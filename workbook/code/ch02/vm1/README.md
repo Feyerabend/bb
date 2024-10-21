@@ -2,7 +2,6 @@
 
 The code implements a basic stack-based virtual machine (VM) in C, which supports a few arithmetic operations (`ADD`, `SUB`, `MUL`), a `SET` operation to push values onto the stack, and a `PRINT` operation to output the result. The program reads instructions (opcodes) from an array (`code`), executes them, and prints the result. Here's a detailed breakdown:
 
----
 
 #### *Components of the Virtual Machine (VM)*:
 
@@ -73,7 +72,6 @@ The code implements a basic stack-based virtual machine (VM) in C, which support
    }
    ```
 
----
 
 #### *Virtual Machine Execution*:
 
@@ -86,31 +84,38 @@ void run(VM* vm) {
     do {
         int opcode = nextcode(vm);
         switch (opcode) {
+
             case HALT:
                 return;
+
             case SET:
                 v = nextcode(vm);
                 push(vm, v);
                 break;
+
             case ADD:
                 b = pop(vm);
                 a = pop(vm);
                 push(vm, a + b);
                 break;
+
             case SUB:
                 b = pop(vm);
                 a = pop(vm);
                 push(vm, a - b);
                 break;
+
             case MUL:
                 b = pop(vm);
                 a = pop(vm);
                 push(vm, a * b);
                 break;
+
             case PRINT:
                 v = pop(vm);
                 printf("%d\n", v);
                 break;
+
             default:
                 break;
         }
@@ -124,7 +129,6 @@ void run(VM* vm) {
 - *`ADD`*, *`SUB`*, *`MUL`*: Pops two values from the stack, performs the corresponding arithmetic operation, and pushes the result back onto the stack.
 - *`PRINT`*: Pops the top value from the stack and prints it.
 
----
 
 #### *Sample Program*:
 
@@ -153,7 +157,7 @@ The steps of execution:
 77
 ```
 
----
+
 
 #### *Main Function*:
 
@@ -177,7 +181,6 @@ int main() {
 }
 ```
 
----
 
 ### Summary:
 This C code represents a simple stack-based virtual machine that can execute a small set of instructions. It processes arithmetic operations on a stack and can print results. The provided sample program demonstrates how the VM works by calculating and printing the sum of two numbers.

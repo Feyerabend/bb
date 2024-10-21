@@ -1,0 +1,76 @@
+# prime numbers
+# faithfully following impl in C
+# but can be optimized in many ways
+
+INIT:
+	SETZ
+	ST 0		# c = 0
+	SET 1
+	ST 1		# j = 1
+
+LOOP:
+	LDARG 1		# i
+	LD 1		# j
+	MOD		# i % j
+	EQZ		# = 0 ?
+
+	JPZ :NOINC	# jump if = 0 false
+
+	LD 0		# c ->
+	INC		# c++
+	ST 0		# -> c
+
+NOINC:
+	LD 1		# j ->
+	INC 		# j++
+	ST 1		# -> j
+
+	LD 1		# j
+	LDARG 1		# i
+	LT		# j < i ?
+	JPNZ :LOOP	# true, loop
+
+	LD 1		# j
+	LDARG 1 	# i
+	EQ		# j = i ?
+	JPNZ :LOOP	# true, loop
+
+	LD 0		# c
+	SET 2
+	EQ		# c = 2 ?
+	JPZ :EXIT	# no? exit call
+
+	LDARG 1 	# prime arg
+	PRINT		# print
+
+EXIT:
+	DROP		# drop excess on stack
+	RET
+
+START:
+	SET 99
+	STORE 0	# n = 99
+
+	SET 1
+	STORE 1	# i = 1
+
+NEXT:
+	LOAD 1		# i
+	INC		# i++
+	DUP		# i i
+	STORE 1	# i global reg
+
+	STARG 1 	# i arg for call
+	CALL :INIT 	# call with 1 argument on stack
+
+	LOAD 1		# i
+	LOAD 0		# n
+	LT 		# i < n ?
+	JPNZ :NEXT	# true, next
+
+	LOAD 0
+	LOAD 1
+	EQ 		# i = n ?
+	JPNZ :NEXT	# true, next
+
+	HALT

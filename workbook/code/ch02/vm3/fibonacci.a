@@ -1,0 +1,37 @@
+# fibonacci 1, 1, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, [610], 987 ...
+
+# Main function (start):
+START:
+    SET 15            # Push 15th Fibonacci number as argument
+    CALL :FIB         # Call FIB function
+    PRINT             # Print the result
+    HALT              # Halt the program
+
+    # FIB function:
+    # FIB: if (n == 0) return 0;
+FIB:
+    DUP               # Duplicate n (top of the stack)
+    EQZ               # Check if n == 0
+    JPZ :NEXT         # If not 0, jump to NEXT
+    SETZ              # Push 0 (return value)
+    RET               # Return 0
+
+    # NEXT: if (n == 1) return 1;
+NEXT:
+    DUP               # Duplicate n again
+    SET 1             # Push 1 to compare
+    EQ                # Check if n == 1
+    JPZ :ELSE         # If not 1, jump to ELSE
+    SET 1             # Push 1 (return value)
+    RET               # Return 1
+
+    # ELSE: return fib(n-1) + fib(n-2);
+ELSE:
+    DEC               # Decrement n (n-1)
+    DUP               # Duplicate (n-1)
+    CALL :FIB         # Call FIB with n-1
+    DUP               # Push the result (fib(n-1)) on the stack
+    DEC               # Decrement the original n (now n-2)
+    CALL :FIB         # Call FIB with n-2
+    ADD               # Add fib(n-1) + fib(n-2)
+    RET               # Return the result

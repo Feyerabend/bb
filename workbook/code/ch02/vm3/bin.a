@@ -1,0 +1,32 @@
+START:
+    SET 16          # number of bits
+    STORE 1         # Store number of bits in register 1
+
+    SET 51966       # decimal input
+    STORE 0         # Store the number in register 0
+
+    SET 1           # Initialize bit mask (1)
+    STORE 2         # Store bit mask in register 2
+
+    LOAD 1          # Load number of bits into register 3
+    DUP
+    STORE 3         # Store the number of bits in register 3
+
+LOOP:
+    LOAD 0          # Load the decimal number
+    LOAD 2          # Load bit mask
+    AND             # Perform bitwise AND to get the bit
+    PRNT            # Print the bit
+
+    LOAD 0          # Reload the decimal number
+    RSH             # Right shift the number
+    STORE 0         # Store the shifted number back
+
+    LOAD 3          # Load the remaining bits count
+    DEC             # Decrement the bit count
+    STORE 3         # Store the updated bit count
+
+    JPNZ :LOOP # If there are still bits to process, loop
+
+    HALT            # End of program
+
