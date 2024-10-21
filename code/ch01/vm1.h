@@ -27,5 +27,3 @@ enum {
 VM* newVM(int* code, int pc);
 void freeVM(VM* vm);
 void run(VM* vm);
-
-/* EOF */
