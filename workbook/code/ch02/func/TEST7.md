@@ -1,3 +1,5 @@
+##mfunc.c
+
 This code implements a simple virtual machine (VM) with support for multiple frames, stack operations, local variables, and basic instructions like ALLOC, DEALLOC, PUSH, POP, and more. Here’s a breakdown of the key components and what the code accomplishes:
 
 1. Frame and FrameStack Structures:
