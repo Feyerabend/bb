@@ -117,7 +117,7 @@ factorial = [
     "JMP 3",     # jump to loop
     
     # end:
-    "PRINT A",   # Print the result in register A
+    "PRINT A",   # print the result in register A
 ]
 
 vm = REGVM()

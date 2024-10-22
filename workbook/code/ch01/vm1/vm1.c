@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "vm1.h"
-
+#include "vm1.h"d
 
 VM* newVM(int* code, int pc) {
 
@@ -89,18 +88,18 @@ void run(VM* vm){
 }
 
 int program[] = {
-        SET, 33,
-        SET, 44,
-        ADD,
-        PRINT,
-        HALT
+    SET, 33,
+    SET, 44,
+    ADD,
+    PRINT,
+    HALT
 };
 
 int main() {
-        VM* vm = newVM(program, 0);
-        if (vm != NULL) {
+    VM* vm = newVM(program, 0);
+    if (vm != NULL) {
 		run(vm);
 		freeVM(vm);
-        }
-        return 0;
+    }
+    return 0;
 };
