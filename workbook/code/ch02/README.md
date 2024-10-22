@@ -1,5 +1,5 @@
 # From Basics To Bytecode: A guide to computers and programming
-# Workbook / code / ch02 
+# workbook / code / ch02 
 
 ## func
 
