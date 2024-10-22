@@ -1,3 +1,5 @@
+## vmo2.c
+
 ### Code Overview
 
 1. Data Types and Structures:
@@ -39,37 +41,40 @@ The code ensures proper memory management by freeing all allocated memory for ob
 Overall, this code provides a simple virtual machine environment for managing and manipulating objects with integer and float fields, demonstrating basic principles of memory management, object-oriented programming concepts in C, and virtual machine execution.
 
 ```
-// Define Celsius Object
-Object Celsius {
-    float temperature = 25.0; // Example temperature in Celsius
+// Define ObjectA
+Object ObjectA {
+    int field1 = 10;
+    float field2 = 3.14;
 }
 
-// Define Fahrenheit Object
-Object Fahrenheit {
-    float temperature = 0.0;   // Placeholder for converted temperature
+// Define ObjectB
+Object ObjectB {
+    int field1 = 20;
+    float field2 = 6.28;
 }
 
-// Define Program for Celsius to Fahrenheit conversion
-Program ProgramCtoF {
-    PRINT Celsius.temperature;                     // Print original Celsius temperature
-    MUL Celsius.temperature, 9.0 / 5.0;            // Multiply Celsius temperature by 9/5
-    ADD Celsius.temperature, 32.0;                 // Add 32 to get Fahrenheit
-    Fahrenheit.temperature = Celsius.temperature;   // Store converted temperature in Fahrenheit object
-    PRINT Fahrenheit.temperature;                   // Print converted Fahrenheit temperature
+// Define Program for ObjectA
+Program ProgramA {
+    PRINT ObjectA.field1;            // Print field1 of ObjectA
+    ADD ObjectA.field1, 5;           // Add 5 to field1 of ObjectA
+    SUB ObjectA.field1, 2;           // Subtract 2 from field1 of ObjectA
+    MUL ObjectA.field1, 3;           // Multiply field1 of ObjectA by 3
+    DIV ObjectA.field1, 2;           // Divide field1 of ObjectA by 2
+    PRINT ObjectA.field1;            // Print field1 of ObjectA again
 }
 
-// Define Program for Fahrenheit to Celsius conversion
-Program ProgramFtoC {
-    PRINT Fahrenheit.temperature;                    // Print original Fahrenheit temperature
-    SUB Fahrenheit.temperature, 32.0;               // Subtract 32 from Fahrenheit temperature
-    MUL Fahrenheit.temperature, 5.0 / 9.0;          // Multiply by 5/9 to convert to Celsius
-    Celsius.temperature = Fahrenheit.temperature;    // Store converted temperature in Celsius object
-    PRINT Celsius.temperature;                       // Print converted Celsius temperature
+// Define Program for ObjectB
+Program ProgramB {
+    PRINT ObjectB.field1;            // Print field1 of ObjectB
+    INC ObjectB.field1;              // Increment field1 of ObjectB
+    ADD ObjectB.field1, 10;          // Add 10 to field1 of ObjectB
+    PRINT ObjectB.field1;            // Print field1 of ObjectB again
 }
 ```
+
 -----
 
-This C code implements a simple virtual machine (VM) that can manipulate objects with fields and execute a predefined set of instructions. Here’s a detailed breakdown of the key components and functionalities of the code:
+## vmo3.c
 
 ### Overview
 
@@ -114,10 +119,9 @@ Conclusion
 
 This code serves as a simple demonstration of object-oriented programming concepts in C, including dynamic memory management, the use of unions for flexible data representation, and basic VM execution models. It provides a foundation that can be expanded to include more complex operations and features, such as method invocation and more advanced data types.
 
+### Pseudo code
 
-
-------
-
+```
 // Define ObjectA
 Object ObjectA {
     int field1 = 10;
@@ -147,34 +151,4 @@ Program ProgramB {
     ADD ObjectB.field1, 10;          // Add 10 to field1 of ObjectB
     PRINT ObjectB.field1;            // Print field1 of ObjectB again
 }
-
-
----------
-
-// Define Celsius Object
-Object Celsius {
-    float temperature = 25.0; // Example temperature in Celsius
-}
-
-// Define Fahrenheit Object
-Object Fahrenheit {
-    float temperature = 0.0;   // Placeholder for converted temperature
-}
-
-// Define Program for Celsius to Fahrenheit conversion
-Program ProgramCtoF {
-    PRINT Celsius.temperature;                     // Print original Celsius temperature
-    MUL Celsius.temperature, 9.0 / 5.0;            // Multiply Celsius temperature by 9/5
-    ADD Celsius.temperature, 32.0;                 // Add 32 to get Fahrenheit
-    Fahrenheit.temperature = Celsius.temperature;   // Store converted temperature in Fahrenheit object
-    PRINT Fahrenheit.temperature;                   // Print converted Fahrenheit temperature
-}
-
-// Define Program for Fahrenheit to Celsius conversion
-Program ProgramFtoC {
-    PRINT Fahrenheit.temperature;                    // Print original Fahrenheit temperature
-    SUB Fahrenheit.temperature, 32.0;               // Subtract 32 from Fahrenheit temperature
-    MUL Fahrenheit.temperature, 5.0 / 9.0;          // Multiply by 5/9 to convert to Celsius
-    Celsius.temperature = Fahrenheit.temperature;    // Store converted temperature in Celsius object
-    PRINT Celsius.temperature;                       // Print converted Celsius temperature
-}
+```
