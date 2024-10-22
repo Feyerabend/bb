@@ -83,6 +83,9 @@ Program ProgramB {
 
 This code extends the previous with a practical example of converting temperatures between Celsius and Farenheit. In other respects it very much works in the same way.
 
+Reviewing the pseudo code, some similarities with early object-oriented language like Simula might be seen.[^simula]
+
+[^simula]: See https://en.wikipedia.org/wiki/Simula.
 
 ### Pseudo code
 
