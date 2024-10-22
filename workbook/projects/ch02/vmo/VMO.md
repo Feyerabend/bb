@@ -83,7 +83,8 @@ Program ProgramB {
 
 This code extends the previous with a practical example of converting temperatures between Celsius and Farenheit. In other respects it very much works in the same way.
 
-Reviewing the pseudo code, some similarities with early object-oriented language like Simula might be seen.[^simula]
+Reviewing the pseudo code, some similarities with early object-oriented language like Simula[^simula] might be seen, although it is a very restricted in every respect.
+The psuedo code also captures some ideas on how and how close a programming language can relate to a programming language virtual machine.
 
 [^simula]: See https://en.wikipedia.org/wiki/Simula.
 
@@ -105,16 +106,16 @@ Program ProgramCtoF {
     PRINT Celsius.temperature;                     // Print original Celsius temperature
     MUL Celsius.temperature, 9.0 / 5.0;            // Multiply Celsius temperature by 9/5
     ADD Celsius.temperature, 32.0;                 // Add 32 to get Fahrenheit
-    Fahrenheit.temperature = Celsius.temperature;   // Store converted temperature in Fahrenheit object
-    PRINT Fahrenheit.temperature;                   // Print converted Fahrenheit temperature
+    Fahrenheit.temperature = Celsius.temperature;  // Store converted temperature in Fahrenheit object
+    PRINT Fahrenheit.temperature;                  // Print converted Fahrenheit temperature
 }
 
 // Define Program for Fahrenheit to Celsius conversion
 Program ProgramFtoC {
-    PRINT Fahrenheit.temperature;                    // Print original Fahrenheit temperature
+    PRINT Fahrenheit.temperature;                   // Print original Fahrenheit temperature
     SUB Fahrenheit.temperature, 32.0;               // Subtract 32 from Fahrenheit temperature
     MUL Fahrenheit.temperature, 5.0 / 9.0;          // Multiply by 5/9 to convert to Celsius
-    Celsius.temperature = Fahrenheit.temperature;    // Store converted temperature in Celsius object
-    PRINT Celsius.temperature;                       // Print converted Celsius temperature
+    Celsius.temperature = Fahrenheit.temperature;   // Store converted temperature in Celsius object
+    PRINT Celsius.temperature;                      // Print converted Celsius temperature
 }
 ```
