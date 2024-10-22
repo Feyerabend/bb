@@ -1,4 +1,4 @@
-## vmo2.c
+## vmo.c
 
 ### Code Overview
 
@@ -74,7 +74,7 @@ Program ProgramB {
 
 -----
 
-## vmo3.c
+## vmo2.c
 
 ### Overview
 
@@ -118,6 +118,13 @@ The code implements careful memory management by dynamically allocating memory f
 ### Conclusion
 
 This code serves as a simple demonstration of object-oriented programming concepts in C, including dynamic memory management, the use of unions for flexible data representation, and basic VM execution models. It provides a foundation that can be expanded to include more complex operations and features, such as method invocation and more advanced data types.
+
+---
+
+## vmo3.c
+
+This code extends the previous with a practical example of converting temperatures between Celsius and Farenheit. In other respects it very much works in the same way.
+
 
 ### Pseudo code
 
