@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "vm1.h"
-
+#include "vm1.h"d
 
 VM* newVM(int* code, int pc) {
 
