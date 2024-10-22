@@ -100,14 +100,7 @@ int program[] = {
 int main() {
         VM* vm = newVM(program, 0);
         if (vm != NULL) {
-		clock_t t;
-		t = clock();
-
 		run(vm);
-
-		t = clock() - t;
-		double duration = ((double) t) / CLOCKS_PER_SEC;
-		printf("%f seconds\n", duration);
 		freeVM(vm);
         }
         return 0;
