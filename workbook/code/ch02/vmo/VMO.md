@@ -1,78 +1,3 @@
-## vmo.c
-
-### Code Overview
-
-1. Data Types and Structures:
-* FieldType Enum: Defines two types of fields that an object can have: TYPE_INT and TYPE_FLOAT.
-* Field Struct: Represents a field in an object, using a union to allow either an integer or a float value.
-* Object Struct: Represents an object that has a name, an array of fields, a count of those fields, and (potentially) an array of method mnemonics.
-* Instruction Enum: Defines the types of instructions the VM can execute, including operations like print, increment, addition, subtraction, multiplication, division, and halt.
-* VMInstruction Struct: Represents a single instruction for the VM, containing the instruction type, the index of the field it operates on, and any operand needed for arithmetic operations.
-* VirtualMachine Struct: Represents the VM itself, containing an array of instructions, the total count of those instructions, and a program counter (PC) that tracks the current instruction to execute.
-2. Functionality:
-* Field Operations: The code implements several functions to operate on the fields of an object:
-* print_fields(Object *obj): Prints the name of the object and its fields.
-* increment_field(Object *obj, int field_index): Increments an integer field at the specified index.
-* add_to_field, subtract_from_field, multiply_field, divide_field: Perform arithmetic operations on integer fields, checking the type before performing the operation and handling potential errors (e.g., division by zero).
-3. Object Creation:
-* The create_object function allocates memory for a new object, initializes its fields, and sets its name. It also initializes the method count and methods array.
-4. Virtual Machine Functions:
-* The create_vm function allocates memory for a new VM, initializes it with a list of instructions, and sets the program counter to the start.
-* The run_vm function executes the instructions stored in the VM, invoking appropriate functions based on the current instruction. The PC is incremented after each instruction until all instructions have been executed or a HALT instruction is encountered.
-5. Program Building:
-* The functions build_program_A and build_program_B create a series of VM instructions for two different objects, ObjectA and ObjectB. Each program includes print operations, arithmetic operations (add, subtract, multiply, divide), and is tailored to the fields of the corresponding object.
-6. Main Functionality:
-* The compile_and_run function orchestrates the entire process. It defines fields for two objects, creates these objects, builds their respective programs, runs the virtual machine for each object, and cleans up the allocated memory after execution to prevent memory leaks.
-
-### Example Execution Flow
-
-When main calls compile_and_run:
-
-* It initializes ObjectA with integer and float fields, builds a program that manipulates ObjectA’s fields, and executes it.
-* It then initializes ObjectB similarly, builds its program, and executes it.
-* The output will display the results of the operations on each object, such as the values of their fields before and after arithmetic operations.
-
-### Memory Management
-
-The code ensures proper memory management by freeing all allocated memory for objects, fields, and programs at the end of the execution, which is essential in C to avoid memory leaks.
-
-### Summary
-
-Overall, this code provides a simple virtual machine environment for managing and manipulating objects with integer and float fields, demonstrating basic principles of memory management, object-oriented programming concepts in C, and virtual machine execution.
-
-```
-// Define ObjectA
-Object ObjectA {
-    int field1 = 10;
-    float field2 = 3.14;
-}
-
-// Define ObjectB
-Object ObjectB {
-    int field1 = 20;
-    float field2 = 6.28;
-}
-
-// Define Program for ObjectA
-Program ProgramA {
-    PRINT ObjectA.field1;            // Print field1 of ObjectA
-    ADD ObjectA.field1, 5;           // Add 5 to field1 of ObjectA
-    SUB ObjectA.field1, 2;           // Subtract 2 from field1 of ObjectA
-    MUL ObjectA.field1, 3;           // Multiply field1 of ObjectA by 3
-    DIV ObjectA.field1, 2;           // Divide field1 of ObjectA by 2
-    PRINT ObjectA.field1;            // Print field1 of ObjectA again
-}
-
-// Define Program for ObjectB
-Program ProgramB {
-    PRINT ObjectB.field1;            // Print field1 of ObjectB
-    INC ObjectB.field1;              // Increment field1 of ObjectB
-    ADD ObjectB.field1, 10;          // Add 10 to field1 of ObjectB
-    PRINT ObjectB.field1;            // Print field1 of ObjectB again
-}
-```
-
------
 
 ## vmo2.c
 
@@ -119,7 +44,40 @@ The code implements careful memory management by dynamically allocating memory f
 
 This code serves as a simple demonstration of object-oriented programming concepts in C, including dynamic memory management, the use of unions for flexible data representation, and basic VM execution models. It provides a foundation that can be expanded to include more complex operations and features, such as method invocation and more advanced data types.
 
----
+### Pseudo code
+
+```simula
+// Define ObjectA
+Object ObjectA {
+    int field1 = 10;
+    float field2 = 3.14;
+}
+
+// Define ObjectB
+Object ObjectB {
+    int field1 = 20;
+    float field2 = 6.28;
+}
+
+// Define Program for ObjectA
+Program ProgramA {
+    PRINT ObjectA.field1;            // Print field1 of ObjectA
+    ADD ObjectA.field1, 5;           // Add 5 to field1 of ObjectA
+    SUB ObjectA.field1, 2;           // Subtract 2 from field1 of ObjectA
+    MUL ObjectA.field1, 3;           // Multiply field1 of ObjectA by 3
+    DIV ObjectA.field1, 2;           // Divide field1 of ObjectA by 2
+    PRINT ObjectA.field1;            // Print field1 of ObjectA again
+}
+
+// Define Program for ObjectB
+Program ProgramB {
+    PRINT ObjectB.field1;            // Print field1 of ObjectB
+    INC ObjectB.field1;              // Increment field1 of ObjectB
+    ADD ObjectB.field1, 10;          // Add 10 to field1 of ObjectB
+    PRINT ObjectB.field1;            // Print field1 of ObjectB again
+}
+```
+
 
 ## vmo3.c
 
