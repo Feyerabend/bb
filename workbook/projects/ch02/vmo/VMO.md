@@ -83,8 +83,9 @@ Program ProgramB {
 
 This code extends the previous with a practical example of converting temperatures between Celsius and Farenheit. In other respects it very much works in the same way.
 
-Reviewing the pseudo code, some similarities with early object-oriented language like Simula[^simula] might be seen, although it is a very restricted in every respect.
-The psuedo code also captures some ideas on how and how close a programming language can relate to a programming language virtual machine.
+Reviewing the pseudocode, one may notice similarities to early object-oriented languages like Simula[^simula], though it remains highly restricted in many aspects. The pseudocode also illustrates concepts regarding how closely a programming language can be designed to reflect a virtual machine. Abstraction doesn’t always need to align with machine code; instead, it can operate at various levels depending on factors such as practicality, performance, and overall usefulness.
+
+Furthermore, the choice of abstraction levels in virtual machines affects not only performance but also the ease with which a programmer can express complex ideas. While low-level instructions may offer precision and control, higher-level abstractions can simplify the development process, enabling more intuitive constructs without worrying about the underlying hardware. This balance between abstraction and control is a key consideration in the design of virtual machines and programming languages alike.
 
 [^simula]: See https://en.wikipedia.org/wiki/Simula.
 
