@@ -88,4 +88,4 @@ By considering these points, you’ll be equipped to design and implement a simp
 
 ## Build a more advanced object-oriented VM
 
-See [workbook/code/ch02/vmo](workbook/code/ch02/vmo) for more.
+See [../../code/ch02/vmo](../..//code/ch02/vmo) for more.
