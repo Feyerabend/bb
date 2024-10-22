@@ -1,7 +1,5 @@
 # regvm
 
----
-
 ## regvm.c
 
 This C code implements a simple virtual machine (VM) that operates on four registers (`A`, `B`, `C`, `D`), and includes a basic instruction set that can manipulate these registers. The VM supports fetching instructions from memory, decoding them, executing them, and updating flags (`Z` for zero and `N` for negative values).
