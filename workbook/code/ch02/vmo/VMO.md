@@ -38,7 +38,35 @@ The code ensures proper memory management by freeing all allocated memory for ob
 
 Overall, this code provides a simple virtual machine environment for managing and manipulating objects with integer and float fields, demonstrating basic principles of memory management, object-oriented programming concepts in C, and virtual machine execution.
 
+```
+// Define Celsius Object
+Object Celsius {
+    float temperature = 25.0; // Example temperature in Celsius
+}
 
+// Define Fahrenheit Object
+Object Fahrenheit {
+    float temperature = 0.0;   // Placeholder for converted temperature
+}
+
+// Define Program for Celsius to Fahrenheit conversion
+Program ProgramCtoF {
+    PRINT Celsius.temperature;                     // Print original Celsius temperature
+    MUL Celsius.temperature, 9.0 / 5.0;            // Multiply Celsius temperature by 9/5
+    ADD Celsius.temperature, 32.0;                 // Add 32 to get Fahrenheit
+    Fahrenheit.temperature = Celsius.temperature;   // Store converted temperature in Fahrenheit object
+    PRINT Fahrenheit.temperature;                   // Print converted Fahrenheit temperature
+}
+
+// Define Program for Fahrenheit to Celsius conversion
+Program ProgramFtoC {
+    PRINT Fahrenheit.temperature;                    // Print original Fahrenheit temperature
+    SUB Fahrenheit.temperature, 32.0;               // Subtract 32 from Fahrenheit temperature
+    MUL Fahrenheit.temperature, 5.0 / 9.0;          // Multiply by 5/9 to convert to Celsius
+    Celsius.temperature = Fahrenheit.temperature;    // Store converted temperature in Celsius object
+    PRINT Celsius.temperature;                       // Print converted Celsius temperature
+}
+```
 -----
 
 This C code implements a simple virtual machine (VM) that can manipulate objects with fields and execute a predefined set of instructions. Here’s a detailed breakdown of the key components and functionalities of the code:
