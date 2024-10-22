@@ -1,3 +1,5 @@
+## mem.c
+
 ### General Description of the Code
 
 The provided code simulates a simple memory management system and a basic virtual machine (VM) with an object model. Here's what it does:
@@ -30,7 +32,7 @@ In virtual machines (VMs), memory management plays a crucial role in ensuring ef
 
 ### Extending the Code with a Garbage Collector
 
-Yes, it is possible to extend this VM with a *garbage collector* (GC) at the VM level. This could replace or work alongside the manual `mem_free()` calls to automatically reclaim memory. A garbage collector would track which objects are still in use and free those that are not.
+It is possible to extend this VM with a *garbage collector* (GC) at the VM level. This could replace or work alongside the manual `mem_free()` calls to automatically reclaim memory. A garbage collector would track which objects are still in use and free those that are not.
 
 ### General Principles for Implementing a Garbage Collector
 
