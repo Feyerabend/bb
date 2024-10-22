@@ -85,20 +85,6 @@ Frame* getFrame(VM* vm, int frameIndex) {
     return vm->fstack.frames[frameIndex];
 }
 
-/*
-// Example: Manipulate a frame's local variable at a given index
-void manipulateFrame(VM* vm, int frameIndex, int localIndex, int newValue) {
-    Frame* frame = getFrame(vm, frameIndex);
-    if (frame != NULL) {
-        if (localIndex < 0 || localIndex >= LOCALS_SIZE) {
-            printf("Invalid local variable index: %d\n", localIndex);
-            return;
-        }
-        frame->locals[localIndex] = newValue;
-        printf("Frame %d local[%d] updated to %d\n", frameIndex, localIndex, newValue);
-    }
-}*/
-
 // push value onto the current frame's stack
 void push(VM* vm, int value) {
     Frame* frame = vm->fstack.frames[vm->fstack.fp];
@@ -138,36 +124,6 @@ void load(VM* vm, int index) {
     int value = vm->fstack.frames[vm->fstack.fp]->locals[index];
     push(vm, value);
 }
-
-/*
-// transfer value from source frame's stack to destination frame's local variable
-void transferStackToLocal(VM* vm, int srcFrameIdx, int destFrameIdx, int localIndex) {
-    // Check for valid source and destination frame indices
-    if (srcFrameIdx < 0 || srcFrameIdx > vm->fstack.fp || destFrameIdx < 0 || destFrameIdx > vm->fstack.fp) {
-        printf("Invalid frame index!\n");
-        return;
-    }
-
-    Frame* srcFrame = vm->fstack.frames[srcFrameIdx];
-    Frame* destFrame = vm->fstack.frames[destFrameIdx];
-
-    // Check if the source frame's stack is not empty
-    if (srcFrame->sp < 0) {
-        printf("Source frame's stack is empty!\n");
-        return;
-    }
-
-    // Pop the value from the source frame's stack
-    int value = srcFrame->stack[srcFrame->sp--];
-
-    // Store the value into the destination frame's locals array
-    if (localIndex >= 0 && localIndex < LOCALS_SIZE) {
-        destFrame->locals[localIndex] = value;
-        printf("Transferred value %d from source frame stack to destination frame local[%d].\n", value, localIndex);
-    } else {
-        printf("Invalid local index in the destination frame!\n");
-    }
-}*/
 
 int transferStackToLocals(VM* vm, int index) {
 
