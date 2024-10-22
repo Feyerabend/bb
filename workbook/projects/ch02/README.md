@@ -1,5 +1,3 @@
-# From Basics To Bytecode: A guide to computers and programming
-
 ## Build your own VM
 
 When building your own very simple virtual machine (VM), there are several key considerations to keep in mind:
@@ -86,6 +84,6 @@ while instruction_pointer < bytecode_length:
 
 By considering these points, you’ll be equipped to design and implement a simple virtual machine, capable of executing basic operations and providing a strong foundation for more complex systems.
 
-## Build a more advanced object-oriented VM
+## Build an advanced object-oriented VM
 
 See [vmo](../..//code/ch02/vmo) for more.
