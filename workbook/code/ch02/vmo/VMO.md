@@ -1,26 +1,26 @@
 Code Overview
 
-	1.	Data Types and Structures:
-	•	FieldType Enum: Defines two types of fields that an object can have: TYPE_INT and TYPE_FLOAT.
-	•	Field Struct: Represents a field in an object, using a union to allow either an integer or a float value.
-	•	Object Struct: Represents an object that has a name, an array of fields, a count of those fields, and (potentially) an array of method mnemonics.
-	•	Instruction Enum: Defines the types of instructions the VM can execute, including operations like print, increment, addition, subtraction, multiplication, division, and halt.
-	•	VMInstruction Struct: Represents a single instruction for the VM, containing the instruction type, the index of the field it operates on, and any operand needed for arithmetic operations.
-	•	VirtualMachine Struct: Represents the VM itself, containing an array of instructions, the total count of those instructions, and a program counter (PC) that tracks the current instruction to execute.
-	2.	Functionality:
-	•	Field Operations: The code implements several functions to operate on the fields of an object:
-	•	print_fields(Object *obj): Prints the name of the object and its fields.
-	•	increment_field(Object *obj, int field_index): Increments an integer field at the specified index.
-	•	add_to_field, subtract_from_field, multiply_field, divide_field: Perform arithmetic operations on integer fields, checking the type before performing the operation and handling potential errors (e.g., division by zero).
-	3.	Object Creation:
-	•	The create_object function allocates memory for a new object, initializes its fields, and sets its name. It also initializes the method count and methods array.
-	4.	Virtual Machine Functions:
-	•	The create_vm function allocates memory for a new VM, initializes it with a list of instructions, and sets the program counter to the start.
-	•	The run_vm function executes the instructions stored in the VM, invoking appropriate functions based on the current instruction. The PC is incremented after each instruction until all instructions have been executed or a HALT instruction is encountered.
-	5.	Program Building:
-	•	The functions build_program_A and build_program_B create a series of VM instructions for two different objects, ObjectA and ObjectB. Each program includes print operations, arithmetic operations (add, subtract, multiply, divide), and is tailored to the fields of the corresponding object.
-	6.	Main Functionality:
-	•	The compile_and_run function orchestrates the entire process. It defines fields for two objects, creates these objects, builds their respective programs, runs the virtual machine for each object, and cleans up the allocated memory after execution to prevent memory leaks.
+1. Data Types and Structures:
+* FieldType Enum: Defines two types of fields that an object can have: TYPE_INT and TYPE_FLOAT.
+* Field Struct: Represents a field in an object, using a union to allow either an integer or a float value.
+* Object Struct: Represents an object that has a name, an array of fields, a count of those fields, and (potentially) an array of method mnemonics.
+* Instruction Enum: Defines the types of instructions the VM can execute, including operations like print, increment, addition, subtraction, multiplication, division, and halt.
+* VMInstruction Struct: Represents a single instruction for the VM, containing the instruction type, the index of the field it operates on, and any operand needed for arithmetic operations.
+* VirtualMachine Struct: Represents the VM itself, containing an array of instructions, the total count of those instructions, and a program counter (PC) that tracks the current instruction to execute.
+2. Functionality:
+* Field Operations: The code implements several functions to operate on the fields of an object:
+* print_fields(Object *obj): Prints the name of the object and its fields.
+* increment_field(Object *obj, int field_index): Increments an integer field at the specified index.
+* add_to_field, subtract_from_field, multiply_field, divide_field: Perform arithmetic operations on integer fields, checking the type before performing the operation and handling potential errors (e.g., division by zero).
+3. Object Creation:
+* The create_object function allocates memory for a new object, initializes its fields, and sets its name. It also initializes the method count and methods array.
+4. Virtual Machine Functions:
+* The create_vm function allocates memory for a new VM, initializes it with a list of instructions, and sets the program counter to the start.
+* The run_vm function executes the instructions stored in the VM, invoking appropriate functions based on the current instruction. The PC is incremented after each instruction until all instructions have been executed or a HALT instruction is encountered.
+5. Program Building:
+* The functions build_program_A and build_program_B create a series of VM instructions for two different objects, ObjectA and ObjectB. Each program includes print operations, arithmetic operations (add, subtract, multiply, divide), and is tailored to the fields of the corresponding object.
+6. Main Functionality:
+* The compile_and_run function orchestrates the entire process. It defines fields for two objects, creates these objects, builds their respective programs, runs the virtual machine for each object, and cleans up the allocated memory after execution to prevent memory leaks.
 
 Example Execution Flow
 
