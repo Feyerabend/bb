@@ -1,8 +1,8 @@
-# REGVM
+# regvm
 
 ---
 
-## C Version Explanation
+## regvm.c
 
 This C code implements a simple virtual machine (VM) that operates on four registers (`A`, `B`, `C`, `D`), and includes a basic instruction set that can manipulate these registers. The VM supports fetching instructions from memory, decoding them, executing them, and updating flags (`Z` for zero and `N` for negative values).
 
@@ -185,7 +185,7 @@ int main() {
 
 ---
 
-## Python Version Explanation
+## regvm.py
 
 This Python code implements a similar virtual machine as the C version. It is designed to handle basic instructions (`MOV`, `ADD`, `SUB`, `MUL`, etc.) and modify registers accordingly. The program runs a simple loop to compute the factorial of 5.
 
@@ -331,8 +331,6 @@ vm.load_program(factorial)
 vm.run()
 ```
 
----
-
 ### Key Points in the Python Version:
 1. *Object-Oriented Design*: The virtual machine is implemented as a class (`REGVM`), encapsulating the program counter, registers, flags, and memory.
 2. *Instruction Execution*: The method `decode_and_execute` decodes the opcode and its arguments, executing instructions like `MOV`, `ADD`, `SUB`, `MUL`, `CMP`, `JMP`, `JZ`, and `PRINT`. Arithmetic operations update the flags as needed.
@@ -347,7 +345,5 @@ Register A: 120
 ```
 
 This output shows the content of register `A`, which holds the value `120`, the result of `5! = 5 * 4 * 3 * 2 * 1 = 120`.
-
----
 
 This comparison demonstrates how a basic virtual machine can be implemented in both C and Python, with similar logic but differing in terms of language features and syntax.
