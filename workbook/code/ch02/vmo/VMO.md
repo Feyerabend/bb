@@ -1,4 +1,4 @@
-Code Overview
+### Code Overview
 
 1. Data Types and Structures:
 * FieldType Enum: Defines two types of fields that an object can have: TYPE_INT and TYPE_FLOAT.
@@ -22,19 +22,19 @@ Code Overview
 6. Main Functionality:
 * The compile_and_run function orchestrates the entire process. It defines fields for two objects, creates these objects, builds their respective programs, runs the virtual machine for each object, and cleans up the allocated memory after execution to prevent memory leaks.
 
-Example Execution Flow
+### Example Execution Flow
 
 When main calls compile_and_run:
 
-	•	It initializes ObjectA with integer and float fields, builds a program that manipulates ObjectA’s fields, and executes it.
-	•	It then initializes ObjectB similarly, builds its program, and executes it.
-	•	The output will display the results of the operations on each object, such as the values of their fields before and after arithmetic operations.
+* It initializes ObjectA with integer and float fields, builds a program that manipulates ObjectA’s fields, and executes it.
+* It then initializes ObjectB similarly, builds its program, and executes it.
+* The output will display the results of the operations on each object, such as the values of their fields before and after arithmetic operations.
 
-Memory Management
+### Memory Management
 
 The code ensures proper memory management by freeing all allocated memory for objects, fields, and programs at the end of the execution, which is essential in C to avoid memory leaks.
 
-Summary
+### Summary
 
 Overall, this code provides a simple virtual machine environment for managing and manipulating objects with integer and float fields, demonstrating basic principles of memory management, object-oriented programming concepts in C, and virtual machine execution.
 
@@ -43,27 +43,27 @@ Overall, this code provides a simple virtual machine environment for managing an
 
 This C code implements a simple virtual machine (VM) that can manipulate objects with fields and execute a predefined set of instructions. Here’s a detailed breakdown of the key components and functionalities of the code:
 
-Overview
+### Overview
 
-	1.	Data Structures:
-	•	FieldType Enum: Defines two types of fields: TYPE_INT for integers and TYPE_FLOAT for floating-point numbers.
-	•	Field Struct: Represents a field within an object. It contains a type (from FieldType) and a union that holds either an integer or a float value, allowing flexibility in field types.
-	•	Object Struct: Represents an object with:
-	•	A name (string).
-	•	An array of fields (Field).
-	•	A count of fields.
-	•	An array of method mnemonics (though this part is defined but not utilized in the provided code).
-	•	A count of methods.
-	•	Instruction Enum: Defines the instructions that the VM can execute, such as printing fields, performing arithmetic operations (increment, add, subtract, multiply, divide), and halting the execution.
-	•	VMInstruction Struct: Represents a single instruction in the VM, consisting of the instruction type, the index of the field it acts on, and any additional operand for arithmetic instructions.
-	•	VirtualMachine Struct: Contains an array of VM instructions, the total number of instructions, and the program counter (PC) which tracks the current instruction being executed.
-	2.	Functions:
-	•	Field Manipulation Functions: Functions for manipulating fields in objects, including printing fields, incrementing, adding, subtracting, multiplying, and dividing integer fields. Each function checks if the field type is appropriate before performing operations.
-	•	Object Creation: The create_object function allocates memory for a new object, initializes its fields, and copies the provided fields.
-	•	Virtual Machine Functions: Functions to create a VM and execute its instructions:
-	•	create_vm initializes a VM with a list of instructions.
-	•	run_vm executes the instructions sequentially, using a switch statement to determine which operation to perform based on the current instruction.
-	3.	Program Building:
+1. Data Structures:
+* FieldType Enum: Defines two types of fields: TYPE_INT for integers and TYPE_FLOAT for floating-point numbers.
+* Field Struct: Represents a field within an object. It contains a type (from FieldType) and a union that holds either an integer or a float value, allowing flexibility in field types.
+* Object Struct: Represents an object with:
+* A name (string).
+* An array of fields (Field).
+* A count of fields.
+* An array of method mnemonics (though this part is defined but not utilized in the provided code).
+* A count of methods.
+* Instruction Enum: Defines the instructions that the VM can execute, such as printing fields, performing arithmetic operations (increment, add, subtract, multiply, divide), and halting the execution.
+* VMInstruction Struct: Represents a single instruction in the VM, consisting of the instruction type, the index of the field it acts on, and any additional operand for arithmetic instructions.
+* VirtualMachine Struct: Contains an array of VM instructions, the total number of instructions, and the program counter (PC) which tracks the current instruction being executed.
+2. Functions:
+* Field Manipulation Functions: Functions for manipulating fields in objects, including printing fields, incrementing, adding, subtracting, multiplying, and dividing integer fields. Each function checks if the field type is appropriate before performing operations.
+* Object Creation: The create_object function allocates memory for a new object, initializes its fields, and copies the provided fields.
+* Virtual Machine Functions: Functions to create a VM and execute its instructions:
+* create_vm initializes a VM with a list of instructions.
+* run_vm executes the instructions sequentially, using a switch statement to determine which operation to perform based on the current instruction.
+3. Program Building:
 	•	The code includes functions build_program_A and build_program_B that create sequences of VM instructions to manipulate specific objects (ObjectA and ObjectB). Each program prints a field, modifies it with various arithmetic operations, and prints it again.
 	4.	Main Execution:
 	•	The compile_and_run function orchestrates the creation of two objects, builds their respective programs, creates and runs virtual machines for each program, and performs cleanup after execution. The function manages memory by freeing the allocated resources for the programs and objects to prevent memory leaks.
