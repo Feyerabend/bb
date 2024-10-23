@@ -164,13 +164,13 @@ int main() {
 // Simple addition program
 
 object ExampleObject {
-    field field1: float = 10.0;  // Initial value of the first field
+    field field1: float = 10.0;   // Initial value of the first field
     field field2: int = 20;       // Initial value of the second field
 
     method addValue() {
-        print(field1);             // Print the initial value of field1
-        field1 = field1 + 5.0;     // Add 5 to field1
-        print(field1);             // Print the updated value of field1
+        print(field1);            // Print the initial value of field1
+        field1 = field1 + 5.0;    // Add 5 to field1
+        print(field1);            // Print the updated value of field1
     }
 }
 
