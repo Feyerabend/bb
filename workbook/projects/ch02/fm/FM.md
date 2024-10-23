@@ -1,5 +1,5 @@
 
-## fvm.py
+## fm.py
 
 *Project: Enhance this interpreter, transforming it into a “functional machine” inspired by Lisp, and experiment with various samples to explore its capabilities further.*
 
