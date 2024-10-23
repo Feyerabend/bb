@@ -6,7 +6,7 @@
 #include <time.h>
 
 typedef struct {
-    int opcode_count[256]; // Max number of opcodes is 256
+    int opcode_count[256]; // max number opcodes 256
     clock_t opcode_time[256];
     int frame_push_count;
     int frame_pop_count;
