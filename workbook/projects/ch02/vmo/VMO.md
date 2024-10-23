@@ -66,7 +66,7 @@ This code serves as a straightforward demonstration of object-oriented concepts 
 
 Reviewing the pseudocode, one may notice (or imaginge) similarities to early object-oriented languages like Java,[^java] though it remains both highly volatile and restricted in too many aspects. It is e.g. scary from an object-oriented view of encapsulation. The pseudocode also illustrates concepts regarding how closely a programming language can be designed to reflect a virtual machine. Abstraction doesn’t always need to align with machine code; instead, it can operate at various levels depending on factors such as practicality, performance, and overall usefulness.
 
-[^java]: See Java wiki.
+[^java]: See https://en.wikipedia.org/wiki/Java_(programming_language).
 
 Furthermore, the choice of abstraction levels in virtual machines affects not only performance but also the ease with which a programmer can express complex ideas. While low-level instructions may offer precision and control, higher-level abstractions can simplify the development process, enabling more intuitive constructs without worrying about the underlying hardware. This balance between abstraction and control is a key consideration in the design of virtual machines and programming languages alike.
 
