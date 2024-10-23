@@ -89,11 +89,11 @@ void run(VM* vm){
 }
 
 int program[] = {
-        SET, 33,
-        SET, 44,
-        ADD,
-        PRINT,
-        HALT
+    SET, 33,
+    SET, 44,
+    ADD,
+    PRINT,
+    HALT
 };
 
 int main() {
