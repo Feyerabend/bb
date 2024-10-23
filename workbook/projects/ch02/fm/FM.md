@@ -1,6 +1,8 @@
 
 ## fvm.py
 
+*Project: Enhance this interpreter, transforming it into a “functional machine” inspired by Lisp, and experiment with various samples to explore its capabilities further.*
+
 ### Overview
 
 The interpreter is designed to evaluate basic Lisp expressions, allowing users to define variables, create functions, and perform arithmetic operations.
