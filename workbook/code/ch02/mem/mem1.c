@@ -75,32 +75,32 @@ void* mem_realloc(void* ptr, size_t new_size) {
     return new_ptr;
 }
 
-// vm
+// machine
 
-typedef struct VM {
+typedef struct Machine {
     void* allocated_blocks[10];
     int block_count;
-} VM;
+} Machine;
 
-void vm_init(VM* vm) {
-    vm->block_count = 0;
+void machine_init(Machine* machine) {
+    machine->block_count = 0;
 }
 
-void* vm_alloc(VM* vm, size_t size) {
+void* machine_alloc(Machine* machine, size_t size) {
     void* addr = mem_malloc(size);
     if (addr != NULL) {
-        vm->allocated_blocks[vm->block_count++] = addr;
+        machine->allocated_blocks[machine->block_count++] = addr;
         printf("Allocated %zu bytes at address %p\n", size, addr);
     }
     return addr;
 }
 
-void vm_free(VM* vm, void* addr) {
+void machine_free(Machine* machine, void* addr) {
     mem_free(addr);
     printf("Freed memory at address %p\n", addr);
 }
 
-void* vm_realloc(VM* vm, void* addr, size_t new_size) {
+void* machine_realloc(Machine* machine, void* addr, size_t new_size) {
     void* new_addr = mem_realloc(addr, new_size);
     if (new_addr != NULL) {
         printf("Reallocated memory from %p to %p, new size: %zu bytes\n", addr, new_addr, new_size);
@@ -108,13 +108,13 @@ void* vm_realloc(VM* vm, void* addr, size_t new_size) {
     return new_addr;
 }
 
-void vm_store(void* addr, int offset, int value) {
+void machine_store(void* addr, int offset, int value) {
     int* block = (int*)((uint8_t*)addr + offset);
     *block = value;
     printf("Stored value %d at offset %d\n", value, offset);
 }
 
-int vm_load(void* addr, int offset) {
+int machine_load(void* addr, int offset) {
     int* block = (int*)((uint8_t*)addr + offset);
     int value = *block;
     printf("Loaded value %d from offset %d\n", value, offset);
@@ -125,40 +125,40 @@ int vm_load(void* addr, int offset) {
 
 int main() {
     memory_init();
-    VM vm;
-    vm_init(&vm);
+    Machine machine;
+    machine_init(&machine);
     const int z = sizeof(int);
 
     // 1: allocate small block for 3 integers
-    void* block = vm_alloc(&vm, 3 * z);
+    void* block = machine_alloc(&machine, 3 * z);
 
     // 2: store values in block (simulating "dynamic array")
-    vm_store(block, 0 * z, 10);
-    vm_store(block, 1 * z, 20);
-    vm_store(block, 2 * z, 30);
+    machine_store(block, 0 * z, 10);
+    machine_store(block, 1 * z, 20);
+    machine_store(block, 2 * z, 30);
 
     // 3: expand block (add more numbers, i.e. reallocating)
-    block = vm_realloc(&vm, block, 6 * z);
+    block = machine_realloc(&machine, block, 6 * z);
 
     // 4: add more values in expanded block
-    vm_store(block, 3 * z, 40);
-    vm_store(block, 4 * z, 50);
-    vm_store(block, 5 * z, 60);
+    machine_store(block, 3 * z, 40);
+    machine_store(block, 4 * z, 50);
+    machine_store(block, 5 * z, 60);
 
     // 5: retrieve values (from "dynamic array")
     for (int i = 0; i < 6; i++) {
-        vm_load(block, i * z);
+        machine_load(block, i * z);
     }
     // 6: replace value at offset (where 50 lives)
-    vm_store(block, 4 * z, 90);
+    machine_store(block, 4 * z, 90);
 
     // 7: retrieve values
     for (int i = 0; i < 6; i++) {
-        vm_load(block, i * z);
+        machine_load(block, i * z);
     }
 
     // 8: free block
-    vm_free(&vm, block);
+    machine_free(&machine, block);
 
     return 0;
 }

@@ -101,13 +101,13 @@ typedef struct {
     char* value;
 } StringObject;
 
-// --- vm ---
-typedef struct SimpleVM {
+// --- machine ---
+typedef struct Machine {
     void** array;
     size_t size;
-} SimpleVM;
+} Machine;
 
-void simple_vm_init(SimpleVM* vm, size_t initial_size) {
+void machine_init(Machine* vm, size_t initial_size) {
     vm->array = (void**)mem_malloc(initial_size * sizeof(void*));
     if (vm->array == NULL) {
         printf("Memory allocation failed for VM array!\n");
@@ -119,7 +119,7 @@ void simple_vm_init(SimpleVM* vm, size_t initial_size) {
     }
 }
 
-void simple_vm_add(SimpleVM* vm, size_t index, ObjectType type, void* value) {
+void machine_add(Machine* vm, size_t index, ObjectType type, void* value) {
     if (index >= vm->size) {
         printf("Index out of bounds: %zu\n", index);
         return;
@@ -162,7 +162,7 @@ void simple_vm_add(SimpleVM* vm, size_t index, ObjectType type, void* value) {
     }
 }
 
-void simple_vm_display(SimpleVM* vm) {
+void machine_display(Machine* vm) {
     printf("Array contents (object references):\n");
     for (size_t i = 0; i < vm->size; i++) {
         Object* obj = (Object*)vm->array[i];
@@ -192,7 +192,7 @@ void simple_vm_display(SimpleVM* vm) {
     }
 }
 
-void simple_vm_delete(SimpleVM* vm, size_t index) {
+void machine_delete(Machine* vm, size_t index) {
     if (index >= vm->size || vm->array[index] == NULL) return;
 
     Object* obj = (Object*)vm->array[index];
@@ -207,32 +207,32 @@ void simple_vm_delete(SimpleVM* vm, size_t index) {
 // sample
 int main() {
     memory_init();
-    SimpleVM vm;
-    simple_vm_init(&vm, 5);
+    Machine vm;
+    machine_init(&vm, 5);
 
     // new objects
     int int_val = 42;
-    simple_vm_add(&vm, 0, INT_OBJECT, &int_val);
+    machine_add(&vm, 0, INT_OBJECT, &int_val);
 
     float float_val = 3.14f;
-    simple_vm_add(&vm, 1, FLOAT_OBJECT, &float_val);
+    machine_add(&vm, 1, FLOAT_OBJECT, &float_val);
 
     char str_val[] = "Hello, World!";
-    simple_vm_add(&vm, 2, STRING_OBJECT, str_val);
+    machine_add(&vm, 2, STRING_OBJECT, str_val);
 
     // display array contents
-    simple_vm_display(&vm);
+    machine_display(&vm);
 
-    simple_vm_delete(&vm, 2);
+    machine_delete(&vm, 2);
 
     char str_val2[] = "Hi, to you!";
-    simple_vm_add(&vm, 3, STRING_OBJECT, str_val2);
+    machine_add(&vm, 3, STRING_OBJECT, str_val2);
 
-    simple_vm_display(&vm);
+    machine_display(&vm);
 
     // clean
     for (size_t i = 0; i < vm.size; i++) {
-        simple_vm_delete(&vm, i);
+        machine_delete(&vm, i);
     }
     mem_free(vm.array);
 
