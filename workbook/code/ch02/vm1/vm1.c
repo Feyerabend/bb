@@ -98,8 +98,8 @@ int program[] = {
 };
 
 int main() {
-        VM* vm = newVM(program, 0);
-        if (vm != NULL) {
+    VM* vm = newVM(program, 0);
+    if (vm != NULL) {
         clock_t t;
         t = clock();
 
@@ -109,8 +109,8 @@ int main() {
         double duration = ((double) t) / CLOCKS_PER_SEC;
         printf("%f seconds\n", duration);
         freeVM(vm);
-        }
-        return 0;
+    }
+    return 0;
 };
 
 /* EOF */
