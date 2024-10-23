@@ -1,7 +1,7 @@
-
 ## fm.py
 
-*Project: Enhance this interpreter, transforming it into a “functional machine” inspired by Lisp, and experiment with various samples to explore its capabilities further.*
+*Project: Enhance this interpreter, transforming it into a "functional machine" inspired by Lisp, and experiment with various samples to explore its capabilities further.*
+*Prerequisites: A basic understanding of functional programming concepts.*
 
 ### Overview
 
@@ -15,11 +15,10 @@ The interpreter is designed to evaluate basic Lisp expressions, allowing users t
 
 #### Class Descriptions
 
-* LispError: This class inherits from Python’s built-in Exception class and is used for handling errors specific to the Lisp interpreter.
+* LispError: This class inherits from Python's built-in Exception class and is used for handling errors specific to the Lisp interpreter.
 
 ```python
 class LispError(Exception):
-    """Custom exception for Lisp interpreter errors."""
     pass
 ```
 
@@ -27,17 +26,14 @@ class LispError(Exception):
 
 ```python
 class Environment:
-    """Represents an environment for variable bindings."""
     def __init__(self, parent=None):
         self.bindings = {}
         self.parent = parent
 
     def set(self, name, value):
-        """Set a variable in the current environment."""
         self.bindings[name] = value
 
     def get(self, name):
-        """Get a variable from the current environment or its parent."""
         if name in self.bindings:
             return self.bindings[name]
         elif self.parent:
@@ -50,13 +46,11 @@ class Environment:
 
 ```python
 class Lisp:
-    """Represents a simple Lisp interpreter."""
     def __init__(self):
         self.env = Environment()  # Global environment
         self._initialize_builtins()  # Initialize built-in functions
 
     def _initialize_builtins(self):
-        """Initialize built-in functions."""
         self.env.set('+', self._add)
         self.env.set('-', self._subtract)
         self.env.set('*', self._multiply)
@@ -115,7 +109,7 @@ The following pseudo code illustrates how the interpreter processes an example:
 ```
 
 3. Execution Steps:
-* Evaluate add: Check if it’s defined, retrieve its closure.
+* Evaluate add: Check if it's defined, retrieve its closure.
 * Evaluate arguments 3 and 5.
 * Call the add function:
 * Create a new environment for the function call.
