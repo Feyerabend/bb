@@ -1,34 +1,30 @@
-This implementation extends the VM functionality to include support for frame-based management, including call/return mechanisms (CALL, RET, CALLV, RETV), local variables, stack manipulation (PUSH, POP), and mathematical operations (ADD, MUL). Here’s a breakdown of key elements and behaviors:
 
-Key Features
+### *VM4 Overview*
 
-	1.	Frame Management:
-	•	Frames represent execution contexts (with their own stack and local variables). This allows functions (or subroutines) to have independent states.
-	•	The FrameStack structure maintains a stack of frames, enabling nested function calls.
-	•	pushFrame and popFrame manage frame stack operations during function calls and returns.
-	2.	Call/Return Mechanisms:
-	•	CALL: Pushes a new frame, stores the return address, and jumps to the target address. This is for calls without argument passing.
-	•	CALLV: Supports calls that pass arguments by popping values from the current frame’s stack and pushing them into the new frame’s local variables.
-	•	RET: Returns control to the previous frame by setting the program counter to the saved return address and popping the current frame.
-	•	RETV: Similar to RET, but also transfers a return value from the current frame to the previous one.
-	3.	Local Variables and Stack Transfer:
-	•	transferStackToLocals moves arguments from the previous frame’s stack to the new frame’s local variables.
-	•	transferStackToReturnValue moves a return value from one frame’s stack to another frame’s return value field.
-	•	Instructions like LD (load) and ST (store) manipulate local variables by interacting with the current frame’s local variable array.
-	4.	Instruction Set:
-	•	Arithmetic operations like ADD and MUL pop two values from the stack, perform the operation, and push the result back.
-	•	PRINT outputs the top value of the stack.
-	•	The HALT instruction terminates the program.
-	5.	Error Handling:
-	•	Robust error handling is built into stack and frame management to avoid overflows, underflows, or invalid access (e.g., accessing out-of-bounds local variables or stack).
+VM4 is a simple stack-based virtual machine (VM) that simulates a processor capable of executing basic arithmetic and control-flow operations. It operates on a *stack* to perform operations and uses *frames* for managing local variables and return addresses in a function call.
 
-Example Execution
+Key components of VM4:
 
-The program starts by pushing 10 and 20 onto the stack, followed by a function call using CALLV, which transfers two arguments to local variables, multiplies and adds them, and returns the result. The result is combined with 80, printed, and the program halts.
+1. *Opcodes*: 
+   - The VM recognizes several opcodes (operation codes) like `ADD`, `MUL`, `PUSH`, `POP`, `CALL`, `RET`, etc. Each of these opcodes corresponds to a specific action, such as pushing a value onto the stack, adding numbers, or calling a function.
+   
+2. *Stack*:
+   - Each frame has a stack (`frame->stack`) where operands are stored temporarily while performing calculations.
+   - Operations like `PUSH`, `POP`, `ADD`, and `MUL` work directly with values on the stack.
 
-Potential Improvements:
+3. *Frames*:
+   - Each frame (`Frame` struct) represents a function context, holding a stack, local variables, the return address, and a return value.
+   - A *FrameStack* manages these frames and allows the VM to handle function calls and returns.
 
-	•	The current implementation doesn’t support nested or recursive function calls that pass values through both CALLV and CALL. Enhancements could be made to unify argument passing across different call types.
-	•	Debugging could be enhanced by printing more detailed state information, such as stack contents after each operation, to trace the flow of data during execution.
+4. *Program Counter (PC)*:
+   - The VM has a program counter (`pc`) that points to the current instruction in the code.
+   - Instructions are fetched, and the program counter increments to the next one, allowing sequential execution.
 
-Overall, this VM design introduces a versatile and flexible stack-based execution model with proper function call management.
+5. *Basic Flow*:
+   - The main execution loop in `run()` fetches opcodes from the `code` array, decodes them, and executes the corresponding operation.
+   - When an opcode like `HALT` is encountered, execution stops.
+   - The VM can also call functions (`CALLV`, `CALL`), return from them (`RET`, `RETV`), and handle local variables via the stack.
+
+6. *Memory Layout*:
+   - `stack[]`: Holds temporary values for arithmetic or function arguments.
+   - `locals[]`: Holds local variables in the current frame, accessed by the `LD` (load) and `ST` (store) instructions.

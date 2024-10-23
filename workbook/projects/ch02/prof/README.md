@@ -1,37 +1,55 @@
-
 ## Overview
 
-This implementation extends the VM functionality to include support for frame-based management, including call/return mechanisms (CALL, RET, CALLV, RETV), local variables, stack manipulation (PUSH, POP), and mathematical operations (ADD, MUL). Here's a breakdown of key elements and behaviors:
+*Make your own profiler, and here is where to start. We use the previous VM4 as the starting point.*
 
-#### Key Features
+### *Profiler Overview*
 
-1. Frame Management:
-* Frames represent execution contexts (with their own stack and local variables). This allows functions (or subroutines) to have independent states.
-* The FrameStack structure maintains a stack of frames, enabling nested function calls.
-* pushFrame and popFrame manage frame stack operations during function calls and returns.
-2. Call/Return Mechanisms:
-* CALL: Pushes a new frame, stores the return address, and jumps to the target address. This is for calls without argument passing.
-* CALLV: Supports calls that pass arguments by popping values from the current frame's stack and pushing them into the new frame's local variables.
-* RET: Returns control to the previous frame by setting the program counter to the saved return address and popping the current frame.
-* RETV: Similar to RET, but also transfers a return value from the current frame to the previous one.
-3. Local Variables and Stack Transfer:
-* `transferStackToLocals` moves arguments from the previous frame's stack to the new frame's local variables.
-* `transferStackToReturnValue` moves a return value from one frame's stack to another frame's return value field.
-* Instructions like LD (load) and ST (store) manipulate local variables by interacting with the current frame's local variable array.
-4. Instruction Set:
-* Arithmetic operations like ADD and MUL pop two values from the stack, perform the operation, and push the result back.
-* PRINT outputs the top value of the stack.
-* The HALT instruction terminates the program.
-5. Error Handling:
-* Robust error handling is built into stack and frame management to avoid overflows, underflows, or invalid access (e.g., accessing out-of-bounds local variables or stack).
+The profiler is designed to monitor the performance and behavior of VM4 during its execution. It captures key data, such as the number of times each opcode is executed and the time taken by each operation.
 
-#### Example Execution
+Key features of the *profiler*:
 
-The program starts by pushing 10 and 20 onto the stack, followed by a function call using CALLV, which transfers two arguments to local variables, multiplies and adds them, and returns the result. The result is combined with 80, printed, and the program halts.
+1. *Opcode Tracking*:
+   - The profiler keeps a count of how many times each opcode is executed.
+   - This helps in understanding which instructions are the most frequent, possibly indicating areas for optimization.
 
-Potential Improvements:
+2. *Timing*:
+   - For each opcode, the profiler records the amount of time spent executing that specific operation.
+   - By capturing the start and end time for each instruction, you can see which opcodes are the most time-consuming.
 
-* The current implementation doesn't support nested or recursive function calls that pass values through both CALLV and CALL. Enhancements could be made to unify argument passing across different call types.
-* Debugging could be enhanced by printing more detailed state information, such as stack contents after each operation, to trace the flow of data during execution.
+3. *Frame and Stack Operations*:
+   - The profiler tracks frame stack operations, including how often frames are pushed and popped.
+   - Similarly, it logs how many `PUSH` and `POP` operations happen on the operand stack, helping to understand the usage of the stack.
 
-Overall, this VM design introduces a versatile and flexible stack-based execution model with proper function call management.
+4. *Total Execution Time*:
+   - The profiler captures the total execution time for the VM's run, providing an overall performance metric.
+
+5. *Profiler Functions*:
+   - `profiler_init()`: Initializes the profiler's counters and timers.
+   - `profiler_start()`: Starts the overall timer for the VM execution.
+   - `profiler_record_*()`: These functions log data about specific operations (e.g., recording opcode execution time, frame stack pushes).
+   - `profiler_report()`: Outputs a summary report with details on opcode counts, timing, and stack/frame activity.
+
+### *How They Work Together*
+
+When the VM4 runs, the profiler intercepts each opcode and records performance data. For example, when the `ADD` instruction is executed, the profiler increments the count for `ADD` and records how long it took to perform the addition. Similarly, whenever a frame is pushed or popped, the profiler notes the event.
+
+The profiler is fully integrated into the VM's main execution loop (`run()`), which ensures that data collection happens automatically for each instruction executed by the VM.
+
+### *Use Case Example*
+
+Imagine a VM program that involves several function calls and arithmetic operations. As the VM runs this program, the profiler will keep track of how often each operation is performed, which operations take the most time, and how many frames are being used. At the end of the execution, a profiler report can show, for instance, that:
+- The `ADD` opcode was executed 10 times and took an average of 0.001 ms per execution.
+- Frames were pushed 3 times and popped 3 times.
+- The total execution time was 0.02 seconds.
+
+This data is invaluable for optimizing the VM and understanding the performance characteristics of the virtual machine and the code it executes.
+
+### *Benefits of the Profiler*
+
+- *Performance Bottlenecks*: If certain opcodes take disproportionately more time than others, you can focus on optimizing them.
+- *Opcode Frequency*: Knowing which opcodes are used the most frequently can help in improving the instruction set or the efficiency of the most used instructions.
+- *Memory and Frame Usage*: By tracking frame and stack operations, the profiler can help ensure there are no unexpected spikes in memory usage or stack overflows.
+
+### *Conclusion*
+
+Together, VM4 and the profiler form a powerful combination: a stack-based virtual machine capable of running programs and a profiler that tracks and measures the performance of each operation. The VM provides a flexible execution model with function calls, arithmetic, and memory management, while the profiler gives insight into how efficiently the VM performs its tasks.
