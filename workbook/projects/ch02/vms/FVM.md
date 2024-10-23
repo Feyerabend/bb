@@ -1,17 +1,17 @@
 
 ## fvm.py
 
-### Simple Lisp Interpreter Overview
+### Overview
 
 The interpreter is designed to evaluate basic Lisp expressions, allowing users to define variables, create functions, and perform arithmetic operations.
 
-Key Components
+#### Key Components
 
 1. LispError: A custom exception class used to signal errors in the Lisp interpreter.
 2. Environment: A class representing a variable environment that supports variable bindings. It can have parent environments, enabling nested scopes.
 3. Lisp: The main class for the interpreter, which initializes the environment and built-in functions, and includes methods for evaluating expressions.
 
-Class Descriptions
+#### Class Descriptions
 
 * LispError: This class inherits from Python’s built-in Exception class and is used for handling errors specific to the Lisp interpreter.
 
@@ -63,7 +63,7 @@ class Lisp:
     # Other methods for evaluation...
 ```
 
-Expression Evaluation
+#### Expression Evaluation
 
 The eval method processes different types of expressions:
 
@@ -73,7 +73,7 @@ The eval method processes different types of expressions:
 * Lambda Functions: Creates a new function and returns it as a closure.
 * Function Calls: Evaluates the function and its arguments, then applies the function.
 
-Example Usage
+#### Example Usage
 
 The main program demonstrates defining and calling functions in the interpreter:
 
@@ -155,6 +155,4 @@ The following pseudo code illustrates how the interpreter processes an example:
 
 ### Conclusion
 
-This simple Lisp interpreter provides a foundation for understanding interpreters and functional programming concepts. Students can enhance and expand this interpreter by adding more built-in functions, control flow constructs, error handling, and additional features like list manipulation or recursion.
-
-This description serves as a guide for students, providing both a theoretical understanding and practical examples of how the interpreter works. They can use this as a basis for building their own versions, adding features, or exploring new concepts in programming languages and interpreters.
+This simple Lisp interpreter provides a foundation for understanding some of interpreters and functional programming concepts. You can enhance and expand this interpreter by adding more built-in functions, control flow constructs, error handling, and additional features like list manipulation or recursion.
