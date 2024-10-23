@@ -322,7 +322,7 @@ void run(VM* vm) {
 
             case HALT:
                 profiler_record_opcode(&profiler, opcode, start_time);
-                profiler_report(&profiler);  // Final report at HALT
+                profiler_report(&profiler);  // final report at HALT
                 return;
 
             default:
