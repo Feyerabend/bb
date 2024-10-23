@@ -77,7 +77,7 @@ void mem_free(void* ptr) {
     merge_free_blocks();
 }
 
-// --- vm & objects ---
+// --- machine & objects ---
 
 // object types
 typedef enum { INT_OBJECT, FLOAT_OBJECT, STRING_OBJECT } ObjectType;
