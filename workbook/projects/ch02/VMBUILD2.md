@@ -9,48 +9,48 @@ When building an interpreter or a simple object-oriented virtual machine (VM), t
 Considerations for Building an Interpreter
 
 1.	Language Syntax and Semantics:
-	•	Define the syntax (grammar) of the language you want to interpret. This includes expressions, statements, and constructs.
-	•	Ensure you have a clear understanding of the semantics (meaning) behind each construct.
+	* Define the syntax (grammar) of the language you want to interpret. This includes expressions, statements, and constructs.
+	* Ensure you have a clear understanding of the semantics (meaning) behind each construct.
 2.	Lexical Analysis:
-	•	Implement a lexer (tokenizer) to break down source code into tokens. Tokens represent basic elements like keywords, identifiers, literals, and operators.
+	* Implement a lexer (tokenizer) to break down source code into tokens. Tokens represent basic elements like keywords, identifiers, literals, and operators.
 3.	Parsing:
-	•	Create a parser to construct an abstract syntax tree (AST) or similar structure from the tokens. The AST represents the hierarchical structure of the source code.
+	* Create a parser to construct an abstract syntax tree (AST) or similar structure from the tokens. The AST represents the hierarchical structure of the source code.
 4.	Evaluation Strategy:
-	•	Decide on an evaluation strategy: eager (immediate evaluation) vs. lazy (deferred evaluation).
-	•	Implement an evaluator that traverses the AST and performs computations based on the semantics of the language.
+	* Decide on an evaluation strategy: eager (immediate evaluation) vs. lazy (deferred evaluation).
+	* Implement an evaluator that traverses the AST and performs computations based on the semantics of the language.
 5.	Error Handling:
-	•	Incorporate robust error handling to manage syntax errors, runtime errors, and semantic errors. Provide meaningful error messages to users.
+	* Incorporate robust error handling to manage syntax errors, runtime errors, and semantic errors. Provide meaningful error messages to users.
 6.	Environment Management:
-	•	Implement an environment model to manage variable bindings, scopes, and functions. This often involves creating a structure to represent the global and local environments.
+	* Implement an environment model to manage variable bindings, scopes, and functions. This often involves creating a structure to represent the global and local environments.
 7.	Built-in Functions:
-	•	Define and implement built-in functions that are essential for the language’s usability, such as mathematical operations, string manipulation, and control flow.
+	* Define and implement built-in functions that are essential for the language’s usability, such as mathematical operations, string manipulation, and control flow.
 8.	Support for Data Structures:
-	•	Consider how the language will handle various data types and structures (e.g., lists, dictionaries, sets) and implement them accordingly.
-	9.	Testing and Debugging:
-	•	Create a suite of tests to validate the correctness of the interpreter. Include unit tests for individual components as well as integration tests for overall functionality.
+	* Consider how the language will handle various data types and structures (e.g., lists, dictionaries, sets) and implement them accordingly.
+9.	Testing and Debugging:
+	* Create a suite of tests to validate the correctness of the interpreter. Include unit tests for individual components as well as integration tests for overall functionality.
 
 #### Considerations for Building a Simple Object-Oriented VM
 
 1.	Object Model:
-	•	Define the object model, including concepts like classes, objects, inheritance, encapsulation, and polymorphism. Decide how objects and classes will be represented and managed.
+	* Define the object model, including concepts like classes, objects, inheritance, encapsulation, and polymorphism. Decide how objects and classes will be represented and managed.
 2.	Memory Management:
-	•	Implement a strategy for memory allocation and garbage collection. Consider how objects are created, referenced, and destroyed to avoid memory leaks.
+	* Implement a strategy for memory allocation and garbage collection. Consider how objects are created, referenced, and destroyed to avoid memory leaks.
 3.	Method Resolution:
-	•	Develop a method resolution mechanism to determine which method to invoke based on the object and the method name. This includes handling method overriding and dynamic dispatch.
+	* Develop a method resolution mechanism to determine which method to invoke based on the object and the method name. This includes handling method overriding and dynamic dispatch.
 4.	Bytecode or Intermediate Representation:
-	•	Decide whether to implement a bytecode compiler that translates the high-level object-oriented code into a lower-level representation for execution. This can improve performance.
+	* Decide whether to implement a bytecode compiler that translates the high-level object-oriented code into a lower-level representation for execution. This can improve performance.
 5.	Inheritance and Composition:
-	•	Implement support for inheritance (class-based or prototype-based) and composition, allowing for code reuse and modular design.
+	* Implement support for inheritance (class-based or prototype-based) and composition, allowing for code reuse and modular design.
 6.	Dynamic Typing vs. Static Typing:
-	•	Decide on the typing system for the VM. Dynamic typing allows for greater flexibility, while static typing can provide safety and performance benefits.
+	* Decide on the typing system for the VM. Dynamic typing allows for greater flexibility, while static typing can provide safety and performance benefits.
 7.	Reflection and Introspection:
-	•	Consider implementing features that allow objects to inspect their own structure and behavior, enabling capabilities like serialization and dynamic method invocation.
+	* Consider implementing features that allow objects to inspect their own structure and behavior, enabling capabilities like serialization and dynamic method invocation.
 8.	Concurrency:
-	•	If the VM is intended to support concurrent execution, consider how to handle threads, synchronization, and shared state among objects.
+	* If the VM is intended to support concurrent execution, consider how to handle threads, synchronization, and shared state among objects.
 9.	Error Handling:
-	•	Design a robust error-handling mechanism that accommodates runtime errors, type errors, and any specific exceptions related to object-oriented operations.
+	* Design a robust error-handling mechanism that accommodates runtime errors, type errors, and any specific exceptions related to object-oriented operations.
 10.	Extensibility:
-	•	Consider how the VM can be extended in the future, allowing users to add new classes, methods, or even new language features without extensive changes to the existing codebase.
+	* Consider how the VM can be extended in the future, allowing users to add new classes, methods, or even new language features without extensive changes to the existing codebase.
 
 By taking these considerations into account, you can build a functional and extensible interpreter or object-oriented VM that effectively serves its intended purpose and can be enhanced over time.
 
