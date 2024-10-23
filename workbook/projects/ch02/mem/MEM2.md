@@ -1,6 +1,4 @@
-## mem.c
-
-### General Description of the Code
+### Code
 
 The provided code simulates a simple memory management system and a basic virtual machine (VM) with an object model. Here's what it does:
 
