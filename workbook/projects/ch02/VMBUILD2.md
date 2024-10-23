@@ -198,13 +198,12 @@ ENVIRONMENT = GlobalEnvironment()
 #### Considerations for Building an Object-Oriented VM
 
 In contrast, when building an object-oriented VM, you focus on managing objects, classes, inheritance, and method resolution. Object-oriented VMs typically support dynamic dispatch, method overriding, and encapsulation.
+* Object Representation: Objects are instances of classes, and they have fields and methods.
+* Class Hierarchy: Implement inheritance and ensure that objects can inherit fields and methods from parent classes.
+* Method Dispatch: Use dynamic dispatch to select the correct method to invoke at runtime based on the class of the object.
+* Memory Management: Allocate memory for objects and ensure proper garbage collection.
 
-	* Object Representation: Objects are instances of classes, and they have fields and methods.
-	* Class Hierarchy: Implement inheritance and ensure that objects can inherit fields and methods from parent classes.
-	* Method Dispatch: Use dynamic dispatch to select the correct method to invoke at runtime based on the class of the object.
-	* Memory Management: Allocate memory for objects and ensure proper garbage collection.
-
-Summary Comparison:
+#### Summary Comparison:
 
 |Aspect|	Functional Interpreter|	Object-Oriented VM|
 |---|---|---|
