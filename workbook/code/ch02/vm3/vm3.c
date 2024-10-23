@@ -127,13 +127,13 @@ void run(VM* vm) {
                 push(vm, rval);          // push return value onto stack
                 break;
 
-            case LD:                     // load local variable relative to current frame pointer
+            case LD:
                 addr = nextcode(vm);     // get local variable index
                 v = vm->stack[vm->fp + addr];
                 push(vm, v);
                 break;
 
-            case ST:                     // store value into local variable relative to current frame pointer
+            case ST:
                 v = pop(vm);
                 addr = nextcode(vm);     // get local variable index
                 vm->stack[vm->fp + addr] = v;
