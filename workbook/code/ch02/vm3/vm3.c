@@ -59,10 +59,10 @@ void run(VM* vm) {
     int a, b, v, addr, rval;
 
     do {
-        print_vm_state(vm);
+        // print_vm_state(vm);
 
         int opcode = nextcode(vm);
-        printf("Executing opcode %d\n", opcode);
+        // printf("Executing opcode %d\n", opcode);
 
         switch (opcode) {
             case HALT:
@@ -232,7 +232,7 @@ void run(VM* vm) {
         }
 
         // print current state after executing instruction
-        print_vm_state(vm);
+        // print_vm_state(vm);
 
     } while (1);
 }
