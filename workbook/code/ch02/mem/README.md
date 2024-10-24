@@ -1,4 +1,4 @@
-## Overview
+## MEM Overview
 
 This program implements a simple *memory allocator* and a *machine simulation* that manages memory allocations dynamically, similar to how `malloc`, `free`, and `realloc` work in C. It demonstrates how memory blocks can be allocated, freed, reallocated, and manipulated. The allocator uses a fixed-size memory pool and manages free blocks using a linked list. The machine structure provides a higher-level interface to perform memory allocations, store and retrieve values in allocated memory, and handle reallocation.
 
