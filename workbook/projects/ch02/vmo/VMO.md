@@ -1,6 +1,8 @@
 ## Project
 
-*Project: Build from the code, add more mathematical functions, more data types, etc.*
+*Build from the code, add more mathematical functions, more data types, etc.*
+
+*Prerequisties: Some familiarity with concepts in object-orientation, preferably som different approaches to how objects are handled in various languages.*
 
 ### Overview
 
