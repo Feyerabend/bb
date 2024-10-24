@@ -1,6 +1,6 @@
 ## VM1 Overview
 
-### Explanation of the C Program with a Simple Stack-Based Virtual Machine:
+### Explanation of the C Program with a Simple Stack-Based Virtual Machine
 
 The code implements a basic stack-based virtual machine (VM) in C, which supports a few arithmetic operations (`ADD`, `SUB`, `MUL`), a `SET` operation to push values onto the stack, and a `PRINT` operation to output the result. The program reads instructions (opcodes) from an array (`code`), executes them, and prints the result. Here's a detailed breakdown:
 
