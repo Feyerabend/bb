@@ -34,9 +34,11 @@
 ### Example Object and Program
 
 ExampleObject:
-* Fields:
-* field1: float initialized to 10.0.
-* field2: int initialized to 20 (though not actively used in this specific example).
+
+Fields:
+* `field1`: float initialized to 10.0.
+* `field2`: int initialized to 20 (though not actively used in this specific example).
+
 Program:
 * Print field1, add 5 to field1, and print field1 again.
 
