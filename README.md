@@ -8,6 +8,6 @@ The [workbook](./workbook) consists of:
 
 * Examples in [__code__](./workbook/code) that were to extensive to be published in the book. The code has also been described at places where it may add to previous code and description.
 
-* There are some __exercises__ which can capture some possible trails for explorations, and
+* There are some [__exercises__](./workbook/exercises) which can capture some possible trails for explorations, and
 
-* Also ideas for additional __projects__ can be found.
+* Also ideas for additional [__projects__](./workbook/projects) can be found.
