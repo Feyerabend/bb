@@ -1,8 +1,8 @@
 ## VM2 Overview
 
-This program implements a simple virtual machine (VM) that interprets and executes a predefined sequence of instructions for calculating and printing Fibonacci numbers. The main C file initializes the VM with a Fibonacci sequence-generating program, runs it, and measures its execution time. The VM operates on a stack-based architecture, executing operations like arithmetic, jumps, and stack manipulation, with custom commands such as TWODUP, ROT, and PRINT.
+The inpiration of this VM version comes from stack-absed programming languages such as FORTH. Moreover, this program implements a simple virtual machine (VM) that interprets and executes a predefined sequence of instructions for calculating and printing Fibonacci numbers. The main C file initializes the VM with a Fibonacci sequence-generating program, runs it, and measures its execution time. The VM operates on a stack-based architecture, executing operations like arithmetic, jumps, and stack manipulation, with custom commands such as TWODUP, ROT, and PRINT.
 
-The inpiration of this version comes from stack-absed programming languages such as FORTH.
+The C program is divided into a header file and a source file, demonstrating the typical organization of these components. A separate file (`main.c`) is the starting point for running the program. Also a Makefile is introduced to show how interaction between compiler and source can be handled.
 
 
 ### Features
