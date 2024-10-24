@@ -1,3 +1,9 @@
+## Project
+
+*Explore memory in relation to application or a e.g. VM. Make a simple garbage collector, and handle memory with some functions for memory management. Explore how a second memeory may expand the primary, and how virtual memory can function.*
+
+*Prerequisties: Familiary with garbage collectors function in general, how virtual memory works in principal, and how memory management works.*
+
 ### Code
 
 The provided code simulates a simple memory management system and a basic virtual machine (VM) with an object model. Here's what it does:
