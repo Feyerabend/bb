@@ -1,4 +1,4 @@
-CC		= gcc
+CC			= gcc
 CFLAGS		= -Wall
 LDFLAGS		=
 OBJFILES	= main.o vm2.o
