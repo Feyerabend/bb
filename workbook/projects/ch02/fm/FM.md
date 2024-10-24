@@ -1,4 +1,7 @@
-*Project: Enhance this interpreter, transforming it into a "functional machine" inspired by Lisp, and experiment with various samples to explore its capabilities further.*
+## Project
+
+*Enhance this interpreter, transforming it into a "functional machine" inspired by Lisp, and experiment with various samples to explore its capabilities further.*
+
 *Prerequisites: A basic understanding of functional programming concepts.*
 
 ### Overview
