@@ -5,6 +5,9 @@
 
 ## regvm
 
+Two different virtual machines, one that uses stack-based operations, and the other that uses register-based operations. They thereby illustrates much of the difference between processors, CPUs, that used similar principals.
+
+
 ## vm1
 
 ## vm2
