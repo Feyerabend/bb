@@ -5,6 +5,7 @@ This code implements a simple stack-based virtual machine (VM) in C. The VM exec
 
 #### VM Structure:
 
+```c
 typedef struct {
     int* code;    // Array of bytecode instructions
     int* stack;   // Stack used for operations
@@ -12,6 +13,7 @@ typedef struct {
     int sp;       // Stack pointer (points to the top of the stack)
     int fp;       // Frame pointer (used to track function call frames)
 } VM;
+```
 
 The VM keeps track of its program counter (pc), stack pointer (sp), frame pointer (fp), the instruction code, and a stack of a fixed size (STACK_SIZE).
 
