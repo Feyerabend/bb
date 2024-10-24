@@ -6,7 +6,7 @@ Here you should be able to find more information, errata, exercises, code, other
 
 The [workbook](./workbook) consists of:
 
-* Examples in __code__ that were to extensive to be published in the book. The code has also been described at places where it may add to previous code and description.
+* Examples in [__code__](./workbook/code) that were to extensive to be published in the book. The code has also been described at places where it may add to previous code and description.
 
 * There are some __exercises__ which can capture some possible trails for explorations, and
 
