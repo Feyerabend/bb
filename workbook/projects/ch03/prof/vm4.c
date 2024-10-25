@@ -16,15 +16,22 @@ typedef enum {
   CALLV,
   CRET,
   DEALLOC,
+  GT,
   HALT,
+  JLE,
+  JNZ,
+  JZ,
   LD,
+  LEQ,
+  LT,
   MUL,
   POP,
   PRINT,
   PUSH,
   RET,
   RETV,
-  ST
+  ST,
+  SUB
 } Opcode;
 
 typedef struct {
@@ -213,6 +220,12 @@ void run(VM* vm) {
         }
         if (vm->debug) {
             printf("PC: %d, Opcode: %d\n", vm->pc, vm->code[vm->pc]);
+
+            printf("Stack contents before opcode %d at PC: %d\n", opcode, vm->pc);
+                for (int i = 0; i <= vm->fstack.frames[vm->fstack.fp]->sp; i++) {
+                printf("%d ", vm->fstack.frames[vm->fstack.fp]->stack[i]);
+            }
+            printf("\n");
         }
 
         clock_t start_time = clock();  // start time
@@ -313,11 +326,61 @@ void run(VM* vm) {
                 push(vm, k);
                 break;
 
+            case SUB:
+                i = pop(vm);
+                j = pop(vm);
+                k = i - j;
+                push(vm, k);
+                break;
+
             case MUL:
                 i = pop(vm);
                 j = pop(vm);
                 k = i * j;
                 push(vm, k);
+                break;
+
+            case GT:
+                j = pop(vm);
+                i = pop(vm);
+                push(vm, (i > j) ? 1 : 0);
+                break;
+
+            case LT:
+                j = pop(vm);
+                i = pop(vm);
+                push(vm, (i < j) ? 1 : 0);
+                break;
+
+            case LEQ:
+                j = pop(vm);
+                i = pop(vm);
+                push(vm, (i <= j) ? 1 : 0);
+                break;
+
+            case JLE:
+                addr = next(vm);
+                int j = pop(vm);
+                int i = pop(vm);
+                if (i <= j) {
+                    vm->pc = addr;
+                }
+                break;
+
+            case JZ:
+                addr = next(vm);
+                value = pop(vm);
+                if (value == 0) {
+                    vm->pc = addr;
+                }
+                break;
+
+            case JNZ:
+                addr = next(vm);
+                value = pop(vm);
+                if (value != 0) {
+                    vm->pc = addr;
+                }
                 break;
 
             case HALT:
@@ -335,7 +398,7 @@ void run(VM* vm) {
 }
 
 int main() {
-    
+
     int code[] = {
         PUSH, 10,
         PUSH, 20,
