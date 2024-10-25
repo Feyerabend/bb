@@ -39,6 +39,10 @@ The profiler is designed to monitor and report various aspects of the VM's execu
 - *Memory Management Insights*: Understanding memory usage patterns helps ensure that the VM operates efficiently and can handle larger workloads without running into memory issues.
 - *Debugging Support*: The profiler provides valuable metrics that can assist in debugging performance-related issues, enabling developers to identify and rectify inefficiencies in the VM's operation.
 
+#### P1, P2, P3
+
+The instrumentation of code introduces overhead that affects absolute timing, as observed in versions `p1', `p2', and `p3'. Due to this added overhead, it's essential to focus on relative measurements and analyze percentage differences rather than relying on absolute timing values for comparison. This approach allows for a more accurate assessment of performance variations without interference from the overhead introduced by instrumentation.
+
 #### Conclusion
 
 This profiler enhances the VM's capabilities by providing detailed performance insights, making it easier to optimize both execution speed and memory usage. It serves as a powerful tool for developers looking to refine their virtual machine implementation and ensure it operates efficiently under various conditions.

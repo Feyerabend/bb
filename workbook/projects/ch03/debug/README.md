@@ -1,4 +1,4 @@
-# Virtual Machines
+# Debugging
 
 Debugging has been an integral part of computing since
 the early days of programming. In many ways, programming
@@ -15,10 +15,10 @@ working with virtual machines, or really in any programming
 environment.
 
 [^log]: A more in depth discussion of the usefulness is done
-in [ED.md](debug/ED.md).
+in [ED.md](editor/ED.md).
 
 
-## assembling & disassembling
+## Assembling & Disassembling
 
 Taking an assembler from previous, we can turn it into something which
 analyses our "machine code," a disassembler. It reverses the process,
@@ -28,17 +28,17 @@ the "assembly language."
 The assembler works as previously:
 
 ```shell
-> python3 asm.py -i sample.a -o sample.b
-> python3 asm.py -i callret.a -o callret.b
-> python3 asm.py -i fact.a -o callret.b
-> ls
-..
-callret.a   fact.a      sample.a
-callret.b   fact.b      sample.b
-..
+   > python3 asm.py -i sample.a -o sample.b
+   > python3 asm.py -i callret.a -o callret.b
+   > python3 asm.py -i fact.a -o callret.b
+   > ls
+   ..
+   callret.a   fact.a      sample.a
+   callret.b   fact.b      sample.b
+   ..
 ```
 
-### disassembler
+### Disassembler
 
 If we take the following 'binary' in 'sample.b':
 
@@ -53,8 +53,8 @@ we can convert it into what it previously was
 assembled from:
 
 ```shell
-> python3 disasm.py -i sample.b -o sample.d
-> cat sample.d
+    > python3 disasm.py -i sample.b -o sample.d
+    > cat sample.d
 L0:
 	LDARG 0     # 013 000
 	ST 0        # 028 000
@@ -92,10 +92,7 @@ Disassemblers can be useful, when e.g. the source isn't available
 or when you want to inspect the machine and the program in this
 context.
 
-
-## debug vm
-
-### tracing
+### Tracing
 
 Tracing involves inserting print statements or logging calls
 into the code to output the program's state and the values of
@@ -103,7 +100,7 @@ variables or in this case mostly the stack at various points
 during execution. This helps to follow the program's flow and
 understand where things might be going wrong.
 
-### single step
+### Single Step
 
 Single-stepping allows the programmer to execute the program
 one line or instruction at a time. This lets you closely examine
@@ -111,7 +108,7 @@ the program's behavior at each step and observe how the stack
 (or in case: variables) and the system state change with each
 executed line of code.
 
-### breakpoints
+### Breakpoints
 
 Breakpoints are markers set in the code where the execution
 will pause, allowing the developer to inspect the program state
@@ -120,7 +117,7 @@ leading up to a particular point in the code, especially where
 issues are suspected to occur.
 
 
-### simple debugging workflow
+### Simple Debugging Workflow
 
 1. __setting breakpoints__: set breakpoints at critical sections or
    where one suspect a bug might be,
@@ -144,8 +141,6 @@ optional 'trace'.
 ```shell
 > python3 dvm.py --singlestep true --breakpoints 14,16 --trace true --input sample.b
 ```
-
-![Debug VM](../assets/images/dvm.png)
 
 Inside the vm, there are features that allow you to single-step
 through the code if selected at the start. When single-stepping
