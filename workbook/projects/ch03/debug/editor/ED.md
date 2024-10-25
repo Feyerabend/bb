@@ -27,8 +27,6 @@ one idea that could be implemented even in editors of today.
 > python3 ed.py -i trad.txt
 ```
 
-![Line editor](../assets/images/ed.png)
-
 ### line editor
 
 We start off with a very simple line editor 'ed.py'. It can load text
@@ -102,8 +100,6 @@ with filtering or sorting options can make this process easier. While text
 files may not present many obstacles, programming languages or machine code
 often benefit significantly from such specialized tools.
 
-![Log viewer](../assets/images/viewlog.png)
-
 
 ### playback viewer
 
@@ -111,8 +107,6 @@ In this case with a line editor that have a *recording log*, a *playback
 viewer* `playlog.html` will illustrate how a textfile gets created. As can
 be understood from this, versioning, alternate copies, and other reconizable
 properties from e.g. versioning software could in principle also be added.
-
-![Log viewer](../assets/images/playlog.png)
 
 Thus logging is often a system tool, but it capture ideas that can be use
 in many other ways.
