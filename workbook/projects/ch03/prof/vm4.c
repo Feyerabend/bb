@@ -16,6 +16,7 @@ typedef enum {
   CALLV,
   CRET,
   DEALLOC,
+  DIV,
   GT,
   HALT,
   JLE,
@@ -24,6 +25,7 @@ typedef enum {
   LD,
   LEQ,
   LT,
+  MOD,
   MUL,
   POP,
   PRINT,
@@ -319,6 +321,13 @@ void run(VM* vm) {
                 printf("PRINT: %d\n", pop(vm));
                 break;
 
+            case MOD:
+                i = pop(vm);
+                j = pop(vm);
+                k = i % j;
+                push(vm, k);
+                break;
+
             case ADD:
                 i = pop(vm);
                 j = pop(vm);
@@ -337,6 +346,17 @@ void run(VM* vm) {
                 i = pop(vm);
                 j = pop(vm);
                 k = i * j;
+                push(vm, k);
+                break;
+
+            case DIV:
+                i = pop(vm);
+                j = pop(vm);
+                if (j == 0) {
+                    printf("DIV: division by zero!\n");
+                    break;
+                }
+                k = i / j;
                 push(vm, k);
                 break;
 
@@ -397,6 +417,43 @@ void run(VM* vm) {
     }
 }
 
+
+int main() {
+
+    // GCD bytecode
+    int code[] = {
+        PUSH, 48,            // Push first number (48)
+        PUSH, 18,            // Push second number (18)
+
+        // Start of GCD computation
+        CALLV, 2, 10,        // Call GCD function (2 args, address 20)
+        PRINT,               // Print the result
+        HALT,                // End the program
+
+        // GCD function definition starts here
+        // Loop until the second number (b) is 0
+        JZ, 13,              // If b is 0, jump to return
+        MOD,                 // Compute a % b
+        PUSH, 0,            // Push updated a (b)
+        RETV,                // Return to caller
+
+        // Return address for JZ when b == 0
+        PUSH, 0,            // Push final value (when b == 0)
+        RETV,                // Return a when b == 0
+    };
+
+    int code_size = sizeof(code) / sizeof(code[0]);
+
+    VM* vm = newVM(code, code_size);
+    vm->debug = 0;
+    pushFrame(vm);
+    run(vm);
+    freeVM(vm);
+
+    return 0;
+}
+
+/*
 int main() {
 
     int code[] = {
@@ -427,4 +484,4 @@ int main() {
     freeVM(vm);
 
     return 0;
-}
+}*/
