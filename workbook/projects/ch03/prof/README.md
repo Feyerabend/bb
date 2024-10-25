@@ -1,56 +1,44 @@
 ## Project
 
-*Make your own profiler, and here is where to start. We use the previous VM4 as the starting point.*
-
+*Make your own profiler, and here is where to start. We use the previous VM2 as the starting point.*
 
 ### Overview
 
-The profiler is designed to monitor the performance and behavior of VM4 during its execution. It captures key data, such as the number of times each opcode is executed and the time taken by each operation.
+The profiler is designed to monitor and report various aspects of the VM's execution, including:
 
-Key features of the *profiler*:
+1. Execution Time Tracking: It measures the total time taken for the VM to execute its instructions, as well as the execution time for individual opcodes. This helps identify which operations consume the most time.
+2. Memory Usage Monitoring:
+	- Current Memory: It tracks the amount of memory currently allocated for the VM's stack and variable storage.
+	- Peak Memory: It records the maximum memory usage during the execution, providing insights into how memory consumption varies with different workloads.
+3. Opcode Execution Statistics:
+	- Count: The number of times each opcode is executed.
+	- Execution Time: The cumulative time spent on each opcode, allowing for performance optimization by identifying bottlenecks in specific operations.
+4. Stack Depth Tracking:
+	- Current Stack Depth: It measures the current depth of the stack, reflecting how many elements are present at any given time.
+	- Peak Stack Depth: It records the maximum depth reached during execution, which can be useful for understanding memory usage patterns and optimizing stack operations.
 
-1. *Opcode Tracking*:
-   - The profiler keeps a count of how many times each opcode is executed.
-   - This helps in understanding which instructions are the most frequent, possibly indicating areas for optimization.
+### Details
 
-2. *Timing*:
-   - For each opcode, the profiler records the amount of time spent executing that specific operation.
-   - By capturing the start and end time for each instruction, you can see which opcodes are the most time-consuming.
+1. Data Structure:
+	- The profiler uses a Profiler struct that holds various fields to track execution time, memory usage, opcode statistics, and stack depth.
+	- Fields include arrays for tracking the start time of opcode executions, cumulative execution times, and counts of how many times each opcode has been executed.
+2. Functions:
+	-	Start and Stop Functions: Functions to start and stop profiling, capturing the start and end times.
+	-	Opcode Profiling Functions: Functions to mark the beginning and end of opcode executions, updating time and count metrics accordingly.
+	-	Memory Tracking Functions: Functions to track memory allocations and deallocations, updating current and peak memory usage.
+	-	Stack Depth Functions: A function to update the current and peak stack depth based on the stack pointer (sp).
+3. Integration with VM Operations:
+	-	The profiler is integrated with VM operations such as push and pop to update stack depth dynamically.
+	-	Memory tracking is incorporated within the VM's memory allocation and deallocation functions, allowing for accurate tracking of memory usage related to the stack and variable storage.
+4. Output Reporting:
+	-	A print function that summarizes the profiling results, displaying total execution time, peak memory usage, peak stack depth, and a detailed breakdown of opcode performance.
 
-3. *Frame and Stack Operations*:
-   - The profiler tracks frame stack operations, including how often frames are pushed and popped.
-   - Similarly, it logs how many `PUSH` and `POP` operations happen on the operand stack, helping to understand the usage of the stack.
+### Benefits
 
-4. *Total Execution Time*:
-   - The profiler captures the total execution time for the VM's run, providing an overall performance metric.
+- Performance Optimization: By identifying slow opcodes and memory-intensive operations, developers can focus on optimizing critical sections of the code.
+- Memory Management Insights: Understanding memory usage patterns helps ensure that the VM operates efficiently and can handle larger workloads without running into memory issues.
+- Debugging Support: The profiler provides valuable metrics that can assist in debugging performance-related issues, enabling developers to identify and rectify inefficiencies in the VM's operation.
 
-5. *Profiler Functions*:
-   - `profiler_init()`: Initializes the profiler's counters and timers.
-   - `profiler_start()`: Starts the overall timer for the VM execution.
-   - `profiler_record_*()`: These functions log data about specific operations (e.g., recording opcode execution time, frame stack pushes).
-   - `profiler_report()`: Outputs a summary report with details on opcode counts, timing, and stack/frame activity.
+Conclusion
 
-### How They Work Together
-
-When the VM4 runs, the profiler intercepts each opcode and records performance data. For example, when the `ADD` instruction is executed, the profiler increments the count for `ADD` and records how long it took to perform the addition. Similarly, whenever a frame is pushed or popped, the profiler notes the event.
-
-The profiler is fully integrated into the VM's main execution loop (`run()`), which ensures that data collection happens automatically for each instruction executed by the VM.
-
-### Use Case Example
-
-Imagine a VM program that involves several function calls and arithmetic operations. As the VM runs this program, the profiler will keep track of how often each operation is performed, which operations take the most time, and how many frames are being used. At the end of the execution, a profiler report can show, for instance, that:
-- The `ADD` opcode was executed 10 times and took an average of 0.001 ms per execution.
-- Frames were pushed 3 times and popped 3 times.
-- The total execution time was 0.02 seconds.
-
-This data is invaluable for optimizing the VM and understanding the performance characteristics of the virtual machine and the code it executes.
-
-### Benefits of the Profiler
-
-- *Performance Bottlenecks*: If certain opcodes take disproportionately more time than others, you can focus on optimizing them.
-- *Opcode Frequency*: Knowing which opcodes are used the most frequently can help in improving the instruction set or the efficiency of the most used instructions.
-- *Memory and Frame Usage*: By tracking frame and stack operations, the profiler can help ensure there are no unexpected spikes in memory usage or stack overflows.
-
-### Conclusion
-
-Together, VM4 and the profiler form a powerful combination: a stack-based virtual machine capable of running programs and a profiler that tracks and measures the performance of each operation. The VM provides a flexible execution model with function calls, arithmetic, and memory management, while the profiler gives insight into how efficiently the VM performs its tasks.
+This profiler enhances the VM's capabilities by providing detailed performance insights, making it easier to optimize both execution speed and memory usage. It serves as a powerful tool for developers looking to refine their virtual machine implementation and ensure it operates efficiently under various conditions.

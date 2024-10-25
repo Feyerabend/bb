@@ -1,8 +1,9 @@
+
 CC		= gcc
 CFLAGS		= -Wall
 LDFLAGS		=
-OBJFILES	= vm4.o profiler.o
-TARGET		= vm4
+OBJFILES	= fibonacci.o vm2.o profiler.o
+TARGET		= fib
 
 all: $(TARGET)
 
