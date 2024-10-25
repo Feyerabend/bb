@@ -2,7 +2,7 @@
 
 *Make your own profiler, and here is where to start. We use the previous VM2 as the starting point.*
 
-### Overview
+#### Overview
 
 The profiler is designed to monitor and report various aspects of the VM's execution, including:
 
@@ -17,7 +17,7 @@ The profiler is designed to monitor and report various aspects of the VM's execu
 	- Current Stack Depth: It measures the current depth of the stack, reflecting how many elements are present at any given time.
 	- Peak Stack Depth: It records the maximum depth reached during execution, which can be useful for understanding memory usage patterns and optimizing stack operations.
 
-### Details
+#### Details
 
 1. *Data Structure*:
 	- The profiler uses a Profiler struct that holds various fields to track execution time, memory usage, opcode statistics, and stack depth.
@@ -33,7 +33,7 @@ The profiler is designed to monitor and report various aspects of the VM's execu
 4. *Output Reporting*:
 	- A print function that summarizes the profiling results, displaying total execution time, peak memory usage, peak stack depth, and a detailed breakdown of opcode performance.
 
-### Benefits
+#### Benefits
 
 - *Performance Optimization*: By identifying slow opcodes and memory-intensive operations, developers can focus on optimizing critical sections of the code.
 - *Memory Management Insights*: Understanding memory usage patterns helps ensure that the VM operates efficiently and can handle larger workloads without running into memory issues.
