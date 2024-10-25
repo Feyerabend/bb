@@ -41,7 +41,7 @@ The profiler is designed to monitor and report various aspects of the VM's execu
 
 #### P1, P2, P3
 
-The instrumentation of code introduces overhead that affects absolute timing, as observed in versions `p1', `p2', and `p3'. Due to this added overhead, it's essential to focus on relative measurements and analyze percentage differences rather than relying on absolute timing values for comparison. This approach allows for a more accurate assessment of performance variations without interference from the overhead introduced by instrumentation.
+The instrumentation of code introduces overhead that affects absolute timing, as observed in versions `p1`, `p2`, and `p3`. Due to this added overhead, it's essential to focus on relative measurements and analyze percentage differences rather than relying on absolute timing values for comparison. This approach allows for a more accurate assessment of performance variations without interference from the overhead introduced by instrumentation.
 
 #### Conclusion
 
