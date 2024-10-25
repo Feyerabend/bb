@@ -10,7 +10,7 @@ As previously stated, logging is a tool with many aspects and uses.
 Here, we demonstrate this by using a *line editor*. A line editor was
 once very common in the past. It was easy to implement and versatile,
 making it effective for editing text files. As long as the files
-weren’t too large, it wasn’t too difficult to use. We will not delve
+weren't too large, it wasn't too difficult to use. We will not delve
 into the specifics of line editors, as that is not our aim here.
 Instead, we want to illustrate how logging can benefit even editors.
 In this case, you can have the *entire history of edits* saved. From
@@ -47,7 +47,6 @@ user commands "view, edit, insert, delete, load, save, exit".
 > python3 ed2.py -i trad.txt
 ```
 
-![Line editor](../assets/images/ed2.png)
 
 ### line editor with logger
 
