@@ -10,7 +10,7 @@ As previously stated, logging is a tool with many aspects and uses.
 Here, we demonstrate this by using a *line editor*. A line editor was
 once very common in the past. It was easy to implement and versatile,
 making it effective for editing text files. As long as the files
-weren’t too large, it wasn’t too difficult to use. We will not delve
+weren't too large, it wasn't too difficult to use. We will not delve
 into the specifics of line editors, as that is not our aim here.
 Instead, we want to illustrate how logging can benefit even editors.
 In this case, you can have the *entire history of edits* saved. From
@@ -26,8 +26,6 @@ one idea that could be implemented even in editors of today.
 ```shell
 > python3 ed.py -i trad.txt
 ```
-
-![Line editor](../assets/images/ed.png)
 
 ### line editor
 
@@ -49,7 +47,6 @@ user commands "view, edit, insert, delete, load, save, exit".
 > python3 ed2.py -i trad.txt
 ```
 
-![Line editor](../assets/images/ed2.png)
 
 ### line editor with logger
 
@@ -102,8 +99,6 @@ with filtering or sorting options can make this process easier. While text
 files may not present many obstacles, programming languages or machine code
 often benefit significantly from such specialized tools.
 
-![Log viewer](../assets/images/viewlog.png)
-
 
 ### playback viewer
 
@@ -111,8 +106,6 @@ In this case with a line editor that have a *recording log*, a *playback
 viewer* `playlog.html` will illustrate how a textfile gets created. As can
 be understood from this, versioning, alternate copies, and other reconizable
 properties from e.g. versioning software could in principle also be added.
-
-![Log viewer](../assets/images/playlog.png)
 
 Thus logging is often a system tool, but it capture ideas that can be use
 in many other ways.
