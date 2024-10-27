@@ -125,7 +125,7 @@
     - Explain why the space character (00100000 in ASCII) has its particular encoding and its importance in text processing and data storage.
 
 15. *Discuss the use of control characters in ASCII.*
-    -Examine ASCII’s control characters (such as newline and carriage return) and their impact on early text processing and communication protocols.
+    - Examine ASCII’s control characters (such as newline and carriage return) and their impact on early text processing and communication protocols.
 
 
 
