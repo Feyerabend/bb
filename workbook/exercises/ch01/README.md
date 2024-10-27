@@ -131,6 +131,54 @@
 
 #### Strings
 
+
+1. *Explain how a string such as “Data” is stored in memory.*
+    - Break down each character’s ASCII binary representation and explain how these are stored consecutively, including the role of the null character at the end.
+
+2. *What challenges arise when using the null character to indicate the end of a string?*
+    - Discuss how this choice impacts memory usage and handling in programming languages, particularly in cases where binary data may include null values.
+
+3. *Convert the string “Binary” into its ASCII binary representation.*
+    - Show each character’s 8-bit encoding and analyze any patterns in the binary sequence based on uppercase vs. lowercase letters.
+
+4. *Investigate the historical evolution of string handling in early programming languages.*
+    - Explore how languages like C represented strings, the reliance on null-terminated strings, and the advantages and limitations of this approach.
+
+5. *What is typecasting, and why is it important in programming?*
+    - Explain how typecasting allows data to be converted from one type to another and give examples of cases where typecasting is essential (e.g., converting integers to floating-point numbers for division).
+
+6. *In what ways does understanding binary representation aid in efficient data storage and manipulation?*
+    - Discuss how knowing the binary layout of data types helps developers optimize storage and processing in applications that handle large volumes of data.
+
+7. *How did early computer systems handle type distinctions, particularly for strings?*
+    - Explore how early computing systems and languages distinguished types and the impact on memory usage and program efficiency.
+
+8. *Describe the process of concatenating two strings in memory.*
+    - Explain how binary sequences are combined when two strings are concatenated and any implications this has for memory allocation and management.
+
+9. *Explain the significance of type systems in programming languages.*
+    - Compare weakly and strongly typed languages, and discuss how type systems prevent errors and allow more robust code, especially in large-scale applications.
+
+10. *Investigate how types represent more than just binary data in object-oriented programming.*
+    - Explain how types, or classes, in languages like Python or Java define both data and the methods associated with that data, giving an example of how a “Person” class might combine attributes and methods.
+
+11. *Research how string encoding has evolved from ASCII to Unicode in programming.*
+    - Explain the limitations of ASCII in representing global characters and how Unicode’s broader encoding scheme has enabled support for a wider array of languages and symbols.
+
+12. *Convert the string “Hello World!” into its binary ASCII representation.*
+    - Display each character’s binary encoding and describe how punctuation and spaces are represented in the ASCII system.
+
+13. *What are the advantages of null-terminated strings versus length-prefixed strings?*
+    - Explore both methods for indicating the end of a string in memory, including any historical reasons for the adoption of null-terminated strings in languages like C.
+
+14. *Discuss the importance of type safety in modern programming languages.*
+    - Explain how type safety reduces errors and enhances code stability, giving examples of type-safe languages (e.g., Java) and those that are more permissive (e.g. JavaScript).
+
+15. *Describe how strings can be manipulated at the binary level, such as reversing or encoding.*
+    - Investigate common string operations, such as reversing or encrypting, and explain how these processes affect the underlying binary data.
+
+
+
 ### Variables
 
 #### Assignment
