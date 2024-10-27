@@ -1,4 +1,4 @@
-Adding a simple memory management module for your OS on the Raspberry Pi Pico will give you basic dynamic memory allocation. Since the RP2040 microcontroller doesn’t have an MMU (Memory Management Unit), we’ll implement a simple allocator, such as a *first-fit allocator*, which is common for embedded systems.
+Adding a simple memory management module for your OS on the Raspberry Pi Pico will give you basic dynamic memory allocation. Since the RP2040 microcontroller doesn't have an MMU (Memory Management Unit), we'll implement a simple allocator, such as a *first-fit allocator*, which is common for embedded systems.
 
 The following steps outline how to create a basic memory manager with malloc and free functions, working directly with a statically allocated memory pool.
 
@@ -7,7 +7,7 @@ The following steps outline how to create a basic memory manager with malloc and
 
 First, define a block of memory that acts as the heap. This pool will be used for all allocations and deallocations.
 
-Let’s assume a simple memory pool of 4KB.
+Let's assume a simple memory pool of 4KB.
 
 ```c
 #define HEAP_SIZE 4096
@@ -150,7 +150,7 @@ Limitations and Extensions
 This memory manager is basic and lacks several advanced features:
 
 - No Boundary Tags: Boundary tags simplify coalescing but add overhead.
-- No Block Splitting on Exact Fit: If a block fits exactly, there’s no need to split.
+- No Block Splitting on Exact Fit: If a block fits exactly, there's no need to split.
 - Best-Fit Strategy: The first-fit algorithm is simple, but a best-fit strategy can reduce fragmentation in some cases.
 
 By adding this memory management module, you get a fully functioning dynamic memory allocator suited to small, embedded systems. This is ideal for educational purposes and understanding the fundamentals of embedded OS development on a simple microcontroller like the RP2040.
