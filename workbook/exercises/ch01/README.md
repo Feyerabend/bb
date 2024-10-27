@@ -7,9 +7,9 @@
 ### Floating-point numbers
 
 * What difficulties are there with representing rational numbers in floating point on computers? Limitations?
-- Investigate the inherent challenges and limitations of using floating-point representation for rational numbers.
+    - Investigate the inherent challenges and limitations of using floating-point representation for rational numbers.
 * Are there other ways to represent fractions in computers?
-- Explore different ways to represent fractional numbers, such as fixed-point representation or rational number representations.
+    - Explore different ways to represent fractional numbers, such as fixed-point representation or rational number representations.
 %\item \textit{What is fixed point representation, and how would an implementation look like in Python? In C?}
 %Compare fixed-point representation with floating-point representation, and examine practical implementations in multiple programming languages.
 %\item \textit{What are the pros and cons of using floating point versus fixed point representations?}
