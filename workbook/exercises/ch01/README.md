@@ -224,7 +224,7 @@
     - Explain why type consistency is crucial in programming, especially in statically typed languages, with an example in C.
 
 9. *Research the historical development of assignment operators in programming.*
-    - Trace the origin of common assignment operators (e.g., +=, -=) and their use in various programming languages.
+    - Trace the origin of common assignment operators (e.g. +=, -=) and their use in various programming languages.
 
 
 #### memory ??
@@ -276,10 +276,12 @@
 
 
 
-
 ### Control structures
 
+
+
 ### Functions
+
 #### Calling functions
 
 
