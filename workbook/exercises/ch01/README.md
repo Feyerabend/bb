@@ -1,10 +1,10 @@
 ## Exercises
 
-## Simple data types
+### Simple data types
 
-###  Integers
+####  Integers
 
-### Floating-point numbers
+#### Floating-point numbers
 
 * What difficulties are there with representing rational numbers in floating point on computers? Limitations?
     - Investigate the inherent challenges and limitations of using floating-point representation for rational numbers.
@@ -39,21 +39,22 @@
 * What are some real-world applications that heavily rely on floating-point computations?
     - Identify fields such as scientific computing, machine learning, and finance where floating-point arithmetic is crucial.
 
-* Could you provide me with references for further reading on floating-point numbers?}
+* Could you provide me with references for further reading on floating-point numbers?
     - Seek additional resources to deepen your understanding and broaden your knowledge of floating-point arithmetic.
 
-### Characters and ASCII
 
-### Strings
+#### Characters and ASCII
 
-## Variables
+#### Strings
 
-### Assignment
+### Variables
 
-### Mutable and immutable
+#### Assignment
 
-## Control structures
+#### Mutable and immutable
 
-## Functions
-### Calling functions
+### Control structures
+
+### Functions
+#### Calling functions
 
