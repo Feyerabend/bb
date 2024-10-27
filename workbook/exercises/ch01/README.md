@@ -24,22 +24,22 @@
 6. *What are the common pitfalls when using floating-point numbers in algorithms?*
     - Identify typical mistakes or misunderstandings that can lead to inaccurate results or unexpected behaviors.
 
-7. *How does the choice of data type (float vs. double) influence precision and memory usage?
+7. *How does the choice of data type (float vs. double) influence precision and memory usage?*
     - Discuss the trade-offs between using single-precision (float) and double-precision (double) floating-point representations.
 
-8. Can you explain the concept of `denormalized numbers' in floating-point representation?
+8. *Can you explain the concept of `denormalized numbers' in floating-point representation?*
     - Delve into how denormalized numbers work and their significance in representing very small values.
 
-9. What role does floating-point arithmetic play in graphics programming?
+9. *What role does floating-point arithmetic play in graphics programming?*
     - Explore how floating-point numbers are utilized in rendering, transformations, and other aspects of computer graphics.
 
-10. How can understanding floating-point representation improve debugging and error analysis in programs?
+10. *How can understanding floating-point representation improve debugging and error analysis in programs?*
     - Discuss how knowledge of floating-point arithmetic can aid in diagnosing numerical issues in code.
 
-11. What are some real-world applications that heavily rely on floating-point computations?
+11. *What are some real-world applications that heavily rely on floating-point computations?*
     - Identify fields such as scientific computing, machine learning, and finance where floating-point arithmetic is crucial.
 
-12. Could you provide me with references for further reading on floating-point numbers?
+12. *Could you provide me with references for further reading on floating-point numbers?*
     - Seek additional resources to deepen your understanding and broaden your knowledge of floating-point arithmetic.
 
 
