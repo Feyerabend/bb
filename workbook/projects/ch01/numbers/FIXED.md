@@ -60,17 +60,17 @@ void print_fixed(fixed_point value) {
 
 ### Explanation of Functions:
 
-- **Conversion between float and fixed-point**:
+- *Conversion between float and fixed-point*:
   - `float_to_fixed(float value)`: Converts a floating-point number to a fixed-point number by multiplying the float by the scale factor (2^16).
   - `fixed_to_float(fixed_point value)`: Converts a fixed-point number back to a floating-point number by dividing it by the scale factor.
   
-- **Arithmetic operations**:
+- *Arithmetic operations*:
   - `fixed_add`, `fixed_sub`: Simple integer addition and subtraction.
   - `fixed_mul`: Multiplies two fixed-point numbers and shifts the result back by `FRACTIONAL_BITS` to account for the fixed-point scaling.
   - `fixed_div`: Shifts the dividend up by `FRACTIONAL_BITS` before performing integer division, to maintain precision.
   - `fixed_mod`: Uses the modulo operation, which operates at the integer level and provides the remainder in fixed-point form.
 
-- **Printing**: `print_fixed` outputs both the fixed-point representation (raw integer value) and the floating-point equivalent.
+- *Printing*: `print_fixed` outputs both the fixed-point representation (raw integer value) and the floating-point equivalent.
 
 ### Sample Usage
 
@@ -149,17 +149,17 @@ Fixed-point: 163840 (Float equivalent: 2.500000)
 
 ### Breakdown of Output:
 
-- **Fixed-point representation**: For example, `5.25` is represented as `344064` in fixed-point. This is calculated as `5.25 * 65536 = 344064`.
-- **Addition**: `5.25 + 2.75 = 8.0` in floating-point. In fixed-point, `344064 + 180224 = 524288`, which converts back to `8.0` in floating-point.
-- **Subtraction**: `5.25 - 2.75 = 2.5`, and in fixed-point, `344064 - 180224 = 163840`, which converts back to `2.5`.
-- **Multiplication**: `5.25 * 2.75 = 9.0625`. The fixed-point result is `619520`, and `619520 / 65536 = 9.0625`.
-- **Division**: `5.25 / 2.75 = 1.5`. The fixed-point result is `122880`, and `122880 / 65536 = 1.5`.
-- **Modulo**: `5.25 % 2.75 = 2.5`. In fixed-point, `163840` represents `2.5`.
+- *Fixed-point representation*: For example, `5.25` is represented as `344064` in fixed-point. This is calculated as `5.25 * 65536 = 344064`.
+- *Addition*: `5.25 + 2.75 = 8.0` in floating-point. In fixed-point, `344064 + 180224 = 524288`, which converts back to `8.0` in floating-point.
+- *Subtraction*: `5.25 - 2.75 = 2.5`, and in fixed-point, `344064 - 180224 = 163840`, which converts back to `2.5`.
+- *Multiplication*: `5.25 * 2.75 = 9.0625`. The fixed-point result is `619520`, and `619520 / 65536 = 9.0625`.
+- *Division*: `5.25 / 2.75 = 1.5`. The fixed-point result is `122880`, and `122880 / 65536 = 1.5`.
+- *Modulo*: `5.25 % 2.75 = 2.5`. In fixed-point, `163840` represents `2.5`.
 
 ### Notes:
 
-1. **Precision**: The multiplication and division operations involve shifts to maintain precision. Using `int64_t` for intermediate results ensures that we avoid overflow during these operations.
-2. **Scaling Factor**: This implementation uses a Q16.16 format (16 bits for the fractional part). You can adjust `FRACTIONAL_BITS` if a different precision is needed.
-3. **Limitations**: Fixed-point numbers offer limited precision compared to floating-point, so rounding errors and overflow issues can occur with large numbers or very small fractional parts.
+1. *Precision*: The multiplication and division operations involve shifts to maintain precision. Using `int64_t` for intermediate results ensures that we avoid overflow during these operations.
+2. *Scaling Factor*: This implementation uses a Q16.16 format (16 bits for the fractional part). You can adjust `FRACTIONAL_BITS` if a different precision is needed.
+3. *Limitations*: Fixed-point numbers offer limited precision compared to floating-point, so rounding errors and overflow issues can occur with large numbers or very small fractional parts.
 
 This library provides basic functionality for handling fixed-point numbers in C and showcases the core operations like conversion, arithmetic, and printing.

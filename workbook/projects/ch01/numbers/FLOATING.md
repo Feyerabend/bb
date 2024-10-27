@@ -1,5 +1,5 @@
 
-## Project Title: *Exploring Floating-Point Numbers and Their Alternatives*
+## Project: *Exploring Floating-Point Numbers and Their Alternatives*
 
 ## Project Background and Purpose
 

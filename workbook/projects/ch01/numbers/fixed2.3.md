@@ -1,24 +1,24 @@
-I understand now that you'd like to use **2.3** specifically as a model to explain fixed-point numbers and arithmetic. Let’s use **2.3** as a direct example to illustrate how fixed-point representation works.
 
-### **Fixed-Point Representation of 2.3**
+### *Fixed-Point Representation of 2.3*
 
-When we use **2.3** as our model for fixed-point representation, we will choose a fixed-point format, say **Qm.n**, where `m` is the integer part, and `n` is the fractional part.
+When we use *2.3* as our model for fixed-point representation, we will choose a fixed-point format,
+say *Qm.n*, where `m` is the integer part, and `n` is the fractional part.
 
-#### **Example: Q2.3 Format**
+#### *Example: Q2.3 Format*
 
-In the **Q2.3** format:
-- **2 bits** are allocated for the integer part.
-- **3 bits** are allocated for the fractional part.
+In the *Q2.3* format:
+- *2 bits* are allocated for the integer part.
+- *3 bits* are allocated for the fractional part.
 
 This means the maximum value we can represent is:
-- **Integer Range**: From -2 to 1 (in binary: `10` to `01`).
-- **Fractional Range**: Represented as `0.0` to `0.875` (as 0.111 in binary is \( \frac{7}{8} \)).
+- *Integer Range*: From -2 to 1 (in binary: `10` to `01`).
+- *Fractional Range*: Represented as `0.0` to `0.875` (as 0.111 in binary is \( \frac{7}{8} \)).
 
-### **Conversion of 2.3 to Fixed-Point**
+### *Conversion of 2.3 to Fixed-Point*
 
-To represent **2.3** in this format:
-1. **Integer Part**: The integer part of 2.3 is `2`, which is represented as `10` in binary.
-2. **Fractional Part**: The fractional part `.3` needs to be converted to binary.
+To represent *2.3* in this format:
+1. *Integer Part*: The integer part of 2.3 is `2`, which is represented as `10` in binary.
+2. *Fractional Part*: The fractional part `.3` needs to be converted to binary.
    - To find the binary representation of `.3`, we can multiply by 2 iteratively:
      - \( 0.3 \times 2 = 0.6 \)  → 0 (whole part), carry forward 0.6
      - \( 0.6 \times 2 = 1.2 \)  → 1 (whole part), carry forward 0.2
@@ -27,27 +27,28 @@ To represent **2.3** in this format:
      - \( 0.8 \times 2 = 1.6 \)  → 1 (whole part), carry forward 0.6
      - \( 0.6 \times 2 = 1.2 \)  → 1 (whole part), carry forward 0.2
      - This gives us a repeating pattern of `0.01001...` in binary.
-3. **Final Representation**: 
-   - **Integer**: `10` (for 2)
-   - **Fraction**: Limited to `3 bits` → `010` (approximating `0.3`)
+3. *Final Representation*: 
+   - *Integer*: `10` (for 2)
+   - *Fraction*: Limited to `3 bits` → `010` (approximating `0.3`)
 
 Putting it all together:
-- **Fixed-Point Representation**: In **Q2.3**, the representation of **2.3** would be `10.010`, which is `2` as integer part and `010` as fractional part.
+- *Fixed-Point Representation*: In *Q2.3*, the representation of *2.3* would be `10.010`, which is `2` as integer part and `010` as fractional part.
 
-### **Fixed-Point Arithmetic Using 2.3**
+### *Fixed-Point Arithmetic Using 2.3*
 
-Now let’s perform basic arithmetic operations using **2.3** as our model, assuming we're working with fixed-point representation in **Q2.3**.
+Now let's perform basic arithmetic operations using *2.3* as our model,
+assuming we're working with fixed-point representation in *Q2.3*.
 
-#### **Addition Example**
+#### *Addition Example*
 
-Let’s add **2.3** (fixed representation `10.010`) and **1.5** (which we will convert).
+Let's add *2.3* (fixed representation `10.010`) and *1.5* (which we will convert).
 
-1. **Convert 1.5 to Q2.3**:
-   - **Integer Part**: `1` (binary `01`)
-   - **Fractional Part**: `0.5` → In 3 bits → `100`
-   - **Fixed Representation**: `01.100`
+1. *Convert 1.5 to Q2.3*:
+   - *Integer Part*: `1` (binary `01`)
+   - *Fractional Part*: `0.5` → In 3 bits → `100`
+   - *Fixed Representation*: `01.100`
 
-2. **Addition**:
+2. *Addition*:
    ```
           10.010  (which is 2.3)
         + 01.100  (which is 1.5)
@@ -56,9 +57,9 @@ Let’s add **2.3** (fixed representation `10.010`) and **1.5** (which we will c
    ```
    - This equals `3.5`, which is valid in our range since `3.5` can be represented.
 
-#### **Subtraction Example**
+#### *Subtraction Example*
 
-Subtract **1.5** from **2.3**.
+Subtract *1.5* from *2.3*.
 
 ```
           10.010  (which is 2.3)
@@ -68,38 +69,38 @@ Subtract **1.5** from **2.3**.
 ```
 - The result is `0.5`, also valid.
 
-#### **Multiplication Example**
+#### *Multiplication Example*
 
-Now let's multiply **2.3** and **1.5**.
+Now let's multiply *2.3* and *1.5*.
 
-1. **Fixed Representations**:
-   - **2.3** = `10.010` (fixed)
-   - **1.5** = `01.100` (fixed)
+1. *Fixed Representations*:
+   - *2.3* = `10.010` (fixed)
+   - *1.5* = `01.100` (fixed)
 
-2. **Multiplication**:
+2. *Multiplication*:
    - Convert to integers (without considering fixed-point scaling):
    - \( 2.3 \times 1.5 = 3.45 \)
 
-3. **Fixed-Point Result**:
+3. *Fixed-Point Result*:
    To convert back to fixed-point:
    - Multiply as integers: \( 10.010 \times 01.100 = 10.111100 \)
    - Right shift by 3 (since we have 3 fractional bits): `001.111` 
    - This is approximately `3.5` which fits our fixed-point range.
 
-#### **Division Example**
+#### *Division Example*
 
-To divide **2.3** by **1.5**.
+To divide *2.3* by *1.5*.
 
-1. **Fixed Representations**:
-   - **2.3** = `10.010` (fixed)
-   - **1.5** = `01.100` (fixed)
+1. *Fixed Representations*:
+   - *2.3* = `10.010` (fixed)
+   - *1.5* = `01.100` (fixed)
 
-2. **Division**:
+2. *Division*:
    \[
    \text{result} = \frac{2.3}{1.5} \approx 1.5333
    \]
 
-3. **Fixed-Point Result**:
+3. *Fixed-Point Result*:
    To convert back to fixed-point:
    - Convert both to integer format:
    - Scale: \( \text{scale } = 8 \) (for Q2.3)
@@ -108,9 +109,9 @@ To divide **2.3** by **1.5**.
    \text{result} = \frac{(10.010 \times 8)}{(01.100 \times 8)} = \frac{18.88}{12.0} = 1.57 \quad \text{(back to fixed-point)}
    \]
 
-### **C Code Example**
+### *C Code Example*
 
-Here's a simple implementation of fixed-point arithmetic using **2.3** as a model in C.
+Here's a simple implementation of fixed-point arithmetic using *2.3* as a model in C.
 
 ```c
 #include <stdio.h>
@@ -197,6 +198,6 @@ int main() {
 }
 ```
 
-### **Summary**
+### *Summary*
 
-Using **2.3** as a model for fixed-point representation helps clarify how numbers can be represented and manipulated in a constrained format. The Q2.3 format allows us to work with both integer and fractional parts effectively, providing insight into basic arithmetic operations like addition, subtraction, multiplication, and division, along with potential
+Using *2.3* as a model for fixed-point representation helps clarify how numbers can be represented and manipulated in a constrained format. The Q2.3 format allows us to work with both integer and fractional parts effectively, providing insight into basic arithmetic operations like addition, subtraction, multiplication, and division, along with potential
