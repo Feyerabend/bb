@@ -82,6 +82,50 @@
 
 #### Characters and ASCII
 
+1. *Describe the ASCII encoding system.*
+    - Explain how ASCII represents characters as binary numbers and the limitations this encoding imposes on representing non-Latin characters.
+
+2. *Explain how the character ‘A’ is represented in ASCII.*
+    - Discuss the binary encoding and what each bit represents. Extend this explanation to lowercase letters and punctuation marks, noting the significance of the uppercase/lowercase distinction.
+
+3. *Trace the development of character encoding systems before ASCII.*
+    - Investigate earlier encoding systems, such as Morse code or telegraphy codes, and discuss how these influenced ASCII’s design.
+
+4. *Why was the development of Unicode necessary despite the success of ASCII?*
+    - Examine the limitations of ASCII in representing diverse characters and languages and how these limitations affected global computing.
+
+5. *Explain the concept of character encoding in ASCII compared to UTF-8.*
+    - Analyze the differences in bit usage between ASCII’s 7-bit encoding and UTF-8’s variable-length encoding, and discuss how UTF-8 supports a much wider range of characters.
+
+6. *Provide the binary encoding of the ASCII characters for ‘Hello’.*
+    - Show each letter’s binary representation, and explain the pattern you observe in encoding uppercase vs. lowercase letters.
+
+7. *Discuss how ASCII’s 7-bit design influenced early computing hardware.*
+    - Research why ASCII was initially designed as a 7-bit code and how this choice affected memory and data transmission in early computer systems.
+
+8. *What role did ASCII play in early internet communication?*
+    - Investigate ASCII’s use in early internet protocols (such as email and HTTP) and explain why its simplicity was advantageous for these applications.
+
+9. *Describe how UTF-8 encodes characters that are not part of ASCII.*
+    - Give examples of how UTF-8 uses more than one byte to represent non-Latin characters and discuss the benefits and potential challenges of variable-length encoding.
+
+10. *Convert the decimal ASCII values of the characters in “Data” to binary.*
+    - Explain each step and analyze the differences in encoding uppercase and lowercase letters.
+
+11. *Explore the historical evolution from ASCII to Extended ASCII.*
+    - Describe the differences and explain how Extended ASCII attempted to represent additional characters. Consider why this solution was still insufficient for global use.
+
+12. *Why does UTF-8 remain the dominant encoding standard on the web today?*
+    - Discuss UTF-8’s advantages over other encoding standards, such as UTF-16 or ISO-8859, particularly for web applications and multilingual content.
+
+13. *Research the historical challenges in creating a unified encoding standard like Unicode.*
+    - Investigate early challenges faced by the Unicode Consortium in standardizing characters for global use and how cultural and linguistic diversity influenced these decisions.
+
+14. *What was the significance of the space character’s encoding in ASCII?*
+    - Explain why the space character (00100000 in ASCII) has its particular encoding and its importance in text processing and data storage.
+
+15. *Discuss the use of control characters in ASCII.*
+    -Examine ASCII’s control characters (such as newline and carriage return) and their impact on early text processing and communication protocols.
 
 
 
