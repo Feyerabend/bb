@@ -29,15 +29,19 @@ Here's a summary of the key UART0 registers (you can find more details in the RP
 3. Baud Rate Calculation
 
 To set the baud rate, we need to configure IBRD and FBRD registers, based on the following formula:
-￼
+
+>> BAUDDIV = UARTCLK / (16 x BAUD RATE)
+
 where UARTCLK for the RP2040 is typically 48 MHz.
 
 For example, to set a baud rate of 115200:
 ￼
+BAUDDIV = 48,000,000 / (16 x 115200) ≈ 26.0417
 
-	•	The integer part (IBRD) is 26.
-	•	The fractional part (FBRD) is calculated as:
-￼
+- The integer part (IBRD) is 26.
+- The fractional part (FBRD) is calculated as:
+
+FRACPART = 0.0417 x 64 ≈ 3
 
 4. UART Initialization Code in C
 
