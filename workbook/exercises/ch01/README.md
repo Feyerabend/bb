@@ -181,12 +181,121 @@
 
 ### Variables
 
+1. *Define what a variable is in both mathematics and computer science.*
+    - Describe the role of variables in both fields and explain why variables are essential for representing data.
+
+2. *How does the use of variables differ between mathematical equations and computer programs?*
+    - Explain the meaning of variables in equations, and contrast this with their use in programming.
+
+3. *Explore how early computer systems stored variable values.*
+    - Research early methods for storing data in computer memory and how variable storage has evolved over time.
+
+4. *What are the most common types of variables in programming?*
+    - Provide examples and explain why a variable’s type is essential for data interpretation.
+
+5. *Discuss the role of variables in functional versus imperative programming paradigms.*
+    - Compare how variables function differently in each paradigm, focusing on functional programming’s preference for immutability.
+
+
 #### Assignment
 
+1. *What does assignment mean in programming?*
+    - Define assignment and explain the general syntax used in languages like Python and C.
+
+2. *Explain the process of assignment using an example.*
+    - Walk through how memory is allocated when assigning a value to a variable, such as x = 10 in Python.
+
+3. *How did early programming languages handle assignment?*
+    - Explore the evolution of assignment operators in early languages, such as Fortran and assembly, and compare them to modern languages.
+
+4. *What is the significance of the assignment operator in dynamically-typed vs. statically-typed languages?*
+    - Describe how assignment operates differently in languages like Python and C, and why type-checking affects the assignment process.
+
+5. *Illustrate how overwriting works in programming.*
+    - Explain what happens when a new value is assigned to an existing variable, including what happens to the previous value in memory.
+
+6. *What is compound assignment, and why is it used?*
+    - Define compound assignment, provide examples, and explain its efficiency benefits in code.
+
+7. *Explain multiple assignment with examples.*
+    - Describe multiple assignment, how it works in languages like Python, and discuss the benefits of this feature.
+
+8. *Discuss type consistency in assignment.*
+    - Explain why type consistency is crucial in programming, especially in statically typed languages, with an example in C.
+
+9. *Research the historical development of assignment operators in programming.*
+    - Trace the origin of common assignment operators (e.g., +=, -=) and their use in various programming languages.
+
+
+#### memory ??
+
+1. *Describe memory allocation during variable assignment.*
+    - Explain the steps involved in allocating memory when a value is assigned to a variable in modern programming languages.
+
+2. *Why is memory allocation important in programming?*
+    - Discuss the importance of memory allocation for efficient program performance and how this is managed in low-level vs. high-level languages.
+
+3. *Explore the historical methods of memory allocation for variables.*
+    - Research how memory was manually managed in early computing and how automated memory management has evolved.
+
+4. *What is garbage collection, and how does it relate to assignment?*
+    - Explain garbage collection, its benefits, and how it affects the memory of overwritten variables.
+
+5. *How does memory allocation differ between primitive types and complex data types?*
+    - Describe the differences in memory allocation for variables that hold integers versus arrays or objects.
+
+6. *Illustrate the impact of variable overwriting on memory.*
+    - Explain what happens to memory when a variable is reassigned, and discuss any potential memory management issues.
+
+
 #### Mutable and immutable
+
+1. *Define mutable and immutable variables with examples.*
+    - Explain the difference between mutable and immutable variables, providing examples in Python.
+
+2. *Why are some variables immutable?*
+    - Discuss the purpose and advantages of immutability, particularly in concurrent programming.
+
+3. *How does mutability affect memory management?*
+    - Compare the memory handling of mutable and immutable variables, particularly with regards to efficiency.
+
+4. *Explain the concept of reference assignment for mutable variables.*
+    - Provide examples of reference assignment and explain how modifying one variable affects another in Python.
+
+5. *Describe value assignment with an example.*
+    - Explain value assignment and how it applies to immutable variables, such as integers and strings.
+
+6. *What role does immutability play in functional programming?*
+    - Discuss why functional programming favors immutability and the benefits it offers for writing predictable code.
+
+7. *Trace the history of immutable data structures in programming languages.*
+    - Research the development of immutable data structures, such as strings in C, and how immutability has been emphasized in later languages like Haskell.
+
+8. *How does immutability ensure thread safety?*
+    - Explain why immutable variables are thread-safe and how this impacts concurrent programming.
+
+
+
 
 ### Control structures
 
 ### Functions
 #### Calling functions
+
+
+
+1. *Explain why assignment is restricted in functional programming.*
+    - Describe the philosophy behind limiting assignment and reassignments in functional programming languages.
+
+2. *Discuss the benefits of immutability in functional programming.*
+    - Explain how immutability contributes to data consistency and predictability in functional code.
+
+3. *Compare assignment in functional vs. imperative programming languages.*
+    - Discuss the differences in variable handling and assignment between functional and imperative paradigms.
+
+4. *Explore the historical influences that shaped assignment in functional programming.*
+    - Research early functional languages like Lisp and ML, and discuss how they influenced modern functional programming practices.
+
+5. *How does functional programming handle variable-like data?*
+    - Explain how functional programming manages data without reassigning variables and the concept of pure functions.
 
