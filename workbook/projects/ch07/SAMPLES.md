@@ -1,4 +1,3 @@
-Here are some sample Java code snippets and their corresponding representations in a minimal JVM instruction set. This will demonstrate how basic constructs in Java would be executed using the defined instructions.
 
 ### Sample Java Code
 
