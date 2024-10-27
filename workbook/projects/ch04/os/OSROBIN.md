@@ -1,3 +1,5 @@
+## Round Robin
+
 Adding a simple round-robin scheduler to your Raspberry Pi Pico operating system will allow you to create a form of multitasking, letting multiple “tasks” run in sequence by giving each task a time slice. This scheduler will not provide true parallelism but will allow the illusion of multiple tasks running simultaneously by quickly switching between them.
 
 In this implementation, we’ll:
