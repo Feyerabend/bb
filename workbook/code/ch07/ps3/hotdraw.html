@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Drawing App</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="drawingCanvas" width="500" height="400"></canvas>
+<button onclick="generatePostScript()">Generate PostScript</button>
+<pre id="postScriptOutput"></pre>
+
+<script>
+  // Base Figure Class
+  class Figure {
+    constructor(x, y, color = 'black') {
+      this.x = x;
+      this.y = y;
+      this.color = color;
+    }
+
+    draw(context) { }
+    move(dx, dy) {
+      this.x += dx;
+      this.y += dy;
+    }
+
+    toPostScript() {
+      return '';
+    }
+  }
+
+  // Rectangle Subclass
+  class Rectangle extends Figure {
+    constructor(x, y, width, height, color = 'black') {
+      super(x, y, color);
+      this.width = width;
+      this.height = height;
+    }
+
+    draw(context) {
+      context.fillStyle = this.color;
+      context.fillRect(this.x, this.y, this.width, this.height);
+    }
+
+    toPostScript() {
+      return `
+      ${this.x} ${this.y} moveto
+      ${this.width} 0 rlineto
+      0 ${this.height} rlineto
+      -${this.width} 0 rlineto
+      closepath
+      ${this.color} setrgbcolor
+      fill`;
+    }
+  }
+
+  // Canvas Class
+  class DrawingCanvas {
+    constructor(canvasElement) {
+      this.canvas = canvasElement;
+      this.context = this.canvas.getContext('2d');
+      this.figures = [];
+      this.selectedFigure = null;
+      this.dragging = false;
+
+      // Event Listeners
+      this.canvas.addEventListener('mousedown', (event) => this.onMouseDown(event));
+      this.canvas.addEventListener('mousemove', (event) => this.onMouseMove(event));
+      this.canvas.addEventListener('mouseup', () => this.onMouseUp());
+    }
+
+    addFigure(figure) {
+      this.figures.push(figure);
+      this.render();
+    }
+
+    render() {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.figures.forEach(figure => figure.draw(this.context));
+    }
+
+    findFigureAt(x, y) {
+      return this.figures.find(
+        figure => x >= figure.x && x <= figure.x + figure.width &&
+                  y >= figure.y && y <= figure.y + figure.height
+      );
+    }
+
+    onMouseDown(event) {
+      const x = event.offsetX;
+      const y = event.offsetY;
+      this.selectedFigure = this.findFigureAt(x, y);
+
+      if (this.selectedFigure) {
+        this.dragging = true;
+        this.lastX = x;
+        this.lastY = y;
+      }
+    }
+
+    onMouseMove(event) {
+      if (this.dragging && this.selectedFigure) {
+        const dx = event.offsetX - this.lastX;
+        const dy = event.offsetY - this.lastY;
+        this.selectedFigure.move(dx, dy);
+        this.lastX = event.offsetX;
+        this.lastY = event.offsetY;
+        this.render();
+      }
+    }
+
+    onMouseUp() {
+      this.dragging = false;
+      this.selectedFigure = null;
+    }
+  }
+
+  // Generate PostScript Code
+  function generatePostScript() {
+    const psCode = drawingCanvas.figures.map(figure => figure.toPostScript()).join('\n');
+    document.getElementById('postScriptOutput').textContent = psCode;
+  }
+
+  // Initialization
+  const canvasElement = document.getElementById('drawingCanvas');
+  const drawingCanvas = new DrawingCanvas(canvasElement);
+
+  // Adding a few rectangles to the canvas
+  drawingCanvas.addFigure(new Rectangle(50, 50, 100, 60, 'red'));
+  drawingCanvas.addFigure(new Rectangle(200, 150, 80, 120, 'blue'));
+
+</script>
+
+</body>
+</html>
