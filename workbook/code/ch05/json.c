@@ -29,7 +29,7 @@ struct JsonValue {
     };
 };
 
-// Function prototypes
+// fwd. decl.
 JsonValue* json_parse(const char **json);
 void json_free(JsonValue *json);
 void print_json(const JsonValue *json, int indent);
@@ -37,7 +37,7 @@ void skip_whitespace(const char **json);
 int expect_char(const char **json, char c);
 char* json_strdup(const char *str, size_t len);
 
-// Utility functions
+// util
 void skip_whitespace(const char **json) {
     while (isspace(**json)) (*json)++;
 }
@@ -56,7 +56,7 @@ char* json_strdup(const char *str, size_t len) {
     return copy;
 }
 
-// Function to parse JSON values
+// fwd. decl. parse JSON values
 JsonValue* json_parse_value(const char **json);
 JsonValue* json_parse_object(const char **json);
 JsonValue* json_parse_array(const char **json);
@@ -66,7 +66,7 @@ JsonValue* json_parse_true(const char **json);
 JsonValue* json_parse_false(const char **json);
 JsonValue* json_parse_null(const char **json);
 
-// JSON parsing functions
+// JSON parsing
 JsonValue* json_parse(const char **json) {
     skip_whitespace(json);
     return json_parse_value(json);
@@ -109,7 +109,7 @@ JsonValue* json_parse_object(const char **json) {
 
         pair.value = json_parse_value(json);
         
-        // Add pair to the object
+        // add pair to object
         object->object_value.pairs = realloc(object->object_value.pairs, sizeof(JsonKeyValue) * (object->object_value.length + 1));
         object->object_value.pairs[object->object_value.length++] = pair;
 
@@ -142,7 +142,7 @@ JsonValue* json_parse_array(const char **json) {
 JsonValue* json_parse_string(const char **json) {
     const char *start = ++(*json);
     while (**json != '\"') {
-        if (**json == '\\') (*json)++; // Skip escape character
+        if (**json == '\\') (*json)++; // skip escape
         (*json)++;
     }
     size_t len = *json - start;
@@ -168,7 +168,7 @@ JsonValue* json_parse_true(const char **json) {
     JsonValue *bool_value = malloc(sizeof(JsonValue));
     bool_value->type = JSON_BOOL;
     bool_value->bool_value = 1; // true
-    *json += 4; // Move past "true"
+    *json += 4; // move past "true"
     return bool_value;
 }
 
@@ -176,18 +176,18 @@ JsonValue* json_parse_false(const char **json) {
     JsonValue *bool_value = malloc(sizeof(JsonValue));
     bool_value->type = JSON_BOOL;
     bool_value->bool_value = 0; // false
-    *json += 5; // Move past "false"
+    *json += 5; // move past "false"
     return bool_value;
 }
 
 JsonValue* json_parse_null(const char **json) {
     JsonValue *null_value = malloc(sizeof(JsonValue));
     null_value->type = JSON_NULL;
-    *json += 4; // Move past "null"
+    *json += 4; // move past "null"
     return null_value;
 }
 
-// Freeing memory for JSON objects
+// free memory for JSON objects
 void json_free(JsonValue *json) {
     if (!json) return;
 
@@ -214,25 +214,7 @@ void json_free(JsonValue *json) {
     free(json);
 }
 
-
-// Main function for testing the JSON parser
-int main() {
-    const char *json_string = "{\"name\": \"John\", \"age\": 30, \"is_student\": false, \"subjects\": [\"math\", \"science\"]}";
-
-    JsonValue *json = json_parse(&json_string);
-    if (json) {
-        print_json(json, 0);
-        printf("\n");
-        json_free(json);
-    } else {
-        printf("Failed to parse JSON.\n");
-    }
-
-    return 0;
-}
-
-
-// Pretty-print the JSON structure
+// pretty-print
 void print_json(const JsonValue *json, int indent) {
     switch (json->type) {
         case JSON_NULL:
@@ -272,3 +254,21 @@ void print_json(const JsonValue *json, int indent) {
             break;
     }
 }
+
+
+int main() {
+    const char *json_string = "{\"name\": \"John\", \"age\": 30, \"is_student\": false, \"subjects\": [\"math\", \"science\"]}";
+
+    JsonValue *json = json_parse(&json_string);
+    if (json) {
+        print_json(json, 0);
+        printf("\n");
+        json_free(json);
+    } else {
+        printf("Failed to parse JSON.\n");
+    }
+
+    return 0;
+}
+
+
