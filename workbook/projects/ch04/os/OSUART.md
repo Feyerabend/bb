@@ -1,3 +1,5 @@
+## UART
+
 Setting up UART on the Raspberry Pi Pico is a great way to output debug information and communicate with external devices. Since you're working without external libraries, we'll access the UART registers directly to configure and send data through UART.
 
 Here's how to set up UART for the Pico step-by-step.
