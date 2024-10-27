@@ -10,7 +10,7 @@ LL(1) is a type of parser used in computer science for syntax analysis. The "LL"
 
 Here's a simple example of an LL(1) parser implementation in both C and Python. We'll use a simple grammar for arithmetic expressions:
 
-```
+```ebnf
 E → T E'
 E' → + T E' | ε
 T → int T' | ( E )
