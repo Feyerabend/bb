@@ -7,21 +7,21 @@
 #define FALSE 0
 
 typedef enum {
-  ADD,
-  ALLOC,
-  CALL,
-  CALLV,
-  CRET,
-  DEALLOC,
-  HALT,
-  LD,
-  MUL,
-  POP,
-  PRINT,
-  PUSH,
-  RET,
-  RETV,
-  ST
+    ADD,
+    ALLOC,
+    CALL,
+    CRET,
+    DEALLOC,
+    HALT,
+    JZ,
+    LD,
+    MUL,
+    POP,
+    PRINT,
+    PUSH,
+    RET,
+    ST,
+    SUB
 } Opcode;
 
 typedef struct {
@@ -52,10 +52,6 @@ void error(VM* vm, const char* message) {
     printf("Error: %s\n", message);
     freeVM(vm);
     exit(EXIT_FAILURE);
-}
-
-int frame(VM* vm) {
-    return vm->fstack.fp;
 }
 
 int next(VM* vm) {
@@ -117,62 +113,27 @@ int pop(VM* vm) {
     return frame->stack[(frame->sp)--];
 }
 
-int peek(VM* vm) {
-    Frame* frame = vm->fstack.frames[vm->fstack.fp];
-    if (frame->sp < 0) {
-        error(vm, "Stack underflow in frame");
-    }
-    return frame->stack[frame->sp];
-}
-
 void store(VM* vm, int index) {
-    if (index < 0 || index >= LOCALS_SIZE) {
-        snprintf(message, sizeof(message), "Invalid local variable index: %d", index);
-        error(vm, message);
-    }
     int value = pop(vm);
     vm->fstack.frames[vm->fstack.fp]->locals[index] = value;
 }
 
 void load(VM* vm, int index) {
-    if (index < 0 || index >= LOCALS_SIZE) {
-        snprintf(message, sizeof(message), "Invalid local variable index: %d", index);
-        error(vm, message);
-    }
     int value = vm->fstack.frames[vm->fstack.fp]->locals[index];
     push(vm, value);
 }
 
-int transferStackToLocals(VM* vm, int index, int num) {
-    Frame* currentFrame = vm->fstack.frames[index];
-    Frame* prevFrame = vm->fstack.frames[index - 1];
-
+void transferStackToLocals(VM* vm, int num) {
+    Frame* currentFrame = vm->fstack.frames[vm->fstack.fp];
+    Frame* prevFrame = vm->fstack.frames[vm->fstack.fp - 1];
     for (int i = 0; i < num; ++i) {
-        if (prevFrame->sp < 0) {
-            error(vm, "Not enough values on the previous frame's stack");
-        }
-        int value = prevFrame->stack[prevFrame->sp--];
-        if (i < LOCALS_SIZE) {
-            currentFrame->locals[i] = value;
-        } else {
-            error(vm, "Too many arguments for local storage");
-        }
+        currentFrame->locals[i] = prevFrame->stack[prevFrame->sp--];
     }
-    return num;
 }
 
-void transferStackToReturnValue(VM* vm, int srcFrameIdx, int destFrameIdx) {
-    if (srcFrameIdx < 0 || srcFrameIdx > vm->fstack.fp ||
-        destFrameIdx < 0 || destFrameIdx > vm->fstack.fp) {
-        printf("Invalid frame index!\n");
-        return;
-    }
-    Frame* srcFrame = vm->fstack.frames[srcFrameIdx];
-    Frame* destFrame = vm->fstack.frames[destFrameIdx];
-    if (srcFrame->sp < 0) {
-        printf("Source frame's stack is empty!\n");
-        return;
-    }
+void transferStackToReturnValue(VM* vm) {
+    Frame* srcFrame = vm->fstack.frames[vm->fstack.fp];
+    Frame* destFrame = vm->fstack.frames[vm->fstack.fp - 1];
     int value = srcFrame->stack[srcFrame->sp--];
     destFrame->returnValue = value;
 }
@@ -197,71 +158,35 @@ void freeVM(VM* vm) {
 }
 
 void run(VM* vm) {
-    int opcode, index, i, j, k;
-    int addr, value, frm, num;
+    int opcode, addr, num;
     Frame* fr;
 
     while (TRUE) {
-        if (vm->pc >= vm->code_length) {
-            printf("Warning: Program counter out of bounds!\n");
-            return;
-        }
-        if (vm->debug) {
-            printf("PC: %d, Opcode: %d\n", vm->pc, vm->code[vm->pc]);
-        }
-
         opcode = next(vm);
         switch (opcode) {
 
-            case ALLOC:
-                pushFrame(vm);
-                break;
-
-            case DEALLOC:
-                popFrame(vm);
-                break;
-
-            case CALLV:
+            case CALL:
                 num = next(vm);
                 addr = next(vm);
-                frm = pushFrame(vm);
+                int frm = pushFrame(vm);
                 fr = getFrame(vm, frm);
                 fr->returnAddress = vm->pc;
-                transferStackToLocals(vm, vm->fstack.fp, num);
-                vm->pc = addr;
-                break;
-
-            case RETV:
-                frm = frame(vm);
-                if (frm == 0) {
-                    printf("RETV: no previous frame to transfer value to!\n");
-                    break;
+                if (num > 0) {
+                    transferStackToLocals(vm, num);
                 }
-                transferStackToReturnValue(vm, frm, frm - 1);
-                fr = vm->fstack.frames[frm];
-                vm->pc = fr->returnAddress;
-                popFrame(vm);
-                break;
-
-            case CALL:
-                addr = next(vm);
-                frm = pushFrame(vm);
-                fr = getFrame(vm, frm);
-                fr->returnAddress = vm->pc;
                 vm->pc = addr;
                 break;
 
             case RET:
+                if (vm->fstack.fp > 0) {
+                    transferStackToReturnValue(vm);
+                }
                 fr = vm->fstack.frames[vm->fstack.fp];
                 vm->pc = fr->returnAddress;
                 popFrame(vm);
                 break;
 
             case PUSH:
-                if (vm->pc >= vm->code_length) {
-                    printf("PUSH: missing value!\n");
-                    return;
-                }
                 push(vm, next(vm));
                 break;
 
@@ -270,26 +195,15 @@ void run(VM* vm) {
                 break;
 
             case LD:
-                if (vm->pc >= vm->code_length) {
-                    printf("LD: missing index!\n");
-                    return;
-                }
-                index = next(vm);
-                load(vm, index);
+                load(vm, next(vm));
                 break;
 
             case ST:
-                if (vm->pc >= vm->code_length) {
-                    printf("ST: missing index!\n");
-                    return;
-                }
-                index = next(vm);
-                store(vm, index);
+                store(vm, next(vm));
                 break;
 
             case CRET:
-                value = vm->fstack.frames[vm->fstack.fp]->returnValue;
-                push(vm, value);
+                push(vm, vm->fstack.frames[vm->fstack.fp]->returnValue);
                 break;
 
             case PRINT:
@@ -297,17 +211,23 @@ void run(VM* vm) {
                 break;
 
             case ADD:
-                i = pop(vm);
-                j = pop(vm);
-                k = i + j;
-                push(vm, k);
+                push(vm, pop(vm) + pop(vm));
+                break;
+
+            case SUB:
+                num = pop(vm);
+                push(vm, pop(vm) - num);
                 break;
 
             case MUL:
-                i = pop(vm);
-                j = pop(vm);
-                k = i * j;
-                push(vm, k);
+                push(vm, pop(vm) * pop(vm));
+                break;
+
+            case JZ:
+                num = pop(vm);
+                addr = next(vm);
+                if (num <= 0)
+                    vm->pc = addr;
                 break;
 
             case HALT:
@@ -321,25 +241,36 @@ void run(VM* vm) {
 }
 
 int main() {
+
     int code[] = {
-        PUSH, 10,
-        PUSH, 20,
+        // Main Program
+        PUSH, 5,                // Push the initial value n = 5
+        CALL, 1, 8,             // Call factorial(5)
+        CRET,                   // Retrieve the result of factorial(5)
+        PRINT,                  // Print the result
+        HALT,                   // End of program
 
-        CALLV, 2, 13,
-        CRET,
-        PUSH, 80,
-        ADD,
-        PRINT,
-        HALT,
+        // Function factorial (Address 8)
+        LD, 0,                  // Load n (the argument)
+        PUSH, 1,                // Push constant 1
+        SUB,                    // Subtract to check if n == 1
+        JZ, 28,                 // Jump to base case if n == 1
 
-        LD, 0,
-        LD, 1,
-        MUL,
-        LD, 0,
-        ADD,
+        // Recursive Case (if n > 1)
+        LD, 0,                  // Load n again (the argument)
+        LD, 0,                  // Load n again (for factorial(n - 1))
+        PUSH, 1,                // Push constant 1
+        SUB,                    // Calculate n - 1
+        CALL, 1, 8,             // Call factorial(n - 1)
+        CRET,                   // Get factorial(n - 1)
+        MUL,                    // Calculate n * factorial(n - 1)
+        RET,                    // Return the result of n * factorial(n - 1)
 
-        RETV,
+        // Base Case (Address 28)
+        PUSH, 1,                // Push 1 (factorial of 1 is 1)
+        RET                     // Return 1
     };
+
     int code_size = sizeof(code) / sizeof(code[0]);
 
     VM* vm = newVM(code, code_size);
@@ -347,6 +278,5 @@ int main() {
     pushFrame(vm);
     run(vm);
     freeVM(vm);
-
     return 0;
 }

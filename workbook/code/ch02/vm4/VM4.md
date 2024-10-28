@@ -1,30 +1,33 @@
 
-### *VM4 Overview*
+## Overview
 
-VM4 is a simple stack-based virtual machine (VM) that simulates a processor capable of executing basic arithmetic and control-flow operations. It operates on a *stack* to perform operations and uses *frames* for managing local variables and return addresses in a function call.
+This code implements a simple stack-based virtual machine (VM) in C, which can interpret and execute bytecode instructions, including arithmetic operations, function calls, and basic flow control. It supports recursive function calls, as illustrated with a factorial calculation.
 
-Key components of VM4:
+### Key Components
 
-1. *Opcodes*: 
-   - The VM recognizes several opcodes (operation codes) like `ADD`, `MUL`, `PUSH`, `POP`, `CALL`, `RET`, etc. Each of these opcodes corresponds to a specific action, such as pushing a value onto the stack, adding numbers, or calling a function.
-   
-2. *Stack*:
-   - Each frame has a stack (`frame->stack`) where operands are stored temporarily while performing calculations.
-   - Operations like `PUSH`, `POP`, `ADD`, and `MUL` work directly with values on the stack.
+1.	Definitions and Structures:
+	•	STACK_SIZE and LOCALS_SIZE define the size limits of the stack and local variable space.
+	•	Opcode enum defines the supported instructions (e.g., ADD, PUSH, CALL).
+	•	Frame structure represents a function call’s execution context, including a stack, local variables, and return data.
+	•	FrameStack and VM structures manage a stack of frames and the VM’s state, including the program counter (pc), code to execute, and a debug flag.
 
-3. *Frames*:
-   - Each frame (`Frame` struct) represents a function context, holding a stack, local variables, the return address, and a return value.
-   - A *FrameStack* manages these frames and allows the VM to handle function calls and returns.
+2.	VM Functions:
+	•	Memory Management: pushFrame and popFrame manage stack frames for function calls and returns.
+	•	Error Handling: error reports issues and terminates the VM if there’s an error (e.g., stack overflow).
+	•	Stack Operations: push, pop, store, and load handle stack data and access local variables.
+	•	Function Call Support: transferStackToLocals and transferStackToReturnValue transfer data between frames for argument passing and return values.
 
-4. *Program Counter (PC)*:
-   - The VM has a program counter (`pc`) that points to the current instruction in the code.
-   - Instructions are fetched, and the program counter increments to the next one, allowing sequential execution.
+3.	Main Execution Loop (run function):
+	•	The main loop executes instructions by fetching each opcode and performing the associated operation. Some highlights:
+	•	CALL: Creates a new frame, stores the current pc as the return address, and optionally transfers arguments.
+	•	RET: Ends the function call by transferring any return value to the calling frame and restoring the return address.
+	•	CRET: Pushes the return value onto the stack.
+	•	Arithmetic (e.g., ADD, SUB, MUL): Operate on stack data.
+	•	Flow Control (e.g., JZ): Enables conditional branching.
 
-5. *Basic Flow*:
-   - The main execution loop in `run()` fetches opcodes from the `code` array, decodes them, and executes the corresponding operation.
-   - When an opcode like `HALT` is encountered, execution stops.
-   - The VM can also call functions (`CALLV`, `CALL`), return from them (`RET`, `RETV`), and handle local variables via the stack.
+4.	Main Program (Factorial Calculation):
+	•	The main function initializes a code array containing bytecode to compute factorial(5) recursively:
+	•	PUSH and CALL push arguments and initiate the recursive factorial function.
+	•	The factorial function uses RET and CRET for recursion and return values.
 
-6. *Memory Layout*:
-   - `stack[]`: Holds temporary values for arithmetic or function arguments.
-   - `locals[]`: Holds local variables in the current frame, accessed by the `LD` (load) and `ST` (store) instructions.
+The factorial bytecode computation illustrates the VM’s capability to handle recursion, local variables, and stack-based arithmetic, producing the factorial of 5 as the output (PRINT: 120).
