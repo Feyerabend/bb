@@ -146,4 +146,3 @@ with open("text2.ppm", "w") as f:
         for pixel in row:
             f.write(f"{pixel[0]} {pixel[1]} {pixel[2]} ")
         f.write("\n")
-
