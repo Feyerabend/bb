@@ -3,7 +3,7 @@
 
 Taking inspiration from Hersey[^hersey] text fonts, the data dictionary represents a set of vector line segments that define each character or number in a simple, stylized font. Each character is created using a sequence of connected line segments with specified start and end points, relative to a common origin for alignment. These vector paths are used to render each glyph by connecting these defined points on a grid.
 
-[^hersey]: https://en.wikipedia.org/wiki/Hershey_fonts.
+[^hersey]: See: https://en.wikipedia.org/wiki/Hershey_fonts. Also: https://paulbourke.net/dataformats/hershey/.
 
 An empty white image grid is created, and a line-drawing algorithm (similar to Bresenham’s line algorithm) is used to apply each character’s line segments to the image. Each character is spaced horizontally using a set spacing value. As the algorithm iterates over each character, it “draws” them on the image in the specified positions, creating a visual representation of the text message using only line segments, without relying on any existing fonts or rasterized text data.
 
