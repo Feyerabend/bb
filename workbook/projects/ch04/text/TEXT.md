@@ -1,17 +1,17 @@
 
+## Vector text
+
+
+
+
 Adding a Slant with Shearing Transformation
 
-To slant text, apply a shearing matrix to each (x, y) coordinate. The shearing transformation matrix to slant by an angle  \theta  is:
-
-
-\begin{bmatrix}
-1 & \tan(\theta) \\
-0 & 1
-\end{bmatrix}
+To slant text, apply a shearing matrix to each (x, y) coordinate.
+The shearing transformation matrix to slant by an angle  $\theta$  is:
 
 <img src="https://latex.codecogs.com/svg.latex?\begin{bmatrix}1&\tan(\theta)\\0&1\end{bmatrix}" />
 
-This matrix shifts each y coordinate by a factor of  x \times \tan(\theta) , where  \theta  is the slant angle.
+This matrix shifts each y coordinate by a factor of  $x \times \tan(\theta)$ , where  $\theta$  is the slant angle.
 
 
 BUT SIMOLIFIED

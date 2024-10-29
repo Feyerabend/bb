@@ -67,7 +67,7 @@ SLANTEDBOLD  = 1 << 3  # 8 (binary: 1000)
 
 # image and font settings
 width, height = 650, 50    # Adjusted width for the whole alphabet
-scale = 1                  # Scale for the font size
+scale = 0.75               # Scale for the font size
 margin = 15                # Margin around text
 spacing = 8                # Spacing between characters
 
@@ -135,10 +135,12 @@ def render_text(text, img, start_x, start_y, style=NORMAL):
         x += spacing * scale
 
 # draw text on the image
-render_text("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", image, margin, height // 2, SLANTEDBOLD)
+render_text("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", image, margin, height // 2, BOLD)
+render_text("0 1 2 3 4 5 6 7 8 9", image, margin + 300, height // 2, SLANTED)
+render_text("ABCDEFGHIJKLMNOPQRSTUVWXYZ", image, margin + 450, height // 2, NORMAL)
 
 # write PPM file
-with open("alphabet.ppm", "w") as f:
+with open("text2.ppm", "w") as f:
     f.write(f"P3\n{width} {height}\n255\n")
     for row in image:
         for pixel in row:

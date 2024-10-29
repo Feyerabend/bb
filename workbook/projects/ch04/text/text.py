@@ -99,9 +99,9 @@ def render_text(text, img, start_x, start_y):
                           int(x + x2 * scale), int(start_y - y2 * scale))
         x += spacing * scale
 
-render_text("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG   0 1 2 3 4 5 6 7 8 9", image, margin, height // 2)
+render_text("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG      0 1 2 3 4 5 6 7 8 9", image, margin, height // 2)
 
-with open("alphabet.ppm", "w") as f:
+with open("text.ppm", "w") as f:
     f.write(f"P3\n{width} {height}\n255\n")
     for row in image:
         for pixel in row:
