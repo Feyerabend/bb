@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive Drawing App</title>
+  <title>Idea for interactive drawing app</title>
   <style>
     canvas {
       border: 1px solid black;
@@ -18,7 +18,7 @@
 <pre id="postScriptOutput"></pre>
 
 <script>
-  // Base Figure Class
+  // base class
   class Figure {
     constructor(x, y, color = 'black') {
       this.x = x;
@@ -37,13 +37,13 @@
     }
   }
 
-  // Rectangle Class with Resizing Handles
+  // rectangle class with resizing handles
   class Rectangle extends Figure {
     constructor(x, y, width, height, color = 'black') {
       super(x, y, color);
       this.width = width;
       this.height = height;
-      this.handleSize = 10; // Handle size for better hit detection
+      this.handleSize = 10;
       this.showHandles = false;
     }
 
@@ -57,7 +57,7 @@
     }
 
     drawHandles(context) {
-      context.fillStyle = 'gray'; // Gray color for handles
+      context.fillStyle = 'gray';
       const handles = this.getHandles();
       handles.forEach(handle => {
         context.fillRect(handle.x, handle.y, this.handleSize, this.handleSize);
@@ -65,17 +65,18 @@
     }
 
     getHandles() {
-      // Exact corner coordinates for handles, aligned to the rectangle corners
+      // exact corner coordinates for handles,
+      // aligned to the rectangle corners
       return [
-        { x: this.x, y: this.y }, // Top-left
-        { x: this.x + this.width - this.handleSize, y: this.y }, // Top-right
-        { x: this.x, y: this.y + this.height - this.handleSize }, // Bottom-left
-        { x: this.x + this.width - this.handleSize, y: this.y + this.height - this.handleSize }  // Bottom-right
+        { x: this.x, y: this.y }, // top-left
+        { x: this.x + this.width - this.handleSize, y: this.y }, // top-right
+        { x: this.x, y: this.y + this.height - this.handleSize }, // bottom-left
+        { x: this.x + this.width - this.handleSize, y: this.y + this.height - this.handleSize }  // bottom-right
       ];
     }
 
+    // hit test: if x and y are within any of the handles
     handleHitTest(x, y) {
-      // Check if x and y are within any of the handles
       return this.getHandles().findIndex(handle =>
         x >= handle.x && x <= handle.x + this.handleSize &&
         y >= handle.y && y <= handle.y + this.handleSize
@@ -84,32 +85,33 @@
 
     resize(handleIndex, dx, dy) {
       switch (handleIndex) {
-        case 0: // Top-left
+        case 0: // top-left
           this.width -= dx;
           this.height -= dy;
           this.x += dx;
           this.y += dy;
           break;
-        case 1: // Top-right
+        case 1: // top-right
           this.width += dx;
           this.height -= dy;
           this.y += dy;
           break;
-        case 2: // Bottom-left
+        case 2: // bottom-left
           this.width -= dx;
           this.height += dy;
           this.x += dx;
           break;
-        case 3: // Bottom-right
+        case 3: // bottom-right
           this.width += dx;
           this.height += dy;
           break;
       }
-      // Ensure minimum width and height
+      // ensure minimum width and height
       if (this.width < this.handleSize) this.width = this.handleSize;
       if (this.height < this.handleSize) this.height = this.handleSize;
     }
 
+    // for export
     toPostScript() {
       return `
       ${this.x} ${this.y} moveto
@@ -122,7 +124,7 @@
     }
   }
 
-  // Drawing Canvas with Interaction Logic
+  // draw canvas with interaction
   class DrawingCanvas {
     constructor(canvasElement) {
       this.canvas = canvasElement;
@@ -188,7 +190,8 @@
         this.lastX = x;
         this.lastY = y;
       } else {
-        this.resetState();  // Clicked outside any rectangle, reset all handles
+        // simple reset, if click outside rectangles
+        this.resetState();
       }
     }
 
@@ -198,7 +201,7 @@
       const clickedFigure = this.findFigureAt(x, y);
 
       if (clickedFigure) {
-        this.resetState(); // Reset first to ensure only this figure is selected
+        this.resetState();
         this.selectedFigure = clickedFigure;
         this.selectedFigure.showHandles = true;
         this.render();
@@ -228,7 +231,6 @@
     }
   }
 
-  // Generate PostScript Code
   function generatePostScript() {
     const psCode = drawingCanvas.figures.map(figure => figure.toPostScript()).join('\n');
     document.getElementById('postScriptOutput').textContent = psCode;
