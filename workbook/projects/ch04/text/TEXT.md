@@ -17,6 +17,7 @@ This matrix shifts each y coordinate by a factor of  $x \times \tan(\theta)$ , w
 
 BUT SIMOLIFIED
 
+![text2](../../assets/images/text2.png)
 
 
 
