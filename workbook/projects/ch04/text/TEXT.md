@@ -10,7 +10,7 @@ Finally, the rendered text is saved as an image file in the PPM format, storing 
 
 ### First test with text
 
-Sample with scale = 1. The text is saved as an image in the PPM format (converted here to PNG).
+File: `text.py`. Sample with scale = 1. The text is saved as an image in the PPM format (converted here to PNG).
 
 ![text](../../assets/images/text.png)
 
@@ -28,7 +28,7 @@ A simple way of doing slanted text, is to use a pre-calculated constant instead 
 
 We also add bold text by drawing the same as with normal text, only one pixel to the right.
 
-Sample scale = 0.75, with styles NORMAL, BOLD, SLANTED, SLANTEDBOLD. Text save as image in PPM format.
+File: `text2.py`. Sample scale = 0.75, with styles NORMAL, BOLD, SLANTED, SLANTEDBOLD. Text saved as image in PPM format.
 
 ![text2](../../assets/images/text2.png)
 
