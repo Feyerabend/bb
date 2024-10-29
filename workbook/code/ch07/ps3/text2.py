@@ -1,3 +1,5 @@
+import math
+
 
 # data for each character
 simplex_data = {
@@ -68,6 +70,15 @@ spacing = 8                # Spacing between characters
 # Create an empty image with a white background
 image = [[[255, 255, 255] for _ in range(width)] for _ in range(height)]
 
+# Define the slant angle in radians (e.g., 15 degrees)
+slant_angle = math.radians(15)
+shear_factor = math.tan(slant_angle)
+
+# Shearing function to apply to coordinates
+def apply_shear(x, y):
+    new_x = x + shear_factor * y
+    return new_x, y
+
 # Function to draw a line on the image using Bresenham's algorithm
 def draw_line(img, x1, y1, x2, y2, color=(0, 0, 0)):
     dx, dy = abs(x2 - x1), abs(y2 - y1)
@@ -94,12 +105,22 @@ def render_text(text, img, start_x, start_y):
         if char in simplex_data:
             for line in simplex_data[char]:
                 (x1, y1), (x2, y2) = line
-                draw_line(img,
-                          int(x + x1 * scale), int(start_y - y1 * scale),
-                          int(x + x2 * scale), int(start_y - y2 * scale))
+                ## normal
+#                draw_line(img,
+#                          int(x + x1 * scale), int(start_y - y1 * scale),
+#                          int(x + x2 * scale), int(start_y - y2 * scale))
+                # bold
 #                draw_line(img,
 #                          int(x + x1 * scale) +1, int(start_y - y1 * scale),
 #                          int(x + x2 * scale) +1, int(start_y - y2 * scale))
+
+                # Apply shear to both endpoints of the line
+                sx1, sy1 = apply_shear(x1 * scale, y1 * scale)
+                sx2, sy2 = apply_shear(x2 * scale, y2 * scale)
+                draw_line(img,
+                          int(x + sx1), int(start_y - sy1),
+                          int(x + sx2), int(start_y - sy2))
+
         x += spacing * scale
 
 # Draw "ABCDEFGHIJKLMNOPQRSTUVWXYZ" on the image
