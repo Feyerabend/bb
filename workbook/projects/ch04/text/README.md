@@ -44,7 +44,7 @@ in a microcontroller, with limited resources.
 
 We also add bold text by drawing the same as with normal text, only one pixel to the right.
 
-File: `text2.py`. Sample scale = 0.75, with styles NORMAL, BOLD, SLANTED, SLANTEDBOLD.
+File: `text2.py`. Sample scale = 0.75, with styles NORMAL, __BOLD__, *SLANTED*, __*SLANTEDBOLD*__.
 Text saved as image in PPM format.
 
 ![text2](../../assets/images/text2.png)
