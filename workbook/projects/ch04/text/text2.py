@@ -59,16 +59,30 @@ simplex_data = {
           ((1, 5), (5, 5))]
 }
 
-# Image and font settings
+# flags using bitwise shifts
+NORMAL       = 1 << 0  # 1 (binary: 0001)
+BOLD         = 1 << 1  # 2 (binary: 0010)
+SLANTED      = 1 << 2  # 4 (binary: 0100)
+SLANTEDBOLD  = 1 << 3  # 8 (binary: 1000)
+
+# image and font settings
 width, height = 650, 50    # Adjusted width for the whole alphabet
 scale = 1                  # Scale for the font size
 margin = 15                # Margin around text
 spacing = 8                # Spacing between characters
 
-# Create an empty image with a white background
+# empty image with white background
 image = [[[255, 255, 255] for _ in range(width)] for _ in range(height)]
 
-# Function to draw a line on the image using Bresenham's algorithm
+# slant angle factor for 15 degrees directly (approximately 0.26795)
+shear_factor = 0.26795
+
+# shearing function to apply to coordinates
+def apply_shear(x, y):
+    new_x = x + shear_factor * y
+    return new_x, y
+
+# draw a line on the image using Bresenham's algorithm
 def draw_line(img, x1, y1, x2, y2, color=(0, 0, 0)):
     dx, dy = abs(x2 - x1), abs(y2 - y1)
     sx = 1 if x1 < x2 else -1
@@ -87,29 +101,47 @@ def draw_line(img, x1, y1, x2, y2, color=(0, 0, 0)):
             err += dx
             y1 += sy
 
-# Function to render a string in the Hershey Simplex font
-def render_text(text, img, start_x, start_y):
+# render a string in the font
+def render_text(text, img, start_x, start_y, style=NORMAL):
     x = start_x
     for char in text:
         if char in simplex_data:
             for line in simplex_data[char]:
                 (x1, y1), (x2, y2) = line
-                draw_line(img,
-                          int(x + x1 * scale), int(start_y - y1 * scale),
-                          int(x + x2 * scale), int(start_y - y2 * scale))
-#                draw_line(img,
-#                          int(x + x1 * scale) +1, int(start_y - y1 * scale),
-#                          int(x + x2 * scale) +1, int(start_y - y2 * scale))
+
+                if style & (NORMAL | BOLD):
+                    x1 = int(x + x1 * scale)
+                    y1 = int(start_y - y1 * scale)
+                    x2 = int(x + x2 * scale)
+                    y2 = int(start_y - y2 * scale)
+                    draw_line(img, x1, y1, x2, y2)
+
+                    if style & BOLD:
+                        draw_line(img, x1+1, y1, x2+1, y2)
+
+                elif style & (SLANTED | SLANTEDBOLD):
+                    sx1, sy1 = apply_shear(x1 * scale, y1 * scale)
+                    sx2, sy2 = apply_shear(x2 * scale, y2 * scale)
+                    x1 = int(x + sx1)
+                    y1 = int(start_y - sy1)
+                    x2 = int(x + sx2)
+                    y2 = int(start_y - sy2)
+                    draw_line(img, x1, y1, x2, y2)
+                
+                    if style & SLANTEDBOLD:
+                        draw_line(img, x1+1, y1, x2+1, y2)
+
+
         x += spacing * scale
 
-# Draw "ABCDEFGHIJKLMNOPQRSTUVWXYZ" on the image
-#render_text("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", image, margin, height // 2)
-render_text("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", image, margin, height // 2)
+# draw text on the image
+render_text("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", image, margin, height // 2, SLANTEDBOLD)
 
-# Write to a PPM file
+# write PPM file
 with open("alphabet.ppm", "w") as f:
     f.write(f"P3\n{width} {height}\n255\n")
     for row in image:
         for pixel in row:
             f.write(f"{pixel[0]} {pixel[1]} {pixel[2]} ")
         f.write("\n")
+

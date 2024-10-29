@@ -1,5 +1,27 @@
-import math
 
+Adding a Slant with Shearing Transformation
+
+To slant text, apply a shearing matrix to each (x, y) coordinate. The shearing transformation matrix to slant by an angle  \theta  is:
+
+
+\begin{bmatrix}
+1 & \tan(\theta) \\
+0 & 1
+\end{bmatrix}
+
+<img src="https://latex.codecogs.com/svg.latex?\begin{bmatrix}1&\tan(\theta)\\0&1\end{bmatrix}" />
+
+This matrix shifts each y coordinate by a factor of  x \times \tan(\theta) , where  \theta  is the slant angle.
+
+
+BUT SIMOLIFIED
+
+
+
+
+
+```python
+import math
 
 # data for each character
 simplex_data = {
@@ -134,3 +156,4 @@ with open("alphabet.ppm", "w") as f:
         for pixel in row:
             f.write(f"{pixel[0]} {pixel[1]} {pixel[2]} ")
         f.write("\n")
+```
