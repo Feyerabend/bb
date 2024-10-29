@@ -13,7 +13,7 @@ The shearing transformation matrix to slant by an angle  $\theta$  is:
 
 This matrix shifts each y coordinate by a factor of  $x \times \tan(\theta)$ , where  $\theta$  is the slant angle.
 
-![text](../assets/images/text.png)
+![text](../../assets/images/text.png)
 
 BUT SIMOLIFIED
 
