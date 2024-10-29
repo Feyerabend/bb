@@ -1,161 +1,30 @@
 
 ## Vector text
 
+The data dictionary represents a set of vector line segments that define each character or number in a simple, stylized font. Each character is created using a sequence of connected line segments with specified start and end points, relative to a common origin for alignment. These vector paths are used to render each glyph by connecting these defined points on a grid.
+
+An empty white image grid is created, and a line-drawing algorithm (similar to Bresenham’s line algorithm) is used to apply each character’s line segments to the image. Each character is spaced horizontally using a set spacing value. As the algorithm iterates over each character, it “draws” them on the image in the specified positions, creating a visual representation of the text message using only line segments, without relying on any existing fonts or rasterized text data.
+
+Finally, the rendered text is saved as an image file in the PPM format, storing RGB values for each pixel across the image, thereby creating a custom bitmap representation of the vector-based text.
 
 
+### First test with text
 
-Adding a Slant with Shearing Transformation
-
-To slant text, apply a shearing matrix to each (x, y) coordinate.
-The shearing transformation matrix to slant by an angle  $\theta$  is:
-
-<img src="https://latex.codecogs.com/svg.latex?\begin{bmatrix}1&\tan(\theta)\\0&1\end{bmatrix}" />
-
-This matrix shifts each y coordinate by a factor of  $x \times \tan(\theta)$ , where  $\theta$  is the slant angle.
-
+Sample:
 ![text](../../assets/images/text.png)
 
-BUT SIMOLIFIED
 
+### Add slant
+
+To slant text, we apply a shearing matrix to each (x, y) coordinate.
+The shearing transformation matrix to slant by an angle  $\theta$  is:
+<img src="https://latex.codecogs.com/svg.latex?\begin{bmatrix}1&\tan(\theta)\\0&1\end{bmatrix}" />
+This matrix shifts each y coordinate by a factor of  $x \times \tan(\theta)$ , where  $\theta$  is the slant angle.
+
+A simple way of doing slanted text, is to use a pre-calculated constant instead of calculating it each time for each glyph or letter.
+
+We also add bold text by drawing the same as with normal text, only one pixel to the right.
+
+Sample:
 ![text2](../../assets/images/text2.png)
 
-
-
-
-```python
-import math
-
-# data for each character
-simplex_data = {
-    'A': [((0, 0), (2.5, 10)), ((2.5, 10), (5, 0)), ((1, 5), (4, 5))],
-    'B': [((0, 0), (0, 10)), ((0, 10), (3, 10)), ((3, 10), (4, 9)), ((4, 9), (4, 6)), 
-          ((4, 6), (3, 5)), ((3, 5), (4, 4)), ((4, 4), (4, 1)), ((4, 1), (3, 0)), 
-          ((3, 0), (0, 0)), ((0, 5), (3, 5))],
-    'C': [((5, 0), (1, 0)), ((1, 0), (0, 1)), ((0, 1), (0, 9)), ((0, 9), (1, 10)),
-          ((1, 10), (5, 10))],
-    'D': [((0, 0), (0, 10)), ((0, 10), (3, 10)), ((3, 10), (4, 9)), ((4, 9), (4, 1)),
-          ((4, 1), (3, 0)), ((0, 0), (3, 0))],
-    'E': [((5, 0), (0, 0)), ((0, 0), (0, 10)), ((0, 10), (5, 10)), ((0, 5), (3, 5))],
-    'F': [((0, 0), (0, 10)), ((0, 10), (5, 10)), ((0, 5), (3, 5))],
-    'G': [((5, 7), (5, 10)), ((5, 10), (1, 10)), ((1, 10), (0, 9)), ((0, 9), (0, 1)),
-          ((0, 1), (1, 0)), ((1, 0), (5, 0)), ((5, 0), (5, 4)), ((3, 4), (5, 4))],
-    'H': [((0, 0), (0, 10)), ((5, 0), (5, 10)), ((0, 5), (5, 5))],
-    'I': [((2, 0), (2, 10)), ((0, 0), (4, 0)), ((0, 10), (4, 10))],
-    'J': [((5, 10), (5, 1)), ((5, 1), (4, 0)), ((4, 0), (1, 0)), ((1, 0), (0, 1))],
-    'K': [((0, 0), (0, 10)), ((5, 10), (0, 5)), ((0, 5), (5, 0))],
-    'L': [((0, 10), (0, 0)), ((0, 0), (5, 0))],
-    'M': [((0, 0), (0, 10)), ((0, 10), (2.5, 5)), ((2.5, 5), (5, 10)), ((5, 10), (5, 0))],
-    'N': [((0, 0), (0, 10)), ((0, 10), (5, 0)), ((5, 0), (5, 10))],
-    'O': [((0, 0), (5, 0)), ((5, 0), (5, 10)), ((5, 10), (0, 10)), ((0, 10), (0, 0))],
-    'P': [((0, 0), (0, 10)), ((0, 10), (4, 10)), ((4, 10), (5, 9)), ((5, 9), (5, 6)),
-          ((5, 6), (4, 5)), ((4, 5), (0, 5))],
-    'Q': [((0, 0), (5, 0)), ((5, 0), (5, 10)), ((5, 10), (0, 10)), ((0, 10), (0, 0)),
-          ((3, 3), (5, 0))],
-    'R': [((0, 0), (0, 10)), ((0, 10), (4, 10)), ((4, 10), (5, 9)), ((5, 9), (5, 6)),
-          ((5, 6), (4, 5)), ((4, 5), (0, 5)), ((0, 5), (5, 0))],
-    'S': [((5, 10), (1, 10)), ((1, 10), (0, 9)), ((0, 9), (1, 5)), ((1, 5), (4, 5)), 
-          ((4, 5), (5, 1)), ((5, 1), (4, 0)), ((4, 0), (0, 0))],
-    'T': [((2.5, 0), (2.5, 10)), ((0, 10), (5, 10))],
-    'U': [((0, 10), (0, 1)), ((0, 1), (1, 0)), ((1, 0), (4, 0)), ((4, 0), (5, 1)),
-          ((5, 1), (5, 10))],
-    'V': [((0, 10), (2.5, 0)), ((2.5, 0), (5, 10))],
-    'W': [((0, 10), (1.5, 0)), ((1.5, 0), (2.5, 5)), ((2.5, 5), (3.5, 0)), ((3.5, 0), (5, 10))],
-    'X': [((0, 10), (5, 0)), ((5, 10), (0, 0))],
-    'Y': [((0, 10), (2.5, 5)), ((2.5, 5), (5, 10)), ((2.5, 5), (2.5, 0))],
-    'Z': [((0, 10), (5, 10)), ((5, 10), (0, 0)), ((0, 0), (5, 0))],
-
-    '0': [((1, 0), (4, 0)), ((4, 0), (5, 1)), ((5, 1), (5, 9)), ((5, 9), (4, 10)),
-          ((4, 10), (1, 10)), ((1, 10), (0, 9)), ((0, 9), (0, 1)), ((0, 1), (1, 0)),
-          ((5, 10), (0, 0))],
-    '1': [((2.5, 0), (2.5, 10))],
-    '2': [((0, 9), (1, 10)), ((1, 10), (4, 10)), ((4, 10), (5, 9)), ((5, 9), (5, 5)), 
-          ((5, 5), (0, 0)), ((0, 0), (5, 0))],
-    '3': [((0, 10), (5, 10)), ((5, 10), (3, 5)), ((3, 5), (5, 0)), ((0, 0), (5, 0))],
-    '4': [((4, 10), (4, 0)), ((0, 5), (5, 5)), ((4, 10), (0, 5))],
-    '5': [((5, 10), (0, 10)), ((0, 10), (0, 5)), ((0, 5), (4, 5)), ((4, 5), (5, 4)),
-          ((5, 4), (5, 0)), 
-          ((5, 0), (0, 0))],
-    '6': [((5, 10), (0, 10)), ((0, 10), (0, 0)), ((0, 0), (5, 0)), ((5, 0), (5, 4)), 
-          ((5, 4), (4, 5)), ((4, 5), (0, 5))],
-    '7': [((0, 10), (5, 10)), ((5, 10), (2, 0))],
-    '8': [((1, 5), (4, 5)), ((1, 10), (4, 10)), ((4, 10), (5, 9)), ((5, 9), (5, 1)), 
-          ((5, 1), (4, 0)), ((4, 0), (1, 0)), ((1, 0), (0, 1)), ((0, 1), (0, 9)), 
-          ((0, 9), (1, 10))],
-    '9': [((5, 0), (5, 10)), ((5, 10), (0, 10)), ((0, 10), (0, 6)), ((0, 6), (1, 5)), 
-          ((1, 5), (5, 5))]
-}
-
-# Image and font settings
-width, height = 650, 50    # Adjusted width for the whole alphabet
-scale = 1                  # Scale for the font size
-margin = 15                # Margin around text
-spacing = 8                # Spacing between characters
-
-# Create an empty image with a white background
-image = [[[255, 255, 255] for _ in range(width)] for _ in range(height)]
-
-# Define the slant angle in radians (e.g., 15 degrees)
-slant_angle = math.radians(15)
-shear_factor = math.tan(slant_angle)
-
-# Shearing function to apply to coordinates
-def apply_shear(x, y):
-    new_x = x + shear_factor * y
-    return new_x, y
-
-# Function to draw a line on the image using Bresenham's algorithm
-def draw_line(img, x1, y1, x2, y2, color=(0, 0, 0)):
-    dx, dy = abs(x2 - x1), abs(y2 - y1)
-    sx = 1 if x1 < x2 else -1
-    sy = 1 if y1 < y2 else -1
-    err = dx - dy
-    while True:
-        if 0 <= x1 < len(img[0]) and 0 <= y1 < len(img):
-            img[y1][x1] = color
-        if (x1, y1) == (x2, y2):
-            break
-        e2 = err * 2
-        if e2 > -dy:
-            err -= dy
-            x1 += sx
-        if e2 < dx:
-            err += dx
-            y1 += sy
-
-# Function to render a string in the Hershey Simplex font
-def render_text(text, img, start_x, start_y):
-    x = start_x
-    for char in text:
-        if char in simplex_data:
-            for line in simplex_data[char]:
-                (x1, y1), (x2, y2) = line
-                ## normal
-#                draw_line(img,
-#                          int(x + x1 * scale), int(start_y - y1 * scale),
-#                          int(x + x2 * scale), int(start_y - y2 * scale))
-                # bold
-#                draw_line(img,
-#                          int(x + x1 * scale) +1, int(start_y - y1 * scale),
-#                          int(x + x2 * scale) +1, int(start_y - y2 * scale))
-
-                # Apply shear to both endpoints of the line
-                sx1, sy1 = apply_shear(x1 * scale, y1 * scale)
-                sx2, sy2 = apply_shear(x2 * scale, y2 * scale)
-                draw_line(img,
-                          int(x + sx1), int(start_y - sy1),
-                          int(x + sx2), int(start_y - sy2))
-
-        x += spacing * scale
-
-# Draw "ABCDEFGHIJKLMNOPQRSTUVWXYZ" on the image
-#render_text("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", image, margin, height // 2)
-render_text("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", image, margin, height // 2)
-
-# Write to a PPM file
-with open("alphabet.ppm", "w") as f:
-    f.write(f"P3\n{width} {height}\n255\n")
-    for row in image:
-        for pixel in row:
-            f.write(f"{pixel[0]} {pixel[1]} {pixel[2]} ")
-        f.write("\n")
-```

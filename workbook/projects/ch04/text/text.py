@@ -1,6 +1,6 @@
 
 # data for each character and number
-simplex_data = {
+data = {
     'A': [((0, 0), (2.5, 10)), ((2.5, 10), (5, 0)), ((1, 5), (4, 5))],
     'B': [((0, 0), (0, 10)), ((0, 10), (3, 10)), ((3, 10), (4, 9)), ((4, 9), (4, 6)), 
           ((4, 6), (3, 5)), ((3, 5), (4, 4)), ((4, 4), (4, 1)), ((4, 1), (3, 0)), 
@@ -91,8 +91,8 @@ def draw_line(img, x1, y1, x2, y2, color=(0, 0, 0)):
 def render_text(text, img, start_x, start_y):
     x = start_x
     for char in text:
-        if char in simplex_data:
-            for line in simplex_data[char]:
+        if char in data:
+            for line in data[char]:
                 (x1, y1), (x2, y2) = line
                 draw_line(img,
                           int(x + x1 * scale), int(start_y - y1 * scale),
