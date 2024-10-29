@@ -15,7 +15,7 @@ File: `text.py`. Sample with scale = 1. The text is saved as an image in the PPM
 ![text](../../assets/images/text.png)
 
 
-### Add slant
+### Add slanted and bold text
 
 To slant text, we apply a shearing matrix to each (x, y) coordinate.
 The shearing transformation matrix to slant by an angle  $\theta$  is:
