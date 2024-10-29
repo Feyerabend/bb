@@ -19,7 +19,9 @@ Sample with scale = 1. The text is saved as an image in the PPM format (converte
 
 To slant text, we apply a shearing matrix to each (x, y) coordinate.
 The shearing transformation matrix to slant by an angle  $\theta$  is:
+
 <img src="https://latex.codecogs.com/svg.latex?\begin{bmatrix}1&\tan(\theta)\\0&1\end{bmatrix}" />
+
 This matrix shifts each y coordinate by a factor of  $x \times \tan(\theta)$ , where  $\theta$  is the slant angle.
 
 A simple way of doing slanted text, is to use a pre-calculated constant instead of calculating it each time for each glyph or letter.
