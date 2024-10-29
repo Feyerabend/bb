@@ -2,7 +2,6 @@
 
 Designing a domain-specific language (DSL) for handling calendar data is an interesting challenge. The language should enable users to easily manipulate, analyze, and visualize calendar events while providing functionality for common operations like calculations, filtering, and aggregating data based on specific criteria. Below is an outline of what such a language might look like, including syntax, functions, and features.
 
-Key Features of the Language
 
 1. Event Representation: The language should have a clear way to define events with attributes such as start time, end time, title, location, and tags.
 2. Date and Time Manipulation: Functions to manipulate dates and times, including addition/subtraction of time intervals, formatting, and comparisons.
@@ -82,15 +81,15 @@ function hours_for_tag(tag) {
 
 #### Potential Functions and Commands
 
-	-	event(): Define a new event.
-	-	events_on(date): Retrieve events for a specific date.
-	-	events_between(start_date, end_date): Retrieve events in a given date range.
-	-	total_duration(tag): Calculate total time spent on events with a specific tag.
-	-	events_with_location(location): Filter events by location.
-	-	count_events_by_tag(tag): Count how many events are tagged with a specific tag.
-	-	group_events_by_day(): Aggregate events by day and provide total duration for each day.
-	-	import_events(file): Import events from a specified file.
-	-	export_events(format): Export events in a specified format (e.g., iCalendar, CSV).
+- event(): Define a new event.
+- events_on(date): Retrieve events for a specific date.
+- events_between(start_date, end_date): Retrieve events in a given date range.
+- total_duration(tag): Calculate total time spent on events with a specific tag.
+- events_with_location(location): Filter events by location.
+- count_events_by_tag(tag): Count how many events are tagged with a specific tag.
+- group_events_by_day(): Aggregate events by day and provide total duration for each day.
+- import_events(file): Import events from a specified file.
+- export_events(format): Export events in a specified format (e.g., iCalendar, CSV).
 
 ### Conclusion
 
