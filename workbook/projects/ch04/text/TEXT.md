@@ -11,6 +11,7 @@ Finally, the rendered text is saved as an image file in the PPM format, storing 
 ### First test with text
 
 Sample:
+
 ![text](../../assets/images/text.png)
 
 
@@ -26,5 +27,6 @@ A simple way of doing slanted text, is to use a pre-calculated constant instead 
 We also add bold text by drawing the same as with normal text, only one pixel to the right.
 
 Sample:
+
 ![text2](../../assets/images/text2.png)
 
