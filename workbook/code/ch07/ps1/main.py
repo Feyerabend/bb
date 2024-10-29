@@ -7,7 +7,7 @@ from output_buffer import OutputBuffer
 class InterpreterEngine:
     def __init__(self):
         self.stack = Stack()
-        self.buffer = OutputBuffer(10, 10)  # Small buffer for demo
+        self.buffer = OutputBuffer(10, 10)  # small buffer for demo
         self.executor = Executor(self.stack, self.buffer)
 
     def load_and_execute(self, code: str):
