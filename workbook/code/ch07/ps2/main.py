@@ -12,6 +12,12 @@ def main():
     # Draw a Bezier curve
     rasterizer.bezier((10, 80), (50, 10), (80, 80))
 
+    # Draw a quadratic Bezier curve
+    rasterizer.beziercurve((20, 30), (50, 10), (80, 30), (0, 255, 0))  # Green curve
+
+    # Draw a cubic Bezier curve
+    rasterizer.beziercurve((10, 90), (30, 60), (70, 60), (90, 90), (0, 0, 255))  # Blue curve
+
     # Save to PPM
     rasterizer.save('output.ppm')
 
