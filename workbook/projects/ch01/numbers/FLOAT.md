@@ -1,21 +1,28 @@
-Certainly! Here’s a Python program that emulates floating-point arithmetic by breaking down numbers into their sign, mantissa, and exponent components, following the IEEE 754 floating-point standard.
+
+## Floating-point numbers
+
+Here’s a Python program that emulates floating-point arithmetic by breaking down
+numbers into their sign, mantissa, and exponent components, following the IEEE 754
+floating-point standard.
 
 In this implementation:
 
-	•	The sign bit represents whether the number is positive or negative.
-	•	The mantissa (or significand) holds the precision of the number.
-	•	The exponent represents the scale or range of the number.
+- The sign bit represents whether the number is positive or negative.
+- The mantissa (or significand) holds the precision of the number.
+- The exponent represents the scale or range of the number.
 
-Let’s create a simple floating-point emulator. This will convert decimal values into a binary floating-point representation, perform operations on them, and show the step-by-step process.
-
-Python Program: Custom Floating Point Representation
+Let’s create a simple floating-point emulator. This will convert decimal values
+into a binary floating-point representation, perform operations on them, and show
+the step-by-step process.
 
 The code below:
 
-	1.	Converts a decimal number into a custom floating-point format.
-	2.	Prints the binary representations of the sign, exponent, and mantissa.
-	3.	Demonstrates addition and subtraction of two floating-point numbers.
+1. Converts a decimal number into a custom floating-point format.
+2. Prints the binary representations of the sign, exponent, and mantissa.
+3. Demonstrates addition and subtraction of two floating-point numbers.
 
+
+```python
 class CustomFloat:
     def __init__(self, value, precision=23, exponent_bits=8):
         # Constants for IEEE-like floating point
@@ -105,24 +112,26 @@ c = a.add(b)
 print("\nResult of A + B in custom floating-point format:")
 print(c)
 print("Decimal representation of Result:", c.components_to_float())
+```
 
 Explanation of the Code
 
-	1.	CustomFloat Class:
-	•	Initialization: Initializes with a value, specifying precision (for mantissa bits) and exponent bits.
-	•	float_to_components: Converts a decimal float to its sign, exponent, and mantissa components based on a simplified IEEE 754 logic.
-	•	components_to_float: Converts sign, exponent, and mantissa back to a floating-point decimal.
-	2.	Addition:
-	•	Exponent Alignment: Aligns the exponents by shifting the mantissa of the smaller exponent.
-	•	Mantissa Addition: Adds the two mantissas and normalizes if necessary (shifts if the mantissa overflows).
-	3.	Example Operations:
-	•	CustomFloat(6.75) creates a custom float object representing 6.75.
-	•	The add method demonstrates addition by creating a new CustomFloat object as the sum of two numbers.
+1. CustomFloat Class:
+	- Initialization: Initializes with a value, specifying precision (for mantissa bits) and exponent bits.
+	- float_to_components: Converts a decimal float to its sign, exponent, and mantissa components based on a simplified IEEE 754 logic.
+	- components_to_float: Converts sign, exponent, and mantissa back to a floating-point decimal.
+2. Addition:
+	- Exponent Alignment: Aligns the exponents by shifting the mantissa of the smaller exponent.
+	- Mantissa Addition: Adds the two mantissas and normalizes if necessary (shifts if the mantissa overflows).
+3. Example Operations:
+	- CustomFloat(6.75) creates a custom float object representing 6.75.
+	- The add method demonstrates addition by creating a new CustomFloat object as the sum of two numbers.
 
 Example Output
 
 The program will show the internal representation in terms of sign, exponent, and mantissa, and it will output a custom addition operation:
 
+```shell
 Number A: Sign: 0, Exponent: 2, Mantissa: 0b11000000000000000000000
 Decimal representation of A: 6.75
 Number B: Sign: 0, Exponent: 1, Mantissa: 0b10000000000000000000000
@@ -131,5 +140,7 @@ Decimal representation of B: 2.5
 Result of A + B in custom floating-point format:
 Sign: 0, Exponent: 2, Mantissa: 0b11011000000000000000000
 Decimal representation of Result: 9.25
+```
 
-This simplified floating-point model shows how each component (sign, exponent, mantissa) plays a role in representing and performing arithmetic with floating-point numbers.
+This simplified floating-point model shows how each component (sign, exponent, mantissa)
+plays a role in representing and performing arithmetic with floating-point numbers.
