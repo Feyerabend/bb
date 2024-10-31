@@ -1,6 +1,10 @@
+
+## Fractional numbers
+
 In Python and C, fractional numbers can be represented and manipulated using both floats and rational numbers, though rational numbers offer higher precision in mathematical calculations. I’ll walk you through each option and include Python and C examples for basic arithmetic with rational numbers.
 
-Representing Fractions
+
+### Representing Fractions
 
 Fractions are parts of a whole and can be represented as two integers: a numerator (top part) and a denominator (bottom part), for example, ￼ for three-fourths. Working directly with numerators and denominators instead of converting fractions to decimal approximations (floats) avoids precision loss, which is common in floating-point arithmetic.
 
@@ -8,22 +12,26 @@ In both Python and C, a fraction can be represented as a structure with two inte
 
 Fractional Arithmetic Rules
 
-	1.	Addition:
+
+1.	Addition:
 
 $\frac{a}{b} + \frac{c}{d} = \frac{a \cdot d + b \cdot c}{b \cdot d}$
 
 
-	2.	Subtraction:
+
+2.	Subtraction:
 
 $\frac{a}{b} - \frac{c}{d} = \frac{a \cdot d - b \cdot c}{b \cdot d}$
 
 
-	3.	Multiplication:
+
+3.	Multiplication:
 
 $\frac{a}{b} \times \frac{c}{d} = \frac{a \cdot c}{b \cdot d}$
 
 
-	4.	Division:
+
+4.	Division:
 
 $\frac{a}{b} \div \frac{c}{d} = \frac{a \cdot d}{b \cdot c}$
 
@@ -35,6 +43,7 @@ Python Example: Fraction Arithmetic
 
 Here’s how to implement a Fraction class in Python, along with a helper function for the GCD:
 
+```python
 def gcd(a, b):
     while b != 0:
         a, b = b, a % b
@@ -72,17 +81,21 @@ class Fraction:
         return Fraction(num, denom)
 
 # Example Usage
+
 f1 = Fraction(1, 2)
 f2 = Fraction(3, 4)
 print(f"Addition: {f1 + f2}")       # Output: 5/4
 print(f"Subtraction: {f1 - f2}")    # Output: -1/4
 print(f"Multiplication: {f1 * f2}") # Output: 3/8
 print(f"Division: {f1 / f2}")       # Output: 2/3
+```
 
-C Example: Fraction Arithmetic
+
+### C Example: Fraction Arithmetic
 
 In C, we can define a similar structure and functions for the four basic arithmetic operations.
 
+```c
 #include <stdio.h>
 
 typedef struct {
@@ -156,8 +169,9 @@ int main() {
 
     return 0;
 }
+```
 
-Explanation
+### Explanation
 
 	1.	GCD Calculation: Both Python and C examples use the Euclidean algorithm to compute the GCD, ensuring each fraction is in its simplest form.
 	2.	Arithmetic Functions: Each operation follows the fraction arithmetic rules above, and the results are simplified before returning.
@@ -167,15 +181,15 @@ This setup in both Python and C will allow you to perform accurate arithmetic op
 
 
 
------
+### Using symbolic logic
 
 Incorporating symbolic logic into number calculations, particularly with fractions, allows for a more flexible and expressive representation of operations. This could include representing operations and expressions symbolically (e.g., without immediately evaluating them) or enabling conditional logic based on specific conditions or properties of the fractions (like divisibility, equality, or relational comparisons).
 
 We can start by creating a symbolic structure in Python that allows us to represent arithmetic expressions with fractions. The symbolic logic would let us:
 
-	1.	Represent operations symbolically (e.g., “add ￼ and ￼” without immediately computing the result).
-	2.	Define conditional expressions based on certain properties (like checking if one fraction is greater than another).
-	3.	Evaluate expressions only when required, allowing for lazy evaluation, which is common in symbolic mathematics.
+1.	Represent operations symbolically (e.g., “add ￼ and ￼” without immediately computing the result).
+2.	Define conditional expressions based on certain properties (like checking if one fraction is greater than another).
+3.	Evaluate expressions only when required, allowing for lazy evaluation, which is common in symbolic mathematics.
 
 Let’s extend our Fraction class to include symbolic representation with lazy evaluation. Here’s an example of how this could look:
 
@@ -183,6 +197,7 @@ Python Example: Fraction with Symbolic Logic
 
 We’ll start by creating a SymbolicFraction class that extends the Fraction class. This class will store operations symbolically and evaluate them only when necessary. We’ll add methods to support symbolic comparisons and boolean checks.
 
+```python
 from functools import reduce
 
 class SymbolicFraction(Fraction):
@@ -253,14 +268,16 @@ print(symbolic_sum)  # Output: "(1/2 + 3/4) = 5/4"
 # Conditional check
 result = f1.if_greater_than(f2, "f1 is greater", "f2 is greater")
 print(result)  # Output: "f2 is greater"
+```
 
-Explanation
+
+#### Explanation
 
 	1.	Symbolic Representation: Each operation (+, -, *, /) is overridden to store the operation symbolically as a string in symbolic_expr, allowing us to print expressions without immediate evaluation.
 	2.	Lazy Evaluation: Only the result of an operation is printed or evaluated when required. For instance, symbolic_sum will hold the expression "(1/2 + 3/4) = 5/4" symbolically until printed.
 	3.	Comparisons with Conditional Logic: The methods is_equal_to, is_greater_than, and is_less_than allow us to perform symbolic comparisons, while if_greater_than lets us apply conditional logic based on the comparison of fractions.
 
-C Example: Symbolic Fraction Arithmetic with Conditionals
+#### C Example: Symbolic Fraction Arithmetic with Conditionals
 
 In C, symbolic handling is less straightforward but still possible by using strings to store operations symbolically. This example provides a simpler approach, where conditions and comparisons are added for symbolic evaluations.
 Here’s the continuation of the C example where we complete the SymbolicFraction structure, add symbolic arithmetic, and enable conditional logic with string-based symbolic expressions.
@@ -269,6 +286,7 @@ Completing the C Example with Symbolic Representation and Conditional Logic
 
 Continuing from where we left off, we’ll implement the add, subtract, multiply, and divide functions, each of which will generate a symbolic expression. Additionally, we’ll add a couple of functions for comparison and conditional expressions.
 
+```c
 #include <stdio.h>
 #include <string.h>
 
@@ -369,11 +387,12 @@ int main() {
 
     return 0;
 }
+```
 
-Explanation
+#### Explanation
 
-	1.	Symbolic Expression Handling: Each operation (add, subtract, multiply, divide) constructs a symbolic expression and assigns it to symbolic_expr. We use snprintf to ensure string safety, formatting the symbolic expression as a readable string.
-	2.	Comparison Functions: Functions like is_equal, is_greater, and is_less perform comparisons on the fractions, allowing conditional logic based on their relationships.
-	3.	Conditional Logic with if_greater: This function takes two SymbolicFraction instances and two string messages (result_if_true and result_if_false). It uses is_greater to check if one fraction is greater than the other and prints the appropriate message.
+1.	Symbolic Expression Handling: Each operation (add, subtract, multiply, divide) constructs a symbolic expression and assigns it to symbolic_expr. We use snprintf to ensure string safety, formatting the symbolic expression as a readable string.
+2.	Comparison Functions: Functions like is_equal, is_greater, and is_less perform comparisons on the fractions, allowing conditional logic based on their relationships.
+3.	Conditional Logic with if_greater: This function takes two SymbolicFraction instances and two string messages (result_if_true and result_if_false). It uses is_greater to check if one fraction is greater than the other and prints the appropriate message.
 
 With this approach, the program maintains a symbolic representation of arithmetic operations on fractions and supports conditional checks and expressions based on symbolic logic. The final output reflects both the symbolic expression and the computed result, combining the symbolic and computational aspects.
