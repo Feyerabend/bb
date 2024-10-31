@@ -15,6 +15,8 @@ and understanding their applications. You can even examine unconventional
 representations—like calculating with Roman numerals—to illustrate the diversity
 of numerical systems and the implications for computation.
 
+Suggested [projects](./FLOATING.md)
+
 Here are some general aspects on the number representations.
 
 
