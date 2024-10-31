@@ -420,14 +420,14 @@ int main() {
 
 #### Explanation
 
-1. Symbolic Expression Handling: Each operation (add, subtract, multiply, divide) constructs a symbolic
+1. Symbolic expressions: Each operation (add, subtract, multiply, divide) constructs a symbolic
    expression and assigns it to symbolic_expr. We use snprintf to ensure string safety, formatting the
    symbolic expression as a readable string.
 
-2. Comparison Functions: Functions like is_equal, is_greater, and is_less perform comparisons on the
+2. Comparisons: Functions like is_equal, is_greater, and is_less perform comparisons on the
    fractions, allowing conditional logic based on their relationships.
 
-3. Conditional Logic with if_greater: This function takes two SymbolicFraction instances and two string
+3. Conditional `if_greater`: This function takes two SymbolicFraction instances and two string
    messages (result_if_true and result_if_false). It uses is_greater to check if one fraction is greater
    than the other and prints the appropriate message.
 
