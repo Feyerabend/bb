@@ -1,12 +1,12 @@
 ## Projects
 
-This chapter offers multiple avenues for exploration, each designed to deepen your
-understanding of fundamental concepts. Here, as an example for exploring, we focus
-on the representation of real numbers in computers, stemming from the mathematical
-constructs of `real numbers.' We explore floating-point and fixed-point representations,
-fractions, and symbolic calculations, as well as the strengths and limitations of
-each approach. Code examples are provided to help you get started with practical
-applications.
+This chapter in the book offers multiple avenues for exploration, each designed to
+deepen your understanding of fundamental concepts. Here, as an example for exploring,
+we focus on the representation of real numbers in computers, stemming from the mathematical
+constructs of `real numbers.' We explore in code floating-point and fixed-point
+representations, fractions, and symbolic calculations, as well as the strengths
+and limitations of each approach. Code examples are provided to help you get
+started with practical applications.
 
 You can further delve into how numbers are represented in various formats, such as
 binary, octal, and hexadecimal, each of which plays a unique role in computing.
@@ -15,9 +15,10 @@ and understanding their applications. You can even examine unconventional
 representations—like calculating with Roman numerals—to illustrate the diversity
 of numerical systems and the implications for computation.
 
-Suggested [projects](./FLOATING.md)
+See more of the suggested [projects](./FLOATING.md) on floating-point.
 
-Here are some general aspects on the number representations.
+Below are some general aspects on the number representations as an overview,
+from which you can draw your own projects.
 
 
 ### Fixed-Point numbers
@@ -74,7 +75,8 @@ Here are some general aspects on the number representations.
     they are prone to precision loss, especially in iterative processes or calculations
     involving both large and small numbers.
 
-*   Several alternatives to floating-point representation exist, each with its own strengths and weaknesses:
+*   Several alternatives to floating-point representation exist, each with its own
+    strengths and weaknesses:
 
     *   *Fixed-Point Representation*: Suitable for applications with predictable range
         and precision needs, like embedded systems. Fixed-point numbers avoid some rounding
@@ -107,6 +109,6 @@ Here are some general aspects on the number representations.
     of the fractions.
 
 *   Python and C examples demonstrate the implementation of fraction classes and symbolic
-    fraction classes that support arithmetic operations, comparisons, and conditional expressions.
+    fraction classes that support arithmetic operations, comparisons, and conditional
+    expressions.
 
-### 
