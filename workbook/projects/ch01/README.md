@@ -106,3 +106,5 @@ Here are some general aspects on the number representations.
 
 *   Python and C examples demonstrate the implementation of fraction classes and symbolic
     fraction classes that support arithmetic operations, comparisons, and conditional expressions.
+
+### 
