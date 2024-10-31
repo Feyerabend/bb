@@ -51,12 +51,28 @@ Next, we transfer to fixed point numbers that are useful such as Q16.16.
 
 ### Fractions
 
+Some programming languages offer built-in support for fractional numbers,
+allowing developers to perform precise arithmetic using exact representations of
+rational numbers. Python, for example, includes a Fraction type in its standard
+library. This is particularly useful when floating-point arithmetic may introduce
+rounding errors.
+
+In contrast, C, as a low-level language, does not include native support for
+fractions; any handling of fractions must be explicitly implemented or managed
+by the programmer.
 
 * Code [frac.c](./numbers/frac.c)
 * Code [frac.py](./numbers/frac.py)
 
+* Description [FRAC.md](./numbers/FRAC.md)
+
+An extension of fractional numbers is the field of symbolic computation, which
+allows to perform algebraic operations on expressions symbolically rather than
+numerically. In symbolic computation, fractions remain in exact form and can be
+manipulated as algebraic entities, meaning expressions like
+$\frac{1}{3} + \frac{2}{3}$ yield $\frac{1}{1}$ exactly, and expressions can be
+expanded, factored, or simplified without ever resorting to approximations. 
+
 * Code [symb.c](./numbers/symb.c)
 * Code [symb.py](./numbers/symb.py)
-
-* Description [FRAC.md](./numbers/FRAC.md)
 
