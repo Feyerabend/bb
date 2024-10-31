@@ -17,9 +17,18 @@ of numerical systems and the implications for computation.
 
 See more of the suggested [projects](./FLOATING.md) on floating-point.
 
+### "Numbers"
+
+1. A Python program that simulates floating-point arithmetic by decomposing numbers into their sign, mantissa, and exponent components, in line with the IEEE 754 floating-point standard.
+* Code [float.py](./numbers/float.py)
+* Description[FLOAT.md](./numbers/FLOAT.md)
+
+2. lksdjalksjd
+lksjdlasjd
+
+
 Below are some general aspects on the number representations as an overview,
 from which you can draw your own projects.
-
 
 ### Fixed-Point numbers
 
