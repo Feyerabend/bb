@@ -30,8 +30,8 @@ A Python program that simulates floating-point arithmetic by decomposing numbers
 into their sign, mantissa, and exponent components, in line with the
 *IEEE 754 floating-point standard*.
 
-* Code [float.py](./numbers/float.py)
-* Description [FLOAT.md](./numbers/FLOAT.md)
+* Code [float.py](./numbers/float.py).
+* Description [FLOAT.md](./numbers/FLOAT.md).
 
 
 ### Fixed
@@ -41,13 +41,13 @@ as 2 bits are used for the integer part, and 3 bits for the fractional part.
 It is in practice not very useful in general, but it easy to follow the calculations
 and transformations of fixed point numbers in principal.
 
-* Code [fixed23.c](./numbers/fixed32.c)
-* Description [FIXED23.md](./numbers/FIXED23.md)
+* Code [fixed23.c](./numbers/fixed32.c).
+* Description [FIXED23.md](./numbers/FIXED23.md).
 
 Next, we transfer to fixed point numbers that are useful such as Q16.16.
 
-* Code [fixed.c](./numbers/fixed.c)
-* Description [FIXED.md](./numbers/FIXED.md)
+* Code [fixed.c](./numbers/fixed.c).
+* Description [FIXED.md](./numbers/FIXED.md).
 
 
 ### Fractions
@@ -62,10 +62,10 @@ In contrast, C, as a low-level language, does not include native support for
 fractions; any handling of fractions must be explicitly implemented or managed
 by the programmer.
 
-* Code [frac.c](./numbers/frac.c)
-* Code [frac.py](./numbers/frac.py)
+* Code [frac.c](./numbers/frac.c).
+* Code [frac.py](./numbers/frac.py).
 
-* Description [FRAC.md](./numbers/FRAC.md)
+* Description [FRAC.md](./numbers/FRAC.md).
 
 An extension of fractional numbers is the field of symbolic computation, which
 allows to perform algebraic operations on expressions symbolically rather than
@@ -73,6 +73,6 @@ numerically. In symbolic computation, fractions remain in exact form and can be
 manipulated as algebraic entities, and expressions can be expanded, factored,
 or simplified without resort to approximation.
 
-* Code [symb.c](./numbers/symb.c)
-* Code [symb.py](./numbers/symb.py)
+* Code [symb.c](./numbers/symb.c).
+* Code [symb.py](./numbers/symb.py).s
 
