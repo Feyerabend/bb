@@ -74,5 +74,5 @@ manipulated as algebraic entities, and expressions can be expanded, factored,
 or simplified without resort to approximation.
 
 * Code [symb.c](./numbers/symb.c).
-* Code [symb.py](./numbers/symb.py).s
+* Code [symb.py](./numbers/symb.py).
 
