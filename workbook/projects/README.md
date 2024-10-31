@@ -64,8 +64,22 @@ material, and ability to work both independently and collaboratively.
 
 ## Management
 
-When using LLMs as part of the learning environment, teachers should take an adaptive approach, tailoring project assignments based on each student's prior knowledge and skills. The goal is to find a balance where projects are neither too simple nor too advanced, offering enough challenge to foster growth without causing frustration or disengagement. This type of project-based guidance diverges from traditional instruction that relies heavily on standardized exercises or uniform tests.
+When using LLMs as part of the learning environment, teachers should take an adaptive approach,
+tailoring project assignments based on each student's prior knowledge and skills. The goal is to find
+a balance where projects are neither too simple nor too advanced, offering enough challenge to foster
+growth without causing frustration or disengagement. This type of project-based guidance diverges
+from traditional instruction that relies heavily on standardized exercises or uniform tests.
 
-In this model, teachers act more as *mentors*, setting up projects that encourage critical thinking, creativity, and independent learning. Rather than simply assessing students' ability to memorize facts or solve pre-defined problems, the emphasis shifts toward evaluating how well students can apply their knowledge to real-world scenarios, often with open-ended solutions. This encourages students to explore topics more deeply, experiment with different approaches, and develop unique solutions, all with the support of LLMs as interactive resources rather than mere answer-providers.
+In this model, teachers act more as *mentors*, setting up projects that encourage critical thinking,
+creativity, and independent learning. Rather than simply assessing students' ability to memorize facts
+or solve pre-defined problems, the emphasis shifts toward evaluating how well students can apply
+their knowledge to real-world scenarios, often with open-ended solutions. This encourages students
+to explore topics more deeply, experiment with different approaches, and develop unique solutions,
+all with the support of LLMs as interactive resources rather than mere answer-providers.
 
-Through this adaptive project management, teachers can observe and assess students' problem-solving skills, persistence, and ability to integrate new information. This approach also provides a richer, more individualized learning experience for students, as they can leverage LLMs to clarify concepts, brainstorm ideas, and seek guidance on specific questions, all tailored to the level of complexity that best suits their current stage of learning.
+Through this adaptive project management, teachers can observe and assess students' problem-solving
+skills, persistence, and ability to integrate new information. This approach also provides a richer, more
+individualized learning experience for students, as they can leverage LLMs to clarify concepts, brainstorm
+ideas, and seek guidance on specific questions, all tailored to the level of complexity that best suits
+their current stage of learning.
+
