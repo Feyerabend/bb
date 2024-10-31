@@ -69,9 +69,8 @@ by the programmer.
 An extension of fractional numbers is the field of symbolic computation, which
 allows to perform algebraic operations on expressions symbolically rather than
 numerically. In symbolic computation, fractions remain in exact form and can be
-manipulated as algebraic entities, meaning expressions like
-$\frac{1}{3} + \frac{2}{3}$ yield $\frac{1}{1}$ exactly, and expressions can be
-expanded, factored, or simplified without ever resorting to approximations. 
+manipulated as algebraic entities, and expressions can be expanded, factored,
+or simplified without resort to approximation.
 
 * Code [symb.c](./numbers/symb.c)
 * Code [symb.py](./numbers/symb.py)
