@@ -1,9 +1,14 @@
 ## Projects
 
 This chapter in the book offers multiple avenues for exploration, each designed to
-deepen your understanding of fundamental concepts. Here, as an example for exploring,
-we focus on the representation of real numbers in computers, stemming from the mathematical
-constructs of `real numbers.' We explore in code floating-point and fixed-point
+deepen your understanding of fundamental concepts.
+
+
+### Numbers
+
+Here, as an *example* for exploring, we focus on the representation of
+real numbers in computers, stemming from the mathematical constructs of
+`real numbers.' We explore in code floating-point and fixed-point
 representations, fractions, and symbolic calculations, as well as the strengths
 and limitations of each approach. Code examples are provided to help you get
 started with practical applications.
@@ -20,7 +25,9 @@ See more of the suggested [projects](./FLOATING.md) on floating-point.
 
 ### Float
 
-A Python program that simulates floating-point arithmetic by decomposing numbers into their sign, mantissa, and exponent components, in line with the IEEE 754 floating-point standard.
+A Python program that simulates floating-point arithmetic by decomposing numbers
+into their sign, mantissa, and exponent components, in line with the
+*IEEE 754 floating-point standard*.
 
 * Code [float.py](./numbers/float.py)
 * Description [FLOAT.md](./numbers/FLOAT.md)
@@ -28,5 +35,21 @@ A Python program that simulates floating-point arithmetic by decomposing numbers
 
 ### Fixed
 
-dasd
-asda
+We start with something very small that represent a very small range of numbers,
+as 2 bits are used for the integer part, and 3 bits for the fractional part.
+It is in practice not very useful in general, but it easy to follow the calculations
+and transformations of fixed point numbers in principal.
+
+* Code [fixed23.c](./numbers/fixed32.c)
+* Description [FIXED23.md](./numbers/FIXED23.md)
+
+Next, we transfer to fixed point numbers that are useful such as Q16.16.
+
+* Code [fixed.c](./numbers/fixed.c)
+* Description [FIXED.md](./numbers/FIXED.md)
+
+
+### Fractions
+
+aksdjl
+lkjsdal
