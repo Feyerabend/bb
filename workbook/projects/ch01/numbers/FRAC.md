@@ -182,11 +182,15 @@ int main() {
 
 ### Explanation
 
-1. GCD Calculation: Both Python and C examples use the Euclidean algorithm to compute the GCD, ensuring each fraction is in its simplest form.
-2. Arithmetic: Each operation follows the fraction arithmetic rules above, and the results are simplified before returning.
-3. Division by zero: Both examples avoid cases where the denominator is zero, which would lead to an undefined fraction.
+1. GCD Calculation: Both Python and C examples use the Euclidean algorithm to compute the GCD,
+   ensuring each fraction is in its simplest form.
+2. Arithmetic: Each operation follows the fraction arithmetic rules above, and the results are
+   simplified before returning.
+3. Division by zero: Both examples avoid cases where the denominator is zero, which would lead
+   to an undefined fraction.
 
-This setup in both Python and C will allow you to perform accurate arithmetic operations with fractions (without relying on floating-point approximations).
+This setup in both Python and C will allow you to perform arithmetic operations with
+fractions (without relying on floating-point approximations).
 
 
 
@@ -200,7 +204,7 @@ equality, or relational comparisons).
 We can start by creating a symbolic structure in Python that allows us to represent arithmetic expressions with fractions.
 The symbolic logic would let us:
 
-1.	Represent operations symbolically (e.g., “add ￼ and ￼” without immediately computing the result).
+1.	Represent operations symbolically without immediately computing the result.
 2.	Define conditional expressions based on certain properties (like checking if one fraction is greater than another).
 3.	Evaluate expressions only when required, allowing for lazy evaluation, which is common in symbolic mathematics.
 
@@ -272,17 +276,17 @@ class SymbolicFraction(Fraction):
         else:
             return result_if_false
 
-# Example Usage
+# example
 f1 = SymbolicFraction(1, 2)
 f2 = SymbolicFraction(3, 4)
 
-# Symbolic representation without evaluation
+# symbolic representation without evaluation
 symbolic_sum = f1 + f2
-print(symbolic_sum)  # Output: "(1/2 + 3/4) = 5/4"
+print(symbolic_sum)  # output: "(1/2 + 3/4) = 5/4"
 
-# Conditional check
+# conditional check
 result = f1.if_greater_than(f2, "f1 is greater", "f2 is greater")
-print(result)  # Output: "f2 is greater"
+print(result)  # output: "f2 is greater"
 ```
 
 
@@ -290,8 +294,10 @@ print(result)  # Output: "f2 is greater"
 
 1. Representation: Each operation (+, -, *, /) is overridden to store the operation symbolically as a
    string in symbolic_expr, allowing us to print expressions without immediate evaluation.
+
 2. Lazy evaluation: Only the result of an operation is printed or evaluated when required. For instance,
    symbolic_sum will hold the expression "(1/2 + 3/4) = 5/4" symbolically until printed.
+
 3. Comparisons with conditional logic: The methods is_equal_to, is_greater_than, and is_less_than
    allow us to perform symbolic comparisons, while if_greater_than lets us apply conditional logic
    based on the comparison of fractions.
@@ -304,8 +310,6 @@ symbolic evaluations.
 
 Here's the continuation of the C example where we complete the SymbolicFraction structure, add symbolic
 arithmetic, and enable conditional logic with string-based symbolic expressions.
-
-Completing the C Example with Symbolic Representation and Conditional Logic
 
 Continuing from where we left off, we'll implement the add, subtract, multiply, and divide functions,
 each of which will generate a symbolic expression. Additionally, we'll add a couple of functions for
@@ -419,9 +423,13 @@ int main() {
 1. Symbolic Expression Handling: Each operation (add, subtract, multiply, divide) constructs a symbolic
    expression and assigns it to symbolic_expr. We use snprintf to ensure string safety, formatting the
    symbolic expression as a readable string.
+
 2. Comparison Functions: Functions like is_equal, is_greater, and is_less perform comparisons on the
    fractions, allowing conditional logic based on their relationships.
-3. Conditional Logic with if_greater: This function takes two SymbolicFraction instances and two string messages (result_if_true and result_if_false). It uses is_greater to check if one fraction is greater than the other and prints the appropriate message.
+
+3. Conditional Logic with if_greater: This function takes two SymbolicFraction instances and two string
+   messages (result_if_true and result_if_false). It uses is_greater to check if one fraction is greater
+   than the other and prints the appropriate message.
 
 With this approach, the program maintains a symbolic representation of arithmetic operations on fractions
 and supports conditional checks and expressions based on symbolic logic. The final output reflects both
