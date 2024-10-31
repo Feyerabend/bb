@@ -8,8 +8,8 @@ The code examples in this book are written in standard Python (version 3), ANSI 
 for the Raspberry Pi Pico, and JavaScript compatible with most modern web browsers.
 To help readers grasp core programming principles, dependencies have been kept to a minimum.
 Except where necessary—-such as for specialized hardware interfaces like an LCD driver—-no
-external libraries are used, or at least a few. This approach encourages a focus on foundational
-coding concepts without reliance on third-party libraries.
+external libraries are used, or at least kept to a minimum. This approach encourages a focus
+on foundational coding concepts without reliance on third-party libraries.
 
 
 ### Libraries
@@ -17,7 +17,7 @@ coding concepts without reliance on third-party libraries.
 Contrary to common recommendations today, writing code for widely used algorithms instead
 of relying on external (third party) libraries can benefit learners by building familiarity
 with fundamental techniques and reducing external dependencies. For instance, this book
-suggests writing a simple virtual machine to allow code to abstract cleanly from underlying
+suggests writing a simple *virtual machine* to allow code to abstract cleanly from underlying
 systems.
 
 While external libraries that are standard, robust, and well-tested should generally be used,
