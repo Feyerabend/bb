@@ -21,6 +21,7 @@ representations—like calculating with Roman numerals—to illustrate the diver
 of numerical systems and the implications for computation.
 
 See more of the suggested [projects](./FLOATING.md) on floating-point.
+Some initial help has been added:
 
 
 ### Float
