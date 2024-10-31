@@ -51,5 +51,12 @@ Next, we transfer to fixed point numbers that are useful such as Q16.16.
 
 ### Fractions
 
-aksdjl
-lkjsdal
+
+* Code [frac.c](./numbers/frac.c)
+* Code [frac.py](./numbers/frac.py)
+
+* Code [symb.c](./numbers/symb.c)
+* Code [symb.py](./numbers/symb.py)
+
+* Description [FRAC.md](./numbers/FRAC.md)
+
