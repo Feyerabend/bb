@@ -13,7 +13,7 @@ In the *Q2.3* format:
 
 This means the maximum value we can represent is:
 - *Integer Range*: From -2 to 1 (in binary: `10` to `01`).
-- *Fractional Range*: Represented as `0.0` to `0.875` (as 0.111 in binary is $\( \frac{7}{8} \)$).
+- *Fractional Range*: Represented as `0.0` to `0.875` (as 0.111 in binary is $`\( \frac{7}{8} \)`$).
 
 ### Conversion of 2.3 to Fixed-Point
 
