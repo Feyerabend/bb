@@ -21,12 +21,12 @@ To represent *2.3* in this format:
 1. *Integer*: The integer part of 2.3 is `2`, which is represented as `10` in binary.
 2. *Fraction*: The fractional part `.3` needs to be converted to binary.
    - To find the binary representation of `.3`, we can multiply by 2 iteratively:
-     - $`0.3 \times 2 = 0.6`$  → 0 (whole part = 0), carry forward 0.6
-     - $`0.6 \times 2 = 1.2`$  → 1 (whole part = 1), carry forward 0.2
-     - $`0.2 \times 2 = 0.4`$  → 0 (whole part = 0), carry forward 0.4
-     - $`0.4 \times 2 = 0.8`$  → 0 (whole part = 0), carry forward 0.8
-     - $`0.8 \times 2 = 1.6`$  → 1 (whole part = 1), carry forward 0.6
-     - $`0.6 \times 2 = 1.2`$  → 1 (whole part = 1), carry forward 0.2
+     - $`0.3 \times 2 = 0.6`$ (whole part = 0), carry forward 0.6
+     - $`0.6 \times 2 = 1.2`$ (whole part = 1), carry forward 0.2
+     - $`0.2 \times 2 = 0.4`$ (whole part = 0), carry forward 0.4
+     - $`0.4 \times 2 = 0.8`$ (whole part = 0), carry forward 0.8
+     - $`0.8 \times 2 = 1.6`$ (whole part = 1), carry forward 0.6
+     - $`0.6 \times 2 = 1.2`$ (whole part = 1), carry forward 0.2
      - This gives us a repeating pattern of `0.01001...` in binary.
 3. *Final*: 
    - *Integer*: `10` (for 2)
