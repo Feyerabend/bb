@@ -105,11 +105,11 @@ To divide *2.3* by *1.5*.
 3. *Fixed-Point Result*:
    To convert back to fixed-point:
    - Convert both to integer format:
-   - Scale: $\( \text{scale } = 8 \)$ (for Q2.3)
+   - Scale: $`\text{scale } = 8 `$ (for Q2.3)
    - Divide as integers and scale: 
-   \[
+   $$\[
    \text{result} = \frac{(10.010 \times 8)}{(01.100 \times 8)} = \frac{18.88}{12.0} = 1.57 \quad \text{(back to fixed-point)}
-   \]
+   \]$$
 
 ### C Code
 
@@ -119,54 +119,49 @@ Here's a simple implementation of fixed-point arithmetic using *2.3* as a model 
 #include <stdio.h>
 #include <stdint.h>
 
-// Define the number of fractional bits for Q2.3
+// number of fractional bits for Q2.3
 #define FRACTIONAL_BITS 3
 #define SCALE (1 << FRACTIONAL_BITS)  // 2^3 = 8 for scaling
 
-// Fixed-point type: using 8-bit signed integer
+// fixed-point type: 8-bit signed integer
 typedef int8_t fixed_point;
 
-// Convert from float to fixed-point
 fixed_point float_to_fixed(float value) {
     return (fixed_point)(value * SCALE);
 }
 
-// Convert from fixed-point to float
 float fixed_to_float(fixed_point value) {
     return (float)value / SCALE;
 }
 
-// Addition of fixed-point numbers
 fixed_point fixed_add(fixed_point a, fixed_point b) {
     return a + b;  // simple addition
 }
 
-// Subtraction of fixed-point numbers
 fixed_point fixed_sub(fixed_point a, fixed_point b) {
     return a - b;  // simple subtraction
 }
 
-// Multiplication of fixed-point numbers
+// multiplication of fixed-point numbers
 fixed_point fixed_mul(fixed_point a, fixed_point b) {
-    return (fixed_point)(((int16_t)a * (int16_t)b) >> FRACTIONAL_BITS); // Right shift to scale down
+    return (fixed_point)(((int16_t)a * (int16_t)b) >> FRACTIONAL_BITS); // right shift to scale down
 }
 
-// Division of fixed-point numbers
+// division of fixed-point numbers
 fixed_point fixed_div(fixed_point a, fixed_point b) {
-    return (fixed_point)((((int16_t)a << FRACTIONAL_BITS) + (b / 2)) / b); // Scale numerator for precision
+    return (fixed_point)((((int16_t)a << FRACTIONAL_BITS) + (b / 2)) / b); // scale numerator for precision
 }
 
-// Print fixed-point value (debugging)
 void print_fixed(fixed_point value) {
     printf("Fixed-point: %d (Float equivalent: %f)\n", value, fixed_to_float(value));
 }
 
 int main() {
-    // Example: Represent 2.3 in fixed-point
+    // represent 2.3 in fixed-point
     float num1 = 2.3;
     fixed_point fixed_num1 = float_to_fixed(num1);
     
-    // Represent another number, say 1.5
+    // another number, say 1.5
     float num2 = 1.5;
     fixed_point fixed_num2 = float_to_fixed(num2);
     
@@ -176,22 +171,18 @@ int main() {
     printf("Original float: %f -> Fixed-point: ", num2);
     print_fixed(fixed_num2);
     
-    // Addition
     fixed_point sum = fixed_add(fixed_num1, fixed_num2);
     printf("\nAddition:\n");
     print_fixed(sum);
 
-    // Subtraction
     fixed_point diff = fixed_sub(fixed_num1, fixed_num2);
     printf("\nSubtraction:\n");
     print_fixed(diff);
 
-    // Multiplication
     fixed_point product = fixed_mul(fixed_num1, fixed_num2);
     printf("\nMultiplication:\n");
     print_fixed(product);
 
-    // Division
     fixed_point quotient = fixed_div(fixed_num1, fixed_num2);
     printf("\nDivision:\n");
     print_fixed(quotient);
