@@ -1,12 +1,16 @@
 
 ## Fixed Q16.16
 
-A fixed-point number system represents real numbers as integers while implicitly treating the number as being scaled by some factor (usually a power of two or ten). In C, we can implement a fixed-point library to handle basic arithmetic (addition, subtraction, multiplication, division, and modulo) and convert between fixed-point and floating-point numbers.
+A fixed-point number system represents real numbers as integers while implicitly treating
+the number as being scaled by some factor (usually a power of two or ten). In C, we can
+implement a fixed-point library to handle basic arithmetic (addition, subtraction, multiplication,
+division, and modulo) and convert between fixed-point and floating-point numbers.
 
-We'll represent fixed-point numbers with an integer and a fixed scaling factor (e.g., 16 fractional bits for a 32-bit fixed-point type).
+We'll represent fixed-point numbers with an integer and a fixed scaling factor
+(e.g., 16 fractional bits for a 32-bit fixed-point type).
 
 
-### Fixed-Point Library in C
+### Fixed-point in C
 
 
 ```c
@@ -61,7 +65,7 @@ void print_fixed(fixed_point value) {
 }
 ```
 
-### Explanation:
+### Explanation
 
 - *Conversion between float and fixed-point*:
   - `float_to_fixed(float value)`: Converts a floating-point number to a fixed-point number by multiplying the float by the scale factor (2^16).
@@ -76,9 +80,10 @@ void print_fixed(fixed_point value) {
 - *Printing*: `print_fixed` outputs both the fixed-point representation (raw integer value) and the floating-point equivalent.
 
 
-### Sample Usage
+### Example
 
-Here's a sample program demonstrating the usage of the fixed-point library with addition, subtraction, multiplication, division, and modulo operations:
+Here's a sample program demonstrating the usage of the fixed-point library
+with addition, subtraction, multiplication, division, and modulo operations:
 
 ```c
 int main() {
@@ -125,46 +130,42 @@ int main() {
 }
 ```
 
-### Sample Output
+### Output
 
 ```bash
 Original floating-point numbers:
-a = 5.250000, b = 2.750000
+a = 14.437500, b = 7.562500
 
 Fixed-point representations:
-Fixed-point: 344064 (Float equivalent: 5.250000)
-Fixed-point: 180224 (Float equivalent: 2.750000)
+Fixed-point: 946176 (Float equivalent: 14.437500)
+Fixed-point: 495616 (Float equivalent: 7.562500)
 
 Addition:
-Fixed-point: 524288 (Float equivalent: 8.000000)
+Fixed-point: 1441792 (Float equivalent: 22.000000)
 
 Subtraction:
-Fixed-point: 163840 (Float equivalent: 2.500000)
+Fixed-point: 450560 (Float equivalent: 6.875000)
 
 Multiplication:
-Fixed-point: 619520 (Float equivalent: 9.062500)
+Fixed-point: 7155456 (Float equivalent: 109.183594)
 
 Division:
-Fixed-point: 122880 (Float equivalent: 1.500000)
+Fixed-point: 125114 (Float equivalent: 1.909088)
 
 Modulo:
-Fixed-point: 163840 (Float equivalent: 2.500000)
+Fixed-point: 450560 (Float equivalent: 6.875000)
 ```
-
-### Output
-
-- *Fixed-point representation*: For example, `5.25` is represented as `344064` in fixed-point. This is calculated as `5.25 * 65536 = 344064`.
-- *Addition*: `5.25 + 2.75 = 8.0` in floating-point. In fixed-point, `344064 + 180224 = 524288`, which converts back to `8.0` in floating-point.
-- *Subtraction*: `5.25 - 2.75 = 2.5`, and in fixed-point, `344064 - 180224 = 163840`, which converts back to `2.5`.
-- *Multiplication*: `5.25 * 2.75 = 9.0625`. The fixed-point result is `619520`, and `619520 / 65536 = 9.0625`.
-- *Division*: `5.25 / 2.75 = 1.5`. The fixed-point result is `122880`, and `122880 / 65536 = 1.5`.
-- *Modulo*: `5.25 % 2.75 = 2.5`. In fixed-point, `163840` represents `2.5`.
-
 
 ### Notes
 
-1. *Precision*: The multiplication and division operations involve shifts to maintain precision. Using `int64_t` for intermediate results ensures that we avoid overflow during these operations.
-2. *Scaling Factor*: This implementation uses a Q16.16 format (16 bits for the fractional part). You can adjust `FRACTIONAL_BITS` if a different precision is needed.
-3. *Limitations*: Fixed-point numbers offer limited precision compared to floating-point, so rounding errors and overflow issues can occur with large numbers or very small fractional parts.
+1. *Precision*: The multiplication and division operations involve shifts
+   to maintain precision. Using `int64_t` for intermediate results ensures
+   that we avoid overflow during these operations.
 
-This library provides basic functionality for handling fixed-point numbers in C and showcases the core operations like conversion, arithmetic, and printing.
+2. *Scaling Factor*: This implementation uses a Q16.16 format (16 bits for
+   the fractional part). You can adjust `FRACTIONAL_BITS` if a different
+   precision is needed.
+
+3. *Limitations*: Fixed-point numbers offer limited precision compared to
+   floating-point, so rounding errors and overflow issues can occur with
+   large numbers or very small fractional parts.
