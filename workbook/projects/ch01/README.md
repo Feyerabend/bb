@@ -13,12 +13,12 @@ representations, fractions, and symbolic calculations, as well as the strengths
 and limitations of each approach. Code examples are provided to help you get
 started with practical applications.
 
-You can further delve into how numbers are represented in various formats, such as
-binary, octal, and hexadecimal, each of which plays a unique role in computing.
-Additionally, explore more such as performing calculations with imaginary (and complex)
-numbers and understanding their applications. You can even examine unconventional
-representations—like calculating with Roman numerals—to illustrate the diversity
-of numerical systems and the implications for computation.
+You can further delve into how numbers are represented in other ways and
+calculation such as arbitrary-precision arithmetic. Additionally, explore
+performing calculations with imaginary (and complex) numbers and understand
+their applications. You can even examine unconventional representations—like
+calculating with Roman numerals—to illustrate the diversity of numerical
+systems and the implications for computation.
 
 See more of suggested [projects](./FLOATING.md) on floating-point to get started.
 Some initial help has been added:
