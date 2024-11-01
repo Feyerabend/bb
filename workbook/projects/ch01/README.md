@@ -4,7 +4,7 @@ The chapter on fundamentals in the book offers multiple avenues for exploration,
 deepen your understanding of fundamental concepts.
 
 
-### Numbers
+### Example: Numbers
 
 Here, as an *example* for exploring deeper, we focus on the representation of
 numbers in computers, stemming from the mathematical constructs of
