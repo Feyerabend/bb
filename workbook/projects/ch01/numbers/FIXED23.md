@@ -5,112 +5,114 @@
 When we use *2.3* as our model for fixed-point representation, we will choose a fixed-point format,
 say *Qm.n*, where `m` is the integer part, and `n` is the fractional part.
 
-#### Example
+
+#### Example: The *Q2.3* Fixed-Point Format
 
 In the *Q2.3* format:
-- *2 bits* are allocated for the integer part.
-- *3 bits* are allocated for the fractional part.
+- *2 bits* are reserved for the integer part.
+- *3 bits* are for the fractional part.
 
-This means the maximum value we can represent is:
-- *Integer Range*: From -2 to 1 (in binary: `10` to `01`).
-- *Fractional Range*: Represented as `0.0` to `0.875` (as 0.111 in binary is $\( \frac{7}{8} \)$).
+This setup allows us to represent:
+- *Integer Range*: from -2 to 1 (where binary `10` is -2, and `01` is 1).
+- *Fractional Range*: from `0.0` to `0.875` (binary `0.111` represents $`\frac{7}{8}`$).
 
-### Conversion of 2.3 to Fixed-Point
+### Converting 2.3 to Fixed-Point in *Q2.3*
 
-To represent *2.3* in this format:
-1. *Integer Part*: The integer part of 2.3 is `2`, which is represented as `10` in binary.
-2. *Fractional Part*: The fractional part `.3` needs to be converted to binary.
-   - To find the binary representation of `.3`, we can multiply by 2 iteratively:
-     - \( 0.3 \times 2 = 0.6 \)  → 0 (whole part), carry forward 0.6
-     - \( 0.6 \times 2 = 1.2 \)  → 1 (whole part), carry forward 0.2
-     - \( 0.2 \times 2 = 0.4 \)  → 0 (whole part), carry forward 0.4
-     - \( 0.4 \times 2 = 0.8 \)  → 0 (whole part), carry forward 0.8
-     - \( 0.8 \times 2 = 1.6 \)  → 1 (whole part), carry forward 0.6
-     - \( 0.6 \times 2 = 1.2 \)  → 1 (whole part), carry forward 0.2
-     - This gives us a repeating pattern of `0.01001...` in binary.
-3. *Final Representation*: 
-   - *Integer*: `10` (for 2)
-   - *Fraction*: Limited to `3 bits` → `010` (approximating `0.3`)
+To represent *2.3* in Q2.3:
 
-Putting it all together:
-- *Fixed-Point Representation*: In *Q2.3*, the representation of *2.3* would be `10.010`, which is `2` as integer part and `010` as fractional part.
+1. *Integer Part*: The integer portion of 2.3 is 2, which is `10` in binary.
+2. *Fractional Part*: The fractional part, `.3`, needs to be converted to binary.
+   - To convert `.3`, we multiply by 2 repeatedly to identify binary bits:
+     - $`0.3 \times 2 = 0.6 `$ (whole part = 0), remaining 0.6
+     - $`0.6 \times 2 = 1.2 `$ (whole part = 1), remaining 0.2
+     - $`0.2 \times 2 = 0.4 `$ (whole part = 0), remaining 0.4
+     - $`0.4 \times 2 = 0.8 `$ (whole part = 0), remaining 0.8
+     - $`0.8 \times 2 = 1.6 `$ (whole part = 1), remaining 0.6
+     - This pattern (`0.01001...`) repeats.
 
-### Fixed-Point Arithmetic Using 2.3
+3. *Final Conversion*:
+   - Integer part: `10` (for 2)
+   - Fractional part (limited to 3 bits): `010` (approximation of `0.3`)
 
-Now let's perform basic arithmetic operations using *2.3* as our model,
-assuming we're working with fixed-point representation in *Q2.3*.
+So, in Q2.3 format:
+- *Fixed-point representation* of *2.3* is `10.010`, where `10` is the integer part and `010` is the fractional part.
+
+### Arithmetic Operations with *2.3* in Fixed-Point Q2.3
+
+Now, let's explore basic arithmetic operations with *2.3* in *Q2.3* format.
 
 #### Addition
 
-Let's add *2.3* (fixed representation `10.010`) and *1.5* (which we will convert).
+Let's add *2.3* (`10.010`) to *1.5*.
 
 1. *Convert 1.5 to Q2.3*:
-   - *Integer Part*: `1` (binary `01`)
-   - *Fractional Part*: `0.5` → In 3 bits → `100`
-   - *Fixed Representation*: `01.100`
+   - Integer part: 1 (`01`)
+   - Fractional part: 0.5 converts to `100` in 3 bits.
+   - Fixed-point representation of 1.5: `01.100`
 
 2. *Addition*:
-   ```
-          10.010  (which is 2.3)
-        + 01.100  (which is 1.5)
-        ---------
-         11.110  (which is 3.5 in fixed point)
-   ```
-   - This equals `3.5`, which is valid in our range since `3.5` can be represented.
+
+```
+       10.010  (= 2.3)
+     + 01.100  (= 1.5)
+     ---------
+       11.110  (= 3.5 in fixed-point)
+```
+
+Result: `11.110`, representing 3.5, which is within the representable range.
 
 #### Subtraction
 
-Subtract *1.5* from *2.3*.
+Now, subtract *1.5* from *2.3*.
 
 ```
-          10.010  (which is 2.3)
-        - 01.100  (which is 1.5)
+          10.010  (= 2.3)
+        - 01.100  (= 1.5)
         ---------
-          00.010  (which is 0.5 in fixed point)
+          00.010  (= 0.5 in fixed-point)
 ```
-- The result is `0.5`, also valid.
+
+Result: `00.010`, representing 0.5, which is also valid in our range.
 
 #### Multiplication
 
-Now let's multiply *2.3* and *1.5*.
+To multiply *2.3* by *1.5*:
 
-1. *Fixed Representations*:
-   - *2.3* = `10.010` (fixed)
-   - *1.5* = `01.100` (fixed)
+1. *Fixed-Point Representations*:
+   - *2.3* as `10.010`
+   - *1.5* as `01.100`
 
 2. *Multiplication*:
-   - Convert to integers (without considering fixed-point scaling):
-   - \( 2.3 \times 1.5 = 3.45 \)
+   - Multiply as if they were integers: `10.010 x 01.100 = 10.111100`
 
-3. *Fixed-Point Result*:
-   To convert back to fixed-point:
-   - Multiply as integers: \( 10.010 \times 01.100 = 10.111100 \)
-   - Right shift by 3 (since we have 3 fractional bits): `001.111` 
-   - This is approximately `3.5` which fits our fixed-point range.
+3. *Scaling*: Since each operand has 3 fractional bits, the result needs adjustment by shifting right by 3 bits.
+   - Right shift `10.111100` by 3: `001.111`
+
+This is approximately `3.5`, fitting within our fixed-point range.
 
 #### Division
 
-To divide *2.3* by *1.5*.
+To divide *2.3* by *1.5*:
 
-1. *Fixed Representations*:
-   - *2.3* = `10.010` (fixed)
-   - *1.5* = `01.100` (fixed)
+1. *Fixed-Point Representations*:
+   - *2.3* as `10.010`
+   - *1.5* as `01.100`
 
 2. *Division*:
-   \[
-   \text{result} = \frac{2.3}{1.5} \approx 1.5333
-   \]
+   $$\[
+   \text{Result} = \frac{2.3}{1.5} \approx 1.5333
+   \]$$
 
-3. *Fixed-Point Result*:
-   To convert back to fixed-point:
-   - Convert both to integer format:
-   - Scale: \( \text{scale } = 8 \) (for Q2.3)
-   - Divide as integers and scale: 
-   \[
-   \text{result} = \frac{(10.010 \times 8)}{(01.100 \times 8)} = \frac{18.88}{12.0} = 1.57 \quad \text{(back to fixed-point)}
-   \]
+3. *Convert Back to Fixed-Point*:
+   - Convert both to integers and adjust:
+   - With a scaling factor of \(8\) (for Q2.3):
+   $$\[
+   \frac{(10.010 \times 8)}{(01.100 \times 8)} = \frac{18.88}{12.0} \approx 1.57
+   \]$$
 
-### C Code
+So, the result in fixed-point representation is approximately `1.57`.
+
+### C code
 
 Here's a simple implementation of fixed-point arithmetic using *2.3* as a model in C.
 
@@ -118,54 +120,49 @@ Here's a simple implementation of fixed-point arithmetic using *2.3* as a model 
 #include <stdio.h>
 #include <stdint.h>
 
-// Define the number of fractional bits for Q2.3
+// number of fractional bits for Q2.3
 #define FRACTIONAL_BITS 3
 #define SCALE (1 << FRACTIONAL_BITS)  // 2^3 = 8 for scaling
 
-// Fixed-point type: using 8-bit signed integer
+// fixed-point type: 8-bit signed integer
 typedef int8_t fixed_point;
 
-// Convert from float to fixed-point
 fixed_point float_to_fixed(float value) {
     return (fixed_point)(value * SCALE);
 }
 
-// Convert from fixed-point to float
 float fixed_to_float(fixed_point value) {
     return (float)value / SCALE;
 }
 
-// Addition of fixed-point numbers
 fixed_point fixed_add(fixed_point a, fixed_point b) {
     return a + b;  // simple addition
 }
 
-// Subtraction of fixed-point numbers
 fixed_point fixed_sub(fixed_point a, fixed_point b) {
     return a - b;  // simple subtraction
 }
 
-// Multiplication of fixed-point numbers
+// multiplication of fixed-point numbers
 fixed_point fixed_mul(fixed_point a, fixed_point b) {
-    return (fixed_point)(((int16_t)a * (int16_t)b) >> FRACTIONAL_BITS); // Right shift to scale down
+    return (fixed_point)(((int16_t)a * (int16_t)b) >> FRACTIONAL_BITS); // right shift to scale down
 }
 
-// Division of fixed-point numbers
+// division of fixed-point numbers
 fixed_point fixed_div(fixed_point a, fixed_point b) {
-    return (fixed_point)((((int16_t)a << FRACTIONAL_BITS) + (b / 2)) / b); // Scale numerator for precision
+    return (fixed_point)((((int16_t)a << FRACTIONAL_BITS) + (b / 2)) / b); // scale numerator for precision
 }
 
-// Print fixed-point value (debugging)
 void print_fixed(fixed_point value) {
     printf("Fixed-point: %d (Float equivalent: %f)\n", value, fixed_to_float(value));
 }
 
 int main() {
-    // Example: Represent 2.3 in fixed-point
+    // represent 2.3 in fixed-point
     float num1 = 2.3;
     fixed_point fixed_num1 = float_to_fixed(num1);
     
-    // Represent another number, say 1.5
+    // another number, say 1.5
     float num2 = 1.5;
     fixed_point fixed_num2 = float_to_fixed(num2);
     
@@ -175,22 +172,18 @@ int main() {
     printf("Original float: %f -> Fixed-point: ", num2);
     print_fixed(fixed_num2);
     
-    // Addition
     fixed_point sum = fixed_add(fixed_num1, fixed_num2);
     printf("\nAddition:\n");
     print_fixed(sum);
 
-    // Subtraction
     fixed_point diff = fixed_sub(fixed_num1, fixed_num2);
     printf("\nSubtraction:\n");
     print_fixed(diff);
 
-    // Multiplication
     fixed_point product = fixed_mul(fixed_num1, fixed_num2);
     printf("\nMultiplication:\n");
     print_fixed(product);
 
-    // Division
     fixed_point quotient = fixed_div(fixed_num1, fixed_num2);
     printf("\nDivision:\n");
     print_fixed(quotient);
@@ -199,6 +192,21 @@ int main() {
 }
 ```
 
-### Summary
+### Running
 
-Using *2.3* as a model for fixed-point representation helps clarify how numbers can be represented and manipulated in a constrained format. The Q2.3 format allows us to work with both integer and fractional parts effectively, providing insight into basic arithmetic operations like addition, subtraction, multiplication, and division, along with potential
+```shell
+Original float: 2.300000 -> Fixed-point: Fixed-point: 18 (Float equivalent: 2.250000) | Binary: 00010010
+Original float: 1.500000 -> Fixed-point: Fixed-point: 12 (Float equivalent: 1.500000) | Binary: 00001100
+
+Addition:
+Fixed-point: 30 (Float equivalent: 3.750000) | Binary: 00011110
+
+Subtraction:
+Fixed-point: 6 (Float equivalent: 0.750000) | Binary: 00000110
+
+Multiplication:
+Fixed-point: 27 (Float equivalent: 3.375000) | Binary: 00011011
+
+Division:
+Fixed-point: 12 (Float equivalent: 1.500000) | Binary: 00001100
+```
