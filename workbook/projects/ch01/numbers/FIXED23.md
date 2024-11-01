@@ -52,10 +52,10 @@ Let's add *2.3* (fixed representation `10.010`) and *1.5* (which we will convert
 
 2. *Addition*:
    ```
-          10.010  (which is 2.3)
-        + 01.100  (which is 1.5)
+          10.010  (= 2.3)
+        + 01.100  (= 1.5)
         ---------
-         11.110  (which is 3.5 in fixed point)
+         11.110   (= 3.5 in fixed point)
    ```
    - This equals `3.5`, which is valid in our range since `3.5` can be represented.
 
@@ -64,10 +64,10 @@ Let's add *2.3* (fixed representation `10.010`) and *1.5* (which we will convert
 Subtract *1.5* from *2.3*.
 
 ```
-          10.010  (which is 2.3)
-        - 01.100  (which is 1.5)
+          10.010  (= 2.3)
+        - 01.100  (= 1.5)
         ---------
-          00.010  (which is 0.5 in fixed point)
+          00.010  (= 0.5 in fixed point)
 ```
 - The result is `0.5`, also valid.
 
@@ -81,11 +81,11 @@ Now let's multiply *2.3* and *1.5*.
 
 2. *Multiplication*:
    - Convert to integers (without considering fixed-point scaling):
-   - \( 2.3 \times 1.5 = 3.45 \)
+   - $\( 2.3 \times 1.5 = 3.45 \)$
 
 3. *Fixed-Point Result*:
    To convert back to fixed-point:
-   - Multiply as integers: \( 10.010 \times 01.100 = 10.111100 \)
+   - Multiply as integers: $\( 10.010 \times 01.100 = 10.111100 \)$
    - Right shift by 3 (since we have 3 fractional bits): `001.111` 
    - This is approximately `3.5` which fits our fixed-point range.
 
@@ -105,7 +105,7 @@ To divide *2.3* by *1.5*.
 3. *Fixed-Point Result*:
    To convert back to fixed-point:
    - Convert both to integer format:
-   - Scale: \( \text{scale } = 8 \) (for Q2.3)
+   - Scale: $\( \text{scale } = 8 \)$ (for Q2.3)
    - Divide as integers and scale: 
    \[
    \text{result} = \frac{(10.010 \times 8)}{(01.100 \times 8)} = \frac{18.88}{12.0} = 1.57 \quad \text{(back to fixed-point)}
@@ -199,7 +199,3 @@ int main() {
     return 0;
 }
 ```
-
-### Summary
-
-Using *2.3* as a model for fixed-point representation helps clarify how numbers can be represented and manipulated in a constrained format. The Q2.3 format allows us to work with both integer and fractional parts effectively, providing insight into basic arithmetic operations like addition, subtraction, multiplication, and division, along with potential
