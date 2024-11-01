@@ -84,8 +84,7 @@ Now let's multiply *2.3* and *1.5*.
    - Convert to integers (without considering fixed-point scaling):
    - $`2.3 \times 1.5 = 3.45`$
 
-3. *Fixed-point*:
-   To convert back to fixed-point:
+3. *To fixed-point*:
    - Multiply as integers: $` 10.010 \times 01.100 = 10.111100 `$
    - Right shift by 3 (since we have 3 fractional bits): `001.111` 
    - This is approximately `3.5` which fits our fixed-point range.
@@ -103,7 +102,7 @@ To divide *2.3* by *1.5*.
    \text{result} = \frac{2.3}{1.5} \approx 1.5333
    \]$$
 
-3. *Fixed-point*:
+3. *To fixed-point*:
    To convert back to fixed-point:
    - Convert both to integer format:
    - Scale: $`\text{scale } = 8 `$ (for Q2.3)
