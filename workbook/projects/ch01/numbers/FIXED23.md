@@ -18,22 +18,22 @@ This means the maximum value we can represent is:
 ### Conversion of 2.3 to Fixed-Point
 
 To represent *2.3* in this format:
-1. *Integer Part*: The integer part of 2.3 is `2`, which is represented as `10` in binary.
-2. *Fractional Part*: The fractional part `.3` needs to be converted to binary.
+1. *Integer*: The integer part of 2.3 is `2`, which is represented as `10` in binary.
+2. *Fraction*: The fractional part `.3` needs to be converted to binary.
    - To find the binary representation of `.3`, we can multiply by 2 iteratively:
-     - \( 0.3 \times 2 = 0.6 \)  → 0 (whole part), carry forward 0.6
-     - \( 0.6 \times 2 = 1.2 \)  → 1 (whole part), carry forward 0.2
-     - \( 0.2 \times 2 = 0.4 \)  → 0 (whole part), carry forward 0.4
-     - \( 0.4 \times 2 = 0.8 \)  → 0 (whole part), carry forward 0.8
-     - \( 0.8 \times 2 = 1.6 \)  → 1 (whole part), carry forward 0.6
-     - \( 0.6 \times 2 = 1.2 \)  → 1 (whole part), carry forward 0.2
+     - $`0.3 \times 2 = 0.6`$  → 0 (whole part), carry forward 0.6
+     - $`0.6 \times 2 = 1.2`$  → 1 (whole part), carry forward 0.2
+     - $`0.2 \times 2 = 0.4`$  → 0 (whole part), carry forward 0.4
+     - $`0.4 \times 2 = 0.8`$  → 0 (whole part), carry forward 0.8
+     - $`0.8 \times 2 = 1.6`$  → 1 (whole part), carry forward 0.6
+     - $`0.6 \times 2 = 1.2`$  → 1 (whole part), carry forward 0.2
      - This gives us a repeating pattern of `0.01001...` in binary.
-3. *Final Representation*: 
+3. *Final*: 
    - *Integer*: `10` (for 2)
    - *Fraction*: Limited to `3 bits` → `010` (approximating `0.3`)
 
-Putting it all together:
-- *Fixed-Point Representation*: In *Q2.3*, the representation of *2.3* would be
+All together:
+- *Fixed-point*: In *Q2.3*, the representation of *2.3* would be
   `10.010`, which is `2` as integer part and `010` as fractional part.
 
 ### Fixed-Point Arithmetic Using 2.3
