@@ -15,7 +15,7 @@ This means the maximum value we can represent is:
 - *Integer Range*: From -2 to 1 (in binary: `10` to `01`).
 - *Fractional Range*: Represented as `0.0` to `0.875` (as 0.111 in binary is $`\frac{7}{8}`$).
 
-### Conversion of 2.3 to Fixed-Point
+### Conversion of 2.3 to fixed-Point
 
 To represent *2.3* in this format:
 1. *Integer*: The integer part of 2.3 is `2`, which is represented as `10` in binary.
@@ -36,26 +36,27 @@ All together:
 - *Fixed-point*: In *Q2.3*, the representation of *2.3* would be
   `10.010`, which is `2` as integer part and `010` as fractional part.
 
-### Fixed-Point Arithmetic Using 2.3
+### Fixed-Point arithmetic with 2.3
 
 Now let's perform basic arithmetic operations using *2.3* as our model,
 assuming we're working with fixed-point representation in *Q2.3*.
 
 #### Addition
 
-Let's add *2.3* (fixed representation `10.010`) and *1.5* (which we will convert).
+To add to the confusion, let's add *2.3* (fixed representation `10.010`)
+and *1.5* (which we will convert).
 
 1. *Convert 1.5 to Q2.3*:
-   - *Integer Part*: `1` (binary `01`)
-   - *Fractional Part*: `0.5` → In 3 bits → `100`
-   - *Fixed Representation*: `01.100`
+   - *Integer*: `1` (binary `01`)
+   - *Fractional*: `0.5` → In 3 bits → `100`
+   - *Fixed*: `01.100`
 
 2. *Addition*:
    ```
           10.010  (= 2.3)
         + 01.100  (= 1.5)
         ---------
-         11.110   (= 3.5 in fixed point)
+          11.110  (= 3.5 in fixed point)
    ```
    - This equals `3.5`, which is valid in our range since `3.5` can be represented.
 
@@ -75,7 +76,7 @@ Subtract *1.5* from *2.3*.
 
 Now let's multiply *2.3* and *1.5*.
 
-1. *Fixed Representations*:
+1. *Fixed*:
    - *2.3* = `10.010` (fixed)
    - *1.5* = `01.100` (fixed)
 
@@ -83,7 +84,7 @@ Now let's multiply *2.3* and *1.5*.
    - Convert to integers (without considering fixed-point scaling):
    - $`2.3 \times 1.5 = 3.45`$
 
-3. *Fixed-Point Result*:
+3. *Fixed-point*:
    To convert back to fixed-point:
    - Multiply as integers: $` 10.010 \times 01.100 = 10.111100 `$
    - Right shift by 3 (since we have 3 fractional bits): `001.111` 
@@ -93,7 +94,7 @@ Now let's multiply *2.3* and *1.5*.
 
 To divide *2.3* by *1.5*.
 
-1. *Fixed Representations*:
+1. *Fixed*:
    - *2.3* = `10.010` (fixed)
    - *1.5* = `01.100` (fixed)
 
@@ -102,7 +103,7 @@ To divide *2.3* by *1.5*.
    \text{result} = \frac{2.3}{1.5} \approx 1.5333
    \]$$
 
-3. *Fixed-Point Result*:
+3. *Fixed-point*:
    To convert back to fixed-point:
    - Convert both to integer format:
    - Scale: $`\text{scale } = 8 `$ (for Q2.3)
@@ -111,7 +112,7 @@ To divide *2.3* by *1.5*.
    \text{result} = \frac{(10.010 \times 8)}{(01.100 \times 8)} = \frac{18.88}{12.0} = 1.57 \quad \text{(back to fixed-point)}
    \]$$
 
-### C Code
+### C code
 
 Here's a simple implementation of fixed-point arithmetic using *2.3* as a model in C.
 
