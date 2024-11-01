@@ -156,25 +156,27 @@ calculation where precision is vital and arbitrary-precision is used, then compa
 with a floating-point version to highlight the differences.
 
 
-5. Advanced Topics (Optional)
+5. Advanced topics (optional)
 
-Starting Point: Advanced topics could include looking at how floating-point numbers
+Starting point: Advanced topics could include looking at how floating-point numbers
 handle edge cases, like very small (subnormal) numbers or how different rounding modes
 affect calculations. These nuances become important in scientific computing and when
 implementing custom floating-point systems.
 
-- Subnormal and Denormal Numbers: These are used when numbers are too small to be
+- Subnormal and denormal numbers: These are used when numbers are too small to be
   represented normally. They allow the representation of numbers close to zero but
   reduce precision.
 
-- Rounding Modes: IEEE 754 defines multiple rounding modes (e.g., round-to-nearest,
+- Rounding modes: IEEE 754 defines multiple rounding modes (e.g., round-to-nearest,
   round-toward-zero). Each mode has its impact on the stability and accuracy of 
   calculations, particularly in long-running algorithms.
 
-Suggested Exploration: Research some specific edge cases, like the difference between
+Suggested exploration: Research some specific edge cases, like the difference between
 0.1 and 1/10 in floating-point arithmetic, which is non-exact due to binary representation
-limitations. Look at a famous case like the Patriot missile error, which was a result of
+limitations. Look at a famous case like the Patriot missile error[^error], which was a result of
 floating-point precision issues, and how alternative systems could potentially avoid such issues.
+
+[^error]: See https://www-users.cse.umn.edu/~arnold/disasters/patriot.html.
 
 
 ### Code
