@@ -13,6 +13,7 @@ Before coding, familiarize yourself with the PostScript language’s fundamental
 
 Here’s a high-level view of how you could organize your project files:
 
+```
 postscript_interpreter/
 ├── src/
 │   ├── main.py                   # Entry point for the project
@@ -39,6 +40,7 @@ postscript_interpreter/
 ├── tests/                         # Unit tests for each module
 ├── examples/                      # Sample PostScript files to test the interpreter
 └── README.md                      # Project documentation
+```
 
 3. Detailed Steps and Module Breakdown
 
