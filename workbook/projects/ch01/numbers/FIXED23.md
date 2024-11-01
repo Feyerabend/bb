@@ -33,7 +33,8 @@ To represent *2.3* in this format:
    - *Fraction*: Limited to `3 bits` → `010` (approximating `0.3`)
 
 Putting it all together:
-- *Fixed-Point Representation*: In *Q2.3*, the representation of *2.3* would be `10.010`, which is `2` as integer part and `010` as fractional part.
+- *Fixed-Point Representation*: In *Q2.3*, the representation of *2.3* would be
+  `10.010`, which is `2` as integer part and `010` as fractional part.
 
 ### Fixed-Point Arithmetic Using 2.3
 
