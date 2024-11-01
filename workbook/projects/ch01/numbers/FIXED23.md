@@ -13,7 +13,7 @@ In the *Q2.3* format:
 
 This means the maximum value we can represent is:
 - *Integer Range*: From -2 to 1 (in binary: `10` to `01`).
-- *Fractional Range*: Represented as `0.0` to `0.875` (as 0.111 in binary is $`\( \frac{7}{8} \)`$).
+- *Fractional Range*: Represented as `0.0` to `0.875` (as 0.111 in binary is $`\frac{7}{8}`$).
 
 ### Conversion of 2.3 to Fixed-Point
 
@@ -81,11 +81,11 @@ Now let's multiply *2.3* and *1.5*.
 
 2. *Multiplication*:
    - Convert to integers (without considering fixed-point scaling):
-   - $\( 2.3 \times 1.5 = 3.45 \)$
+   - $`2.3 \times 1.5 = 3.45`$
 
 3. *Fixed-Point Result*:
    To convert back to fixed-point:
-   - Multiply as integers: $\( 10.010 \times 01.100 = 10.111100 \)$
+   - Multiply as integers: $` 10.010 \times 01.100 = 10.111100 `$
    - Right shift by 3 (since we have 3 fractional bits): `001.111` 
    - This is approximately `3.5` which fits our fixed-point range.
 
@@ -98,9 +98,9 @@ To divide *2.3* by *1.5*.
    - *1.5* = `01.100` (fixed)
 
 2. *Division*:
-   \[
+   $$\[
    \text{result} = \frac{2.3}{1.5} \approx 1.5333
-   \]
+   \]$$
 
 3. *Fixed-Point Result*:
    To convert back to fixed-point:
