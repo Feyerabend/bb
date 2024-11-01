@@ -4,9 +4,9 @@ The chapter on fundamentals in the book offers multiple avenues for exploration,
 deepen your understanding of fundamental concepts.
 
 
-### Example: Numbers
+### Example: Projects on numbers
 
-#### 1. Project: Integer representations in different bases
+#### 1. Integer representations in different bases
 
 - Objective: Write a program to convert numbers between binary, octal, decimal, and hexadecimal.
   Implement the conversions ad understand the importance of each base and how they're used in
@@ -16,7 +16,7 @@ deepen your understanding of fundamental concepts.
   in binary. Explore why it's useful (e.g. decimal displays in calculators) and
   implement basic addition or subtraction with it to understand encoding limitations.
 
-#### 2. Project: Creating a custom base or number representation
+#### 2. Creating a custom base or number representation
 
 - Objective: Design your own base system (e.g. base-7 or base-12) and implement a converter
   that converts to and from this custom system to decimal. This exercise helps you to understand
@@ -27,7 +27,7 @@ deepen your understanding of fundamental concepts.
   of such systems in complex computation, showing why positional systems are favored in
   computing.
 
-#### 3. Project: Representing negative numbers in binary
+#### 3. Representing negative numbers in binary
 
 - Objective: Implement positive and negative integers using two's complement and one's
   complement representations. Manually convert between decimal and two's complement binary
@@ -36,7 +36,7 @@ deepen your understanding of fundamental concepts.
 - Challenge: Explore edge cases, such as integer overflow and underflow, to understand
   the significance of bit-width limitations in two's complement arithmetic.
 
-#### 4. Project: Investigating alternative numerical representations
+#### 4. Investigating alternative numerical representations
 
 - Objective: Experiment with unique representations like Gray code, where consecutive
   numbers differ by only one bit, and explore its applications (e.g., in error reduction
@@ -46,7 +46,7 @@ deepen your understanding of fundamental concepts.
   like characters (ASCII) or images (binary pixel representation). This will give you a
   broader understanding of how versatile binary is in computing beyond just encoding numbers.
 
-#### 5. Project: Understanding checksum and parity in data transmission
+#### 5. Understanding checksum and parity in data transmission
 
 - Objective: You can implement a simple parity check (single or double) to illustrate
   how error detection works in data transmission. Extend this by implementing a simple
@@ -55,7 +55,7 @@ deepen your understanding of fundamental concepts.
 - Challenge: Implement Hamming code for error correction, investigare how numerical
   representations directly impact data reliability in transmission.
 
-#### 6. Project: Compare efficiency of different representations
+#### 6. Compare efficiency of different representations
 
 - Objective: Compare efficiency and accuracy in different numerical systems by
   conducting a study. For instance, measure memory usage or computational speed for
@@ -67,7 +67,7 @@ deepen your understanding of fundamental concepts.
   for it and why.
 
 
-#### 7. Project: Simulating big numbers and arbitrary-precision arithmetic
+#### 7. Simulating big numbers and arbitrary-precision arithmetic
 
 - Objective: Implement basic operations (addition, subtraction, multiplication)
   for very large integers by storing digits in arrays. This introduces the concept
@@ -78,7 +78,7 @@ deepen your understanding of fundamental concepts.
   arithmetic, avoiding floating-point imprecision and understanding where
   arbitrary-precision libraries are valuable in real applications.
 
-#### 8. Project: Exploring floating-point arithmetic and precision limits
+#### 8. Exploring floating-point arithmetic and precision limits
 
 - Objective: Take floating-point representation (IEEE 754) and experiment with
   representing simple decimal values like 0.1, 0.2, etc., in floating-point format.
