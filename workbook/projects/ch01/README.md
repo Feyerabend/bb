@@ -12,9 +12,9 @@ deepen your understanding of fundamental concepts.
   Implement the conversions ad understand the importance of each base and how they're used in
   computing (e.g., binary for logic, hexadecimal for compactness in memory addresses).
 
-- Extension: Binary-Coded Decimal (BCD). Examine BCD, where each decimal digit is represented
-  in binary. Explore why it's useful (e.g. decimal displays in calculators) and
-  implement basic addition or subtraction with it to understand encoding limitations.
+- Extension: Examine Binary-Coded Decimal (BCD), where each decimal digit is represented in
+  binary. Explore why it's useful (e.g. decimal displays in calculators) and implement basic
+  addition or subtraction with it to understand encoding limitations.
 
 #### 2. Creating a custom base or number representation
 
