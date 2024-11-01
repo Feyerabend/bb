@@ -11,52 +11,82 @@ crucial in fields such as scientific computing, engineering, and data analysis.
 
 ### Research questions
 
-1.	How do Floating-Point Numbers Work?
-	- Explain the structure of floating-point numbers, covering components such as the sign bit, exponent, and mantissa. Delve into concepts like precision, rounding, and representation limits.
-	- Describe IEEE 754, the standard format for floating-point arithmetic, including single, double, and extended precision.
-	- Examine how common operations, like addition and multiplication, work with floating-point numbers, and explore common pitfalls in arithmetic, like rounding errors and overflow/underflow.
+1.	How do floating-point numbers work?
+	- Explain the structure of floating-point numbers, covering components such as the
+      sign bit, exponent, and mantissa. Delve into concepts like precision, rounding,
+      and representation limits.
+	- Describe IEEE 754, the standard format for floating-point arithmetic, including
+      single, double, and extended precision.
+	- Examine how common operations, like addition and multiplication, work with
+      floating-point numbers, and explore common pitfalls in arithmetic, like rounding
+      errors and overflow/underflow.
 
-2.	Historical Context of Floating-Point Arithmetic
-	- Explore the history of floating-point numbers, starting from the early methods of approximating real numbers to the development of the IEEE standard in the 1980s.
-	- Discuss early computer architectures and the challenges that influenced the design of floating-point arithmetic.
+2.	Historical context of floating-point arithmetic
+	- Explore the history of floating-point numbers, starting from the early methods
+      of approximating real numbers to the development of the IEEE standard in the 1980s.
+	- Discuss early computer architectures and the challenges that influenced the
+      design of floating-point arithmetic.
 
-3.	Alternatives to Floating-Point Numbers
-	- Fixed-point representation: Describe how it works and compare its strengths and weaknesses with floating-point representation, especially in resource-constrained systems like embedded devices.
-	- Arbitrary-precision arithmetic: Explain how libraries or algorithms provide precision beyond standard floating-point limits, and discuss trade-offs in terms of speed and memory.
-	- Rational numbers: Describe how representing numbers as fractions avoids precision loss in some cases and is sometimes used in algebraic computation systems.
-	- Interval arithmetic: Explore how this alternative bounds calculations within a range to better manage precision in critical applications, like physics simulations.
+3.	Alternatives to floating-point numbers
+	- Fixed-point representation: Describe how it works and compare its strengths
+      and weaknesses with floating-point representation, especially in resource-constrained
+      systems like embedded devices.
+	- Arbitrary-precision arithmetic: Explain how libraries or algorithms provide precision
+      beyond standard floating-point limits, and discuss trade-offs in terms of speed and memory.
+	- Rational numbers: Describe how representing numbers as fractions avoids precision
+      loss in some cases and is sometimes used in algebraic computation systems.
+	- Interval arithmetic: Explore how this alternative bounds calculations within a range
+      to better manage precision in critical applications, like physics simulations.
 
-4.	Comparing Floating-Point and Alternative Representations
-	- Discuss practical scenarios in which floating-point numbers are preferable (e.g., fast calculations where small errors are acceptable) versus when alternatives are better suited (e.g., exact calculations required in financial transactions).
-	- Explore specific cases or fields where each representation is commonly used, including scientific research, finance, video games, and industrial applications.
+4.	Comparing floating-point and alternative representations
+	- Discuss practical scenarios in which floating-point numbers are preferable
+      (e.g. fast calculations where small errors are acceptable) versus when alternatives
+      are better suited (e.g., exact calculations required in financial transactions).
+	- Explore specific cases or fields where each representation is commonly used,
+      including scientific research, finance, video games, and industrial applications.
 
-5.	Advanced Topics (Optional)
-	- Explain advanced floating-point concepts, such as subnormal numbers, denormalized numbers, and rounding modes (e.g., round-to-nearest, round-toward-zero).
-	- Examine specific examples of floating-point-related issues in software (e.g., famous failures due to floating-point errors, such as the Patriot missile failure and the Vancouver Stock Exchange issue).
+5.	Advanced topics (optional)
+	- Explain advanced floating-point concepts, such as subnormal numbers, denormalized
+      numbers, and rounding modes (e.g., round-to-nearest, round-toward-zero).
+	- Examine specific examples of floating-point-related issues in software
+      (e.g. famous failures due to floating-point errors, such as the
+      Vancouver Stock Exchange issue).
 
 
 ### Deliverables
 
-- Research Paper or Report: Students can compile their findings into a structured document, including sections on each of the research questions above, with examples, figures, and code snippets if applicable.
-- Presentation: A presentation summarizing key insights from their research, aiming to explain floating-point concepts in an engaging way that would be accessible to classmates who may not have a technical background.
-- Code Demonstration (Optional): A coding component that could involve creating a simple program to demonstrate the limitations of floating-point arithmetic versus an alternative representation, such as comparing floating-point precision to arbitrary-precision libraries in Python or using interval arithmetic libraries.
+- Research paper or report: Students can compile their findings into a structured document,
+  including sections on each of the research questions above, with examples, figures, and
+  code snippets if applicable.
+- Presentation: A presentation summarizing key insights from their research, aiming to explain
+  floating-point concepts in an engaging way that would be accessible to classmates who may
+  not have a technical background.
+- Code demonstration (optional): A coding component that could involve creating a simple
+  program to demonstrate the limitations of floating-point arithmetic versus an alternative
+  representation, such as comparing floating-point precision to arbitrary-precision libraries
+  in Python or using interval arithmetic libraries.
 
 
 ### Evaluation criteria
 
 The project can be evaluated based on:
 
-- Clarity and Depth of Research: Are floating-point concepts explained clearly? Is the historical context accurately represented?
-- Comparison and Analysis: Are the differences between floating-point and alternatives clearly delineated? Is there a well-structured analysis of when to use each representation?
-- Presentation Quality: Is the presentation accessible, engaging, and effective for an audience with a diverse technical background?
-- Coding and Practical Demonstrations (Optional): Are code examples provided to illustrate concepts? Are the demonstrations effective in showing the limitations and strengths of different representations?
+- Clarity and depth of research: Are floating-point concepts explained clearly? Is the historical
+  context accurately represented?
+- Comparison and analysis: Are the differences between floating-point and alternatives clearly
+  delineated? Is there a well-structured analysis of when to use each representation?
+- Presentation quality: Is the presentation accessible, engaging, and effective for an audience
+  with a diverse technical background?
+- Coding and practical demonstrations (optional): Are code examples provided to illustrate concepts?
+  Are the demonstrations effective in showing the limitations and strengths of different representations?
 
-This project is designed to help you not only understand floating-point numbers but also appreciate their importance in computational contexts, alongside alternative methods for representing numbers. It offers a mix of theory, history, and practical application, which can deepen your understanding of numerical computation and its implications.
-
+This project is designed to help you not only understand floating-point numbers but also appreciate
+their importance in computational contexts, alongside alternative methods for representing numbers.
+It offers a mix of theory, history, and practical application, which can deepen your understanding
+of numerical computation and its implications.
 
 
 ### Suggested start of project
-
 
 1. How do Floating-Point Numbers Work?
 
@@ -145,4 +175,59 @@ Suggested Exploration: Research some specific edge cases, like the difference be
 0.1 and 1/10 in floating-point arithmetic, which is non-exact due to binary representation
 limitations. Look at a famous case like the Patriot missile error, which was a result of
 floating-point precision issues, and how alternative systems could potentially avoid such issues.
+
+
+### Code
+
+#### Float
+
+A Python program that simulates floating-point arithmetic by decomposing numbers
+into their sign, mantissa, and exponent components, in line with the
+*IEEE 754 floating-point standard*.
+
+* Code [float.py](./numbers/float.py).
+* Description [FLOAT.md](./numbers/FLOAT.md).
+
+
+#### Fixed
+
+We start with something very small that represent a very small range of numbers,
+as 2 bits are used for the integer part, and 3 bits for the fractional part.
+It is in practice not very useful in general, but it easy to follow the calculations
+and transformations of fixed point numbers in principal.
+
+* Code [fixed23.c](./numbers/fixed32.c).
+* Description [FIXED23.md](./numbers/FIXED23.md).
+
+Next, we transfer to fixed point numbers that are useful such as Q16.16.
+
+* Code [fixed.c](./numbers/fixed.c).
+* Description [FIXED.md](./numbers/FIXED.md).
+
+
+#### Fractions
+
+Some programming languages offer built-in support for fractional numbers,
+allowing developers to perform precise arithmetic using exact representations of
+rational numbers. Python, for example, includes a Fraction type in its standard
+library. This is particularly useful when floating-point arithmetic may introduce
+rounding errors.
+
+In contrast, C, as a low-level language, does not include native support for
+fractions; any handling of fractions must be explicitly implemented or managed
+by the programmer.
+
+* Code [frac.c](./numbers/frac.c).
+* Code [frac.py](./numbers/frac.py).
+
+* Description [FRAC.md](./numbers/FRAC.md).
+
+An extension of fractional numbers is the field of symbolic computation, which
+allows to perform algebraic operations on expressions symbolically rather than
+numerically. In symbolic computation, fractions remain in exact form and can be
+manipulated as algebraic entities, and expressions can be expanded, factored,
+or simplified without resort to approximation.
+
+* Code [symb.c](./numbers/symb.c).
+* Code [symb.py](./numbers/symb.py).
 
