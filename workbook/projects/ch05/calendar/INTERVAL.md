@@ -1,4 +1,4 @@
-Certainly! Interval arithmetic is a way to handle uncertainties and errors in calculations by working with intervals rather than precise numbers. In essence, each number is represented as an interval, which accounts for possible variations or uncertainties in the value. This is particularly useful in scenarios where we need to track errors that accumulate over multiple calculations.
+Interval arithmetic is a way to handle uncertainties and errors in calculations by working with intervals rather than precise numbers. In essence, each number is represented as an interval, which accounts for possible variations or uncertainties in the value. This is particularly useful in scenarios where we need to track errors that accumulate over multiple calculations.
 
 Basics of Interval Arithmetic in C
 
@@ -24,6 +24,7 @@ Interval Arithmetic in C
 
 Here is an example in C that defines an interval structure and implements basic operations on intervals.
 
+```c
 #include <stdio.h>
 #include <float.h>
 
@@ -106,6 +107,7 @@ int main() {
 
     return 0;
 }
+```
 
 Explanation
 
@@ -150,15 +152,15 @@ In interval arithmetic, an interval is typically defined by a lower bound \(a\) 
 #### Basic Operations
 
 Suppose you have two intervals:
-- \( I = [a, b] \)
-- \( J = [c, d] \)
+- $\( I = [a, b] \)$
+- $\( J = [c, d] \)$
 
 The basic interval operations are as follows:
 
-1. *Addition*: \( I + J = [a + c, b + d] \)
-2. *Subtraction*: \( I - J = [a - d, b - c] \)
-3. *Multiplication*: \( I \times J = [\min(ac, ad, bc, bd), \max(ac, ad, bc, bd)] \)
-4. *Division* (if \(0 \notin J\)): \( I / J = [\min(a/c, a/d, b/c, b/d), \max(a/c, a/d, b/c, b/d)] \)
+1. *Addition*: $\( I + J = [a + c, b + d] \)$
+2. *Subtraction*: $\( I - J = [a - d, b - c] \)$
+3. *Multiplication*: $\( I \times J = [\min(ac, ad, bc, bd), \max(ac, ad, bc, bd)] \)$
+4. *Division* (if $\(0 \notin J\)$): $\( I / J = [\min(a/c, a/d, b/c, b/d), \max(a/c, a/d, b/c, b/d)] \)$
 
 Let's create a simple C program to define intervals and perform these operations.
 
@@ -250,8 +252,6 @@ int main() {
     return 0;
 }
 ----
-
-
 
 
 
