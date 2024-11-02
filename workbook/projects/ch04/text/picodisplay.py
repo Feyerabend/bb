@@ -45,8 +45,13 @@ data = {
 
     'a': [
     # Bottom horizontal line
-    ((0, 0), (0, 5)),  # Base of the 'a'
-    ((0, 5), (5, 5)),  # Base of the 'a'
+    ((0, 1), (0, 3)),  # Base of the 'a'
+    ((1, 0), (5, 0)),  # Base of the 'a'
+    ((0, 1), (0, 3)),  # Base of the 'a'
+    ((1, 0), (5, 0)),  # Base of the 'a'
+    ((4, 1), (4, 6)),  # Base of the 'a'
+    ((1, 4), (4, 4)),  # Base of the 'a'
+    ((1, 7), (3, 7)),  # Base of the 'a'
    ],
 
 
