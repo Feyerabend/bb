@@ -2,6 +2,17 @@
 # data for each character
 data = {
 
+    # lower case example
+    'a': [
+        ((0, 1), (0, 3)),  #
+        ((1, 0), (5, 0)),  #
+        ((0, 1), (0, 3)),  #
+        ((1, 0), (5, 0)),  #
+        ((4, 1), (4, 6)),  #
+        ((1, 4), (4, 4)),  #
+        ((1, 7), (3, 7)),  #
+    ],
+
     # upper case
     'A': [((0, 0), (2.5, 10)), ((2.5, 10), (5, 0)), ((1, 5), (4, 5))],
     'B': [((0, 0), (0, 10)), ((0, 10), (3, 10)), ((3, 10), (4, 9)), ((4, 9), (4, 6)), 
@@ -39,21 +50,6 @@ data = {
     'X': [((0, 10), (5, 0)), ((5, 10), (0, 0))],
     'Y': [((0, 10), (2.5, 5)), ((2.5, 5), (5, 10)), ((2.5, 5), (2.5, 0))],
     'Z': [((0, 10), (5, 10)), ((5, 10), (0, 0)), ((0, 0), (5, 0))],
-
-    # lower case
-#    'a': [((1, 4), (3, 4)), ((3, 4), (4, 5)), ((4, 5), (4, 9)), ((4, 9), (2, 9)), ((2, 9), (1, 8)), ((1, 8), (1, 7)), ((1, 7), (2, 6)), ((2, 6), (4, 6))], #((0, 10), (0, 0))], 
-
-    'a': [
-    # Bottom horizontal line
-    ((0, 1), (0, 3)),  # Base of the 'a'
-    ((1, 0), (5, 0)),  # Base of the 'a'
-    ((0, 1), (0, 3)),  # Base of the 'a'
-    ((1, 0), (5, 0)),  # Base of the 'a'
-    ((4, 1), (4, 6)),  # Base of the 'a'
-    ((1, 4), (4, 4)),  # Base of the 'a'
-    ((1, 7), (3, 7)),  # Base of the 'a'
-   ],
-
 
     # punctuation
     '.': [((1, 0), (1, 1))],
@@ -93,9 +89,9 @@ SLANTEDBOLD  = 1 << 3  # 8 (binary: 1000)
 
 # image and font settings
 width, height = 240, 135    # Adjusted width for the whole alphabet
-scale = 0.75               # Scale for the font size
-margin = 15                # Margin around text
-spacing = 8                # Spacing between characters
+scale = 0.6               # Scale for the font size
+margin = 12                # Margin around text
+spacing = 7                # Spacing between characters
 
 # empty image with white background
 image = [[[255, 255, 255] for _ in range(width)] for _ in range(height)]
@@ -178,7 +174,7 @@ def render_text_with_wrapping(words, img, start_x, start_y, letter_width=6, lett
 
 # Example usage
 words = ["THE", "QUICK", "BROWN", "FOX", "JUMPS", "OVER", "THE", "LaZY", "DOG."]
-render_text_with_wrapping(words, image, start_x=10, start_y=20, line_width=200)
+render_text_with_wrapping(words, image, start_x=10, start_y=20, line_width=220, style=SLANTED)
 
 # draw text on the image
 #render_text("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", image, margin, height // 2, BOLD)
