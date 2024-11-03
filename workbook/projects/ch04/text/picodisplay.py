@@ -89,7 +89,7 @@ SLANTEDBOLD  = 1 << 3  # 8 (binary: 1000)
 
 # image and font settings
 width, height = 240, 135    # Adjusted width for the whole alphabet
-scale = 0.6               # Scale for the font size
+scale = 0.7               # Scale for the font size
 margin = 12                # Margin around text
 spacing = 7                # Spacing between characters
 
@@ -175,11 +175,6 @@ def render_text_with_wrapping(words, img, start_x, start_y, letter_width=6, lett
 # Example usage
 words = ["THE", "QUICK", "BROWN", "FOX", "JUMPS", "OVER", "THE", "LaZY", "DOG."]
 render_text_with_wrapping(words, image, start_x=10, start_y=20, line_width=220, style=SLANTED)
-
-# draw text on the image
-#render_text("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", image, margin, height // 2, BOLD)
-#render_text("0 1 2 3 4 5 6 7 8 9", image, margin, margin + spacing, SLANTED)
-#render_text("ABCDEFGHIJKLMNOPQRSTUVWXYZ", image, margin, margin, NORMAL)
 
 # write PPM file
 with open("picotext.ppm", "w") as f:

@@ -7,7 +7,8 @@ font. Each character is created using a sequence of connected line segments with
 start and end points, relative to a common origin for alignment. These vector paths are
 used to render each glyph by connecting these defined points on a grid.
 
-[^hersey]: See: https://en.wikipedia.org/wiki/Hershey_fonts. Also: https://paulbourke.net/dataformats/hershey/.
+[^hersey]: See: https://en.wikipedia.org/wiki/Hershey_fonts.
+Also: https://paulbourke.net/dataformats/hershey/.
 
 An empty white image grid is created, and a line-drawing algorithm (similar to
 Bresenham’s line algorithm) is used to apply each character’s line segments to
@@ -48,4 +49,18 @@ File: `text2.py`. Sample scale = 0.75, with styles NORMAL, __BOLD__, *SLANTED*, 
 Text saved as image in PPM format.
 
 ![text2](../../assets/images/text2.png)
+
+
+### Making fonts
+
+![text2](../../assets/images/font.jpg)
+
+
+
+NOTE:
+The format isn't very compact: drawing from one coordinate to another, 4 digits. It could instead
+be a `move` with one set of coordinates, and `drawto` with another, then instead of starting over, `drawto` with two sets instead of one,
+if the lines connect .. this what is done with e.g. PostScript and SVG.
+
+
 
