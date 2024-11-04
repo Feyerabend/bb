@@ -6,18 +6,18 @@
 #define LED_PIN     25
 
 void delay(unsigned int ticks) {
-    SYST_CVR = 0;              // Reset the timer counter
-    SYST_RVR = ticks;          // Set reload value
-    SYST_CSR = 5;              // Enable counter with no interrupt
-    while ((SYST_CSR & (1 << 16)) == 0);  // Wait for the count flag
+    SYST_CVR = 0;              // reset the timer counter
+    SYST_RVR = ticks;          // set reload value
+    SYST_CSR = 5;              // enable counter with no interrupt
+    while ((SYST_CSR & (1 << 16)) == 0);  // wait for the count flag
 }
 
 void main() {
-    // Set LED_PIN as output
+    // set LED_PIN as output
     GPIO_DIR |= (1 << LED_PIN);
 
     while (1) {
-        GPIO_OUT ^= (1 << LED_PIN);  // Toggle LED
-        delay(3000000);              // Delay for a while
+        GPIO_OUT ^= (1 << LED_PIN);  // toggle LED
+        delay(3000000);              // delay for a while
     }
 }
