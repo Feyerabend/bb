@@ -2,8 +2,8 @@ from datetime import datetime
 
 class AccountingMachine:
     def __init__(self):
-        self.accounts = {}  # Holds account balances
-        self.verifications = []  # Stores each transaction as a verification
+        self.accounts = {}  # holds account balances
+        self.verifications = []  # stores each transaction as a verification
     
     def create_account(self, account_name):
         """Creates an account with a zero balance."""
@@ -46,51 +46,51 @@ class AccountingMachine:
         total_debits = sum(amount for _, amount in debits)
         total_credits = sum(amount for _, amount in credits)
         
-        # Check if the transaction is balanced
+        # check if the transaction is balanced
         if total_debits != total_credits:
             raise ValueError("Transaction is not balanced. Debits do not equal credits.")
         
-        # Apply debits
+        # apply debits
         for account_name, amount in debits:
             self.debit(account_name, amount)
         
-        # Apply credits
+        # apply credits
         for account_name, amount in credits:
             self.credit(account_name, amount)
         
-        # Log the transaction
+        # log the transaction
         self._log_verification(debits, credits)
         print("Transaction completed successfully.\n")
 
-# Usage example:
+# example
 machine = AccountingMachine()
 
-# Create accounts
+# create accounts
 machine.create_account("Cash")
 machine.create_account("Revenue")
 machine.create_account("Expense")
 
-# Check initial balances
+# check initial balances
 print("\nInitial Balances:")
 print("Cash:", machine.get_balance("Cash"))
 print("Revenue:", machine.get_balance("Revenue"))
 print("Expense:", machine.get_balance("Expense"))
 
-# Make a balanced transaction: Debit Cash, Credit Revenue
+# make a balanced transaction: Debit Cash, Credit Revenue
 print("\nTransaction 1: Debit Cash 100, Credit Revenue 100")
 machine.make_transaction(debits=[("Cash", 100)], credits=[("Revenue", 100)])
 
-# Make a balanced transaction: Debit Expense, Credit Cash
+# make a balanced transaction: Debit Expense, Credit Cash
 print("\nTransaction 2: Debit Expense 50, Credit Cash 50")
 machine.make_transaction(debits=[("Expense", 50)], credits=[("Cash", 50)])
 
-# Check balances after transactions
+# check balances after transactions
 print("\nBalances after Transactions:")
 print("Cash:", machine.get_balance("Cash"))
 print("Revenue:", machine.get_balance("Revenue"))
 print("Expense:", machine.get_balance("Expense"))
 
-# Print all verifications
+# all verifications
 print("\nAll Verifications:")
 for v in machine.verifications:
     print(v)
