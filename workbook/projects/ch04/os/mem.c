@@ -2,9 +2,9 @@
 static uint8_t heap[HEAP_SIZE];
 
 typedef struct BlockHeader {
-    uint32_t size;          // Size of the block (excluding header)
-    uint8_t in_use;         // 1 in use, 0 is free
-    struct BlockHeader *next; // Pointer to the next block in the linked list
+    uint32_t size;            // size of the block (excluding header)
+    uint8_t in_use;           // 1 in use, 0 is free
+    struct BlockHeader *next; // pointer to the next block in the linked list
 } BlockHeader;
 
 #define HEADER_SIZE sizeof(BlockHeader)
@@ -22,24 +22,24 @@ void *malloc(uint32_t size) {
 
     while (current) {
         if (!current->in_use && current->size >= size) {
-            // Found a suitable block, split if necessary
+            // found a suitable block, split if necessary
             if (current->size > size + HEADER_SIZE) {
-                // Create a new block header for the remaining free space
+                // create a new block header for the remaining free space
                 BlockHeader *new_block = (BlockHeader *)((uint8_t *)current + HEADER_SIZE + size);
                 new_block->size = current->size - size - HEADER_SIZE;
                 new_block->in_use = 0;
                 new_block->next = current->next;
 
-                // Update current block
+                // update current block
                 current->size = size;
                 current->next = new_block;
             }
             current->in_use = 1;
-            return (void *)((uint8_t *)current + HEADER_SIZE); // Return pointer after header
+            return (void *)((uint8_t *)current + HEADER_SIZE); // return pointer after header
         }
         current = current->next;
     }
-    return NULL; // No suitable block found
+    return NULL; // no suitable block found
 }
 
 void free(void *ptr) {
@@ -48,13 +48,13 @@ void free(void *ptr) {
     BlockHeader *block = (BlockHeader *)((uint8_t *)ptr - HEADER_SIZE);
     block->in_use = 0;
 
-    // Coalesce with next block if free
+    // coalesce with next block if free
     if (block->next && !block->next->in_use) {
         block->size += HEADER_SIZE + block->next->size;
         block->next = block->next->next;
     }
 
-    // Coalesce with previous block if free
+    // coalesce with previous block if free
     BlockHeader *prev = free_list;
     while (prev && prev->next != block) {
         prev = prev->next;

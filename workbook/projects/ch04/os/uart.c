@@ -12,26 +12,25 @@
 #define GPIO_UART_RX    1
 
 void uart_init() {
-    // Disable UART0 before configuring it
-    UART0_CR = 0x0;
+    UART0_CR = 0x0; // disable UART0 before configuring it
     
-    // Set the integer & fractional part of the baud rate
-    UART0_IBRD = 26;  // Integer part for 115200 baud rate
-    UART0_FBRD = 3;   // Fractional part for 115200 baud rate
+    // set the integer & fractional part of the baud rate
+    UART0_IBRD = 26;  // integer part for 115200 baud rate
+    UART0_FBRD = 3;   // fractional part for 115200 baud rate
     
-    // Set the UART line control for 8-bit, no parity, 1 stop bit (8N1)
-    UART0_LCRH = (3 << 5);  // Set word length to 8 bits (WLEN field)
+    // set the UART line control for 8-bit, no parity, 1 stop bit (8N1)
+    UART0_LCRH = (3 << 5);  // set word length to 8 bits (WLEN field)
 
-    // Enable UART0, TX, and RX
+    // enable UART0, TX, and RX
     UART0_CR = (1 << 9) | (1 << 8) | (1 << 0);
 }
 
 void uart_send_char(char c) {
-    // Wait for UART0 to be ready to transmit (TXFF flag should be clear)
+    // wait for UART0 to be ready to transmit (TXFF flag should be clear)
     while (UART0_FR & (1 << 5)) {
-        // Spin until TX FIFO is not full
+        // spin until TX FIFO is not full
     }
-    UART0_DR = c;  // Write character to data register
+    UART0_DR = c;  // write character to data register
 }
 
 void uart_send_string(const char* str) {
