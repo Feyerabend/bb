@@ -1,6 +1,9 @@
 
 ## Koch snowflakes
 
+An introduction to Koch snowflakes is naturally Wikipedia: https://en.wikipedia.org/wiki/Koch_snowflake.
+
+
 ### For beginners
 
 1. Basic line drawing with recursion:
