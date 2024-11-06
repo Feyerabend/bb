@@ -1,7 +1,11 @@
 
 ## Koch snowflakes
 
-An introduction to Koch snowflakes is naturally Wikipedia: https://en.wikipedia.org/wiki/Koch_snowflake.
+The point of looking at "Koch snowflakes" is the prominent use of recursion.
+An introduction to Koch snowflakes can naturally be collected from Wikipedia:
+https://en.wikipedia.org/wiki/Koch_snowflake.
+
+This is also an example of fractals, see https://en.wikipedia.org/wiki/Fractal.
 
 
 ### For beginners
