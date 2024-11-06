@@ -17,7 +17,7 @@
 - Objective: Introduce basic loops and iteration before diving into recursion.
 - Exercise: Get the first the points for one iteration of a Koch snowflake and draw the entire snowflake using for loops.
 - Goal: Build an understanding of how symmetry (120-degree rotation) works in the snowflake.
-- Code: [koch.py](koch.py)
+- Code: [koch.py](koch.py).
 
 4. Counting segments in each teration:
 - Objective: Calculate the growth in complexity.
@@ -40,7 +40,7 @@
 3. Koch snowflake with dynamic levels of recursion (in book):
 - Objective: Interact with recursion levels in real-time.
 - Exercise: Create a program that allows users to input the recursion depth (e.g., from 1 to 6) to adjust the level of detail in the snowflake.
-- Goal: Demonstrate how recursion depth affects complexity, and help students develop user interaction within recursive programs.
+- Goal: Demonstrate how recursion depth affects complexity, and develop user interaction within recursive programs.
 - Code: [JavaScript](koch.html).
 
 4. Drawing the snowflake in 3D:
