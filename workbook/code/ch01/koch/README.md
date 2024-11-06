@@ -17,6 +17,7 @@
 - Objective: Introduce basic loops and iteration before diving into recursion.
 - Exercise: Get the first the points for one iteration of a Koch snowflake and draw the entire snowflake using for loops.
 - Goal: Build an understanding of how symmetry (120-degree rotation) works in the snowflake.
+- Code: [koch.py](koch.py)
 
 4. Counting segments in each teration:
 - Objective: Calculate the growth in complexity.
@@ -27,19 +28,20 @@
 ### For non-beginners
 
 1. Animating the Koch snowflake:
-- Objective: Create a dynamic visualization of the snowflake’s growth with each recursion.
+- Objective: Create a dynamic visualization of the snowflake's growth with each recursion.
 - Exercise: Use a library like matplotlib or pygame to draw the Koch snowflake in real-time, updating the display as each recursion level is added. Or use JavaScript and Canvas.
 - Goal: Explore practical aspects of rendering, animation, and performance issues with recursive drawings.
 
 2. Optimising recursion with memoization:
 - Objective: Reduce redundant calculations.
 - Exercise: Implement memoization (caching) to store previously computed line segments, reusing them if the recursion path duplicates work.
-- Goal: Understand optimisation techniques in recursion and when they’re applicable.
+- Goal: Understand optimisation techniques in recursion and when they're applicable.
 
 3. Koch snowflake with dynamic levels of recursion (in book):
 - Objective: Interact with recursion levels in real-time.
 - Exercise: Create a program that allows users to input the recursion depth (e.g., from 1 to 6) to adjust the level of detail in the snowflake.
 - Goal: Demonstrate how recursion depth affects complexity, and help students develop user interaction within recursive programs.
+- Code: [JavaScript](koch.html).
 
 4. Drawing the snowflake in 3D:
 - Objective: Extend the fractal concept to three dimensions.
@@ -56,9 +58,9 @@
 - Exercise: Implement both a recursive and an iterative version of the Koch curve, comparing performance and memory usage.
 - Goal: Discuss to both methods, on where recursion is advantageous and when iteration might be more efficient.
 
-7. Calculating the snowflake’s fractal dimension:
+7. Calculating the snowflake's fractal dimension:
 - Objective: Explore mathematical properties of fractals.
 - Exercise: Explore through calculating the fractal dimension of the Koch snowflake by analyzing how the length and complexity increase with each iteration.
 - Goal: Connect programming to mathematical theory and introduce concepts like self-similarity and fractal dimension.
 
-These exercises should encourage both groups to apply recursion in creative and analytical ways, deepening understanding of recursion’s capabilities and its application in real-world computing.
+These exercises should encourage both groups to apply recursion in creative and analytical ways, deepening understanding of recursion's capabilities and its application in real-world computing.
