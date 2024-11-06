@@ -10,7 +10,7 @@ class Path:
 
     # PostScript primarily uses cubic Bézier curves to define shapes and paths.
     # These curves are parametrized by four points: two endpoints and two control points
-    # two points come from moveto ..
+    # two points come from moveto ..?
     def curveto(self, x1: float, y1: float, x2: float, y2: float, x3: float, y3: float):
         pass
 
