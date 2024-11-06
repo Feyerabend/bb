@@ -60,7 +60,7 @@ This is also an example of fractals, see https://en.wikipedia.org/wiki/Fractal.
 - Exercise: Expand on the Koch snowflake by writing a program that outputs the fractal at various recursion depths as a PPM image.
 - Goal: Practice generating visual files programmatically and understand how recursion can directly control pixel-level output.
 
-6. Comparing Recursive and Iterative Approaches:
+6. Comparing recursive and iterative approaches:
 - Objective: Introduce alternative recursive implementations.
 - Exercise: Implement both a recursive and an iterative version of the Koch curve, comparing performance and memory usage.
 - Goal: Discuss to both methods, on where recursion is advantageous and when iteration might be more efficient.
@@ -70,4 +70,5 @@ This is also an example of fractals, see https://en.wikipedia.org/wiki/Fractal.
 - Exercise: Explore through calculating the fractal dimension of the Koch snowflake by analyzing how the length and complexity increase with each iteration.
 - Goal: Connect programming to mathematical theory and introduce concepts like self-similarity and fractal dimension.
 
-These exercises should encourage both groups to apply recursion in creative and analytical ways, deepening understanding of recursion's capabilities and its application in real-world computing.
+These exercises should encourage both groups to apply recursion in creative and analytical ways,
+deepening understanding of recursion's capabilities and its application in real-world computing.
