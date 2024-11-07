@@ -92,58 +92,6 @@ functionality as you progress.
 	6.	Text Rendering: Implement text support, managing the placement, rotation, and scaling of text in the graphics state.
 	7.	Performance and Optimization: Once the main functionality is complete, optimize for performance, especially in the rasterizer, where pixel-by-pixel manipulation can be costly.
 
-
-A “craft philosophy” would likely critique this iterative, functionally tiered approach to building a PostScript interpreter on several fronts.
-Craft philosophy tends to emphasize holistic development, deep understanding, and continuous integration of all aspects of a project. Here's how
-this viewpoint might contrast with or challenge the proposed structured plan:
-
-1.	Holistic Understanding Over Segmentation: The iterative approach isolates different components—basic interpreter, rasterizer,
-    graphics state, etc.—into discrete steps. From a craft perspective, this compartmentalization could be seen as neglecting the
-    complex interdependencies between these elements. Craftsmanship would encourage a more integrated approach, where you build
-    and understand the interpreter as a unified entity rather than in separable, modular stages. For example, the graphic state
-    handling, the interpreter, and the rasterizer should be conceived with mutual influence from the start, as they all shape the final outcome.
-
-2.	Emphasis on Immediate Feedback and Refinement: A craft-oriented approach values continuous feedback from the full system to
-    guide development. The proposed plan, in contrast, postpones certain aspects like performance optimization until after all
-    functionality is complete. In a craft philosophy, performance considerations and functional accuracy would evolve side by side,
-    with each influencing the other. This perspective suggests that a craftsman might start with an interpreter that already considers
-    its eventual performance constraints, adapting it in real-time rather than as a separate “optimization” step.
-
-3.	Prioritization of Materiality and User Experience: Craft philosophy is often closely linked to the tangible quality of work and
-    the experience it provides. A craftsman might focus on how each feature or enhancement affects the end user's experience or the
-    interpreter's “feel” at each stage. This could translate to an emphasis on early rendering accuracy or subtlety in line work and
-    shape representation, even if it means deviating from the “minimal interpreter” concept. For example, they might start with a
-    finely tuned, basic rasterizer that immediately incorporates more realistic handling of curves and colors to better approximate
-    PostScript's intended output, rather than settling for basic shapes initially.
-
-4.	Iterative, Non-linear Development: In a craft philosophy, development is less linear and more exploratory. Each step would likely
-    prompt reflection and adjustment, not just within that phase but across the entire system. Instead of strictly moving from basic
-    functionality to advanced features, a craftsperson might loop back frequently, tweaking and refining components in light of new
-    insights. For instance, implementing control structures in the interpreter might reveal limitations or optimizations in the
-    rasterizer or graphics state that the craftsperson would address immediately, rather than deferring to a “performance optimization”
-    stage.
-
-5.	Deep Respect for the “Materials” of the Code: Craftsmanship emphasizes a close relationship with the “materials” at hand—in this case,
-    the language, libraries, and even the hardware on which the interpreter runs. A craft approach might scrutinize how each coding decision
-    interacts with the machine's memory and processing capacity. This is not necessarily absent in the iterative approach, but a craft-oriented
-    developer would likely integrate this thinking from the outset rather than as a separate, final consideration.
-
-In sum, a craft philosophy would encourage a non-linear, integrated development of the PostScript interpreter, focusing on achieving
-coherence across all parts of the system from the beginning. Instead of tackling isolated functionality one at a time, it would value
-building a connected whole, where each small decision informs the development of every other component, resulting in an interpreter
-that feels thoughtfully crafted and deeply connected to both its technical foundation and user experience.
-
-A “scientific philosophy” of architecting and coding would approach the construction of a PostScript interpreter with an emphasis on methodical experimentation, hypothesis testing, and evidence-based iteration, which contrasts significantly with the “craft philosophy” perspective. Here's how the scientific philosophy would differ from the craft approach and from the original iterative development plan:
-	1.	Hypothesis-Driven Development: In a scientific approach, each stage of development would begin with clearly formulated hypotheses about how components should behave or interact. For instance, before implementing the basic interpreter, a scientific developer might hypothesize, “A stack-based approach will provide efficient parsing for simple arithmetic and stack operations.” Development of this component would then proceed with tests specifically designed to confirm or refute this hypothesis, gathering quantitative metrics (e.g., speed of execution, memory use) to support the findings. This method prioritizes predictable, measurable outcomes at every stage and aligns decisions with empirical evidence rather than intuition or iterative adjustments.
-	2.	Isolation of Variables and Controlled Experimentation: A scientific philosophy would advocate for controlled experimentation with each component in isolation before integration. Instead of developing an integrated graphics state or advanced interpreter features early, the scientific approach would test each module (e.g., stack operations, rasterizer) independently. For example, it would examine the performance and accuracy of the rasterizer alone, possibly with artificial or simplified data, to isolate its behavior without interference from the graphics state or transformation complexities. This systematic isolation of variables allows for clear cause-and-effect analysis and helps minimize confounding factors during development.
-	3.	Data-Driven Decisions and Optimization: In contrast to the craft emphasis on holistic experience, a scientific approach to optimization would rely on data collection and analysis to guide performance tuning. Instead of integrating performance optimizations organically, the scientific developer would collect benchmark data across different stages, identifying bottlenecks, memory usage patterns, and computational costs based on quantitative evidence. Optimization would then target these specific areas, refining the codebase based on statistically significant improvements rather than a subjective sense of “craft.” For example, they might measure pixel processing time in the rasterizer and apply optimizations only where measurable gains can be verified through repeated testing.
-	4.	Iterative Testing and Validation at Every Step: A scientific method would value extensive testing and validation to ensure that each hypothesis holds true and that improvements are consistent. A scientific approach might include automated regression testing after each development cycle to ensure that new features (like control structures or text rendering) don't disrupt established functionality. Testing might also include edge cases and stress testing designed to expose limitations and quantify the interpreter's handling under various conditions, which aligns well with the scientific emphasis on reproducibility and repeatable results.
-	5.	Refinement Through Empirical Feedback Rather than Intuition: Whereas the craft philosophy relies on the developer's intuition, experience, and real-time adjustments, the scientific philosophy prefers empirical feedback from systematic observation and testing. For example, in implementing the graphics state, rather than adjusting colors and transformations based on perceived quality or aesthetic fidelity, a scientific approach might use standardized color tests and transformation matrices, checking results against expected outputs and known color profiles to verify accuracy.
-	6.	Documented Rationale and Transparency: Scientific development emphasizes transparency in methodology and decisions, often with documentation that describes each phase's hypotheses, experimental procedures, results, and conclusions. This systematic recording creates a development “paper trail” that makes reasoning and choices transparent, which is valuable for subsequent maintenance or extensions of the interpreter. In contrast, a craft approach might produce less formal documentation, relying more on the coder's knowledge and familiarity with the codebase.
-
-In summary, a scientific philosophy would apply a rigorous, evidence-based framework to each stage of the interpreter's development, with a focus on isolation, testing, and optimization informed by empirical data. Where a craft-oriented developer might seek holistic cohesion and qualitative improvement throughout, a scientific developer would approach the project as a series of controlled experiments, with decisions guided by measurable outcomes rather than a subjective sense of craftsmanship. The result would likely be a more modular, statistically optimized interpreter with transparent documentation that emphasizes predictability and reproducibility over the holistic, experiential quality sought by a craft approach.
-
-
 Here's an outline of key functions for each module, focusing on their roles in a PostScript interpreter and rasterizer. This outline is based on the suggested structure and splits functionality to keep each module manageable.
 
 1. Interpreter Module
