@@ -365,17 +365,17 @@ Handles transformations, such as translation, rotation, and scaling.
 
 4. Main Script (main.py)
 
-InterpreterEngine
+`InterpreterEngine`
 
 Orchestrates the loading, parsing, execution, and rendering process.
 
-- Attributes:
-	* lexer: Lexer: Tokenizer for input code.
-	* parser: Parser: Parser for tokenized input.
-	* executor: Executor: Executor for running commands.
-	* renderer: Renderer: Renderer for visual output.
-- Methods:
-	* `__init__(self)`: Initializes the interpreter engine and its components.
+- Attributes
+	* `lexer`: Tokenizer for input code.
+	* `parser`: Parser for tokenized input.
+	* `executor`: Executor for running commands.
+	* `renderer`: Renderer for visual output.
+- Methods
+	* `__init__(self)`: Initialises the interpreter engine and its components.
 	* `load_file(self, filename: str)`: Loads a PostScript file for processing.
 	* `parse_and_execute(self)`: Tokenizes, parses, and executes code.
 	* `render_output(self)`: Displays or saves the rendered output.
