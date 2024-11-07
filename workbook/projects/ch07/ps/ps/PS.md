@@ -91,6 +91,34 @@ To ensure each part works correctly, develop unit tests for individual component
 	7.	Performance and Optimization: Once the main functionality is complete, optimize for performance, especially in the rasterizer, where pixel-by-pixel manipulation can be costly.
 
 
+A “craft philosophy” would likely critique this iterative, functionally tiered approach to building a PostScript interpreter on several fronts.
+Craft philosophy tends to emphasize holistic development, deep understanding, and continuous integration of all aspects of a project. Here's how
+this viewpoint might contrast with or challenge the proposed structured plan:
+
+1.	Holistic Understanding Over Segmentation: The iterative approach isolates different components—basic interpreter, rasterizer,
+    graphics state, etc.—into discrete steps. From a craft perspective, this compartmentalization could be seen as neglecting the
+    complex interdependencies between these elements. Craftsmanship would encourage a more integrated approach, where you build
+    and understand the interpreter as a unified entity rather than in separable, modular stages. For example, the graphic state
+    handling, the interpreter, and the rasterizer should be conceived with mutual influence from the start, as they all shape the final outcome.
+
+2.	Emphasis on Immediate Feedback and Refinement: A craft-oriented approach values continuous feedback from the full system to
+    guide development. The proposed plan, in contrast, postpones certain aspects like performance optimization until after all
+    functionality is complete. In a craft philosophy, performance considerations and functional accuracy would evolve side by side,
+    with each influencing the other. This perspective suggests that a craftsman might start with an interpreter that already considers
+    its eventual performance constraints, adapting it in real-time rather than as a separate “optimization” step.
+
+3.	Prioritization of Materiality and User Experience: Craft philosophy is often closely linked to the tangible quality of work and
+    the experience it provides. A craftsman might focus on how each feature or enhancement affects the end user's experience or the
+    interpreter's “feel” at each stage. This could translate to an emphasis on early rendering accuracy or subtlety in line work and
+    shape representation, even if it means deviating from the “minimal interpreter” concept. For example, they might start with a
+    finely tuned, basic rasterizer that immediately incorporates more realistic handling of curves and colors to better approximate
+    PostScript's intended output, rather than settling for basic shapes initially.
+
+4.	Iterative, Non-linear Development: In a craft philosophy, development is less linear and more exploratory. Each step would likely prompt reflection and adjustment, not just within that phase but across the entire system. Instead of strictly moving from basic functionality to advanced features, a craftsperson might loop back frequently, tweaking and refining components in light of new insights. For instance, implementing control structures in the interpreter might reveal limitations or optimizations in the rasterizer or graphics state that the craftsperson would address immediately, rather than deferring to a “performance optimization” stage.
+5.	Deep Respect for the “Materials” of the Code: Craftsmanship emphasizes a close relationship with the “materials” at hand—in this case, the language, libraries, and even the hardware on which the interpreter runs. A craft approach might scrutinize how each coding decision interacts with the machine's memory and processing capacity. This is not necessarily absent in the iterative approach, but a craft-oriented developer would likely integrate this thinking from the outset rather than as a separate, final consideration.
+
+In sum, a craft philosophy would encourage a non-linear, integrated development of the PostScript interpreter, focusing on achieving coherence across all parts of the system from the beginning. Instead of tackling isolated functionality one at a time, it would value building a connected whole, where each small decision informs the development of every other component, resulting in an interpreter that feels thoughtfully crafted and deeply connected to both its technical foundation and user experience.
+
 
 Here's an outline of key functions for each module, focusing on their roles in a PostScript interpreter and rasterizer. This outline is based on the suggested structure and splits functionality to keep each module manageable.
 
@@ -208,7 +236,7 @@ This function breakdown keeps each file focused on its responsibilities while en
 
 
 
-Certainly! Defining classes will provide a solid structure for encapsulating functionality, making the codebase modular and easier to manage. Here's a detailed breakdown of the classes, organized by module.
+Defining classes will provide a solid structure for encapsulating functionality, making the codebase modular and easier to manage. Here's a detailed breakdown of the classes, organized by module.
 
 1. Interpreter Module
 
