@@ -378,7 +378,7 @@ Orchestrates the loading, parsing, execution, and rendering process.
 	* `__init__(self)`: Initializes the interpreter engine and its components.
 	* `load_file(self, filename: str)`: Loads a PostScript file for processing.
 	* `parse_and_execute(self)`: Tokenizes, parses, and executes code.
-	*`render_output(self)`: Displays or saves the rendered output.
+	* `render_output(self)`: Displays or saves the rendered output.
 
 This setup keeps each class focused on a specific responsibility, simplifying code management and testing.
 Using this structure, you'll have a modular and scalable foundation for your interpreter and rasterizer.
