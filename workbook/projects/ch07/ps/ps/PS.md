@@ -7,11 +7,11 @@ The PostScript language is a stack-based, dynamically-typed language for page de
 	1.	Interpreter: Parses and processes PostScript commands.
 	2.	Rasterizer: Transforms vector descriptions and text into a pixel-based representation.
 
-Before coding, familiarize yourself with the PostScript language’s fundamentals, particularly its graphics model, operators, and coordinate system. Next, set up a minimal project structure that allows easy expansion.
+Before coding, familiarize yourself with the PostScript language's fundamentals, particularly its graphics model, operators, and coordinate system. Next, set up a minimal project structure that allows easy expansion.
 
 2. Project Structure and File Organization
 
-Here’s a high-level view of how you could organize your project files:
+Here's a high-level view of how you could organize your project files:
 
 ```
 postscript_interpreter/
@@ -92,11 +92,11 @@ To ensure each part works correctly, develop unit tests for individual component
 
 
 
-Here’s an outline of key functions for each module, focusing on their roles in a PostScript interpreter and rasterizer. This outline is based on the suggested structure and splits functionality to keep each module manageable.
+Here's an outline of key functions for each module, focusing on their roles in a PostScript interpreter and rasterizer. This outline is based on the suggested structure and splits functionality to keep each module manageable.
 
 1. Interpreter Module
 
-lexer.py
+`lexer.py`
 
 Handles breaking down the PostScript code into tokens.
 
@@ -104,11 +104,11 @@ Handles breaking down the PostScript code into tokens.
 	•	is_number(token: str) -> bool: Checks if a token represents a number.
 	•	is_operator(token: str) -> bool: Checks if a token is a valid PostScript operator.
 
-parser.py
+`parser.py`
 
 Interprets tokens and organizes them into executable instructions.
 
-	•	parse(tokens: List[Token]) -> ASTNode: Converts a list of tokens into an Abstract Syntax Tree (AST) or another structured format that’s easier to interpret.
+	•	parse(tokens: List[Token]) -> ASTNode: Converts a list of tokens into an Abstract Syntax Tree (AST) or another structured format that's easier to interpret.
 	•	parse_expression(tokens: List[Token]) -> ASTNode: Parses expressions, identifying and grouping tokens like if and for into executable expressions.
 
 executor.py
@@ -208,7 +208,7 @@ This function breakdown keeps each file focused on its responsibilities while en
 
 
 
-Certainly! Defining classes will provide a solid structure for encapsulating functionality, making the codebase modular and easier to manage. Here’s a detailed breakdown of the classes, organized by module.
+Certainly! Defining classes will provide a solid structure for encapsulating functionality, making the codebase modular and easier to manage. Here's a detailed breakdown of the classes, organized by module.
 
 1. Interpreter Module
 
@@ -320,7 +320,7 @@ Renders paths, shapes, and text onto an output buffer.
 	•	Methods:
 	•	render_path(self, path: Path): Renders a path based on the current graphics state.
 	•	render_text(self, text: str, position: Tuple[int, int]): Renders text at a specified position.
-	•	apply_color(self): Sets the buffer’s current color.
+	•	apply_color(self): Sets the buffer's current color.
 
 OutputBuffer (output_buffer.py)
 
@@ -369,28 +369,30 @@ InterpreterEngine
 
 Orchestrates the loading, parsing, execution, and rendering process.
 
-	•	Attributes:
-	•	lexer: Lexer: Tokenizer for input code.
-	•	parser: Parser: Parser for tokenized input.
-	•	executor: Executor: Executor for running commands.
-	•	renderer: Renderer: Renderer for visual output.
-	•	Methods:
-	•	__init__(self): Initializes the interpreter engine and its components.
-	•	load_file(self, filename: str): Loads a PostScript file for processing.
-	•	parse_and_execute(self): Tokenizes, parses, and executes code.
-	•	render_output(self): Displays or saves the rendered output.
+- Attributes:
+	* lexer: Lexer: Tokenizer for input code.
+	* parser: Parser: Parser for tokenized input.
+	* executor: Executor: Executor for running commands.
+	* renderer: Renderer: Renderer for visual output.
+- Methods:
+	* `__init__(self)`: Initializes the interpreter engine and its components.
+	* `load_file(self, filename: str)`: Loads a PostScript file for processing.
+	* `parse_and_execute(self)`: Tokenizes, parses, and executes code.
+	*`render_output(self)`: Displays or saves the rendered output.
 
-This setup keeps each class focused on a specific responsibility, simplifying code management and testing. Using this structure, you’ll have a modular and scalable foundation for your interpreter and rasterizer.
+This setup keeps each class focused on a specific responsibility, simplifying code management and testing.
+Using this structure, you'll have a modular and scalable foundation for your interpreter and rasterizer.
 
 
 
 
-Certainly! Here’s a layout of the separate files and modules with only the method and class signatures. This should provide a clear outline of the project structure without the implementation details.
+#### Implementation structure
 
 1. Interpreter Module
 
 lexer.py
 
+```python
 class Token:
     def __init__(self, type: str, value: any):
         pass
@@ -401,9 +403,10 @@ class Lexer:
 
     def tokenize(self) -> list[Token]:
         pass
-
+```
 parser.py
 
+```python
 class ASTNode:
     def __init__(self, type: str, value: any, children: list['ASTNode'] = None):
         pass
@@ -417,9 +420,11 @@ class Parser:
 
     def parse_expression(self, tokens: list[Token]) -> ASTNode:
         pass
+```
 
 executor.py
 
+```python
 class Executor:
     def __init__(self, stack: 'Stack', env: 'Environment'):
         pass
@@ -432,9 +437,11 @@ class Executor:
 
     def evaluate_procedure(self, procedure: list[Token]):
         pass
+```
 
 stack.py
 
+```python
 class Stack:
     def __init__(self):
         pass
@@ -447,9 +454,11 @@ class Stack:
 
     def peek(self) -> any:
         pass
+```
 
 environment.py
 
+```python
 class Environment:
     def __init__(self):
         pass
@@ -465,11 +474,13 @@ class Environment:
 
     def exit_scope(self):
         pass
+```
 
 2. Rasterizer Module
 
 graphics_state.py
 
+```python
 class GraphicsState:
     def __init__(self):
         pass
@@ -488,9 +499,11 @@ class GraphicsState:
 
     def pop_state(self):
         pass
+```
 
 path.py
 
+```python
 class Path:
     def __init__(self):
         pass
@@ -506,9 +519,11 @@ class Path:
 
     def closepath(self):
         pass
+```
 
 renderer.py
 
+```python
 class Renderer:
     def __init__(self, buffer: 'OutputBuffer', graphics_state: GraphicsState):
         pass
@@ -521,9 +536,11 @@ class Renderer:
 
     def apply_color(self):
         pass
+```
 
 output_buffer.py
 
+```python
 class OutputBuffer:
     def __init__(self, width: int, height: int):
         pass
@@ -536,11 +553,13 @@ class OutputBuffer:
 
     def save(self, filename: str):
         pass
+```
 
 3. Utility Module
 
 color_utils.py
 
+```python
 class ColorUtils:
     @staticmethod
     def rgb_to_gray(r: int, g: int, b: int) -> int:
@@ -549,9 +568,11 @@ class ColorUtils:
     @staticmethod
     def blend_colors(color1: tuple[int, int, int], color2: tuple[int, int, int], ratio: float) -> tuple[int, int, int]:
         pass
+```
 
 geometry_utils.py
 
+```python
 class GeometryUtils:
     @staticmethod
     def distance(point1: tuple[float, float], point2: tuple[float, float]) -> float:
@@ -560,9 +581,11 @@ class GeometryUtils:
     @staticmethod
     def point_on_line(x0: float, y0: float, x1: float, y1: float, t: float) -> tuple[float, float]:
         pass
+```
 
 transformations.py
 
+```python
 class Transformations:
     @staticmethod
     def translate(matrix: list[list[float]], dx: float, dy: float) -> list[list[float]]:
@@ -575,11 +598,13 @@ class Transformations:
     @staticmethod
     def scale(matrix: list[list[float]], sx: float, sy: float) -> list[list[float]]:
         pass
+```
 
 4. Main Script
 
 main.py
 
+```python
 class InterpreterEngine:
     def __init__(self):
         pass
@@ -592,5 +617,7 @@ class InterpreterEngine:
 
     def render_output(self):
         pass
+```
 
-This layout provides a modular, organized approach to implementing a PostScript interpreter and rasterizer. Each class focuses on a distinct responsibility, making it easier to expand and debug as you implement the methods.
+This layout provides a modular, organized approach to implementing a PostScript interpreter and rasterizer.
+Each class focuses on a distinct responsibility, making it easier to expand and debug as you implement the methods.
