@@ -2,7 +2,7 @@
 ## PostScript
 
 
-#### 1. Project Overview and Initial Steps
+### 1. Project Overview and Initial Steps
 
 The PostScript language is a stack-based, dynamically-typed language for page description, so your project will need two primary components:
 
@@ -13,7 +13,7 @@ Before coding, familiarize yourself with the PostScript language's fundamentals,
 system. Next, set up a minimal project structure that allows easy expansion.
 
 
-#### 2. Project Structure and File Organization
+### 2. Project Structure and File Organization
 
 Here's a high-level view of how you could organize your project files:
 
@@ -47,7 +47,7 @@ postscript_interpreter/
 ```
 
 
-#### 3. Detailed Steps and Module Breakdown
+### 3. Detailed Steps and Module Breakdown
 
 ##### Step 1: Set Up the Interpreter
 
@@ -91,7 +91,7 @@ interprets commands and that the renderer produces accurate output for simple sh
 functionality as you progress.
 
 
-#### 4. Iterative Development Approach
+### 4. Iterative Development Approach
 
 1.	Basic Interpreter: Implement a minimal interpreter that can parse and execute simple arithmetic and
     stack operations, e.g. `3 4 add`.
@@ -158,15 +158,15 @@ Manages the environment, storing variables, functions, and nested scopes.
 
 ##### 2. Rasteriser Module
 
-renderer.py
+__`renderer.py`__
 
 Handles the actual rasterization, converting shapes and text into pixels based on the graphics state.
 
-- render_path(path: Path, state: GraphicsState, buffer: OutputBuffer): Renders a vector path onto the output buffer according to the current graphics state (for stroke and fill operations).
-- render_text(text: str, position: Tuple[int, int], state: GraphicsState, buffer: OutputBuffer): Renders text at a given position based on the current graphics state.
-- apply_color(buffer: OutputBuffer, color: Tuple[int, int, int]): Applies color settings to the buffer.
+- `render_path(path: Path, state: GraphicsState, buffer: OutputBuffer)`: Renders a vector path onto the output buffer according to the current graphics state (for stroke and fill operations).
+- `render_text(text: str, position: Tuple[int, int], state: GraphicsState, buffer: OutputBuffer)`: Renders text at a given position based on the current graphics state.
+- `apply_color(buffer: OutputBuffer, color: Tuple[int, int, int])`: Applies color settings to the buffer.
 
-graphics_state.py
+__`graphics_state.py`__
 
 Manages the current graphics settings, such as transformations, colors, and line styles.
 
@@ -176,22 +176,22 @@ Manages the current graphics settings, such as transformations, colors, and line
 - push_state(): Saves the current graphics state onto a stack.
 - pop_state(): Restores the previous graphics state from the stack.
 
-path.py
+__`path.py`__
 
 Defines and manages vector paths, handling PostScript drawing commands.
 
-- moveto(x: float, y: float): Starts a new subpath at the specified coordinates.
-- lineto(x: float, y: float): Adds a line to the current path from the current point to (x, y).
-- curveto(x1: float, y1: float, x2: float, y2: float, x3: float, y3: float): Adds a cubic Bezier curve to the path.
-- closepath(): Closes the current path, connecting the end back to the start.
+- `moveto(x: float, y: float)`: Starts a new subpath at the specified coordinates.
+- `lineto(x: float, y: float)`: Adds a line to the current path from the current point to (x, y).
+- `curveto(x1: float, y1: float, x2: float, y2: float, x3: float, y3: float)`: Adds a cubic Bezier curve to the path.
+- `closepath()`: Closes the current path, connecting the end back to the start.
 
-output_buffer.py
+__`output_buffer.py`__
 
 Stores the pixel data for rasterised images, ready for display or saving to a file.
 
-- set_pixel(x: int, y: int, color: Tuple[int, int, int]): Sets a pixel at (x, y) to the specified color.
-- clear(): Clears the buffer, filling it with a default background color.
-- save(filename: str): Saves the buffer as an image file (e.g., PNG or BMP).
+- `set_pixel(x: int, y: int, color: Tuple[int, int, int])`: Sets a pixel at (x, y) to the specified color.
+- `clear()`: Clears the buffer, filling it with a default background color.
+- `save(filename: str)`: Saves the buffer as an image file (e.g., PNG or BMP).
 
 
 ##### 3. Utility Module
