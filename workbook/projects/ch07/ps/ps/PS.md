@@ -4,20 +4,25 @@
 
 ### 1. Project Overview and Initial Steps
 
-The PostScript language is a stack-based, dynamically-typed language for page description, so your project will need two primary components:
+The PostScript language is a stack-based, dynamically-typed language for
+page description, so your project will need two primary components:
 
-1. Interpreter: Parses and processes PostScript commands.
-2. Rasteriser: Transforms vector descriptions and text into a pixel-based representation.
+1. *Interpreter*: Parses and processes PostScript commands.
+2. *Rasteriser*: Transforms vector descriptions and text into a pixel-based representation.
 
-Before coding, familiarize yourself with the PostScript language's fundamentals, particularly its graphics model, operators, and coordinate
-system. Next, set up a minimal project structure that allows easy expansion.
+Before coding, familiarize yourself with the PostScript language's fundamentals,
+particularly its graphics model, operators, and coordinate system.
 
+* https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf
+
+
+Next, set up a minimal project structure that allows easy expansion.
 
 ### 2. Project Structure and File Organization
 
 Here's a high-level view of how you could organize your project files:
 
-```
+```shell
 postscript_interpreter/
 ├── src/
 │   ├── main.py                    # Entry point for the project
@@ -59,7 +64,7 @@ modules for tokenizing commands, parsing them, and executing them within the cor
 - Parser (`parser.py`): Organizes tokens into interpretable units, recognising PostScript language constructs
   such as loops, procedures, and control structures.
 - Executor (`executor.py`): Executes parsed instructions by manipulating the operand stack and calling appropriate
-  functions. Each PostScript operator (e.g., moveto, lineto, stroke) will have a corresponding function.
+  functions. Each PostScript operator (e.g. `moveto`, `lineto`, `stroke`) will have a corresponding function.
 - Stack Management (`stack.py`): PostScript is stack-based, so the interpreter should use a stack to handle
   arguments and results.
 - Environment (`environment.py`): Manages variables, procedures, and dictionaries, maintaining state across
