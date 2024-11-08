@@ -49,7 +49,7 @@ postscript_interpreter/
 
 ### 3. Detailed Steps and Module Breakdown
 
-##### Step 1: Set Up the Interpreter
+#### Step 1: Set Up the Interpreter
 
 The interpreter reads PostScript commands, parses them, and manages the operand stack. This step will involve
 modules for tokenizing commands, parsing them, and executing them within the correct context.
@@ -60,14 +60,14 @@ modules for tokenizing commands, parsing them, and executing them within the cor
 - Stack Management (`stack.py`): PostScript is stack-based, so the interpreter should use a stack to handle arguments and results.
 - Environment (`environment.py`): Manages variables, procedures, and dictionaries, maintaining state across commands and supporting scoping rules.
 
-##### Step 2: Set Up the Graphics State
+#### Step 2: Set Up the Graphics State
 
 The graphics state is a collection of parameters that affects how PostScript graphics operators work. This
 includes things like the current transformation matrix, line width, and fill color.
 
 - Graphics State (`graphics_state.py`): Tracks parameters such as color, transformations, and line style. It maintains the current transformation matrix (CTM) and other style attributes. PostScript commands modify this state and store it on a stack to support nested graphics contexts.
 
-##### Step 3: Develop the Rasteriser
+#### Step 3: Develop the Rasteriser
 
 The rasteriser converts paths, shapes, and text commands into pixels, making use of the graphics state. This component will likely involve modules to handle specific rendering tasks, such as filling paths and rendering text.
 
@@ -75,7 +75,7 @@ The rasteriser converts paths, shapes, and text commands into pixels, making use
 - Path Management (`path.py`): Represents and manipulates geometric paths, handling commands like moveto, lineto, curveto, and closepath. It supports constructing paths and converting them into rasterised form.
 - Output Buffer (`output_buffer.py`): Stores the pixel data for the rendered image, which can be saved to a file or displayed. You might use a simple 2D array to represent pixel data and write it out as a PNG or other image format.
 
-##### Step 4: Utility Modules
+#### Step 4: Utility Modules
 
 These will provide helper functions and classes to manage color, geometry, and transformations, aiding both the interpreter and rasteriser.
 
@@ -84,7 +84,7 @@ These will provide helper functions and classes to manage color, geometry, and t
 - Transformations (transformations.py): Implements translation, rotation, scaling, and matrix operations for the current transformation matrix.
 
 
-##### Step 5: Testing and examples
+#### Step 5: Testing and examples
 
 To ensure each part works correctly, develop unit tests for individual components. For example, verify that the parser correctly
 interprets commands and that the renderer produces accurate output for simple shapes. Create sample PostScript files to validate 
@@ -113,7 +113,7 @@ interpreter and rasteriser. This outline is based on the suggested structure and
 functionality to keep each module manageable.
 
 
-##### 1. Interpreter Module
+#### 1. Interpreter Module
 
 __`lexer.py`__
 
@@ -156,7 +156,7 @@ Manages the environment, storing variables, functions, and nested scopes.
 - `exit_scope()`: Pops the current scope, restoring the previous one.
 
 
-##### 2. Rasteriser Module
+#### 2. Rasteriser Module
 
 __`renderer.py`__
 
@@ -194,35 +194,35 @@ Stores the pixel data for rasterised images, ready for display or saving to a fi
 - `save(filename: str)`: Saves the buffer as an image file (e.g., PNG or BMP).
 
 
-##### 3. Utility Module
+#### 3. Utility Module
 
 color_utils.py
 
 Provides helper functions for color operations.
 
-	•	rgb_to_gray(r: int, g: int, b: int) -> int: Converts an RGB color to grayscale.
-	•	blend_colors(color1: Tuple[int, int, int], color2: Tuple[int, int, int], ratio: float) -> Tuple[int, int, int]: Blends two colors according to a specified ratio.
+- rgb_to_gray(r: int, g: int, b: int) -> int: Converts an RGB color to grayscale.
+- blend_colors(color1: Tuple[int, int, int], color2: Tuple[int, int, int], ratio: float) -> Tuple[int, int, int]: Blends two colors according to a specified ratio.
 
 geometry_utils.py
 
 Contains helper functions for geometric calculations.
 
-	•	distance(point1: Tuple[float, float], point2: Tuple[float, float]) -> float: Calculates the Euclidean distance between two points.
-	•	point_on_line(x0: float, y0: float, x1: float, y1: float, t: float) -> Tuple[float, float]: Finds a point on a line segment from (x0, y0) to (x1, y1) based on parameter t (0 <= t <= 1).
+- distance(point1: Tuple[float, float], point2: Tuple[float, float]) -> float: Calculates the Euclidean distance between two points.
+- point_on_line(x0: float, y0: float, x1: float, y1: float, t: float) -> Tuple[float, float]: Finds a point on a line segment from (x0, y0) to (x1, y1) based on parameter t (0 <= t <= 1).
 
 transformations.py
 
 Implements matrix transformations for scaling, rotating, and translating shapes.
 
-	•	translate(matrix: List[List[float]], dx: float, dy: float) -> List[List[float]]: Applies a translation to the transformation matrix.
-	•	rotate(matrix: List[List[float]], angle: float) -> List[List[float]]: Rotates the transformation matrix by a given angle.
-	•	scale(matrix: List[List[float]], sx: float, sy: float) -> List[List[float]]: Scales the transformation matrix by (sx, sy).
+- translate(matrix: List[List[float]], dx: float, dy: float) -> List[List[float]]: Applies a translation to the transformation matrix.
+- rotate(matrix: List[List[float]], angle: float) -> List[List[float]]: Rotates the transformation matrix by a given angle.
+- scale(matrix: List[List[float]], sx: float, sy: float) -> List[List[float]]: Scales the transformation matrix by (sx, sy).
 
 ##### 4. main.py (Entry Point)
 
-	•	load_file(filename: str): Loads a PostScript file for processing.
-	•	parse_and_execute(code: str): Tokenizes, parses, and executes the PostScript code.
-	•	render_output(buffer: OutputBuffer): Displays or saves the final rendered image from the output buffer.
+- load_file(filename: str): Loads a PostScript file for processing.
+- parse_and_execute(code: str): Tokenizes, parses, and executes the PostScript code.
+- render_output(buffer: OutputBuffer): Displays or saves the final rendered image from the output buffer.
 
 This function breakdown keeps each file focused on its responsibilities while ensuring that core tasks like parsing,
 state management, and rendering are separated. It will allow you to work on components individually, making debugging
@@ -266,44 +266,44 @@ ASTNode (parser.py)
 
 Represents a node in the abstract syntax tree.
 
-	•	Attributes:
-	•	type: str: Type of the node (e.g., “operator”, “expression”).
-	•	value: Any: The value of the node (e.g., operator name or literal value).
-	•	children: List[ASTNode]: Child nodes for expressions or nested statements.
-	•	Methods:
-	•	__init__(self, type: str, value: Any, children: Optional[List[ASTNode]] = None): Initializes an AST node.
+Attributes:
+- type: str: Type of the node (e.g., “operator”, “expression”).
+- value: Any: The value of the node (e.g., operator name or literal value).
+- children: List[ASTNode]: Child nodes for expressions or nested statements.
+Methods:
+- __init__(self, type: str, value: Any, children: Optional[List[ASTNode]] = None): Initializes an AST node.
 
 Executor (executor.py)
 
 Interprets the parsed code and executes it on the stack.
 
-	•	Methods:
-	•	__init__(self, stack: Stack, env: Environment): Initializes the executor with an operand stack and environment.
-	•	execute(self, ast: ASTNode): Interprets and executes a node.
-	•	evaluate_operator(self, operator: str, operands: List[Any]): Executes an operator with given operands.
+Methods:
+- __init__(self, stack: Stack, env: Environment): Initializes the executor with an operand stack and environment.
+- execute(self, ast: ASTNode): Interprets and executes a node.
+- evaluate_operator(self, operator: str, operands: List[Any]): Executes an operator with given operands.
 
 Stack (stack.py)
 
 Manages the operand stack, where PostScript stores temporary values.
 
-	•	Attributes:
-	•	items: List[Any]: A list that stores stack values.
-	•	Methods:
-	•	push(self, value: Any): Pushes a value onto the stack.
-	•	pop(self) -> Any: Pops and returns the top value from the stack.
-	•	peek(self) -> Any: Returns the top value without removing it.
+Attributes:
+- items: List[Any]: A list that stores stack values.
+Methods:
+- push(self, value: Any): Pushes a value onto the stack.
+- pop(self) -> Any: Pops and returns the top value from the stack.
+- peek(self) -> Any: Returns the top value without removing it.
 
 Environment (environment.py)
 
 Handles variable and procedure storage, maintaining nested scopes.
 
-	•	Attributes:
-	•	scope_stack: List[Dict[str, Any]]: A stack of dictionaries, each representing a scope level.
-	•	Methods:
-	•	define(self, name: str, value: Any): Defines a variable or procedure in the current scope.
-	•	lookup(self, name: str) -> Any: Retrieves a variable or procedure from the nearest scope.
-	•	enter_scope(self): Adds a new scope to the stack.
-	•	exit_scope(self): Removes the current scope, reverting to the previous one.
+Attributes:
+- scope_stack: List[Dict[str, Any]]: A stack of dictionaries, each representing a scope level.
+Methods:
+- define(self, name: str, value: Any): Defines a variable or procedure in the current scope.
+- lookup(self, name: str) -> Any: Retrieves a variable or procedure from the nearest scope.
+- enter_scope(self): Adds a new scope to the stack.
+- exit_scope(self): Removes the current scope, reverting to the previous one.
 
 2. Rasteriser Module
 
@@ -311,40 +311,40 @@ GraphicsState (graphics_state.py)
 
 Stores the current graphics settings, such as color, line width, and transformation matrix.
 
-	•	Attributes:
-	•	color: Tuple[int, int, int]: Current drawing color.
-	•	line_width: float: Width of lines for strokes.
-	•	transform_matrix: List[List[float]]: Transformation matrix for scaling, translation, and rotation.
-	•	Methods:
-	•	__init__(self): Initializes with default graphics settings.
-	•	set_color(self, r: int, g: int, b: int): Sets the drawing color.
-	•	set_line_width(self, width: float): Updates the line width.
-	•	apply_transform(self, matrix: List[List[float]]): Updates the transformation matrix.
+Attributes:
+- color: Tuple[int, int, int]: Current drawing color.
+- line_width: float: Width of lines for strokes.
+- transform_matrix: List[List[float]]: Transformation matrix for scaling, translation, and rotation.
+Methods:
+- __init__(self): Initializes with default graphics settings.
+- set_color(self, r: int, g: int, b: int): Sets the drawing color.
+- set_line_width(self, width: float): Updates the line width.
+- apply_transform(self, matrix: List[List[float]]): Updates the transformation matrix.
 
 Path (path.py)
 
 Manages vector paths, including subpaths and path operations.
 
-	•	Attributes:
-	•	points: List[Tuple[float, float]]: A list of points in the path.
-	•	closed: bool: Indicates if the path is closed.
-	•	Methods:
-	•	moveto(self, x: float, y: float): Starts a new subpath.
-	•	lineto(self, x: float, y: float): Adds a line to the current subpath.
-	•	curveto(self, x1: float, y1: float, x2: float, y2: float, x3: float, y3: float): Adds a Bezier curve.
-	•	closepath(self): Closes the current path.
+Attributes:
+- points: List[Tuple[float, float]]: A list of points in the path.
+- closed: bool: Indicates if the path is closed.
+Methods:
+- moveto(self, x: float, y: float): Starts a new subpath.
+- lineto(self, x: float, y: float): Adds a line to the current subpath.
+- curveto(self, x1: float, y1: float, x2: float, y2: float, x3: float, y3: float): Adds a Bezier curve.
+- closepath(self): Closes the current path.
 
 Renderer (renderer.py)
 
 Renders paths, shapes, and text onto an output buffer.
 
-	•	Attributes:
-	•	buffer: OutputBuffer: The buffer where rendered pixels are stored.
-	•	graphics_state: GraphicsState: Current graphics state for rendering.
-	•	Methods:
-	•	render_path(self, path: Path): Renders a path based on the current graphics state.
-	•	render_text(self, text: str, position: Tuple[int, int]): Renders text at a specified position.
-	•	apply_color(self): Sets the buffer's current color.
+Attributes:
+- buffer: OutputBuffer: The buffer where rendered pixels are stored.
+- graphics_state: GraphicsState: Current graphics state for rendering.
+Methods:
+- render_path(self, path: Path): Renders a path based on the current graphics state.
+- render_text(self, text: str, position: Tuple[int, int]): Renders text at a specified position.
+- apply_color(self): Sets the buffer's current color.
 
 OutputBuffer (output_buffer.py)
 
@@ -410,7 +410,7 @@ Using this structure, you'll have a modular and scalable foundation for your int
 
 
 
-#### Structure
+### Structure
 
 1. Interpreter Module
 
