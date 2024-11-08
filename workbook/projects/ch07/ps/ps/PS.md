@@ -100,7 +100,7 @@ functionality as you progress.
 Here's an outline of key functions for each module, focusing on their roles in a PostScript interpreter and rasterizer. This outline
 is based on the suggested structure and splits functionality to keep each module manageable.
 
-1. Interpreter Module
+##### 1. Interpreter Module
 
 `lexer.py`
 
@@ -142,7 +142,7 @@ Manages the environment, storing variables, functions, and nested scopes.
 	•	enter_scope(): Pushes a new scope onto the environment stack.
 	•	exit_scope(): Pops the current scope, restoring the previous one.
 
-2. Rasterizer Module
+##### 2. Rasterizer Module
 
 renderer.py
 
@@ -179,7 +179,7 @@ Stores the pixel data for rasterized images, ready for display or saving to a fi
 	•	clear(): Clears the buffer, filling it with a default background color.
 	•	save(filename: str): Saves the buffer as an image file (e.g., PNG or BMP).
 
-3. Utility Module
+##### 3. Utility Module
 
 color_utils.py
 
@@ -203,7 +203,7 @@ Implements matrix transformations for scaling, rotating, and translating shapes.
 	•	rotate(matrix: List[List[float]], angle: float) -> List[List[float]]: Rotates the transformation matrix by a given angle.
 	•	scale(matrix: List[List[float]], sx: float, sy: float) -> List[List[float]]: Scales the transformation matrix by (sx, sy).
 
-4. main.py (Entry Point)
+##### 4. main.py (Entry Point)
 
 	•	load_file(filename: str): Loads a PostScript file for processing.
 	•	parse_and_execute(code: str): Tokenizes, parses, and executes the PostScript code.
@@ -211,7 +211,7 @@ Implements matrix transformations for scaling, rotating, and translating shapes.
 
 This function breakdown keeps each file focused on its responsibilities while ensuring that core tasks like parsing, state management, and rendering are separated. It will allow you to work on components individually, making debugging and testing simpler.
 
-
+---
 
 
 Defining classes will provide a solid structure for encapsulating functionality, making the codebase modular and easier to manage. Here's a detailed breakdown of the classes, organized by module.
