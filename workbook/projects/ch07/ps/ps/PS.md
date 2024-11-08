@@ -54,34 +54,51 @@ postscript_interpreter/
 The interpreter reads PostScript commands, parses them, and manages the operand stack. This step will involve
 modules for tokenizing commands, parsing them, and executing them within the correct context.
 
-- Lexer (`lexer.py`): Tokenizes PostScript input into recognizable symbols like numbers, operators, and names. This module is essential to break down the input for parsing.
-- Parser (`parser.py`): Organizes tokens into interpretable units, recognising PostScript language constructs such as loops, procedures, and control structures.
-- Executor (`executor.py`): Executes parsed instructions by manipulating the operand stack and calling appropriate functions. Each PostScript operator (e.g., moveto, lineto, stroke) will have a corresponding function.
-- Stack Management (`stack.py`): PostScript is stack-based, so the interpreter should use a stack to handle arguments and results.
-- Environment (`environment.py`): Manages variables, procedures, and dictionaries, maintaining state across commands and supporting scoping rules.
+- Lexer (`lexer.py`): Tokenizes PostScript input into recognizable symbols like numbers, operators, and names.
+  This module is essential to break down the input for parsing.
+- Parser (`parser.py`): Organizes tokens into interpretable units, recognising PostScript language constructs
+  such as loops, procedures, and control structures.
+- Executor (`executor.py`): Executes parsed instructions by manipulating the operand stack and calling appropriate
+  functions. Each PostScript operator (e.g., moveto, lineto, stroke) will have a corresponding function.
+- Stack Management (`stack.py`): PostScript is stack-based, so the interpreter should use a stack to handle
+  arguments and results.
+- Environment (`environment.py`): Manages variables, procedures, and dictionaries, maintaining state across
+  commands and supporting scoping rules.
 
 #### Step 2: Set Up the Graphics State
 
 The graphics state is a collection of parameters that affects how PostScript graphics operators work. This
 includes things like the current transformation matrix, line width, and fill color.
 
-- Graphics State (`graphics_state.py`): Tracks parameters such as color, transformations, and line style. It maintains the current transformation matrix (CTM) and other style attributes. PostScript commands modify this state and store it on a stack to support nested graphics contexts.
+- Graphics State (`graphics_state.py`): Tracks parameters such as color, transformations, and line style.
+  It maintains the current transformation matrix (CTM) and other style attributes. PostScript commands
+  modify this state and store it on a stack to support nested graphics contexts.
 
 #### Step 3: Develop the Rasteriser
 
-The rasteriser converts paths, shapes, and text commands into pixels, making use of the graphics state. This component will likely involve modules to handle specific rendering tasks, such as filling paths and rendering text.
+The rasteriser converts paths, shapes, and text commands into pixels, making use of the graphics state.
+This component will likely involve modules to handle specific rendering tasks, such as filling paths and
+rendering text.
 
-- Renderer (`renderer.py`): Implements core rasterization logic, translating vector shapes into pixel data according to the graphics state. This module will handle operations like stroke, fill, and text rendering.
-- Path Management (`path.py`): Represents and manipulates geometric paths, handling commands like moveto, lineto, curveto, and closepath. It supports constructing paths and converting them into rasterised form.
-- Output Buffer (`output_buffer.py`): Stores the pixel data for the rendered image, which can be saved to a file or displayed. You might use a simple 2D array to represent pixel data and write it out as a PNG or other image format.
+- Renderer (`renderer.py`): Implements core rasterization logic, translating vector shapes into pixel
+  data according to the graphics state. This module will handle operations like stroke, fill, and text rendering.
+- Path Management (`path.py`): Represents and manipulates geometric paths, handling commands like `moveto`,
+  `lineto`, `curveto`, and `closepath`. It supports constructing paths and converting them into rasterised form.
+- Output Buffer (`output_buffer.py`): Stores the pixel data for the rendered image, which can be saved to a
+  file or displayed. You might use a simple 2D array to represent pixel data and write it out as a PNG or other
+  image format.
 
 #### Step 4: Utility Modules
 
-These will provide helper functions and classes to manage color, geometry, and transformations, aiding both the interpreter and rasteriser.
+These will provide helper functions and classes to manage color, geometry, and transformations, aiding both
+the interpreter and rasteriser.
 
-- Color Utilities (color_utils.py): Handles color transformations (e.g., RGB to grayscale) and manages color mixing operations.
-- Geometry Utilities (geometry_utils.py): Contains functions for geometric operations, like distance calculations and point transformations.
-- Transformations (transformations.py): Implements translation, rotation, scaling, and matrix operations for the current transformation matrix.
+- Color Utilities (color_utils.py): Handles color transformations (e.g., RGB to grayscale) and manages color
+  mixing operations.
+- Geometry Utilities (geometry_utils.py): Contains functions for geometric operations, like distance calculations
+  and point transformations.
+- Transformations (transformations.py): Implements translation, rotation, scaling, and matrix operations
+  for the current transformation matrix.
 
 
 #### Step 5: Testing and examples
@@ -101,11 +118,11 @@ functionality as you progress.
     the rasteriser to respect these attributes.
 4.	Support for Paths and Complex Shapes: Enhance the interpreter and rasteriser to support complex paths
     and curves using commands like `moveto`, `lineto`, and `curveto`.
-5.	Advanced Interpreter Features: Add support for control structures (e.g., if, for, and repeat) and
+5.	Advanced Interpreter Features: Add support for control structures (e.g. `if`, `for`, and `repeat`) and
     procedures to allow more complex PostScript files to be interpreted.
 6.	Text Rendering: Implement text support, managing the placement, rotation, and scaling of text in the 
     graphics state.
-7.	Performance and Optimization: Once the main functionality is complete, optimize for performance,
+7.	Performance and Optimisation: Once the main functionality is complete, optimize for performance,
     especially in the rasteriser, where pixel-by-pixel manipulation can be costly.
 
 Here's an outline of key functions for each module, focusing on their roles in a PostScript
@@ -119,7 +136,8 @@ __`lexer.py`__
 
 Handles breaking down the PostScript code into tokens.
 
-- `tokenize(code: str) -> List[Token]`: Splits the input PostScript code into tokens, such as numbers, operators, names, and symbols.
+- `tokenize(code: str) -> List[Token]`: Splits the input PostScript code into tokens,
+  such as numbers, operators, names, and symbols.
 - `is_number(token: str) -> bool`: Checks if a token represents a number.
 - `is_operator(token: str) -> bool`: Checks if a token is a valid PostScript operator.
 
@@ -127,16 +145,21 @@ __`parser.py`__
 
 Interprets tokens and organizes them into executable instructions.
 
-- `parse(tokens: List[Token]) -> ASTNode`: Converts a list of tokens into an Abstract Syntax Tree (AST) or another structured format that's easier to interpret.
-- `parse_expression(tokens: List[Token]) -> ASTNode`: Parses expressions, identifying and grouping tokens like if and for into executable expressions.
+- `parse(tokens: List[Token]) -> ASTNode`: Converts a list of tokens into an Abstract Syntax Tree (AST)
+  or another structured format that's easier to interpret.
+- `parse_expression(tokens: List[Token]) -> ASTNode`: Parses expressions, identifying and grouping tokens
+  like if and for into executable expressions.
 
 __`executor.py`__
 
 Executes parsed commands, operating on the stack and interacting with other modules.
 
-- `execute(ast: ASTNode)`: Interprets each AST node and executes commands by calling specific operator functions.
-- `run_operator(operator: str, operands: List[Any]) -> Any`: Executes PostScript operators (e.g., add, moveto, lineto) using the operand stack.
-- `evaluate_procedure(procedure: List[Token])`: Evaluates and executes user-defined procedures, typically stored in the environment.
+- `execute(ast: ASTNode)`: Interprets each AST node and executes commands by calling specific operator
+  functions.
+- `run_operator(operator: str, operands: List[Any]) -> Any`: Executes PostScript operators
+  (e.g. `add`, `moveto`, `lineto`) using the operand stack.
+- `evaluate_procedure(procedure: List[Token])`: Evaluates and executes user-defined procedures,
+  typically stored in the environment.
 
 __`stack.py`__
 
@@ -162,19 +185,21 @@ __`renderer.py`__
 
 Handles the actual rasterization, converting shapes and text into pixels based on the graphics state.
 
-- `render_path(path: Path, state: GraphicsState, buffer: OutputBuffer)`: Renders a vector path onto the output buffer according to the current graphics state (for stroke and fill operations).
-- `render_text(text: str, position: Tuple[int, int], state: GraphicsState, buffer: OutputBuffer)`: Renders text at a given position based on the current graphics state.
+- `render_path(path: Path, state: GraphicsState, buffer: OutputBuffer)`: Renders a vector path onto
+  the output buffer according to the current graphics state (for stroke and fill operations).
+- `render_text(text: str, position: Tuple[int, int], state: GraphicsState, buffer: OutputBuffer)`:
+  Renders text at a given position based on the current graphics state.
 - `apply_color(buffer: OutputBuffer, color: Tuple[int, int, int])`: Applies color settings to the buffer.
 
 __`graphics_state.py`__
 
 Manages the current graphics settings, such as transformations, colors, and line styles.
 
-- set_color(r: int, g: int, b: int): Sets the drawing color in the graphics state.
-- set_line_width(width: float): Sets the width for stroking paths.
-- set_transform(matrix: List[List[float]]): Sets the transformation matrix in the graphics state.
-- push_state(): Saves the current graphics state onto a stack.
-- pop_state(): Restores the previous graphics state from the stack.
+- `set_color(r: int, g: int, b: int)`: Sets the drawing color in the graphics state.
+- `set_line_width(width: float)`: Sets the width for stroking paths.
+- `set_transform(matrix: List[List[float]])`: Sets the transformation matrix in the graphics state.
+- `push_state()`: Saves the current graphics state onto a stack.
+- `pop_state()`: Restores the previous graphics state from the stack.
 
 __`path.py`__
 
@@ -196,27 +221,30 @@ Stores the pixel data for rasterised images, ready for display or saving to a fi
 
 #### 3. Utility Module
 
-color_utils.py
+`color_utils.py`
 
 Provides helper functions for color operations.
 
-- rgb_to_gray(r: int, g: int, b: int) -> int: Converts an RGB color to grayscale.
-- blend_colors(color1: Tuple[int, int, int], color2: Tuple[int, int, int], ratio: float) -> Tuple[int, int, int]: Blends two colors according to a specified ratio.
+- `rgb_to_gray(r: int, g: int, b: int) -> int`: Converts an RGB color to grayscale.
+- `blend_colors(color1: Tuple[int, int, int], color2: Tuple[int, int, int], ratio: float) -> Tuple[int, int, int]`:
+  Blends two colors according to a specified ratio.
 
-geometry_utils.py
+`geometry_utils.py`
 
 Contains helper functions for geometric calculations.
 
-- distance(point1: Tuple[float, float], point2: Tuple[float, float]) -> float: Calculates the Euclidean distance between two points.
-- point_on_line(x0: float, y0: float, x1: float, y1: float, t: float) -> Tuple[float, float]: Finds a point on a line segment from (x0, y0) to (x1, y1) based on parameter t (0 <= t <= 1).
+- `distance(point1: Tuple[float, float], point2: Tuple[float, float]) -> float`:
+  Calculates the Euclidean distance between two points.
+- `point_on_line(x0: float, y0: float, x1: float, y1: float, t: float) -> Tuple[float, float]`:
+  Finds a point on a line segment from (x0, y0) to (x1, y1) based on parameter t (0 <= t <= 1).
 
-transformations.py
+`transformations.py`
 
 Implements matrix transformations for scaling, rotating, and translating shapes.
 
-- translate(matrix: List[List[float]], dx: float, dy: float) -> List[List[float]]: Applies a translation to the transformation matrix.
-- rotate(matrix: List[List[float]], angle: float) -> List[List[float]]: Rotates the transformation matrix by a given angle.
-- scale(matrix: List[List[float]], sx: float, sy: float) -> List[List[float]]: Scales the transformation matrix by (sx, sy).
+- `translate(matrix: List[List[float]], dx: float, dy: float) -> List[List[float]]`: Applies a translation to the transformation matrix.
+- `rotate(matrix: List[List[float]], angle: float) -> List[List[float]]`: Rotates the transformation matrix by a given angle.
+- `scale(matrix: List[List[float]], sx: float, sy: float) -> List[List[float]]`: Scales the transformation matrix by (sx, sy).
 
 ##### 4. main.py (Entry Point)
 
@@ -241,87 +269,87 @@ Token (`lexer.py`)
 Represents individual tokens parsed from the input code.
 
 Attributes:
-- type: str: The type of the token (e.g., “operator”, “number”, “name”).
-- value: Any: The actual value (e.g., the number itself or the operator symbol).
+- `type: str`: The type of the token (e.g. “operator”, “number”, “name”).
+- `value: Any`: The actual value (e.g. the number itself or the operator symbol).
 Methods:
-- __init__(self, type: str, value: Any): Initializes a token with its type and value.
+- `__init__(self, type: str, value: Any)`: Initializes a token with its type and value.
 
 Lexer (`lexer.py`)
 
 Tokenizes raw PostScript code.
 
 Methods:
-- __init__(self, code: str): Initializes the lexer with the input code.
-- tokenize(self) -> List[Token]: Processes the input and returns a list of Token objects.
+- `__init__(self, code: str)`: Initializes the lexer with the input code.
+- `tokenize(self) -> List[Token]`: Processes the input and returns a list of Token objects.
 
-Parser (parser.py)
+Parser (`parser.py`)
 
-Converts tokens into structured representations (e.g., AST or expression trees).
+Converts tokens into structured representations (e.g. AST or expression trees).
 
 Methods:
-- __init__(self, tokens: List[Token]): Initializes the parser with a list of tokens.
-- parse(self) -> ASTNode: Parses tokens into an abstract syntax tree (AST) or a similar structure.
+- `__init__(self, tokens: List[Token])`: Initializes the parser with a list of tokens.
+- `parse(self) -> ASTNode`: Parses tokens into an abstract syntax tree (AST) or a similar structure.
 
-ASTNode (parser.py)
+ASTNode (`parser.py`)
 
 Represents a node in the abstract syntax tree.
 
 Attributes:
-- type: str: Type of the node (e.g., “operator”, “expression”).
-- value: Any: The value of the node (e.g., operator name or literal value).
-- children: List[ASTNode]: Child nodes for expressions or nested statements.
+- `type: str`: Type of the node (e.g. “operator”, “expression”).
+- `value: Any`: The value of the node (e.g. operator name or literal value).
+- `children: List[ASTNode]`: Child nodes for expressions or nested statements.
 Methods:
-- __init__(self, type: str, value: Any, children: Optional[List[ASTNode]] = None): Initializes an AST node.
+- `__init__(self, type: str, value: Any, children: Optional[List[ASTNode]] = None)`: Initializes an AST node.
 
-Executor (executor.py)
+Executor (`executor.py`)
 
 Interprets the parsed code and executes it on the stack.
 
 Methods:
-- __init__(self, stack: Stack, env: Environment): Initializes the executor with an operand stack and environment.
-- execute(self, ast: ASTNode): Interprets and executes a node.
-- evaluate_operator(self, operator: str, operands: List[Any]): Executes an operator with given operands.
+- `__init__(self, stack: Stack, env: Environment)`: Initializes the executor with an operand stack and environment.
+- `execute(self, ast: ASTNode)`: Interprets and executes a node.
+- `evaluate_operator(self, operator: str, operands: List[Any])`: Executes an operator with given operands.
 
 Stack (stack.py)
 
 Manages the operand stack, where PostScript stores temporary values.
 
 Attributes:
-- items: List[Any]: A list that stores stack values.
+- `items: List[Any]`: A list that stores stack values.
 Methods:
-- push(self, value: Any): Pushes a value onto the stack.
-- pop(self) -> Any: Pops and returns the top value from the stack.
-- peek(self) -> Any: Returns the top value without removing it.
+- `push(self, value: Any)`: Pushes a value onto the stack.
+- `pop(self) -> Any`: Pops and returns the top value from the stack.
+- `peek(self) -> Any`: Returns the top value without removing it.
 
-Environment (environment.py)
+Environment (`environment.py`)
 
 Handles variable and procedure storage, maintaining nested scopes.
 
 Attributes:
-- scope_stack: List[Dict[str, Any]]: A stack of dictionaries, each representing a scope level.
+- `scope_stack: List[Dict[str, Any]]`: A stack of dictionaries, each representing a scope level.
 Methods:
-- define(self, name: str, value: Any): Defines a variable or procedure in the current scope.
-- lookup(self, name: str) -> Any: Retrieves a variable or procedure from the nearest scope.
-- enter_scope(self): Adds a new scope to the stack.
-- exit_scope(self): Removes the current scope, reverting to the previous one.
+- `define(self, name: str, value: Any)`: Defines a variable or procedure in the current scope.
+- `lookup(self, name: str) -> Any`: Retrieves a variable or procedure from the nearest scope.
+- `enter_scope(self)`: Adds a new scope to the stack.
+- `exit_scope(self)`: Removes the current scope, reverting to the previous one.
 
 2. Rasteriser Module
 
-GraphicsState (graphics_state.py)
+GraphicsState (`graphics_state.py`)
 
 Stores the current graphics settings, such as color, line width, and transformation matrix.
 
 Attributes:
-- color: Tuple[int, int, int]: Current drawing color.
-- line_width: float: Width of lines for strokes.
-- transform_matrix: List[List[float]]: Transformation matrix for scaling, translation, and rotation.
+- `color: Tuple[int, int, int]`: Current drawing color.
+- `line_width: float`: Width of lines for strokes.
+- `transform_matrix: List[List[float]]`: Transformation matrix for scaling, translation, and rotation.
 Methods:
-- __init__(self): Initializes with default graphics settings.
-- set_color(self, r: int, g: int, b: int): Sets the drawing color.
-- set_line_width(self, width: float): Updates the line width.
-- apply_transform(self, matrix: List[List[float]]): Updates the transformation matrix.
+- `__init__(self)`: Initializes with default graphics settings.
+- `set_color(self, r: int, g: int, b: int)`: Sets the drawing color.
+- `set_line_width(self, width: float)`: Updates the line width.
+- `apply_transform(self, matrix: List[List[float]])`: Updates the transformation matrix.
 
-Path (path.py)
+Path (`path.py`)
 
 Manages vector paths, including subpaths and path operations.
 
@@ -334,26 +362,26 @@ Methods:
 - curveto(self, x1: float, y1: float, x2: float, y2: float, x3: float, y3: float): Adds a Bezier curve.
 - closepath(self): Closes the current path.
 
-Renderer (renderer.py)
+Renderer (`renderer.py`)
 
 Renders paths, shapes, and text onto an output buffer.
 
 Attributes:
-- buffer: OutputBuffer: The buffer where rendered pixels are stored.
-- graphics_state: GraphicsState: Current graphics state for rendering.
+- `buffer: OutputBuffer`: The buffer where rendered pixels are stored.
+- `graphics_state`: GraphicsState: Current graphics state for rendering.
 Methods:
-- render_path(self, path: Path): Renders a path based on the current graphics state.
-- render_text(self, text: str, position: Tuple[int, int]): Renders text at a specified position.
-- apply_color(self): Sets the buffer's current color.
+- `render_path(self, path: Path)`: Renders a path based on the current graphics state.
+- `render_text(self, text: str, position: Tuple[int, int])`: Renders text at a specified position.
+- `apply_color(self)`: Sets the buffer's current color.
 
-OutputBuffer (output_buffer.py)
+OutputBuffer (`output_buffer.py`)
 
 Represents the pixel-based output, where rasterised images are stored.
 
 Attributes:
-- width: int: Width of the output buffer.
-- height: int: Height of the output buffer.
-- pixels: List[List[Tuple[int, int, int]]]: 2D array of pixels (RGB format).
+- `width: int`: Width of the output buffer.
+- `height: int`: Height of the output buffer.
+- `pixels: List[List[Tuple[int, int, int]]]`: 2D array of pixels (RGB format).
 Methods:
 - __init__(self, width: int, height: int): Initializes the buffer with a specified size.
 - set_pixel(self, x: int, y: int, color: Tuple[int, int, int]): Sets a pixel at (x, y) to a specific color.
@@ -362,47 +390,47 @@ Methods:
 
 3. Utility Module
 
-ColorUtils (color_utils.py)
+ColorUtils (`color_utils.py`)
 
 Provides color manipulation functions.
 
 Static Methods:
-- rgb_to_gray(r: int, g: int, b: int) -> int: Converts an RGB color to grayscale.
-- blend_colors(color1: Tuple[int, int, int], color2: Tuple[int, int, int], ratio: float) -> Tuple[int, int, int]: Blends two colors by a specified ratio.
+- `rgb_to_gray(r: int, g: int, b: int) -> int`: Converts an RGB color to grayscale.
+- `blend_colors(color1: Tuple[int, int, int], color2: Tuple[int, int, int], ratio: float) -> Tuple[int, int, int]`: Blends two colors by a specified ratio.
 
 GeometryUtils (`geometry_utils.py`)
 
 Provides helper functions for geometric operations.
 
 Static Methods:
-- distance(point1: Tuple[float, float], point2: Tuple[float, float]) -> float: Calculates distance between two points.
-- point_on_line(x0: float, y0: float, x1: float, y1: float, t: float) -> Tuple[float, float]: Calculates a point on a line segment.
+- `distance(point1: Tuple[float, float], point2: Tuple[float, float]) -> float`: Calculates distance between two points.
+- `point_on_line(x0: float, y0: float, x1: float, y1: float, t: float) -> Tuple[float, float]`: Calculates a point on a line segment.
 
 Transformations (`transformations.py`)
 
 Handles transformations, such as translation, rotation, and scaling.
 
 Static Methods:
-- translate(matrix: List[List[float]], dx: float, dy: float) -> List[List[float]]: Applies translation to a transformation matrix.
-- rotate(matrix: List[List[float]], angle: float) -> List[List[float]]: Rotates the transformation matrix.
-- scale(matrix: List[List[float]], sx: float, sy: float) -> List[List[float]]: Scales the transformation matrix.
+- `translate(matrix: List[List[float]], dx: float, dy: float) -> List[List[float]]`: Applies translation to a transformation matrix.
+- `rotate(matrix: List[List[float]], angle: float) -> List[List[float]]`: Rotates the transformation matrix.
+- `scale(matrix: List[List[float]], sx: float, sy: float) -> List[List[float]]`: Scales the transformation matrix.
 
-4. Main Script (main.py)
+4. Main Script (`main.py`)
 
 `InterpreterEngine`
 
 Orchestrates the loading, parsing, execution, and rendering process.
 
-- Attributes
-	* `lexer`: Tokenizer for input code.
-	* `parser`: Parser for tokenized input.
-	* `executor`: Executor for running commands.
-	* `renderer`: Renderer for visual output.
-- Methods
-	* `__init__(self)`: Initialises the interpreter engine and its components.
-	* `load_file(self, filename: str)`: Loads a PostScript file for processing.
-	* `parse_and_execute(self)`: Tokenizes, parses, and executes code.
-	* `render_output(self)`: Displays or saves the rendered output.
+Attributes
+- `lexer`: Tokenizer for input code.
+- `parser`: Parser for tokenized input.
+- `executor`: Executor for running commands.
+- `renderer`: Renderer for visual output.
+Methods
+- `__init__(self)`: Initialises the interpreter engine and its components.
+- `load_file(self, filename: str)`: Loads a PostScript file for processing.
+- `parse_and_execute(self)`: Tokenizes, parses, and executes code.
+- `render_output(self)`: Displays or saves the rendered output.
 
 This setup keeps each class focused on a specific responsibility, simplifying code management and testing.
 Using this structure, you'll have a modular and scalable foundation for your interpreter and rasteriser.
