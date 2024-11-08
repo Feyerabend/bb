@@ -51,41 +51,45 @@ postscript_interpreter/
 
 ##### Step 1: Set Up the Interpreter
 
-The interpreter reads PostScript commands, parses them, and manages the operand stack. This step will involve modules for tokenizing commands, parsing them, and executing them within the correct context.
+The interpreter reads PostScript commands, parses them, and manages the operand stack. This step will involve
+modules for tokenizing commands, parsing them, and executing them within the correct context.
 
-	•	Lexer (lexer.py): Tokenizes PostScript input into recognizable symbols like numbers, operators, and names. This module is essential to break down the input for parsing.
-	•	Parser (parser.py): Organizes tokens into interpretable units, recognizing PostScript language constructs such as loops, procedures, and control structures.
-	•	Executor (executor.py): Executes parsed instructions by manipulating the operand stack and calling appropriate functions. Each PostScript operator (e.g., moveto, lineto, stroke) will have a corresponding function.
-	•	Stack Management (stack.py): PostScript is stack-based, so the interpreter should use a stack to handle arguments and results.
-	•	Environment (environment.py): Manages variables, procedures, and dictionaries, maintaining state across commands and supporting scoping rules.
+- Lexer (lexer.py): Tokenizes PostScript input into recognizable symbols like numbers, operators, and names. This module is essential to break down the input for parsing.
+- Parser (parser.py): Organizes tokens into interpretable units, recognizing PostScript language constructs such as loops, procedures, and control structures.
+- Executor (executor.py): Executes parsed instructions by manipulating the operand stack and calling appropriate functions. Each PostScript operator (e.g., moveto, lineto, stroke) will have a corresponding function.
+- Stack Management (stack.py): PostScript is stack-based, so the interpreter should use a stack to handle arguments and results.
+- Environment (environment.py): Manages variables, procedures, and dictionaries, maintaining state across commands and supporting scoping rules.
 
 ##### Step 2: Set Up the Graphics State
 
-The graphics state is a collection of parameters that affects how PostScript graphics operators work. This includes things like the current transformation matrix, line width, and fill color.
+The graphics state is a collection of parameters that affects how PostScript graphics operators work. This
+includes things like the current transformation matrix, line width, and fill color.
 
-	•	Graphics State (graphics_state.py): Tracks parameters such as color, transformations, and line style. It maintains the current transformation matrix (CTM) and other style attributes. PostScript commands modify this state and store it on a stack to support nested graphics contexts.
+- Graphics State (graphics_state.py): Tracks parameters such as color, transformations, and line style. It maintains the current transformation matrix (CTM) and other style attributes. PostScript commands modify this state and store it on a stack to support nested graphics contexts.
 
 ##### Step 3: Develop the Rasterizer
 
 The rasterizer converts paths, shapes, and text commands into pixels, making use of the graphics state. This component will likely involve modules to handle specific rendering tasks, such as filling paths and rendering text.
 
-	•	Renderer (renderer.py): Implements core rasterization logic, translating vector shapes into pixel data according to the graphics state. This module will handle operations like stroke, fill, and text rendering.
-	•	Path Management (path.py): Represents and manipulates geometric paths, handling commands like moveto, lineto, curveto, and closepath. It supports constructing paths and converting them into rasterized form.
-	•	Output Buffer (output_buffer.py): Stores the pixel data for the rendered image, which can be saved to a file or displayed. You might use a simple 2D array to represent pixel data and write it out as a PNG or other image format.
+- Renderer (renderer.py): Implements core rasterization logic, translating vector shapes into pixel data according to the graphics state. This module will handle operations like stroke, fill, and text rendering.
+- Path Management (path.py): Represents and manipulates geometric paths, handling commands like moveto, lineto, curveto, and closepath. It supports constructing paths and converting them into rasterized form.
+- Output Buffer (output_buffer.py): Stores the pixel data for the rendered image, which can be saved to a file or displayed. You might use a simple 2D array to represent pixel data and write it out as a PNG or other image format.
 
 ##### Step 4: Utility Modules
 
 These will provide helper functions and classes to manage color, geometry, and transformations, aiding both the interpreter and rasterizer.
 
-	•	Color Utilities (color_utils.py): Handles color transformations (e.g., RGB to grayscale) and manages color mixing operations.
-	•	Geometry Utilities (geometry_utils.py): Contains functions for geometric operations, like distance calculations and point transformations.
-	•	Transformations (transformations.py): Implements translation, rotation, scaling, and matrix operations for the current transformation matrix.
+- Color Utilities (color_utils.py): Handles color transformations (e.g., RGB to grayscale) and manages color mixing operations.
+- Geometry Utilities (geometry_utils.py): Contains functions for geometric operations, like distance calculations and point transformations.
+- Transformations (transformations.py): Implements translation, rotation, scaling, and matrix operations for the current transformation matrix.
 
-##### Step 5: Testing and Examples
+
+##### Step 5: Testing and examples
 
 To ensure each part works correctly, develop unit tests for individual components. For example, verify that the parser correctly
 interprets commands and that the renderer produces accurate output for simple shapes. Create sample PostScript files to validate 
 functionality as you progress.
+
 
 #### 4. Iterative Development Approach
 
@@ -97,8 +101,10 @@ functionality as you progress.
 6.	Text Rendering: Implement text support, managing the placement, rotation, and scaling of text in the graphics state.
 7.	Performance and Optimization: Once the main functionality is complete, optimize for performance, especially in the rasterizer, where pixel-by-pixel manipulation can be costly.
 
-Here's an outline of key functions for each module, focusing on their roles in a PostScript interpreter and rasterizer. This outline
-is based on the suggested structure and splits functionality to keep each module manageable.
+Here's an outline of key functions for each module, focusing on their roles in a PostScript
+interpreter and rasterizer. This outline is based on the suggested structure and splits
+functionality to keep each module manageable.
+
 
 ##### 1. Interpreter Module
 
@@ -106,41 +112,42 @@ is based on the suggested structure and splits functionality to keep each module
 
 Handles breaking down the PostScript code into tokens.
 
-	•	tokenize(code: str) -> List[Token]: Splits the input PostScript code into tokens, such as numbers, operators, names, and symbols.
-	•	is_number(token: str) -> bool: Checks if a token represents a number.
-	•	is_operator(token: str) -> bool: Checks if a token is a valid PostScript operator.
+- `tokenize(code: str) -> List[Token]`: Splits the input PostScript code into tokens, such as numbers, operators, names, and symbols.
+- `is_number(token: str) -> bool`: Checks if a token represents a number.
+- `is_operator(token: str) -> bool`: Checks if a token is a valid PostScript operator.
 
 `parser.py`
 
 Interprets tokens and organizes them into executable instructions.
 
-	•	parse(tokens: List[Token]) -> ASTNode: Converts a list of tokens into an Abstract Syntax Tree (AST) or another structured format that's easier to interpret.
-	•	parse_expression(tokens: List[Token]) -> ASTNode: Parses expressions, identifying and grouping tokens like if and for into executable expressions.
+- `parse(tokens: List[Token]) -> ASTNode`: Converts a list of tokens into an Abstract Syntax Tree (AST) or another structured format that's easier to interpret.
+- `parse_expression(tokens: List[Token]) -> ASTNode`: Parses expressions, identifying and grouping tokens like if and for into executable expressions.
 
-executor.py
+`executor.py`
 
 Executes parsed commands, operating on the stack and interacting with other modules.
 
-	•	execute(ast: ASTNode): Interprets each AST node and executes commands by calling specific operator functions.
-	•	run_operator(operator: str, operands: List[Any]) -> Any: Executes PostScript operators (e.g., add, moveto, lineto) using the operand stack.
-	•	evaluate_procedure(procedure: List[Token]): Evaluates and executes user-defined procedures, typically stored in the environment.
+- `execute(ast: ASTNode)`: Interprets each AST node and executes commands by calling specific operator functions.
+- `run_operator(operator: str, operands: List[Any]) -> Any`: Executes PostScript operators (e.g., add, moveto, lineto) using the operand stack.
+- `evaluate_procedure(procedure: List[Token])`: Evaluates and executes user-defined procedures, typically stored in the environment.
 
-stack.py
+`stack.py`
 
 Implements the operand stack needed for PostScript operations.
 
-	•	push(value: Any): Pushes a value onto the stack.
-	•	pop() -> Any: Pops the top value off the stack and returns it.
-	•	top() -> Any: Returns the top value without removing it.
+- `push(value: Any)`: Pushes a value onto the stack.
+- `pop() -> Any`: Pops the top value off the stack and returns it.
+- `top() -> Any`: Returns the top value without removing it.
 
-environment.py
+`environment.py`
 
 Manages the environment, storing variables, functions, and nested scopes.
 
-	•	define(name: str, value: Any): Defines a variable or procedure with a given name.
-	•	lookup(name: str) -> Any: Retrieves the value of a variable or procedure by name.
-	•	enter_scope(): Pushes a new scope onto the environment stack.
-	•	exit_scope(): Pops the current scope, restoring the previous one.
+- `define(name: str, value: Any)`: Defines a variable or procedure with a given name.
+- `lookup(name: str) -> Any`: Retrieves the value of a variable or procedure by name.
+- `enter_scope()`: Pushes a new scope onto the environment stack.
+- `exit_scope()`: Pops the current scope, restoring the previous one.
+
 
 ##### 2. Rasterizer Module
 
@@ -148,36 +155,37 @@ renderer.py
 
 Handles the actual rasterization, converting shapes and text into pixels based on the graphics state.
 
-	•	render_path(path: Path, state: GraphicsState, buffer: OutputBuffer): Renders a vector path onto the output buffer according to the current graphics state (for stroke and fill operations).
-	•	render_text(text: str, position: Tuple[int, int], state: GraphicsState, buffer: OutputBuffer): Renders text at a given position based on the current graphics state.
-	•	apply_color(buffer: OutputBuffer, color: Tuple[int, int, int]): Applies color settings to the buffer.
+- render_path(path: Path, state: GraphicsState, buffer: OutputBuffer): Renders a vector path onto the output buffer according to the current graphics state (for stroke and fill operations).
+- render_text(text: str, position: Tuple[int, int], state: GraphicsState, buffer: OutputBuffer): Renders text at a given position based on the current graphics state.
+- apply_color(buffer: OutputBuffer, color: Tuple[int, int, int]): Applies color settings to the buffer.
 
 graphics_state.py
 
 Manages the current graphics settings, such as transformations, colors, and line styles.
 
-	•	set_color(r: int, g: int, b: int): Sets the drawing color in the graphics state.
-	•	set_line_width(width: float): Sets the width for stroking paths.
-	•	set_transform(matrix: List[List[float]]): Sets the transformation matrix in the graphics state.
-	•	push_state(): Saves the current graphics state onto a stack.
-	•	pop_state(): Restores the previous graphics state from the stack.
+- set_color(r: int, g: int, b: int): Sets the drawing color in the graphics state.
+- set_line_width(width: float): Sets the width for stroking paths.
+- set_transform(matrix: List[List[float]]): Sets the transformation matrix in the graphics state.
+- push_state(): Saves the current graphics state onto a stack.
+- pop_state(): Restores the previous graphics state from the stack.
 
 path.py
 
 Defines and manages vector paths, handling PostScript drawing commands.
 
-	•	moveto(x: float, y: float): Starts a new subpath at the specified coordinates.
-	•	lineto(x: float, y: float): Adds a line to the current path from the current point to (x, y).
-	•	curveto(x1: float, y1: float, x2: float, y2: float, x3: float, y3: float): Adds a cubic Bezier curve to the path.
-	•	closepath(): Closes the current path, connecting the end back to the start.
+- moveto(x: float, y: float): Starts a new subpath at the specified coordinates.
+- lineto(x: float, y: float): Adds a line to the current path from the current point to (x, y).
+- curveto(x1: float, y1: float, x2: float, y2: float, x3: float, y3: float): Adds a cubic Bezier curve to the path.
+- closepath(): Closes the current path, connecting the end back to the start.
 
 output_buffer.py
 
 Stores the pixel data for rasterized images, ready for display or saving to a file.
 
-	•	set_pixel(x: int, y: int, color: Tuple[int, int, int]): Sets a pixel at (x, y) to the specified color.
-	•	clear(): Clears the buffer, filling it with a default background color.
-	•	save(filename: str): Saves the buffer as an image file (e.g., PNG or BMP).
+- set_pixel(x: int, y: int, color: Tuple[int, int, int]): Sets a pixel at (x, y) to the specified color.
+- clear(): Clears the buffer, filling it with a default background color.
+- save(filename: str): Saves the buffer as an image file (e.g., PNG or BMP).
+
 
 ##### 3. Utility Module
 
@@ -209,40 +217,43 @@ Implements matrix transformations for scaling, rotating, and translating shapes.
 	•	parse_and_execute(code: str): Tokenizes, parses, and executes the PostScript code.
 	•	render_output(buffer: OutputBuffer): Displays or saves the final rendered image from the output buffer.
 
-This function breakdown keeps each file focused on its responsibilities while ensuring that core tasks like parsing, state management, and rendering are separated. It will allow you to work on components individually, making debugging and testing simpler.
+This function breakdown keeps each file focused on its responsibilities while ensuring that core tasks like parsing,
+state management, and rendering are separated. It will allow you to work on components individually, making debugging
+and testing simpler.
 
 ---
 
 
-Defining classes will provide a solid structure for encapsulating functionality, making the codebase modular and easier to manage. Here's a detailed breakdown of the classes, organized by module.
+Defining classes will provide a solid structure for encapsulating functionality, making the codebase modular and easier
+to manage. Here's a detailed breakdown of the classes, organized by module.
 
 1. Interpreter Module
 
-Token (lexer.py)
+Token (`lexer.py`)
 
 Represents individual tokens parsed from the input code.
 
-	•	Attributes:
-	•	type: str: The type of the token (e.g., “operator”, “number”, “name”).
-	•	value: Any: The actual value (e.g., the number itself or the operator symbol).
-	•	Methods:
-	•	__init__(self, type: str, value: Any): Initializes a token with its type and value.
+Attributes:
+- type: str: The type of the token (e.g., “operator”, “number”, “name”).
+- value: Any: The actual value (e.g., the number itself or the operator symbol).
+Methods:
+- __init__(self, type: str, value: Any): Initializes a token with its type and value.
 
-Lexer (lexer.py)
+Lexer (`lexer.py`)
 
 Tokenizes raw PostScript code.
 
-	•	Methods:
-	•	__init__(self, code: str): Initializes the lexer with the input code.
-	•	tokenize(self) -> List[Token]: Processes the input and returns a list of Token objects.
+Methods:
+- __init__(self, code: str): Initializes the lexer with the input code.
+- tokenize(self) -> List[Token]: Processes the input and returns a list of Token objects.
 
 Parser (parser.py)
 
 Converts tokens into structured representations (e.g., AST or expression trees).
 
-	•	Methods:
-	•	__init__(self, tokens: List[Token]): Initializes the parser with a list of tokens.
-	•	parse(self) -> ASTNode: Parses tokens into an abstract syntax tree (AST) or a similar structure.
+Methods:
+- __init__(self, tokens: List[Token]): Initializes the parser with a list of tokens.
+- parse(self) -> ASTNode: Parses tokens into an abstract syntax tree (AST) or a similar structure.
 
 ASTNode (parser.py)
 
@@ -332,15 +343,15 @@ OutputBuffer (output_buffer.py)
 
 Represents the pixel-based output, where rasterized images are stored.
 
-	•	Attributes:
-	•	width: int: Width of the output buffer.
-	•	height: int: Height of the output buffer.
-	•	pixels: List[List[Tuple[int, int, int]]]: 2D array of pixels (RGB format).
-	•	Methods:
-	•	__init__(self, width: int, height: int): Initializes the buffer with a specified size.
-	•	set_pixel(self, x: int, y: int, color: Tuple[int, int, int]): Sets a pixel at (x, y) to a specific color.
-	•	clear(self): Fills the buffer with a background color.
-	•	save(self, filename: str): Saves the buffer to an image file.
+Attributes:
+- width: int: Width of the output buffer.
+- height: int: Height of the output buffer.
+- pixels: List[List[Tuple[int, int, int]]]: 2D array of pixels (RGB format).
+Methods:
+- __init__(self, width: int, height: int): Initializes the buffer with a specified size.
+- set_pixel(self, x: int, y: int, color: Tuple[int, int, int]): Sets a pixel at (x, y) to a specific color.
+- clear(self): Fills the buffer with a background color.
+- save(self, filename: str): Saves the buffer to an image file.
 
 3. Utility Module
 
@@ -348,26 +359,26 @@ ColorUtils (color_utils.py)
 
 Provides color manipulation functions.
 
-	•	Static Methods:
-	•	rgb_to_gray(r: int, g: int, b: int) -> int: Converts an RGB color to grayscale.
-	•	blend_colors(color1: Tuple[int, int, int], color2: Tuple[int, int, int], ratio: float) -> Tuple[int, int, int]: Blends two colors by a specified ratio.
+Static Methods:
+- rgb_to_gray(r: int, g: int, b: int) -> int: Converts an RGB color to grayscale.
+- blend_colors(color1: Tuple[int, int, int], color2: Tuple[int, int, int], ratio: float) -> Tuple[int, int, int]: Blends two colors by a specified ratio.
 
-GeometryUtils (geometry_utils.py)
+GeometryUtils (`geometry_utils.py`)
 
 Provides helper functions for geometric operations.
 
-	•	Static Methods:
-	•	distance(point1: Tuple[float, float], point2: Tuple[float, float]) -> float: Calculates distance between two points.
-	•	point_on_line(x0: float, y0: float, x1: float, y1: float, t: float) -> Tuple[float, float]: Calculates a point on a line segment.
+Static Methods:
+- distance(point1: Tuple[float, float], point2: Tuple[float, float]) -> float: Calculates distance between two points.
+- point_on_line(x0: float, y0: float, x1: float, y1: float, t: float) -> Tuple[float, float]: Calculates a point on a line segment.
 
-Transformations (transformations.py)
+Transformations (`transformations.py`)
 
 Handles transformations, such as translation, rotation, and scaling.
 
-	•	Static Methods:
-	•	translate(matrix: List[List[float]], dx: float, dy: float) -> List[List[float]]: Applies translation to a transformation matrix.
-	•	rotate(matrix: List[List[float]], angle: float) -> List[List[float]]: Rotates the transformation matrix.
-	•	scale(matrix: List[List[float]], sx: float, sy: float) -> List[List[float]]: Scales the transformation matrix.
+Static Methods:
+- translate(matrix: List[List[float]], dx: float, dy: float) -> List[List[float]]: Applies translation to a transformation matrix.
+- rotate(matrix: List[List[float]], angle: float) -> List[List[float]]: Rotates the transformation matrix.
+- scale(matrix: List[List[float]], sx: float, sy: float) -> List[List[float]]: Scales the transformation matrix.
 
 4. Main Script (main.py)
 
@@ -392,7 +403,7 @@ Using this structure, you'll have a modular and scalable foundation for your int
 
 
 
-#### Implementation structure
+#### Structure
 
 1. Interpreter Module
 
