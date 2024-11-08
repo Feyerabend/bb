@@ -1,15 +1,19 @@
 
+## PostScript
 
-1. Project Overview and Initial Steps
+
+#### 1. Project Overview and Initial Steps
 
 The PostScript language is a stack-based, dynamically-typed language for page description, so your project will need two primary components:
 
-	1.	Interpreter: Parses and processes PostScript commands.
-	2.	Rasterizer: Transforms vector descriptions and text into a pixel-based representation.
+1. Interpreter: Parses and processes PostScript commands.
+2. Rasterizer: Transforms vector descriptions and text into a pixel-based representation.
 
-Before coding, familiarize yourself with the PostScript language's fundamentals, particularly its graphics model, operators, and coordinate system. Next, set up a minimal project structure that allows easy expansion.
+Before coding, familiarize yourself with the PostScript language's fundamentals, particularly its graphics model, operators, and coordinate
+system. Next, set up a minimal project structure that allows easy expansion.
 
-2. Project Structure and File Organization
+
+#### 2. Project Structure and File Organization
 
 Here's a high-level view of how you could organize your project files:
 
@@ -42,9 +46,10 @@ postscript_interpreter/
 └── README.md                      # Project documentation
 ```
 
-3. Detailed Steps and Module Breakdown
 
-Step 1: Set Up the Interpreter
+#### 3. Detailed Steps and Module Breakdown
+
+##### Step 1: Set Up the Interpreter
 
 The interpreter reads PostScript commands, parses them, and manages the operand stack. This step will involve modules for tokenizing commands, parsing them, and executing them within the correct context.
 
@@ -54,13 +59,13 @@ The interpreter reads PostScript commands, parses them, and manages the operand 
 	•	Stack Management (stack.py): PostScript is stack-based, so the interpreter should use a stack to handle arguments and results.
 	•	Environment (environment.py): Manages variables, procedures, and dictionaries, maintaining state across commands and supporting scoping rules.
 
-Step 2: Set Up the Graphics State
+##### Step 2: Set Up the Graphics State
 
 The graphics state is a collection of parameters that affects how PostScript graphics operators work. This includes things like the current transformation matrix, line width, and fill color.
 
 	•	Graphics State (graphics_state.py): Tracks parameters such as color, transformations, and line style. It maintains the current transformation matrix (CTM) and other style attributes. PostScript commands modify this state and store it on a stack to support nested graphics contexts.
 
-Step 3: Develop the Rasterizer
+##### Step 3: Develop the Rasterizer
 
 The rasterizer converts paths, shapes, and text commands into pixels, making use of the graphics state. This component will likely involve modules to handle specific rendering tasks, such as filling paths and rendering text.
 
@@ -68,7 +73,7 @@ The rasterizer converts paths, shapes, and text commands into pixels, making use
 	•	Path Management (path.py): Represents and manipulates geometric paths, handling commands like moveto, lineto, curveto, and closepath. It supports constructing paths and converting them into rasterized form.
 	•	Output Buffer (output_buffer.py): Stores the pixel data for the rendered image, which can be saved to a file or displayed. You might use a simple 2D array to represent pixel data and write it out as a PNG or other image format.
 
-Step 4: Utility Modules
+##### Step 4: Utility Modules
 
 These will provide helper functions and classes to manage color, geometry, and transformations, aiding both the interpreter and rasterizer.
 
@@ -76,23 +81,24 @@ These will provide helper functions and classes to manage color, geometry, and t
 	•	Geometry Utilities (geometry_utils.py): Contains functions for geometric operations, like distance calculations and point transformations.
 	•	Transformations (transformations.py): Implements translation, rotation, scaling, and matrix operations for the current transformation matrix.
 
-Step 5: Testing and Examples
+##### Step 5: Testing and Examples
 
 To ensure each part works correctly, develop unit tests for individual components. For example, verify that the parser correctly
 interprets commands and that the renderer produces accurate output for simple shapes. Create sample PostScript files to validate 
 functionality as you progress.
 
-4. Iterative Development Approach
+#### 4. Iterative Development Approach
 
-	1.	Basic Interpreter: Implement a minimal interpreter that can parse and execute simple arithmetic and stack operations, e.g., 3 4 add.
-	2.	Basic Rasterizer: Implement basic rasterization for simple geometric shapes (e.g., lines, circles) and verify by displaying the results in the output buffer.
-	3.	Integration of Graphics State: Add graphics state handling, such as color and transformation. Extend the rasterizer to respect these attributes.
-	4.	Support for Paths and Complex Shapes: Enhance the interpreter and rasterizer to support complex paths and curves using commands like moveto, lineto, and curveto.
-	5.	Advanced Interpreter Features: Add support for control structures (e.g., if, for, and repeat) and procedures to allow more complex PostScript files to be interpreted.
-	6.	Text Rendering: Implement text support, managing the placement, rotation, and scaling of text in the graphics state.
-	7.	Performance and Optimization: Once the main functionality is complete, optimize for performance, especially in the rasterizer, where pixel-by-pixel manipulation can be costly.
+1.	Basic Interpreter: Implement a minimal interpreter that can parse and execute simple arithmetic and stack operations, e.g., 3 4 add.
+2.	Basic Rasterizer: Implement basic rasterization for simple geometric shapes (e.g., lines, circles) and verify by displaying the results in the output buffer.
+3.	Integration of Graphics State: Add graphics state handling, such as color and transformation. Extend the rasterizer to respect these attributes.
+4.	Support for Paths and Complex Shapes: Enhance the interpreter and rasterizer to support complex paths and curves using commands like moveto, lineto, and curveto.
+5.	Advanced Interpreter Features: Add support for control structures (e.g., if, for, and repeat) and procedures to allow more complex PostScript files to be interpreted.
+6.	Text Rendering: Implement text support, managing the placement, rotation, and scaling of text in the graphics state.
+7.	Performance and Optimization: Once the main functionality is complete, optimize for performance, especially in the rasterizer, where pixel-by-pixel manipulation can be costly.
 
-Here's an outline of key functions for each module, focusing on their roles in a PostScript interpreter and rasterizer. This outline is based on the suggested structure and splits functionality to keep each module manageable.
+Here's an outline of key functions for each module, focusing on their roles in a PostScript interpreter and rasterizer. This outline
+is based on the suggested structure and splits functionality to keep each module manageable.
 
 1. Interpreter Module
 
