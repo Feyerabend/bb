@@ -9,12 +9,12 @@ class Lexer:
 
     def tokenize(self):
         token_specification = [
-            ('NUMBER', r'\d+(\.\d*)?'),     # Integer or decimal number
-            ('NAME', r'/[a-zA-Z_]\w*'),     # Variable names
-            ('OPERATOR', r'[a-zA-Z]+'),     # Operators
-            ('WHITESPACE', r'[ \t]+'),      # Spaces and tabs
-            ('NEWLINE', r'\n'),             # Line endings
-            ('SKIP', r'[ \t]+'),            # Skip spaces and tabs
+            ('NUMBER', r'\d+(\.\d*)?'),     # integer or decimal number
+            ('NAME', r'/[a-zA-Z_]\w*'),     # variable names
+            ('OPERATOR', r'[a-zA-Z]+'),     # operators
+            ('WHITESPACE', r'[ \t]+'),      # spaces and tabs
+            ('NEWLINE', r'\n'),             # line endings
+            ('SKIP', r'[ \t]+'),            # skip spaces and tabs
         ]
         tok_regex = '|'.join(f'(?P<{pair[0]}>{pair[1]})' for pair in token_specification)
         
