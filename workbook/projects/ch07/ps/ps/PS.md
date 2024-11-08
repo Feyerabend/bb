@@ -7,7 +7,7 @@
 The PostScript language is a stack-based, dynamically-typed language for page description, so your project will need two primary components:
 
 1. Interpreter: Parses and processes PostScript commands.
-2. Rasterizer: Transforms vector descriptions and text into a pixel-based representation.
+2. Rasteriser: Transforms vector descriptions and text into a pixel-based representation.
 
 Before coding, familiarize yourself with the PostScript language's fundamentals, particularly its graphics model, operators, and coordinate
 system. Next, set up a minimal project structure that allows easy expansion.
@@ -20,7 +20,7 @@ Here's a high-level view of how you could organize your project files:
 ```
 postscript_interpreter/
 ├── src/
-│   ├── main.py                   # Entry point for the project
+│   ├── main.py                    # Entry point for the project
 │   ├── interpreter/
 │   │   ├── __init__.py            # Initializes the interpreter module
 │   │   ├── lexer.py               # Tokenizes PostScript commands
@@ -29,12 +29,12 @@ postscript_interpreter/
 │   │   ├── stack.py               # Manages the operand stack
 │   │   └── environment.py         # Manages variable and function definitions
 │   │
-│   ├── rasterizer/
-│   │   ├── __init__.py            # Initializes the rasterizer module
+│   ├── rasteriser/
+│   │   ├── __init__.py            # Initializes the rasteriser module
 │   │   ├── renderer.py            # Renders shapes and text to a buffer
 │   │   ├── graphics_state.py      # Tracks the graphics state (transformations, color, etc.)
 │   │   ├── path.py                # Manages paths and geometric data
-│   │   └── output_buffer.py       # Stores rasterized data for output
+│   │   └── output_buffer.py       # Stores rasterised data for output
 │   │
 │   ├── utils/
 │   │   ├── color_utils.py         # Manages color conversions
@@ -54,30 +54,30 @@ postscript_interpreter/
 The interpreter reads PostScript commands, parses them, and manages the operand stack. This step will involve
 modules for tokenizing commands, parsing them, and executing them within the correct context.
 
-- Lexer (lexer.py): Tokenizes PostScript input into recognizable symbols like numbers, operators, and names. This module is essential to break down the input for parsing.
-- Parser (parser.py): Organizes tokens into interpretable units, recognizing PostScript language constructs such as loops, procedures, and control structures.
-- Executor (executor.py): Executes parsed instructions by manipulating the operand stack and calling appropriate functions. Each PostScript operator (e.g., moveto, lineto, stroke) will have a corresponding function.
-- Stack Management (stack.py): PostScript is stack-based, so the interpreter should use a stack to handle arguments and results.
-- Environment (environment.py): Manages variables, procedures, and dictionaries, maintaining state across commands and supporting scoping rules.
+- Lexer (`lexer.py`): Tokenizes PostScript input into recognizable symbols like numbers, operators, and names. This module is essential to break down the input for parsing.
+- Parser (`parser.py`): Organizes tokens into interpretable units, recognising PostScript language constructs such as loops, procedures, and control structures.
+- Executor (`executor.py`): Executes parsed instructions by manipulating the operand stack and calling appropriate functions. Each PostScript operator (e.g., moveto, lineto, stroke) will have a corresponding function.
+- Stack Management (`stack.py`): PostScript is stack-based, so the interpreter should use a stack to handle arguments and results.
+- Environment (`environment.py`): Manages variables, procedures, and dictionaries, maintaining state across commands and supporting scoping rules.
 
 ##### Step 2: Set Up the Graphics State
 
 The graphics state is a collection of parameters that affects how PostScript graphics operators work. This
 includes things like the current transformation matrix, line width, and fill color.
 
-- Graphics State (graphics_state.py): Tracks parameters such as color, transformations, and line style. It maintains the current transformation matrix (CTM) and other style attributes. PostScript commands modify this state and store it on a stack to support nested graphics contexts.
+- Graphics State (`graphics_state.py`): Tracks parameters such as color, transformations, and line style. It maintains the current transformation matrix (CTM) and other style attributes. PostScript commands modify this state and store it on a stack to support nested graphics contexts.
 
-##### Step 3: Develop the Rasterizer
+##### Step 3: Develop the Rasteriser
 
-The rasterizer converts paths, shapes, and text commands into pixels, making use of the graphics state. This component will likely involve modules to handle specific rendering tasks, such as filling paths and rendering text.
+The rasteriser converts paths, shapes, and text commands into pixels, making use of the graphics state. This component will likely involve modules to handle specific rendering tasks, such as filling paths and rendering text.
 
-- Renderer (renderer.py): Implements core rasterization logic, translating vector shapes into pixel data according to the graphics state. This module will handle operations like stroke, fill, and text rendering.
-- Path Management (path.py): Represents and manipulates geometric paths, handling commands like moveto, lineto, curveto, and closepath. It supports constructing paths and converting them into rasterized form.
-- Output Buffer (output_buffer.py): Stores the pixel data for the rendered image, which can be saved to a file or displayed. You might use a simple 2D array to represent pixel data and write it out as a PNG or other image format.
+- Renderer (`renderer.py`): Implements core rasterization logic, translating vector shapes into pixel data according to the graphics state. This module will handle operations like stroke, fill, and text rendering.
+- Path Management (`path.py`): Represents and manipulates geometric paths, handling commands like moveto, lineto, curveto, and closepath. It supports constructing paths and converting them into rasterised form.
+- Output Buffer (`output_buffer.py`): Stores the pixel data for the rendered image, which can be saved to a file or displayed. You might use a simple 2D array to represent pixel data and write it out as a PNG or other image format.
 
 ##### Step 4: Utility Modules
 
-These will provide helper functions and classes to manage color, geometry, and transformations, aiding both the interpreter and rasterizer.
+These will provide helper functions and classes to manage color, geometry, and transformations, aiding both the interpreter and rasteriser.
 
 - Color Utilities (color_utils.py): Handles color transformations (e.g., RGB to grayscale) and manages color mixing operations.
 - Geometry Utilities (geometry_utils.py): Contains functions for geometric operations, like distance calculations and point transformations.
@@ -93,22 +93,29 @@ functionality as you progress.
 
 #### 4. Iterative Development Approach
 
-1.	Basic Interpreter: Implement a minimal interpreter that can parse and execute simple arithmetic and stack operations, e.g., 3 4 add.
-2.	Basic Rasterizer: Implement basic rasterization for simple geometric shapes (e.g., lines, circles) and verify by displaying the results in the output buffer.
-3.	Integration of Graphics State: Add graphics state handling, such as color and transformation. Extend the rasterizer to respect these attributes.
-4.	Support for Paths and Complex Shapes: Enhance the interpreter and rasterizer to support complex paths and curves using commands like moveto, lineto, and curveto.
-5.	Advanced Interpreter Features: Add support for control structures (e.g., if, for, and repeat) and procedures to allow more complex PostScript files to be interpreted.
-6.	Text Rendering: Implement text support, managing the placement, rotation, and scaling of text in the graphics state.
-7.	Performance and Optimization: Once the main functionality is complete, optimize for performance, especially in the rasterizer, where pixel-by-pixel manipulation can be costly.
+1.	Basic Interpreter: Implement a minimal interpreter that can parse and execute simple arithmetic and
+    stack operations, e.g. `3 4 add`.
+2.	Basic Rasteriser: Implement basic rasterization for simple geometric shapes (e.g., lines, circles)
+    and verify by displaying the results in the output buffer.
+3.	Integration of Graphics State: Add graphics state handling, such as color and transformation. Extend
+    the rasteriser to respect these attributes.
+4.	Support for Paths and Complex Shapes: Enhance the interpreter and rasteriser to support complex paths
+    and curves using commands like `moveto`, `lineto`, and `curveto`.
+5.	Advanced Interpreter Features: Add support for control structures (e.g., if, for, and repeat) and
+    procedures to allow more complex PostScript files to be interpreted.
+6.	Text Rendering: Implement text support, managing the placement, rotation, and scaling of text in the 
+    graphics state.
+7.	Performance and Optimization: Once the main functionality is complete, optimize for performance,
+    especially in the rasteriser, where pixel-by-pixel manipulation can be costly.
 
 Here's an outline of key functions for each module, focusing on their roles in a PostScript
-interpreter and rasterizer. This outline is based on the suggested structure and splits
+interpreter and rasteriser. This outline is based on the suggested structure and splits
 functionality to keep each module manageable.
 
 
 ##### 1. Interpreter Module
 
-`lexer.py`
+__`lexer.py`__
 
 Handles breaking down the PostScript code into tokens.
 
@@ -116,14 +123,14 @@ Handles breaking down the PostScript code into tokens.
 - `is_number(token: str) -> bool`: Checks if a token represents a number.
 - `is_operator(token: str) -> bool`: Checks if a token is a valid PostScript operator.
 
-`parser.py`
+__`parser.py`__
 
 Interprets tokens and organizes them into executable instructions.
 
 - `parse(tokens: List[Token]) -> ASTNode`: Converts a list of tokens into an Abstract Syntax Tree (AST) or another structured format that's easier to interpret.
 - `parse_expression(tokens: List[Token]) -> ASTNode`: Parses expressions, identifying and grouping tokens like if and for into executable expressions.
 
-`executor.py`
+__`executor.py`__
 
 Executes parsed commands, operating on the stack and interacting with other modules.
 
@@ -131,7 +138,7 @@ Executes parsed commands, operating on the stack and interacting with other modu
 - `run_operator(operator: str, operands: List[Any]) -> Any`: Executes PostScript operators (e.g., add, moveto, lineto) using the operand stack.
 - `evaluate_procedure(procedure: List[Token])`: Evaluates and executes user-defined procedures, typically stored in the environment.
 
-`stack.py`
+__`stack.py`__
 
 Implements the operand stack needed for PostScript operations.
 
@@ -139,7 +146,7 @@ Implements the operand stack needed for PostScript operations.
 - `pop() -> Any`: Pops the top value off the stack and returns it.
 - `top() -> Any`: Returns the top value without removing it.
 
-`environment.py`
+__`environment.py`__
 
 Manages the environment, storing variables, functions, and nested scopes.
 
@@ -149,7 +156,7 @@ Manages the environment, storing variables, functions, and nested scopes.
 - `exit_scope()`: Pops the current scope, restoring the previous one.
 
 
-##### 2. Rasterizer Module
+##### 2. Rasteriser Module
 
 renderer.py
 
@@ -180,7 +187,7 @@ Defines and manages vector paths, handling PostScript drawing commands.
 
 output_buffer.py
 
-Stores the pixel data for rasterized images, ready for display or saving to a file.
+Stores the pixel data for rasterised images, ready for display or saving to a file.
 
 - set_pixel(x: int, y: int, color: Tuple[int, int, int]): Sets a pixel at (x, y) to the specified color.
 - clear(): Clears the buffer, filling it with a default background color.
@@ -298,7 +305,7 @@ Handles variable and procedure storage, maintaining nested scopes.
 	•	enter_scope(self): Adds a new scope to the stack.
 	•	exit_scope(self): Removes the current scope, reverting to the previous one.
 
-2. Rasterizer Module
+2. Rasteriser Module
 
 GraphicsState (graphics_state.py)
 
@@ -341,7 +348,7 @@ Renders paths, shapes, and text onto an output buffer.
 
 OutputBuffer (output_buffer.py)
 
-Represents the pixel-based output, where rasterized images are stored.
+Represents the pixel-based output, where rasterised images are stored.
 
 Attributes:
 - width: int: Width of the output buffer.
@@ -398,7 +405,7 @@ Orchestrates the loading, parsing, execution, and rendering process.
 	* `render_output(self)`: Displays or saves the rendered output.
 
 This setup keeps each class focused on a specific responsibility, simplifying code management and testing.
-Using this structure, you'll have a modular and scalable foundation for your interpreter and rasterizer.
+Using this structure, you'll have a modular and scalable foundation for your interpreter and rasteriser.
 
 
 
@@ -493,7 +500,7 @@ class Environment:
         pass
 ```
 
-2. Rasterizer Module
+2. Rasteriser Module
 
 graphics_state.py
 
@@ -636,5 +643,5 @@ class InterpreterEngine:
         pass
 ```
 
-This layout provides a modular, organized approach to implementing a PostScript interpreter and rasterizer.
+This layout provides a modular, organized approach to implementing a PostScript interpreter and rasteriser.
 Each class focuses on a distinct responsibility, making it easier to expand and debug as you implement the methods.
