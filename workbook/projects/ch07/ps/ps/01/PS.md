@@ -81,9 +81,10 @@ modules for tokenizing commands, parsing them, and executing them within the cor
 The graphics state is a collection of parameters that affects how PostScript graphics operators work. This
 includes things like the current transformation matrix, line width, and fill color.
 
-- Graphics State (`graphics_state.py`): Tracks parameters such as color, transformations, and line style.
-  It maintains the current transformation matrix (CTM) and other style attributes. PostScript commands
-  modify this state and store it on a stack to support nested graphics contexts.
+- Graphics State (`graphics_state.py`): Tracks parameters such as color, transformations,
+  and line style. It maintains the current transformation matrix (CTM) and other style
+  attributes. PostScript commands modify this state and store it on a stack to support
+  nested graphics contexts.
 
 
 #### Step 3: Develop the Rasteriser
@@ -93,14 +94,16 @@ This component will likely involve modules to handle specific rendering tasks, s
 rendering text.
 
 - Renderer (`renderer.py`): Implements core rasterization logic, translating vector shapes into pixel
-  data according to the graphics state. This module will handle operations like stroke, fill, and text rendering.
+  data according to the graphics state. This module will handle operations like stroke, fill, and text
+  rendering.
 
 - Path Management (`path.py`): Represents and manipulates geometric paths, handling commands like `moveto`,
-  `lineto`, `curveto`, and `closepath`. It supports constructing paths and converting them into rasterised form.
+  `lineto`, `curveto`, and `closepath`. It supports constructing paths and converting them into rasterised
+  form.
 
-- Output Buffer (`output_buffer.py`): Stores the pixel data for the rendered image, which can be saved to a
-  file or displayed. You might use a simple 2D array to represent pixel data and write it out as a PNG or other
-  image format.
+- Output Buffer (`output_buffer.py`): Stores the pixel data for the rendered image, which can be saved
+  to a file or displayed. You might use a simple 2D array to represent pixel data and write it out as a
+  PNG or other image format.
 
 
 #### Step 4: Utility Modules
@@ -108,13 +111,13 @@ rendering text.
 These will provide helper functions and classes to manage color, geometry, and transformations, aiding both
 the interpreter and rasteriser.
 
-- Color Utilities (color_utils.py): Handles color transformations (e.g., RGB to grayscale) and manages color
+- Color Utilities (`color_utils.py`): Handles color transformations (e.g., RGB to grayscale) and manages color
   mixing operations.
 
-- Geometry Utilities (geometry_utils.py): Contains functions for geometric operations, like distance calculations
+- Geometry Utilities (`geometry_utils.py`): Contains functions for geometric operations, like distance calculations
   and point transformations.
 
-- Transformations (transformations.py): Implements translation, rotation, scaling, and matrix operations
+- Transformations (`transformations.py`): Implements translation, rotation, scaling, and matrix operations
   for the current transformation matrix.
 
 
@@ -289,11 +292,12 @@ This function breakdown keeps each file focused on its responsibilities while en
 state management, and rendering are separated. It will allow you to work on components individually, making debugging
 and testing simpler.
 
----
 
+#### Classes & Modules
 
 Defining classes will provide a solid structure for encapsulating functionality, making the codebase modular and easier
 to manage. Here's a detailed breakdown of the classes, organized by module.
+
 
 1. Interpreter Module
 
@@ -343,7 +347,7 @@ Methods:
 - `execute(self, ast: ASTNode)`: Interprets and executes a node.
 - `evaluate_operator(self, operator: str, operands: List[Any])`: Executes an operator with given operands.
 
-Stack (stack.py)
+Stack (`stack.py`)
 
 Manages the operand stack, where PostScript stores temporary values.
 
@@ -387,13 +391,13 @@ Path (`path.py`)
 Manages vector paths, including subpaths and path operations.
 
 Attributes:
-- points: List[Tuple[float, float]]: A list of points in the path.
-- closed: bool: Indicates if the path is closed.
+- `points: List[Tuple[float, float]]`: A list of points in the path.
+- `closed: bool`: Indicates if the path is closed.
 Methods:
-- moveto(self, x: float, y: float): Starts a new subpath.
-- lineto(self, x: float, y: float): Adds a line to the current subpath.
-- curveto(self, x1: float, y1: float, x2: float, y2: float, x3: float, y3: float): Adds a Bezier curve.
-- closepath(self): Closes the current path.
+- `moveto(self, x: float, y: float)`: Starts a new subpath.
+- `lineto(self, x: float, y: float)`: Adds a line to the current subpath.
+- `curveto(self, x1: float, y1: float, x2: float, y2: float, x3: float, y3: float)`: Adds a Bezier curve.
+- `closepath(self)`: Closes the current path.
 
 Renderer (`renderer.py`)
 
@@ -416,10 +420,10 @@ Attributes:
 - `height: int`: Height of the output buffer.
 - `pixels: List[List[Tuple[int, int, int]]]`: 2D array of pixels (RGB format).
 Methods:
-- __init__(self, width: int, height: int): Initializes the buffer with a specified size.
-- set_pixel(self, x: int, y: int, color: Tuple[int, int, int]): Sets a pixel at (x, y) to a specific color.
-- clear(self): Fills the buffer with a background color.
-- save(self, filename: str): Saves the buffer to an image file.
+- `__init__(self, width: int, height: int)`: Initializes the buffer with a specified size.
+- `set_pixel(self, x: int, y: int, color`: Tuple[int, int, int]): Sets a pixel at (x, y) to a specific color.
+- `clear(self)`: Fills the buffer with a background color.
+- `save(self, filename: str)`: Saves the buffer to an image file.
 
 3. Utility Module
 
