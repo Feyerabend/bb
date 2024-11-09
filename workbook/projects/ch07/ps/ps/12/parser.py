@@ -39,7 +39,7 @@ class Parser:
     def parse_instruction(self) -> ASTNode:
         token = self._peek()
         
-        if token.type == "NUMBER" or token.type == "STRING" or token.type == "NAME":
+        if token.type == "NUMBER" or token.type == "STRING" or token.type == "NAME" or token.type == "COMMENT":
             return self._advance_and_wrap("Push")
         
         if token.value in {"add", "sub", "mul", "div", "dup", "exch", "pop", "def"}:
@@ -123,6 +123,10 @@ class Parser:
     def parse_name(self) -> ASTNode:
         token = self._expect("NAME")
         return ASTNode("Name", token.value)
+
+    def parse_name(self) -> ASTNode:
+        token = self._expect("COMMENT")
+        return ASTNode("Comment", token.value)
 
     def _peek(self) -> Token:
         return self.tokens[self.index]

@@ -22,25 +22,44 @@ class Lexer:
             if char.isspace():
                 self.index += 1
                 continue
-            
+
+            if char == '%':
+                tokens.append(self._skip_comment())
+                continue
+
             if char.isdigit() or (char == '-' and self._peek().isdigit()):
                 tokens.append(self._number())
+
             elif char == '/':
                 tokens.append(self._name())
+
             elif char == '(':
                 tokens.append(self._string())
+
             elif char.isalpha():
                 tokens.append(self._identifier())
+
             elif char == '{':
                 tokens.append(Token("LBRACE", char))
                 self.index += 1
+
             elif char == '}':
                 tokens.append(Token("RBRACE", char))
                 self.index += 1
+
             else:
                 raise ValueError(f"Unexpected character: {char}")
         
         return tokens
+
+    def _skip_comment(self):
+        self.index += 1  # skip '%'
+        start = self.index
+        while self.index < len(self.code) and self.code[self.index] != '\n':
+            self.index += 1
+        value = self.code[start:self.index]
+        self.index += 1  # skip '\n'
+        return Token("COMMENT", value)
 
     def _number(self):
         num_re = re.compile(r'-?\d+(\.\d+)?')
@@ -60,14 +79,14 @@ class Lexer:
         return Token("NAME", name)
 
     def _string(self):
-        self.index += 1  # Skip '('
+        self.index += 1  # skip '('
         start = self.index
         while self.index < len(self.code) and self.code[self.index] != ')':
             self.index += 1
         if self.index >= len(self.code):
             raise ValueError("Unterminated string")
         value = self.code[start:self.index]
-        self.index += 1  # Skip ')'
+        self.index += 1  # skip ')'
         return Token("STRING", value)
 
     def _identifier(self):

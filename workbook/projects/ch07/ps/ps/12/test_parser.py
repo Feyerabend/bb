@@ -129,10 +129,12 @@ class TestPostScriptParser(unittest.TestCase):
         moveto 100 100
         lineto 200 200
         ifelse { setcolor 0 1 0 } { setcolor 1 0 0 }
+        % at last a comment
         """
         ast = self.parse_code(code)
         self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 6)
+        self.assertEqual(len(ast.children), 7)
+
         self.assertEqual(ast.children[0].type, "Push")
         self.assertEqual(ast.children[0].value, "/x")
 
@@ -155,7 +157,12 @@ class TestPostScriptParser(unittest.TestCase):
         self.assertEqual(ast.children[5].value, "ifelse")
         self.assertEqual(len(ast.children[5].children), 2)
 
+        self.assertEqual(ast.children[6].type, "Push")
+        self.assertEqual(ast.children[6].value, " at last a comment")
+        self.assertEqual(len(ast.children[6].children), 0)
+
 #       print(ast)
+
 
 if __name__ == "__main__":
     unittest.main()
