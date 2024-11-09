@@ -67,9 +67,9 @@ def draw_square(image: Image, matrix: list[list[float]], color: tuple, offset: t
     # Define the vertices of a unit square (centered at (0,0))
     square_vertices = [
         [-50, -50, 1],  # Top-left corner
-        [50, -50, 1],   # Top-right corner
-        [50, 50, 1],    # Bottom-right corner
-        [-50, 50, 1],   # Bottom-left corner
+        [ 50, -50, 1],  # Top-right corner
+        [ 50,  50, 1],  # Bottom-right corner
+        [-50,  50, 1],  # Bottom-left corner
     ]
 
     # Apply the transformation to each vertex of the square

@@ -23,36 +23,37 @@ Next, set up a minimal project structure that allows easy expansion.
 Here's a high-level view of how you could organize your project files:
 
 ```shell
-postscript_interpreter/
+ps_interpreter/
 ├── src/
-│   ├── main.py                    # Entry point for the project
+│   ├── main.py                    # entry point for the project
 │   ├── interpreter/
-│   │   ├── __init__.py            # Initializes the interpreter module
-│   │   ├── lexer.py               # Tokenizes PostScript commands
-│   │   ├── parser.py              # Parses tokens into executable statements
-│   │   ├── executor.py            # Executes parsed PostScript commands
-│   │   ├── stack.py               # Manages the operand stack
-│   │   └── environment.py         # Manages variable and function definitions
+│   │   ├── ..
+│   │   ├── lexer.py               # tokenizes PostScript commands
+│   │   ├── parser.py              # parses tokens into executable statements
+│   │   ├── executor.py            # executes parsed PostScript commands
+│   │   ├── stack.py               # manages the operand stack
+│   │   └── environment.py         # manages variable and function definitions
 │   │
 │   ├── rasteriser/
-│   │   ├── __init__.py            # Initializes the rasteriser module
-│   │   ├── renderer.py            # Renders shapes and text to a buffer
-│   │   ├── graphics_state.py      # Tracks the graphics state (transformations, color, etc.)
-│   │   ├── path.py                # Manages paths and geometric data
-│   │   └── output_buffer.py       # Stores rasterised data for output
+│   │   ├── ..
+│   │   ├── renderer.py            # renders shapes and text to a buffer
+│   │   ├── graphics_state.py      # tracks the graphics state (transformations, color, etc.)
+│   │   ├── path.py                # manages paths and geometric data
+│   │   └── output_buffer.py       # stores rasterised data for output
 │   │
 │   ├── utils/
-│   │   ├── color_utils.py         # Manages color conversions
-│   │   ├── geometry_utils.py      # Helper functions for geometric operations
-│   │   └── transformations.py     # Functions for translation, rotation, scaling
+│   │   ├── color_utils.py         # manages color conversions
+│   │   ├── geometry_utils.py      # helper functions for geometric operations
+│   │   └── transformations.py     # functions for translation, rotation, scaling
 │
-├── tests/                         # Unit tests for each module
-├── examples/                      # Sample PostScript files to test the interpreter
-└── README.md                      # Project documentation
+├── tests/                         # unit tests for each module
+├── examples/                      # sample PostScript files to test the interpreter
+└── README.md                      # project documentation
 ```
 
 
 ### 3. Detailed Steps and Module Breakdown
+
 
 #### Step 1: Set Up the Interpreter
 
@@ -61,14 +62,19 @@ modules for tokenizing commands, parsing them, and executing them within the cor
 
 - Lexer (`lexer.py`): Tokenizes PostScript input into recognizable symbols like numbers, operators, and names.
   This module is essential to break down the input for parsing.
+
 - Parser (`parser.py`): Organizes tokens into interpretable units, recognising PostScript language constructs
   such as loops, procedures, and control structures.
+
 - Executor (`executor.py`): Executes parsed instructions by manipulating the operand stack and calling appropriate
   functions. Each PostScript operator (e.g. `moveto`, `lineto`, `stroke`) will have a corresponding function.
+
 - Stack Management (`stack.py`): PostScript is stack-based, so the interpreter should use a stack to handle
   arguments and results.
+
 - Environment (`environment.py`): Manages variables, procedures, and dictionaries, maintaining state across
   commands and supporting scoping rules.
+
 
 #### Step 2: Set Up the Graphics State
 
@@ -79,6 +85,7 @@ includes things like the current transformation matrix, line width, and fill col
   It maintains the current transformation matrix (CTM) and other style attributes. PostScript commands
   modify this state and store it on a stack to support nested graphics contexts.
 
+
 #### Step 3: Develop the Rasteriser
 
 The rasteriser converts paths, shapes, and text commands into pixels, making use of the graphics state.
@@ -87,11 +94,14 @@ rendering text.
 
 - Renderer (`renderer.py`): Implements core rasterization logic, translating vector shapes into pixel
   data according to the graphics state. This module will handle operations like stroke, fill, and text rendering.
+
 - Path Management (`path.py`): Represents and manipulates geometric paths, handling commands like `moveto`,
   `lineto`, `curveto`, and `closepath`. It supports constructing paths and converting them into rasterised form.
+
 - Output Buffer (`output_buffer.py`): Stores the pixel data for the rendered image, which can be saved to a
   file or displayed. You might use a simple 2D array to represent pixel data and write it out as a PNG or other
   image format.
+
 
 #### Step 4: Utility Modules
 
@@ -100,8 +110,10 @@ the interpreter and rasteriser.
 
 - Color Utilities (color_utils.py): Handles color transformations (e.g., RGB to grayscale) and manages color
   mixing operations.
+
 - Geometry Utilities (geometry_utils.py): Contains functions for geometric operations, like distance calculations
   and point transformations.
+
 - Transformations (transformations.py): Implements translation, rotation, scaling, and matrix operations
   for the current transformation matrix.
 
@@ -117,16 +129,22 @@ functionality as you progress.
 
 1.	Basic Interpreter: Implement a minimal interpreter that can parse and execute simple arithmetic and
     stack operations, e.g. `3 4 add`.
+
 2.	Basic Rasteriser: Implement basic rasterization for simple geometric shapes (e.g., lines, circles)
     and verify by displaying the results in the output buffer.
+
 3.	Integration of Graphics State: Add graphics state handling, such as color and transformation. Extend
     the rasteriser to respect these attributes.
+
 4.	Support for Paths and Complex Shapes: Enhance the interpreter and rasteriser to support complex paths
     and curves using commands like `moveto`, `lineto`, and `curveto`.
+
 5.	Advanced Interpreter Features: Add support for control structures (e.g. `if`, `for`, and `repeat`) and
     procedures to allow more complex PostScript files to be interpreted.
+
 6.	Text Rendering: Implement text support, managing the placement, rotation, and scaling of text in the 
     graphics state.
+
 7.	Performance and Optimisation: Once the main functionality is complete, optimize for performance,
     especially in the rasteriser, where pixel-by-pixel manipulation can be costly.
 
@@ -146,6 +164,7 @@ Handles breaking down the PostScript code into tokens.
 - `is_number(token: str) -> bool`: Checks if a token represents a number.
 - `is_operator(token: str) -> bool`: Checks if a token is a valid PostScript operator.
 
+
 __`parser.py`__
 
 Interprets tokens and organizes them into executable instructions.
@@ -154,6 +173,7 @@ Interprets tokens and organizes them into executable instructions.
   or another structured format that's easier to interpret.
 - `parse_expression(tokens: List[Token]) -> ASTNode`: Parses expressions, identifying and grouping tokens
   like if and for into executable expressions.
+
 
 __`executor.py`__
 
@@ -165,6 +185,7 @@ Executes parsed commands, operating on the stack and interacting with other modu
   (e.g. `add`, `moveto`, `lineto`) using the operand stack.
 - `evaluate_procedure(procedure: List[Token])`: Evaluates and executes user-defined procedures,
   typically stored in the environment.
+
 
 __`stack.py`__
 
@@ -196,6 +217,7 @@ Handles the actual rasterization, converting shapes and text into pixels based o
   Renders text at a given position based on the current graphics state.
 - `apply_color(buffer: OutputBuffer, color: Tuple[int, int, int])`: Applies color settings to the buffer.
 
+
 __`graphics_state.py`__
 
 Manages the current graphics settings, such as transformations, colors, and line styles.
@@ -206,6 +228,7 @@ Manages the current graphics settings, such as transformations, colors, and line
 - `push_state()`: Saves the current graphics state onto a stack.
 - `pop_state()`: Restores the previous graphics state from the stack.
 
+
 __`path.py`__
 
 Defines and manages vector paths, handling PostScript drawing commands.
@@ -214,6 +237,7 @@ Defines and manages vector paths, handling PostScript drawing commands.
 - `lineto(x: float, y: float)`: Adds a line to the current path from the current point to (x, y).
 - `curveto(x1: float, y1: float, x2: float, y2: float, x3: float, y3: float)`: Adds a cubic Bezier curve to the path.
 - `closepath()`: Closes the current path, connecting the end back to the start.
+
 
 __`output_buffer.py`__
 
@@ -226,6 +250,7 @@ Stores the pixel data for rasterised images, ready for display or saving to a fi
 
 #### 3. Utility Module
 
+
 `color_utils.py`
 
 Provides helper functions for color operations.
@@ -233,6 +258,7 @@ Provides helper functions for color operations.
 - `rgb_to_gray(r: int, g: int, b: int) -> int`: Converts an RGB color to grayscale.
 - `blend_colors(color1: Tuple[int, int, int], color2: Tuple[int, int, int], ratio: float) -> Tuple[int, int, int]`:
   Blends two colors according to a specified ratio.
+
 
 `geometry_utils.py`
 
@@ -243,6 +269,7 @@ Contains helper functions for geometric calculations.
 - `point_on_line(x0: float, y0: float, x1: float, y1: float, t: float) -> Tuple[float, float]`:
   Finds a point on a line segment from (x0, y0) to (x1, y1) based on parameter t (0 <= t <= 1).
 
+
 `transformations.py`
 
 Implements matrix transformations for scaling, rotating, and translating shapes.
@@ -250,6 +277,7 @@ Implements matrix transformations for scaling, rotating, and translating shapes.
 - `translate(matrix: List[List[float]], dx: float, dy: float) -> List[List[float]]`: Applies a translation to the transformation matrix.
 - `rotate(matrix: List[List[float]], angle: float) -> List[List[float]]`: Rotates the transformation matrix by a given angle.
 - `scale(matrix: List[List[float]], sx: float, sy: float) -> List[List[float]]`: Scales the transformation matrix by (sx, sy).
+
 
 ##### 4. main.py (Entry Point)
 
