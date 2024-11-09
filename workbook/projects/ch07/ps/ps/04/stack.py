@@ -1,21 +1,40 @@
 class Stack:
     def __init__(self):
-        self.stack = []
+        # The stack will hold items of any type.
+        self.items = []
 
     def push(self, value: any):
-        print(f"[DEBUG] Pushing to stack: {value}")
-        self.stack.append(value)
+        """Push an item onto the stack."""
+        self.items.append(value)
 
     def pop(self) -> any:
-        if not self.stack:
-            raise IndexError("Pop from empty stack")
-        value = self.stack.pop()
-        print(f"[DEBUG] Popping from stack: {value}")
-        return value
+        """Pop an item from the stack and return it. Raise IndexError if the stack is empty."""
+        if not self.items:
+            raise IndexError("pop from empty stack")
+        return self.items.pop()
 
     def peek(self) -> any:
-        if not self.stack:
-            raise IndexError("Peek from empty stack")
-        value = self.stack[-1]
-        print(f"[DEBUG] Peeking at stack: {value}")
-        return value
+        """Return the top item of the stack without removing it. Raise IndexError if empty."""
+        if not self.items:
+            raise IndexError("peek from empty stack")
+        return self.items[-1]
+
+    def is_empty(self) -> bool:
+        """Check if the stack is empty."""
+        return len(self.items) == 0
+
+    def size(self) -> int:
+        """Return the size of the stack."""
+        return len(self.items)
+
+    def clear(self):
+        """Clear the stack."""
+        self.items.clear()
+
+    def __repr__(self):
+        """Return a string representation of the stack."""
+        return f"Stack({self.items})"
+
+    def __contains__(self, item):
+        """Check if an item is in the stack."""
+        return item in self.items

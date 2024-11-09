@@ -8,8 +8,24 @@ class ASTNode:
         self.value = value
         self.children = children if children else []
 
+#    def __repr__(self):
+#        return f"ASTNode(type={self.type}, value={self.value}, children={self.children})"
     def __repr__(self):
-        return f"ASTNode(type={self.type}, value={self.value}, children={self.children})"
+        return self.pretty_print(indent=0)
+
+    def pretty_print(self, indent=0):
+        # Start with the indentation and the node's type and value
+        indent_str = ' ' * indent
+        repr_str = f"{indent_str}ASTNode(type={self.type}, value={self.value})"
+
+        # If there are children, recursively pretty-print them with increased indentation
+        if self.children:
+            repr_str += '\n' + indent_str + '{'
+            for child in self.children:
+                repr_str += '\n' + child.pretty_print(indent + 4)  # Increase indent for child nodes
+            repr_str += '\n' + indent_str + '}'
+
+        return repr_str
 
 class Parser:
     def __init__(self, tokens: list[Token]):
@@ -34,7 +50,7 @@ class Parser:
             self.position += 1
             return ASTNode("Number", value=token.value)
         
-        elif token.type == "NAME":
+        elif token.type in ("NAME", "IDENTIFIER"):
             self.position += 1
             return ASTNode("Name", value=token.value)
         
