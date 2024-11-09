@@ -1,26 +1,13 @@
-
-## ENBF
-
-Given that we are aiming for a more robust EBNF to support a wider range of
-PostScript-like capabilities, including dictionaries, stroke attributes, and
-basic control structures, here's an extended EBNF grammar. This will cover:
-
-1. Dictionaries and Variables: Simple dictionary manipulation
-   and variable assignment.
-
-2. Stroke and Fill Attributes: Stroke width, color settings,
-   and filling.
-
-3. Branching: Conditional execution using if and basic loops.
-
-4. Path and Graphics Commands: Basic drawing commands, as well
-   as stack manipulation.
+Given that we are aiming for a more robust EBNF to support a wider range of PostScript-like capabilities, including dictionaries, stroke attributes, and basic control structures, here’s an extended EBNF grammar. This will cover:
+	1.	Dictionaries and Variables: Simple dictionary manipulation and variable assignment.
+	2.	Stroke and Fill Attributes: Stroke width, color settings, and filling.
+	3.	Branching: Conditional execution using if and basic loops.
+	4.	Path and Graphics Commands: Basic drawing commands, as well as stack manipulation.
 
 This EBNF still aims to be minimal but with a sufficient subset for PostScript-like behavior.
 
-#### Expanded EBNF Grammar for Enhanced PostScript Subset
+Expanded EBNF Grammar for Enhanced PostScript Subset
 
-```enbf
 Program             ::= { Instruction }
 
 Instruction         ::= Push
@@ -62,34 +49,27 @@ String              ::= "(" { Character } ")"
 
 Digit               ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 Character           ::= Any printable ASCII character except "(" and ")"
-```
 
-#### Explanation of Grammar
+Explanation of Grammar
 
-Dictionaries and Variables:
-* dict creates a dictionary of a specified size.
-* begin and end push and pop dictionaries onto the dictionary stack.
-* def defines a name-value pair in the current dictionary.
-* load retrieves a variable's value, while store saves a value in a dictionary.
+	•	Dictionaries and Variables:
+	•	dict creates a dictionary of a specified size.
+	•	begin and end push and pop dictionaries onto the dictionary stack.
+	•	def defines a name-value pair in the current dictionary.
+	•	load retrieves a variable’s value, while store saves a value in a dictionary.
+	•	Graphics State Commands:
+	•	setcolor and setlinewidth set color and line width attributes.
+	•	stroke and fill complete a path by applying either stroke or fill operations.
+	•	Control Structures:
+	•	if executes a block if a condition is true.
+	•	ifelse executes one of two blocks based on a condition.
+	•	repeat loops a block a specified number of times.
+	•	Path Commands: Commands like moveto, lineto, and curveto are included for path creation, with closepath to complete paths.
 
-Graphics State Commands:
-* setcolor and setlinewidth set color and line width attributes.
-* stroke and fill complete a path by applying either stroke or fill operations.
-
-Control Structures:
-* if executes a block if a condition is true.
-* ifelse executes one of two blocks based on a condition.
-* repeat loops a block a specified number of times.
-
-Path Commands: Commands like moveto, lineto, and curveto are
-included for path creation, with closepath to complete paths.
-
-
-#### Example Code in Enhanced PostScript Syntax
+Example Code in Enhanced PostScript Syntax
 
 Below is an example to demonstrate the usage of this EBNF:
 
-```ps
 % Define a simple dictionary
 /myDict 5 dict def
 myDict begin
@@ -122,7 +102,5 @@ x 50 gt {  % If x > 50, draw another line
 
 % Clean up
 end
-```
 
-This EBNF and example provide a powerful yet minimalistic subset of PostScript for both
-procedural drawing commands and data management with dictionaries and variables.
+This EBNF and example provide a powerful yet minimalistic subset of PostScript for both procedural drawing commands and data management with dictionaries and variables. Let me know if you want to proceed with parser and AST generation based on this structure!

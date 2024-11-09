@@ -8,6 +8,7 @@ class Token:
     def __repr__(self):
         return f"Token(type={self.type}, value={self.value})"
 
+
 class Lexer:
     def __init__(self, code: str):
         self.code = code
