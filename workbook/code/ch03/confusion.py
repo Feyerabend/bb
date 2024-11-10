@@ -1,11 +1,13 @@
 # sample: each element is (actual temperature, predicted temperature)
 temperature_log = [
     (20, 21), (25, 24), (30, 28), (15, 18), (22, 19), (27, 29),
-    (18, 17), (21, 23), (16, 15), (20, 20), (24, 26), (19, 18)
+    (18, 17), (21, 23), (16, 15), (20, 20), (24, 26), (19, 18),
+    (23, 24), (28, 27), (19, 20), (17, 18), (22, 23), (26, 25),
+    (29, 31), (21, 22), (18, 16), (24, 22), (20, 21), (25, 27)
 ]
 
-# threshold for prediction as "accurate"
-threshold = 2  # plus/minus degrees
+# def. threshold for prediction as "accurate"
+threshold = 2  # plus or minus 2 degrees range
 
 true_positive = 0  # accurate positive predictions
 false_positive = 0 # predicted higher, inaccurate
