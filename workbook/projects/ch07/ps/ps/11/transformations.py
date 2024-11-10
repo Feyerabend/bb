@@ -12,7 +12,7 @@ class Transformations:
 
     @staticmethod
     def rotate(matrix: list[list[float]], angle: float) -> list[list[float]]:
-        # Convert angle to radians
+        # to radians
         angle_rad = math.radians(angle)
         rotation_matrix = [
             [math.cos(angle_rad), -math.sin(angle_rad), 0],
@@ -30,7 +30,7 @@ class Transformations:
         ]
         return matrix_multiply(matrix, scaling_matrix)
 
-# Helper function for matrix multiplication
+# helper
 def matrix_multiply(a, b):
     result = [[0 for _ in range(len(b[0]))] for _ in range(len(a))]
     for i in range(len(a)):
@@ -38,17 +38,17 @@ def matrix_multiply(a, b):
             result[i][j] = sum(a[i][k] * b[k][j] for k in range(len(b)))
     return result
 
-# Example of using the transformations
+# using the transformations
 matrix = [
-    [1, 0, 0],  # A point (x, y, 1) in homogeneous coordinates
+    [1, 0, 0],  # point (x, y, 1) in homogeneous coordinates
     [0, 1, 0],
     [0, 0, 1]
 ]
 
-# Apply transformations
-matrix = Transformations.translate(matrix, 5, 10)  # Translate by (5, 10)
-matrix = Transformations.rotate(matrix, 45)        # Rotate by 45 degrees
-matrix = Transformations.scale(matrix, 2, 2)       # Scale by a factor of 2
+# apply transformations
+matrix = Transformations.translate(matrix, 5, 10)  # translate by (5, 10)
+matrix = Transformations.rotate(matrix, 45)        # rotate by 45 degrees
+matrix = Transformations.scale(matrix, 2, 2)       # scale by a factor of 2
 
 # Output the resulting matrix
 print(matrix)
