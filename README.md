@@ -6,8 +6,6 @@ Here you should be able to find more information, errata, exercises, code, other
 
 The [workbook](./workbook) consists of:
 
-* Examples in [__code__](./workbook/code) that were both to extensive to be published in the book, and complete code. The code has also been described in text at places where it may add to previous code and description.
+* Examples in [__code__](./workbook/code) that were both too extensive to be published in the book, and complete code. The code has also been described in text at places where it may add to previous code and description.
 
-* There are some [__exercises__](./workbook/exercises) which can capture some possible trails for explorations, and
-
-* Also ideas for additional [__projects__](./workbook/projects) can be found.
+* Also ideas for additional [__projects__](./workbook/projects), some discussions and exercises can be found.
