@@ -1,4 +1,3 @@
-# lexer.py
 import re
 
 class Token:
@@ -7,91 +6,51 @@ class Token:
         self.value = value
 
     def __repr__(self):
-        return f"Token({self.type}, {self.value})"
+        return f"Token(type={self.type}, value={self.value})"
 
 class Lexer:
     def __init__(self, code: str):
         self.code = code
-        self.index = 0
+        self.patterns = [
+            # Numbers first, including negative numbers and floating-point
+            ("NUMBER", r"-?\d+(\.\d+)?"),  # Matches numbers, negative or positive
+            ("OPERATOR", r"\b(add|sub|mul|div|idiv|neg|mod|dup|exch|clear|pop|def|lt|eq|gt)\b"),  # Operators (specific keywords)
+            ("COMMAND", r"\b(newpath|moveto|lineto|rlineto|curveto|closepath|stroke|fill|setcolor|setgray|setlinewidth|dict|begin|end|load|store|if|ifelse|repeat|showpage|while)\b"),  # Commands
+            ("NAME", r"/[a-zA-Z_][a-zA-Z0-9_]*"),  # Names (e.g., /x)
+            ("IDENTIFIER", r"\b[a-zA-Z_][a-zA-Z0-9_]*\b"),  # Identifiers (e.g., x, y)
+            ("STRING", r"\(.*?\)"),  # Strings (e.g., (abc))
+            ("LBRACE", r"{"),  # Left brace
+            ("RBRACE", r"}"),  # Right brace
+            ("WHITESPACE", r"\s+"),  # Ignore whitespace
+            ("COMMENT", r"%.*"),  # Comments starting with '%'
+        ]
 
     def tokenize(self) -> list[Token]:
         tokens = []
-        while self.index < len(self.code):
-            char = self.code[self.index]
+        index = 0
+        while index < len(self.code):
+            match = None
+            for token_type, pattern in self.patterns:
+                regex = re.compile(pattern)
+                match = regex.match(self.code, index)
+                if match:
+                    # Only add to the token list if it's not whitespace or a comment
+                    if token_type != "WHITESPACE" and token_type != "COMMENT":
+                        value = match.group(0)
+                        if token_type == "NUMBER":
+                            value = float(value) if '.' in value else int(value)
+                        elif token_type == "STRING":
+                            value = value[1:-1]  # Strip parentheses from strings
+                        # Debugging: Show which token is matched
+                        print(f"Matched: {token_type} with value: {value}")
+                        tokens.append(Token(token_type, value))
+                    
+                    # Move the index forward by the length of the match
+                    index = match.end(0)
+                    break
 
-            if char.isspace():
-                self.index += 1
-                continue
-
-            if char == '%':
-                tokens.append(self._skip_comment())
-                continue
-
-            if char.isdigit() or (char == '-' and self._peek().isdigit()):
-                tokens.append(self._number())
-
-            elif char == '/':
-                tokens.append(self._name())
-
-            elif char == '(':
-                tokens.append(self._string())
-
-            elif char.isalpha():
-                tokens.append(self._identifier())
-
-            elif char == '{':
-                tokens.append(Token("LBRACE", char))
-                self.index += 1
-
-            elif char == '}':
-                tokens.append(Token("RBRACE", char))
-                self.index += 1
-
-            else:
-                raise ValueError(f"Unexpected character: {char}")
+            # If no pattern matched, raise an error for an unexpected character
+            if not match:
+                raise ValueError(f"Unexpected character: {self.code[index]}")
         
         return tokens
-
-    def _skip_comment(self):
-        self.index += 1  # skip '%'
-        start = self.index
-        while self.index < len(self.code) and self.code[self.index] != '\n':
-            self.index += 1
-        value = self.code[start:self.index]
-        self.index += 1  # skip '\n'
-        return Token("COMMENT", value)
-
-    def _number(self):
-        num_re = re.compile(r'-?\d+(\.\d+)?')
-        match = num_re.match(self.code, self.index)
-        if not match:
-            raise ValueError("Invalid number format")
-        num_str = match.group(0)
-        self.index += len(num_str)
-        return Token("NUMBER", float(num_str) if '.' in num_str else int(num_str))
-
-    def _name(self):
-        self.index += 1
-        name = '/'
-        while self.index < len(self.code) and self.code[self.index].isalpha():
-            name += self.code[self.index]
-            self.index += 1
-        return Token("NAME", name)
-
-    def _string(self):
-        self.index += 1  # skip '('
-        start = self.index
-        while self.index < len(self.code) and self.code[self.index] != ')':
-            self.index += 1
-        if self.index >= len(self.code):
-            raise ValueError("Unterminated string")
-        value = self.code[start:self.index]
-        self.index += 1  # skip ')'
-        return Token("STRING", value)
-
-    def _identifier(self):
-        start = self.index
-        while self.index < len(self.code) and self.code[self.index].isalpha():
-            self.index += 1
-        value = self.code[start:self.index]
-        return Token("OPERATOR", value)

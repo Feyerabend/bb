@@ -1,168 +1,177 @@
-# test_parser.py
 import unittest
-
-from lexer import Lexer
+from lexer import Lexer, Token
 from parser import Parser, ASTNode
 
+class TestParser(unittest.TestCase):
 
-class TestPostScriptParser(unittest.TestCase):
-
-    def parse_code(self, code: str) -> ASTNode:
+    def test_comment_ignored(self):
+        code = """
+        /x 10 def
+        % This is a comment
+        /y 20 def
+        x y moveto
+        """
         lexer = Lexer(code)
         tokens = lexer.tokenize()
         parser = Parser(tokens)
-        return parser.parse()
+        ast = parser.parse()
 
-    def test_single_number_push(self):
-        code = "123"
-        ast = self.parse_code(code)
-        self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 1)
-        self.assertEqual(ast.children[0].type, "Push")
-        self.assertEqual(ast.children[0].value, 123)
+        expected_ast = ASTNode("Program", children=[
+            ASTNode("Name", value='/x'),
+            ASTNode("Number", value=10),
+            ASTNode("Operator", value='def'),  # Now expecting 'Operator' instead of 'Name'
+            ASTNode("Name", value='/y'),
+            ASTNode("Number", value=20),
+            ASTNode("Operator", value='def'),  # Same here
+            ASTNode("Name", value='x'),
+            ASTNode("Name", value='y'),
+            ASTNode("Command", value='moveto')
+        ])
 
-    def test_single_string_push(self):
-        code = "(hello)"
-        ast = self.parse_code(code)
-        self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 1)
-        self.assertEqual(ast.children[0].type, "Push")
-        self.assertEqual(ast.children[0].value, "hello")
+        self.assertEqual(str(ast), str(expected_ast))
 
-    def test_single_name_push(self):
-        code = "/name"
-        ast = self.parse_code(code)
-        self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 1)
-        self.assertEqual(ast.children[0].type, "Push")
-        self.assertEqual(ast.children[0].value, "/name")
-
-    def test_operator_add(self):
-        code = "add"
-        ast = self.parse_code(code)
-        self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 1)
-        self.assertEqual(ast.children[0].type, "Operator")
-        self.assertEqual(ast.children[0].value, "add")
-
-    def test_moveto_path_command(self):
-        code = "moveto 10 20"
-        ast = self.parse_code(code)
-        self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 1)
-        self.assertEqual(ast.children[0].type, "PathCommand")
-        self.assertEqual(ast.children[0].value, "moveto")
-        self.assertEqual(len(ast.children[0].children), 2)
-        self.assertEqual(ast.children[0].children[0].value, 10)
-        self.assertEqual(ast.children[0].children[1].value, 20)
-
-    def test_curveto_path_command(self):
-        code = "curveto 10 20 30 40 50 60"
-        ast = self.parse_code(code)
-        self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 1)
-        self.assertEqual(ast.children[0].type, "PathCommand")
-        self.assertEqual(ast.children[0].value, "curveto")
-        self.assertEqual(len(ast.children[0].children), 6)
-        self.assertEqual(ast.children[0].children[0].value, 10)
-        self.assertEqual(ast.children[0].children[1].value, 20)
-        self.assertEqual(ast.children[0].children[2].value, 30)
-        self.assertEqual(ast.children[0].children[3].value, 40)
-        self.assertEqual(ast.children[0].children[4].value, 50)
-        self.assertEqual(ast.children[0].children[5].value, 60)
-
-    def test_setcolor_graphics_state_command(self):
-        code = "setcolor 1 0 0"
-        ast = self.parse_code(code)
-        self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 1)
-        self.assertEqual(ast.children[0].type, "GraphicsStateCommand")
-        self.assertEqual(ast.children[0].value, "setcolor")
-        self.assertEqual(len(ast.children[0].children), 3)
-        self.assertEqual(ast.children[0].children[0].value, 1)
-        self.assertEqual(ast.children[0].children[1].value, 0)
-        self.assertEqual(ast.children[0].children[2].value, 0)
-
-    def test_dict_dictionary_command(self):
-        code = "dict 10"
-        ast = self.parse_code(code)
-        self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 1)
-        self.assertEqual(ast.children[0].type, "DictionaryCommand")
-        self.assertEqual(ast.children[0].value, "dict")
-        self.assertEqual(len(ast.children[0].children), 1)
-        self.assertEqual(ast.children[0].children[0].value, 10)
-
-    def test_repeat_control_structure(self):
-        code = "repeat 3 { moveto 10 10 lineto 20 20 }"
-        ast = self.parse_code(code)
-        self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 1)
-        self.assertEqual(ast.children[0].type, "ControlStructure")
-        self.assertEqual(ast.children[0].value, "repeat")
-        self.assertEqual(ast.children[0].children[0].value, 3)
-        self.assertEqual(ast.children[0].children[1].type, "Block")
-        self.assertEqual(len(ast.children[0].children[1].children), 2)
-
-    def test_ifelse_control_structure(self):
-        code = "ifelse { moveto 10 10 } { lineto 20 20 }"
-        ast = self.parse_code(code)
-        self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 1)
-        self.assertEqual(ast.children[0].type, "ControlStructure")
-        self.assertEqual(ast.children[0].value, "ifelse")
-        self.assertEqual(len(ast.children[0].children), 2)
-        self.assertEqual(ast.children[0].children[0].type, "Block")
-        self.assertEqual(ast.children[0].children[1].type, "Block")
-
-    def test_block(self):
-        code = "{ moveto 10 20 lineto 30 40 }"
-        ast = self.parse_code(code)
-        self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 1)
-        self.assertEqual(ast.children[0].type, "Block")
-        self.assertEqual(len(ast.children[0].children), 2)
-
-    def test_complex_program(self):
+    def test_conditional_ifelse(self):
         code = """
         /x 10 def
-        moveto 100 100
-        lineto 200 200
-        ifelse { setcolor 0 1 0 } { setcolor 1 0 0 }
-        % at last a comment
+        /y 20 def
+        x y eq {
+            /z 30 def
+        } {
+            /z 40 def
+        } ifelse
         """
-        ast = self.parse_code(code)
-        self.assertEqual(ast.type, "Program")
-        self.assertEqual(len(ast.children), 7)
+        lexer = Lexer(code)
+        tokens = lexer.tokenize()
+        parser = Parser(tokens)
+        ast = parser.parse()
 
-        self.assertEqual(ast.children[0].type, "Push")
-        self.assertEqual(ast.children[0].value, "/x")
+        expected_ast = ASTNode("Program", children=[
+            ASTNode("Name", value='/x'),
+            ASTNode("Number", value=10),
+            ASTNode("Operator", value='def'),
+            ASTNode("Name", value='/y'),
+            ASTNode("Number", value=20),
+            ASTNode("Operator", value='def'),
+            ASTNode("Name", value='x'),
+            ASTNode("Name", value='y'),
+            ASTNode("Operator", value='eq'),
+            ASTNode("Block", children=[
+                ASTNode("Name", value='/z'),
+                ASTNode("Number", value=30),
+                ASTNode("Operator", value='def')
+            ]),
+            ASTNode("Block", children=[
+                ASTNode("Name", value='/z'),
+                ASTNode("Number", value=40),
+                ASTNode("Operator", value='def')
+            ]),
+            ASTNode("Command", value='ifelse')
+        ])
 
-        self.assertEqual(ast.children[1].type, "Push")
-        self.assertEqual(ast.children[1].value, 10)
-#       self.assertEqual(len(ast.children[1].children), 2)
+        self.assertEqual(str(ast), str(expected_ast))
 
-        self.assertEqual(ast.children[2].type, "Operator")
-        self.assertEqual(ast.children[2].value, "def")
-#       self.assertEqual(len(ast.children[2].children), 2)
+    def test_nested_blocks(self):
+        code = """
+        /x 10 def
+        {
+            /y 20 def
+            x y moveto
+        } def
+        """
+        lexer = Lexer(code)
+        tokens = lexer.tokenize()
+        parser = Parser(tokens)
+        ast = parser.parse()
 
-        self.assertEqual(ast.children[3].type, "PathCommand")
-        self.assertEqual(ast.children[3].value, "moveto")
-        self.assertEqual(len(ast.children[3].children), 2)
-        self.assertEqual(ast.children[4].type, "PathCommand")
-        self.assertEqual(ast.children[4].value, "lineto")
-        self.assertEqual(len(ast.children[4].children), 2)
+        expected_ast = ASTNode("Program", children=[
+            ASTNode("Name", value='/x'),
+            ASTNode("Number", value=10),
+            ASTNode("Operator", value='def'),
+            ASTNode("Block", children=[
+                ASTNode("Name", value='/y'),
+                ASTNode("Number", value=20),
+                ASTNode("Operator", value='def'),
+                ASTNode("Name", value='x'),
+                ASTNode("Name", value='y'),
+                ASTNode("Command", value='moveto')
+            ]),
+            ASTNode("Operator", value='def')  # Expecting 'Operator' for def here as well
+        ])
 
-        self.assertEqual(ast.children[5].type, "ControlStructure")
-        self.assertEqual(ast.children[5].value, "ifelse")
-        self.assertEqual(len(ast.children[5].children), 2)
+        self.assertEqual(str(ast), str(expected_ast))
 
-        self.assertEqual(ast.children[6].type, "Push")
-        self.assertEqual(ast.children[6].value, " at last a comment")
-        self.assertEqual(len(ast.children[6].children), 0)
+    def test_postscript_code(self):
+        code = """
+        /x 10 def
+        /y 20 def
+        x y moveto
+        50 60.98 lineto
+        { x -10 add } repeat
+        """
+        lexer = Lexer(code)
+        tokens = lexer.tokenize()
+        parser = Parser(tokens)
+        ast = parser.parse()
 
-#       print(ast)
+        expected_ast = ASTNode("Program", children=[
+            ASTNode("Name", value='/x'),
+            ASTNode("Number", value=10),
+            ASTNode("Operator", value='def'),
+            ASTNode("Name", value='/y'),
+            ASTNode("Number", value=20),
+            ASTNode("Operator", value='def'),
+            ASTNode("Name", value='x'),
+            ASTNode("Name", value='y'),
+            ASTNode("Command", value='moveto'),
+            ASTNode("Number", value=50),
+            ASTNode("Number", value=60.98),
+            ASTNode("Command", value='lineto'),
+            ASTNode("Block", children=[
+                ASTNode("Name", value='x'),
+                ASTNode("Number", value=-10),
+                ASTNode("Operator", value='add'),
+            ]),
+            ASTNode("Command", value='repeat')
+        ])
 
+        self.assertEqual(str(ast), str(expected_ast))
+
+    def test_while_loop(self):
+        code = """
+        /x 10 def
+        /y 20 def
+        { x y lt {
+            x x 1 add def
+        } while}
+        """
+        lexer = Lexer(code)
+        tokens = lexer.tokenize()
+        parser = Parser(tokens)
+        ast = parser.parse()
+
+        expected_ast = ASTNode("Program", children=[
+            ASTNode("Name", value='/x'),
+            ASTNode("Number", value=10),
+            ASTNode("Operator", value='def'),
+            ASTNode("Name", value='/y'),
+            ASTNode("Number", value=20),
+            ASTNode("Operator", value='def'),
+            ASTNode("Block", children=[
+                ASTNode("Name", value='x'),
+                ASTNode("Name", value='y'),
+                ASTNode("Operator", value='lt'),
+                ASTNode("Block", children=[
+                    ASTNode("Name", value='x'),
+                    ASTNode("Name", value='x'),
+                    ASTNode("Number", value=1),
+                    ASTNode("Operator", value='add'),
+                    ASTNode("Operator", value='def')
+                ]),
+                ASTNode("Command", value='while')
+            ])
+        ])
+
+        self.assertEqual(str(ast), str(expected_ast))
 
 if __name__ == "__main__":
     unittest.main()

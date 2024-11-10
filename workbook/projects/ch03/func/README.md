@@ -1,20 +1,32 @@
-The example above is indeed more aligned with unit testing since it verifies a single method (add) in isolation. Functional testing, however, is often broader and tests multiple components working together to fulfill a user requirement or scenario end-to-end.
 
-Let’s elevate this to a true functional test by defining a broader scenario that simulates how a user might interact with the calculator application as a whole. This will test the full flow of operations, including addition, subtraction, and possibly other features.
 
-Functional Testing Example: Calculator Application Workflow
 
-Suppose our calculator now has multiple functions and can handle a sequence of operations. A functional test might look like this:
+The example above is indeed more aligned with unit testing since it verifies a single method (add) in isolation.
+Functional testing, however, is often broader and tests multiple components working together to fulfill a user
+requirement or scenario end-to-end.
+
+Let’s elevate this to a true functional test by defining a broader scenario that simulates how a user might
+interact with the calculator application as a whole. This will test the full flow of operations, including addition,
+subtraction, and possibly other features.
+
+
+### Functional Testing Example: Calculator Application Workflow
+
+Suppose our calculator now has multiple functions and can handle a sequence of operations. A functional test might
+look like this:
 
 Scenario: Calculate the Result of a Series of Operations
 
-1. Requirement: The calculator application should handle a series of operations and give a final result according to operator precedence and left-to-right evaluation.
+1. Requirement: The calculator application should handle a series of operations and give a final result according
+to operator precedence and left-to-right evaluation.
 
 2. Input: The user enters a sequence of operations: 3 + 5 * 2 - 4 / 2
 
-3. Expected Output: The application should return the correct answer based on the order of operations, which is 3 + (5 * 2) - (4 / 2) = 10
+3. Expected Output: The application should return the correct answer based on the order of operations, which is
+'3 + (5 * 2) - (4 / 2) = 10'
 
-Functional Test Implementation
+
+### Functional Test Implementation
 
 Here’s how a functional test might be implemented to simulate this user interaction:
 
@@ -44,7 +56,8 @@ if __name__ == "__main__":
     unittest.main()
 ```
 
-Key Differences from Unit Testing
+
+### Key Differences from Unit Testing
 
 In this functional test:
 
