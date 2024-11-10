@@ -11,19 +11,19 @@ The von Neumann machine is a foundational computer architecture conceptualized i
 ### Exercises or projects
 
 
-1. Simulating a Basic von Neumann Machine (Without LLMs)
+#### 1. Simulating a Basic von Neumann Machine (Without LLMs)
 
 - You can build a simple von Neumann machine simulator in a language like Python or JavaScript. The project involves creating a program that mimics the machine's architecture, including a memory system for data and instructions, a basic ALU, and a control unit. You write code to load, fetch, decode, execute instructions, and update a program counter. This exercise provides hands-on experience with how CPUs process instructions in sequence and manage memory.
 
 - Learning Outcome: Gain understanding of low-level instruction execution, memory management, and control flow.
 
-2. Assembly Language Programming Exercises (Without LLMs)
+#### 2. Assembly Language Programming Exercises (Without LLMs)
 
 - Using an emulator like MARS for MIPS or similar, you can write simple assembly language programs that showcase how data and instructions coexist in memory, typical of the von Neumann model. They can start with basic arithmetic operations, control structures (loops, conditionals), and progress to more complex tasks (sorting algorithms, simple I/O operations).
 
 - Learning Outcome: Familiarize youself with machine-level operations and how high-level concepts like loops translate to low-level code.
 
-3. Von Neumann Bottleneck Exploration (LLM-Optional)
+#### 3. Von Neumann Bottleneck Exploration (LLM-Optional)
 
 - In this exercise, you investigate the von Neumann bottleneck, the limitation caused by shared memory access for data and instructions. Design experiments to measure memory access times in a simulated environment, comparing sequential access patterns versus cache-optimized or parallel approaches.
 
@@ -31,13 +31,13 @@ The von Neumann machine is a foundational computer architecture conceptualized i
 
 - Learning Outcome: Understand the performance challenges in von Neumann architecture and the role of caches.
 
-4. Basic Compiler Design Project (Without LLMs)
+#### 4. Basic Compiler Design Project (Without LLMs)
 
 - For a deeper dive, you implement a simple compiler that translates a high-level language (like a subset of C) into the assembly language of their von Neumann simulator. They will need to implement lexical analysis, parsing, and code generation stages.
 
 - Learning Outcome: Appreciate the role of compilers in translating high-level code to machine instructions and reinforce concepts of instruction fetching and decoding.
 
-5. LLM-Assisted Program Design & Debugging (Optional LLM Integration)
+#### 5. LLM-Assisted Program Design & Debugging (Optional LLM Integration)
 
 - In this exercise, you design programs for a von Neumann machine simulator, with optional help from an LLM. They can use the LLM as a debugging partner to explain specific assembly instructions or diagnose errors. For example, they might ask, "Why is this loop not updating the accumulator correctly?" to receive potential solutions or hints.
 
