@@ -38,8 +38,8 @@ co-authored by von Neumann, which deeply influenced subsequent computer developm
   structures (loops, conditionals), and progress to more complex tasks (sorting algorithms,
   simple I/O operations).
 
-  RARS: https://github.com/TheThirdOne/rars
-  Ripes: https://github.com/mortbopet/Ripes
+  * RARS: https://github.com/TheThirdOne/rars
+  * Ripes: https://github.com/mortbopet/Ripes
 
 - Learning Outcome: Familiarize youself with machine-level operations and how high-level concepts
   like loops translate to low-level code.
