@@ -1,4 +1,4 @@
-Creating a ``minimal instruction set'' for a PostScript interpreter requires
+Creating a 'minimal instruction set' for a PostScript interpreter requires
 focusing on the core operations needed to manipulate the graphics state,
 manage the stack, and execute drawing commands.
 
