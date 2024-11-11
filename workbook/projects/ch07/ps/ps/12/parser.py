@@ -1,7 +1,6 @@
 import re
 from enum import Enum, auto
 
-# Token Types
 class TokenType(Enum):
     NUMBER = auto()
     IDENTIFIER = auto()
@@ -12,7 +11,6 @@ class TokenType(Enum):
     RBRACE = auto()
     COMMENT = auto()
 
-# Token Representation
 class Token:
     def __init__(self, type, value=None):
         self.type = type
@@ -21,7 +19,6 @@ class Token:
     def __repr__(self):
         return f"Token({self.type}, {repr(self.value)})"
 
-# Lexer Class
 class Lexer:
     NUM_REGEX = re.compile(r'-?\d+(\.\d+)?')
     ID_REGEX = re.compile(r'[a-zA-Z_][a-zA-Z0-9_]*')
@@ -37,36 +34,33 @@ class Lexer:
         while self.pos < len(self.code):
             char = self.code[self.pos]
 
-            # Whitespace
-            if char.isspace():
+            if char.isspace(): # whitespace
                 self.pos += 1
                 continue
 
-            # Numbers
             if match := self.NUM_REGEX.match(self.code, self.pos):
                 tokens.append(Token(TokenType.NUMBER, float(match.group())))
                 self.pos = match.end()
                 continue
 
-            # Identifiers
             if match := self.ID_REGEX.match(self.code, self.pos):
                 tokens.append(Token(TokenType.IDENTIFIER, match.group()))
                 self.pos = match.end()
                 continue
 
-            # Literals (beginning with /)
+            # literals (beginning with /literal)
             if match := self.LITERAL_REGEX.match(self.code, self.pos):
                 tokens.append(Token(TokenType.LITERAL, match.group()))
                 self.pos = match.end()
                 continue
 
-            # Comments
+            # comments
             if match := self.COMMENT_REGEX.match(self.code, self.pos):
                 tokens.append(Token(TokenType.COMMENT, match.group().strip()))
                 self.pos = match.end()
                 continue
 
-            # Symbols
+            # arrays
             if char == '[':
                 tokens.append(Token(TokenType.LBRACKET, '['))
                 self.pos += 1
@@ -75,6 +69,7 @@ class Lexer:
                 tokens.append(Token(TokenType.RBRACKET, ']'))
                 self.pos += 1
                 continue
+            # procedures (blocks)
             if char == '{':
                 tokens.append(Token(TokenType.LBRACE, '{'))
                 self.pos += 1
@@ -84,12 +79,11 @@ class Lexer:
                 self.pos += 1
                 continue
 
-            # Unknown characters
+            # unknown characters
             raise SyntaxError(f"Unexpected character: {char}")
         
         return tokens
 
-# Parser Class
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
