@@ -6,8 +6,8 @@ by mathematician John von Neumann. It introduced the revolutionary idea of a sto
 model, where instructions and data share the same memory space, allowing a computer to execute
 sequences of instructions loaded into its memory. This design contrasted with earlier machines 
 that were hardwired for specific tasks, offering flexibility and programmability that paved
-the way for modern computing. The architecture laid out core components&em;an arithmetic logic
-unit (ALU), control unit, memory, and input/output&em;forming the basis of most computers to
+the way for modern computing. The architecture laid out core components-an arithmetic logic
+unit (ALU), control unit, memory, and input/output-forming the basis of most computers to
 this day. Its principles were outlined in the 1945 report First Draft of a Report on the EDVAC,
 co-authored by von Neumann, which deeply influenced subsequent computer development.
 
