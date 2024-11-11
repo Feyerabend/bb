@@ -32,13 +32,14 @@ co-authored by von Neumann, which deeply influenced subsequent computer developm
 
 #### Assembly language programming exercises
 
-- Using an emulator like MARS for MIPS or search for something similar, you can write simple
-  assembly language programs that showcase how data and instructions coexist in memory,
+- Using an emulator like RARS for RISC-V, Ripes or search for something similar, you can write 
+  simple assembly language programs that showcase how data and instructions coexist in memory,
   typical of the von Neumann model. You can start with basic arithmetic operations, control
   structures (loops, conditionals), and progress to more complex tasks (sorting algorithms,
   simple I/O operations).
 
-  MARS: https://dpetersanderson.github.io/
+  RARS: https://github.com/TheThirdOne/rars
+  Ripes: https://github.com/mortbopet/Ripes
 
 - Learning Outcome: Familiarize youself with machine-level operations and how high-level concepts
   like loops translate to low-level code.
