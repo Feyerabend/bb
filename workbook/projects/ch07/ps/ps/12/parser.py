@@ -1,87 +1,172 @@
-# parser.py
+import re
+from enum import Enum, auto
 
-from lexer import Token
+# Token Types
+class TokenType(Enum):
+    NUMBER = auto()
+    IDENTIFIER = auto()
+    LITERAL = auto()
+    LBRACKET = auto()
+    RBRACKET = auto()
+    LBRACE = auto()
+    RBRACE = auto()
+    COMMENT = auto()
 
-class ASTNode:
-    def __init__(self, type: str, value: any = None, children: list['ASTNode'] = None):
+# Token Representation
+class Token:
+    def __init__(self, type, value=None):
         self.type = type
         self.value = value
-        self.children = children if children else []
 
     def __repr__(self):
-        return self.pretty_print(indent=0)
+        return f"Token({self.type}, {repr(self.value)})"
 
-    def pretty_print(self, indent=0):
-        # indentation and node's type and value
-        indent_str = ' ' * indent
-        repr_str = f"{indent_str}ASTNode(type={self.type}, value={self.value})"
+# Lexer Class
+class Lexer:
+    NUM_REGEX = re.compile(r'-?\d+(\.\d+)?')
+    ID_REGEX = re.compile(r'[a-zA-Z_][a-zA-Z0-9_]*')
+    LITERAL_REGEX = re.compile(r'/[a-zA-Z_][a-zA-Z0-9_]*')
+    COMMENT_REGEX = re.compile(r'%.*')
+    
+    def __init__(self, code):
+        self.code = code
+        self.pos = 0
 
-        # children, recursively pretty-print them with increased indentation
-        if self.children:
-            repr_str += '\n' + indent_str + '{'
-            for child in self.children:
-                repr_str += '\n' + child.pretty_print(indent + 4)  # indent for child nodes
-            repr_str += '\n' + indent_str + '}'
+    def tokenize(self):
+        tokens = []
+        while self.pos < len(self.code):
+            char = self.code[self.pos]
 
-        return repr_str
+            # Whitespace
+            if char.isspace():
+                self.pos += 1
+                continue
 
+            # Numbers
+            if match := self.NUM_REGEX.match(self.code, self.pos):
+                tokens.append(Token(TokenType.NUMBER, float(match.group())))
+                self.pos = match.end()
+                continue
+
+            # Identifiers
+            if match := self.ID_REGEX.match(self.code, self.pos):
+                tokens.append(Token(TokenType.IDENTIFIER, match.group()))
+                self.pos = match.end()
+                continue
+
+            # Literals (beginning with /)
+            if match := self.LITERAL_REGEX.match(self.code, self.pos):
+                tokens.append(Token(TokenType.LITERAL, match.group()))
+                self.pos = match.end()
+                continue
+
+            # Comments
+            if match := self.COMMENT_REGEX.match(self.code, self.pos):
+                tokens.append(Token(TokenType.COMMENT, match.group().strip()))
+                self.pos = match.end()
+                continue
+
+            # Symbols
+            if char == '[':
+                tokens.append(Token(TokenType.LBRACKET, '['))
+                self.pos += 1
+                continue
+            if char == ']':
+                tokens.append(Token(TokenType.RBRACKET, ']'))
+                self.pos += 1
+                continue
+            if char == '{':
+                tokens.append(Token(TokenType.LBRACE, '{'))
+                self.pos += 1
+                continue
+            if char == '}':
+                tokens.append(Token(TokenType.RBRACE, '}'))
+                self.pos += 1
+                continue
+
+            # Unknown characters
+            raise SyntaxError(f"Unexpected character: {char}")
+        
+        return tokens
+
+# Parser Class
 class Parser:
-    def __init__(self, tokens: list[Token]):
+    def __init__(self, tokens):
         self.tokens = tokens
-        self.position = 0
+        self.pos = 0
 
-    def parse(self) -> ASTNode:
-        return self.parse_statements()
+    def parse(self):
+        ast = []
+        while self.pos < len(self.tokens):
+            token = self.tokens[self.pos]
+            if token.type == TokenType.LBRACKET:
+                ast.append(self.parse_array())
+            elif token.type == TokenType.LBRACE:
+                ast.append(self.parse_block())
+            else:
+                ast.append(self.parse_expression(token))
+            self.pos += 1
+        return ast
 
-    def parse_statements(self) -> ASTNode:
-        statements = []
-        while self.position < len(self.tokens):
-            if self.current_token().type == "RBRACE":
+    def parse_expression(self, token):
+        if token.type in {TokenType.NUMBER, TokenType.IDENTIFIER, TokenType.LITERAL, TokenType.COMMENT}:
+            return token.value
+        raise SyntaxError(f"Unexpected token: {token}")
+
+    def parse_array(self):
+        self.pos += 1  # Skip '['
+        array = []
+        while self.pos < len(self.tokens):
+            token = self.tokens[self.pos]
+            if token.type == TokenType.RBRACKET:
                 break
-            statements.append(self.parse_expression())
-        return ASTNode("Program", children=statements)
+            elif token.type == TokenType.LBRACKET:
+                array.append(self.parse_array())
+            elif token.type == TokenType.LBRACE:
+                array.append(self.parse_block())
+            else:
+                array.append(self.parse_expression(token))
+            self.pos += 1
+        if self.pos >= len(self.tokens) or self.tokens[self.pos].type != TokenType.RBRACKET:
+            raise SyntaxError("Unclosed array")
+        return array
 
-    def parse_expression(self) -> ASTNode:
-        token = self.current_token()
-        
-        if token.type == "NUMBER":
-            self.position += 1
-            return ASTNode("Number", value=token.value)
-        
-        elif token.type in ("NAME", "IDENTIFIER"):
-            self.position += 1
-            return ASTNode("Name", value=token.value)
-        
-        elif token.type == "STRING":
-            self.position += 1
-            return ASTNode("String", value=token.value)
-        
-        elif token.type == "COMMAND":
-            self.position += 1
-            return ASTNode("Command", value=token.value)
-        
-        elif token.type == "OPERATOR":
-            self.position += 1
-            return ASTNode("Operator", value=token.value)
-        
-        elif token.type == "LBRACE":
-            self.position += 1
-            block = self.parse_statements()
-            self.expect_token("RBRACE")
-            return ASTNode("Block", children=block.children)
-        
-        elif token.type == "RBRACE":
-            raise ValueError("Unmatched closing brace '}'")
-        
-        else:
-            raise ValueError(f"Unexpected token: {token}")
+    def parse_block(self):
+        self.pos += 1  # Skip '{'
+        block = []
+        while self.pos < len(self.tokens):
+            token = self.tokens[self.pos]
+            if token.type == TokenType.RBRACE:
+                break
+            elif token.type == TokenType.LBRACKET:
+                block.append(self.parse_array())
+            elif token.type == TokenType.LBRACE:
+                block.append(self.parse_block())
+            else:
+                block.append(self.parse_expression(token))
+            self.pos += 1
+        if self.pos >= len(self.tokens) or self.tokens[self.pos].type != TokenType.RBRACE:
+            raise SyntaxError("Unclosed block")
+        return block
 
-    def expect_token(self, expected_type):
-        if self.current_token().type != expected_type:
-            raise ValueError(f"Expected token type {expected_type}, got {self.current_token().type}")
-        self.position += 1
+    def get_next_token(self):
+        if self.pos < len(self.tokens):
+            return self.tokens[self.pos]
+        raise SyntaxError("Unexpected end of input")
+    
+    def has_tokens(self):
+        return self.pos < len(self.tokens)
 
-    def current_token(self) -> Token:
-        if self.position < len(self.tokens):
-            return self.tokens[self.position]
-        return Token("EOF", None)
+# Example Usage
+if __name__ == "__main__":
+    code = """
+    100 200 moveto
+    [1 2 3 add] [100 200] gsave
+    % This is a comment with a command: moveto
+    { /x 3 add } stroke
+    """
+    lexer = Lexer(code)
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse()
+    print(ast)  # Should print the parsed AST

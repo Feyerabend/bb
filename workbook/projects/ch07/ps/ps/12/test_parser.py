@@ -1,177 +1,123 @@
 import unittest
-from lexer import Lexer, Token
-from parser import Parser, ASTNode
+from parser import Lexer, Parser
 
-class TestParser(unittest.TestCase):
+class TestPostScriptParser(unittest.TestCase):
+    def setUp(self):
+        self.lexer = Lexer
+        self.parser = Parser
 
-    def test_comment_ignored(self):
+    def test_basic_commands(self):
+        code = "100 200 moveto 300 400 lineto stroke"
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = [100, 200, 'moveto', 300, 400, 'lineto', 'stroke']
+        self.assertEqual(ast, expected_ast)
+
+    def test_literal_parsing(self):
+        code = "/myLiteral 42"
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = ['/myLiteral', 42]
+        self.assertEqual(ast, expected_ast)
+    
+    def test_array_parsing(self):
+        code = "[1 2 3 add] [100 200] gsave"
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = [[1, 2, 3, 'add'], [100, 200], 'gsave']
+        self.assertEqual(ast, expected_ast)
+    
+    def test_nested_array(self):
+        code = "[1 2 [3 4] dup]"
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = [[1, 2, [3, 4], 'dup']]
+        self.assertEqual(ast, expected_ast)
+
+    def test_block_parsing(self):
+        code = "{ 10 20 moveto 30 40 lineto }"
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = [[10, 20, 'moveto', 30, 40, 'lineto']]
+        self.assertEqual(ast, expected_ast)
+
+    def test_nested_block(self):
+        code = "{ 1 { 2 3 add } mul }"
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = [[1, [2, 3, 'add'], 'mul']]
+        self.assertEqual(ast, expected_ast)
+    
+    def test_comments_parsing(self):
         code = """
-        /x 10 def
-        % This is a comment
-        /y 20 def
-        x y moveto
+        100 200 moveto
+        % This is a comment with a command: moveto
+        300 400 lineto stroke
         """
-        lexer = Lexer(code)
-        tokens = lexer.tokenize()
-        parser = Parser(tokens)
-        ast = parser.parse()
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = [100, 200, 'moveto', '% This is a comment with a command: moveto', 300, 400, 'lineto', 'stroke']
+        self.assertEqual(ast, expected_ast)
 
-        expected_ast = ASTNode("Program", children=[
-            ASTNode("Name", value='/x'),
-            ASTNode("Number", value=10),
-            ASTNode("Operator", value='def'),  # Now expecting 'Operator' instead of 'Name'
-            ASTNode("Name", value='/y'),
-            ASTNode("Number", value=20),
-            ASTNode("Operator", value='def'),  # Same here
-            ASTNode("Name", value='x'),
-            ASTNode("Name", value='y'),
-            ASTNode("Command", value='moveto')
-        ])
+    def test_comment_with_directive(self):
+        code = "300 400 moveto % Change color: setcolor 1.0 0.5 0.5"
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = [300, 400, 'moveto', '% Change color: setcolor 1.0 0.5 0.5']
+        self.assertEqual(ast, expected_ast)
 
-        self.assertEqual(str(ast), str(expected_ast))
-
-    def test_conditional_ifelse(self):
+    def test_combined_structure(self):
         code = """
-        /x 10 def
-        /y 20 def
-        x y eq {
-            /z 30 def
-        } {
-            /z 40 def
-        } ifelse
+        100 200 moveto
+        [300 400] dup
+        { /x 3 add } gsave
+        stroke
         """
-        lexer = Lexer(code)
-        tokens = lexer.tokenize()
-        parser = Parser(tokens)
-        ast = parser.parse()
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = [
+            100, 200, 'moveto', 
+            [300, 400], 'dup', 
+            ['/x', 3, 'add'], 
+            'gsave', 
+            'stroke'
+        ]
+        self.assertEqual(ast, expected_ast)
 
-        expected_ast = ASTNode("Program", children=[
-            ASTNode("Name", value='/x'),
-            ASTNode("Number", value=10),
-            ASTNode("Operator", value='def'),
-            ASTNode("Name", value='/y'),
-            ASTNode("Number", value=20),
-            ASTNode("Operator", value='def'),
-            ASTNode("Name", value='x'),
-            ASTNode("Name", value='y'),
-            ASTNode("Operator", value='eq'),
-            ASTNode("Block", children=[
-                ASTNode("Name", value='/z'),
-                ASTNode("Number", value=30),
-                ASTNode("Operator", value='def')
-            ]),
-            ASTNode("Block", children=[
-                ASTNode("Name", value='/z'),
-                ASTNode("Number", value=40),
-                ASTNode("Operator", value='def')
-            ]),
-            ASTNode("Command", value='ifelse')
-        ])
+    def test_large_number_parsing(self):
+        code = "1000000000 -1234567890"
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = [1000000000, -1234567890]
+        self.assertEqual(ast, expected_ast)
 
-        self.assertEqual(str(ast), str(expected_ast))
+    def test_floating_point_numbers(self):
+        code = "1.23 4.56 add"
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = [1.23, 4.56, 'add']
+        self.assertEqual(ast, expected_ast)
 
-    def test_nested_blocks(self):
-        code = """
-        /x 10 def
-        {
-            /y 20 def
-            x y moveto
-        } def
-        """
-        lexer = Lexer(code)
-        tokens = lexer.tokenize()
-        parser = Parser(tokens)
-        ast = parser.parse()
+    def test_malformed_input(self):
+        code = "100 200 moveto ]"
+        with self.assertRaises(SyntaxError):
+            tokens = self.lexer(code).tokenize()
+            self.parser(tokens).parse()
 
-        expected_ast = ASTNode("Program", children=[
-            ASTNode("Name", value='/x'),
-            ASTNode("Number", value=10),
-            ASTNode("Operator", value='def'),
-            ASTNode("Block", children=[
-                ASTNode("Name", value='/y'),
-                ASTNode("Number", value=20),
-                ASTNode("Operator", value='def'),
-                ASTNode("Name", value='x'),
-                ASTNode("Name", value='y'),
-                ASTNode("Command", value='moveto')
-            ]),
-            ASTNode("Operator", value='def')  # Expecting 'Operator' for def here as well
-        ])
+    def test_empty_array(self):
+        code = "[] 100 dup"
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = [[], 100, 'dup']
+        self.assertEqual(ast, expected_ast)
 
-        self.assertEqual(str(ast), str(expected_ast))
+    def test_empty_block(self):
+        code = "{}"
+        tokens = self.lexer(code).tokenize()
+        ast = self.parser(tokens).parse()
+        expected_ast = [[]]
+        self.assertEqual(ast, expected_ast)
 
-    def test_postscript_code(self):
-        code = """
-        /x 10 def
-        /y 20 def
-        x y moveto
-        50 60.98 lineto
-        { x -10 add } repeat
-        """
-        lexer = Lexer(code)
-        tokens = lexer.tokenize()
-        parser = Parser(tokens)
-        ast = parser.parse()
-
-        expected_ast = ASTNode("Program", children=[
-            ASTNode("Name", value='/x'),
-            ASTNode("Number", value=10),
-            ASTNode("Operator", value='def'),
-            ASTNode("Name", value='/y'),
-            ASTNode("Number", value=20),
-            ASTNode("Operator", value='def'),
-            ASTNode("Name", value='x'),
-            ASTNode("Name", value='y'),
-            ASTNode("Command", value='moveto'),
-            ASTNode("Number", value=50),
-            ASTNode("Number", value=60.98),
-            ASTNode("Command", value='lineto'),
-            ASTNode("Block", children=[
-                ASTNode("Name", value='x'),
-                ASTNode("Number", value=-10),
-                ASTNode("Operator", value='add'),
-            ]),
-            ASTNode("Command", value='repeat')
-        ])
-
-        self.assertEqual(str(ast), str(expected_ast))
-
-    def test_while_loop(self):
-        code = """
-        /x 10 def
-        /y 20 def
-        { x y lt {
-            x x 1 add def
-        } while}
-        """
-        lexer = Lexer(code)
-        tokens = lexer.tokenize()
-        parser = Parser(tokens)
-        ast = parser.parse()
-
-        expected_ast = ASTNode("Program", children=[
-            ASTNode("Name", value='/x'),
-            ASTNode("Number", value=10),
-            ASTNode("Operator", value='def'),
-            ASTNode("Name", value='/y'),
-            ASTNode("Number", value=20),
-            ASTNode("Operator", value='def'),
-            ASTNode("Block", children=[
-                ASTNode("Name", value='x'),
-                ASTNode("Name", value='y'),
-                ASTNode("Operator", value='lt'),
-                ASTNode("Block", children=[
-                    ASTNode("Name", value='x'),
-                    ASTNode("Name", value='x'),
-                    ASTNode("Number", value=1),
-                    ASTNode("Operator", value='add'),
-                    ASTNode("Operator", value='def')
-                ]),
-                ASTNode("Command", value='while')
-            ])
-        ])
-
-        self.assertEqual(str(ast), str(expected_ast))
-
+# Run the tests
 if __name__ == "__main__":
     unittest.main()
