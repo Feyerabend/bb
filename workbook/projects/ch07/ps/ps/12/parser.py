@@ -99,7 +99,7 @@ class Parser:
                 ast.append(self.parse_block())
             else:
                 ast.append(self.parse_expression(token))
-            self.pos += 1
+            self.advance() # self.pos += 1
         return ast
 
     def parse_expression(self, token):
@@ -108,7 +108,7 @@ class Parser:
         raise SyntaxError(f"Unexpected token: {token}")
 
     def parse_array(self):
-        self.pos += 1  # Skip '['
+        self.advance() # self.pos += 1  # Skip '['
         array = []
         while self.pos < len(self.tokens):
             token = self.tokens[self.pos]
@@ -120,7 +120,7 @@ class Parser:
                 array.append(self.parse_block())
             else:
                 array.append(self.parse_expression(token))
-            self.pos += 1
+            self.advance() # self.pos += 1
         if self.pos >= len(self.tokens) or self.tokens[self.pos].type != TokenType.RBRACKET:
             raise SyntaxError("Unclosed array")
         return array
@@ -138,7 +138,7 @@ class Parser:
                 block.append(self.parse_block())
             else:
                 block.append(self.parse_expression(token))
-            self.pos += 1
+            self.advance() # self.pos += 1
         if self.pos >= len(self.tokens) or self.tokens[self.pos].type != TokenType.RBRACE:
             raise SyntaxError("Unclosed block")
         return block
@@ -150,6 +150,9 @@ class Parser:
     
     def has_tokens(self):
         return self.pos < len(self.tokens)
+    
+    def advance(self):
+        self.pos += 1
 
 # Example Usage
 if __name__ == "__main__":

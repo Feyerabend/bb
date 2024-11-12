@@ -61,7 +61,7 @@ data = {
 
 # settings
 width, height = 650, 50    # adjusted width for the whole alphabet
-scale = 1                  # scale for the font size
+scale = 1.1                  # scale for the font size
 margin = 15                # margin around text
 spacing = 8                # spacing between characters
 
@@ -69,7 +69,7 @@ spacing = 8                # spacing between characters
 image = [[[255, 255, 255] for _ in range(width)] for _ in range(height)]
 
 # draw a line on the image using Bresenham's algorithm
-def draw_line(img, x1, y1, x2, y2, color=(0, 0, 0)):
+def draw_line_bresenham(img, x1, y1, x2, y2, color=(0, 0, 0)):
     dx, dy = abs(x2 - x1), abs(y2 - y1)
     sx = 1 if x1 < x2 else -1
     sy = 1 if y1 < y2 else -1
@@ -87,6 +87,7 @@ def draw_line(img, x1, y1, x2, y2, color=(0, 0, 0)):
             err += dx
             y1 += sy
 
+
 # render a string in font
 def render_text(text, img, start_x, start_y):
     x = start_x
@@ -94,7 +95,7 @@ def render_text(text, img, start_x, start_y):
         if char in data:
             for line in data[char]:
                 (x1, y1), (x2, y2) = line
-                draw_line(img,
+                draw_line_bresenham(img,
                           int(x + x1 * scale), int(start_y - y1 * scale),
                           int(x + x2 * scale), int(start_y - y2 * scale))
         x += spacing * scale
