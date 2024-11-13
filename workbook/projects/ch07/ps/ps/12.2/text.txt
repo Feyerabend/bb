@@ -1,0 +1,29 @@
+
+1. Complex Procedures
+
+Here we focus on enhancing the interpreter to support complex control flows and nested procedures.
+- Conditional Logic Enhancements: Ensure that the if, ifelse, and other conditional statements can handle nested structures. This will be crucial for any complex procedure that has its own logic or calls additional sub-procedures.
+- Loops: Implement the handling of looping constructs such as for, repeat, and while. These will need to interact smoothly with the stack, popping and pushing appropriately within each loop cycle.
+- Procedure Calls within Procedures: Ensure that the interpreter can handle recursive or nested procedure calls. Each call should properly maintain its own environment or context if variables are defined locally within the procedure.
+- Error Handling: Add exceptions or warnings for unsupported operations or potential infinite loops.
+
+
+2. Graphics Commands
+
+With complex procedures working, we can look into more graphical functionalities to emulate PostScript’s graphical capabilities.
+- Enhanced Graphics State: Since you already have a GraphicsState class, expand it to handle transformations like scaling, rotation, and translations more deeply. You may also want to extend support for line width, color manipulation, and transformations.
+
+Shape Rendering:
+- Implement functions for rendering basic shapes (e.g., moveto, lineto, stroke, fill, arc).
+- Support the concept of “paths” where commands can accumulate to build up complex shapes.
+- Make sure the shapes respect the current transformation matrix (CTM) so they scale, rotate, and move as expected when transformations are applied.
+
+Graphics Stack:
+- Implement gsave and grestore for managing nested graphical states. These are essential for scenarios where nested transformations or temporary style changes need to be reverted.
+
+
+3. Testing and Refinement
+
+Add test cases to validate each of these new functionalities:
+- Test cases for nested procedures, complex conditions, and loops.
+- Graphics command tests that verify transformations and rendering accuracy. If you have a way to visualize output, test that shapes are rendered as expected.
