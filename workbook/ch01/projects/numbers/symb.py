@@ -76,7 +76,7 @@ class SymbolicFraction(Fraction):
     def __str__(self):
         return f"{self.symbolic_expr} = {self.numerator}/{self.denominator}"
 
-    # Comparison operations (returns a boolean)
+    # comparison operations (returns boolean)
     def is_equal_to(self, other):
         return self.numerator * other.denominator == self.denominator * other.numerator
 
@@ -86,7 +86,7 @@ class SymbolicFraction(Fraction):
     def is_less_than(self, other):
         return self.numerator * other.denominator < self.denominator * other.numerator
 
-    # Conditional expression
+    # conditional expression
     def if_greater_than(self, other, result_if_true, result_if_false):
         if self.is_greater_than(other):
             return result_if_true

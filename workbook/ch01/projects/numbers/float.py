@@ -1,8 +1,8 @@
 class CustomFloat:
     def __init__(self, value, precision=23, exponent_bits=8):
         # constants for IEEE-like floating point
-        self.precision = precision  # Number of bits in mantissa
-        self.exponent_bits = exponent_bits  # Number of bits in exponent
+        self.precision = precision  # number of bits in mantissa
+        self.exponent_bits = exponent_bits  # number of bits in exponent
         self.bias = (2 ** (exponent_bits - 1)) - 1
 
         # convert to floating-point representation
@@ -10,7 +10,7 @@ class CustomFloat:
         
     def float_to_components(self, value):
         """Convert a float to its binary components: sign, exponent, and mantissa"""
-        # Determine the sign bit
+        # determine sign bit
         sign = 0 if value >= 0 else 1
         value = abs(value)
         
@@ -34,11 +34,11 @@ class CustomFloat:
 
     def components_to_float(self):
         """Convert binary components back to float"""
-        # unbias the exponent
+        # unbias exponent
         exponent = self.exponent - self.bias
-        # calculate the decimal mantissa
+        # calculate decimal mantissa
         mantissa = 1.0 + self.mantissa / (2 ** self.precision)
-        # calculate the value
+        # calculate value
         return (-1) ** self.sign * mantissa * (2 ** exponent)
 
     def __str__(self):
