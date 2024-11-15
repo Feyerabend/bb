@@ -1,205 +1,184 @@
+import re
+from enum import Enum, auto
 
-class OperandStack:
-
-    def __init__(self):
-        self.stack = []
-
-    def push(self, value):
-        self.stack.append(value)
-
-    def pop(self):
-        if not self.stack:
-            raise ValueError("Operand stack underflow")
-        return self.stack.pop()
-
-    def top(self): # = peek
-        if not self.stack:
-            raise ValueError("Operand stack underflow")
-        return self.stack[-1]
-
-    def clear(self):
-        self.stack.clear()
-
-    def __len__(self):
-        return len(self.stack)
-
-    def __repr__(self):
-        return repr(self.stack)
+from parser import Token, TokenType, ASTNode, Lexer, Parser
 
 
-# add: __str__ to check define
-class DictionaryStack:
+class PostScriptObject:
+    def execute(self, interpreter):
+        pass
 
-    def __init__(self):
-        self.stack = [{}]
+class Number(PostScriptObject):
+    def __init__(self, value):
+        self.value = value
+    
+    def execute(self, interpreter):
+        interpreter.operand_stack.append(self)
 
-    def define(self, name, value):
-        """Defines a variable or procedure in the current (topmost) dictionary scope."""
-        self.stack[-1][name] = value
+class Boolean(PostScriptObject):
+    def __init__(self, value):
+        self.value = value
 
-    def lookup(self, name):
-        """Looks up a name in the stack, searching from the top (most recent) scope."""
-        for scope in reversed(self.stack):
-            if name in scope:
-                return scope[name]
-        raise KeyError(f"Undefined name: {name}")
+    def execute(self, interpreter):
+        interpreter.operand_stack.append(self)
 
-    def push_scope(self):
-        """Pushes a new dictionary (scope) onto the stack."""
-        self.stack.append({})
+class String(PostScriptObject):
+    def __init__(self, value):
+        self.value = value
 
-    def pop_scope(self):
-        """Pops the top dictionary (scope) from the stack. Raises an error if only one scope exists."""
-        if len(self.stack) <= 1:
-            raise ValueError("Cannot pop the global scope")
-        self.stack.pop()
+    def execute(self, interpreter):
+        interpreter.operand_stack.append(self)
 
-    def __len__(self):
-        return len(self.stack)
+class Array(PostScriptObject):
+    def __init__(self, elements):
+        self.elements = elements
 
-    def __repr__(self):
-        return repr(self.stack)
+    def execute(self, interpreter):
+        interpreter.operand_stack.append(self)
 
+class Name(PostScriptObject):
+    def __init__(self, name):
+        self.name = name
+
+    def execute(self, interpreter):
+        value = interpreter.lookup(self.name)
+        if isinstance(value, Procedure):
+            interpreter.execution_stack.append(interpreter.current_object_stream)
+            interpreter.current_object_stream = value.elements
+        elif value is not None:
+            value.execute(interpreter)
+        else:
+            raise NameError(f"Undefined name: {self.name}")
+
+class Operator(PostScriptObject):
+    def __init__(self, func):
+        self.func = func
+
+    def execute(self, interpreter):
+        self.func(interpreter)
+
+class Procedure(PostScriptObject):
+    def __init__(self, elements):
+        self.elements = elements
+
+    def execute(self, interpreter):
+        interpreter.execution_stack.append(interpreter.current_object_stream)
+        interpreter.current_object_stream = self.elements
+
+# --- Interpreter Class Definition ---
 
 class Interpreter:
-    def __init__(self, operand_stack, dictionary_stack):
-        self.operand_stack = operand_stack
-        self.dictionary_stack = dictionary_stack
+    def __init__(self):
+        self.operand_stack = []
+        self.execution_stack = []
+        self.dictionary_stack = [{}]
+        self.current_object_stream = []
 
-    def add(self):
-        b = self.operand_stack.pop()
-        a = self.operand_stack.pop()
-        self.operand_stack.push(a + b)
-
-    def sub(self):
-        b = self.operand_stack.pop()
-        a = self.operand_stack.pop()
-        self.operand_stack.push(a - b)
-
-    def mul(self):
-        b = self.operand_stack.pop()
-        a = self.operand_stack.pop()
-        self.operand_stack.push(a * b)
-
-    def div(self):
-        b = self.operand_stack.pop()
-        if b == 0:
-            raise ZeroDivisionError("Division by zero")
-        a = self.operand_stack.pop()
-        self.operand_stack.push(a / b)
-
-    def dup(self):
-        self.operand_stack.push(self.operand_stack.top())
-
-    def exch(self): # aka: swap
-        b = self.operand_stack.pop()
-        a = self.operand_stack.pop()
-        self.operand_stack.push(b)
-        self.operand_stack.push(a)
-
-    def pop(self):
-        self.operand_stack.pop()
-
-# procedures
-
-    def define_procedure(self, name, commands):
-        self.dictionary_stack.define(name, commands)
-
-    def execute_procedure(self, procedure_name):
-        """Executes a procedure by fetching it from the dictionary stack and interpreting each command."""
-        commands = self.dictionary_stack.lookup(procedure_name)
-        if not isinstance(commands, list):
-            raise ValueError(f"{procedure_name} is not a procedure")
-        for command in commands:
-            self.execute(command)
-
-# control
-
-    def if_(self):
-        """Executes a procedure if the top operand is true (non-zero)."""
-        proc = self.operand_stack.pop()
-        condition = self.operand_stack.pop()
-        if condition:
-            self.execute(proc)
-
-    def ifelse(self):
-        """Executes one of two procedures based on a condition."""
-        else_proc = self.operand_stack.pop()
-        if_proc = self.operand_stack.pop()
-        condition = self.operand_stack.pop()
-        if condition:
-            self.execute(if_proc)
-        else:
-            self.execute(else_proc)
-
-
-    def repeat(self):
-        """Repeats a procedure a specified number of times."""
-        proc = self.operand_stack.pop()
-        count = int(self.operand_stack.pop())
-        for _ in range(count):
-            self.execute(proc)
-
-    def is_number(self, value):
-        """Check if value is a number, whether as a string, a float, or inside a single-item list."""
-        if isinstance(value, list) and len(value) == 1:
-            value = value[0]
-        if isinstance(value, str):
-            if value.isdigit() or (value[0] == '-' and value[1:].isdigit()):
-                return int(value)
-            try:
-                return float(value)
-            except ValueError:
-                return None  # not a number
+    def lookup(self, name):
+        for dictionary in reversed(self.dictionary_stack):
+            if name in dictionary:
+                return dictionary[name]
         return None
 
-# main exec
+    def define(self, name, value):
+        self.dictionary_stack[-1][name] = value
 
-    def execute(self, token):
-        # Number handling
-        number = self.is_number(token)
-        if number is not None:
-            self.operand_stack.push(number)
+    def execute_ast(self, ast):
+        for node in ast:
+            self.execute_node(node)
+
+    def execute_def(self, node):
+        # Ensure node.value is structured as expected
+        print(f"Debugging DEF node: {node}")  # See the entire node for clarity
+        print(f"Debugging DEF node value: {node.value}")  # Specifically inspect the value
+    # Continue with the rest of the function...
+        if isinstance(node.value, dict) and "name" in node.value and "value" in node.value:
+            definition_name = node.value["name"]
+            definition_value = node.value["value"]
     
-        # Literal name or command handling
-        elif isinstance(token, str):
-            if token.startswith('/'):  # Literal name, so push as-is
-                self.operand_stack.push(token)
-        
-            elif token == "def":  # Handle the "def" command specifically
-                # Expecting: <name> <value> def
-                value = self.operand_stack.pop()
-                name = self.operand_stack.pop()
-            
-                if not isinstance(name, str) or not name.startswith('/'):
-                    raise ValueError("Expected a literal name starting with '/' for def")
-
-                # Define without the leading '/' in the dictionary
-                self.dictionary_stack.define(name[1:], value)
-
-            else:  # Check dictionary for variable/procedure or an operation
-                try:
-                    value = self.dictionary_stack.lookup(token)
-                    if isinstance(value, list):  # Procedure / block
-                        self.execute_procedure(value)
-                    else:  # Defined value, push to operand stack
-                        self.operand_stack.push(value)
-                except KeyError:
-                    if hasattr(self, token):  # Invoke interpreter operation if exists
-                        getattr(self, token)()
-                    else:
-                        raise ValueError(f"Unknown command or undefined name: {token}")
-
-        # Block handling
-        elif isinstance(token, list):  # Array or Block
-            if token and token[0] == '{' and token[-1] == '}':  # Block
-                block_content = token[1:-1]  # Remove the braces
-                self.operand_stack.push(block_content)
-            else:
-                self.operand_stack.push(token)
-    
+            if definition_name and definition_value:
+                self.dictionary_stack.define(definition_name, definition_value)
         else:
-            raise TypeError(f"Unsupported token type: {type(token)}")
+            raise SyntaxError("Invalid DEF node format.")
 
 
+    def execute_equals(self):
+        """Handles the '=' command to print the top of the operand stack."""
+        if self.operand_stack:
+            print(self.operand_stack.pop())
 
+    def execute_dequals(self):
+        """Handles the '==' command to print a syntactic representation of the top of the operand stack."""
+        if self.operand_stack:
+            print(repr(self.operand_stack.pop()))
+
+
+    def execute_node(self, node):
+        if node.type == TokenType.NUMBER:
+            Number(node.value).execute(self)
+        elif node.type == TokenType.LITERAL:
+            self.operand_stack.append(Name(node.value[1:]))  # Remove leading '/' from literal
+        elif node.type == TokenType.IDENTIFIER:
+            if node.value == "def":  # Explicitly handle 'def'
+                self.execute_def(node)
+            else:
+                Name(node.value).execute(self)
+        elif node.type == TokenType.LBRACKET:
+            array_elements = [self.convert_ast_to_obj(el) for el in node.value]
+            Array(array_elements).execute(self)
+        elif node.type == TokenType.LBRACE:
+            block_elements = [self.convert_ast_to_obj(el) for el in node.value]
+            Procedure(block_elements).execute(self)
+        elif node.type == TokenType.EQUALS:
+            self.execute_equals()
+        elif node.type == TokenType.DEQUALS:
+            self.execute_dequals()
+        elif node.type == TokenType.DEF:
+            self.execute_def(node)
+        else:
+            raise SyntaxError(f"Unhandled AST node type: {node.type}")
+
+    def convert_ast_to_obj(self, node):
+        """Helper to convert ASTNode to corresponding PostScript object"""
+        if node.type == TokenType.NUMBER:
+            return Number(node.value)
+        elif node.type == TokenType.LITERAL:
+            return Name(node.value[1:])
+        elif node.type == TokenType.IDENTIFIER:
+            return Name(node.value)
+        elif node.type == TokenType.LBRACKET:
+            return Array([self.convert_ast_to_obj(el) for el in node.value])
+        elif node.type == TokenType.LBRACE:
+            return Procedure([self.convert_ast_to_obj(el) for el in node.value])
+        else:
+            raise SyntaxError(f"Unhandled AST node type in conversion: {node.type}")
+
+# --- Testing ---
+
+# Define some basic operators
+def add(interpreter):
+    b = interpreter.operand_stack.pop().value
+    a = interpreter.operand_stack.pop().value
+    interpreter.operand_stack.append(Number(a + b))
+
+def print_stack(interpreter):
+    print("Stack:", [obj.value if isinstance(obj, (Number, String, Boolean)) else obj for obj in interpreter.operand_stack])
+
+# Add these operations to the interpreter
+interpreter = Interpreter()
+interpreter.define("add", Operator(add))
+interpreter.define("=", Operator(print_stack))
+
+# Test cases
+code = """
+5 3 add =
+/sum { 2 add } def
+10 sum =
+"""
+lexer = Lexer(code)
+tokens = lexer.tokenize()
+parser = Parser(tokens)
+ast = parser.parse()
+
+# Execute parsed AST
+interpreter.execute_ast(ast)

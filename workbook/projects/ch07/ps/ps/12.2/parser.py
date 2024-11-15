@@ -12,6 +12,8 @@ class TokenType(Enum):
     COMMENT = auto()
     HEADER = auto()
     STRING = auto()
+    EQUALS = auto()
+    DEQUALS = auto()
     DIRECTIVE = auto()
     DEF = auto()
 
@@ -32,10 +34,15 @@ class Lexer:
     HEADER_REGEX = re.compile(r'%!PS-[^\s]+')
     DIRECTIVE_REGEX = re.compile(r'%%[^\n]+')
     DEF_REGEX = re.compile(r'\bdef\b')
+    # regon. =
+    # recog. ==
 
     def __init__(self, code):
         self.code = code
         self.pos = 0
+
+    def advance(self):
+        self.pos += 1
 
     def tokenize(self):
         tokens = []
@@ -47,7 +54,7 @@ class Lexer:
             print(f"Current position {self.pos}, char: {display_char}")
 
             if char.isspace():  # Skip whitespace
-                self.pos += 1
+                self.advance() # self.pos += 1
                 continue
 
             # String literals (inside parentheses)
@@ -106,27 +113,39 @@ class Lexer:
                 print(f"Matched DEF: {match.group()}")
                 continue
 
+            if char == '=':
+                self.advance()  # Move to the next character after the first '='
+                # Peek ahead to check if the next character is also '='
+                if self.pos < len(self.code) and self.code[self.pos] == '=':
+                    tokens.append(Token(TokenType.DEQUALS, '=='))
+                    self.advance()  # Consume the second '='
+                    print("Matched DEQUALS: ==")
+                else:
+                    tokens.append(Token(TokenType.EQUALS, '='))
+                    print("Matched EQUALS: =")
+                continue
+
             # Array Brackets
             if char == '[':
                 tokens.append(Token(TokenType.LBRACKET, '['))
-                self.pos += 1
+                self.advance()
                 print("Matched LBRACKET: [")
                 continue
             if char == ']':
                 tokens.append(Token(TokenType.RBRACKET, ']'))
-                self.pos += 1
+                self.advance()
                 print("Matched RBRACKET: ]")
                 continue
 
             # Procedure Braces
             if char == '{':
                 tokens.append(Token(TokenType.LBRACE, '{'))
-                self.pos += 1
+                self.advance()
                 print("Matched LBRACE: {")
                 continue
             if char == '}':
                 tokens.append(Token(TokenType.RBRACE, '}'))
-                self.pos += 1
+                self.advance()
                 print("Matched RBRACE: }")
                 continue
 
@@ -134,6 +153,7 @@ class Lexer:
             raise SyntaxError(f"Unexpected character: {char} at position {self.pos}")
 
         return tokens
+
 
 class ASTNode:
     def __init__(self, type, value):
@@ -172,12 +192,22 @@ class Parser:
         return ast
 
     def parse_expression(self, token):
-        if token.type in {TokenType.NUMBER, TokenType.IDENTIFIER, TokenType.LITERAL, TokenType.COMMENT, TokenType.HEADER, TokenType.DIRECTIVE}:
+        if token.type in {
+           TokenType.NUMBER, TokenType.IDENTIFIER, TokenType.LITERAL,
+            TokenType.COMMENT, TokenType.HEADER, TokenType.DIRECTIVE}:
             return ASTNode(token.type, token.value)
+
+        elif token.type == TokenType.EQUALS:
+            return ASTNode(TokenType.EQUALS, '=')  # Handle '=' as a procedure call
+    
+        elif token.type == TokenType.DEQUALS:
+            return ASTNode(TokenType.DEQUALS, '==')  # Handle '==' as a procedure call
+
         raise SyntaxError(f"Unexpected token: {token}")
 
+
     def parse_array(self):
-        self.advance()  # Skip '['
+        self.advance()  # skip '['
         array = []
         while self.pos < len(self.tokens):
             token = self.tokens[self.pos]
@@ -195,7 +225,7 @@ class Parser:
         return ASTNode(TokenType.LBRACKET, array)
 
     def parse_block(self):
-        self.advance()  # Skip '{'
+        self.advance()  # skip '{'
         block = []
         while self.pos < len(self.tokens):
             token = self.tokens[self.pos]
@@ -213,17 +243,25 @@ class Parser:
         return ASTNode(TokenType.LBRACE, block)
 
     def parse_def(self):
-        """Parse `/name { ... } def` definitions."""
-        # Literal name (e.g., /moveto)
-        name_token = self.tokens[self.pos - 1]  # Literal name is right before 'def'
-        if name_token.type != TokenType.LITERAL:
-            raise SyntaxError(f"Expected literal name before 'def', found {name_token}")
-        # Block definition
-        self.advance()  # Move to block
-        if self.tokens[self.pos].type != TokenType.LBRACE:
-            raise SyntaxError("Expected '{' after literal name for 'def'")
-        block = self.parse_block()
-        return ASTNode(TokenType.DEF, {"name": name_token.value, "block": block})
+        # Assume 'name' and 'value' are parsed correctly
+
+        name = self.parse_identifier()  # or however the identifier is parsed
+        value = self.parse_expression()  # or however the value is parsed
+        return ASTNode(TokenType.DEF, value={"name": name, "value": value})
+
+
+#    def parse_def(self):
+#        """Parse `/name { ... } def` definitions."""
+        # literal name (e.g., /moveto)
+#        name_token = self.tokens[self.pos - 1]  # literal name is right before 'def'
+#        if name_token.type != TokenType.LITERAL:
+#            raise SyntaxError(f"Expected literal name before 'def', found {name_token}")
+#        # block definition
+#        self.advance()  # move to block
+#        if self.tokens[self.pos].type != TokenType.LBRACE:
+#            raise SyntaxError("Expected '{' after literal name for 'def'")
+#        block = self.parse_block()
+#        return ASTNode(TokenType.DEF, {"name": name_token.value, "block": block})
 
     def get_next_token(self):
         if self.pos < len(self.tokens):
@@ -245,47 +283,6 @@ sample_code = """
 [ 1 2 3 ] % array example
 """
 
-sample_code = """
-%!PS-Adobe-2.0
-%%Title: Green Book Listing 15-1, on page 213.
-%%Creator: "extract" program
-%%CreationDate: Mon May  9 09:52:12 PDT 1988
-%%EndComments
-% --- cut here ---
-%!PS-Adobe-2.0
-%%Title: pathtrace.ps
-%%EndComments
- /debug 10 dict def
- debug begin
-	/str 128 string def
-	/*moveto /moveto load def
-	/*lineto /lineto load def
-
-	/moveto { %def
-		(moveto: ) print
-		exch dup str cvs print % X-val
-		( ) print exch dup ==    % Y-val
-		flush
-		*moveto					% execute real moveto
-	} bind def
-	/lineto { %def
-		(lineto: ) print
-		exch dup str cvs print % X-val
-		( ) print exch dup ==    % Y-val
-		flush
-		*lineto					% execute real lineto
-	} bind def
- end
-%%EndProlog
- debug begin
-	100 100 translate
-	100 100 moveto
-	200 200 lineto
-	stroke
-	showpage
- end
-%%Trailer
-"""
 
 
 # Run Lexer and Parser
