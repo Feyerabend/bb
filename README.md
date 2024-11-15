@@ -6,6 +6,12 @@ This repository is primarily to be used as a companion to the upcomming book
 Here you should be able to find more information, errata, exercises, code,
 other resources and updates.
 
+
+A teaser for the book in PDF, so far:
+
+* [From Basics to Bytecode](./book/boktest.pdf)
+
+
 The [workbook](./workbook) consists mainly of:
 
 * Examples in __*code*__ that were both too extensive to be published in
