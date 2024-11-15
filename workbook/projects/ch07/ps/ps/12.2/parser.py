@@ -34,8 +34,8 @@ class Lexer:
     HEADER_REGEX = re.compile(r'%!PS-[^\s]+')
     DIRECTIVE_REGEX = re.compile(r'%%[^\n]+')
     DEF_REGEX = re.compile(r'\bdef\b')
-    # regon. =
-    # recog. ==
+    # =
+    # ==
 
     def __init__(self, code):
         self.code = code

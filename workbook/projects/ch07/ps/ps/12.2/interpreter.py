@@ -4,39 +4,39 @@ from enum import Enum, auto
 from parser import Token, TokenType, ASTNode, Lexer, Parser
 
 
-class PostScriptObject:
+class PSObject:
     def execute(self, interpreter):
         pass
 
-class Number(PostScriptObject):
+class Number(PSObject):
     def __init__(self, value):
         self.value = value
     
     def execute(self, interpreter):
         interpreter.operand_stack.append(self)
 
-class Boolean(PostScriptObject):
+class Boolean(PSObject):
     def __init__(self, value):
         self.value = value
 
     def execute(self, interpreter):
         interpreter.operand_stack.append(self)
 
-class String(PostScriptObject):
+class String(PSObject):
     def __init__(self, value):
         self.value = value
 
     def execute(self, interpreter):
         interpreter.operand_stack.append(self)
 
-class Array(PostScriptObject):
+class Array(PSObject):
     def __init__(self, elements):
         self.elements = elements
 
     def execute(self, interpreter):
         interpreter.operand_stack.append(self)
 
-class Name(PostScriptObject):
+class Name(PSObject):
     def __init__(self, name):
         self.name = name
 
@@ -50,14 +50,14 @@ class Name(PostScriptObject):
         else:
             raise NameError(f"Undefined name: {self.name}")
 
-class Operator(PostScriptObject):
+class Operator(PSObject):
     def __init__(self, func):
         self.func = func
 
     def execute(self, interpreter):
         self.func(interpreter)
 
-class Procedure(PostScriptObject):
+class Procedure(PSObject):
     def __init__(self, elements):
         self.elements = elements
 
@@ -117,9 +117,9 @@ class Interpreter:
         if node.type == TokenType.NUMBER:
             Number(node.value).execute(self)
         elif node.type == TokenType.LITERAL:
-            self.operand_stack.append(Name(node.value[1:]))  # Remove leading '/' from literal
+            self.operand_stack.append(Name(node.value[1:]))  # remove '/'
         elif node.type == TokenType.IDENTIFIER:
-            if node.value == "def":  # Explicitly handle 'def'
+            if node.value == "def":  # ugly: handle 'def'
                 self.execute_def(node)
             else:
                 Name(node.value).execute(self)
@@ -139,7 +139,7 @@ class Interpreter:
             raise SyntaxError(f"Unhandled AST node type: {node.type}")
 
     def convert_ast_to_obj(self, node):
-        """Helper to convert ASTNode to corresponding PostScript object"""
+        """Helper to convert ASTNode to corresponding PS object"""
         if node.type == TokenType.NUMBER:
             return Number(node.value)
         elif node.type == TokenType.LITERAL:
