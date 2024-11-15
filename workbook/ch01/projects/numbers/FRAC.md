@@ -1,46 +1,41 @@
 
 ## Fractional numbers
 
-In Python and C, fractional numbers can be represented and manipulated using both floats and rational numbers,
-though rational numbers offer higher precision in mathematical calculations.
+In Python and C, fractional numbers can be represented and manipulated using
+both floats and rational numbers, though rational numbers offer higher precision
+in mathematical calculations.
 
 
 ### Representing fractions
 
-Fractions are parts of a whole and can be represented as two integers: a numerator (top part) and a denominator
-(bottom part). Working directly with numerators and denominators instead of converting fractions to decimal
-approximations (floats) avoids precision loss, which is common in floating-point arithmetic.
+Fractions are parts of a whole and can be represented as two integers: a
+numerator (top part) and a denominator (bottom part). Working directly with
+numerators and denominators instead of converting fractions to decimal
+approximations (floats) avoids precision loss, which is common in floating-point
+arithmetic.
 
-In both Python and C, a fraction can be represented as a structure with two integers: the numerator and
-the denominator. The key to calculating with fractions lies in applying the appropriate rules of arithmetic
-and simplifying the fraction by finding the greatest common divisor (GCD) of the numerator and denominator.
+In both Python and C, a fraction can be represented as a structure with two
+integers: the numerator and the denominator. The key to calculating with fractions
+lies in applying the appropriate rules of arithmetic and simplifying the fraction
+by finding the *greatest common divisor* (GCD) of the numerator and denominator.
 
 
 #### Simple fractional arithmetic rules
 
-
-1.	Addition:
-
+1. Addition:
 $\frac{a}{b} + \frac{c}{d} = \frac{a \cdot d + b \cdot c}{b \cdot d}$
 
 
-
-2.	Subtraction:
-
+2. Subtraction:
 $\frac{a}{b} - \frac{c}{d} = \frac{a \cdot d - b \cdot c}{b \cdot d}$
 
 
-
-3.	Multiplication:
-
+3. Multiplication:
 $\frac{a}{b} \times \frac{c}{d} = \frac{a \cdot c}{b \cdot d}$
 
 
-
-4.	Division:
-
+4. Division:
 $\frac{a}{b} \div \frac{c}{d} = \frac{a \cdot d}{b \cdot c}$
-
 
 
 To ensure the results are as simplified as possible, we divide both the
@@ -49,7 +44,7 @@ numerator and the denominator by their GCD after each operation.
 
 #### Python
 
-Here's how to implement a Fraction class in Python, along with a helper
+Here's how to implement a `Fraction` class in Python, along with a helper
 function for the GCD:
 
 ```python
@@ -196,13 +191,14 @@ fractions (without relying on floating-point approximations).
 
 ### Using symbolic logic
 
-Incorporating symbolic logic into number calculations, particularly with fractions, allows for a more flexible and expressive
-representation of operations. This could include representing operations and expressions symbolically (e.g., without immediately
-evaluating them) or enabling conditional logic based on specific conditions or properties of the fractions (like divisibility,
+Incorporating symbolic logic into number calculations, particularly with fractions, allows
+for a more flexible and expressive representation of operations. This could include representing
+operations and expressions symbolically (e.g., without immediately evaluating them) or enabling
+conditional logic based on specific conditions or properties of the fractions (like divisibility,
 equality, or relational comparisons).
 
-We can start by creating a symbolic structure in Python that allows us to represent arithmetic expressions with fractions.
-The symbolic logic would let us:
+We can start by creating a symbolic structure in Python that allows us to represent arithmetic
+expressions with fractions. The symbolic logic would let us:
 
 1.	Represent operations symbolically without immediately computing the result.
 2.	Define conditional expressions based on certain properties (like checking if one fraction is greater than another).
@@ -213,8 +209,9 @@ Let's extend our Fraction class to include symbolic representation with *lazy ev
 
 #### Python
 
-We'll start by creating a SymbolicFraction class that extends the Fraction class. This class will store operations
-symbolically and evaluate them only when necessary. We'll add methods to support symbolic comparisons and boolean checks.
+We'll start by creating a SymbolicFraction class that extends the Fraction class. This class
+will store operations symbolically and evaluate them only when necessary. We'll add methods
+to support symbolic comparisons and boolean checks.
 
 ```python
 from functools import reduce
@@ -259,7 +256,7 @@ class SymbolicFraction(Fraction):
     def __str__(self):
         return f"{self.symbolic_expr} = {self.numerator}/{self.denominator}"
 
-    # Comparison operations (returns a boolean)
+    # comparison operations (returns boolean)
     def is_equal_to(self, other):
         return self.numerator * other.denominator == self.denominator * other.numerator
 
@@ -269,7 +266,7 @@ class SymbolicFraction(Fraction):
     def is_less_than(self, other):
         return self.numerator * other.denominator < self.denominator * other.numerator
 
-    # Conditional expression
+    # conditional expression
     def if_greater_than(self, other, result_if_true, result_if_false):
         if self.is_greater_than(other):
             return result_if_true
@@ -428,8 +425,8 @@ int main() {
    fractions, allowing conditional logic based on their relationships.
 
 3. Conditional `if_greater`: This function takes two SymbolicFraction instances and two string
-   messages (result_if_true and result_if_false). It uses is_greater to check if one fraction is greater
-   than the other and prints the appropriate message.
+   messages (`result_if_true` and `result_if_false`). It uses `is_greater` to check if one
+   fraction is greater than the other and prints the appropriate message.
 
 With this approach, the program maintains a symbolic representation of arithmetic operations on fractions
 and supports conditional checks and expressions based on symbolic logic. The final output reflects both
