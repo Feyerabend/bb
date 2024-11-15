@@ -2,8 +2,9 @@
 
 ### Representation of 2.3
 
-When we use *2.3* as our model for fixed-point representation, we will choose a fixed-point format,
-say *Qm.n*, where `m` is the integer part, and `n` is the fractional part.
+When we use *2.3* as our model for fixed-point representation, we will choose a
+fixed-point format, say *Qm.n*, where `m` is the integer part, and `n` is the
+fractional part.
 
 
 #### Example: The *Q2.3* Fixed-Point Format
@@ -14,7 +15,8 @@ In the *Q2.3* format:
 
 This setup allows us to represent:
 - *Integer Range*: from -2 to 1 (where binary `10` is -2, and `01` is 1).
-- *Fractional Range*: from `0.0` to `0.875` (binary `0.111` represents $`\frac{7}{8}`$).
+- *Fractional Range*: from `0.0` to `0.875` (binary `0.111` represents
+$`\frac{7}{8}`$).
 
 ### Converting 2.3 to Fixed-Point in *Q2.3*
 
@@ -35,7 +37,8 @@ To represent *2.3* in Q2.3:
    - Fractional part (limited to 3 bits): `010` (approximation of `0.3`)
 
 So, in Q2.3 format:
-- *Fixed-point representation* of *2.3* is `10.010`, where `10` is the integer part and `010` is the fractional part.
+- *Fixed-point representation* of *2.3* is `10.010`, where `10` is the integer
+part and `010` is the fractional part.
 
 ### Arithmetic Operations with *2.3* in Fixed-Point Q2.3
 
@@ -85,7 +88,8 @@ To multiply *2.3* by *1.5*:
 2. *Multiplication*:
    - Multiply as if they were integers: `10.010 x 01.100 = 10.111100`
 
-3. *Scaling*: Since each operand has 3 fractional bits, the result needs adjustment by shifting right by 3 bits.
+3. *Scaling*: Since each operand has 3 fractional bits, the result needs adjustment
+by shifting right by 3 bits.
    - Right shift `10.111100` by 3: `001.111`
 
 This is approximately `3.5`, fitting within our fixed-point range.
@@ -120,11 +124,9 @@ Here's a simple implementation of fixed-point arithmetic using *2.3* as a model 
 #include <stdio.h>
 #include <stdint.h>
 
-// number of fractional bits for Q2.3
 #define FRACTIONAL_BITS 3
 #define SCALE (1 << FRACTIONAL_BITS)  // 2^3 = 8 for scaling
 
-// fixed-point type: 8-bit signed integer
 typedef int8_t fixed_point;
 
 fixed_point float_to_fixed(float value) {
@@ -136,19 +138,17 @@ float fixed_to_float(fixed_point value) {
 }
 
 fixed_point fixed_add(fixed_point a, fixed_point b) {
-    return a + b;  // simple addition
+    return a + b;  // addition
 }
 
 fixed_point fixed_sub(fixed_point a, fixed_point b) {
-    return a - b;  // simple subtraction
+    return a - b;  // subtraction
 }
 
-// multiplication of fixed-point numbers
 fixed_point fixed_mul(fixed_point a, fixed_point b) {
     return (fixed_point)(((int16_t)a * (int16_t)b) >> FRACTIONAL_BITS); // right shift to scale down
 }
 
-// division of fixed-point numbers
 fixed_point fixed_div(fixed_point a, fixed_point b) {
     return (fixed_point)((((int16_t)a << FRACTIONAL_BITS) + (b / 2)) / b); // scale numerator for precision
 }
@@ -158,11 +158,9 @@ void print_fixed(fixed_point value) {
 }
 
 int main() {
-    // represent 2.3 in fixed-point
     float num1 = 2.3;
     fixed_point fixed_num1 = float_to_fixed(num1);
     
-    // another number, say 1.5
     float num2 = 1.5;
     fixed_point fixed_num2 = float_to_fixed(num2);
     
