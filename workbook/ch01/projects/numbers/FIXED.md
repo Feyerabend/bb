@@ -17,49 +17,39 @@ We'll represent fixed-point numbers with an integer and a fixed scaling factor
 #include <stdio.h>
 #include <stdint.h>
 
-// Define the number of fractional bits (we use 16 for Q16.16 fixed-point format)
 #define FRACTIONAL_BITS 16
-#define SCALE (1 << FRACTIONAL_BITS)  // 2^16 or 65536 for scaling
+#define SCALE (1 << FRACTIONAL_BITS)  // 2^16 for scaling
 
-// Fixed-point type: using 32-bit signed integer
 typedef int32_t fixed_point;
 
-// Convert from float to fixed-point
 fixed_point float_to_fixed(float value) {
     return (fixed_point)(value * SCALE);
 }
 
-// Convert from fixed-point to float
 float fixed_to_float(fixed_point value) {
     return (float)value / SCALE;
 }
 
-// Addition of fixed-point numbers
 fixed_point fixed_add(fixed_point a, fixed_point b) {
     return a + b;
 }
 
-// Subtraction of fixed-point numbers
 fixed_point fixed_sub(fixed_point a, fixed_point b) {
     return a - b;
 }
 
-// Multiplication of fixed-point numbers
 fixed_point fixed_mul(fixed_point a, fixed_point b) {
     return (fixed_point)(((int64_t)a * b) >> FRACTIONAL_BITS);
 }
 
-// Division of fixed-point numbers
 fixed_point fixed_div(fixed_point a, fixed_point b) {
     return (fixed_point)(((int64_t)a << FRACTIONAL_BITS) / b);
 }
 
-// Modulo operation for fixed-point numbers
 fixed_point fixed_mod(fixed_point a, fixed_point b) {
     return a % b;
 }
 
-// Printing fixed-point value (debugging)
 void print_fixed(fixed_point value) {
     printf("Fixed-point: %d (Float equivalent: %f)\n", value, fixed_to_float(value));
 }
@@ -68,16 +58,22 @@ void print_fixed(fixed_point value) {
 ### Explanation
 
 - *Conversion between float and fixed-point*:
-  - `float_to_fixed(float value)`: Converts a floating-point number to a fixed-point number by multiplying the float by the scale factor (2^16).
-  - `fixed_to_float(fixed_point value)`: Converts a fixed-point number back to a floating-point number by dividing it by the scale factor.
+  - `float_to_fixed(float value)`: Converts a floating-point number to a fixed-point number
+    by multiplying the float by the scale factor (2^16).
+  - `fixed_to_float(fixed_point value)`: Converts a fixed-point number back to a floating-point
+    number by dividing it by the scale factor.
   
 - *Arithmetic operations*:
   - `fixed_add`, `fixed_sub`: Simple integer addition and subtraction.
-  - `fixed_mul`: Multiplies two fixed-point numbers and shifts the result back by `FRACTIONAL_BITS` to account for the fixed-point scaling.
-  - `fixed_div`: Shifts the dividend up by `FRACTIONAL_BITS` before performing integer division, to maintain precision.
-  - `fixed_mod`: Uses the modulo operation, which operates at the integer level and provides the remainder in fixed-point form.
+  - `fixed_mul`: Multiplies two fixed-point numbers and shifts the result back by `FRACTIONAL_BITS`
+    to account for the fixed-point scaling.
+  - `fixed_div`: Shifts the dividend up by `FRACTIONAL_BITS` before performing integer division,
+    to maintain precision.
+  - `fixed_mod`: Uses the modulo operation, which operates at the integer level and provides
+    the remainder in fixed-point form.
 
-- *Printing*: `print_fixed` outputs both the fixed-point representation (raw integer value) and the floating-point equivalent.
+- *Printing*: `print_fixed` outputs both the fixed-point representation (raw integer value) and
+  the floating-point equivalent.
 
 
 ### Example
@@ -87,7 +83,6 @@ with addition, subtraction, multiplication, division, and modulo operations:
 
 ```c
 int main() {
-    // Convert floating-point numbers to fixed-point numbers
     float a_f = 5.25;
     float b_f = 2.75;
     
@@ -162,7 +157,7 @@ Fixed-point: 450560 (Float equivalent: 6.875000)
    to maintain precision. Using `int64_t` for intermediate results ensures
    that we avoid overflow during these operations.
 
-2. *Scaling Factor*: This implementation uses a Q16.16 format (16 bits for
+2. *Scaling factor*: This implementation uses a Q16.16 format (16 bits for
    the fractional part). You can adjust `FRACTIONAL_BITS` if a different
    precision is needed.
 
