@@ -10,17 +10,17 @@
 2. *Explain the difference between signed and unsigned integer representation.*
     - How does this difference impact the range of representable values, and why is it crucial in certain applications?
 
-3.	*Describe the concept of 2’s complement representation in an 8-bit system.*
+3.	*Describe the concept of 2's complement representation in an 8-bit system.*
     - Investigate how this approach allows representation of negative integers, and explain how it differs from other binary representations.
 
-4.	*In an 8-bit system, calculate the binary representation of -25 using 2’s complement.*
+4.	*In an 8-bit system, calculate the binary representation of -25 using 2's complement.*
     - Show each step and discuss why each is necessary to properly encode the value.
 
 5.	*What are the main challenges of converting a decimal integer, such as 123, into binary form?*
     - Analyze the process and potential sources of error, focusing on practical difficulties in manual and programmatic conversion.
 
 6.	*How does sign extension work when converting an 8-bit signed integer to a larger bit size (e.g., 16 bits)?*
-    - Explain why this method preserves the integer’s value and how it differs for positive and negative numbers.
+    - Explain why this method preserves the integer's value and how it differs for positive and negative numbers.
 
 7.	*Discuss the implications of overflow in an 8-bit integer system.*
     - When does overflow occur, and how might it impact real-world applications that rely on integer computations?
@@ -85,61 +85,61 @@
 1. *Describe the ASCII encoding system.*
     - Explain how ASCII represents characters as binary numbers and the limitations this encoding imposes on representing non-Latin characters.
 
-2. *Explain how the character ‘A’ is represented in ASCII.*
+2. *Explain how the character 'A' is represented in ASCII.*
     - Discuss the binary encoding and what each bit represents. Extend this explanation to lowercase letters and punctuation marks, noting the significance of the uppercase/lowercase distinction.
 
 3. *Trace the development of character encoding systems before ASCII.*
-    - Investigate earlier encoding systems, such as Morse code or telegraphy codes, and discuss how these influenced ASCII’s design.
+    - Investigate earlier encoding systems, such as Morse code or telegraphy codes, and discuss how these influenced ASCII's design.
 
 4. *Why was the development of Unicode necessary despite the success of ASCII?*
     - Examine the limitations of ASCII in representing diverse characters and languages and how these limitations affected global computing.
 
 5. *Explain the concept of character encoding in ASCII compared to UTF-8.*
-    - Analyze the differences in bit usage between ASCII’s 7-bit encoding and UTF-8’s variable-length encoding, and discuss how UTF-8 supports a much wider range of characters.
+    - Analyze the differences in bit usage between ASCII's 7-bit encoding and UTF-8's variable-length encoding, and discuss how UTF-8 supports a much wider range of characters.
 
-6. *Provide the binary encoding of the ASCII characters for ‘Hello’.*
-    - Show each letter’s binary representation, and explain the pattern you observe in encoding uppercase vs. lowercase letters.
+6. *Provide the binary encoding of the ASCII characters for 'Hello'.*
+    - Show each letter's binary representation, and explain the pattern you observe in encoding uppercase vs. lowercase letters.
 
-7. *Discuss how ASCII’s 7-bit design influenced early computing hardware.*
+7. *Discuss how ASCII's 7-bit design influenced early computing hardware.*
     - Research why ASCII was initially designed as a 7-bit code and how this choice affected memory and data transmission in early computer systems.
 
 8. *What role did ASCII play in early internet communication?*
-    - Investigate ASCII’s use in early internet protocols (such as email and HTTP) and explain why its simplicity was advantageous for these applications.
+    - Investigate ASCII's use in early internet protocols (such as email and HTTP) and explain why its simplicity was advantageous for these applications.
 
 9. *Describe how UTF-8 encodes characters that are not part of ASCII.*
     - Give examples of how UTF-8 uses more than one byte to represent non-Latin characters and discuss the benefits and potential challenges of variable-length encoding.
 
-10. *Convert the decimal ASCII values of the characters in “Data” to binary.*
+10. *Convert the decimal ASCII values of the characters in `Data` to binary.*
     - Explain each step and analyze the differences in encoding uppercase and lowercase letters.
 
 11. *Explore the historical evolution from ASCII to Extended ASCII.*
     - Describe the differences and explain how Extended ASCII attempted to represent additional characters. Consider why this solution was still insufficient for global use.
 
 12. *Why does UTF-8 remain the dominant encoding standard on the web today?*
-    - Discuss UTF-8’s advantages over other encoding standards, such as UTF-16 or ISO-8859, particularly for web applications and multilingual content.
+    - Discuss UTF-8's advantages over other encoding standards, such as UTF-16 or ISO-8859, particularly for web applications and multilingual content.
 
 13. *Research the historical challenges in creating a unified encoding standard like Unicode.*
     - Investigate early challenges faced by the Unicode Consortium in standardizing characters for global use and how cultural and linguistic diversity influenced these decisions.
 
-14. *What was the significance of the space character’s encoding in ASCII?*
+14. *What was the significance of the space character's encoding in ASCII?*
     - Explain why the space character (00100000 in ASCII) has its particular encoding and its importance in text processing and data storage.
 
 15. *Discuss the use of control characters in ASCII.*
-    - Examine ASCII’s control characters (such as newline and carriage return) and their impact on early text processing and communication protocols.
+    - Examine ASCII's control characters (such as newline and carriage return) and their impact on early text processing and communication protocols.
 
 
 
 #### Strings
 
 
-1. *Explain how a string such as “Data” is stored in memory.*
-    - Break down each character’s ASCII binary representation and explain how these are stored consecutively, including the role of the null character at the end.
+1. *Explain how a string such as `Data` is stored in memory.*
+    - Break down each character's ASCII binary representation and explain how these are stored consecutively, including the role of the null character at the end.
 
 2. *What challenges arise when using the null character to indicate the end of a string?*
     - Discuss how this choice impacts memory usage and handling in programming languages, particularly in cases where binary data may include null values.
 
-3. *Convert the string “Binary” into its ASCII binary representation.*
-    - Show each character’s 8-bit encoding and analyze any patterns in the binary sequence based on uppercase vs. lowercase letters.
+3. *Convert the string `Binary` into its ASCII binary representation.*
+    - Show each character's 8-bit encoding and analyze any patterns in the binary sequence based on uppercase vs. lowercase letters.
 
 4. *Investigate the historical evolution of string handling in early programming languages.*
     - Explore how languages like C represented strings, the reliance on null-terminated strings, and the advantages and limitations of this approach.
@@ -160,13 +160,13 @@
     - Compare weakly and strongly typed languages, and discuss how type systems prevent errors and allow more robust code, especially in large-scale applications.
 
 10. *Investigate how types represent more than just binary data in object-oriented programming.*
-    - Explain how types, or classes, in languages like Python or Java define both data and the methods associated with that data, giving an example of how a “Person” class might combine attributes and methods.
+    - Explain how types, or classes, in languages like Python or Java define both data and the methods associated with that data, giving an example of how a `Person` class might combine attributes and methods.
 
 11. *Research how string encoding has evolved from ASCII to Unicode in programming.*
-    - Explain the limitations of ASCII in representing global characters and how Unicode’s broader encoding scheme has enabled support for a wider array of languages and symbols.
+    - Explain the limitations of ASCII in representing global characters and how Unicode's broader encoding scheme has enabled support for a wider array of languages and symbols.
 
-12. *Convert the string “Hello World!” into its binary ASCII representation.*
-    - Display each character’s binary encoding and describe how punctuation and spaces are represented in the ASCII system.
+12. *Convert the string `Hello World!` into its binary ASCII representation.*
+    - Display each character's binary encoding and describe how punctuation and spaces are represented in the ASCII system.
 
 13. *What are the advantages of null-terminated strings versus length-prefixed strings?*
     - Explore both methods for indicating the end of a string in memory, including any historical reasons for the adoption of null-terminated strings in languages like C.
@@ -191,10 +191,10 @@
     - Research early methods for storing data in computer memory and how variable storage has evolved over time.
 
 4. *What are the most common types of variables in programming?*
-    - Provide examples and explain why a variable’s type is essential for data interpretation.
+    - Provide examples and explain why a variable's type is essential for data interpretation.
 
 5. *Discuss the role of variables in functional versus imperative programming paradigms.*
-    - Compare how variables function differently in each paradigm, focusing on functional programming’s preference for immutability.
+    - Compare how variables function differently in each paradigm, focusing on functional programming's preference for immutability.
 
 
 #### Assignment
