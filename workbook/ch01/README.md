@@ -104,5 +104,3 @@ numbers in computers, stemming from the mathematical constructs of
 representations, fractions, and symbolic calculations, as well as the strengths
 and limitations of each approach. Code examples are provided to help you get
 started with practical applications.
-
-See more of this suggested [projects](./FLOATING.md) on floating-point to get started.
