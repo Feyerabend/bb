@@ -27,7 +27,7 @@ co-authored by von Neumann, which deeply influenced subsequent computer developm
   load, fetch, decode, execute instructions, and update a program counter. This exercise provides
   hands-on experience with how CPUs process instructions in sequence and manage memory.
 
-- Learning Outcome: Gain understanding of low-level instruction execution, memory management,
+- Learning: Gain understanding of low-level instruction execution, memory management,
   and control flow.
 
 #### Assembly language programming exercises
@@ -41,7 +41,7 @@ co-authored by von Neumann, which deeply influenced subsequent computer developm
   * RARS: https://github.com/TheThirdOne/rars
   * Ripes: https://github.com/mortbopet/Ripes
 
-- Learning Outcome: Familiarize youself with machine-level operations and how high-level concepts
+- Learning: Familiarize youself with machine-level operations and how high-level concepts
   like loops translate to low-level code.
 
 #### Von Neumann bottleneck exploration
@@ -51,10 +51,10 @@ co-authored by von Neumann, which deeply influenced subsequent computer developm
   a simulated environment, comparing sequential access patterns versus cache-optimized or parallel
   approaches.
 
-- If LLMs are assumed, use them as a reference to check their understanding, ask questions about
+- If LLMs are assumed, use them as a reference to check your understanding, ask questions about
   bottleneck implications, or get guidance on optimization ideas.
 
-- Learning Outcome: Understand the performance challenges in von Neumann architecture and the role
+- Learning: Understand the performance challenges in von Neumann architecture and the role
   of caches.
 
 #### Basic compiler design project
@@ -64,7 +64,7 @@ co-authored by von Neumann, which deeply influenced subsequent computer developm
   of your von Neumann simulator. You will need to implement lexical analysis, parsing, and code
   generation stages.
 
-- Learning Outcome: Appreciate the role of compilers in translating high-level code to machine
+- Learning: Appreciate the role of compilers in translating high-level code to machine
   instructions and reinforce concepts of instruction fetching and decoding.
 
 #### LLM-Assisted program design & debugging
@@ -74,7 +74,7 @@ co-authored by von Neumann, which deeply influenced subsequent computer developm
   or diagnose errors. For example, you might ask, "Why is this loop not updating the accumulator
   correctly?" to receive potential solutions or hints.
 
-- Learning Outcome: Develop problem-solving skills for low-level programming while gaining practice
+- Learning: Develop problem-solving skills for low-level programming while gaining practice
   in seeking out debugging support.
 
 These exercises and projects can help you develop a deep understanding of the von Neumann machine
