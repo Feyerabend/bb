@@ -55,10 +55,12 @@ This is also an example of fractals, see [https://en.wikipedia.org/wiki/Fractal]
 - Exercise: Implement a 3D Koch snowflake variant, where each side of the snowflake branches out into three-dimensional space.
 - Goal: Introduce the challenges of 3D space transformations, while reinforcing recursive thinking with a more complex visualization.
 
-5. Writing a PPM image generator for any fractal depth:
+5. Writing a PPM image[^ppm] generator for any fractal depth:
 - Objective: Understand file I/O and image generation using recursion.
 - Exercise: Expand on the Koch snowflake by writing a program that outputs the fractal at various recursion depths as a PPM image.
 - Goal: Practice generating visual files programmatically and understand how recursion can directly control pixel-level output.
+
+[^ppm]: See e.g. [https://rosettacode.org/wiki/Bitmap/Write_a_PPM_file](https://rosettacode.org/wiki/Bitmap/Write_a_PPM_file)
 
 6. Comparing recursive and iterative approaches:
 - Objective: Introduce alternative recursive implementations.
