@@ -1,0 +1,25 @@
+# factorial see https://en.wikipedia.org/wiki/Factorial
+
+START:
+
+   SET 10         # n = 15
+   DUP
+   STORE 0        # i = 15
+   SET 1
+   STORE 1        # fact = 1
+
+LOOP:
+
+   LOAD 0         # i
+   LOAD 1         # fact
+   MUL            # i * fact ->
+   STORE 1        # -> fact
+   LOAD 0         # i
+   DEC            # --i
+   DUP
+   STORE 0        # -> i
+   JPNZ :LOOP     # i ≠ 0 ?
+
+   LOAD 1         # fact
+   PRINT
+   HALT
