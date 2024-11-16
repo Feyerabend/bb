@@ -1,3 +1,7 @@
+# this sample requires installment of PIL
+# check for installments:
+# python -m pip list
+
 from PIL import Image, ImageDraw
 import math
 
