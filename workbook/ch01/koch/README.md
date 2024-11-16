@@ -60,7 +60,8 @@ This is also an example of fractals, see [https://en.wikipedia.org/wiki/Fractal]
     - Exercise: Expand on the Koch snowflake by writing a program that outputs the fractal at various recursion depths as a PPM image.
     - Goal: Practice generating visual files programmatically and understand how recursion can directly control pixel-level output.
 
-[^ppm]: See e.g. [https://rosettacode.org/wiki/Bitmap/Write_a_PPM_file](https://rosettacode.org/wiki/Bitmap/Write_a_PPM_file)
+[^ppm]: See e.g. [https://rosettacode.org/wiki/Bitmap/Write_a_PPM_file](https://rosettacode.org/wiki/Bitmap/Write_a_PPM_file).
+The PPM3 format (Portable Pixel Map 3) is a simple image file format that represents color images. It stores pixel data in a grid structure, where each pixel’s color is defined by three values corresponding to the red, green, and blue (RGB) color channels. These values are typically stored as plain text in the file, with each pixel’s color values separated by whitespace. The PPM3 format is known for its simplicity and human-readable structure, making it easy to create and manipulate, though it is not particularly efficient for large images due to its uncompressed nature.
 
 6. Comparing recursive and iterative approaches:
     - Objective: Introduce alternative recursive implementations.
