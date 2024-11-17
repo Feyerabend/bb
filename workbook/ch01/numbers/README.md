@@ -118,7 +118,7 @@ floating-point arithmetic.
 
 - Fixed-Point Representation: Useful for applications with predictable range and
   precision needs, like embedded systems. Fixed-point numbers avoid some rounding
-  issues but have limited dynamic range.
+  issues but have limited dynamic range.[^fixed]
 
 - Arbitrary-Precision Arithmetic: Allows more precise calculations by allocating
   more bits for storage as needed. This is slower than fixed-precision but can be
@@ -133,6 +133,7 @@ floating-point numbers fail and how alternatives can provide more accurate resul
 Investigate specific libraries (e.g., Python's decimal and fractions modules) that
 handle arbitrary-precision and rational numbers, respectively.
 
+[^fixed]: See e.g. https://www.wedolow.com/en/resources/fixed-point-precision-efficiency/
 
 4. Comparing Floating-Point and Alternative Representations
 
