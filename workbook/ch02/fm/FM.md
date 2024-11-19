@@ -72,11 +72,11 @@ class Lisp:
 
 The eval method processes different types of expressions:
 
-* Numeric Literals: Returns the value directly.
+* Numeric literals: Returns the value directly.
 * Variables: Retrieves the value from the environment.
-* Function Definitions: Evaluates a define expression to bind a name to a function or variable.
-* Lambda Functions: Creates a new function and returns it as a closure.
-* Function Calls: Evaluates the function and its arguments, then applies the function.
+* Function definitions: Evaluates a define expression to bind a name to a function or variable.
+* Lambda functions: Creates a new function and returns it as a closure.
+* Function calls: Evaluates the function and its arguments, then applies the function.
 
 #### Example
 
