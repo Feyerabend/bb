@@ -7,6 +7,9 @@ to a shared repository. This ensures that problems are detected early, before th
 large and costly to fix. CI is a crucial part of modern DevOps workflows, promoting
 collaboration, code quality, and faster release cycles.
 
+[![Python CI](https://github.com/Feyerabend/bb/actions/workflows/main.yml/badge.svg)](https://github.com/Feyerabend/bb/actions/workflows/main.yml)
+
+
 The file 'main.yml' lives in 'bb/.github/workflows/main.yml':
 
 
