@@ -37,8 +37,9 @@ jobs:
     - name: Print working directory
        run: pwd
 
+    # right place?
     - name: List files
-       run: ls -R bbc/workbook/ch03/sample
+       run: ls -R bb/workbook/ch03/ci
 
     # unit tests using Python's unittest
     - name: Run tests
