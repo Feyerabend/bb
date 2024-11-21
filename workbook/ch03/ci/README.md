@@ -9,8 +9,10 @@ collaboration, code quality, and faster release cycles.
 
 ### Project
 
-*Adapt the below scripts and install in your own repository, with some more serious code.
-Also follow the suggestions of expanding the yml-script. Read-up on how Action works at GitHub.*
+*Adapt the scripts below and install them in your own repository, using more robust and
+production-ready code. Additionally, implement the suggested improvements to expand the
+YAML script. Take some time to read up on how 'GitHub Actions' work to make the most of
+this tool.*
 
 ### Example on GitHUb
 
