@@ -41,7 +41,7 @@ jobs:
     - name: List files
        run: ls -R bb/workbook/ch03/ci
 
-    # unit tests using Python's unittest
+    # unit tests using Python's unittest: bb/workbook/ch03/ci
     - name: Run tests
       run: |
-        python -m unittest discover -s workbook/ch03/ci -p 'test_*.py'
+        python -m unittest discover -s -p 'test_*.py'
