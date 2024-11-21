@@ -1,11 +1,6 @@
 
 ## Confusion matrix
 
-As an argument for including machine learning as an early educational topic, consider
-the concept of a confusion matrix--a powerful "debugging technique" for evaluating and
-refining models. It provides detailed insights into the strengths and weaknesses of a
-model's predictions, going beyond the simplicity of accuracy metrics.
-
 In essence, the confusion matrix serves as a diagnostic tool, revealing where a model
 excels and where it falters, whether due to false positives, false negatives, or other
 errors. This insight enables you to fine-tune, troubleshoot, and optimize the model's
