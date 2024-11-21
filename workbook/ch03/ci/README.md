@@ -14,7 +14,7 @@ production-ready code. Additionally, implement the suggested improvements to exp
 YAML script. Take some time to read up on how 'GitHub Actions' work to make the most of
 this tool.*
 
-### Example on GitHUb
+### Example on GitHub
 
 First an example of how CI work on GitHub with a Pyhton script.
 A badge react to how the automatic runs work, if it breaks it changes colour.
