@@ -7,11 +7,19 @@ to a shared repository. This ensures that problems are detected early, before th
 large and costly to fix. CI is a crucial part of modern DevOps workflows, promoting
 collaboration, code quality, and faster release cycles.
 
+### Project
+
+*Adapt the below scripts and install in your own repository, with some more serious code.
+Also follow the suggestions of expanding the yml-script.*
+
+### Example on GitHUb
+
+First an example of how CI work on GitHub with a Pyhton script.
+A badge react to how the automatic runs work, if it breaks it changes colour.
+
 [![Python CI](https://github.com/Feyerabend/bb/actions/workflows/main.yml/badge.svg)](https://github.com/Feyerabend/bb/actions/workflows/main.yml)
 
-
-The file 'main.yml' lives in 'bb/.github/workflows/main.yml':
-
+The file 'main.yml' lives in 'bb/.github/workflows/main.yml'.
 
 ```yml
 name: Python CI
@@ -202,3 +210,28 @@ quality checks.
 
 This workflow provides a solid foundation for CI in a Python project,
 ensuring code quality and functionality are maintained with every change.
+
+
+### Sample
+
+`main.py`
+
+```python
+# some function
+def some_function(a, b):
+    return a + b
+```
+
+`test_main.py`
+
+```python
+import unittest
+from main import some_function
+
+class TestMain(unittest.TestCase):
+    def test_some_function(self):
+        self.assertEqual(some_function(2, 3), 5)
+
+if __name__ == '__main__':
+    unittest.main()
+```
