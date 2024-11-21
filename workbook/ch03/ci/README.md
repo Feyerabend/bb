@@ -7,7 +7,7 @@ to a shared repository. This ensures that problems are detected early, before th
 large and costly to fix. CI is a crucial part of modern DevOps workflows, promoting
 collaboration, code quality, and faster release cycles.
 
-### Project
+#### Project
 
 *Adapt the scripts below and install them in your own repository, using more robust and
 production-ready code. Additionally, implement the suggested improvements to expand the
