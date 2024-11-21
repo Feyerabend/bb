@@ -31,15 +31,15 @@ jobs:
 
     # PYTHONPATH (include script's parent directory, if needed)
     - name: Set PYTHONPATH
-       run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+      run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
 
     # check where we are?
     - name: Print working directory
-       run: pwd
+      run: pwd
 
     # right place?
     - name: List files
-       run: ls -R workbook/ch03/ci
+      run: ls -R bb/workbook/ch03/ci
 
     # unit tests using Python's unittest: bb/workbook/ch03/ci
     - name: Run tests
