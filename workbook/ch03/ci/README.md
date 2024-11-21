@@ -97,9 +97,10 @@ The steps section defines the actions to perform in sequence.
 - name: Checkout code
   uses: actions/checkout@v4
 ```
-	•	This uses the actions/checkout action to clone the repository’s code into the virtual machine, enabling subsequent steps to work with the source code.
 
-	2.	Set Up Python
+This uses the actions/checkout action to clone the repository’s code into the virtual machine, enabling subsequent steps to work with the source code.
+
+2.	Set Up Python
 
 ```yml
 - name: Set up Python
@@ -107,36 +108,36 @@ The steps section defines the actions to perform in sequence.
   with:
     python-version: '3.9'
 ```
-	•	This installs Python 3.9 on the runner. The actions/setup-python action simplifies setting up Python environments in CI pipelines.
+This installs Python 3.9 on the runner. The actions/setup-python action simplifies setting up Python environments in CI pipelines.
 
-	3.	Install Dependencies
+3.	Install Dependencies
 ```yml
 - name: Install dependencies
   run: |
     python -m pip install --upgrade pip
     if [ -f workbook/ch03/ci/requirements.txt ]; then pip install -r requirements.txt; fi
 ```
-	•	Upgrades pip to the latest version.
-	•	Checks for a requirements.txt file (at the specified path) and installs any dependencies listed in it. This makes the environment ready for testing.
+	- Upgrades pip to the latest version.
+	- Checks for a requirements.txt file (at the specified path) and installs any dependencies listed in it. This makes the environment ready for testing.
 
-	4.	Set PYTHONPATH
+4.	Set PYTHONPATH
 ```yml
 - name: Set PYTHONPATH
   run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
 ```
-	•	Extends the PYTHONPATH environment variable to include the repository’s root directory. This ensures that Python can locate modules and packages correctly.
+	- Extends the PYTHONPATH environment variable to include the repository’s root directory. This ensures that Python can locate modules and packages correctly.
 
-	5.	Run Tests
+5.	Run Tests
 ```yml
 - name: Run tests
   run: |
     python -m unittest discover -s workbook/ch03/ci -p 'test_*.py'
 ```
-	•	Executes all unit tests found in the directory workbook/ch03/ci whose filenames match the pattern test_*.py. The unittest framework is used for testing.
+	- Executes all unit tests found in the directory workbook/ch03/ci whose filenames match the pattern test_*.py. The unittest framework is used for testing.
 
 Customization Suggestions
 
-	•	Additional Python Versions: To test against multiple Python versions, you can use a strategy matrix:
+	- Additional Python Versions: To test against multiple Python versions, you can use a strategy matrix:
 ```yml
 strategy:
   matrix:
@@ -145,7 +146,7 @@ with:
   python-version: ${{ matrix.python-version }}
 ```
 
-	•	Code Coverage: Integrate tools like coverage.py to generate a test coverage report.
+	- Code Coverage: Integrate tools like coverage.py to generate a test coverage report.
 ```yml
 - name: Generate coverage report
   run: |
@@ -154,7 +155,7 @@ with:
     coverage report
 ```
 
-	•	Linting: Add a step to run a linter like flake8 or pylint for code quality checks.
+	- Linting: Add a step to run a linter like flake8 or pylint for code quality checks.
 ```yml
 - name: Lint code
   run: |
