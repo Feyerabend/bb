@@ -31,7 +31,7 @@ jobs:
 
     # PYTHONPATH (include script's parent directory, if needed)
     - name: Set PYTHONPATH
-      run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/bb/workbook/ch03/ci" >> $GITHUB_ENV
+       run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/bb/workbook/ch03/ci" >> $GITHUB_ENV
 
     # check where we are?
     - name: Print working directory
@@ -44,4 +44,4 @@ jobs:
     # unit tests using Python's unittest
     - name: Run tests
       run: |
-        python -m unittest discover -s ./bb/workbook/ch03/ci -p 'test_*.py'
+        python -m unittest discover -s workbook/ch03/ci -p 'test_*.py'
