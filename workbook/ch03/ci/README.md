@@ -53,13 +53,14 @@ jobs:
 ```
 
 
-1. name: Python CI
+#### 1. name: Python CI
 
-This defines the name of the workflow. “Python CI” is descriptive and indicates that the
-workflow is a Continuous Integration process for a Python project.
+This defines the name of the workflow. “Python CI” is descriptive
+and indicates that the workflow is a Continuous Integration process
+for a Python project.
 
 
-2. Triggers (on)
+#### 2. Triggers (on)
 
 ```yml
 on:
@@ -75,30 +76,38 @@ This section defines the triggers for the workflow:
 - push: The workflow runs whenever a commit is pushed to the main branch.
 - pull_request: The workflow also runs for pull requests targeting the main branch.
 
-These triggers ensure that the pipeline is executed whenever changes are made to critical code paths.
+These triggers ensure that the pipeline is executed whenever
+changes are made to critical code paths.
 
-3. jobs
+#### 3. jobs
 
-Jobs represent individual tasks or a sequence of tasks within the workflow. The script defines a single job named build.
+Jobs represent individual tasks or a sequence of tasks within the
+workflow. The script defines a single job named build.
 
-3.1 runs-on
+#### 3.1 runs-on
 
 ```yml
 runs-on: ubuntu-latest
 ```
 
-This specifies the environment in which the job will execute. ubuntu-latest is a virtual machine running the latest stable Ubuntu release. It provides a clean and standardized environment for CI tasks.
+This specifies the environment in which the job will execute.
+`ubuntu-latest` is a virtual machine running the latest stable
+Ubuntu release. It provides a clean and standardized environment
+for CI tasks.
 
-3.2 Steps in the Job
+#### 3.2 Steps in the Job
 
 The steps section defines the actions to perform in sequence.
-	1.	Checkout Code
+
+1.	Checkout Code
 ```yml
 - name: Checkout code
   uses: actions/checkout@v4
 ```
 
-This uses the actions/checkout action to clone the repository’s code into the virtual machine, enabling subsequent steps to work with the source code.
+This uses the actions/checkout action to clone the repository’s code
+into the virtual machine, enabling subsequent steps to work with the
+source code.
 
 2.	Set Up Python
 
@@ -108,7 +117,8 @@ This uses the actions/checkout action to clone the repository’s code into the 
   with:
     python-version: '3.9'
 ```
-This installs Python 3.9 on the runner. The actions/setup-python action simplifies setting up Python environments in CI pipelines.
+This installs Python 3.9 on the runner. The actions/setup-python
+action simplifies setting up Python environments in CI pipelines.
 
 3.	Install Dependencies
 ```yml
@@ -117,27 +127,39 @@ This installs Python 3.9 on the runner. The actions/setup-python action simplifi
     python -m pip install --upgrade pip
     if [ -f workbook/ch03/ci/requirements.txt ]; then pip install -r requirements.txt; fi
 ```
-	- Upgrades pip to the latest version.
-	- Checks for a requirements.txt file (at the specified path) and installs any dependencies listed in it. This makes the environment ready for testing.
 
-4.	Set PYTHONPATH
+Upgrades pip to the latest version.
+
+Checks for a requirements.txt file (at the specified path) and
+installs any dependencies listed in it. This makes the environment
+ready for testing.
+
+4. Set PYTHONPATH
 ```yml
 - name: Set PYTHONPATH
   run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
 ```
-	- Extends the PYTHONPATH environment variable to include the repository’s root directory. This ensures that Python can locate modules and packages correctly.
+Extends the PYTHONPATH environment variable to include the repository’s
+root directory. This ensures that Python can locate modules and packages
+correctly.
 
-5.	Run Tests
+5. Run Tests
 ```yml
 - name: Run tests
   run: |
     python -m unittest discover -s workbook/ch03/ci -p 'test_*.py'
 ```
-	- Executes all unit tests found in the directory workbook/ch03/ci whose filenames match the pattern test_*.py. The unittest framework is used for testing.
 
-Customization Suggestions
+Executes all unit tests found in the directory workbook/ch03/ci whose
+filenames match the pattern test_*.py. The unittest framework is used
+for testing.
 
-	- Additional Python Versions: To test against multiple Python versions, you can use a strategy matrix:
+
+### Customization Suggestions
+
+Additional Python Versions: To test against multiple Python versions,
+you can use a strategy matrix:
+
 ```yml
 strategy:
   matrix:
@@ -146,7 +168,9 @@ with:
   python-version: ${{ matrix.python-version }}
 ```
 
-	- Code Coverage: Integrate tools like coverage.py to generate a test coverage report.
+Code Coverage: Integrate tools like coverage.py to generate a test
+coverage report.
+
 ```yml
 - name: Generate coverage report
   run: |
@@ -155,7 +179,9 @@ with:
     coverage report
 ```
 
-	- Linting: Add a step to run a linter like flake8 or pylint for code quality checks.
+Linting: Add a step to run a linter like flake8 or pylint for code
+quality checks.
+
 ```yml
 - name: Lint code
   run: |
