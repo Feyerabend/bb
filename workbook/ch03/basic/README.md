@@ -107,3 +107,32 @@ delivers the expected results when used as an end product. Functional tests focu
 functionality, confirming that the system behaves as users would expect, covering everything from
 processing input to generating output. This final stage ensures that the application is not only
 technically sound but also practical and reliable for its intended use.
+
+### Exercises or Projects
+
+1. *How can the ‘bulk_delete’ feature be incorporated into the existing database structure?*
+    - Analyze the requirements for implementing the bulk_delete method and discuss the necessary modifications to ensure it integrates seamlessly with the current functionality.
+
+2. *What steps are required to organise tests into a hierarchy of unit, integration, and functional tests?*
+	- Evaluate how to categorize and structure the tests to reflect their roles, ensuring that each type of test is clearly separated and systematically executed.
+
+3. *How can error handling be improved in the system to better manage invalid inputs or commands?*
+    - Propose enhancements to the error-handling mechanisms in both the interpreter and database, considering how they interact and communicate feedback.
+
+4. *What trade-offs arise when adding new features to an existing system?*
+	- Explore the balance between extending functionality, maintaining system performance, and preserving code clarity and test coverage.
+
+5. *How does the design of the database interface influence testability and maintainability?*
+	- Discuss the impact of interface design decisions on the ease of writing comprehensive tests and ensuring long-term code reliability.
+
+6. *How can test coverage be measured and improved across all levels of testing?*
+	- Examine methods for evaluating test coverage and identify strategies to fill gaps, ensuring thorough validation of the system’s functionality.
+
+7. *How can the database be enhanced to support more complex data types?*
+    - Investigate the steps needed to allow storage and manipulation of non-integer values or more structured data, such as lists or dictionaries.
+
+8. *What considerations are required to ensure the tests cover edge cases effectively?*
+    - Identify potential edge cases for the database and interpreter, and discuss how to include them in unit, integration, and functional tests.
+
+9. *What changes would be necessary to expand the system to handle concurrency?*
+	- Examine the modifications required in the database and interpreter to handle simultaneous user interactions and maintain data consistency.
