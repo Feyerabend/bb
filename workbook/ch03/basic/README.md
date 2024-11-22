@@ -33,3 +33,77 @@ While unit and integration tests focus on the correctness of components and thei
 functional tests ensure that the application delivers the expected results when used in real-world
 scenarios. These tests may involve interacting with a user interface, testing entire workflows,
 or running a series of commands that reflect how the application will be used in practice.
+
+
+### Code
+
+The code extends from a simulated database:
+
+```python
+class Database:
+    def add(self, key, value):
+        ..
+    def delete(self, key):
+        ..
+    def get(self, key):
+        ..
+    def is_integer(self, key):
+        ..
+```
+
+A class for static 'stored procedures':
+
+```python
+class DatabaseProcedures:
+    @staticmethod
+    def increment_value(db, key, amount):
+        ..
+
+    # new feature!
+    @staticmethod
+    def bulk_delete(db, prefix):
+        ..
+```
+
+
+And an interpreter:
+
+```python
+class SimpleInterpreter:
+    def execute(self, command):
+        
+        if match := add_pattern.match(command):
+            ..
+            return
+
+        elif match := delete_pattern.match(command):
+            ..
+            return
+
+        elif match := increment_pattern.match(command):
+            ..
+            return
+
+        return "Invalid command"
+```
+
+#### Process
+
+1. First, we evaluate the behavior of individual components using unit tests. These tests focus
+on isolated units of code, such as functions or methods, ensuring they work correctly in
+isolation. By testing each unit separately, we can pinpoint issues at a granular level without
+interference from other parts of the system. This approach helps maintain the reliability of
+smaller code segments, making it easier to identify and resolve bugs quickly.
+
+2. Next, we move on to integration tests, which examine how multiple components or classes work
+together as a system. These tests are essential for verifying that interactions between components
+function correctly, such as how a database integrates with the application logic or how different
+services communicate with each other. Integration tests help uncover issues that arise when components
+are combined, ensuring they cooperate as intended.
+
+3. Finally, we conduct functional tests to assess the system’s overall behavior in real-world
+scenarios. These tests simulate user interactions and workflows, validating that the application
+delivers the expected results when used as an end product. Functional tests focus on end-to-end
+functionality, confirming that the system behaves as users would expect, covering everything from
+processing input to generating output. This final stage ensures that the application is not only
+technically sound but also practical and reliable for its intended use.
