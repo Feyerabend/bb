@@ -125,24 +125,24 @@ int main() {
 
 Explanation:
 
-1. Initial setup: We create an object and define the VM instructions.
-2. First snapshot: We take a snapshot after the initial state of the VM.
-3. Run VM: The VM runs through all the instructions, modifying the object.
-4. First rewind: We rewind to the first snapshot and print the object's state.
-5. Second snapshot: After the first rewind, we take another snapshot.
-6. Second run: We run the VM again to change the object's state further.
-7. Second rewind: We rewind to the second snapshot and print the object's state again.
-8. Clean Up: We free the memory used by the snapshots and the object.
+1. *Initial setup*: We create an object and define the VM instructions.
+2. *First snapshot*: We take a snapshot after the initial state of the VM.
+3. *Run VM*: The VM runs through all the instructions, modifying the object.
+4. *First rewind*: We rewind to the first snapshot and print the object's state.
+5. *Second snapshot*: After the first rewind, we take another snapshot.
+6. *Second run*: We run the VM again to change the object's state further.
+7. *Second rewind*: We rewind to the second snapshot and print the object's state again.
+8. *Clean up*: We free the memory used by the snapshots and the object.
 
-This structure allows for clear demonstration of the snapshots and rewinds
-at two different points in the program, making it easier to understand how
-the object state changes over time.
+This structure allows for demonstration of the snapshots and rewinds at two
+different points in the program, making it easier to understand how the object
+state changes over time.
 
 
 
 ### Example 2
 
-In the provided Lisp interpreter, the snapshot mechanism is implemented within the
+In the provided "Lisp" interpreter, the snapshot mechanism is implemented within the
 `Environment` class through two key methods `snapshot()` and `restore(snapshot)`.
 
 1. The `snapshot()` method captures current state of the environment, which includes:
@@ -171,8 +171,8 @@ In the provided Lisp interpreter, the snapshot mechanism is implemented within t
 
 #### Context of snapshots
 
-In programming and software development, the ability to take snapshots of the application
-state is particularly useful in various scenarios, such as:
+Looking at this from another way: in programming and software development, the ability
+to take snapshots of the application state is particularly useful in various scenarios.
 
 - *Debugging*: When testing a program, developers may want to pause execution at certain
   points, analyze the state of the application, and revert back if needed. This can be
@@ -184,13 +184,13 @@ state is particularly useful in various scenarios, such as:
   during different operations. This is critical in systems that rely on transactional
   integrity or rollback capabilities.
 
-- *Time-Travel Debugging (TTD)*: TTD is a technique that enables developers to step backward
-  in execution, inspecting the state of the program at different times. This can significantly
+- *Time-Travel Debugging (TTD)*: TTD is thus a technique that enables developers to step
+  backward in execution, inspecting the state of the program at different times. This can
   simplify debugging by allowing users to explore the history of function calls and variable
   changes.
 
 
-Benefits:
+__Benefits__
 
 1. *Error recovery*: By providing a mechanism to revert to a prior state,
    snapshots allow developers to recover from errors or bugs that occur due
@@ -217,7 +217,7 @@ integrated into a VM, TTD facilitates a clear and structured approach to managin
 state changes and ensures that developers can navigate the complexities of object
 states throughout the execution of code.
 
-The snapshot mechanism implemented in the Lisp interpreter serves as a 
+The snapshot mechanism implemented in the "Lisp" interpreter serves as a 
 tool for managing the state of the interpreter during execution. It enhances
 debugging capabilities, aids in error recovery, and provides a way to explore
 the behavior of the program at different points in time. By incorporating snapshot
