@@ -447,7 +447,7 @@ in a form of reinforcement learning.
 
 Here are some possible projects that relate to programming:
 
-1. Implement RL for "Rock-Paper-Scissors"
+__1. Implement RL for "Rock-Paper-Scissors"__
 
 *Rock-Paper-Scissors is a simple game with no environment states, but RL can still be applied to
 learn optimal strategies against an opponent.*
@@ -464,7 +464,7 @@ What you will learn:
 - Strategy optimization through trial and error.
 
 
-2. Reinforcement Learning for a "Grid World"
+__2. Reinforcement Learning for a "Grid World"__
 
 *Create a 2D grid where an agent starts at one corner and must reach a goal at the opposite corner while avoiding obstacles.*
 
@@ -482,7 +482,7 @@ What you will learn:
 - Exploration vs. exploitation in pathfinding problems.
 
 
-3. Train an RL Agent for "Nim"
+__3. Train an RL Agent for "Nim"__
 
 *Nim is a mathematical game where players take turns removing objects from heaps.
 The player forced to take the last object loses. The agent must learn an optimal strategy.*
@@ -498,7 +498,7 @@ What you will learn:
 - Strategy improvement through self-play.
 
 
-4. Teach RL to Play "Maze Solver"
+__4. Teach RL to Play "Maze Solver"__
 
 *Create a simple maze (e.g. a 10x10 grid) where the agent must find the shortest path to the goal.
 Add dynamic elements like penalties for dead ends or rewards for collecting items in the maze.*
@@ -513,7 +513,7 @@ What you will learn:
 - Trade-offs in reward shaping and discount factors.
 
 
-5. Explore RL with "Guess the Number"
+__5. Explore RL with "Guess the Number"__
 
 *The agent guesses a number chosen by the environment (e.g. say between 1 and 100).
 After each guess, the environment provides feedback: "higher," "lower," or "correct."*
@@ -528,7 +528,7 @@ What you will learn:
 - Efficient learning strategies in finite environments.
 
 
-6. Play "Connect Four" with RL
+__6. Play "Connect Four" with RL__
 
 *Connect Four is a turn-based game where players drop pieces into columns of a grid to form a
 line of four. You can create a simplified version (e.g. a 4x4 grid) to train an agent.*
@@ -544,7 +544,7 @@ What you will learn:
 - Implementing RL in competitive games.
 
 
-7. Multi-Armed Bandit Problem
+__7. Multi-Armed Bandit Problem__
 
 *Simulate the classic multi-armed bandit problem, where an agent selects from several slot machines
 (each with different probabilities of winning) to maximize its cumulative reward.*
@@ -559,7 +559,7 @@ What you will learn:
 - Bandit problems as a simplified RL scenario.
 
 
-8. "Snake Game" with RL
+__8. "Snake Game" with RL__
 
 *Implement a simple version of the classic Snake game. The agent learns to move the snake to
 maximize its length without hitting walls or itself.*
@@ -574,7 +574,7 @@ What you will learn:
 - RL in games with growing state spaces.
 
 
-9. Design a Custom Board Game
+__9. Design a Custom Board Game__
 
 *Students design their own simple board game and implement reinforcement learning to solve it.*
 
@@ -588,7 +588,7 @@ What you will learn:
 - Balancing complexity and solvability in game design.
 
 
-10. Compare RL Techniques in Simple Games
+__10. Compare RL Techniques in Simple Games__
 
 Pick one game (e.g. Tic-Tac-Toe, Grid World) and implement two RL algorithms:
 - Q-learning (done in case Tic-Tac-Toe).
