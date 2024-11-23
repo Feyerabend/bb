@@ -26,10 +26,10 @@ and ultimately prevents the launch of real-world nuclear weapons.
 
 Tic-Tac-Toe is pivotal in *War Games* not just as a game but as a metaphor for the futility of nuclear war. The movie draws a parallel
 between the game’s simple structure, where the outcome is either a draw or a win for one player (if both players play optimally),
-and the destructive nature of global conflict. The game’s deterministic nature provides an easily understandable model for how the
+and the destructive nature of global conflict. The game's deterministic nature provides an easily understandable model for how the
 complex, unpredictable nature of war can be reduced to a simpler concept: there are no real winners, only devastation.
 
-The inclusion of Tic-Tac-Toe also plays into the broader theme of WavrGames—the misunderstanding and misapplication of technology in
+The inclusion of Tic-Tac-Toe also plays into the broader theme of *War Games*—-the misunderstanding and misapplication of technology in
 high-stakes situations. The WOPR computer, despite its advanced capabilities, is initially unable to understand the implications of
 global nuclear war until it engages in the simple, non-threatening game. This shift from a war game to a trivial game like Tic-Tac-Toe
 highlights the movie’s central critique of the Cold War arms race and the reliance on computer systems to make life-or-death decisions.
@@ -59,7 +59,7 @@ of the 1980s, which still resonate today as AI and automated systems continue to
 
 ## Tic-Tac-Toe
 
-To transition to the game of tic-Tac-Toe, there are several machine learning (ML) and artificial
+To transition to the game of tic-Tac-Toe itself, there are several machine learning (ML) and artificial
 intelligence (AI) approaches that can be used to train a model or agent to play the game. Given that
 Tic-Tac-Toe is a relatively small and simple game, it is a great candidate for a classic search-based
 algorithm. But we will also give you a simple reinforcement learning (RL) approach, to illustrate the method
