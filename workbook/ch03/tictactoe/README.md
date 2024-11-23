@@ -576,7 +576,7 @@ What you will learn:
 
 10. Compare RL Techniques in Simple Games
 
-Pick one game (e.g. Tic-Tac-Toe, Grid World) and implement two RL algorithms, such as:
+Pick one game (e.g. Tic-Tac-Toe, Grid World) and implement two RL algorithms:
 - Q-learning (done in case Tic-Tac-Toe).
 - Monte Carlo methods.
 - SARSA.
@@ -587,8 +587,8 @@ Tasks:
 - Analyze how the choice of algorithm impacts learning.
 
 What you will learn:
-	- Practical differences between RL algorithms.
-	- Strengths and weaknesses of various techniques.
+- Practical differences between RL algorithms.
+- Strengths and weaknesses of various techniques.
 
 These exercises are designed to be approachable for students with basic programming and RL knowledge
 while offering opportunities for deeper exploration.
