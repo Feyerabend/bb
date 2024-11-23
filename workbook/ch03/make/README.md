@@ -11,9 +11,9 @@ project involves multiple files and complex compilation steps.
 
 - Purpose: Automate the process of compiling and building software.
 - How it works: make reads instructions from a Makefile, which specifies:
-- Targets: The files or actions you want to build or perform.
-- Dependencies: Files or prerequisites required to build a target.
-- Commands: Steps to generate the target from its dependencies.
+    - Targets: The files or actions you want to build or perform.
+    - Dependencies: Files or prerequisites required to build a target.
+    - Commands: Steps to generate the target from its dependencies.
 
 
 #### Basic Structure of a Makefile
