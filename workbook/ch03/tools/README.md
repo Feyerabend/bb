@@ -1,5 +1,5 @@
 
-## Building you own Toolbox
+## Building your own Toolbox
 
 Just as a carpenter understands the intricacies of their craft well enough to identify gaps
 in their toolkit and create custom solutions, a developer can do the same in the world of
