@@ -89,122 +89,25 @@ Disassemblers can be useful, when e.g. the source isn't available
 or when you want to inspect the machine and the program in this
 context.
 
-#### Tracing
 
-Tracing involves inserting print statements or logging calls
-into the code to output the program's state and the values of
-variables or in this case mostly the stack at various points
-during execution. This helps to follow the program's flow and
-understand where things might be going wrong.
+### Diagnostics with Statistics
 
-#### Single Step
+To gain deeper insights into how programs execute on our virtual machine and to
+identify opportunities for improvement, statistical analysis can be an invaluable
+tool. In this case, we have opted to use Bayesian techniques to perform a
+post-mortem analysis, examining the program’s behavior after its execution.
 
-Single-stepping allows the programmer to execute the program
-one line or instruction at a time. This lets you closely examine
-the program's behavior at each step and observe how the stack
-(or in case: variables) and the system state change with each
-executed line of code.
+By leveraging Bayesian methods, we can infer probabilities and relationships from
+the execution logs generated during the program's runtime. These techniques allow
+us to model uncertainties and dependencies in a principled way, enabling more
+informed decisions about optimization and debugging. For example, Bayesian analysis
+could help identify which execution paths are most likely to lead to errors or
+performance bottlenecks, or it could quantify the likelihood of certain variables
+taking specific values under varying conditions.
 
-#### Breakpoints
+This approach goes beyond simple descriptive statistics by incorporating prior
+knowledge or assumptions into the analysis. As a result, it offers a more nuanced
+understanding of program behavior, even in cases where the data may be sparse or
+noisy. By iterating on these insights, we can refine both the virtual machine's
+design and the programs that run on it.
 
-Breakpoints are markers set in the code where the execution
-will pause, allowing the developer to inspect the program state
-at specific points. This is useful for examining the conditions
-leading up to a particular point in the code, especially where
-issues are suspected to occur.
-
-
-#### Simple Debugging Workflow
-
-1. __setting breakpoints__: set breakpoints at critical sections or
-   where one suspect a bug might be,
-2. __run to breakpoint__: the program runs normally until it hits a
-   breakpoint,
-3. __inspect__: once paused, inspect stack, variables, other memory,
-   to understand the program's condition at that moment,
-4. __single step__: after inspection, single-step through subsequent
-   lines to observe changes and further diagnose issues.
-   or just let the program *continue*,
-5. __trace__: supplementary to breakpoints and stepping, trace logs
-   provide a broader picture of program flow, stack and variable 
-   states throughout the execution.
-
-#### dvm
-
-A simple implementation of some debugging tools inside a previously
-seen vm, let you choose for 'singlestep', setting 'breakpoints' and an
-optional 'trace'.
-
-```shell
-> python3 dvm.py --singlestep true --breakpoints 14,16 --trace true --input sample.b
-```
-
-Inside the vm, there are features that allow you to single-step
-through the code if selected at the start. When single-stepping
-is no longer needed, the 'continue' command can execute the code
-without pausing at each step.
-
-A trace can display various elements, such as the current stack,
-the program counter, the executing operator and operand, and
-other options like arrays, arguments, and variables. The trace
-can be turned off, and the options can be selected dynamically.
-For example, choosing "pos" would show the *program counter*,
-*operation/operand*, and the *stack*, while "pv" would show the
-*program counter* and *variables*. In this case the trace isn't
-a log in a file, but only displayed on the screen.
-
-Breakpoints will halt the program and wait for further instructions.
-
-Test with included samples such as 'fact.a' and 'callret.a'
-where they are easy to follow, and see what happends when
-they are executed through the debugger.
-
-The `dvm.py` file is essentially the previous `vm.py` and
-contains the implementation of the virtual machine.
-It defines the operations supported by the VM,
-such as arithmetic operations, logical operations, control
-flow operations, and more. Each operation is represented by
-an opcode, and the VM processes a sequence of these opcodes
-to perform computations.
-
-
-### test dvm
-
-While debugging the programs that the VM executes is
-crucial, ensuring the VM itself functions correctly
-is equally important. Developing a suite of test programs
-not only helps in specifying the machine's behavior
-but also aids in validating its consistency when the
-VM is ported to other platforms.
-
-A test suite serves as both a specification and documentation
-for the VM, outlining its expected behavior and providing
-clear examples of its operation. It aids in debugging by
-quickly identifying bugs and regressions, ensuring that new
-changes or optimizations do not disrupt existing functionality.
-Additionally, when porting the VM to different platforms, the
-test suite helps verify that the port maintains consistency
-with the original implementation, allowing for early detection
-of platform-specific issues.
-To execute some illustrative tests and validate the
-functionality of the VM, run the `dvmtest.py` script.
-
-```shell
-> python3 dvmtest.py
-```
-
-This script leverages many components from the `dvm.py`
-file to perform a series of operations and tests,
-ensuring the VM works correctly across various scenarios.
-*The tests are not exhaustive,
-but they illustrate the principal idea.*
-
-The `dvmtest.py` file contains a suite of tests designed
-to validate the functionality of the VM. Each test focuses
-on specific operations or scenarios to ensure the VM
-handles them accordingly. But they are only tests, they
-do not verify that the vm is always correct. For that
-we would have to prove them somehow -- which will not
-be done here. The tests include: arithmetics,
-division by zero, logical and comparison operators,
-arrays, function calls.
