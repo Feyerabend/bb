@@ -4,19 +4,15 @@
 Debugging has been an integral part of computing since
 the early days of programming. In many ways, programming
 remains a *craft*, and debugging is a critical aspect of
-that craft.
-Early debugging tools were fundamental yet highly effective.
-Techniques such as logging[^log], single-stepping through code,
-and setting breakpoints to halt execution for detailed
-inspection were very useful. These methods allowed developers
-to meticulously trace and resolve issues.
+that craft. Early debugging tools were fundamental yet
+highly effective. Techniques such as logging, single-stepping
+through code, and setting breakpoints to halt execution for
+detailed inspection were very useful. These methods allowed
+developers to meticulously trace and resolve issues.
 In this exploration, we’ll revisit these simple but powerful
 debugging tools and see how they are still relevant when
 working with virtual machines, or really in any programming
 environment.
-
-[^log]: A more in depth discussion of the usefulness is done
-in [ED.md](editor/ED.md).
 
 
 ### Assembling & Disassembling
@@ -158,8 +154,6 @@ For example, choosing "pos" would show the *program counter*,
 a log in a file, but only displayed on the screen.
 
 Breakpoints will halt the program and wait for further instructions.
-
-![Debug VM](../assets/images/dvm2.png)
 
 Test with included samples such as 'fact.a' and 'callret.a'
 where they are easy to follow, and see what happends when
