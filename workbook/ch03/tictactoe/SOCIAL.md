@@ -109,7 +109,7 @@ d.) Research and presentation topics
 
 2. *Simulate an ethical dilemma: Write a program that models a decision-making process for a hypothetical
    autonomous drone. Define rules to prioritize human safety and ethical considerations. Reflect on the
-   challenges of implementing such rules in real-world scenarios.*
+   challenges of implementing such rules in real-world scenarios. Are they even possible?*
 
 
 ### Reflective and ethical discussions
