@@ -73,7 +73,7 @@ clean:
 
 Run make clean to delete the main executable:
 
-```makefile
+```shell
 make clean
 ```
 
@@ -133,7 +133,7 @@ gcc -c hello.c
 gcc -o main main.o hello.o
 ```
 
-With make, the Makefile simplifies this process:
+With 'make', the 'Makefile' simplifies this process:
 
 ```makefile
 CC = gcc
