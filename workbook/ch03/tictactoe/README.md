@@ -445,6 +445,8 @@ activities and provides “rewards” such as badges or notifications. This make
 in a form of reinforcement learning.
 
 
+Here are some possible projects that relate to programming:
+
 1. Implement RL for "Rock-Paper-Scissors"
 
 *Rock-Paper-Scissors is a simple game with no environment states, but RL can still be applied to
