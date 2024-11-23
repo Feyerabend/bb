@@ -283,7 +283,8 @@ main.c:
 int main() {
     printf("Hello, make!\n");
     return 0;
-}```
+}
+```
 
 Makefile:
 
@@ -296,4 +297,44 @@ test:
 
 clean:
 	rm -f main
+```
+
+And YAML build.yml:
+
+```yaml
+name: Build in Subdirectory
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up build tools
+      run: sudo apt-get update && sudo apt-get install -y gcc make
+
+    - name: List directory contents
+      run: ls -l workbook/ch03/make
+
+    - name: Navigate to subdirectory and build
+      working-directory: workbook/ch03/make
+      run: make build
+
+    - name: Run tests
+      working-directory: workbook/ch03/make
+      run: make test | grep "Hello, make!"
+
+    - name: Clean up
+      working-directory: workbook/ch03/make
+      run: make clean
 ```
