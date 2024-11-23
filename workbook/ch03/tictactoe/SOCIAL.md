@@ -115,7 +115,7 @@ d.) Research and presentation topics
 ### Reflective and ethical discussions
 
 1. *Reflect on the statement: "In warfare, there are no winners—only survivors." How does this perspective
-   change when considering AI-controlled weapons?
+   change when considering AI-controlled weapons?*
 
 2. *Discuss whether war games normalise violence or provide a harmless outlet for understanding strategy
    and competition. Defend your position with examples.*
