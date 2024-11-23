@@ -1,5 +1,25 @@
 
-## Building you own Toolbox: Debugging
+## Building you own Toolbox
+
+Just as a carpenter understands the intricacies of their craft well enough to identify gaps
+in their toolkit and create custom solutions, a developer can do the same in the world of
+software. Whether it's writing a specialized debugging tool, creating a tailor-made profiler,
+or developing a unique scripting language to optimize a specific workflow, developers have
+the ability to shape their tools to meet their precise needs.
+
+This ability to craft tools not only enhances efficiency but also fosters a deeper understanding
+of the systems being worked on. Just as a custom woodworking jig can ensure precision in a
+fine cabinet, a well-designed software tool can streamline development and debugging, often
+solving problems that off-the-shelf tools cannot fully address. Embracing this mindset turns
+tool creation into a natural extension of problem-solving, reflecting both creativity and
+technical expertise.
+
+I can testify to this as I have a background in education as a cabinetmaker.
+As a cabinetmaker, you sometimes have the opportunity to craft your own tools.
+The same principle can many times apply to developers.
+
+
+### Debugging
 
 Debugging has been an integral part of computing since
 the early days of programming. In many ways, programming
@@ -13,6 +33,9 @@ In this exploration, we’ll revisit these simple but powerful
 debugging tools and see how they are still relevant when
 working with virtual machines, or really in any programming
 environment.
+
+... future
+
 
 
 ### Assembling & Disassembling
