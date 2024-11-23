@@ -1,8 +1,9 @@
+
 build:
-    gcc -o main main.c
+	gcc -o main main.c
 
 test:
-    ./main
+	./main
 
 clean:
-    rm -f main
+	rm -f main
