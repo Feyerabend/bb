@@ -94,9 +94,6 @@ vm.run()
 In this example, instructions and data are stored in separate memory arrays.
 The LOAD instruction fetches data from the data array based on an index.
 
-
-### Summary
-
 * In the von Neumann example, both instructions and data occupy the same memory,
   leading to simpler implementation but potential contention.
 
