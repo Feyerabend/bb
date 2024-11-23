@@ -427,16 +427,28 @@ The epsilon-greedy strategy helps balance exploration (trying new, unknown actio
 
 In each episode (or game), the agent starts from a fresh board state, selects actions, receives rewards, and updates its Q-values until the game ends (either by winning, drawing, or making an invalid move). After many episodes, the agent's Q-table will reflect the best moves to make in various board states, enabling it to play the game optimally.
 
+
 ### Conclusion
+
 In summary, Q-learning allows the Tic-Tac-Toe agent to progressively learn the optimal strategy by interacting with the game environment, updating its action-value estimates, and balancing exploration and exploitation to maximize long-term rewards. The more episodes the agent plays, the better it becomes at choosing the best moves, leading to an improved performance in the game.
 
 
 ## Projects
 
+If you’re familiar with psychology, the term *reinforcement learning* might already sound familiar.
+Reinforcement learning (RL) shares its foundational roots with behavioral theories in psychology,
+particularly those established in the early 20th century. RL directly builds on psychological concepts
+such as learning through rewards, trial-and-error processes, and the development of habits.
 
-1. Implement RL (Reinforcement Learning) for "Rock-Paper-Scissors"
+Even if you haven’t studied psychology, you might use a device, like a fitness tracker, that logs your
+activities and provides “rewards” such as badges or notifications. This makes you an active participant
+in a form of reinforcement learning.
 
-*Rock-Paper-Scissors is a simple game with no environment states, but RL can still be applied to learn optimal strategies against an opponent.*
+
+1. Implement RL for "Rock-Paper-Scissors"
+
+*Rock-Paper-Scissors is a simple game with no environment states, but RL can still be applied to
+learn optimal strategies against an opponent.*
 
 Tasks:
 - Write a program to simulate the Rock-Paper-Scissors game.
