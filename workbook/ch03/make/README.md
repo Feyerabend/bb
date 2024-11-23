@@ -254,3 +254,46 @@ make DEBUG=0
 
 [![Build in Subdirectory](https://github.com/Feyerabend/bb/actions/workflows/build.yml/badge.svg)](https://github.com/Feyerabend/bb/actions/workflows/build.yml)
 
+Using make with GitHub Actions allows you to automate the build and testing process of your
+code directly within your CI/CD pipeline. GitHub Actions provides an environment to define
+workflows, automate tasks, and execute scripts, such as running make commands to compile or
+test code. Typically, you’d use a .github/workflows directory in your repository to define
+YAML files that describe the build process and the steps required to execute it.
+
+To use make in a GitHub Actions workflow, you first need to specify the environment. This can
+be done using the runs-on key, which defines the operating system of the runner
+(e.g. ubuntu-latest, windows-latest). You then define the steps of the workflow, which might
+include checking out the repository, installing necessary tools (like gcc and make), and
+running the make command to build or test the project. The working-directory key can be used
+to specify a subdirectory containing your Makefile, ensuring the make command is executed in
+the correct location.
+
+A typical GitHub Actions configuration for running make would involve first checking out the
+repository with actions/checkout, followed by setting up the necessary build environment
+(such as installing make and other dependencies). Then, you would run make to execute targets
+such as make build to compile the code or make test to run unit tests. You can also add custom
+commands to clean up after the build using a target like make clean. By automating this
+process in GitHub Actions, you ensure consistent, repeatable builds and tests without manual
+intervention.
+
+main.c:
+
+```c
+#include <stdio.h>
+int main() {
+    printf("Hello, make!\n");
+    return 0;
+}```
+
+Makefile:
+
+```makefile
+build:
+	gcc -o main main.c
+
+test:
+	./main
+
+clean:
+	rm -f main
+```
