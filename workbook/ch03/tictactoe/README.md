@@ -1,7 +1,7 @@
 
-## Movie *War Games*
+## Movie *WarGames*
 
-In the 1983 movie *War Games*, the plot revolves around a young computer whiz named David Lightman, played by Matthew Broderick,
+In the 1983 movie *WarGames*[^war], the plot revolves around a young computer whiz named David Lightman, played by Matthew Broderick,
 who accidentally hacks into a U.S. military supercomputer called WOPR (War Operation Plan Response). Initially believing that
 he is playing a game of chess against a computer, David unwittingly triggers a sequence of events that leads to the simulation
 of a global nuclear conflict. The plot centers on David’s realization that the WOPR system, designed to simulate and predict
@@ -9,7 +9,7 @@ outcomes of military conflicts, has the power to launch real nuclear weapons. Th
 using his knowledge of games and computer systems, realizes that the only way to prevent global catastrophe is to convince the
 supercomputer that nuclear war is not winnable.
 
-A key moment in *War Games* is when David, after engaging the WOPR in a game of Tic-Tac-Toe, understands the parallel between the
+A key moment in *WarGames* is when David, after engaging the WOPR in a game of Tic-Tac-Toe, understands the parallel between the
 strategy of the game and the futility of nuclear war. The computer plays Tic-Tac-Toe, a game that is simple, deterministic, and
 has a known solution where either a player wins or the game results in a draw. The lesson that emerges from the game, which is
 applied to nuclear strategy, is that there are no winners in a global thermonuclear war—just like in Tic-Tac-Toe, the best outcome
@@ -21,15 +21,16 @@ is not to engage at all. The computer, after playing several rounds of Tic-Tac-T
 is a futile exercise—just as a nuclear war would be. This realization leads to the cessation of the simulated global conflict
 and ultimately prevents the launch of real-world nuclear weapons.
 
+[^war]: See https://www.imdb.com/title/tt0086567/, https://en.wikipedia.org/wiki/WarGames.
 
-### The Significance of Tic-Tac-Toe in *War Games*
+### The Significance of Tic-Tac-Toe in *WarGames*
 
-Tic-Tac-Toe is pivotal in *War Games* not just as a game but as a metaphor for the futility of nuclear war. The movie draws a parallel
+Tic-Tac-Toe is pivotal in *WarGames* not just as a game but as a metaphor for the futility of nuclear war. The movie draws a parallel
 between the game’s simple structure, where the outcome is either a draw or a win for one player (if both players play optimally),
 and the destructive nature of global conflict. The game's deterministic nature provides an easily understandable model for how the
 complex, unpredictable nature of war can be reduced to a simpler concept: there are no real winners, only devastation.
 
-The inclusion of Tic-Tac-Toe also plays into the broader theme of *War Games*—-the misunderstanding and misapplication of technology in
+The inclusion of Tic-Tac-Toe also plays into the broader theme of *WarGames*—-the misunderstanding and misapplication of technology in
 high-stakes situations. The WOPR computer, despite its advanced capabilities, is initially unable to understand the implications of
 global nuclear war until it engages in the simple, non-threatening game. This shift from a war game to a trivial game like Tic-Tac-Toe
 highlights the movie’s central critique of the Cold War arms race and the reliance on computer systems to make life-or-death decisions.
@@ -45,13 +46,13 @@ capable of running simulations of nuclear war but, without understanding the hum
 cannot arrive at a logical conclusion on its own. The game of Tic-Tac-Toe, with its clearly defined rules and outcomes, serves as
 a turning point, showing that human judgment and logic are still critical when dealing with AI in high-stakes situations.
 
-In today’s world, the lessons from *War Games* and the simplicity of Tic-Tac-Toe resonate with the ongoing development and deployment of
+In today’s world, the lessons from *WarGames* and the simplicity of Tic-Tac-Toe resonate with the ongoing development and deployment of
 AI in military contexts. Whether it’s AI-controlled drones, missile defense systems, or autonomous weapons, the concern is that these
 systems might make decisions without human intervention or oversight. The film serves as a reminder that, much like the game of Tic-Tac-Toe,
 certain types of conflict—particularly those involving mass destruction—are best avoided altogether, and AI systems need to be guided
 by ethical reasoning and human understanding to ensure they don’t lead to catastrophic consequences.
 
-The plot of *War Games*, especially the use of Tic-Tac-Toe, highlights the intersection of games, AI, and military strategy. The film uses
+The plot of *WarGames*, especially the use of Tic-Tac-Toe, highlights the intersection of games, AI, and military strategy. The film uses
 the simple rules of a children’s game to demonstrate that sometimes, in the context of warfare, there is no winning move—only the
 avoidance of conflict. This concept, drawn from the game, becomes a metaphor for the broader political and technological concerns
 of the 1980s, which still resonate today as AI and automated systems continue to play an increasing role in defense and decision-making.
