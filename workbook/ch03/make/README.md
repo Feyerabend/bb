@@ -248,3 +248,9 @@ make DEBUG=0
 2.	Use variables and pattern rules to minimize repetition.
 3.	Check that changes to source files trigger only necessary recompilation.
 4.	Leverage .PHONY to avoid issues with non-file targets like clean.
+
+
+### GitHub Actions
+
+[![Build in Subdirectory](https://github.com/Feyerabend/bb/actions/workflows/build.yml/badge.svg)](https://github.com/Feyerabend/bb/actions/workflows/build.yml)
+
