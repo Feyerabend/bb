@@ -331,10 +331,7 @@ of instruction processing operate concurrently.
 3.	Execute: Perform the operation, accessing data memory if needed.
 4.	Write back: Store results in registers or memory.
 
-
-Python Implementation of a Simple Pipeline
-
-Using Python threads and queues to represent stages:
+Using Python threads and queues to represent stages.
 
 ```python
 import threading
