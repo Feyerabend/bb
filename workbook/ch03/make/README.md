@@ -28,7 +28,7 @@ target: dependencies
 - `command`: Shell commands executed to create the target.
 
 
-1. A Simple Example
+##### 1. A Simple Example
 
 Suppose we have a C program 'main.c':
 
@@ -59,7 +59,7 @@ To build the program, simply run 'make' at the command line.
 - `main.c`: This is the *dependency*. If main.c is modified, the target will be rebuilt.
 - `gcc -o main main.c`: The command to compile the program.
 
-2. Adding Cleanup
+##### 2. Adding Cleanup
 
 You can add a clean target to remove build files:
 
@@ -77,7 +77,7 @@ Run make clean to delete the main executable:
 make clean
 ```
 
-3. Variables in Makefiles
+##### 3. Variables in Makefiles
 
 You can simplify your Makefile by using variables:
 
@@ -97,7 +97,7 @@ clean:
 - `$(CFLAGS)`: Compiler flags (e.g., -Wall enables warnings).
 - `$(TARGET)`: A custom variable holding the target name.
 
-4. Handling Multiple Files
+##### 4. Handling Multiple Files
 
 For larger projects, source files are often split across multiple .c files, main.c:
 
@@ -156,7 +156,7 @@ clean:
 
 Run make to build the program, and make clean to remove generated files.
 
-5. Automatic Dependency Handling
+##### 5. Automatic Dependency Handling
 
 Makefiles can automatically detect changes in dependencies using special features using pattern rules:
 
@@ -185,7 +185,7 @@ clean:
 - `%.o: %.c`: A pattern rule for generating .o files from .c files.
 - `$<`: Refers to the first dependency (e.g. main.c for main.o).
 
-6. Using Built-in Functions
+##### 6. Using Built-in Functions
 
 Makefiles include functions for string manipulation and other utilities. Common ones include:
 - `$@`: The target name.
@@ -201,7 +201,7 @@ $(TARGET): $(OBJS)
 
 - Build `$(TARGET)` using `$(CC)` with all dependencies `$^`.
 
-7. Phony Targets
+##### 7. Phony Targets
 
 Some targets, like 'clean', don’t correspond to actual files. To prevent conflicts, you can declare them phony:
 
@@ -211,7 +211,7 @@ clean:
     rm -f $(TARGET) $(OBJS)
 ```
 
-8. Advanced: Conditional Compilation
+##### 8. Advanced: Conditional Compilation
 
 You can include optional features using conditions:
 
@@ -244,7 +244,7 @@ make DEBUG=0
 
 #### Recommendations
 
-1.	Organize Your Rules: List targets logically, and use comments to document the purpose of each.
-2.	Keep It DRY: Use variables and pattern rules to minimize repetition.
-3.	Test Frequently: Check that changes to source files trigger only necessary recompilation.
-4.	Leverage .PHONY: Avoid issues with non-file targets like clean.
+1.	List targets logically, and use comments to document the purpose of each.
+2.	Use variables and pattern rules to minimize repetition.
+3.	Check that changes to source files trigger only necessary recompilation.
+4.	Leverage .PHONY to avoid issues with non-file targets like clean.
