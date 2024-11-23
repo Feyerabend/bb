@@ -233,8 +233,8 @@ make DEBUG=0
 
 #### Summary
 
-|--|--|
 |Command|	Description|
+|--|--|
 |make|	Build the default target (first in the file).|
 |make <target>|	Build a specific target.|
 |make clean|	Execute the clean target.|
