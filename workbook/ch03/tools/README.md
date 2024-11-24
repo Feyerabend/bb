@@ -121,7 +121,7 @@ context.
 To gain deeper insights into how programs execute on our virtual machine and to
 identify opportunities for improvement, statistical analysis can be an invaluable
 tool. In this case, we have opted to use Bayesian techniques to perform a
-post-mortem analysis, examining the program’s behavior after its execution.
+post-mortem analysis, examining the program's behavior after its execution.
 
 By leveraging Bayesian methods, we can infer probabilities and relationships from
 the execution logs generated during the program's runtime. These techniques allow
