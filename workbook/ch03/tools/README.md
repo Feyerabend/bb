@@ -29,7 +29,7 @@ fundamental yet highly effective. Techniques such as logging,
 single-stepping through code, and setting breakpoints to halt
 execution for detailed inspection were very useful. These
 methods allowed developers to meticulously trace and resolve
-issues. In this exploration, we’ll revisit these simple but
+issues. In this exploration, we'll revisit these simple but
 powerful debugging tools and see how they are still relevant
 when working with virtual machines, or really in any programming
 environment.
