@@ -1,5 +1,5 @@
 
-## Movie *WarGames*
+## The Movie *WarGames*
 
 In the 1983 movie *WarGames*[^war], the plot revolves around a young computer whiz named David Lightman, played by Matthew Broderick,
 who accidentally hacks into a U.S. military supercomputer called WOPR (War Operation Plan Response). Initially believing that
