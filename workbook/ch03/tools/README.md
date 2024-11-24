@@ -1,18 +1,20 @@
 
 ## Building your own Toolbox
 
-Just as a carpenter understands the intricacies of their craft well enough to identify gaps
-in their toolkit and create custom solutions, a developer can do the same in the world of
-software. Whether it's writing a specialized debugging tool, creating a tailor-made profiler,
-or developing a unique scripting language to optimize a specific workflow, developers have
+Just as a carpenter understands the intricacies of their craft well enough
+to identify gaps in their toolkit and create custom solutions, a developer
+can do the same in the world of software. Whether it's writing a specialized
+debugging tool, creating a tailor-made profiler, or developing a unique
+scripting language to optimize a specific workflow, developers have
 the ability to shape their tools to meet their precise needs.
 
-This ability to craft tools not only enhances efficiency but also fosters a deeper understanding
-of the systems being worked on. Just as a custom woodworking jig can ensure precision in a
-fine cabinet, a well-designed software tool can streamline development and debugging, often
-solving problems that off-the-shelf tools cannot fully address. Embracing this mindset turns
-tool creation into a natural extension of problem-solving, reflecting both creativity and
-technical expertise.
+This ability to craft tools not only enhances efficiency but also fosters
+a deeper understanding of the systems being worked on. Just as a custom
+woodworking jig can ensure precision in a fine cabinet, a well-designed
+software tool can streamline development and debugging, often solving
+problems that off-the-shelf tools cannot fully address. Embracing this
+mindset turns tool creation into a natural extension of problem-solving,
+reflecting both creativity and technical expertise.
 
 I can testify to this as I have a background in education as a cabinetmaker.
 As a cabinetmaker, you sometimes have the opportunity to craft your own tools.
@@ -22,16 +24,14 @@ The same principle can many times apply to developers.
 ### Debugging
 
 Debugging has been an integral part of computing since
-the early days of programming. In many ways, programming
-remains a *craft*, and debugging is a critical aspect of
-that craft. Early debugging tools were fundamental yet
-highly effective. Techniques such as logging, single-stepping
-through code, and setting breakpoints to halt execution for
-detailed inspection were very useful. These methods allowed
-developers to meticulously trace and resolve issues.
-In this exploration, we’ll revisit these simple but powerful
-debugging tools and see how they are still relevant when
-working with virtual machines, or really in any programming
+the early days of programming. Early debugging tools were
+fundamental yet highly effective. Techniques such as logging,
+single-stepping through code, and setting breakpoints to halt
+execution for detailed inspection were very useful. These
+methods allowed developers to meticulously trace and resolve
+issues. In this exploration, we’ll revisit these simple but
+powerful debugging tools and see how they are still relevant
+when working with virtual machines, or really in any programming
 environment.
 
 ... future
@@ -40,7 +40,7 @@ environment.
 
 ### Assembling & Disassembling
 
-Taking an assembler from previous, we can turn it into something which
+Taking an assembler from a previous chapter, we can turn it into something which
 analyses our "machine code," a disassembler. It reverses the process,
 takes the integers and turn them into easier to understandable mnemonics,
 the "assembly language."
