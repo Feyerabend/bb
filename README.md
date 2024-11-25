@@ -7,7 +7,7 @@ Here you should be able to find more information, errata, exercises, code,
 other resources and updates.
 
 
-A teaser for the book in PDF: [From Basics to Bytecode](./book/boktest.pdf).
+A teaser for the book in PDF: [From Basics to Bytecode](./book/README.md).
 
 
 The [workbook](./workbook) consists mainly of:
