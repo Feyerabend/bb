@@ -30,8 +30,6 @@ your skillset and equip you with the expertise needed to advance in your work.
 
 ### Debugging
 
-- [Debugging](./debug)
-
 Debugging has been an integral part of computing since
 the early days of programming. Early debugging tools were
 fundamental yet highly effective. Techniques such as logging,
@@ -41,6 +39,8 @@ methods allowed developers to meticulously trace and resolve
 issues. In this exploration, we'll revisit these simple but
 powerful debugging tools and see how they are still relevant
 when working with virtual machines.
+
+- [Debugging](./debug)
 
 
 ### Assembling & Disassembling
