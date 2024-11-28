@@ -30,6 +30,8 @@ your skillset and equip you with the expertise needed to advance in your work.
 
 ### Debugging
 
+- [Debugging](./debug)
+
 Debugging has been an integral part of computing since
 the early days of programming. Early debugging tools were
 fundamental yet highly effective. Techniques such as logging,
@@ -42,6 +44,8 @@ when working with virtual machines.
 
 
 ### Assembling & Disassembling
+
+- [Assember/Disassembler](./asm)
 
 Taking an assembler from a previous chapter, we can turn it into something which
 analyses our "machine code," a disassembler. It reverses the process,
@@ -121,6 +125,8 @@ context.
 
 ### Static Analyser
 
+- [Static Analyser](./static)
+
 Static analysis examines code *without executing* it. It checks for potential issues
 like syntax errors, incorrect instruction formats, or misuse of variables. In the
 provided example, the static analyzer validates the REGVM program by ensuring valid
@@ -129,6 +135,8 @@ before even running the code.
 
 
 ### Profiling
+
+- [Profiler](./prof)
 
 Profiling tools are software utilities designed to analyze a program's performance
 characteristics during execution. They provide insights into aspects like execution
@@ -139,6 +147,8 @@ speed, efficiency, or scalability.
 
 
 ### Diagnostics with Statistics
+
+- [Diagnostics](./diag)
 
 To gain deeper insights into how programs execute on our virtual machine and to
 identify opportunities for improvement, statistical analysis can be an invaluable
