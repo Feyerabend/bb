@@ -9,7 +9,7 @@ are decoded and executed sequentially, allowing the simulation of small programs
 like the included example for factorial calculation.
 
 
-### Static Analysis Description
+### Description
 
 Static analysis is a method of examining code *without executing* it, focusing on
 detecting errors, inconsistencies, or potential issues. In this context, the static
