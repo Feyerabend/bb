@@ -87,7 +87,7 @@ the core tasks.
 Before EDVAC we had ENIAC. ENIAC (Electronic Numerical Integrator and Computer) was not a von Neumann
 machine but rather a precursor. It was one of the first general-purpose digital computers and
 laid important groundwork for future computing concepts. However, ENIAC did not embody the defining
-characteristics of the Von Neumann architecture:
+characteristics of the von Neumann architecture:
 
 1. Stored program: In a von Neumann machine, instructions and data are stored in the same memory.
    ENIAC, on the other hand, did not have a stored-program design. Instead, it had to be physically
