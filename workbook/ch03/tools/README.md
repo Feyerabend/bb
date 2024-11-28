@@ -20,6 +20,13 @@ I can testify to this as I have a background in education as a cabinetmaker.
 As a cabinetmaker, you sometimes have the opportunity to craft your own tools.
 The same principle can many times apply to developers.
 
+To make things more transparent, we turn our attention to tools for our previous
+virtual machines. This serves a dual purpose: not only can you enhance these
+tools to deepen your understanding, but the process of improvement itself helps
+to clarify the underlying ideas and principles behind them.
+Additionally, working with the corresponding professional tools will expand
+your skillset and equip you with the expertise needed to advance in your work.
+
 
 ### Debugging
 
