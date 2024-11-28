@@ -1,0 +1,10 @@
+START:
+	SET 43
+	STARG 0
+	CALL :SU
+	HALT
+
+SU:
+	LDARG 0	
+	PRINT
+	RET

@@ -38,11 +38,7 @@ execution for detailed inspection were very useful. These
 methods allowed developers to meticulously trace and resolve
 issues. In this exploration, we'll revisit these simple but
 powerful debugging tools and see how they are still relevant
-when working with virtual machines, or really in any programming
-environment.
-
-... future
-
+when working with virtual machines.
 
 
 ### Assembling & Disassembling
