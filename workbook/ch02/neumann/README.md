@@ -80,3 +80,26 @@ co-authored by von Neumann, which deeply influenced subsequent computer developm
 These exercises and projects can help you develop a deep understanding of the von Neumann machine
 and its principles, with LLMs available optionally for guidance without directly impacting or solving
 the core tasks.
+
+
+### ENIAC
+
+Before EDVAC we had ENIAC. ENIAC (Electronic Numerical Integrator and Computer) was not a von Neumann
+machine but rather a precursor. It was one of the first general-purpose digital computers and
+laid important groundwork for future computing concepts. However, ENIAC did not embody the defining
+characteristics of the Von Neumann architecture:
+
+1. Stored program: In a von Neumann machine, instructions and data are stored in the same memory.
+   ENIAC, on the other hand, did not have a stored-program design. Instead, it had to be physically
+   rewired for each new problem, making programming labor-intensive and time-consuming.
+
+2. Single memory: ENIAC used separate systems for its instructions (hardwired into its configuration)
+   and the data it processed. The von Neumann machine integrates both into a single memory space.
+
+3.	Automatic sequential execution: While ENIAC could perform calculations at high speeds once configured,
+    it required manual intervention to change its program by altering wiring and switches, which contrasts
+    with the automated and dynamic sequence of instructions in a von Neumann system.
+
+Although ENIAC was later modified in 1948 to include some aspects of a stored-program system, this was a
+'retrofit' rather than part of its original design. As such, ENIAC remains firmly categorized as a precursor.
+
