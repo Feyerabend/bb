@@ -125,6 +125,16 @@ opcodes, correct argument counts, proper register usage, and jump target resolut
 before even running the code.
 
 
+### Profiling
+
+Profiling tools are software utilities designed to analyze a program's performance
+characteristics during execution. They provide insights into aspects like execution
+time, memory usage, function call frequency, and resource utilization. By collecting
+and visualising this data, profiling tools help identify bottlenecks, inefficiencies,
+or excessive resource consumption, enabling developers to optimize their code for
+speed, efficiency, or scalability.
+
+
 ### Diagnostics with Statistics
 
 To gain deeper insights into how programs execute on our virtual machine and to
