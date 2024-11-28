@@ -45,8 +45,6 @@ when working with virtual machines.
 
 ### Assembling & Disassembling
 
-- [Assember/Disassembler](./asm)
-
 Taking an assembler from a previous chapter, we can turn it into something which
 analyses our "machine code," a disassembler. It reverses the process,
 takes the integers and turn them into easier to understandable mnemonics,
@@ -122,10 +120,10 @@ Disassemblers can be useful, when e.g. the source isn't available
 or when you want to inspect the machine and the program in this
 context.
 
+- [Assember/Disassembler](./asm)
+
 
 ### Static Analyser
-
-- [Static Analyser](./static)
 
 Static analysis examines code *without executing* it. It checks for potential issues
 like syntax errors, incorrect instruction formats, or misuse of variables. In the
@@ -133,10 +131,10 @@ provided example, the static analyzer validates the REGVM program by ensuring va
 opcodes, correct argument counts, proper register usage, and jump target resolution
 before even running the code.
 
+- [Static Analyser](./static)
+
 
 ### Profiling
-
-- [Profiler](./prof)
 
 Profiling tools are software utilities designed to analyze a program's performance
 characteristics during execution. They provide insights into aspects like execution
@@ -145,10 +143,10 @@ and visualising this data, profiling tools help identify bottlenecks, inefficien
 or excessive resource consumption, enabling developers to optimize their code for
 speed, efficiency, or scalability.
 
+- [Profiler](./prof)
+
 
 ### Diagnostics with Statistics
-
-- [Diagnostics](./diag)
 
 To gain deeper insights into how programs execute on our virtual machine and to
 identify opportunities for improvement, statistical analysis can be an invaluable
@@ -169,4 +167,5 @@ understanding of program behavior, even in cases where the data may be sparse or
 noisy. By iterating on these insights, we can refine both the virtual machine's
 design and the programs that run on it.
 
+- [Diagnostics](./diag)
 
