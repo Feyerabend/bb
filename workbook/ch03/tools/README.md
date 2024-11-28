@@ -116,6 +116,15 @@ or when you want to inspect the machine and the program in this
 context.
 
 
+### Static Analyser
+
+Static analysis examines code *without executing* it. It checks for potential issues
+like syntax errors, incorrect instruction formats, or misuse of variables. In the
+provided example, the static analyzer validates the REGVM program by ensuring valid
+opcodes, correct argument counts, proper register usage, and jump target resolution
+before even running the code.
+
+
 ### Diagnostics with Statistics
 
 To gain deeper insights into how programs execute on our virtual machine and to
@@ -136,4 +145,5 @@ knowledge or assumptions into the analysis. As a result, it offers a more nuance
 understanding of program behavior, even in cases where the data may be sparse or
 noisy. By iterating on these insights, we can refine both the virtual machine's
 design and the programs that run on it.
+
 
