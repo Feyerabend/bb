@@ -74,7 +74,7 @@ jobs:
 ```
 
 
-#### 1. name: Python CI
+#### 1. 'name': Python CI
 
 This defines the name of the workflow. “Python CI” is descriptive
 and indicates that the workflow is a Continuous Integration process
@@ -94,18 +94,20 @@ on:
 ```
 
 This section defines the triggers for the workflow:
-- push: The workflow runs whenever a commit is pushed to the main branch.
-- pull_request: The workflow also runs for pull requests targeting the main branch.
+- `push`: The workflow runs whenever a commit is pushed to the main branch.
+- `pull_request`: The workflow also runs for pull requests targeting the main branch.
 
 These triggers ensure that the pipeline is executed whenever
 changes are made to critical code paths.
 
-#### 3. jobs
+
+#### 3. 'jobs'
 
 Jobs represent individual tasks or a sequence of tasks within the
 workflow. The script defines a single job named build.
 
-#### 3.1 runs-on
+
+#### 3.1 'runs-on'
 
 ```yml
 runs-on: ubuntu-latest
@@ -116,7 +118,8 @@ This specifies the environment in which the job will execute.
 Ubuntu release. It provides a clean and standardized environment
 for CI tasks.
 
-#### 3.2 Steps in the Job
+
+#### 3.2 Steps in the job
 
 The steps section defines the actions to perform in sequence.
 
@@ -142,6 +145,7 @@ This installs Python 3.9 on the runner. The actions/setup-python
 action simplifies setting up Python environments in CI pipelines.
 
 3.	Install Dependencies
+
 ```yml
 - name: Install dependencies
   run: |
@@ -156,6 +160,7 @@ installs any dependencies listed in it. This makes the environment
 ready for testing.
 
 4. Set PYTHONPATH
+
 ```yml
 - name: Set PYTHONPATH
   run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
@@ -164,7 +169,8 @@ Extends the PYTHONPATH environment variable to include the repository’s
 root directory. This ensures that Python can locate modules and packages
 correctly.
 
-5. Run Tests
+5. Run tests
+
 ```yml
 - name: Run tests
   run: |
@@ -176,7 +182,7 @@ filenames match the pattern test_*.py. The unittest framework is used
 for testing.
 
 
-### Customization Suggestions
+### Customization suggestions
 
 Additional Python Versions: To test against multiple Python versions,
 you can use a strategy matrix:
