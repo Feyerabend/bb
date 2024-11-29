@@ -40,6 +40,8 @@ issues. In this exploration, we'll revisit these simple but
 powerful debugging tools and see how they are still relevant
 when working with virtual machines.
 
+- [Debugging](./debug)
+
 
 ### Assembling & Disassembling
 
@@ -118,6 +120,8 @@ Disassemblers can be useful, when e.g. the source isn't available
 or when you want to inspect the machine and the program in this
 context.
 
+- [Assember/Disassembler](./asm)
+
 
 ### Static Analyser
 
@@ -126,6 +130,8 @@ like syntax errors, incorrect instruction formats, or misuse of variables. In th
 provided example, the static analyzer validates the REGVM program by ensuring valid
 opcodes, correct argument counts, proper register usage, and jump target resolution
 before even running the code.
+
+- [Static Analyser](./static)
 
 
 ### Profiling
@@ -136,6 +142,8 @@ time, memory usage, function call frequency, and resource utilization. By collec
 and visualising this data, profiling tools help identify bottlenecks, inefficiencies,
 or excessive resource consumption, enabling developers to optimize their code for
 speed, efficiency, or scalability.
+
+- [Profiler](./prof)
 
 
 ### Diagnostics with Statistics
@@ -159,4 +167,5 @@ understanding of program behavior, even in cases where the data may be sparse or
 noisy. By iterating on these insights, we can refine both the virtual machine's
 design and the programs that run on it.
 
+- [Diagnostics](./diag)
 
