@@ -1,15 +1,20 @@
 
 ## Sustainable computing
 
+*Project: Discuss how a new way of building computers could be done. A seed for such a
+study would be "microcontrollers" or very simple computers that could handle in principle
+easy tasks, like e.g. in an office text processing, and connected things like storage,
+printing, layout, conversions between legacy formats etc.*
+
 Re-imagining computing in a distributed, energy-efficient way—especially using microcontroller-like
 architectures running simple, specialized programs—could indeed be a promising direction for future,
 *sustainable computing*. For certain tasks, like text processing, this approach could provide a
 remarkably efficient and lightweight alternative to the current paradigm of general-purpose,
-power-hungry computers.
+power-hungry computers. And perhaps also more secure, as the simpler the software gets.
 
-Historically, as you noted, the early Unix philosophy emphasized small, single-purpose tools that
+Historically, the early Unix philosophy emphasized small, single-purpose tools that
 could be combined in flexible ways, and this model could adapt well to a microcontroller-based,
-distributed computing environment. Here's how such a system might work and why it holds promise:
+distributed computing environment.
 
 1. *Efficiency and Energy Usage*: Microcontrollers are incredibly efficient in terms of energy usage,
    often drawing only milliwatts of power compared to the hundreds of watts consumed by a modern CPU.
@@ -66,10 +71,9 @@ sustainable technology.
 In a scenario where computing is re-imagined around distributed microcontroller-based systems and modular,
 single-purpose programs, software development would indeed look very different. It would emphasize
 efficiency, simplicity, and modularity, drawing from principles of embedded systems programming and
-Unix-like philosophies. Here's how software development might look in such a scenario and what it would
-take for a startup to thrive in this niche.
+Unix-like philosophies.
 
-Software Development Approach and Tooling
+#### Software Development Approach and Tooling
 
 1. *Low-Level Languages and Lightweight Libraries*: Development would likely focus on low-level
    languages like C or Rust, which are known for their efficiency and low memory footprint.
@@ -108,10 +112,10 @@ Software Development Approach and Tooling
 
 ### Suitability for Startups
 
-A startup could indeed carve out a niche in this area, particularly if they focused on applications where
+A startup could carve out a niche in this area, particularly if they focused on applications where
 resource efficiency is paramount. For instance, many modern software applications, especially those for personal
 productivity or simple data processing, don't require the massive processing power of today's general-purpose
-computers. Here's how a startup might approach it:
+computers.
 
 1. *Focusing on High-Value Niche Applications*: Certain applications, especially those in resource-constrained
    environments, would benefit most. These could include:
@@ -166,3 +170,4 @@ where minimal hardware is used for maximum productivity, specifically in environ
 that don't need multimedia processing or heavy computing. This model could encourage a
 shift back to efficient, purpose-built systems, helping reduce computing energy costs
 industry-wide and influencing software design to prioritize simplicity and modularity.
+
