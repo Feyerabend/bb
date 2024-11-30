@@ -468,7 +468,7 @@ This operation checks if the variable `'x'` is present in memory before proceedi
 - *Precondition* $\( P \)$: `'x'` must be in the memory of the virtual machine.
 - *Postcondition* $\( Q \)$: The state remains unchanged if the precondition holds (no changes to the memory or stack).
 
-${ ‘x’ ∈ vm.memory } CHECK_PRECONDITION( λ vm: ‘x’ ∈ vm.memory ) { True }$
+{ ‘x’ ∈ vm.memory } CHECK_PRECONDITION( λ vm: ‘x’ ∈ vm.memory ) { True }
 
 #### 2. `LOAD x`
 
@@ -477,7 +477,7 @@ This operation loads the value of `'x'` from memory and pushes it onto the stack
 - *Precondition* \( P \): `'x'` must be in the memory of the virtual machine.
 - *Postcondition* \( Q \): After loading, the stack contains the value of `'x'`, and the state of the memory remains unchanged.
 
-${ ‘x’ ∈ vm.memory } LOAD ‘x’ { Stack = [vm.memory[‘x’]], Memory = vm.memory }$
+{ ‘x’ ∈ vm.memory } LOAD ‘x’ { Stack = [vm.memory[‘x’]], Memory = vm.memory }
 
 #### 3. `PUSH_LIST`
 
