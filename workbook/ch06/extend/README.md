@@ -297,12 +297,12 @@ Memory: {'x': 5, 'lst': [5]}
 13. Halt (HALT): The program halts, and the final stack is [10].
 
 
-* Final Output:
+##### Final Output:
 - Final Stack: [10]
 - Memory: {'x': 5, 'lst': [5]}
 
 
-* Summary
+##### Summary
 - The program executes successfully and manipulates the stack and memory as expected.
 - The APPEND operation, list indexing, and addition all work correctly.
 - The checks for preconditions and postconditions are handled properly.
