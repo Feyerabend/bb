@@ -190,26 +190,6 @@ vm.memory['x'] = 5  # predefine 'x' in memory
 vm.execute(program)
 ```
 
-And a sample program:
-
-```python
-program = [
-    ('CHECK_PRECONDITION', lambda vm: 'x' in vm.memory),               # ensure 'x' is defined
-    ('LOAD', 'x'),                                                     # load variable 'x'
-    ('CHECK_POSTCONDITION', lambda vm: len(vm.stack) > 0),             # ensure stack isn't empty
-    ('PUSH_LIST',),                                                    # push a new list to the stack
-    ('APPEND',),                                                       # append 'x' to the list
-    ('STORE', 'lst'),                                                  # store the list in 'lst'
-    ('CHECK_PRECONDITION', lambda vm: 'lst' in vm.memory),             # ensure 'lst' exists
-    ('LOAD', 'x'),                                                     # load 'x'
-    ('LOAD', 'lst'),                                                   # load 'lst'
-    ('PUSH', 0),                                                       # push index for list access
-    ('INDEX',),                                                        # get 'lst[0]'
-    ('CHECK_POSTCONDITION', lambda vm: isinstance(vm.stack[-1], int)), # ensure top is an int
-    ('ADD',),                                                          # add 'x' and 'lst[0]'
-    ('HALT',),                                                         # halt the program
-]
-```
 
 Ouput:
 
