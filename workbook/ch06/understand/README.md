@@ -8,9 +8,9 @@ asynchronous with the prevailing trends of the time.
 
 I couldn't find any space that explored programming in the way I understood it, so I started writing
 my own papers and collecting my thoughts—just for myself. I'd finish them, then throw them into a
-drawer. At one point, I tried to publish some of my ideas, but they were heavily misunderstood and
-distorted when they went to print. It was such a discouraging experience that I gave up on the idea
-of publishing altogether.
+"drawer" (or to be correct: a folder). At one point, I tried to publish some of my ideas, but they
+were heavily misunderstood and distorted when they went to print. It was such a discouraging experience
+that I gave up on the idea of publishing altogether.
 
 Still, I didn't stop developing my ideas. I kept working on them, refining them, and finding ways
 to express what I was exploring. One of the results of that work is a document from the early 1990s.
@@ -37,11 +37,12 @@ The rise of graphical user interfaces during this period made computers more acc
 further disconnected users from the programming processes underlying these systems. This divide
 underscored the need to understand programming as a fundamentally human-centered activity. The text
 proposed that programming involves not only interfacing with machines but also understanding ourselves
-through language and cognitive constructs.
+through language and cognitive constructs. I was very much inspired by Lisp Machines, Xerox Star
+and the Apple Macintosh.
 
 Inspiration also came from the Second International Conference on Logic Programming, held in 1984 in
 Uppsala, where my university was based. The event introduced me to foundational concepts of logic
-programming, particularly Prolog and LISP. We had a LISP Machine at the university, a pinnacle of
+programming, particularly Prolog and LISP. We had a Lisp Machine at the university, a pinnacle of
 advanced computing at the time. However, I never interacted with the machine until half a year ago,
 when encountering one felt like rediscovering a lost artifact from a pivotal time in my academic
 journey.
@@ -61,16 +62,16 @@ of human engagement, creativity, and discovery.
 
 ### Programming languages, linguistics, and human cognition
 
-Drawing from the Greek hermeneuein—to explain, say, or translate—the text likens understanding programming
-languages to interpreting a text. This parallels Noam Chomsky's distinction between competence (internal
-knowledge of syntax and semantics) and performance (practical application), a framework that aligns with
+Drawing from the Greek *hermeneuein*-—to explain, say, or translate-—the text likens understanding programming
+languages to interpreting a text. This parallels Noam Chomsky's distinction between *competence* (internal
+knowledge of syntax and semantics) and *performance* (practical application), a framework that aligns with
 programming's dual nature: grasping a language's structure and using it to create functional software.
 
-Modern computational linguistics and machine learning advances, such as GPT-4 and neural machine translation,
+Modern *computational linguistics* and *machine learning* advances, such as GPT-4 and neural machine translation,
 demonstrate how programming languages are "interpreted" by machines. These technologies link linguistic theory
-to programming, bridging human and machine cognition through AI-assisted coding tools like GitHub Copilot.
+to programming, bridging human and machine cognition through AI-assisted coding tools (like GitHub Copilot).
 
-Programming is also a cognitive negotiation, engaging mental models of problems, language syntax, and iterative 
+Programming is also a *cognitive negotiation*, engaging mental models of problems, language syntax, and iterative 
 feedback. Research into programming psychology and cognitive load theory shows how different paradigms (e.g.
 object-oriented vs. functional programming) affect problem-solving efficiency, underscoring the interplay
 between cognitive processes and programming.
@@ -78,9 +79,9 @@ between cognitive processes and programming.
 
 ### Constructivism and program development
 
-The constructivist philosophy, which views knowledge as emerging through active engagement, resonates with
+The *constructivist philosophy*, which views knowledge as emerging through active engagement, resonates with
 programming as a dynamic, iterative process of discovery and refinement. This idea prefigured modern practices
-like Test-Driven Development (TDD), Agile, and Extreme Programming (XP), which emphasize incremental learning
+like *Test-Driven Development* (TDD), *Agile*, and *Extreme Programming* (XP), which emphasize incremental learning
 and continuous improvement.
 
 In education and development, iterative methods foster understanding by breaking problems into manageable chunks,
@@ -88,17 +89,16 @@ reflecting a constructivist mindset. Similarly, tools like TDD and pair programm
 enabling programmers to "construct" solutions while continuously testing and revising their work.
 
 
-
 ### Cognitive science, HCI, and programming interfaces
 
-Chomsky's competence versus performance framework has implications for cognitive science, particularly in
+Chomsky's competence versus performance framework has implications for *cognitive science*, particularly in
 understanding how the brain processes programming. Writing and debugging code require significant cognitive
 effort, involving brain regions associated with language, problem-solving, and mathematical reasoning. This
 mirrors how natural language is processed, suggesting that programming is both a linguistic and cognitive activity.
 
 The interface between programmers and machines, anticipated in the text, prefigures modern advances in human-computer
 interaction (HCI). Integrated Development Environments (IDEs), real-time collaboration tools, and visual debugging
-interfaces aim to reduce cognitive load and make programming more intuitive. By enhancing feedback and collaboration,
+interfaces aim to reduce *cognitive load* and make programming more intuitive. By enhancing feedback and collaboration,
 these tools embody the principles of cognitive efficiency.
 
 
@@ -106,7 +106,7 @@ these tools embody the principles of cognitive efficiency.
 
 Programming languages are more than technical tools; they reflect cognitive processes and societal conventions. The
 evolution of language theory, from rule-based systems to domain-specific languages (DSLs), visual programming, and
-multi-paradigm languages, illustrates an effort to align languages with human cognitive models. Functional and logic
+multi-paradigm languages, illustrates an effort to align languages with *human cognitive models*. Functional and logic
 programming, for example, continue to shape how programmers think about problems.
 
 The text's distinction between *a-understanding* (syntax and semantics) and *b-understanding* (creative application)
@@ -118,7 +118,7 @@ theoretical knowledge versus practical skill.
 ### Conclusion
 
 These ideas were explored in the late 1980s and early 1990s. Some themes, such as the intersection of programming
-with language theory, cognition, and the iterative process of software development, are now more central to
+with *language theory*, *cognition*, and the *iterative process* of software development, are now more central to
 modern discussions in software engineering and cognitive science.
 
 In some ways, I anticipated some trends that became mainstream only decades later. The rise of AI-assisted programming,
