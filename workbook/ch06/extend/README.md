@@ -587,18 +587,24 @@ also on the state and values of the system (such as the variable x).
 
 ### Project Extensions
 
-What remains is also to make the proof of correctness. Formalisation is not enough.
-To extend the project and include a proof of correctness, you would need to integrate
-formal methods that validate the behavior of programs against its specification.
-Formal verification goes beyond mere formalisation as above. It rigorously proves that the
-implementation adheres to its defined preconditions, postconditions and invariants
-(stack etc. above), covering all possible states and transitions.
+What remains is to establish a proof of correctness; formalization alone is insufficient.
+Extending the project to include such a proof requires the integration of formal methods
+that rigorously validate the program’s behavior against its specification. Formal verification,
+unlike mere formalization, ensures that the implementation strictly adheres to its defined
+preconditions, postconditions, and invariants (such as those governing the stack or other
+structures), comprehensively addressing all possible states and transitions.
 
-A proven program represents a very high standard of software reliability. It satisfies
-not just the typical expectation of working for the most likely inputs (such that can
-be reflected through tests) but guarantees correctness under all circumstances defined
-by the specification. This level of rigor is especially critical for systems where failure
-is not acceptable, such as aerospace software, medical devices, and financial systems.
-By extending the project to include formal verification, you're elevating it to a level
-of precision and trustworthiness that transcends usual traditional software engineering.
+A program verified in this way achieves an exceptional level of reliability. It meets not
+only the typical expectation of functioning correctly for likely inputs—those scenarios
+that can be covered through testing—but also guarantees correctness under all conditions
+defined by the specification. This rigor is particularly vital in domains where failure
+is unacceptable, such as aerospace software, medical devices, or financial systems.
+Extending the project to encompass formal verification elevates its standard of precision
+and trustworthiness far beyond that of conventional software engineering practices.
+
+It is important to note, however, that fully automated solutions for formal proofs remain
+an open challenge in computer science. While significant strides have been made in automating
+parts of the process, complete automation for complex systems is not yet a reality.
+Nonetheless, a great deal can still be achieved by leveraging existing tools and techniques
+to pave the way toward more rigorous software correctness.
 
