@@ -8,19 +8,21 @@ In this project, we delve into simulating dependent types and constraints within
 using *preconditions* and *postconditions*, but also *constraints* as core mechanisms. This approach
 draws on a blend of ideas that should inspire your exploration and experimentation.
 
-The concept originates from Test-Driven Development (TDD), where tests are typically developed as
-separate entities, scaffolding the main program. This separation offers significant advantages:
-tests remain distinct from the program, ensuring minimal interference during execution while preserving
-their utility for validation.
+The idea or concept here originates from another look at Test-Driven Development (TDD), where
+tests are typically developed as separate entities, scaffolding the main program. This separation (tests
+and what they test) offers significant advantages: tests remain distinct from the program, ensuring
+minimal interference during execution while preserving their utility for validation.
 
 However, alternative paradigms could be worth exploring. One such approach envisions programs as
 "self-restrictive," incorporating *TDD-like principles* directly within the programming language itself.
+(Actually they are very separate, but could be understood as a "mapping" between them.)
 By embedding constraints and conditions, programs become intrinsically aware of their boundaries and
 correctness criteria, eliminating the dependency on external tests.
 
 To experiment with this idea, we propose a twofold focus: integrating *constraints* into programming
 languages and implementing *preconditions* and *postconditions*, inspired by Hoare logic. These mechanisms
 enable rigorous enforcement of correctness while maintaining flexibility for dynamic execution.
+
 
 ### Suggested Projects
 
@@ -44,7 +46,15 @@ enable rigorous enforcement of correctness while maintaining flexibility for dyn
 
 This vision pushes the boundaries of programming language design. By experimenting within the controlled
 environment of a VM, you can validate these ideas and offer insights that might shape the future of
-programming paradigms. Build your own experimental language!
+programming paradigms. Maybe you could build your own experimental language!
+
+Speaking of "contracts" above, check out the programming language Eiffel. Eiffel[^eiffel] is an object-oriented
+programming language created by Bertrand Meyer in the late 1980s. It is designed with a focus on software
+reliability, reusability, and maintainability. Eiffel's key feature is its strong emphasis on
+*Design by Contract* (DbC), which helps developers create software with clearly defined responsibilities
+and guarantees, leading to fewer bugs and more reliable code.
+
+[^eiffel]: See e.g. https://en.wikipedia.org/wiki/Eiffel_(programming_language).
 
 
 ### Constraints and Hoare Logic
