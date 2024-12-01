@@ -5,9 +5,9 @@ While they may occasionally expand upon the book's suggested code, they primaril
 direct code references from the text.
 
 The code examples in this book are written in standard Python (version 3), ANSI C, MicroPython
-for the Raspberry Pi Pico, and JavaScript compatible with most modern web browsers.
+for the Raspberry Pi Pico, and sometimes JavaScript compatible with most modern web browsers.
 To help readers grasp core programming principles, dependencies have been kept to a minimum.
-Except where necessary—-such as for specialized hardware interfaces like an LCD driver—-no
+Except where necessary--such as for specialized hardware interfaces like an LCD driver--no
 external libraries are used, or at least kept to a minimum. This approach encourages a focus
 on foundational coding concepts without reliance on third-party libraries.
 
@@ -29,8 +29,8 @@ sometimes 'reinvent the wheel' and increase development time, especially for com
 where libraries are standardized, robust, and highly optimized. Established libraries also
 tend to be well-documented and peer-reviewed, meaning they've been vetted for reliability
 and bugs. The right balance often means selectively using trusted, essential
-libraries—-especially for complex tasks that are beyond the immediate scope of this
-book—-while still tackle more straightforward implementations.
+libraries--especially for complex tasks that are beyond the immediate scope of this
+book--while still tackle more straightforward implementations.
 
 
 ## Projects
@@ -117,5 +117,3 @@ skills, persistence, and ability to integrate new information. This approach als
 individualized learning experience for students, as they can leverage LLMs to clarify concepts, brainstorm
 ideas, and seek guidance on specific questions, all tailored to the level of complexity that best suits
 their current stage of learning.
-
-
