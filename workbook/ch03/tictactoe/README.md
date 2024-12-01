@@ -4,7 +4,7 @@
 In the 1983 movie *WarGames*[^war], the plot revolves around a young computer whiz named David Lightman, played by Matthew Broderick,
 who accidentally hacks into a U.S. military supercomputer called WOPR (War Operation Plan Response). Initially believing that
 he is playing a game of chess against a computer, David unwittingly triggers a sequence of events that leads to the simulation
-of a global nuclear conflict. The plot centers on David’s realization that the WOPR system, designed to simulate and predict
+of a global nuclear conflict. The plot centers on David's realization that the WOPR system, designed to simulate and predict
 outcomes of military conflicts, has the power to launch real nuclear weapons. The critical moment in the film comes when David, 
 using his knowledge of games and computer systems, realizes that the only way to prevent global catastrophe is to convince the
 supercomputer that nuclear war is not winnable.
@@ -12,13 +12,13 @@ supercomputer that nuclear war is not winnable.
 A key moment in *WarGames* is when David, after engaging the WOPR in a game of Tic-Tac-Toe, understands the parallel between the
 strategy of the game and the futility of nuclear war. The computer plays Tic-Tac-Toe, a game that is simple, deterministic, and
 has a known solution where either a player wins or the game results in a draw. The lesson that emerges from the game, which is
-applied to nuclear strategy, is that there are no winners in a global thermonuclear war—just like in Tic-Tac-Toe, the best outcome
+applied to nuclear strategy, is that there are no winners in a global thermonuclear war--just like in Tic-Tac-Toe, the best outcome
 is a draw.
 
 This revelation is crucial to the plot, as David uses the simple logic of the game to break through to the supercomputer. He
 demonstrates to the WOPR system that a nuclear conflict is analogous to a game of Tic-Tac-Toe, where the only logical conclusion
 is not to engage at all. The computer, after playing several rounds of Tic-Tac-Toe and analyzing the results, concludes that it
-is a futile exercise—just as a nuclear war would be. This realization leads to the cessation of the simulated global conflict
+is a futile exercise--just as a nuclear war would be. This realization leads to the cessation of the simulated global conflict
 and ultimately prevents the launch of real-world nuclear weapons.
 
 [^war]: See https://www.imdb.com/title/tt0086567/, https://en.wikipedia.org/wiki/WarGames.
@@ -26,14 +26,14 @@ and ultimately prevents the launch of real-world nuclear weapons.
 ### The Significance of Tic-Tac-Toe in *WarGames*
 
 Tic-Tac-Toe is pivotal in *WarGames* not just as a game but as a metaphor for the futility of nuclear war. The movie draws a parallel
-between the game’s simple structure, where the outcome is either a draw or a win for one player (if both players play optimally),
+between the game's simple structure, where the outcome is either a draw or a win for one player (if both players play optimally),
 and the destructive nature of global conflict. The game's deterministic nature provides an easily understandable model for how the
 complex, unpredictable nature of war can be reduced to a simpler concept: there are no real winners, only devastation.
 
-The inclusion of Tic-Tac-Toe also plays into the broader theme of *WarGames*—-the misunderstanding and misapplication of technology in
+The inclusion of Tic-Tac-Toe also plays into the broader theme of *WarGames*---the misunderstanding and misapplication of technology in
 high-stakes situations. The WOPR computer, despite its advanced capabilities, is initially unable to understand the implications of
 global nuclear war until it engages in the simple, non-threatening game. This shift from a war game to a trivial game like Tic-Tac-Toe
-highlights the movie’s central critique of the Cold War arms race and the reliance on computer systems to make life-or-death decisions.
+highlights the movie's central critique of the Cold War arms race and the reliance on computer systems to make life-or-death decisions.
 The simplicity of Tic-Tac-Toe becomes a stark contrast to the complex, life-threatening scenarios that computers were being used to
 simulate and manage at the time.
 
@@ -42,18 +42,18 @@ simulate and manage at the time.
 
 The Tic-Tac-Toe game also connects to broader questions about artificial intelligence (AI) and decision-making, which have become
 increasingly relevant as AI systems are used to simulate and potentially make decisions in warfare. In the movie, the WOPR system is
-capable of running simulations of nuclear war but, without understanding the human element—such as the futility of total destruction—it
+capable of running simulations of nuclear war but, without understanding the human element--such as the futility of total destruction--it
 cannot arrive at a logical conclusion on its own. The game of Tic-Tac-Toe, with its clearly defined rules and outcomes, serves as
 a turning point, showing that human judgment and logic are still critical when dealing with AI in high-stakes situations.
 
-In today’s world, the lessons from *WarGames* and the simplicity of Tic-Tac-Toe resonate with the ongoing development and deployment of
-AI in military contexts. Whether it’s AI-controlled drones, missile defense systems, or autonomous weapons, the concern is that these
+In today's world, the lessons from *WarGames* and the simplicity of Tic-Tac-Toe resonate with the ongoing development and deployment of
+AI in military contexts. Whether it's AI-controlled drones, missile defense systems, or autonomous weapons, the concern is that these
 systems might make decisions without human intervention or oversight. The film serves as a reminder that, much like the game of Tic-Tac-Toe,
-certain types of conflict—particularly those involving mass destruction—are best avoided altogether, and AI systems need to be guided
-by ethical reasoning and human understanding to ensure they don’t lead to catastrophic consequences.
+certain types of conflict--particularly those involving mass destruction--are best avoided altogether, and AI systems need to be guided
+by ethical reasoning and human understanding to ensure they don't lead to catastrophic consequences.
 
 The plot of *WarGames*, especially the use of Tic-Tac-Toe, highlights the intersection of games, AI, and military strategy. The film uses
-the simple rules of a children’s game to demonstrate that sometimes, in the context of warfare, there is no winning move—only the
+the simple rules of a children's game to demonstrate that sometimes, in the context of warfare, there is no winning move--only the
 avoidance of conflict. This concept, drawn from the game, becomes a metaphor for the broader political and technological concerns
 of the 1980s, which still resonate today as AI and automated systems continue to play an increasing role in defense and decision-making.
 
@@ -223,10 +223,10 @@ In short, the minimax algorithm is a decision-making framework used in two-playe
 determine the optimal move by assuming that both players play perfectly. The algorithm evaluates
 all possible moves, creating a game tree where nodes represent game states. At each step, it
 alternates between a "maximizing" player, who seeks to maximize their score, and a "minimizing"
-player, who aims to minimize the maximizing player’s score. Starting from the end states (leaves),
+player, who aims to minimize the maximizing player's score. Starting from the end states (leaves),
 the algorithm propagates the values back up the tree, with the maximizing and minimizing layers
 selecting the best outcomes for their respective objectives. This ensures that the chosen move
-at the root leads to the best possible outcome for the player, regardless of the opponent’s responses.
+at the root leads to the best possible outcome for the player, regardless of the opponent's responses.
 
 
 ### 2. Q-Learning (Reinforcement Learning)
@@ -422,28 +422,36 @@ The agent updates its Q-table using the current state, action, reward, and the n
 
 *Exploration vs. Exploitation*
 
-The epsilon-greedy strategy helps balance exploration (trying new, unknown actions) and exploitation (choosing the best-known action). Over time, as the agent learns more about the game, it will shift from exploration to exploitation, making more informed decisions based on its learned Q-values.
+The epsilon-greedy strategy helps balance exploration (trying new, unknown actions) and exploitation
+(choosing the best-known action). Over time, as the agent learns more about the game, it will shift
+from exploration to exploitation, making more informed decisions based on its learned Q-values.
 
 *Game Flow*
 
-In each episode (or game), the agent starts from a fresh board state, selects actions, receives rewards, and updates its Q-values until the game ends (either by winning, drawing, or making an invalid move). After many episodes, the agent's Q-table will reflect the best moves to make in various board states, enabling it to play the game optimally.
+In each episode (or game), the agent starts from a fresh board state, selects actions, receives rewards,
+and updates its Q-values until the game ends (either by winning, drawing, or making an invalid move).
+After many episodes, the agent's Q-table will reflect the best moves to make in various board states,
+enabling it to play the game optimally.
 
 
 ### Conclusion
 
-In summary, Q-learning allows the Tic-Tac-Toe agent to progressively learn the optimal strategy by interacting with the game environment, updating its action-value estimates, and balancing exploration and exploitation to maximize long-term rewards. The more episodes the agent plays, the better it becomes at choosing the best moves, leading to an improved performance in the game.
+In summary, Q-learning allows the Tic-Tac-Toe agent to progressively learn the optimal strategy by
+interacting with the game environment, updating its action-value estimates, and balancing exploration
+and exploitation to maximize long-term rewards. The more episodes the agent plays, the better it becomes
+at choosing the best moves, leading to an improved performance in the game.
 
 
 ## Projects
 
-If you’re familiar with psychology, the term *reinforcement learning* might already sound familiar.
+If you're familiar with psychology, the term *reinforcement learning* might already sound familiar.
 Reinforcement learning (RL) shares its foundational roots with behavioral theories in psychology,
 particularly those established in the early 20th century. RL directly builds on psychological concepts
 such as learning through rewards, trial-and-error processes, and the development of habits.
 
-Even if you haven’t studied psychology, you might use a device, like a fitness tracker, that logs your
-activities and provides “rewards” such as badges or notifications. This makes you an active participant
-in a form of reinforcement learning.
+Even if you haven't studied psychology, you might use a device, like a fitness tracker, that logs your
+activities and provides "rewards" such as badges or notifications. This makes you an active participant
+in a form of reinforcement learning. Your are the one being "trained" and respond to triggers.
 
 
 Here are some possible projects that relate to programming:
