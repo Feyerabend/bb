@@ -55,11 +55,15 @@ reducing bugs and unexpected behavior. These constraints can simulate dependent 
 a value depends on its context or other values, offering a richer framework for expressing program
 invariants.
 
-Hoare logic, introduced by C.A.R. Hoare in 1969, provides a formal system for reasoning about
+Hoare logic, introduced by C.A.R. Hoare in 1969[^hoare], provides a formal system for reasoning about
 *program correctness*. Central to Hoare logic are Hoare triples of the form '{P} C {Q}', where:
-- P is the precondition, a statement about the program’s state before execution.
+- P is the precondition, a statement about the program's state before execution.
 - C is the command or sequence of instructions.
-- Q is the postcondition, a statement about the program’s state after execution.
+- Q is the postcondition, a statement about the program's state after execution.
+
+[^hoare]: Hoare, C.A.R. (1969). "An Axiomatic Basis for Computer Programming"
+*Communications of the ACM* (October 1969) pp. 576-583.
+
 
 These constructs allow developers to verify programs by proving that if P holds before C executes,
 then Q will hold afterward—assuming C is correctly implemented. Hoare logic forms the foundation
@@ -468,7 +472,7 @@ This operation checks if the variable `'x'` is present in memory before proceedi
 - *Precondition* $\( P \)$: `'x'` must be in the memory of the virtual machine.
 - *Postcondition* $\( Q \)$: The state remains unchanged if the precondition holds (no changes to the memory or stack).
 
-{ ‘x’ ∈ vm.memory } CHECK_PRECONDITION( λ vm: ‘x’ ∈ vm.memory ) { True }
+{ ‘x' ∈ vm.memory } CHECK_PRECONDITION( λ vm: ‘x' ∈ vm.memory ) { True }
 
 #### 2. `LOAD x`
 
@@ -477,7 +481,7 @@ This operation loads the value of `'x'` from memory and pushes it onto the stack
 - *Precondition* \( P \): `'x'` must be in the memory of the virtual machine.
 - *Postcondition* \( Q \): After loading, the stack contains the value of `'x'`, and the state of the memory remains unchanged.
 
-{ ‘x’ ∈ vm.memory } LOAD ‘x’ { Stack = [vm.memory[‘x’]], Memory = vm.memory }
+{ ‘x' ∈ vm.memory } LOAD ‘x' { Stack = [vm.memory[‘x']], Memory = vm.memory }
 
 #### 3. `PUSH_LIST`
 
@@ -504,7 +508,7 @@ This operation pops a value from the stack and stores it in memory under the var
 - *Precondition* \( P \): The stack must contain a value that can be stored under the variable `'lst'`.
 - *Postcondition* \( Q \): After the operation, the memory contains the value previously popped from the stack under the variable `'lst'`.
 
-{ Stack[-1] ∈ any type } STORE ‘lst’ { vm.memory[‘lst’] = Stack[-1] }
+{ Stack[-1] ∈ any type } STORE ‘lst' { vm.memory[‘lst'] = Stack[-1] }
 
 #### 6. `LOAD lst`
 
@@ -513,7 +517,7 @@ This operation loads the list stored under the variable `'lst'` from memory and 
 - *Precondition* \( P \): The variable `'lst'` must be present in memory.
 - *Postcondition* \( Q \): After loading, the stack contains the list stored in `'lst'`.
 
-{ ‘lst’ ∈ vm.memory } LOAD ‘lst’ { Stack = [vm.memory[‘lst’]], Memory = vm.memory }
+{ ‘lst' ∈ vm.memory } LOAD ‘lst' { Stack = [vm.memory[‘lst']], Memory = vm.memory }
 
 #### 7. `INDEX`
 
@@ -549,9 +553,9 @@ We can now combine these Hoare triples to represent the full program. The execut
 with the precondition checks and moves through each instruction.
 
 ```text
-{ ‘x’ ∈ vm.memory } CHECK_PRECONDITION( λ vm: ‘x’ ∈ vm.memory )
+{ ‘x' ∈ vm.memory } CHECK_PRECONDITION( λ vm: ‘x' ∈ vm.memory )
 
-{ ‘x’ ∈ vm.memory } LOAD ‘x’ { Stack = [5] }
+{ ‘x' ∈ vm.memory } LOAD ‘x' { Stack = [5] }
 
 { len(vm.stack) > 0 } CHECK_POSTCONDITION( λ vm: len(vm.stack) > 0 )
 
@@ -559,9 +563,9 @@ with the precondition checks and moves through each instruction.
 
 { Stack[-2] ∈ list ∧ Stack[-1] ∈ any type } APPEND { Stack = [5, [5]] }
 
-{ Stack[-1] ∈ list } STORE ‘lst’ { vm.memory[‘lst’] = [5] }
+{ Stack[-1] ∈ list } STORE ‘lst' { vm.memory[‘lst'] = [5] }
 
-{ ‘lst’ ∈ vm.memory } LOAD ‘lst’ { Stack = [[5]] }
+{ ‘lst' ∈ vm.memory } LOAD ‘lst' { Stack = [[5]] }
  
 { Stack[-2] ∈ list ∧ Stack[-1] ∈ int } INDEX { Stack = [5] }
 
