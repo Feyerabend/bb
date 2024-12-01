@@ -584,5 +584,21 @@ the exact behavior of the program is contingent on that value. This is the crux 
 verification: the correctness of the program depends not just on the preconditions but
 also on the state and values of the system (such as the variable x).
 
-What remains is also to make the proof of ceorrectness. Formalisation is not enough.
-Extend you project to include also this.
+
+### Project Extensions
+
+What remains is also to make the proof of correctness. Formalisation is not enough.
+To extend the project and include a proof of correctness, you would need to integrate
+formal methods that validate the behavior of programs against its specification.
+Formal verification goes beyond mere formalisation as above. It rigorously proves that the
+implementation adheres to its defined preconditions, postconditions and invariants
+(stack etc. above), covering all possible states and transitions.
+
+A proven program represents a very high standard of software reliability. It satisfies
+not just the typical expectation of working for the most likely inputs (such that can
+be reflected through tests) but guarantees correctness under all circumstances defined
+by the specification. This level of rigor is especially critical for systems where failure
+is not acceptable, such as aerospace software, medical devices, and financial systems.
+By extending the project to include formal verification, you're elevating it to a level
+of precision and trustworthiness that transcends usual traditional software engineering.
+
