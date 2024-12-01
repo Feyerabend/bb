@@ -125,6 +125,6 @@ In some ways, I anticipated some trends that became mainstream only decades late
 the growth of cognitive science applications in programming education, and the increasing importance of user-friendly
 interfaces and tools all echo ideas from thought I had at the time.
 
-It's a timeless nature of some of these core concepts—-how programming, cognition, and language will always be deeply
-intertwined-—and how ideas that may have seemed unconventional or early on can eventually shape how we understand
+It's a timeless nature of some of these core concepts--how programming, cognition, and language will always be deeply
+intertwined--and how ideas that may have seemed unconventional or early on can eventually shape how we understand
 and interact with technology.
