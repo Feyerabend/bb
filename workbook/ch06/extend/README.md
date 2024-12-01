@@ -579,3 +579,6 @@ The program will work correctly only if x is defined in memory and has a valid v
 the exact behavior of the program is contingent on that value. This is the crux of formal
 verification: the correctness of the program depends not just on the preconditions but
 also on the state and values of the system (such as the variable x).
+
+What remains is also to make the proof of ceorrectness. Formalisation is not enough.
+Extend you project to include also this.
