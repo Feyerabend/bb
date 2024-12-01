@@ -595,8 +595,8 @@ preconditions, postconditions, and invariants (such as those governing the stack
 structures), comprehensively addressing all possible states and transitions.
 
 A program verified in this way achieves an exceptional level of reliability. It meets not
-only the typical expectation of functioning correctly for likely inputs—those scenarios
-that can be covered through testing—but also guarantees correctness under all conditions
+only the typical expectation of functioning correctly for likely inputs--those scenarios
+that can be covered through testing--but also guarantees correctness under all conditions
 defined by the specification. This rigor is particularly vital in domains where failure
 is unacceptable, such as aerospace software, medical devices, or financial systems.
 Extending the project to encompass formal verification elevates its standard of precision

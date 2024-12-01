@@ -7,7 +7,7 @@ various departments and institutions at the university, but nothing came of it. 
 asynchronous with the prevailing trends of the time.
 
 I couldn't find any space that explored programming in the way I understood it, so I started writing
-my own papers and collecting my thoughts—just for myself. I'd finish them, then throw them into a
+my own papers and collecting my thoughts--just for myself. I'd finish them, then throw them into a
 "drawer" (or to be correct: a folder). At one point, I tried to publish some of my ideas, but they
 were heavily misunderstood and distorted when they went to print. It was such a discouraging experience
 that I gave up on the idea of publishing altogether.
@@ -62,7 +62,7 @@ of human engagement, creativity, and discovery.
 
 ### Programming languages, linguistics, and human cognition
 
-Drawing from the Greek *hermeneuein*-—to explain, say, or translate-—the text likens understanding programming
+Drawing from the Greek *hermeneuein*--to explain, say, or translate--the text likens understanding programming
 languages to interpreting a text. This parallels Noam Chomsky's distinction between *competence* (internal
 knowledge of syntax and semantics) and *performance* (practical application), a framework that aligns with
 programming's dual nature: grasping a language's structure and using it to create functional software.
