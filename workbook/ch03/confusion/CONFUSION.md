@@ -1,9 +1,29 @@
 
+
 ## Confusion matrix
+
+If we take a simple example to easy relate, weather forecasting:
+
+- A weather forecast predicts whether it will rain or not.
+- Positive: Rain is predicted.
+- Negative: No rain is predicted.
+
+__Outcomes__
+
+In a matrix we can classify different outcomes:
+
+1.	True Positive (TP): It rains, and rain was predicted.
+	- You bring an umbrella, and it rains.
+2.	False Positive (FP): It does not rain, but rain was predicted.
+	- You bring an umbrella, but the sun is shining.
+3.	True Negative (TN): It does not rain, and no rain was predicted.
+	- You leave your umbrella at home, and the day stays dry.
+4.	False Negative (FN): It rains, but no rain was predicted.
+	- You leave your umbrella at home and you will get wet.
 
 In essence, the confusion matrix serves as a diagnostic tool, revealing where a model
 excels and where it falters, whether due to false positives, false negatives, or other
-errors. This insight enables you to fine-tune, troubleshoot, and optimize the model's
+errors. This insight enables you to fine-tune, troubleshoot, and optimise the model's
 performance, tailoring it to better meet the specific demands of real-world applications.
 By learning such practical and analytical approaches early, you can better understand
 and harness the complexity of machine learning systems.
