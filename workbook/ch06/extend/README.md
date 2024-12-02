@@ -4,24 +4,35 @@
 *Project: Explore how theory can influence practice in an attempt to build programs that
 mirrors TDD but are reflected directly within the programming language (here a VM).*
 
-In this project, we delve into simulating dependent types and constraints within a virtual machine,
-using *preconditions* and *postconditions*, but also *constraints* as core mechanisms. This approach
-draws on a blend of ideas that should inspire your exploration and experimentation.
+This project explores how preconditions, postconditions, and constraints can be integrated
+into a virtual machine, creating a system where correctness criteria are inherent to the
+programming process. The approach draws from a blend of ideas, blending inspiration from
+*Test-Driven Development* (TDD) with principles of logic and formal verification.
 
-The idea or concept here originates from another look at Test-Driven Development (TDD), where
-tests are typically developed as separate entities, scaffolding the main program. This separation (tests
-and what they test) offers significant advantages: tests remain distinct from the program, ensuring
-minimal interference during execution while preserving their utility for validation.
+TDD is a methodology centered on writing tests before developing the corresponding program
+code. These tests, external to the program, serve as scaffolding to guide development and
+validation. This separation of concerns—where tests operate independently of the program
+they evaluate—offers critical advantages, such as maintaining minimal interference during
+execution and providing a robust validation framework.
 
-However, alternative paradigms could be worth exploring. One such approach envisions programs as
-"self-restrictive," incorporating *TDD-like principles* directly within the programming language itself.
-(Actually they are very separate, but could be understood as a "mapping" between them.)
-By embedding constraints and conditions, programs become intrinsically aware of their boundaries and
-correctness criteria, eliminating the dependency on external tests.
+In contrast, preconditions and postconditions, rooted in formal logic and exemplified by
+Hoare logic, represent a different perspective. Instead of relying on external tests,
+they embed correctness specifications directly into the program itself. Preconditions
+define what must hold true before a computation begins, and postconditions define what
+must hold true afterward. Together with constraints, they provide a rigorous framework
+for verifying program correctness at the logical level.
 
-To experiment with this idea, we propose a twofold focus: integrating *constraints* into programming
-languages and implementing *preconditions* and *postconditions*, inspired by Hoare logic. These mechanisms
-enable rigorous enforcement of correctness while maintaining flexibility for dynamic execution.
+While TDD and logic-based correctness are distinct, this project proposes investigating
+how aspects of these paradigms might influence each other. Could principles of TDD,
+such as iterative refinement and continuous validation, inspire new ways to design
+systems with embedded logical correctness? Conversely, could embedding preconditions
+and postconditions provide insights into automating or augmenting the test-writing
+process inherent to TDD?
+
+To explore these questions, the project focuses on two key areas: integrating constraints
+into programming languages and implementing preconditions and postconditions. These
+mechanisms aim to create programs that are not only functionally correct but also capable
+of adapting dynamically within well-defined logical boundaries.
 
 
 ### Suggested Projects
