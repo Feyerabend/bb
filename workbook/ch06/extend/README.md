@@ -1,8 +1,8 @@
 
 ## Experimental Simulation
 
-*Project: Explore how theory can influence practice in an attempt to build programs that
-mirrors TDD but are reflected directly within the programming language (here a VM).*
+*Project: Investigating the Integration of Theory and Practice to Develop Programs
+Reflecting New Paradigms Inspired by TDD and Logical Correctness.*
 
 This project explores how preconditions, postconditions, and constraints can be integrated
 into a virtual machine, creating a system where correctness criteria are inherent to the
@@ -15,7 +15,7 @@ validation. This separation of concerns—where tests operate independently of t
 they evaluate—offers critical advantages, such as maintaining minimal interference during
 execution and providing a robust validation framework.
 
-In contrast, preconditions and postconditions, rooted in formal logic and exemplified by
+In contrast, *preconditions* and *postconditions*, rooted in formal logic and exemplified by
 Hoare logic, represent a different perspective. Instead of relying on external tests,
 they embed correctness specifications directly into the program itself. Preconditions
 define what must hold true before a computation begins, and postconditions define what
@@ -629,3 +629,5 @@ parts of the process, complete automation for complex systems is not yet a reali
 Nonetheless, a great deal can still be achieved by leveraging existing tools and techniques
 to pave the way toward more rigorous software correctness.
 
+A common joke relating to this, suggests that a formal proof might end up containing
+more errors than the program it is intended to verify ..
