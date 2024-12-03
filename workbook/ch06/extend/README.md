@@ -29,6 +29,10 @@ systems with embedded logical correctness? Conversely, could embedding precondit
 and postconditions provide insights into automating or augmenting the test-writing
 process inherent to TDD?
 
+Testing identifies problems and improves reliability but does not guarantee perfection.
+Logic-based methods on the other hand can theoretically ensure correctness but are not
+universally applicable or scalable.
+
 To explore these questions, the project focuses on two key areas: integrating constraints
 into programming languages and implementing preconditions and postconditions. These
 mechanisms aim to create programs that are not only functionally correct but also capable
