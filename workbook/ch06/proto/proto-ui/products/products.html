@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Listing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        .product button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product Listing</h1>
+    <div id="product-list"></div>
+
+    <script>
+        // Example product data
+        const products = [
+            { id: 1, name: "Product A", price: 10, description: "Description of Product A" },
+            { id: 2, name: "Product B", price: 20, description: "Description of Product B" },
+            { id: 3, name: "Product C", price: 30, description: "Description of Product C" },
+        ];
+
+        const productList = document.getElementById("product-list");
+
+        // Render products
+        products.forEach(product => {
+            const productDiv = document.createElement("div");
+            productDiv.className = "product";
+            productDiv.innerHTML = `
+                <h2>${product.name}</h2>
+                <p>Price: $${product.price}</p>
+                <button onclick="viewProduct(${product.id})">View Details</button>
+            `;
+            productList.appendChild(productDiv);
+        });
+
+        // Function to handle view details
+        function viewProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            alert(`Name: ${product.name}\nPrice: $${product.price}\nDescription: ${product.description}`);
+        }
+    </script>
+</body>
+</html>
