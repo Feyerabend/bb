@@ -6,7 +6,7 @@
 * Knuth, D. E. (1974). "Structured Programming with go to Statements." *ACM Computing Surveys*, 6(4), pp.261-301.
 
 
-*Project: Think about optimisation, some historical perspctives, future, and what you can add? Discuss!*
+*Project: Think about optimisation, some historical perspectives, future, and what you can add? Discuss!*
 
 
 ### Premature Optimisation
