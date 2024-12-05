@@ -21,7 +21,7 @@ and maintainability. Optimisation, he argued, should be reserved for critical se
 as bottlenecks through profiling or performance analysis.
 
 This principle does not dismiss the importance of efficiency; rather, it warns that an obsession with
-premature optimization can lead to convoluted code that is harder to maintain or debug. Knuth advocated
+premature optimisation can lead to convoluted code that is harder to maintain or debug. Knuth advocated
 that developers should prioritize good program design, which inherently minimizes inefficiencies, and
 focus on optimisation only after a program is both functional and robust.
 
@@ -55,7 +55,7 @@ structured constructs naturally minimize the need for goto.
 
 ### Cultural Legacy
 
-The debates surrounding goto and optimization have shaped modern programming practices. Dijkstra's advocacy
+The debates surrounding goto and optimisation have shaped modern programming practices. Dijkstra's advocacy
 for structured programming laid the foundation for cleaner, more reliable code, while Knuth's insights
 provided a balanced approach, respecting both practical needs and theoretical principles. Together, their
 perspectives underscore the importance of clarity and judicious decision-making in programming, rejecting
