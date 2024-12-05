@@ -103,3 +103,4 @@ characteristics of the von Neumann architecture:
 Although ENIAC was later modified in 1948 to include some aspects of a stored-program system, this was a
 'retrofit' rather than part of its original design. As such, ENIAC remains firmly categorized as a precursor.
 
+![ENIAC, publ. domain](workbook/ch02/neumann/eniac.png)
