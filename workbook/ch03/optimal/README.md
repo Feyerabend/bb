@@ -1,7 +1,7 @@
 
 ## Optimisation or Optimization
 
-Optimization or optimisation, in British English, in computing refers to the process of improving
+Optimization, or optimisation in British English, in computing refers to the process of improving
 software or hardware to maximize efficiency, speed, or resource usage. This practice dates back to
 the early days of computing, when hardware was expensive and limited in capability. Early optimisation
 efforts focused heavily on reducing memory usage and execution time, as these were critical constraints.
