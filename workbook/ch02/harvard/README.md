@@ -11,7 +11,7 @@ and interact with processing units.
 	- Bottleneck: The shared memory and bus often lead to the so-called 'von Neumann bottleneck,' where the speed of the
       system is limited by the rate at which the processor can fetch data and instructions.
 
-2.	Harvard
+2. Harvard
 	- Separate memories: The Harvard architecture uses *separate* memory spaces for program instructions and data.
 	- Parallel fetching: With distinct buses for instructions and data, the processor can fetch instructions and
       access data simultaneously, leading to potential performance improvements.
@@ -133,7 +133,7 @@ and coding skills.
 	- Simulating control flow (loops, conditionals).
 	- A basic calculator program.
 
-5.	Extend the VM (optional):
+5. Extend the VM (optional):
 	- Stack-based operations. How would a stack operate in this machine?
 	- Conditional jumps (JMP_IF, JMP).
 	- A basic assembler to convert human-readable instructions to the VM’s format.
@@ -174,15 +174,15 @@ Run programs on the VM, identify bugs, and optimise execution (e.g. avoid hardco
 
 #### Learning
 
-1.	Architecture Principles:
+1. Architecture Principles:
 	- Understand the separation of instruction and data memory in Harvard architecture.
 	- Compare the performance issues and complexity differences with von Neumann architecture.
 
-2.	Programming Skills:
+2. Programming Skills:
 	- Translate high-level logic into machine-level operations.
 	- Implement and debug a processor-like system in Python.
 
-3.	Discovery and Insight:
+3. Discovery and Insight:
 	- Realize the constraints of early computing systems (e.g. limited instructions, memory management).
 	- Explore the challenges of memory and instruction handling (e.g. bounds checking, program counter management).
 
@@ -243,18 +243,18 @@ interpreter, these approaches are sufficient to *illustrate* the concept.
 
 #### Internals to Simulate
 
-1.	Parallel Fetching and Execution:
+1. Parallel Fetching and Execution:
 	- One thread or coroutine can simulate the instruction fetch unit (reading instructions).
 	- Another can handle the data access unit (fetching/storing data for the current instruction).
 
-2.	Instruction Pipeline:
+2. Instruction Pipeline:
 	- Implement a basic pipeline with stages such as fetch, decode, and execute, where different
       parts of the pipeline execute in parallel.
 	
-3.	Memory Access Contention:
+3. Memory Access Contention:
 	- Simulate contention between instruction and data buses (optional for advanced scenarios).
 
-4.	Registers and ALU:
+4. Registers and ALU:
 	- Design a simple arithmetic logic unit (ALU) for execution of instructions.
 	- Use separate "registers" for instruction decoding and data handling.
 
@@ -326,10 +326,10 @@ of instruction processing operate concurrently.
 
 #### Pipelining Stages:
 
-1.	Fetch: Retrieve an instruction from instruction memory.
-2.	Decode: Decode the instruction to determine operands and operation.
-3.	Execute: Perform the operation, accessing data memory if needed.
-4.	Write back: Store results in registers or memory.
+1. Fetch: Retrieve an instruction from instruction memory.
+2. Decode: Decode the instruction to determine operands and operation.
+3. Execute: Perform the operation, accessing data memory if needed.
+4. Write back: Store results in registers or memory.
 
 Using Python threads and queues to represent stages.
 
@@ -422,14 +422,14 @@ vm.run()
 
 #### Extensions
 
-1.	Hazards:
+1. Hazards:
 	- Explore data hazards, such as instructions that depend on the results of others.
 	- Simulate pipeline stalls and hazard detection.
 
-2.	Out-of-Order Execution:
+2. Out-of-Order Execution:
 	- Simulate how modern processors execute independent instructions in parallel.
 
-3.	Cache Simulation:
+3. Cache Simulation:
 	- Add caching for data memory and simulate how cache misses affect performance.
 
 By simulating these advanced features, you can deepen your understanding of parallel processing and how it is implemented
