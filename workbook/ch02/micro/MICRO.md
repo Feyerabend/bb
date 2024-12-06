@@ -50,16 +50,16 @@ The relationship can be thought of as:
 ### Historical Perspective
 
 1. In the early days there was no Microcode:
-- In the 1940s and 50s, early computers like the ENIAC executed hardwired instructions directly.
-- Changes in functionality required rewiring the machine.
+    - In the 1940s and 50s, early computers like the ENIAC executed hardwired instructions directly.
+    - Changes in functionality required rewiring the machine.
 
 2. Microcode introduction (1950s–60s):
-- IBM introduced microcode in its System/360 series, allowing multiple ISAs to be implemented on the same hardware.
-- Maurice Wilkes is credited with pioneering the concept of microprogramming.
+    - IBM introduced microcode in its System/360 series, allowing multiple ISAs to be implemented on the same hardware.
+    - Maurice Wilkes is credited with pioneering the concept of microprogramming.
 
 3. Modern use:
-- Today, CPUs from Intel and AMD use microcode for managing complex instructions, debugging, and optimisation.
-- Microcode remains crucial in *backward compatibility*, enabling modern processors to execute older machine code.
+    - Today, CPUs from Intel and AMD use microcode for managing complex instructions, debugging, and optimisation.
+    - Microcode remains crucial in *backward compatibility*, enabling modern processors to execute older machine code.
 
 You might notice here that CPUs such as ARM is not mentioned. Microcode is not always needed, and its use depends
 largely on the type of CPU architecture. Reduced Instruction Set Computing (RISC) processors generally do *not*
