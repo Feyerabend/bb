@@ -98,7 +98,21 @@ another vector graphics format. The PostScript implementation I have to leave to
 
 And here you enter!
 
-Could you improve on the algorithm that fills the paths? Can you implement stroke so it also make lines thicker than 1?
-Could you improve on the comunication with the client? What does the client need? More documentation? What kind?
-How should the documentation for the program look like? More of conditions, iteration variants, other control
-structures should be implemented, and so on.
+
+### Things to consider ..
+
+We could think of immediate things, like feature enhancements. Could you improve on the algorithm that fills the paths?
+It doesn't look any good for the moment.
+
+More of conditions, iteration variants, other control structures should be implemented, and so on. which in this case
+could be considered as features ..
+
+Can you implement stroke so it also make lines thicker than 1? What are the requirements from the client? Communicate!
+
+Could you improve on the communication itself with the client? What does the client need? More documentation?
+What kind of documentation? How should the documentation for the program look like? It is still unclear ..
+
+How would you consider your progress? What is worth keeping from the session with the client? Separate your prototypes
+from you production code .. later on in the process. Prototypes have been really the only ones so far in the code, even
+the "new" design could be considered as prototype--testing ideas, but so far not settled the code as permanent.
+
