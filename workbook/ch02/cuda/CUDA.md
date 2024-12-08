@@ -83,6 +83,7 @@ thread_idx = block_id * self.threads_per_block + thread_id
 This allows threads to be assigned different pieces of work, which is essential in achieving
 parallelism.
 
+Compare: [CUDA Sample](https://github.com/NVIDIA/cuda-samples/blob/master/Samples/0_Introduction/vectorAdd/vectorAdd.cu)
 
 ### How the Program Simulates CUDA Execution
 
@@ -101,18 +102,18 @@ they emulate the process of launching parallel computations.
 
 ### Why Use CUDA and GPUs?
 
-1.	Parallelism:
+1. Parallelism:
 The main advantage of using CUDA and GPUs is the ability to process many tasks simultaneously.
 GPUs have thousands of cores, each capable of executing a thread independently. This is ideal
 for tasks that can be divided into smaller, parallel sub-tasks, such as matrix multiplication,
 image processing, simulations, or deep learning.
 
-2.	Speed:
+2. Speed:
 For certain types of workloads, GPUs can be orders of magnitude faster than CPUs. This is due
 to the massive parallelism in GPUs. For example, scientific simulations that involve large matrix
 operations can run much faster on a GPU than on a CPU.
 
-3.	Efficiency in Large-Scale Data Processing:
+3. Efficiency in Large-Scale Data Processing:
 Applications that deal with large amounts of data, such as training neural networks or processing
 large datasets (e.g., in physics simulations), can benefit greatly from CUDA. A single GPU can
 handle thousands of parallel threads, making it suitable for workloads that require significant
