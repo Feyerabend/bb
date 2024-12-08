@@ -83,7 +83,6 @@ thread_idx = block_id * self.threads_per_block + thread_id
 This allows threads to be assigned different pieces of work, which is essential in achieving
 parallelism.
 
-Compare: [CUDA Sample](https://github.com/NVIDIA/cuda-samples/blob/master/Samples/0_Introduction/vectorAdd/vectorAdd.cu)
 
 ### How the Program Simulates CUDA Execution
 
@@ -98,6 +97,8 @@ kernels are typically written in C and executed by many threads in parallel.
 * Parallel Execution: The launch_kernel method spawns multiple threads in Python, with each
 thread executing the kernel on a piece of data. While Python threads are not real GPU threads,
 they emulate the process of launching parallel computations.
+
+Compare: [CUDA Sample](https://github.com/NVIDIA/cuda-samples/blob/master/Samples/0_Introduction/vectorAdd/vectorAdd.cu)
 
 
 ### Why Use CUDA and GPUs?
