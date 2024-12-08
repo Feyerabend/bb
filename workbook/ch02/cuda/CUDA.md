@@ -98,7 +98,7 @@ kernels are typically written in C and executed by many threads in parallel.
 thread executing the kernel on a piece of data. While Python threads are not real GPU threads,
 they emulate the process of launching parallel computations.
 
-Compare: [CUDA Sample](https://github.com/NVIDIA/cuda-samples/blob/master/Samples/0_Introduction/vectorAdd/vectorAdd.cu)
+Compare: [CUDA Sample](https://github.com/NVIDIA/cuda-samples/blob/master/Samples/0_Introduction/vectorAdd/vectorAdd.cu).
 
 
 ### Why Use CUDA and GPUs?
