@@ -97,3 +97,8 @@ Developer: Sure, here is a rendering of Bill Clinton, for now as I haven't integ
 another vector graphics format. The PostScript implementation I have to leave to my students ..
 
 And here you enter!
+
+Could you improve on the algorithm that fills the paths? Can you implement stroke so it also make lines thicker than 1?
+Could you improve on the comunication with the client? What does the client need? More documentation? What kind?
+How should the documentation for the program look like? More of conditions, iteration variants, other control
+structures should be implemented, and so on.
