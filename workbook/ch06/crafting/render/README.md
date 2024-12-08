@@ -101,18 +101,21 @@ And here you enter!
 
 ### Things to consider ..
 
-We could think of immediate things, like feature enhancements. Could you improve on the algorithm that fills the paths?
-It doesn't look any good for the moment.
+We should start by considering immediate improvements, such as feature enhancements. For example, can you
+improve the algorithm that generates the paths? Right now, it doesn’t look good at all.
 
-More of conditions, iteration variants, other control structures should be implemented, and so on. which in this case
-could be considered as features ..
+There are also conditions, iteration variants, and other control structures that need to be implemented.
+These could be seen as new features in this context.
 
-Can you implement stroke so it also make lines thicker than 1? What are the requirements from the client? Communicate!
+Additionally, could you extend the stroke feature to allow for lines thicker than 1 pixel? It's also crucial
+to clarify the client's requirements--communication is key here! Did we forgot something important?
 
-Could you improve on the communication itself with the client? What does the client need? More documentation?
-What kind of documentation? How should the documentation for the program look like? It is still unclear ..
+On that note, can you improve the communication with the client? Do they need more documentation? What kind
+of documentation would be most helpful to them? The requirements are still unclear, and we need to define
+what the program's documentation should look like.
 
-How would you consider your progress? What is worth keeping from the session with the client? Separate your prototypes
-from you production code .. later on in the process. Prototypes have been really the only ones so far in the code, even
-the "new" design could be considered as prototype--testing ideas, but so far not settled the code as permanent.
-
+How would you assess your progress so far? What elements from the session with the client are worth keeping?
+Make sure to separate prototypes from production code as the process moves forward. Up to now, the code has
+been more prototype-oriented, even the "new" design, which has mainly been about testing ideas. It hasn't
+yet settled into something final. Remember: don't get too attached to the code. The ideas and concepts behind
+it are what truly matter and should be preserved.
