@@ -1,6 +1,6 @@
 
 *Project: Explore non-conventional execution models outside of von Neumann
-or Harvard, historiccally or currently, and look at their inner workings.*
+or Harvard, historically or currently, and look at their inner workings.*
 
 
 ## Overview of the Program 'cuda.py'
