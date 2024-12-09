@@ -7,7 +7,7 @@ direct code references from the text.
 The code examples in this book are written in standard Python (version 3), ANSI C, MicroPython
 for the Raspberry Pi Pico, and sometimes JavaScript compatible with most modern web browsers.
 To help readers grasp core programming principles, dependencies have been kept to a minimum.
-Except where necessary--such as for specialized hardware interfaces like an LCD driver--no
+Except where necessary--such as for specialised hardware interfaces like an LCD driver--no
 external libraries are used, or at least kept to a minimum. This approach encourages a focus
 on foundational coding concepts without reliance on third-party libraries.
 
@@ -26,7 +26,7 @@ may introduce unnecessary dependencies.
 
 In the real world, it's worth noting that writing custom solutions for everything can
 sometimes 'reinvent the wheel' and increase development time, especially for common tasks
-where libraries are standardized, robust, and highly optimized. Established libraries also
+where libraries are standardised, robust, and highly optimised. Established libraries also
 tend to be well-documented and peer-reviewed, meaning they've been vetted for reliability
 and bugs. The right balance often means selectively using trusted, essential
 libraries--especially for complex tasks that are beyond the immediate scope of this
@@ -38,7 +38,7 @@ book--while still tackle more straightforward implementations.
 The purpose of these folders containing project suggestions is to facilitate a deep
 and engaging exploration of computing, programming and some computer science concepts.
 By leveraging the guidance provided by large language models (LLMs), you can dive
-into a wide range of topics and build a personalized understanding of complex subjects.
+into a wide range of topics and build a personalised understanding of complex subjects.
 When you encounter a concept or topic that isn't immediately clear, these resources
 encourage you to explore it more thoroughly, gradually enhancing both your knowledge
 and problem-solving abilities. This process empowers you to develop a foundational
@@ -48,7 +48,7 @@ The project suggestions span a range of difficulty levels, from introductory to
 advanced. Depending on your experience, the time required to complete each project
 may vary significantly. The final output can also vary based on your goals--whether
 you opt for a comprehensive report or a straightforward description of the code's
-functionality. While LLMs provide considerable support, truly internalizing your
+functionality. While LLMs provide considerable support, truly internalising your
 learning may call for unique approaches or creative problem-solving methods to
 solidify your understanding.
 
@@ -60,7 +60,7 @@ different approaches often reveals new insights and clarifies complex ideas.
 A teacher can use LLMs effectively to both support and assess students' learning
 in various ways. Here's how:
 
-1. *Personalized guidance*: Teachers can set up LLM-guided tasks that allow students
+1. *Personalised guidance*: Teachers can set up LLM-guided tasks that allow students
    to explore topics individually, adjusting the level of guidance based on each
    student's progress. By assigning projects that require iterative improvement,
    teachers can assess students' ability to independently deepen their understanding,
@@ -80,7 +80,7 @@ in various ways. Here's how:
 
 4. *Project-based evaluation*: Teachers can design (or redisng) projects where students
    are graded on both their final product and the insights they share about their
-   process. This can include decisions on code structure, optimizations, or even
+   process. This can include decisions on code structure, optimisations, or even
    explanations of what the code does and why. The LLM can serve as a coding assistant,
    but students will need to demonstrate deeper understanding by articulating
    *the reasoning behind* their choices.
@@ -88,7 +88,7 @@ in various ways. Here's how:
 5. *Peer collaboration and reflection*: Teachers can encourage group work where students
    use the LLM collaboratively, asking them to reflect on what insights came from each
    team member versus the LLM. Evaluating these reflections can reveal how well students
-   can integrate and synthesize information from different sources, including AI tools
+   can integrate and synthesise information from different sources, including AI tools
    and peer discussions.
 
 
@@ -103,10 +103,10 @@ When using LLMs as part of the learning environment, teachers should take an ada
 tailoring project assignments based on each student's prior knowledge and skills. The goal is to find
 a balance where projects are neither too simple nor too advanced, offering enough challenge to foster
 growth without causing frustration or disengagement. This type of project-based guidance diverges
-from traditional instruction that relies heavily on standardized exercises or uniform tests.
+from traditional instruction that relies heavily on standardised exercises or uniform tests.
 
 In this model, teachers act more as *mentors*, setting up projects that encourage critical thinking,
-creativity, and independent learning. Rather than simply assessing students' ability to memorize facts
+creativity, and independent learning. Rather than simply assessing students' ability to memorise facts
 or solve pre-defined problems, the emphasis shifts toward evaluating how well students can apply
 their knowledge to real-world scenarios, often with open-ended solutions. This encourages students
 to explore topics more deeply, experiment with different approaches, and develop unique solutions,
@@ -114,6 +114,6 @@ all with the support of LLMs as interactive resources rather than mere answer-pr
 
 Through this adaptive project management, teachers can observe and assess students' problem-solving
 skills, persistence, and ability to integrate new information. This approach also provides a richer, more
-individualized learning experience for students, as they can leverage LLMs to clarify concepts, brainstorm
+individualised learning experience for students, as they can leverage LLMs to clarify concepts, brainstorm
 ideas, and seek guidance on specific questions, all tailored to the level of complexity that best suits
 their current stage of learning.
