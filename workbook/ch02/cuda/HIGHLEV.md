@@ -153,7 +153,7 @@ neural network workloads. This trend points to a future where languages or frame
 are *tightly coupled* with specialised hardware to maximise performance.
 
 FPGAs (Field-Programmable Gate Arrays) offer another promising direction. Unlike 
-ixed-function chips, FPGAs can be reprogrammed to implement hardware acceleration
+dedicated chips, FPGAs can be reprogrammed to implement hardware acceleration
 for specific high-level languages or frameworks. This flexibility bridges the gap
 between general-purpose processors and custom-designed hardware. High-level parallel
 programming languages like *OpenCL*, *CUDA*, and even domain-specific languages can be
