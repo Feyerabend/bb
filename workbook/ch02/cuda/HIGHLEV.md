@@ -163,5 +163,5 @@ designing dedicated chips.
 *Project/Exercise: Explore potential future integrations of hardware and software
 through the lens of programming languages, frameworks, or newly evolved languages
 tailored for hardware acceleration, such as CUDA. Discuss how these advancements
-could shape the development of hardware-optimized computing and drive innovation
+could shape the development of hardware-optimised computing and drive innovation
 in software-hardware synergy.*
