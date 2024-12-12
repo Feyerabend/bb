@@ -67,7 +67,7 @@ In particular, the "winding" and "evenodd" rules are essential for determining h
   If the count is odd, the area is filled; if the count is even, it is not.
 
 Understanding these rules is crucial for ensuring that shapes are filled correctly, particularly when paths overlap
-or self-intersect. Both are used in PostScript, as well as SVG. See FILL.md for more information.
+or self-intersect. Both are used in PostScript, as well as SVG. See [FILL.md](./FILL.md) for more information.
 
 
 ### Second Attempt at Rendering
