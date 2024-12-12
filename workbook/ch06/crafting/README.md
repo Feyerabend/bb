@@ -1,5 +1,5 @@
 
-__Here’s a fictional dialogue that sets the stage for developing a PostScript-like interpreter.
+__Here's a fictional dialogue that sets the stage for developing a PostScript-like interpreter.
 This story provides context for students (you) to understand client-developer interactions and
 problem-solving in software projects.__
 
