@@ -30,6 +30,15 @@ The parsing table might look like this for the grammar:
 | 3     |           | Shift 4   | Reduce 2     |           |
 | 4     | Reduce 2  |           |              |           |
 
+
+While both a parsing table and what we have already studied, a state machine involve states
+and transitions (often based on input symbols), a parsing table is more specialized because
+it includes actions for both shifting states and reducing based on grammar rules. A state
+machine focuses on state transitions and typically doesn't involve grammar application or
+reductions. Therefore, they are not the same, even though they share some structural
+similarities.
+
+
 ### Parsing Process
 
 We will parse the input `aabb$` (the `$` symbol marks the end of input).
