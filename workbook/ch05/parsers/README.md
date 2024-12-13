@@ -8,7 +8,9 @@ transformation within the grammar.
 
 The general form of a production rule is:
 
-> A → α
+```text
+   A → α
+```
 
 Here, `A` is a non-terminal symbol (representing a syntactic category), and `α` is a sequence of terminals
 (actual symbols of the language) and/or non-terminals (further rules). The left-hand side (`A`) indicates
