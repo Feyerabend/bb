@@ -1,14 +1,30 @@
 
 ## Parsers Overview
 
-Production rules are the formal descriptions in a grammar that define how symbols in a language can be generated.
-Each rule specifies how a non-terminal symbol can be replaced with a sequence of terminal and/or non-terminal symbols.
-They follow the form:
+Production rules are the formal constructs in a grammar that define the syntactic structure of a language.
+They specify how symbols in the language can be generated or replaced during parsing. Each production rule
+maps a non-terminal symbol to a sequence of terminal and/or non-terminal symbols, describing a valid
+transformation within the grammar.
+
+The general form of a production rule is:
 
 > A → α
 
-where `A` is a non-terminal, and `α` is a sequence of terminals and non-terminals. These rules collectively define
-the structure and syntax of a language.
+Here, `A` is a non-terminal symbol (representing a syntactic category), and `α` is a sequence of terminals
+(actual symbols of the language) and/or non-terminals (further rules). The left-hand side (`A`) indicates
+what is being defined, and the right-hand side (`α`) specifies how it can be expanded.
+
+For example, in a grammar for simple arithmetic expressions:
+    
+>    Expr → Expr + Term
+>    Expr → Term
+>    Term → Number
+>    Number → 0 | 1 | 2 | ... | 9
+
+These rules define how complex expressions like `3 + 5` can be decomposed into their basic components
+(numbers, operators) and parsed accordingly.
+
+
 
 ### Top-Down Parsers
 
