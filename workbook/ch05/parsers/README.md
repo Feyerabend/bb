@@ -9,7 +9,7 @@ transformation within the grammar.
 The general form of a production rule is:
 
 ```text
-   A → α
+    A → α
 ```
 
 Here, `A` is a non-terminal symbol (representing a syntactic category), and `α` is a sequence of terminals
@@ -96,7 +96,7 @@ Focusing on LL(1), Recursive Descent, and Combinatorial Parsing
 	- Implements each grammar rule as a function, where non-terminals are recursive calls.
 	- Parsing decisions are guided by lookahead (one token ahead in LL(1)).
 	- Direct and clear for grammar constructs, making it excellent for prototyping parsers.
-	- Example: For grammar $S \to aA ,  A \to b$ you might write:
+	- Example: For grammar $S \to aA ,   A \to b$ you might write:
 
 ```python
 def parse_S():
@@ -112,6 +112,7 @@ def parse_A():
 	- Allows direct representation of grammar rules as high-level abstractions, improving readability and maintainability.
 	- Often uses monads (in functional languages) to chain parsing computations.
 	- Example in Haskell:
+
 ```haskell
 expr = do { x <- term; char '+'; y <- term; return (x + y) }
 ```
