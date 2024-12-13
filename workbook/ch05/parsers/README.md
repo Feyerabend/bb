@@ -15,11 +15,13 @@ Here, `A` is a non-terminal symbol (representing a syntactic category), and `α`
 what is being defined, and the right-hand side (`α`) specifies how it can be expanded.
 
 For example, in a grammar for simple arithmetic expressions:
-    
->    Expr → Expr + Term
->    Expr → Term
->    Term → Number
->    Number → 0 | 1 | 2 | ... | 9
+
+```text
+    Expr → Expr + Term
+    Expr → Term
+    Term → Number
+    Number → 0 | 1 | 2 | ... | 9
+```
 
 These rules define how complex expressions like `3 + 5` can be decomposed into their basic components
 (numbers, operators) and parsed accordingly.
