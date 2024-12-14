@@ -93,7 +93,7 @@ class SVGPathParser:
         # Add whitespace between commands and arguments if there is none
         path_data = re.sub(r'([a-zA-Z])(?=\d)', r'\1 ', path_data)  # Command followed directly by a digit
         path_data = re.sub(r'([a-zA-Z])(?=[a-zA-Z])', r'\1 ', path_data)  # Command followed by another command
-        
+
         commands = []
         tokens = path_data.replace(',', ' ').split()
         i = 0
