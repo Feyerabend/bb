@@ -64,6 +64,10 @@ class Rasterizer:
                     for x in range(x_start, x_end + 1):
                         self.canvas[y][x] = color_rgb
 
+            # TBD
+            # This is UNTESTED, but will the client need this?
+            # Maybe the documents have other rules? which ones?
+            # We must have the documents to understand further ..
             elif fill_rule == "winding":
                 winding_count = 0
                 for x in range(self.width):
