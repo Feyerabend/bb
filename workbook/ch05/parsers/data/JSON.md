@@ -5,9 +5,9 @@
 
 This parser exemplifies recursive descent parsing, where each non-terminal in the JSON
 grammar corresponds to a dedicated parsing function:
-- json_parse_object handles JSON objects.
-- json_parse_array handles arrays.
-- json_parse_string handles strings.
+- `json_parse_object` handles JSON objects.
+- `json_parse_array` handles arrays.
+- `json_parse_string` handles strings.
 - And so on for numbers, booleans, and null values.
 
 In parsing theory, recursive descent parsers are a top-down approach to parsing, starting
@@ -19,11 +19,11 @@ from the root of the grammar (in this case, a JSON value) and decomposing it int
 JSON can be described with a context-free grammar (CFG). The parser aligns with the grammar as follows:
 
 ```ebnf
-value ::= object | array | string | number | "true" | "false" | "null"
-object ::= "{" (string ":" value ("," string ":" value)*)? "}"
-array ::= "[" (value ("," value)*)? "]"
-string ::= "\"" .* "\""
-number ::= [+-]?([0-9]+(.[0-9]+)?) ([eE][+-]?[0-9]+)?
+    value ::= object | array | string | number | "true" | "false" | "null"
+    object ::= "{" (string ":" value ("," string ":" value)*)? "}"
+    array ::= "[" (value ("," value)*)? "]"
+    string ::= "\"" .* "\""
+    number ::= [+-]?([0-9]+(.[0-9]+)?) ([eE][+-]?[0-9]+)?
 ```
 
 The parser implements this grammar through its structure, functions, and control flow. For instance:
