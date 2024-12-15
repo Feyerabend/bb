@@ -2,7 +2,7 @@
 ## Pushdown Automaton
 
 A PDA can recognize context-free languages. Here's a simple PDA to recognize
-the language $L = \{ a^n b^n \mid n \geq 0 \}$  (equal numbers of 'a' followed by 'b').
+the language $$ L = \{ a^n b^n \mid n \geq 0 \} $$  (equal numbers of 'a' followed by 'b').
 The stack grows with each a and shrinks with each b.
 
 ```python
