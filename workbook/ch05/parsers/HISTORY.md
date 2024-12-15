@@ -1,14 +1,14 @@
 
 ## Some Historical Remarks on Parsing
 
-Parsing in computing refers to the process of analyzing a sequence of symbols, often in the form of text or code,
+Parsing in computing refers to the process of analysing a sequence of symbols, often in the form of text or code,
 to determine its grammatical structure based on formal rules. The history of parsing is deeply rooted in the development
 of formal languages and computation, with key milestones that shaped its role in programming and computer science.
 
 The origins of parsing trace back to the 1940s and 1950s, during the early days of computing when the foundations of
 formal languages were laid by mathematicians such as Alan Turing and Noam Chomsky. Turing’s work on computation and
 his introduction of the Turing machine played a critical role in the development of automata theory, which forms
-the basis for parsing. In the 1950s, Chomsky introduced his hierarchy of grammars, categorizing them into regular,
+the basis for parsing. In the 1950s, Chomsky introduced his hierarchy of grammars, categorising them into regular,
 context-free, context-sensitive, and recursively enumerable types. These classifications continue to influence
 parsing techniques used today.
 
@@ -19,7 +19,7 @@ to the development of more sophisticated parsing methods. The concept of context
 a significant step forward, enabling more structured and automated parsing of code. These grammars could be processed
 by pushdown automata, a theoretical machine model that handles context-free languages efficiently.
 
-During the 1960s and 1970s, the rise of compilers led to more formalized parsing methods. The development of recursive
+During the 1960s and 1970s, the rise of compilers led to more formalised parsing methods. The development of recursive
 descent parsers and top-down parsing methods like LL parsers allowed for simple context-free grammars to be handled
 efficiently. However, it was the introduction of LR parsers in the 1970s by Donald Knuth that marked a major advancement
 in the field. LR parsers, which read input from left to right and produce a rightmost derivation, made it possible to
@@ -42,5 +42,5 @@ in integrated development environments (IDEs).
 Today, parsing is no longer limited to programming languages and compilers. It plays a crucial role in web development,
 data processing, and many other domains that involve structured text. From parsing source code and configuration files
 to processing JSON data and markup languages, parsing remains a foundational component of modern computing. Its history
-reflects the ongoing efforts to automate and optimize the way machines interpret human-readable information.
+reflects the ongoing efforts to automate and optimise the way machines interpret human-readable information.
 
