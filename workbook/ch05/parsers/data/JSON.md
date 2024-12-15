@@ -72,19 +72,19 @@ efficiency for practical applications.
 
 #### Potential Improvements
 
-1. Lexer Integration:
+1. *Lexer Integration*:
    Introducing a lexer to tokenize JSON into recognizable units (STRING, NUMBER, COMMA, etc.)
    would decouple lexical and syntactic concerns, improving modularity.
 
-2. Grammar Validation:
+2. *Grammar Validation*:
    The parser assumes JSON input adheres to the grammar. Incorporating grammar validation would
    help ensure all constructs are properly formed.
 
-3. Error Recovery:
+3. *Error Recovery*:
    Current error handling stops parsing upon encountering an invalid structure. Implementing
    strategies like synchronizing at the next valid token (e.g. '}' or ']') would enhance robustness.
 
-4. Advanced Tree Representation:
+4. *Advanced Tree Representation*:
    Enhance the AST to include line/column information for each node, useful for debugging
    and error reporting.
 
