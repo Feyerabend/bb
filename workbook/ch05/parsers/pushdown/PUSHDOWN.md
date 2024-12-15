@@ -48,7 +48,7 @@ print(pda.accepts("aabb"))    # True, valid balanced string
 print(pda.accepts("aaabbb"))  # True, valid balanced string
 print(pda.accepts("abab"))    # False, invalid order
 print(pda.accepts("aab"))     # False, unbalanced string
-print(pda.accepts("baab"))     # False, invalid order
+print(pda.accepts("baab"))    # False, invalid order
 ```
 
 
