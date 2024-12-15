@@ -88,12 +88,12 @@ efficiency for practical applications.
    Enhance the AST to include line/column information for each node, useful for debugging
    and error reporting.
 
-*ProjectExercise: Amend the parser with one or several of these suggestions.*
+*Project/Exercise: Amend the parser with one or several of these suggestions.*
 
 
 ### Summary
 
-This JSON parser is a practical embodiment of parsing theory concepts, particularly recursive descent parsing.
+This JSON parser is a practical embodiment of parsing theory concepts, particularly *recursive descent parsing*.
 It adheres to the JSON grammar, constructs an AST-like structure, and demonstrates efficient parsing with basic
 error handling. Enhancements informed by theoretical principles could make it more robust and extensible,
 bridging the gap between theory and practical implementation.
