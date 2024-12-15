@@ -67,7 +67,7 @@ recovery strategies (e.g. skipping malformed sections).
 ### 6. Efficiency
 
 Parsing is performed in a single pass with recursive calls, resulting in linear time complexity relative
-to the size of the JSON input ($O(n)$), assuming well-formed JSON. Parsing theory often considers such
+to the size of the JSON input ($\`O(n)\`$), assuming well-formed JSON. Parsing theory often considers such
 efficiency for practical applications.
 
 #### Potential Improvements
