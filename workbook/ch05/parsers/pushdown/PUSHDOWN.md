@@ -80,14 +80,23 @@ A PDA has:
 ### How Does a PDA Work?
 
 a. The PDA reads an input string one symbol at a time.
+
 b. For each symbol:
+
     1. It checks the current state.
+
     2. It checks the symbol on top of the stack.
+
     3. It decides:
+
 	    - Whether to push, pop, or leave the stack unchanged.
+
 	    - Which state to transition to next.
+
 	    - At the end, the input is accepted if:
+
     	    - The PDA is in an accepting state and/or
+
 	        - The stack is empty (depending on the PDA's design).
 
 
