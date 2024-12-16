@@ -71,9 +71,69 @@ simulating human intelligence. While neural network-driven approaches have shift
 of AI research, the foundational work on parsing laid the groundwork for the sophisticated
 language technologies we see today.
 
-*Project: Examine some history of Natural Language Processing, and what the corresponding
-field is today. How much of human intelligence is embeded in human language? Go deeper
-into the philosophical questions of AI and language, human or artificial ..*
+
+### Projects
+
+*Project 1: Forecast how language understanding in AI might evolve beyond neural models. Explore topics
+like few-shot learning, multimodal AI (language and vision), or grounded language understanding
+(linking text to the real world).*
+
+Deliverable: A speculative research paper or presentation predicting the future trajectory of NLP.
+
+*Project 2: Explore how AI has transitioned from rule-based parsing to neural language models.
+Compare early AI systems like SHRDLU or ELIZA with modern LLMs (e.g., GPT or BERT). Discuss
+the implications of this shift for understanding human language.*
+
+Deliverable: A report or presentation analyzing the strengths and weaknesses of symbolic versus neural approaches. Include examples of both types of systems and evaluate their capabilities.
+
+*Project 3: Investigate the challenge of syntactic and semantic ambiguity in natural language.
+Implement a simple parser using context-free grammars to showcase issues with ambiguity,
+then compare it with how modern LLMs handle ambiguous sentences.*
+
+Deliverable: A prototype parser and an analysis of how ambiguity is resolved in traditional parsing versus neural models.
+
+*Project 4: Delve into philosophical questions: Do LLMs truly “understand” language, or are
+they sophisticated pattern-matchers? Examine theories of meaning, like Wittgenstein's
+"language games" or Searle's "Chinese Room," in the context of AI’s language capabilities.*
+
+Deliverable: An essay or multimedia project exploring the nature of understanding in human and artificial intelligence.
+
+*Project 5: Study how probabilistic methods like probabilistic context-free grammars (PCFGs)
+influenced AI's handling of language. Create a PCFG-based parser and evaluate its effectiveness
+compared to rule-based and neural approaches.*
+
+Deliverable: A working PCFG parser and a comparative analysis of its efficiency and accuracy.
+
+
+*Project 6: Design a hybrid AI system that integrates a symbolic parser with a neural network.
+For example, use parsing to extract syntactic structure, then feed the structure into a neural
+model for semantic interpretation or text generation (e.g. GPT2).*
+
+Deliverable: A prototype hybrid system and a discussion on the benefits of combining symbolic and neural methods.
+
+*Project 7: Investigate how parsing can enhance the interpretability of LLMs. For instance,
+visualise how a sentence is parsed syntactically and semantically to explain how a model
+generates a response.*
+
+Deliverable: An interactive tool or visualization that demonstrates the role of parsing in improving explainability.
+
+*Project 8: Compare how parsing techniques handle languages with vastly different structures
+(e.g. English vs. Chinese). Highlight the limitations of traditional parsers and evaluate
+how neural models overcome these challenges.*
+
+Deliverable: A comparative study or tool that demonstrates parsing for two languages with different syntactic rules.
+
+
+*Project 9: Examine how biases in training data affect both traditional and neural parsing systems.
+Investigate real-world cases where incorrect parsing led to biased or unfair AI decisions.*
+
+Deliverable: A report on ethical issues in language parsing and recommendations for mitigating bias.
+
+
+*Project 10. Develop a basic natural language interaction system using a parser and symbolic reasoning 
+to simulate understanding. Create a small environment where users can issue commands (e.g., move a block, draw a shape).*
+
+Deliverable: A working system and a reflection on the challenges of building rule-based language systems.
 
 
 ### Earley Parser
