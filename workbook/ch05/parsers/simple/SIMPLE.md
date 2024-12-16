@@ -41,7 +41,7 @@ Production rules define the transformations in a grammar. Each rule specifies ho
 can be replaced by a sequence of other non-terminals or terminals.
 
 For example:
-- Expr → Term ("+" Term | "-" Term)* means an expression can be:
+- `Expr → Term ("+" Term | "-" Term)*` means an expression can be:
 - A term.
 - A term followed by one or more additions or subtractions of other terms.
 
@@ -60,12 +60,13 @@ Both parse trees and ASTs are derived from the grammar and production rules, but
 	- It includes all details of the grammar, even those that might be redundant for evaluation or transformation.
 	- Example:
         - For 3 + 2 * (4 - 1), a parse tree based on the grammar would explicitly show:
-	    - Expr expanded to Term + Term.
-	    - Term expanded to Factor * Factor, and so on.
+    	    - Expr expanded to Term + Term.
+	        - Term expanded to Factor * Factor, and so on.
+            - E.g. (Expr (Term Num(3)) + (Term (Factor ...)))
 
 2. *AST*:
-	- An abstract syntax tree is a simplified representation of the structure of the input.
-	- It eliminates unnecessary nodes (like non-terminals for Expr, Term, etc.) and focuses on the core logical structure.
+	- An abstract syntax tree is a *simplified* representation of the structure of the input.
+	- It eliminates *unnecessary nodes* (like non-terminals for Expr, Term, etc.) and focuses on the core logical structure.
 	- Example:
         - For 3 + 2 * (4 - 1), the AST might look like:
 
