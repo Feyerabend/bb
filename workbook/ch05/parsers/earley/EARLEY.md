@@ -1,5 +1,5 @@
 
-## Natural Laguage and Parsing
+## Natural Language and Parsing
 
 Before the advent of Large Language Models (LLMs) and the widespread adoption of neural networks, natural
 language parsing was often considered a fundamental part of artificial intelligence (AI) research. This
