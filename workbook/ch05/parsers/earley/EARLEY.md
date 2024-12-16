@@ -140,9 +140,11 @@ Deliverable: A working system and a reflection on the challenges of building rul
 
 * Earley, J. (1970). An efficient context-free parsing algorithm. *Communications of the ACM*, 13, p.94-102.
 
-An Earley parser is a type of top-down parsing algorithm that works well for parsing context-free grammars
+An Earley[^explained] parser is a type of top-down parsing algorithm that works well for parsing context-free grammars
 and it is particularly useful when dealing with ambiguous grammars. While it’s typically used in more complex
 cases like natural language processing or parsing expressions.
+
+[^explained]: A thorugh examination of Earley parsers: [https://loup-vaillant.fr/tutorials/earley-parsing/](https://loup-vaillant.fr/tutorials/earley-parsing/)
 
 The Earley parser is named after its creator, Jay Earley, who introduced it in 1970 as part of his doctoral research.
 Earley's work was focused on developing a general parsing algorithm for context-free grammars (CFGs), with the goal
