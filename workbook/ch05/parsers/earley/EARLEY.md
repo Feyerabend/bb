@@ -74,13 +74,13 @@ language technologies we see today.
 
 ### Projects
 
-*Project 1: Forecast how language understanding in AI might evolve beyond neural models. Explore topics
+- *Project 1: Forecast how language understanding in AI might evolve beyond neural models. Explore topics
 like few-shot learning, multimodal AI (language and vision), or grounded language understanding
 (linking text to the real world).*
 
 Deliverable: A speculative research paper or presentation predicting the future trajectory of NLP.
 
-*Project 2: Explore how AI has transitioned from rule-based parsing to neural language models.
+- *Project 2: Explore how AI has transitioned from rule-based parsing to neural language models.
 Compare early AI systems like SHRDLU or ELIZA with modern LLMs (e.g., GPT or BERT). Discuss
 the implications of this shift for understanding human language.*
 
