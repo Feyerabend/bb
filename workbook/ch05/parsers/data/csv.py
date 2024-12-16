@@ -34,7 +34,7 @@ class SimpleCSVParser:
         return rows
 
 
-# Example Usage
+# example
 csv_data = """name,computer,price
 "John Foo","",30
 "Alice Baz","Apple I",2000
