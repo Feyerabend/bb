@@ -1,106 +1,95 @@
 
-class OperatorPrecedenceParser:
+class PrecendenceParser:
     def __init__(self):
-        # precedence and associativity (left or right)
+        # precedence table
+        # lower number = lower precedence
         self.operators = {
-            '+': (1, 'L'),  # precedence 1, left-associative
-            '-': (1, 'L'),
-            '*': (2, 'L'),
-            '/': (2, 'L')
+            '+': 1,
+            '-': 1,
+            '*': 2,
+            '/': 2
         }
 
     def is_operator(self, token):
         return token in self.operators
 
     def precedence(self, operator):
-        return self.operators[operator][0]
+        return self.operators.get(operator, -1)  # -1 for non-operators
 
-    def associativity(self, operator):
-        return self.operators[operator][1]
-
-    def to_postfix(self, infix_tokens):
-        output = []
+    def parse(self, tokens):
         stack = []
-        for token in infix_tokens:
-            if token.isnumeric():
-                output.append(token)
+        operators = []
+
+        def reduce():
+            operator = operators.pop()
+            right = stack.pop()
+            left = stack.pop()
+            return (operator, left, right)
+
+        for token in tokens:
+            if token.isdigit():
+                stack.append(int(token)) # integers only
             elif self.is_operator(token):
-                while (stack and stack[-1] != '(' and
-                       (self.precedence(stack[-1]) > self.precedence(token) or
-                        (self.precedence(stack[-1]) == self.precedence(token) and
-                         self.associativity(token) == 'L'))):
-                    output.append(stack.pop())
-                stack.append(token)
+                while (operators and self.precedence(operators[-1]) >= self.precedence(token)):
+                    stack.append(reduce()) # reductions while precendece cond met
+                operators.append(token)  # push current op
             elif token == '(':
-                stack.append(token)
+                operators.append(token)  # push opening parenthesis
             elif token == ')':
-                while stack and stack[-1] != '(':
-                    output.append(stack.pop())
-                stack.pop()  # pop the '('
-        while stack:
-            output.append(stack.pop())
-        return output
+                # reduce until matching '('
+                while operators and operators[-1] != '(':
+                    stack.append(reduce())
+                operators.pop()  # pop '('
 
-    def to_prefix(self, infix_tokens):
-        reversed_tokens = infix_tokens[::-1]
-        # swap '(' with ')' and vice versa
-        swapped_tokens = ['(' if t == ')' else ')' if t == '(' else t for t in reversed_tokens]
-        postfix = self.to_postfix(swapped_tokens)
-        return postfix[::-1]
+        # remaining reductions
+        while operators:
+            stack.append(reduce())
 
-    def evaluate_postfix(self, postfix_tokens):
-        stack = []
-        for token in postfix_tokens:
-            if token.isnumeric():
-                stack.append(int(token))
-            elif self.is_operator(token):
-                b = stack.pop()
-                a = stack.pop()
-                if token == '+':
-                    stack.append(a + b)
-                elif token == '-':
-                    stack.append(a - b)
-                elif token == '*':
-                    stack.append(a * b)
-                elif token == '/':
-                    stack.append(a / b)
+        # final item on the stack is the parse tree!
         return stack[0]
 
-    def evaluate_prefix(self, prefix_tokens):
-        stack = []
-        for token in reversed(prefix_tokens):
-            if token.isnumeric():
-                stack.append(int(token))
-            elif self.is_operator(token):
-                a = stack.pop()
-                b = stack.pop()
-                if token == '+':
-                    stack.append(a + b)
-                elif token == '-':
-                    stack.append(a - b)
-                elif token == '*':
-                    stack.append(a * b)
-                elif token == '/':
-                    stack.append(a / b)
-        return stack[0]
+    def evaluate(self, tree):
+        if isinstance(tree, int):  # leaf node (operand)
+            return tree
+        operator, left, right = tree
+        left_val = self.evaluate(left)
+        right_val = self.evaluate(right)
+        if operator == '+':
+            return left_val + right_val
+        elif operator == '-':
+            return left_val - right_val
+        elif operator == '*':
+            return left_val * right_val
+        elif operator == '/':
+            return left_val / right_val
+
+    def to_postfix(self, tree):
+        if isinstance(tree, int):
+            return str(tree)
+        operator, left, right = tree
+        return f"{self.to_postfix(left)} {self.to_postfix(right)} {operator}"
+
+    def to_prefix(self, tree):
+        if isinstance(tree, int):
+            return str(tree)
+        operator, left, right = tree
+        return f"{operator} {self.to_prefix(left)} {self.to_prefix(right)}"
 
 
 # example
-parser = OperatorPrecedenceParser()
+parser = PrecendenceParser()
 
 infix = "3 + 5 * ( 2 - 8 ) / 4"
-infix_tokens = infix.split()  # simple tokenize
+tokens = infix.split()  # simple tokenize input
 
-# to postfix and prefix from infix
-postfix = parser.to_postfix(infix_tokens)
-prefix = parser.to_prefix(infix_tokens)
+parse_tree = parser.parse(tokens)
 
-# eval to make it more interesting, check
-postfix_result = parser.evaluate_postfix(postfix)
-prefix_result = parser.evaluate_prefix(prefix)
+result = parser.evaluate(parse_tree)
+postfix = parser.to_postfix(parse_tree)
+prefix = parser.to_prefix(parse_tree)
 
-print("Infix:  ", infix)
-print("Postfix:", ' '.join(postfix))
-print("Prefix: ", ' '.join(prefix))
-print("Postfix Result:", postfix_result)
-print("Prefix Result: ", prefix_result)
+print("Infix:   ", infix)
+print("Parse Tree:", parse_tree)
+print("Postfix: ", postfix)
+print("Prefix:  ", prefix)
+print("Result:  ", result)
