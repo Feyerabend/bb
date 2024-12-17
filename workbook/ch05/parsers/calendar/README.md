@@ -117,4 +117,4 @@ Summary of RFC 5545
 - Provides detailed rules for encoding, recurrence, and time zone management.
 - Addresses extensions through the X- prefix for non-standard properties.
 
-For full details, you can consult the RFC 5545 specification.
+For full details, you can consult the [RFC 5545](https://datatracker.ietf.org/doc/html/rfc5545) specification.
