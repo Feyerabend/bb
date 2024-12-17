@@ -73,6 +73,7 @@ Arguments for DSLs Over APIs
 ### Contra
 
 1. Counterargument: APIs are More General and Versatile
+
    Response: While APIs offer generality, this can be a double-edged sword. For
    specific tasks, their broad scope often introduces unnecessary complexity,
    requiring developers to navigate extensive documentation and handle edge cases
@@ -80,6 +81,7 @@ Arguments for DSLs Over APIs
    domain-specific problems, resulting in cleaner and more efficient solutions.
 
 2. Counterargument: DSLs Require Additional Development Effort
+
    Response: Building a DSL does require an upfront investment in design and
    implementation. However, this effort is often offset by the long-term benefits
    of easier maintenance, greater readability, and reduced reliance on external
@@ -87,6 +89,7 @@ Arguments for DSLs Over APIs
    dividends by simplifying updates and enhancements.
 
 3. Counterargument: APIs Leverage Well-Tested External Libraries
+
    Response: While external libraries can provide robust, pre-tested functionality,
    they also introduce dependencies and potential vulnerabilities. A DSL that avoids
    external libraries offers greater control over the codebase, reducing the risk
@@ -95,6 +98,7 @@ Arguments for DSLs Over APIs
    dependencies may not justify their use.
 
 4. Counterargument: DSLs May Not Be as Flexible as APIs for Unexpected Needs
+
    Response: Flexibility depends on how the DSL is designed. A well-constructed DSL
    can incorporate mechanisms like conditional logic, extensibility, and modular
    design to accommodate unforeseen requirements. Additionally, DSLs can coexist
