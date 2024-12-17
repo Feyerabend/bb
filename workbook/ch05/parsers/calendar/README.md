@@ -10,12 +10,12 @@ like 2445. iCalendar uses a plain text format with a structured syntax that is b
 and machine-parsable.
 
 Features
-	- Interoperability: Enables different calendar systems to exchange information seamlessly.
-	- Versatility: Supports events, to-dos, journal entries, and free/busy scheduling.
-	- Time Zones: Provides robust time zone support.
-	- Recurrence: Allows specification of repeating events or tasks.
-	- Attachments: Enables linking or embedding files.
-	- Alarms and Reminders: Supports notifications for events and tasks.
+- Interoperability: Enables different calendar systems to exchange information seamlessly.
+- Versatility: Supports events, to-dos, journal entries, and free/busy scheduling.
+- Time Zones: Provides robust time zone support.
+- Recurrence: Allows specification of repeating events or tasks.
+- Attachments: Enables linking or embedding files.
+- Alarms and Reminders: Supports notifications for events and tasks.
 
 ### iCalendar Data Scheme Overview
 
@@ -25,35 +25,35 @@ structured into components, properties, and values.
 1. Components
 
 The primary building blocks of an iCalendar file are components that describe different calendar entities:
-	- VCALENDAR: The root component; contains metadata and other components.
-	- VEVENT: Represents calendar events (e.g., meetings, birthdays).
-	- VTODO: Describes tasks or to-dos (e.g., assignments, shopping lists).
-	- VJOURNAL: For journal entries or notes.
-	- VFREEBUSY: Specifies availability for scheduling (free/busy time).
-	- VALARM: Defines alarms and reminders for events or tasks.
-	- VTIMEZONE: Provides time zone information.
+- VCALENDAR: The root component; contains metadata and other components.
+- VEVENT: Represents calendar events (e.g., meetings, birthdays).
+- VTODO: Describes tasks or to-dos (e.g., assignments, shopping lists).
+- VJOURNAL: For journal entries or notes.
+- VFREEBUSY: Specifies availability for scheduling (free/busy time).
+- VALARM: Defines alarms and reminders for events or tasks.
+- VTIMEZONE: Provides time zone information.
 
 Each component begins with `BEGIN:<component>` and ends with `END:<component>`.
 
 2. Properties
 
 Properties define attributes of components. Common properties include:
-	- VERSION: Specifies the iCalendar version (e.g., 2.0 in RFC 5545).
-	- PRODID: Identifies the product generating the iCalendar data.
-	- DTSTART: Specifies the start date/time of an event or task.
-	- DTEND: Specifies the end date/time of an event.
-    - SUMMARY: A brief summary or title for an event/task.
-	- UID: A unique identifier for the calendar object.
-	- LOCATION: Specifies the event's location.
-	- DESCRIPTION: Provides additional details about the event/task.
-	- RRULE: Defines recurrence rules for repeating events/tasks.
-    - ATTENDEE: Lists participants for an event.
-	- ORGANIZER: Identifies the event's organizer.
+- VERSION: Specifies the iCalendar version (e.g., 2.0 in RFC 5545).
+- PRODID: Identifies the product generating the iCalendar data.
+- DTSTART: Specifies the start date/time of an event or task.
+- DTEND: Specifies the end date/time of an event.
+- SUMMARY: A brief summary or title for an event/task.
+- UID: A unique identifier for the calendar object.
+- LOCATION: Specifies the event's location.
+- DESCRIPTION: Provides additional details about the event/task.
+- RRULE: Defines recurrence rules for repeating events/tasks.
+- ATTENDEE: Lists participants for an event.
+- ORGANIZER: Identifies the event's organizer.
 
 3. Values
 
 Properties can have values of different types, such as dates, text, or binary data.
-	- Dates and times are usually in the YYYYMMDDTHHMMSSZ format (UTC with Z) or local time.
+- Dates and times are usually in the YYYYMMDDTHHMMSSZ format (UTC with Z) or local time.
 
 Example iCalendar File
 
@@ -80,8 +80,8 @@ END:VCALENDAR
 ### Data Scheme
 
 Hierarchical Structure
-	- VCALENDAR is the container; it wraps all other components.
-	- Components like VEVENT can contain properties like SUMMARY, UID, DTSTART.
+- VCALENDAR is the container; it wraps all other components.
+- Components like VEVENT can contain properties like SUMMARY, UID, DTSTART.
 
 Recurrence Rules (RRULE)
 
@@ -110,10 +110,11 @@ TZOFFSETTO:-0500
 END:STANDARD
 END:VTIMEZONE
 ```
+
 Summary of RFC 5545
-	- Defines the structure and syntax of the iCalendar format.
-	- Specifies MIME types (text/calendar) for interoperability.
-	- Provides detailed rules for encoding, recurrence, and time zone management.
-	- Addresses extensions through the X- prefix for non-standard properties.
+- Defines the structure and syntax of the iCalendar format.
+- Specifies MIME types (text/calendar) for interoperability.
+- Provides detailed rules for encoding, recurrence, and time zone management.
+- Addresses extensions through the X- prefix for non-standard properties.
 
 For full details, you can consult the RFC 5545 specification.
