@@ -1,6 +1,10 @@
 
 ## Parsers Overview
 
+Parsers represent a broad and foundational area within computer science and related disciplines, having
+evolved significantly over time. In this discussion, we focus on a select aspect of their [history](HISTORY.md),
+highlighting their application and relevance, particularly in the context of computer languages.
+
 Production rules are the formal constructs in a grammar that define the syntactic structure of a language.
 They specify how symbols in the language can be generated or replaced during parsing. Each production rule
 maps a non-terminal symbol to a sequence of terminal and/or non-terminal symbols, describing a valid
