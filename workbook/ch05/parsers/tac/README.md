@@ -58,11 +58,12 @@ __3. Temporary Variables__
 - These variables are crucial for preserving partial results while respecting
   operator precedence and associativity.
 
+
 ### Generating Assembly Instructions
 
 TAC is a useful intermediary in generating assembly instructions.
 
-1. Mapping Operations to Assembly:
+__1. Mapping Operations to Assembly__
 
 - Each TAC instruction corresponds to one or more assembly instructions,
   depending on the target architecture.
@@ -79,7 +80,8 @@ t0 = b * c  ->  LOAD R1, b
 - Temporary variables (t0, t1, etc.) are typically mapped to registers or
   memory locations.
 
-2. Simplifying Register Allocation:
+
+__2. Simplifying Register Allocation__
 
 - TAC's explicit use of temporary variables makes it easier for the compiler
   to allocate registers or memory slots.
@@ -87,7 +89,8 @@ t0 = b * c  ->  LOAD R1, b
 - For instance, a register allocator can decide which registers to assign to
   t0, t1, etc., ensuring efficient use of CPU resources.
 
-3. Handling Precedence and Associativity:
+
+__3. Handling Precedence and Associativity__
 
 - Since TAC respects the operator precedence established during parsing, the
   assembly instructions derived from TAC also adhere to the correct evaluation order.
@@ -96,7 +99,7 @@ t0 = b * c  ->  LOAD R1, b
   precedence.
 
 
-4. Optimisation:
+__4. Optimisation__
 
 - TAC is a common target for compiler optimisations, such as constant folding,
   common subexpression elimination, and loop unrolling.
@@ -104,7 +107,8 @@ t0 = b * c  ->  LOAD R1, b
 - For example, if b and c are constants, the TAC t0 = b * c can be precomputed
   as t0 = 15 (if b = 3 and c = 5), reducing the number of assembly instructions.
 
-5. Platform Independence:
+
+__5. Platform Independence__
 
 - TAC is independent of any specific machine architecture. Once generated, the
   TAC can be converted into assembly for different architectures (x86, ARM, etc.),
