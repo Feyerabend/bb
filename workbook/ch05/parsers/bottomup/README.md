@@ -78,8 +78,8 @@ Phases:
 
 Production Rules
 * Rule 1: $\` E \rightarrow [ E ] \`$ (an LBRACKET, an E, and an RBRACKET are reduced to E).
-* Rule 2: $ E \rightarrow EE $ (two E elements are reduced to a single E).
-* Rule 3: $ E \rightarrow \text{VALUE} $ (a single VALUE is reduced to E).
+* Rule 2: $\` E \rightarrow EE \`$ (two E elements are reduced to a single E).
+* Rule 3: $\` E \rightarrow \text{VALUE} \`$ (a single VALUE is reduced to E).
 
 Example Workflow
 
