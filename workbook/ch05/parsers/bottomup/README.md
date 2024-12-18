@@ -31,77 +31,121 @@ Bottom-up parsing works by applying reductions and shifts in the following steps
 - Handles Complex Expressions: This approach naturally handles complex expressions in programming languages, such as arithmetic operations, control structures (like if-else or loops), and others.
 
 
-### Example: POP3 
+### Example: Nested Brackets
 
-This program implements a *bottom-up parser* using a *shift-reduce parsing* approach to process a simplified grammar for input commands. It includes two main components: a tokenizer and a parser.
+This program implements a *bottom-up parser* using a *shift-reduce parsing* approach to
+process a simplified grammar for input commands. It includes two main components:
+a tokenizer and a parser.
 
 #### Tokenizer
-The tokenizer converts the raw input string into a sequence of tokens based on predefined patterns (regular expressions). Each token represents a syntactic unit like a command, number, or string. 
 
-Purpose of the tokenizer
-* Breaks down input into manageable, discrete units.
-* Removes unnecessary elements, such as whitespace.
-* Classifies each unit with a type (e.g., `COMMAND`, `NUMBER`, `STRING`).
+The tokenizer converts the raw input string into a sequence of tokens using predefined
+patterns (regular expressions). Each token represents a syntactic unit, such as a bracket,
+value, or whitespace.
 
-Given input:
-> USER 1234\nPASS secret\n
+Purpose of the Tokenizer
+- Breaks down the input into manageable, discrete units.
+- Removes unnecessary elements, like whitespace.
+- Classifies each unit with a type (e.g., LBRACKET, RBRACKET, VALUE).
 
-Produce:
+Given:
+
+```python
+[ "value" [ "value" "value" ] ]
+```
+
+Produces:
+
 ```python
 [
-    ('COMMAND', 'USER'),
-    ('NUMBER', '1234'),
-    ('NEWLINE', '\n'),
-    ('COMMAND', 'PASS'),
-    ('STRING', 'secret'),
-    ('NEWLINE', '\n')
+    ('LBRACKET', '['),
+    ('VALUE', '"value"'),
+    ('LBRACKET', '['),
+    ('VALUE', '"value"'),
+    ('VALUE', '"value"'),
+    ('RBRACKET', ']'),
+    ('RBRACKET', ']')
 ]
 ```
 
 #### Parser
 
-The `ShiftReduceParser` processes tokens using the *shift-reduce strategy*:
+The ShiftReduceParser processes tokens using the shift-reduce strategy.
 
-### Phases:
-- *Shift*: Push the next token from the input onto a stack.
-- *Reduce*: Apply production rules if the top elements of the stack match a rule's right-hand side.
+Phases:
+- Shift: Pushes the next token from the input onto a stack.
+- Reduce: Applies production rules when the top elements of the stack match a rule’s right-hand side.
 
-### Production Rules:
-- *Rule 1*: $\( S \rightarrow \text{COMMAND NUMBER} \)$ (a `COMMAND` followed by a `NUMBER` is reduced to `S`).
-- *Rule 2*: $\( S \rightarrow \text{COMMAND STRING} \)$ (a `COMMAND` followed by a `STRING` is reduced to `S`).
-- *Rule 3*: $\( S \rightarrow SS \)$ (two `S` elements are reduced to a larger `S`, combining them).
+Production Rules
+* Rule 1: $ E \rightarrow [ E ] $ (an LBRACKET, an E, and an RBRACKET are reduced to E).
+* Rule 2: $ E \rightarrow EE $ (two E elements are reduced to a single E).
+* Rule 3: $ E \rightarrow \text{VALUE} $ (a single VALUE is reduced to E).
 
-### Example Workflow:
+Example Workflow
+
 For the input tokens:
 
 ```python
 [
-    ('COMMAND', 'USER'),
-    ('NUMBER', '1234'),
-    ('NEWLINE', '\n'),
-    ('COMMAND', 'PASS'),
-    ('STRING', 'secret'),
-    ('NEWLINE', '\n')
+    ('LBRACKET', '['),
+    ('VALUE', '"value"'),
+    ('LBRACKET', '['),
+    ('VALUE', '"value"'),
+    ('VALUE', '"value"'),
+    ('RBRACKET', ']'),
+    ('RBRACKET', ']')
 ]
 ```
 
-1. The parser shifts `('COMMAND', 'USER')` and `('NUMBER', '1234')`, then applies Rule 1 to reduce them to `S`.
-2. It shifts `('COMMAND', 'PASS')` and `('STRING', 'secret')`, then applies Rule 2 to reduce them to another `S`.
-3. Finally, Rule 3 combines the two `S` elements into a single `S`, completing the parse.
+1. Shifting and Initial Reduction:
+    - The parser shifts ('VALUE', '"value"') and applies Rule 3 to reduce it to E.
+	- This results in:
+```python
+[('E', [('VALUE', '"value"')])]
+```
 
-#### Parse Tree
+2. Processing Nested Structure:
+	- The parser shifts ('LBRACKET', '[') and ('VALUE', '"value"'), then applies Rule 1 to reduce [ E ] to E.
+	- This results in:
+```python
+[('E', [('RBRACKET', ']'), ('E', [('VALUE', '"value"')]), ('LBRACKET', '[')])]
+```
 
-The final parse tree reflects the hierarchical structure of the input:
+3. Combining Sequential Expressions:
+	- The parser reduces the two E elements using Rule 2.
+	- This results in:
+```python
+[('E', [('E', [('VALUE', '"value"')]), ('E', [('VALUE', '"value"')])])]
+```
 
+4. Final Reduction:
+	- The parser reduces the entire nested structure [ "value" [ "value" "value" ] ] using Rule 1.
+	- This results in:
+```python
+[('E', [
+    ('RBRACKET', ']'),
+    ('E', [
+        ('E', [('VALUE', '"value"')]),
+        ('E', [('VALUE', '"value"')])
+    ]),
+    ('LBRACKET', '[')
+])]
+```
+
+Parse Tree
+
+The final parse tree reflects the nested structure of the input:
 ```python
 [
-    ('S', [('NUMBER', '1234'), ('COMMAND', 'USER')]),
-    ('S', [('STRING', 'secret'), ('COMMAND', 'PASS')]),
-    ('S', [
-        ('S', [('STRING', 'secret'), ('COMMAND', 'PASS')]),
-        ('S', [('NUMBER', '1234'), ('COMMAND', 'USER')])
+    ('E', [
+        ('RBRACKET', ']'),
+        ('E', [
+            ('E', [('VALUE', '"value"')]),
+            ('E', [('VALUE', '"value"')])
+        ]),
+        ('LBRACKET', '[')
     ])
 ]
 ```
-
-This structure is derived from the application of production rules and represents the parsed input.
+This hierarchical representation demonstrates how the grammar rules decompose the input
+into its structural components, showcasing the capabilities of bottom-up parsing.
