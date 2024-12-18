@@ -89,9 +89,9 @@ These parsers start with the input tokens and attempt to reconstruct the start s
 	- A general parsing technique for any context-free grammar.
     - Suitable for ambiguous grammars but slower compared to LL and LR parsers for regular use.
 
-3. CYK Parser:
-	- Uses a dynamic programming approach and works on grammars in Chomsky Normal Form (CNF).
-	- Efficient for ambiguous grammars but impractical for hand-written parsers.
+3. Metcalfe Parser:
+	- Through a separate program, can it parse a diverse set of grammars.
+	- Useful in educational purpose as it is easy to understand the principles of parsing.
 
 4. LL(1) Parsing:
 	- Strengths: Easy to implement, efficient for simple grammars, and guarantees linear parsing time for LL(1) grammars.
@@ -102,3 +102,7 @@ These parsers start with the input tokens and attempt to reconstruct the start s
 	- Implements each grammar rule as a function, where non-terminals are recursive calls.
 	- Parsing decisions are guided by lookahead (one token ahead in LL(1)).
 	- Direct and clear for grammar constructs, making it excellent for prototyping parsers.
+
+<!-- 3. CYK Parser:
+#	- Uses a dynamic programming approach and works on grammars in Chomsky Normal Form (CNF).
+#	- Efficient for ambiguous grammars but impractical for hand-written parsers.-->
