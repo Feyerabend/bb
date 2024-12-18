@@ -14,10 +14,13 @@ addressing real-world programming challenges. Specifically, this approach showca
 how DSLs can replace traditional APIs to achieve decoupling, increase abstraction,
 and ensure maintainability while offering greater flexibility for future changes.*
 
+*Your part in this project is to find out a suitable language, or using the
+suggested syntax, build a __parser__ that is connected to the semantics from
+report.py, or something similar.*
 
 ### Beyond Parsing: Observations on Programming and the Case for DSLs Over APIs
 
-__This project goes beyond the basic task of parsing calendar data.__ It delves into
+But __this project goes beyond the basic task of parsing calendar data.__ It delves into
 broader programming concepts, exploring the use of Domain-Specific Languages (DSLs)
 as a compelling alternative to Application Programming Interfaces (APIs), particularly
 in scenarios where external libraries might traditionally be used. By integrating
