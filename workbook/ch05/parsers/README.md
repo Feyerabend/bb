@@ -107,15 +107,11 @@ def parse_A():
     match('b')
 ```
 
-3. Combinatorial Parsing:
+3. [Combinatorial](./combinator) Parsing:
 	- Constructs parsers as composable components.
 	- Allows direct representation of grammar rules as high-level abstractions, improving readability and maintainability.
 	- Often uses monads (in functional languages) to chain parsing computations.
-	- Example in Haskell:
 
-```haskell
-expr = do { x <- term; char '+'; y <- term; return (x + y) }
-```
 
 Each of these parsing techniques has its strengths, making them suitable for different kinds of grammars and use cases.
 While LL(1) and recursive descent are particularly effective for simple or handcrafted grammars, combinatorial parsing
