@@ -33,11 +33,11 @@ of writing parsers more systematic and less error-prone. This period also saw th
 a data structure that provides a more intuitive and compact representation of a program's syntax, which was particularly
 useful for later stages of compilation or interpretation.
 
-In the 2000s and beyond, parsing evolved alongside the growth of web technologies and the increasing need to parse data
-formats like JSON and XML. Modern parsing libraries such as ANTLR provided more flexible and powerful tools for parsing
-not just programming languages but also structured data used in various applications. Error handling and recovery
-mechanisms also improved, leading to more robust parsers that can provide helpful feedback to developers, especially
-in integrated development environments (IDEs).
+In the 2000s and beyond, parsing evolved alongside the growth of web technologies and the increasing need to parse
+[data formats](./data) like JSON and XML. Modern parsing libraries such as ANTLR provided more flexible and powerful
+tools for parsing not just programming languages but also structured data used in various applications. Error handling
+and recovery mechanisms also improved, leading to more robust parsers that can provide helpful feedback to developers,
+especially in integrated development environments (IDEs).
 
 Today, parsing is no longer limited to programming languages and compilers. It plays a crucial role in web development,
 data processing, and many other domains that involve structured text. From parsing source code and configuration files
