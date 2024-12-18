@@ -39,7 +39,7 @@ class CustomFloat:
         sign = 0 if value >= 0 else 1
         value = abs(value)
         
-        # normalize the value to get mantissa and exponent
+        # normalise the value to get mantissa and exponent
         exponent = 0
         if value != 0:
             while value >= 2.0:
@@ -86,7 +86,7 @@ class CustomFloat:
         # add mantissas
         result_mantissa = mantissa_a + mantissa_b
 
-        # normalize result
+        # normalise result
         while result_mantissa >= (1 << (self.precision + 1)):
             result_mantissa >>= 1
             result_exponent += 1
