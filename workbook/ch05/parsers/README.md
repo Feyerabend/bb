@@ -71,48 +71,28 @@ These parsers start with the input tokens and attempt to reconstruct the start s
 	- Simpler than full LR parsers but limited to certain grammars.
 
 
-### Other Parsing Techniques
+### Selected Parsing Techniques
 
-1. Combinatorial Parsing:
+1. [Combinatorial](./combinator) Parsing:
 	- A functional programming approach to parsing where parsers are functions that can be combined in modular ways to recognize grammar constructs.
 	- Often implemented in languages like Haskell or Scala.
 	- Elegant, flexible, and well-suited to highly modular or complex grammar constructs.
 	- More commonly used in small domain-specific languages rather than general-purpose compilers due to potential inefficiency.
-2. Earley Parser:
+
+2. [Earley](./earley) Parser:
 	- A general parsing technique for any context-free grammar.
     - Suitable for ambiguous grammars but slower compared to LL and LR parsers for regular use.
+
 3. CYK Parser:
 	- Uses a dynamic programming approach and works on grammars in Chomsky Normal Form (CNF).
 	- Efficient for ambiguous grammars but impractical for hand-written parsers.
 
-Focusing on LL(1), Recursive Descent, and Combinatorial Parsing
-
-1. LL(1) Parsing:
+4. LL(1) Parsing:
 	- Strengths: Easy to implement, efficient for simple grammars, and guarantees linear parsing time for LL(1) grammars.
 	- Limitations: Cannot handle left-recursive or ambiguous grammars. Requires careful grammar design to fit LL(1) constraints.
 	- Uses a parsing table for predictive parsing, where each cell indicates which production to apply based on the current input token and non-terminal.
 
-2. Recursive Descent Parsing:
+5. Recursive Descent Parsing:
 	- Implements each grammar rule as a function, where non-terminals are recursive calls.
 	- Parsing decisions are guided by lookahead (one token ahead in LL(1)).
 	- Direct and clear for grammar constructs, making it excellent for prototyping parsers.
-	- Example: For grammar $S \to aA ,   A \to b$ you might write:
-
-```python
-def parse_S():
-    match('a')
-    parse_A()
-
-def parse_A():
-    match('b')
-```
-
-3. [Combinatorial](./combinator) Parsing:
-	- Constructs parsers as composable components.
-	- Allows direct representation of grammar rules as high-level abstractions, improving readability and maintainability.
-	- Often uses monads (in functional languages) to chain parsing computations.
-
-
-Each of these parsing techniques has its strengths, making them suitable for different kinds of grammars and use cases.
-While LL(1) and recursive descent are particularly effective for simple or handcrafted grammars, combinatorial parsing
-excels in modularity and expressiveness, making it ideal for functional programming approaches.
