@@ -18,7 +18,7 @@ This is also an example of fractals, see [https://en.wikipedia.org/wiki/Fractal]
 2. Tracing the recursive calls:
     - Objective: Understand the recursion depth and number of calls.
     - Exercise: Trace the recursive calls and print each level of recursion, possibly with indentation to show hierarchy.
-    - Goal: Visualize how many times the function calls itself, and discuss the memory usage and computational cost of recursion.
+    - Goal: Visualise how many times the function calls itself, and discuss the memory usage and computational cost of recursion.
 
 3. Drawing the snowflake with simple loops (in book):
     - Objective: Introduce basic loops and iteration before diving into recursion.
@@ -35,7 +35,7 @@ This is also an example of fractals, see [https://en.wikipedia.org/wiki/Fractal]
 ### For non-beginners
 
 1. Animating the Koch snowflake:
-    - Objective: Create a dynamic visualization of the snowflake's growth with each recursion.
+    - Objective: Create a dynamic visualisation of the snowflake's growth with each recursion.
     - Exercise: Use a library like matplotlib or pygame to draw the Koch snowflake in real-time, updating the display as each recursion level is added. Or use JavaScript and Canvas.
     - Goal: Explore practical aspects of rendering, animation, and performance issues with recursive drawings.
 
