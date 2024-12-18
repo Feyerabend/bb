@@ -149,3 +149,22 @@ The final parse tree reflects the nested structure of the input:
 ```
 This hierarchical representation demonstrates how the grammar rules decompose the input
 into its structural components, showcasing the capabilities of bottom-up parsing.
+
+```text
+                E
+               / \
+         LBRACKET  \
+             [      E
+                   / \
+                  E   RBRACKET
+                 / \      ]
+         LBRACKET  E
+           [      / \
+                 E   RBRACKET
+                / \      ]
+            VALUE  E
+           "value"  |
+                   / \
+                VALUE  VALUE
+               "value" "value"
+```
