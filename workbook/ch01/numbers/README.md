@@ -11,7 +11,7 @@ crucial in fields such as scientific computing, engineering, and data analysis.
 
 ### Research questions
 
-1.	How do floating-point numbers work?
+1. How do floating-point numbers work?
 	- Explain the structure of floating-point numbers, covering components such as the
       sign bit, exponent, and mantissa. Delve into concepts like precision, rounding,
       and representation limits.
@@ -21,13 +21,13 @@ crucial in fields such as scientific computing, engineering, and data analysis.
       floating-point numbers, and explore common pitfalls in arithmetic, like rounding
       errors and overflow/underflow.
 
-2.	Historical context of floating-point arithmetic
+2. Historical context of floating-point arithmetic
 	- Explore the history of floating-point numbers, starting from the early methods
       of approximating real numbers to the development of the IEEE standard in the 1980s.
 	- Discuss early computer architectures and the challenges that influenced the
       design of floating-point arithmetic.
 
-3.	Alternatives to floating-point numbers
+3. Alternatives to floating-point numbers
 	- Fixed-point representation: Describe how it works and compare its strengths
       and weaknesses with floating-point representation, especially in resource-constrained
       systems like embedded devices.
@@ -38,15 +38,15 @@ crucial in fields such as scientific computing, engineering, and data analysis.
 	- Interval arithmetic: Explore how this alternative bounds calculations within a range
       to better manage precision in critical applications, like physics simulations.
 
-4.	Comparing floating-point and alternative representations
+4. Comparing floating-point and alternative representations
 	- Discuss practical scenarios in which floating-point numbers are preferable
       (e.g. fast calculations where small errors are acceptable) versus when alternatives
       are better suited (e.g., exact calculations required in financial transactions).
 	- Explore specific cases or fields where each representation is commonly used,
       including scientific research, finance, video games, and industrial applications.
 
-5.	Advanced topics (optional)
-	- Explain advanced floating-point concepts, such as subnormal numbers, denormalized
+5. Advanced topics (optional)
+	- Explain advanced floating-point concepts, such as subnormal numbers, denormalised
       numbers, and rounding modes (e.g., round-to-nearest, round-toward-zero).
 	- Examine specific examples of floating-point-related issues in software
       (e.g. famous failures due to floating-point errors, such as the
@@ -58,7 +58,7 @@ crucial in fields such as scientific computing, engineering, and data analysis.
 - Research paper or report: Students can compile their findings into a structured document,
   including sections on each of the research questions above, with examples, figures, and
   code snippets if applicable.
-- Presentation: A presentation summarizing key insights from their research, aiming to explain
+- Presentation: A presentation summarising key insights from their research, aiming to explain
   floating-point concepts in an engaging way that would be accessible to classmates who may
   not have a technical background.
 - Code demonstration (optional): A coding component that could involve creating a simple
@@ -104,7 +104,7 @@ Suggested Exploration: Start with examples of 32-bit (single precision) and 64-b
 Starting Point: The concept of floating-point representation has evolved over time as computing needs grew. Early computers used fixed-point numbers due to limited hardware capabilities. However, as more complex calculations were needed (e.g., scientific simulations), floating-point representation became essential.
 
 - Early Challenges: Fixed-point numbers couldn't handle the wide range of values required by scientific computations, which led to the development of floating-point representations.
-- IEEE 754 Standard: Before IEEE 754, there were various ways to represent floating-point numbers, leading to compatibility issues. IEEE 754 standardized floating-point representation, making computations more reliable across systems.
+- IEEE 754 Standard: Before IEEE 754, there were various ways to represent floating-point numbers, leading to compatibility issues. IEEE 754 standardised floating-point representation, making computations more reliable across systems.
 
 Suggested Exploration: Look at notable figures in the field, like William Kahan, who contributed to the IEEE standard. Also, consider researching notable historical events, like the Apollo missions, which relied heavily on precise floating-point calculations.
 
