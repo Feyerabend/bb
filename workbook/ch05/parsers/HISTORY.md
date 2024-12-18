@@ -17,7 +17,7 @@ the context of assembly languages and the first high-level languages like Fortra
 the need for automatic translation of human-readable code into machine instructions became essential, giving rise
 to the development of more sophisticated parsing methods. The concept of context-free grammars (CFGs) emerged as
 a significant step forward, enabling more structured and automated parsing of code. These grammars could be processed
-by pushdown automata, a theoretical machine model that handles context-free languages efficiently.
+by [pushdown automata](./pushdown), a theoretical machine model that handles context-free languages efficiently.
 
 During the 1960s and 1970s, the rise of compilers led to more formalised parsing methods. The development of recursive
 descent parsers and top-down parsing methods like LL parsers allowed for simple context-free grammars to be handled
