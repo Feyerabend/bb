@@ -6,7 +6,7 @@ it into report.py, that partially implements a simple reporting language. This
 language allows you to query, analyse, and format calendar data into automated
 work hour reports. By leveraging an ordinary calendar application that supports
 iCalendar exports, you can streamline the process of tracking and reporting your
-working hours (as a developer/contractor).*
+working hours (as a developer/consultant).*
 
 *The project serves as an example of how parsing and reporting can be seamlessly
 integrated. It demonstrates the utility of Domain-Specific Languages (DSLs) in
