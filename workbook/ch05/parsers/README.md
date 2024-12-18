@@ -28,7 +28,8 @@ For example, in a grammar for simple arithmetic expressions:
 These rules define how complex expressions like `3 + 5` can be decomposed into their basic components
 (numbers, operators) and parsed accordingly.
 
-See some [simple](./simple) explanation of these basic steps.
+See some [simple](./simple) explanation of these basic steps: from a textual input to a representation of
+the input in data structures that can be processed by the computer (a parse tree or AST).
 
 
 ### Top-Down Parsers
