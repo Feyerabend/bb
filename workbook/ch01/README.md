@@ -33,7 +33,7 @@ deepen your understanding of fundamental concepts.
 
 - Extension: Non-positional systems. Implement simple arithmetic with Roman numerals, a
   non-positional system. This project can illustrate the practical limitations
-  of such systems in complex computation, showing why positional systems are favored in
+  of such systems in complex computation, showing why positional systems are favoured in
   computing.
 
 #### 3. Representing negative numbers in binary
@@ -61,7 +61,7 @@ deepen your understanding of fundamental concepts.
   how error detection works in data transmission. Extend this by implementing a simple
   checksum algorithm to see how checksums verify data integrity in transmitted data.
 
-- Challenge: Implement Hamming code for error correction, investigare how numerical
+- Challenge: Implement Hamming code for error correction, investigate how numerical
   representations directly impact data reliability in transmission.
 
 #### 6. Compare efficiency of different representations
@@ -69,7 +69,7 @@ deepen your understanding of fundamental concepts.
 - Objective: Compare efficiency and accuracy in different numerical systems by
   conducting a study. For instance, measure memory usage or computational speed for
   calculations in different formats (e.g., binary vs. BCD vs. floating-point) and
-  analyze which is most efficient for specific types of calculations.
+  analyse which is most efficient for specific types of calculations.
 
 - Challenge: Research a use case (e.g., financial software, scientific computation,
   or graphics) and determine which number system or representation is best suited
