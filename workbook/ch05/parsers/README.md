@@ -44,7 +44,7 @@ These parsers start from the start symbol of the grammar and attempt to derive t
 2. Recursive Descent Parsing:
 	- A simple top-down parsing method where each non-terminal in the grammar is implemented as a recursive function.
 	- Relies on LL(1) grammar for correctness.
-	- It’s intuitive and easy to implement but requires that the grammar avoids left recursion and excessive ambiguity.
+	- It's intuitive and easy to implement but requires that the grammar avoids left recursion and excessive ambiguity.
 
 3. Predictive Parsing:
 	- A non-recursive approach to LL parsing that uses a predictive table to guide parsing decisions.
