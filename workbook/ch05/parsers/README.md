@@ -90,8 +90,8 @@ These parsers start with the input tokens and attempt to reconstruct the start s
     - Suitable for ambiguous grammars but slower compared to LL and LR parsers for regular use.
 
 3. Metcalfe Parser:
-	- Through a separate program, can it parse a diverse set of grammars.
-	- Useful in educational purpose as it is easy to understand the principles of parsing.
+	- Through a separate program, can it parse a diverse set of grammars which makes it reprogrammable.
+	- Useful in educational purposes as it is easy to understand the principles of parsing.
 
 4. LL(1) Parsing:
 	- Strengths: Easy to implement, efficient for simple grammars, and guarantees linear parsing time for LL(1) grammars.
