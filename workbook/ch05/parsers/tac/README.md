@@ -7,11 +7,12 @@ It represents the program as a series of simple instructions, each involving at 
 three operands. These operands typically include variables, constants, and temporary
 variables that store intermediate results.
 
-Parsing transforms a high-level expression (like a + (b * c) / 5 - 8) into a structured
+Parsing transforms a high-level expression (like 'a + (b * c) / 5 - 8') into a structured
 representation, such as an abstract syntax tree (AST). TAC is generated as a step in the
 translation process, often following the parsing phase.
 
-1. AST Traversal:
+
+__1. AST Traversal__
 
 - During parsing, the expression is converted into an AST that reflects the
   precedence and associativity of operators.
@@ -32,7 +33,8 @@ b   c
 - Generating TAC involves a postorder traversal of this tree, processing nodes
   from the leaves up to the root.
 
-2. Breaking Complex Expressions into Steps:
+
+__2. Breaking Complex Expressions into Steps__
 
 - TAC simplifies the expression by breaking it into a series of simple binary operations.
 
@@ -48,7 +50,8 @@ t3 = t2 - 8
 - This step-by-step representation is more manageable for the next stages
   of compilation.
 
-3. Temporary Variables:
+
+__3. Temporary Variables__
 
 - TAC introduces temporary variables (t0, t1, etc.) to store intermediate results.
 
