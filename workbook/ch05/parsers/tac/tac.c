@@ -1,143 +1,102 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
+import re
 
-#define MAX_LEN 100
+# Generate temporary variable names
+def generate_temp_var(temp_count):
+    return f"t{temp_count}"
 
-// struct: TAC instruction
-typedef struct {
-    char op;     // operator ('+', '-', '*', '/')
-    char result; // temporary variable (t1, t2, etc.)
-    char arg1;   // first operand
-    char arg2;   // second operand
-} TAC;
+# Tokenize the input string (handle parentheses)
+def tokenize(expr):
+    # Regular expression to match numbers, variables, and operators
+    token_pattern = r'\d+|[a-zA-Z]+|[()+\-*/]'
+    tokens = re.findall(token_pattern, expr)
+    print("Tokens:", tokens)  # Debugging statement to print the tokens
+    return tokens
 
-// generate temporary variable names
-char generateTempVar(int tempCount) {
-    return 't' + tempCount; // variable names like t1, t2, etc.
-}
+# Handle precedence
+def precedence(op):
+    if op == '+' or op == '-':
+        return 1
+    if op == '*' or op == '/':
+        return 2
+    return 0
 
-// tokenise the input string (handle parentheses)
-void tokenize(const char *expr, char tokens[MAX_LEN][MAX_LEN], int *tokenCount) {
-    int i = 0, j = 0;
-    while (expr[i] != '\0') {
-        if (isdigit(expr[i]) || isalpha(expr[i])) {
-            tokens[*tokenCount][j++] = expr[i++];
-            tokens[*tokenCount][j] = '\0';
-            (*tokenCount)++;
-            j = 0;
-        } else if (expr[i] == '+' || expr[i] == '-' || expr[i] == '*' || expr[i] == '/') {
-            tokens[*tokenCount][0] = expr[i++];
-            tokens[*tokenCount][1] = '\0';
-            (*tokenCount)++;
-        } else if (expr[i] == '(' || expr[i] == ')') {
-            tokens[*tokenCount][0] = expr[i++];
-            tokens[*tokenCount][1] = '\0';
-            (*tokenCount)++;
-        } else if (expr[i] == ' ') {
-            i++;  // skip spaces
-        } else {
-            i++;  // skip other characters
-        }
-    }
-}
+# Convert the tokens into TAC
+def parse_to_tac(tokens):
+    tac = []  # Stores the Three Address Code instructions
+    temp_count = 0  # Counter for temporary variables
+    stack = []  # Stack for operands and operators
 
-// handle precedence
-int precedence(char op) {
-    if (op == '+' || op == '-') return 1;
-    if (op == '*' || op == '/') return 2;
-    return 0;
-}
+    # Loop through each token
+    for token in tokens:
+        print(f"\nProcessing token: {token}")  # Debugging statement for each token
+        if token.isdigit() or token.isalpha():  # Operand (numbers or variables)
+            stack.append(token)
+            print(f"Stack after operand '{token}': {stack}")  # Debugging statement to print stack
+        elif token == '(':  # Left parenthesis - push to stack
+            stack.append('(')
+            print(f"Stack after '(': {stack}")  # Debugging statement to print stack
+        elif token == ')':  # Right parenthesis - pop until left parenthesis
+            print(f"Processing ')', Stack before popping: {stack}")  # Debugging before popping
+            while stack and stack[-1] != '(':
+                if len(stack) < 3:
+                    raise IndexError(f"Not enough operands or operators in the stack for popping. Stack state: {stack}")
+                
+                arg2 = stack.pop()
+                arg1 = stack.pop()
+                operator = stack.pop()
+                result = generate_temp_var(temp_count)
+                tac.append(f"{result} = {arg1} {operator} {arg2}")
+                stack.append(result)  # Push result back to stack
+                print(f"Generated TAC: {result} = {arg1} {operator} {arg2}, Stack after pushing result: {stack}")  # Debugging
+            if stack and stack[-1] == '(':  # Pop '('
+                stack.pop()
+            print(f"Stack after ')': {stack}")  # Debugging statement for stack after ')'
+        elif token in '+-*/':  # Operator
+            print(f"Processing operator: {token}, Stack before checking precedence: {stack}")  # Debugging before operator
+            while (len(stack) >= 3 and precedence(stack[-2]) >= precedence(token)):
+                if len(stack) < 3:
+                    raise IndexError(f"Not enough operands or operators in the stack for popping. Stack state: {stack}")
+                
+                arg2 = stack.pop()
+                arg1 = stack.pop()
+                operator = stack.pop()
+                result = generate_temp_var(temp_count)
+                tac.append(f"{result} = {arg1} {operator} {arg2}")
+                stack.append(result)  # Push result back to stack
+                print(f"Generated TAC: {result} = {arg1} {operator} {arg2}, Stack after pushing result: {stack}")  # Debugging
+            stack.append(token)
+            print(f"Stack after adding operator '{token}': {stack}")  # Debugging
 
-// convert the tokens into TAC
-void parseToTAC(char tokens[MAX_LEN][MAX_LEN], int tokenCount) {
-    TAC tac[MAX_LEN];
-    int tacCount = 0;
-    int tempCount = 0;
-    char stack[MAX_LEN];
-    int stackTop = -1;
-
-    // loop through each token
-    for (int i = 0; i < tokenCount; i++) {
-        char *token = tokens[i];
+    # Generate final result
+    print(f"\nStack before final processing: {stack}")  # Debugging before final popping
+    while len(stack) > 1:
+        if len(stack) < 3:
+            raise IndexError(f"Not enough operands or operators in the stack for final processing. Stack state: {stack}")
         
-        if (isdigit(token[0]) || isalpha(token[0])) {
-            // operand (numbers or variables)
-            stack[++stackTop] = token[0];
-        } else if (token[0] == '(') {
-            // left parenthesis - push to stack
-            stack[++stackTop] = '(';
-        } else if (token[0] == ')') {
-            // right parenthesis - pop until left parenthesis
-            while (stackTop >= 0 && stack[stackTop] != '(') {
-                char arg2 = stack[stackTop--];
-                char arg1 = stack[stackTop--];
-                char operator = stack[stackTop--];
-                char result = generateTempVar(tempCount++);
-                
-                tac[tacCount].op = operator;
-                tac[tacCount].result = result;
-                tac[tacCount].arg1 = arg1;
-                tac[tacCount].arg2 = arg2;
-                tacCount++;
-                
-                stack[++stackTop] = result;
-            }
-            stackTop--; // pop the '('
-        } else if (token[0] == '+' || token[0] == '-' || token[0] == '*' || token[0] == '/') {
-            // operator
-            while (stackTop >= 1 && precedence(stack[stackTop - 1]) >= precedence(token[0])) {
-                char arg2 = stack[stackTop--];
-                char arg1 = stack[stackTop--];
-                char operator = stack[stackTop--];
-                char result = generateTempVar(tempCount++);
-                
-                tac[tacCount].op = operator;
-                tac[tacCount].result = result;
-                tac[tacCount].arg1 = arg1;
-                tac[tacCount].arg2 = arg2;
-                tacCount++;
-                
-                stack[++stackTop] = result;
-            }
-            stack[++stackTop] = token[0];
-        }
-    }
+        arg2 = stack.pop()
+        arg1 = stack.pop()
+        operator = stack.pop()
+        result = generate_temp_var(temp_count)
+        tac.append(f"{result} = {arg1} {operator} {arg2}")
+        stack.append(result)  # Push final result back to stack
+        print(f"Generated TAC: {result} = {arg1} {operator} {arg2}, Stack after pushing result: {stack}")  # Debugging
 
-    // generate final result
-    while (stackTop >= 1) {
-        char arg2 = stack[stackTop--];
-        char arg1 = stack[stackTop--];
-        char operator = stack[stackTop--];
-        char result = generateTempVar(tempCount++);
-        
-        tac[tacCount].op = operator;
-        tac[tacCount].result = result;
-        tac[tacCount].arg1 = arg1;
-        tac[tacCount].arg2 = arg2;
-        tacCount++;
-    }
+    # Print TAC instructions
+    print("\nGenerated Three-Address Code:")
+    for instruction in tac:
+        print(instruction)
 
-    // print TAC instructions
-    printf("Three-Address Code:\n");
-    for (int i = 0; i < tacCount; i++) {
-        printf("%c = %c %c %c\n", tac[i].result, tac[i].arg1, tac[i].op, tac[i].arg2);
-    }
-}
+def main():
+    # Input expression
+    expr = "a + ( b * c ) / 5 - 8"
+    print("Input:")
+    print(expr)
 
-int main() {
-    // input expression
-    char expr[] = "a + (b * c) / 5 - 8";
-    printf("Input:\n");
-	printf("a + (b * c) / 5 - 8\n");
+    # Tokenize the expression
+    tokens = tokenize(expr)
 
-    char tokens[MAX_LEN][MAX_LEN];
-    int tokenCount = 0;
+    # Parse the tokens to generate Three Address Code (TAC)
+    parse_to_tac(tokens)
 
-    tokenize(expr, tokens, &tokenCount);
-
-    parseToTAC(tokens, tokenCount);
-
-    return 0;
-}
+if __name__ == "__main__":
+    main()
