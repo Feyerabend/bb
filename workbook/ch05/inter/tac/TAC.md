@@ -4,7 +4,7 @@
 Besides expressions, a complete TAC representation also includes constructs for control flow,
 function calls, memory management, and other programming features.
 
-1. Basic Concepts
+__1. Basic Concepts__
 
 - Instruction Format: Each TAC instruction has at most three operands:
   * x = y op z (binary operation)
@@ -14,7 +14,7 @@ function calls, memory management, and other programming features.
 - Labels: Used to denote targets for jumps and branches.
 
 
-2. Representing Expressions
+__2. Representing Expressions__
 
 TAC can represent arithmetic, logical, and relational expressions:
 - Arithmetic: t1 = a + b
@@ -29,7 +29,7 @@ t2 = t1 * z
 result = t2
 ```
 
-3. Conditional Branching
+__3. Conditional Branching__
 
 TAC supports conditional statements using comparisons and jumps:
 - if-goto: Conditional jump to a label if a condition is true.
@@ -47,7 +47,7 @@ y = y - 1
 label_2:
 ```
 
-4. Loops
+__4. Loops__
 
 Loops are represented using labels and jumps:
 - While Loop:
@@ -74,7 +74,7 @@ goto label_1
 label_2:
 ```
 
-5. Function Calls
+__5. Function Calls__
 
 TAC handles function calls with param, call, and return instructions:
 - param: Push a parameter onto the call stack.
@@ -90,7 +90,7 @@ call add, 2  # Call `add` with 2 parameters
 result = t1  # Capture the return value in `result`
 ```
 
-6. Arrays and Memory
+__6. Arrays and Memory__
 
 TAC can represent arrays and memory access:
 - Array Access:
@@ -108,7 +108,7 @@ t2 = t1 + 1
 arr[i] = t2
 ```
 
-7. Object-Oriented Features
+__7. Object-Oriented Features__
 
 For object-oriented languages, TAC can represent method calls and member access:
 - Member Access: t1 = obj.field
@@ -122,7 +122,7 @@ call obj.method, 1
 t1 = t2  # Capture the return value
 ```
 
-8. Error Handling
+__8. Error Handling__
 
 Control flow for exceptions can be represented using labels and jumps:
 
@@ -136,16 +136,18 @@ goto label_end
 label_end:
 ```
 
-9. Advanced Features
-- Phi Functions (for SSA): To handle merging variables at control flow joins.
+__9. Advanced Features__
+
+Phi Functions (for SSA): To handle merging variables at control flow joins.
 
 ```assembly
 t1 = phi(x1, x2)
 ```
 
-- Inline Assembly: To include specific low-level instructions directly.
+Inline Assembly: To include specific low-level instructions directly.
 
-Example: Full TAC Program
+
+### Example: Full TAC Program
 
 Here’s a TAC representation of a simple program:
 
@@ -172,7 +174,7 @@ label_base_case:
 return 1
 ```
 
-10. Benefits of TAC
+Benefits of TAC
 - Simplified Analysis: Easier for compilers to analyze, optimize, and generate machine code.
 - Portability: Language-neutral representation simplifies targeting multiple architectures.
 - Optimisation: Enables techniques like dead-code elimination, constant folding, and register allocation.
