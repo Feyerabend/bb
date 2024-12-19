@@ -47,24 +47,24 @@ class TACParser:
         return {"type": "assignment", "left": left, "right": self.parse_expression(right)}
 
     def parse_expression(self, expr):
-        # Check if it's a constant
+
+        # constant?
         expr = expr.strip()
         if self.is_constant(expr):
             return {"type": "term", "value": expr, "is_constant": True}
         
-        # Check for parentheses to handle operator precedence
+        # parentheses to handle operator precedence
         if expr.startswith('(') and expr.endswith(')'):
-            return self.parse_expression(expr[1:-1])  # Recursively parse inside parentheses
+            return self.parse_expression(expr[1:-1])  # recursively parse inside parentheses
 
-        # Split by operators, allowing multiple-digit or multi-character operators like "=="
+        # split by operators, allowing multiple-digit or multi-character operators like "==" -- works?
         tokens = re.split(r"([+\-*/<>=!&|]+)", expr)
         tokens = [token.strip() for token in tokens if token.strip()]
 
-        if len(tokens) == 1:
-            # Single term (either variable or constant)
+        if len(tokens) == 1: # single term (either variable or constant)
             return {"type": "term", "value": tokens[0], "is_constant": self.is_constant(tokens[0])}
         elif len(tokens) == 3:
-            # Binary operation
+            # binary operation
             left = self.parse_expression(tokens[0])
             operator = tokens[1]
             right = self.parse_expression(tokens[2])
@@ -110,7 +110,7 @@ class TACParser:
         """
         Check if the value is a constant (numeric).
         """
-        return re.match(r"^\d+$", value) is not None  # Match integer constants
+        return re.match(r"^\d+$", value) is not None  # integer constants
 
 
 def test_tac_parser():

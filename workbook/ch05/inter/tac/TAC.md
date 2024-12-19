@@ -184,7 +184,7 @@ Benefits of TAC
 
 ```ebnf
 program       = { statement } ;
-statement     = assignment | if_statement | goto_statement | label | print_statement | function_call | return_statement ;
+statement     = assignment | if_statement | goto_statement | label | print_statement | function_call | return_statement | halt_statement ;
 assignment    = identifier "=" expression ;
 expression    = term [ operator term ] ;
 term          = identifier | number ;
@@ -193,10 +193,15 @@ if_statement  = "if" expression "goto" label ;
 goto_statement = "goto" label ;
 label         = "label" identifier ":" ;
 print_statement = "print" identifier ;
+halt_statement = "halt" ;
 function_call = "call" identifier "," number ;
 return_statement = "return" [ identifier | number ] ;
 identifier    = letter { letter | digit | "_" } ;
 number        = digit { digit } ;
 ```
 
+
+
+statement = assignment | if_statement | goto_statement | label | print_statement | function_call | return_statement | halt_statement ;
+halt_statement = "halt" ;
 ..
