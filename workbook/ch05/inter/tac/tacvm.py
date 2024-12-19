@@ -215,21 +215,3 @@ program = [
 print("\ncount from 10")
 vm = VirtualMachine(program)
 vm.run()
-
-
-
-
-
-'''
-        elif inst_type == "call":
-            func_name = instruction["identifier"]
-            arg_count = instruction["arg_count"]
-            self.stack.append((self.pc, self.memory.copy()))  # current state onto stack
-            self.pc = self.labels[func_name] - 1
-
-        elif inst_type == "return":
-            if self.stack:
-                self.pc, self.memory = self.stack.pop()
-            else:
-                self.running = False
-'''
