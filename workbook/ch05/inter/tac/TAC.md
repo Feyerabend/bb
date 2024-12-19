@@ -6,12 +6,12 @@ function calls, memory management, and other programming features.
 
 1. Basic Concepts
 
-  - Instruction Format: Each TAC instruction has at most three operands:
-    - x = y op z (binary operation)
-	  - x = op y (unary operation)
-	  - x = y (assignment)
-	- Temporary Variables: Intermediate results are stored in temporary variables, usually denoted as t1, t2, etc.
-	- Labels: Used to denote targets for jumps and branches.
+- Instruction Format: Each TAC instruction has at most three operands:
+  - x = y op z (binary operation)
+	- x = op y (unary operation)
+	- x = y (assignment)
+- Temporary Variables: Intermediate results are stored in temporary variables, usually denoted as t1, t2, etc.
+- Labels: Used to denote targets for jumps and branches.
 
 
 2. Representing Expressions
