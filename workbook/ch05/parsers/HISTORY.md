@@ -6,11 +6,14 @@ to determine its grammatical structure based on formal rules. The history of par
 of formal languages and computation, with key milestones that shaped its role in programming and computer science.
 
 The origins of parsing trace back to the 1940s and 1950s, during the early days of computing when the foundations of
-formal languages were laid by mathematicians such as Alan Turing and Noam Chomsky. Turing's work on computation and
+formal languages were laid by mathematicians such as Alan Turing and Noam Chomsky[^chom]. Turing's work on computation and
 his introduction of the Turing machine played a critical role in the development of automata theory, which forms
 the basis for parsing. In the 1950s, Chomsky introduced his hierarchy of grammars, categorising them into regular,
 context-free, context-sensitive, and recursively enumerable types. These classifications continue to influence
 parsing techniques used today.
+
+[^chom]: The book I like most and can recommend is his early work: Chomsky, N. (1957). *Syntactic Structures*.
+The Hague: Mouton.
 
 In the early days of programming, parsing was often done manually or using rudimentary techniques, especially in
 the context of assembly languages and the first high-level languages like Fortran. As programming languages evolved,
