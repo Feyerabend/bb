@@ -178,3 +178,25 @@ Benefits of TAC
 - Simplified Analysis: Easier for compilers to analyze, optimize, and generate machine code.
 - Portability: Language-neutral representation simplifies targeting multiple architectures.
 - Optimisation: Enables techniques like dead-code elimination, constant folding, and register allocation.
+
+
+### EBNF
+
+```ebnf
+program       = { statement } ;
+statement     = assignment | if_statement | goto_statement | label | print_statement | function_call | return_statement ;
+assignment    = identifier "=" expression ;
+expression    = term [ operator term ] ;
+term          = identifier | number ;
+operator      = "+" | "-" | "*" | "/" | "&&" | "||" | "<" | "<=" | ">" | ">=" | "==" | "!=" ;
+if_statement  = "if" expression "goto" label ;
+goto_statement = "goto" label ;
+label         = "label" identifier ":" ;
+print_statement = "print" identifier ;
+function_call = "call" identifier "," number ;
+return_statement = "return" [ identifier | number ] ;
+identifier    = letter { letter | digit | "_" } ;
+number        = digit { digit } ;
+```
+
+..
