@@ -132,6 +132,45 @@ class VirtualMachine:
         return memory_usage + stack_usage
 
 
+
+factorial_program = [
+    {"type": "label", "identifier": "start"},
+    {"type": "assignment", "dest": "n", "rhs": {"type": "term", "value": "5"}},  # input number 5! = 120
+    {"type": "assignment", "dest": "result", "rhs": {"type": "term", "value": "1"}},
+    {"type": "label", "identifier": "loop"},
+    {"type": "if", "condition": {"type": "binary_op", "left": {"type": "term", "value": "n"}, "operator": "<=", "right": {"type": "term", "value": "0"}}, "label": "end"},
+    {"type": "assignment", "dest": "result", "rhs": {"type": "binary_op", "left": {"type": "term", "value": "result"}, "operator": "*", "right": {"type": "term", "value": "n"}}},
+    {"type": "assignment", "dest": "n", "rhs": {"type": "binary_op", "left": {"type": "term", "value": "n"}, "operator": "-", "right": {"type": "term", "value": "1"}}},
+    {"type": "goto", "label": "loop"},
+    {"type": "label", "identifier": "end"},
+    {"type": "print", "value": "result"},
+    {"type": "halt"},
+]
+
+vm = VirtualMachine(factorial_program)
+vm.run()
+
+fibonacci_program = [
+    {"type": "label", "identifier": "start"},
+    {"type": "assignment", "dest": "a", "rhs": {"type": "term", "value": "0"}},
+    {"type": "assignment", "dest": "b", "rhs": {"type": "term", "value": "1"}},
+    {"type": "assignment", "dest": "limit", "rhs": {"type": "term", "value": "10"}},  # 10 terms
+    {"type": "assignment", "dest": "count", "rhs": {"type": "term", "value": "0"}},
+    {"type": "label", "identifier": "loop"},
+    {"type": "if", "condition": {"type": "binary_op", "left": {"type": "term", "value": "count"}, "operator": ">=", "right": {"type": "term", "value": "limit"}}, "label": "end"},
+    {"type": "print", "value": "a"},
+    {"type": "assignment", "dest": "temp", "rhs": {"type": "term", "value": "b"}},
+    {"type": "assignment", "dest": "b", "rhs": {"type": "binary_op", "left": {"type": "term", "value": "a"}, "operator": "+", "right": {"type": "term", "value": "b"}}},
+    {"type": "assignment", "dest": "a", "rhs": {"type": "term", "value": "temp"}},
+    {"type": "assignment", "dest": "count", "rhs": {"type": "binary_op", "left": {"type": "term", "value": "count"}, "operator": "+", "right": {"type": "term", "value": "1"}}},
+    {"type": "goto", "label": "loop"},
+    {"type": "label", "identifier": "end"},
+    {"type": "halt"},
+]
+
+vm = VirtualMachine(fibonacci_program)
+vm.run()
+
 program = [
     {"type": "label", "identifier": "start"},
     {"type": "assignment", "dest": "x", "rhs": {"type": "term", "value": "10"}},
