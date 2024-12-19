@@ -98,14 +98,28 @@ class VirtualMachine:
         elif inst_type == "call":
             func_name = instruction["identifier"]
             arg_count = instruction["arg_count"]
-            self.stack.append((self.pc, self.memory.copy()))  # current state onto stack
-            self.pc = self.labels[func_name] - 1
+
+            self.stack.append((self.pc + 1, self.memory.copy()))
+
+            for i in range(arg_count):
+                arg_key = f"arg{i}"
+                if arg_key in self.memory:
+                    self.memory[arg_key] = self.memory[arg_key]
+                else:
+                    self.memory[arg_key] = 0  # 0, if no argument
+
+            if func_name in self.labels:
+                self.pc = self.labels[func_name] - 1  # -1 to offset PC increment
+            else:
+                raise ValueError(f"Undefined function label: {func_name}")
 
         elif inst_type == "return":
             if self.stack:
+                # restore program counter and memory state
                 self.pc, self.memory = self.stack.pop()
+                self.pc -= 1  # -1 to offset PC increment
             else:
-                self.running = False
+                self.running = False  # no stack frames; "halt"
 
         elif inst_type == "halt":
             self.running = False
@@ -147,6 +161,7 @@ factorial_program = [
     {"type": "halt"},
 ]
 
+print("\nfactorial")
 vm = VirtualMachine(factorial_program)
 vm.run()
 
@@ -168,8 +183,24 @@ fibonacci_program = [
     {"type": "halt"},
 ]
 
+print("\nfibonacci")
 vm = VirtualMachine(fibonacci_program)
 vm.run()
+
+function_call_program = [
+    {"type": "label", "identifier": "start"},
+    {"type": "assignment", "dest": "arg0", "rhs": {"type": "term", "value": "42"}},  # 42 as an argument
+    {"type": "call", "identifier": "hello", "arg_count": 1},
+    {"type": "halt"},
+    {"type": "label", "identifier": "hello"},
+    {"type": "print", "value": "arg0"},  # print argument
+    {"type": "return"},
+]
+
+print("\nfunction call with arguments")
+vm = VirtualMachine(function_call_program)
+vm.run()
+
 
 program = [
     {"type": "label", "identifier": "start"},
@@ -181,5 +212,24 @@ program = [
     {"type": "halt"},
 ]
 
+print("\ncount from 10")
 vm = VirtualMachine(program)
 vm.run()
+
+
+
+
+
+'''
+        elif inst_type == "call":
+            func_name = instruction["identifier"]
+            arg_count = instruction["arg_count"]
+            self.stack.append((self.pc, self.memory.copy()))  # current state onto stack
+            self.pc = self.labels[func_name] - 1
+
+        elif inst_type == "return":
+            if self.stack:
+                self.pc, self.memory = self.stack.pop()
+            else:
+                self.running = False
+'''
