@@ -1,5 +1,5 @@
 
-## TAC: Three Address Code (TAC)
+## Three Address Code (TAC)
 
 Besides expressions, a complete TAC representation also includes constructs for control flow,
 function calls, memory management, and other programming features.
@@ -7,9 +7,9 @@ function calls, memory management, and other programming features.
 __1. Basic Concepts__
 
 - Instruction Format: Each TAC instruction has at most three operands:
-  * x = y op z (binary operation)
-  * x = op y (unary operation)
-  * x = y (assignment)
+  * `x = y op z` (binary operation)
+  * `x = op y` (unary operation)
+  * `x = y` (assignment)
 - Temporary Variables: Intermediate results are stored in temporary variables, usually denoted as t1, t2, etc.
 - Labels: Used to denote targets for jumps and branches.
 
@@ -17,9 +17,9 @@ __1. Basic Concepts__
 __2. Representing Expressions__
 
 TAC can represent arithmetic, logical, and relational expressions:
-- Arithmetic: t1 = a + b
-- Logical: t2 = a && b
-- Relational: t3 = a < b
+- Arithmetic: `t1 = a + b`
+- Logical: `t2 = a && b`
+- Relational: `t3 = a < b`
 
 Example:
 
@@ -32,8 +32,8 @@ result = t2
 __3. Conditional Branching__
 
 TAC supports conditional statements using comparisons and jumps:
-- if-goto: Conditional jump to a label if a condition is true.
-- goto: Unconditional jump to a label.
+- `if-goto`: Conditional jump to a label if a condition is true.
+- `goto`: Unconditional jump to a label.
 
 Example (if-else):
 
@@ -77,9 +77,9 @@ label_2:
 __5. Function Calls__
 
 TAC handles function calls with param, call, and return instructions:
-- param: Push a parameter onto the call stack.
-- call: Invoke a function with a specified number of parameters.
-- return: Return a value from a function.
+- `param`: Push a parameter onto the call stack.
+- `call`: Invoke a function with a specified number of parameters.
+- `return`: Return a value from a function.
 
 Example (function call):
 
@@ -199,9 +199,4 @@ return_statement = "return" [ identifier | number ] ;
 identifier    = letter { letter | digit | "_" } ;
 number        = digit { digit } ;
 ```
-
-
-
-statement = assignment | if_statement | goto_statement | label | print_statement | function_call | return_statement | halt_statement ;
-halt_statement = "halt" ;
 ..
