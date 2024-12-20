@@ -94,11 +94,11 @@ __6. Arrays and Memory__
 
 TAC can represent arrays and memory access:
 - Array Access:
-  - Read: t1 = arr[i]
-  - Write: arr[i] = t2
+  - Read: `t1 = arr[i]`
+  - Write: `arr[i] = t2`
 - Pointers:
-  - Dereference: t3 = *p
-  - Address-of: p = &x
+  - Dereference: `t3 = *p`
+  - Address-of: `p = &x`
 
 Example:
 
@@ -111,8 +111,8 @@ arr[i] = t2
 __7. Object-Oriented Features__
 
 For object-oriented languages, TAC can represent method calls and member access:
-- Member Access: t1 = obj.field
-- Method Calls: t2 = obj.method()
+- Member Access: `t1 = obj.field`
+- Method Calls: `t2 = obj.method()`
 
 Example:
 
@@ -188,14 +188,15 @@ statement     = assignment | if_statement | goto_statement | label | print_state
 assignment    = identifier "=" expression ;
 expression    = term [ operator term ] ;
 term          = identifier | number ;
-operator      = "+" | "-" | "*" | "/" | "&&" | "||" | "<" | "<=" | ">" | ">=" | "==" | "!=" ;
-if_statement  = "if" expression "goto" label ;
+operator      = "+" | "-" | "*" | "/" | "&&" | "||" ;
+condition     = "<" | "<=" | ">" | ">=" | "==" | "!=" ;
+if_statement  = "if" condition "goto" label ;
 goto_statement = "goto" label ;
 label         = "label" identifier ":" ;
 print_statement = "print" identifier ;
-halt_statement = "halt" ;
 function_call = "call" identifier "," number ;
 return_statement = "return" [ identifier | number ] ;
+halt_statement = "halt" ;
 identifier    = letter { letter | digit | "_" } ;
 number        = digit { digit } ;
 ```

@@ -10,7 +10,7 @@ class SSAConverter:
         """
         Increment and return a new version for a variable. Constants remain unchanged.
         """
-        if var.isdigit():  # Constants remain unchanged
+        if var.isdigit():  # Constants remain unchanged - more digits?
             return var
         if var not in self.variable_versions:
             self.variable_versions[var] = 0
