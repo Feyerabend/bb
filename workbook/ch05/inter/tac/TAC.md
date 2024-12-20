@@ -180,24 +180,103 @@ Benefits of TAC
 - Optimisation: Enables techniques like dead-code elimination, constant folding, and register allocation.
 
 
-### EBNF
+
+### Annotated TAC
+
+Annotated Three-Address Code (TAC) enhances plain TAC by including additional metadata and structure.
+This version is more programmatically accessible, allowing for easier integration into compilers,
+interpreters, or analysis tools. While the annotated TAC format differs slightly from plain TAC, it
+represents the same underlying logic.
+
+#### EBNF
 
 ```ebnf
-program       = { statement } ;
-statement     = assignment | if_statement | goto_statement | label | print_statement | function_call | return_statement | halt_statement ;
-assignment    = identifier "=" expression ;
-expression    = term [ operator term ] ;
-term          = identifier | number ;
-operator      = "+" | "-" | "*" | "/" | "&&" | "||" ;
-condition     = "<" | "<=" | ">" | ">=" | "==" | "!=" ;
-if_statement  = "if" condition "goto" label ;
-goto_statement = "goto" label ;
-label         = "label" identifier ":" ;
-print_statement = "print" identifier ;
-function_call = "call" identifier "," number ;
-return_statement = "return" [ identifier | number ] ;
-halt_statement = "halt" ;
-identifier    = letter { letter | digit | "_" } ;
-number        = digit { digit } ;
+program           = { statement } ;
+statement         = assignment 
+                  | if_statement 
+                  | goto_statement 
+                  | label 
+                  | print_statement 
+                  | function_call 
+                  | return_statement 
+                  | halt_statement ;
+assignment        = identifier "=" expression ;
+expression        = term [ operator term ] ;
+term              = identifier | number ;
+operator          = "+" | "-" | "*" | "/" | "&&" | "||" ;
+condition         = "<" | "<=" | ">" | ">=" | "==" | "!=" ;
+if_statement      = "if" condition "goto" label ;
+goto_statement    = "goto" label ;
+label             = "label" identifier ":" ;
+print_statement   = "print" identifier ;
+function_call     = "call" identifier "," number ;
+return_statement  = "return" [ identifier | number ] ;
+halt_statement    = "halt" ;
+identifier        = letter { letter | digit | "_" } ;
+number            = digit { digit } ;
 ```
+
+#### Example: Factorial Program
+
+Here is an example of a factorial program written in annotated TAC:
+
+```python
+factorial_program = [
+    {"type": "label", "identifier": "start"},
+    {"type": "assignment", "dest": "n", "rhs": {"type": "term", "value": "5"}},  # Input: calculate 5! = 120
+    {"type": "assignment", "dest": "result", "rhs": {"type": "term", "value": "1"}},
+    {"type": "label", "identifier": "loop"},
+    {"type": "if", "condition": {
+        "type": "binary_op",
+        "left": {"type": "term", "value": "n"},
+        "operator": "<=",
+        "right": {"type": "term", "value": "0"}
+    }, "label": "end"},
+    {"type": "assignment", "dest": "result", "rhs": {
+        "type": "binary_op",
+        "left": {"type": "term", "value": "result"},
+        "operator": "*",
+        "right": {"type": "term", "value": "n"}
+    }},
+    {"type": "assignment", "dest": "n", "rhs": {
+        "type": "binary_op",
+        "left": {"type": "term", "value": "n"},
+        "operator": "-",
+        "right": {"type": "term", "value": "1"}
+    }},
+    {"type": "goto", "label": "loop"},
+    {"type": "label", "identifier": "end"},
+    {"type": "print", "value": "result"},
+    {"type": "halt"},
+]
+```
+
+#### Equivalent Plain TAC Representation
+
+The annotated TAC program can be translated into plain TAC, which is closer to traditional assembly-like syntax:
+
+```assembly
+label start:
+n = 5
+result = 1
+label loop:
+if n <= 0 goto end
+result = result * n
+n = n - 1
+goto loop
+label end:
+print result
+halt
+```
+
+Improvements in the Annotated TAC
+1. *Explicit Metadata*: Each statement includes its type, allowing for direct parsing and understanding.
+2. *Structured Conditions*: Conditions are represented as binary operations, making them easier to evaluate programmatically.
+3. *Semantic Clarity*: Labels, assignments, and operations are well-defined, reducing ambiguity.
+4. *Enhanced Debugging*: Metadata and structured fields simplify error tracing and debugging.
+
+This annotated TAC format offers an intuitive way to model and manipulate programs while retaining compatibility
+with the simpler plain TAC representation above.
+
+
 ..
