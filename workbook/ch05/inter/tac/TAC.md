@@ -223,7 +223,7 @@ Here is an example of a factorial program written in annotated TAC:
 ```python
 factorial_program = [
     {"type": "label", "identifier": "start"},
-    {"type": "assignment", "dest": "n", "rhs": {"type": "term", "value": "5"}},  # Input: calculate 5! = 120
+    {"type": "assignment", "dest": "n", "rhs": {"type": "term", "value": "5"}},  # 5! = 120
     {"type": "assignment", "dest": "result", "rhs": {"type": "term", "value": "1"}},
     {"type": "label", "identifier": "loop"},
     {"type": "if", "condition": {
