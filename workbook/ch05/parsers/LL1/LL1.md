@@ -26,7 +26,7 @@ Here's the grammar with support for numbers, floating points, and operators:
 ### Parsing Table
 
 ```text
-Non-terminal	num	(	+	-	*	/	%	)	$	^
+NT	num	(	+	-	*	/	%	)	$	^
 E	T E'	T E'								
 E'			+ T E'	- T E'	ε	ε	ε	ε	ε	
 T	F T'	F T'								
@@ -35,6 +35,7 @@ F	num	( E )								num ^ F
 ```
 
 Legend:
+- NT is Non-terminal
 - $ is the end-of-input marker.
 - Cells contain the production to apply or are empty if the input is invalid for that non-terminal.
 
