@@ -12,11 +12,11 @@ parser will recognise. These include operators (e.g., PLUS, MINUS, TIMES, etc.),
 and access operators like member access (PERIOD) and array indexing (LBRACKET, RBRACKET).
 
 
-### Tokenization (Lexer)
+### Tokenisation (Lexer)
 
-The tokenize function is responsible for converting an input string into a list of tokens that the parser can
+The tokenise function is responsible for converting an input string into a list of tokens that the parser can
 process. Each token corresponds to a meaningful element in the input string (e.g. an identifier, number,
-operator, or symbol). The token_list holds these tokens, and the nextsym function retrieves the next token
+operator, or symbol). The `token_list` holds these tokens, and the nextsym function retrieves the next token
 for processing.
 
 The lexer recognizes:
@@ -42,7 +42,7 @@ The ASTNode class represents nodes in the Abstract Syntax Tree (AST). Each node 
 - `member`: For member access, stores the name of the member being accessed.
 - `index`: For array access, stores the index expression.
 
-The nnode function creates a new ASTNode with the specified type.
+The `nnode()` function creates a new ASTNode with the specified type.
 
 ### The Parser
 
@@ -78,31 +78,31 @@ This results in a correct handling of operator precedence when constructing the 
 __Test Case 1: Array Indexing and Assignment__
 
 *Input: "array[3] = object.property + 5"*
-1. parse_expression starts the parsing process and recognizes the assignment (=) operator.
-2. parse_term handles the left-hand side of the assignment (array[3]), which involves array indexing.
+1. `parse_expression` starts the parsing process and recognizes the assignment (=) operator.
+2. `parse_term` handles the left-hand side of the assignment (array[3]), which involves array indexing.
    It constructs an ARRAY_ACCESS node.
-3. parse_factor is called to parse the right-hand side (object.property + 5), which involves member
+3. `parse_factor` is called to parse the right-hand side (object.property + 5), which involves member
    access (object.property). This constructs a MEMBER_ACCESS node.
 4. The result is an AST representing the assignment with array indexing and member access.
 
 __Test Case 2: Simple Assignment__
 
 *Input: "x = 3"*
-1. parse_expression starts the parsing process and recognizes the assignment (=) operator.
+1. `parse_expression` starts the parsing process and recognizes the assignment (=) operator.
 2. The left-hand side is parsed as an identifier (x), and the right-hand side is parsed as a number (3).
 3. The result is an ASSIGNMENT AST node representing the assignment.
 
 __Test Case 3: Member Access__
 
 *Input: "object.property"*
-1. parse_expression starts the parsing process and calls parse_factor to handle the identifier object.
+1. `parse_expression` starts the parsing process and calls parse_factor to handle the identifier object.
 2. It then detects the member access (.) and constructs a MEMBER_ACCESS node for property.
 3. The result is an AST representing the member access.
 
 
-### Output of the AST
+#### Output of the AST
 
-The print_ast function recursively prints the structure of the AST in a readable format. It shows the
+The `print_ast()` function recursively prints the structure of the AST in a readable format. It shows the
 type of each node, along with the values for identifiers, numbers, and any additional attributes like
 member (for member access) and index (for array indexing).
 
