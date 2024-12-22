@@ -151,7 +151,7 @@ def factor():
     elif accept(LPAREN):
         n = expression()
         expect(RPAREN)
-    elif recognize(MINUS):  # Unary minus handling
+    elif recognize(MINUS):  # unary minus handling
         nextsym()
         n = factor()
         unary_minus = nnode(UMINUS)
@@ -182,7 +182,7 @@ def term():
 
 # expressions to handle addition, subtraction, etc.
 def expression():
-    if recognize(MINUS):  # Unary minus handling at expression level
+    if recognize(MINUS):  # unary minus handling at expression level
         n = nnode(UMINUS)
         nextsym()
         n.node1 = term()
@@ -223,10 +223,10 @@ def print_tree(node, depth=0):
         print_tree(node.node1, depth + 2)
 
 def run_parser(input_str):
-    tokenize(input_str)  # Tokenize the input string
-    result = expression()  # Start parsing from the expression level
+    tokenize(input_str)  # tokenize input string
+    result = expression()  # start parsing from expression level
     print("Parsed AST:")
-    print_tree(result)  # Print the Abstract Syntax Tree (AST)
+    print_tree(result)  # print Abstract Syntax Tree (AST)
 
 # Test Case 1: Expression with floating-point numbers and unary minus
 sample_input = "(a + 3.5) * (c - 1.2) + 3 * -4.5"
