@@ -35,12 +35,12 @@ by the parser to recognize specific language constructs.
 AST Nodes
 
 The ASTNode class represents nodes in the Abstract Syntax Tree (AST). Each node can store:
-- type: The type of the node (e.g., ASSIGNMENT, MEMBER_ACCESS, ARRAY_ACCESS, OP for operators).
-- node1 and node2: References to child nodes, allowing for binary tree-like structures for operations.
-- value: The value of the node (used for literals such as numbers).
-- name: The name of an identifier (used for variable names).
-- member: For member access, stores the name of the member being accessed.
-- index: For array access, stores the index expression.
+- `type`: The type of the node (e.g., ASSIGNMENT, MEMBER_ACCESS, ARRAY_ACCESS, OP for operators).
+- `node1` and `node2`: References to child nodes, allowing for binary tree-like structures for operations.
+- `value`: The value of the node (used for literals such as numbers).
+- `name`: The name of an identifier (used for variable names).
+- `member`: For member access, stores the name of the member being accessed.
+- `index`: For array access, stores the index expression.
 
 The nnode function creates a new ASTNode with the specified type.
 
@@ -49,14 +49,14 @@ The nnode function creates a new ASTNode with the specified type.
 The parser consists of several functions that parse specific parts of an expression and build the
 corresponding AST.
 
-- parse_factor: This function handles the lowest-level constructs (e.g., identifiers, numbers, parentheses,
+- `parse_factor`: This function handles the lowest-level constructs (e.g. identifiers, numbers, parentheses,
   member access, and array indexing). If it encounters an identifier, it will check for possible member
   access or array indexing and build the corresponding AST nodes.
 
-- parse_expression: This function handles expressions that involve assignments and operators. It handles
+- `parse_expression`: This function handles expressions that involve assignments and operators. It handles
   the assignment (=) operator and various arithmetic (+, -, etc.) and logical operators (OR, XORSYM).
 
-- parse_term: This function handles terms that involve multiplication (*), division (/), modulus (%),
+- `parse_term`: This function handles terms that involve multiplication (*), division (/), modulus (%),
   and logical AND (&).
 
 Each of these functions processes tokens in a left-to-right order and recursively constructs an AST by
@@ -66,9 +66,9 @@ linking nodes together for operations.
 #### Operator Precedence
 
 The precedence of operations is handled by the order in which the parsing functions are invoked:
-- parse_factor handles the lowest precedence operations (e.g., literal values and parentheses).
-- parse_term handles multiplication, division, modulus, and logical AND (higher precedence).
-- parse_expression handles addition, subtraction, and logical OR and XOR (lowest precedence).
+- `parse_factor` handles the lowest precedence operations (e.g. literal values and parentheses).
+- `parse_term` handles multiplication, division, modulus, and logical AND (higher precedence).
+- `parse_expression` handles addition, subtraction, and logical OR and XOR (lowest precedence).
 
 This results in a correct handling of operator precedence when constructing the AST.
 
@@ -77,7 +77,7 @@ This results in a correct handling of operator precedence when constructing the 
 
 __Test Case 1: Array Indexing and Assignment__
 
-Input: "array[3] = object.property + 5"
+*Input: "array[3] = object.property + 5"*
 1. parse_expression starts the parsing process and recognizes the assignment (=) operator.
 2. parse_term handles the left-hand side of the assignment (array[3]), which involves array indexing.
    It constructs an ARRAY_ACCESS node.
@@ -87,14 +87,14 @@ Input: "array[3] = object.property + 5"
 
 __Test Case 2: Simple Assignment__
 
-Input: "x = 3"
+*Input: "x = 3"*
 1. parse_expression starts the parsing process and recognizes the assignment (=) operator.
 2. The left-hand side is parsed as an identifier (x), and the right-hand side is parsed as a number (3).
 3. The result is an ASSIGNMENT AST node representing the assignment.
 
 __Test Case 3: Member Access__
 
-Input: "object.property"
+*Input: "object.property"*
 1. parse_expression starts the parsing process and calls parse_factor to handle the identifier object.
 2. It then detects the member access (.) and constructs a MEMBER_ACCESS node for property.
 3. The result is an AST representing the member access.
