@@ -108,14 +108,17 @@ The grammar for the language defined by this parser can be described using EBNF.
 ```
 
 Explanation:
-- An expression consists of one or more terms, where terms are combined by addition (+), subtraction (-), OR, or XOR.
-- A term consists of one or more factors, which are combined using multiplication (*), division (/), modulus (%), or AND.
-- A factor can be an identifier, a number, a parenthesized expression, or a unary minus applied to another factor.
+- An expression consists of one or more terms, where terms are combined by
+  addition (+), subtraction (-), OR, or XOR.
+- A term consists of one or more factors, which are combined using
+  multiplication (*), division (/), modulus (%), or AND.
+- A factor can be an identifier, a number, a parenthesized expression,
+  or a unary minus applied to another factor.
 
 This grammar reflects the structure of arithmetic and logical operations allowed by the language.
 
 How the Code Works:
-1. *Tokenization*: The tokenize() function processes the input string and produces a list of tokens,
+1. *Tokenization*: The tokenise() function processes the input string and produces a list of tokens,
    which are the basic building blocks for parsing.
 2. *Parsing*: The recursive functions factor(), term(), and expression() build the Abstract Syntax
    Tree (AST) based on the token sequence produced by the lexer.
