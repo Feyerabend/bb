@@ -1,11 +1,6 @@
 
 ## LL(1) Parsing
 
-Revised Plan with a Parsing Table
-1. *Define the Grammar and EBNF*: We rewrite the grammar and ensure it's in LL(1) form.
-2. *Construct the Parsing Table*: The table maps (non-terminal, lookahead token) to the production rule to apply.
-3. *Implement Table-Driven Parsing*: Use the parsing table to decide which production to apply based on the current token and non-terminal.
-
 
 ### Grammar (EBNF)
 
