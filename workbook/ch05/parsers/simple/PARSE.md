@@ -8,7 +8,7 @@ AND, OR, XOR, and unary minus. The parser constructs an Abstract Syntax Tree (AS
 the parsed input, which can then be used for evaluation or further processing.
 
 
-1. Token Types (Symbol Constants):
+1. *Token Types (Symbol Constants)*:
    The code defines constants for the various token types that the lexer (tokenizer) will recognize.
    These tokens are used by the parser to identify different elements of the input.
 	- Identifiers (IDENT): Represent variable names, such as a, b, x.
@@ -20,7 +20,7 @@ the parsed input, which can then be used for evaluation or further processing.
 	- Period (PERIOD): Not specifically used in this example but can represent a decimal point or
       another operator (context-dependent).
 
-2. Lexer (Tokenizer):
+2. *Lexer (Tokenizer)*:
    The lexer is responsible for converting the input string into a sequence of tokens that the parser
    can understand. It processes each character in the input and classifies it into one of the defined
    token types.
@@ -36,30 +36,30 @@ the parsed input, which can then be used for evaluation or further processing.
     For the input string "(a + 3.5) * (c - 1.2) + 3 * -4.5", the lexer generates tokens such as
     LPAREN, IDENT("a"), PLUS, FLOAT(3.5), and so on.
 
-3. Parser:
+3. *Parser*:
    The parser uses recursive descent parsing to handle different levels of expressions. It constructs
    an Abstract Syntax Tree (AST) as it processes the tokens.
 
     Key Parser Functions:
-	- factor(): This function handles the base components of an expression—either a number (integer or
+	- `factor()`: This function handles the base components of an expression—either a number (integer or
       floating-point), an identifier (variable), or an expression within parentheses. It also handles
       unary minus (e.g. -a or -(a + b)).
-	- term(): This function handles multiplication, division, modulus, and bitwise AND operations.
+	- `term()`: This function handles multiplication, division, modulus, and bitwise AND operations.
       It combines factors using these operators.
-	- expression(): The main entry point for parsing expressions. It handles addition, subtraction,
+	- `expression()`: The main entry point for parsing expressions. It handles addition, subtraction,
       bitwise OR, and XOR operations. It uses terms to build more complex expressions.
 
     The parser uses a set of functions that process each operator and operand, recursively building nodes for the AST.
 
-4. Abstract Syntax Tree (AST):
+4. *Abstract Syntax Tree (AST)*:
    The AST is a hierarchical tree structure where each node represents a computational step (like an
    operation or a value) in the parsed expression. The tree allows easy manipulation of expressions
    and can be evaluated or transformed.
 
-	- Node Class: The Node class defines the structure of each AST node. It includes a type (operator
+	- *Node Class*: The Node class defines the structure of each AST node. It includes a type (operator
       or operand), pointers to left and right children (node1 and node2), and additional properties
       for values or names.
-	- Value Class: The Value class is used to store the position of the tokens (start and end),
+	- *Value Class*: The Value class is used to store the position of the tokens (start and end),
       though it isn't used in detail in this code but can be expanded to add more tracking functionality.
 
    Example AST for (a + 3.5) * (c - 1.2) + 3 * -4.5:
@@ -115,14 +115,14 @@ Explanation:
 This grammar reflects the structure of arithmetic and logical operations allowed by the language.
 
 How the Code Works:
-1. Tokenization: The tokenize() function processes the input string and produces a list of tokens,
+1. *Tokenization*: The tokenize() function processes the input string and produces a list of tokens,
    which are the basic building blocks for parsing.
-2. Parsing: The recursive functions factor(), term(), and expression() build the Abstract Syntax
+2. *Parsing*: The recursive functions factor(), term(), and expression() build the Abstract Syntax
    Tree (AST) based on the token sequence produced by the lexer.
-3. Abstract Syntax Tree (AST): Each expression is represented as a tree of Node objects, where
+3. *Abstract Syntax Tree (AST)*: Each expression is represented as a tree of Node objects, where
    each node represents either a value (number, identifier) or an operation (e.g. addition,
    multiplication).
-4. Output: The print_tree() function prints the structure of the AST, which can be further used
+4. *Output*: The print_tree() function prints the structure of the AST, which can be further used
    for evaluation, transformation, or optimisation.
 
 This implementation serves as the foundation for more complex expression evaluation and manipulation
