@@ -25,16 +25,16 @@ the parsed input, which can then be used for evaluation or further processing.
    can understand. It processes each character in the input and classifies it into one of the defined
    token types.
 
-    Main Steps in the Tokeniser:
+   Main Steps in the Tokeniser:
 	- It checks if the current character is part of an identifier (variable) or a number.
 	- For numbers, it differentiates between integers and floating-point numbers using the presence
       of a dot (.).
 	- It handles the parsing of arithmetic operators, parentheses, and whitespace.
 	- If an unrecognized character is encountered, a SyntaxError is raised.
 
-    Example Tokenisation:
-    For the input string "(a + 3.5) * (c - 1.2) + 3 * -4.5", the lexer generates tokens such as
-    LPAREN, IDENT("a"), PLUS, FLOAT(3.5), and so on.
+   Example Tokenisation:
+   For the input string "(a + 3.5) * (c - 1.2) + 3 * -4.5", the lexer generates tokens such as
+   LPAREN, IDENT("a"), PLUS, FLOAT(3.5), and so on.
 
 3. *Parser*:
    The parser uses recursive descent parsing to handle different levels of expressions. It constructs
@@ -48,8 +48,8 @@ the parsed input, which can then be used for evaluation or further processing.
 	- `expression()`: The main entry point for parsing expressions. It handles addition, subtraction,
       bitwise OR, and XOR operations. It uses terms to build more complex expressions.
 
-    The parser uses a set of functions that process each operator and operand, recursively building
-    nodes for the AST.
+   The parser uses a set of functions that process each operator and operand, recursively building
+   nodes for the AST.
 
 4. *Abstract Syntax Tree (AST)*:
    The AST is a hierarchical tree structure where each node represents a computational step (like an
@@ -66,7 +66,7 @@ the parsed input, which can then be used for evaluation or further processing.
    The AST will contain nodes for operations like addition (+), multiplication (*), and unary minus (-).
    The identifiers and numbers are leaf nodes in the tree.
 
-5. Evaluation/Output:
+5. *Evaluation/Output*:
    After parsing the input, the AST is printed using the print_tree() function, which recursively prints
    the structure of the AST. This is a simple textual representation to visualize how the input was parsed.
 
