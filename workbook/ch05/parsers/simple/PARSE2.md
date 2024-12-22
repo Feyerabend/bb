@@ -20,10 +20,10 @@ operator, or symbol). The `token_list` holds these tokens, and the nextsym funct
 for processing.
 
 The lexer recognizes:
-- Identifiers: Alphanumeric sequences representing variable names.
-- Numbers: Integer values.
-- Operators: Arithmetic and logical operators (+, -, *, /, %, &, |, ^).
-- Symbols: Parentheses ((, )), assignment (=), member access (.), and array indexing ([ and ]).
+- *Identifiers*: Alphanumeric sequences representing variable names.
+- *Numbers*: Integer values.
+- *Operators*: Arithmetic and logical operators (+, -, *, /, %, &, |, ^).
+- *Symbols*: Parentheses ((, )), assignment (=), member access (.), and array indexing ([ and ]).
 
 The lexer also skips over whitespace and raises an error if it encounters an unknown character.
 
