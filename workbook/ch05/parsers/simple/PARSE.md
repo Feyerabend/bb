@@ -1,7 +1,7 @@
 
 ## Simple Parser
 
-This code implements a simple tokenizer and parser for a basic arithmetic expression language.
+This code implements a simple tokeniser and parser for a basic arithmetic expression language.
 The language supports variables (identifiers), integers, floating-point numbers, and common
 arithmetic operations like addition, subtraction, multiplication, division, modulus, bitwise
 AND, OR, XOR, and unary minus. The parser constructs an Abstract Syntax Tree (AST) to represent
@@ -9,7 +9,7 @@ the parsed input, which can then be used for evaluation or further processing.
 
 
 1. *Token Types (Symbol Constants)*:
-   The code defines constants for the various token types that the lexer (tokenizer) will recognize.
+   The code defines constants for the various token types that the lexer (tokeniser) will recognize.
    These tokens are used by the parser to identify different elements of the input.
 	- Identifiers (IDENT): Represent variable names, such as a, b, x.
 	- Numbers (NUMBER, FLOAT): Represent integer and floating-point numbers.
@@ -48,7 +48,8 @@ the parsed input, which can then be used for evaluation or further processing.
 	- `expression()`: The main entry point for parsing expressions. It handles addition, subtraction,
       bitwise OR, and XOR operations. It uses terms to build more complex expressions.
 
-    The parser uses a set of functions that process each operator and operand, recursively building nodes for the AST.
+    The parser uses a set of functions that process each operator and operand, recursively building
+    nodes for the AST.
 
 4. *Abstract Syntax Tree (AST)*:
    The AST is a hierarchical tree structure where each node represents a computational step (like an
