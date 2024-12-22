@@ -118,14 +118,14 @@ Explanation:
 This grammar reflects the structure of arithmetic and logical operations allowed by the language.
 
 How the Code Works:
-1. *Tokenization*: The tokenise() function processes the input string and produces a list of tokens,
+1. *Tokenisation*: The `tokenize()` function processes the input string and produces a list of tokens,
    which are the basic building blocks for parsing.
-2. *Parsing*: The recursive functions factor(), term(), and expression() build the Abstract Syntax
+2. *Parsing*: The recursive functions `factor()`, `term()`, and `expression()` build the Abstract Syntax
    Tree (AST) based on the token sequence produced by the lexer.
 3. *Abstract Syntax Tree (AST)*: Each expression is represented as a tree of Node objects, where
    each node represents either a value (number, identifier) or an operation (e.g. addition,
    multiplication).
-4. *Output*: The print_tree() function prints the structure of the AST, which can be further used
+4. *Output*: The `print_tree()` function prints the structure of the AST, which can be further used
    for evaluation, transformation, or optimisation.
 
 This implementation serves as the foundation for more complex expression evaluation and manipulation
