@@ -20,19 +20,19 @@ the parsed input, which can then be used for evaluation or further processing.
 	- Period (PERIOD): Not specifically used in this example but can represent a decimal point or
       another operator (context-dependent).
 
-2. *Lexer (Tokenizer)*:
+2. *Lexer (Tokeniser)*:
    The lexer is responsible for converting the input string into a sequence of tokens that the parser
    can understand. It processes each character in the input and classifies it into one of the defined
    token types.
 
-    Main Steps in the Tokenizer:
+    Main Steps in the Tokeniser:
 	- It checks if the current character is part of an identifier (variable) or a number.
 	- For numbers, it differentiates between integers and floating-point numbers using the presence
       of a dot (.).
 	- It handles the parsing of arithmetic operators, parentheses, and whitespace.
 	- If an unrecognized character is encountered, a SyntaxError is raised.
 
-    Example Tokenization:
+    Example Tokenisation:
     For the input string "(a + 3.5) * (c - 1.2) + 3 * -4.5", the lexer generates tokens such as
     LPAREN, IDENT("a"), PLUS, FLOAT(3.5), and so on.
 
@@ -40,7 +40,6 @@ the parsed input, which can then be used for evaluation or further processing.
    The parser uses recursive descent parsing to handle different levels of expressions. It constructs
    an Abstract Syntax Tree (AST) as it processes the tokens.
 
-    Key Parser Functions:
 	- `factor()`: This function handles the base components of an expression—either a number (integer or
       floating-point), an identifier (variable), or an expression within parentheses. It also handles
       unary minus (e.g. -a or -(a + b)).
