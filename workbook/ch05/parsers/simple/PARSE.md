@@ -1,5 +1,5 @@
 
-## Simple Parser
+## Simple Recursive Desacent Parser
 
 This code implements a simple tokeniser and parser for a basic arithmetic expression language.
 The language supports variables (identifiers), integers, floating-point numbers, and common

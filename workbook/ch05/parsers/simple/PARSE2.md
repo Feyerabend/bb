@@ -1,5 +1,5 @@
 
-## Extended Simple Parser
+## Extended Simple Recursive Descent Parser
 
 This code is an implementation of a simple parser for expressions involving identifiers, numbers, operators,
 member access, and array indexing, designed to convert input strings into an Abstract Syntax Tree (AST).
