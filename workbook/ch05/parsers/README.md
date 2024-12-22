@@ -93,7 +93,7 @@ These parsers start with the input tokens and attempt to reconstruct the start s
 	- Through a separate program, can it parse a diverse set of grammars which makes it reprogrammable.
 	- Useful in educational purposes as it is easy to understand the principles of parsing.
 
-4. LL(1) Parsing:
+4. [LL(1)](./LL1) Parsing:
 	- Strengths: Easy to implement, efficient for simple grammars, and guarantees linear parsing time for LL(1) grammars.
 	- Limitations: Cannot handle left-recursive or ambiguous grammars. Requires careful grammar design to fit LL(1) constraints.
 	- Uses a parsing table for predictive parsing, where each cell indicates which production to apply based on the current input token and non-terminal.
