@@ -20,8 +20,8 @@ From this, we know the language involves expressions, which combine numbers and 
 #### 2. Establish Precedence and Associativity
 
 Operators often have precedence:
-- * and / have higher precedence than + and -.
-- Parentheses () override precedence.
+- `*` and `/` have higher precedence than `+` and `-`.
+- Parentheses `()` override precedence.
 - Associativity governs how operators of the same precedence are evaluated:
 - Most arithmetic operators are left-associative (e.g., 3 - 2 - 1 is (3 - 2) - 1).
 
@@ -45,28 +45,28 @@ Informally:
 
 Translate the informal rules into a formal grammar:
 
-1. Start with the highest-level construct:
+__1. Start with the highest-level construct:__
 $E \rightarrow T \ E{\prime}$
 
 Here, $E$ is an *expression*, which consists of a *term* ($T$) followed by $E{\prime}$,
 which accounts for additional terms connected by + or -.
 
-2. Define $E{\prime}$ for additions and subtractions:
+__2. Define $E{\prime}$ for additions and subtractions:__
 $E{\prime} \rightarrow + \ T \ E{\prime} \ | \ - \ T \ E{\prime} \ | \ \epsilon$
 
 $E{\prime}$ recursively handles additional terms or ends the expression $( \epsilon )$.
 
-3. Define $T$ for multiplication and division:
+__3. Define $T$ for multiplication and division:__
 $T \rightarrow F \ T{\prime}$
 
 $T$ consists of a *factor* ($F$) followed by $T{\prime}$, which handles repeated factors connected by * or /.
 
-4. Define $T{\prime}$:
+__4. Define $T{\prime}$:__
 $T{\prime} \rightarrow * \ F \ T{\prime} \ | \ / \ F \ T{\prime} \ | \ \epsilon$
 
 $T{\prime}$ handles multiplication and division or ends the term $( \epsilon )$.
 
-5. Define $F$ for numbers and parentheses:
+__5. Define $F$ for numbers and parentheses:__
 $F \rightarrow \text{num} \ | \ ( E )$
 
 
