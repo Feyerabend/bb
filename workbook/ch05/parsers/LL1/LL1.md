@@ -88,7 +88,7 @@ Here's is the final grammar with support for numbers, floating points, and opera
 
 ### Parsing Table
 
-And here is parsing table that results from the reassoning above:
+And here is parsing table that results from the reasoning above:
 
 
 |NT	|num	|(	|+	|-	|*	|/	|%	|)	|$	|^|
