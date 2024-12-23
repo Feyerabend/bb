@@ -102,7 +102,3 @@ These parsers start with the input tokens and attempt to reconstruct the start s
 	- Implements each grammar rule as a function, where non-terminals are recursive calls.
 	- Parsing decisions are guided by lookahead (one token ahead in LL(1)).
 	- Direct and clear for grammar constructs, making it excellent for prototyping parsers.
-
-<!-- 3. CYK Parser:
-#	- Uses a dynamic programming approach and works on grammars in Chomsky Normal Form (CNF).
-#	- Efficient for ambiguous grammars but impractical for hand-written parsers.-->
