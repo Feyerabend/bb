@@ -105,6 +105,17 @@ Legend:
 - $ is the end-of-input marker.
 - Cells contain the production to apply or are empty if the input is invalid for that non-terminal.
 
+Steps to Use the Table (what the program does):
+1. Start with the initial non-terminal (e.g. E).
+2. Look at the current token (lookahead) in the input.
+3. Find the intersection of the *row* (non-terminal) and *column* (lookahead):
+	- If the cell contains a production (e.g. E → T E'), apply it.
+	- If the cell contains ε, perform an epsilon transition (nothing is added to the stack).
+	- If the cell contains error, the input cannot be parsed.
+	- If the cell is empty, it is an implicit error.
+4. Replace the non-terminal on the top of the stack with the symbols from the production rule.
+5. Repeat until the input is parsed (stack is empty and input is consumed).
+
 
 ### Code
 
