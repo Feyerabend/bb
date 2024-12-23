@@ -1,10 +1,78 @@
 
 ## LL(1) Parsing
 
+Arriving at the grammar is an essential step in designing a parser. The grammar is
+typically derived from the language specification or requirements you want to parse.
+The grammar for LL(1) and its use of a parsing table, can be a bit odd to understand.
+
+
+#### 1. Understand the Structure of the Language
+
+Start by identifying the key constructs of the language. For arithmetic expressions,
+this includes:
+- Numbers (integers or floating-point).
+- Arithmetic operators like +, -, *, /.
+- Parentheses for grouping.
+
+From this, we know the language involves expressions, which combine numbers and operators.
+
+
+#### 2. Establish Precedence and Associativity
+
+Operators often have precedence:
+- * and / have higher precedence than + and -.
+- Parentheses () override precedence.
+- Associativity governs how operators of the same precedence are evaluated:
+- Most arithmetic operators are left-associative (e.g., 3 - 2 - 1 is (3 - 2) - 1).
+
+This informs how we design the grammar rules.
+
+
+#### 3. Write Informal Rules
+
+Break the expression into its hierarchical components:
+1. *Expression (E)*: The top-level construct, allowing addition and subtraction.
+2. *Term (T)*: A sub-part of an expression, handling multiplication and division.
+3. *Factor (F)*: The smallest unit, such as a number or a parenthesized expression.
+
+Informally:
+- An expression is one or more terms combined by + or -.
+- A term is one or more factors combined by * or /.
+- A factor is a number or a grouped expression in parentheses.
+
+
+#### 4. Write the Grammar
+
+Translate the informal rules into a formal grammar:
+
+1. Start with the highest-level construct:
+$E \rightarrow T \ E{\prime}$
+
+Here, $E$ is an *expression*, which consists of a *term* ($T$) followed by $E{\prime}$,
+which accounts for additional terms connected by + or -.
+
+2. Define $E{\prime}$ for additions and subtractions:
+$E{\prime} \rightarrow + \ T \ E{\prime} \ | \ - \ T \ E{\prime} \ | \ \epsilon$
+
+$E{\prime}$ recursively handles additional terms or ends the expression $( \epsilon )$.
+
+3. Define $T$ for multiplication and division:
+$T \rightarrow F \ T{\prime}$
+
+$T$ consists of a *factor* ($F$) followed by $T{\prime}$, which handles repeated factors connected by * or /.
+
+4. Define $T{\prime}$:
+$T{\prime} \rightarrow * \ F \ T{\prime} \ | \ / \ F \ T{\prime} \ | \ \epsilon$
+
+$T{\prime}$ handles multiplication and division or ends the term $( \epsilon )$.
+
+5. Define $F$ for numbers and parentheses:
+$F \rightarrow \text{num} \ | \ ( E )$
+
 
 ### Grammar (EBNF)
 
-Here's the grammar with support for numbers, floating points, and operators:
+Here's is the final grammar with support for numbers, floating points, and operators:
 
 ```ebnf
     E  → T E'
@@ -15,10 +83,12 @@ Here's the grammar with support for numbers, floating points, and operators:
 ```
 
 - num represents an integer or floating-point number.
-- ε is the empty production (nothing).
+- ε is the empty production (i.e. nothing).
 
 
 ### Parsing Table
+
+And here is parsing table that results from the reassoning above:
 
 ```text
 NT	num	(	+	-	*	/	%	)	$	^
@@ -33,6 +103,7 @@ Legend:
 - NT is Non-terminal
 - $ is the end-of-input marker.
 - Cells contain the production to apply or are empty if the input is invalid for that non-terminal.
+
 
 ### Code
 
@@ -85,7 +156,7 @@ class LL1Parser:
         print(f"Tokens: {tokens}")
         return tokens
 
-    def lookahead(self):
+    def lookahead(self): # one item look ahead
         return self.tokens[self.pos] if self.pos < len(self.tokens) else None
 
     def parse(self):
@@ -100,16 +171,19 @@ class LL1Parser:
                     self.stack.extend(reversed(production))  # push production onto stack
                 else:
                     raise Exception(f"Error: Unexpected token {token} for {top}")
+
             elif top == token:  # terminal matches input
                 print(f"Consuming: {token}")
                 self.pos += 1
+
             elif top == 'num' and self.is_number(token):  # match number
                 print(f"Consuming number: {token}")
                 self.pos += 1
+
             else:
                 raise Exception(f"Error: Unexpected token {token}. Expected {top}")
 
-        if self.lookahead() == '$':
+        if self.lookahead() == '$': # end parsing
             print("Input parsed successfully!")
         else:
             raise Exception(f"Error: Unexpected input at end. Found {self.lookahead()}")
