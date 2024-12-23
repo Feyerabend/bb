@@ -11,7 +11,7 @@ The grammar for LL(1) and its use of a parsing table, can be a bit odd to unders
 Start by identifying the key constructs of the language. For arithmetic expressions,
 this includes:
 - Numbers (integers or floating-point).
-- Arithmetic operators like +, -, *, /.
+- Arithmetic operators like `+`, `-`, `*`, `/`.
 - Parentheses for grouping.
 
 From this, we know the language involves expressions, which combine numbers and operators.
@@ -215,7 +215,7 @@ parser5 = LL1Parser(input_string5)
 parser5.parse()
 ```
 
-### Explanation:
+#### Explanation
 
 1. Parsing Table:
 	- Explicitly constructed for each non-terminal and terminal.
@@ -234,7 +234,7 @@ parser5.parse()
 	- Matches integers and floating-point numbers.
 
 
-### Output
+#### Output
 
 For the input 3 + 2 * 4:
 
