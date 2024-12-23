@@ -110,19 +110,14 @@ void parse_F() {
     }
 }
 
-
 int main() {
     input = "3.14 + (2 * 4) - 5 / 1.5";
-
     printf("Input: %s\n", input);
-
     parse_E();
-
     if (input[pos] == '\0') {
         printf("Parsing successful!\n");
     } else {
         printf("Error: Unexpected input at position %d: '%c'\n", pos, current_token());
     }
-
     return 0;
 }
