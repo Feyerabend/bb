@@ -99,6 +99,15 @@ T'			ε	ε	* F T'	/ F T'	% F T'	ε	ε
 F	num	( E )								num ^ F
 ```
 
+|NT	|num	|(	|+	|-	|*	|/	|%	|)	|$	|^|
+|-|-|-|-|-|-|-|-|-|-|-|
+|E	|T E'	|T E'	|	|	|	|	|	|	|	|   |
+|E'	|		|+ T E'	|- T E'	|ε	|ε	|ε	|ε	|ε	|   |   |
+|T	|F T'	|F T'	|	|	|	|	|	|	|	|   |
+|T'	|		|ε	ε	|* F T'	|/ F T'	|% F T'	|ε	|ε	|   |   |   |
+|F	|num	|( E )	|	|	|	|	|	|	|	|num ^ F    |
+
+
 Legend:
 - NT is Non-terminal
 - $ is the end-of-input marker.
