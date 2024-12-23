@@ -90,14 +90,6 @@ Here's is the final grammar with support for numbers, floating points, and opera
 
 And here is parsing table that results from the reassoning above:
 
-```text
-NT	num	(	+	-	*	/	%	)	$	^
-E	T E'	T E'								
-E'			+ T E'	- T E'	ε	ε	ε	ε	ε	
-T	F T'	F T'								
-T'			ε	ε	* F T'	/ F T'	% F T'	ε	ε	
-F	num	( E )								num ^ F
-```
 
 |NT	|num	|(	|+	|-	|*	|/	|%	|)	|$	|^|
 |-|-|-|-|-|-|-|-|-|-|-|
