@@ -67,16 +67,16 @@ This rule ensures that any unrecognised input is flagged as an error during toke
 ### Examples of Syntax Errors a Tokeniser Detects
 
 * Invalid Characters:
-    Input: j !! n;
-    Detection: !! is flagged as invalid since it’s not a recognized operator or delimiter.
+    - Input: j !! n;
+    - Detection: !! is flagged as invalid since it’s not a recognized operator or delimiter.
 
 * Unexpected Token Combinations:
-    Input: j := n \;
-    Detection: \ is flagged as invalid, as it’s not part of a valid token.
+    - Input: j := n \;
+    - Detection: \ is flagged as invalid, as it’s not part of a valid token.
 
 * Whitespace-Sensitive Errors:
-    Input: procedure sub;const k =7;
-    Detection: Without a space after ;, some tokenisers may not correctly separate tokens, leading to a mismatch.
+    - Input: procedure sub;const k =7;
+    - Detection: Without a space after ;, some tokenisers may not correctly separate tokens, leading to a mismatch.
 
 Why Regular Expressions Work Well
 * Simplicity: They provide a concise way to define patterns for each token type.
