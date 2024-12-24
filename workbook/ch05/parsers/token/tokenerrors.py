@@ -102,6 +102,16 @@ def compare_tokens(tokens_valid, tokens_erroneous):
             print(f"Erroneous: {error_token}")
             print("---")
 
+def save_tokens_to_json(tokens, filename):
+    with open(filename, 'w') as file:
+        file.write("[\n")
+        for i, token in enumerate(tokens):
+            json_token = f'  {{"type": "{token[0]}", "value": {repr(token[1])}, "line": {token[2]}, "column": {token[3]}}}'
+            file.write(json_token)
+            if i < len(tokens) - 1:
+                file.write(",\n")  # a comma except for the last token
+        file.write("\n]")
+
 # Test invalid cases
 source_code_with_invalid_operator = """
 const n = 13;
@@ -160,3 +170,5 @@ try:
         print(token)
 except RuntimeError as e:
     print(str(e))
+
+
