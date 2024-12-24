@@ -87,30 +87,6 @@ def tokenize(code):
     
     return tokens
 
-def compare_tokens(tokens_valid, tokens_erroneous):
-    """Compare tokens of valid and erroneous source codes and highlight differences."""
-    if len(tokens_valid) != len(tokens_erroneous):
-        print("Tokens mismatch in length!")
-        print(f"Valid tokens length: {len(tokens_valid)}")
-        print(f"Erroneous tokens length: {len(tokens_erroneous)}")
-        return
-
-    for i, (valid_token, error_token) in enumerate(zip(tokens_valid, tokens_erroneous)):
-        if valid_token != error_token:
-            print(f"Difference at index {i}:")
-            print(f"Valid: {valid_token}")
-            print(f"Erroneous: {error_token}")
-            print("---")
-
-def save_tokens_to_json(tokens, filename):
-    with open(filename, 'w') as file:
-        file.write("[\n")
-        for i, token in enumerate(tokens):
-            json_token = f'  {{"type": "{token[0]}", "value": {repr(token[1])}, "line": {token[2]}, "column": {token[3]}}}'
-            file.write(json_token)
-            if i < len(tokens) - 1:
-                file.write(",\n")  # a comma except for the last token
-        file.write("\n]")
 
 # Test invalid cases
 source_code_with_invalid_operator = """
