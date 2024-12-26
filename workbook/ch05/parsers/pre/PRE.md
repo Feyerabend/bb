@@ -82,7 +82,7 @@ __6. Cross-Language Integration:__
 
 - Example:
 ```
-/* @ffi extern "C" factorial(int n)" */
+/* @ffi extern "C" "factorial(int n)" */
 let result = factorial(5);
 ```
 
