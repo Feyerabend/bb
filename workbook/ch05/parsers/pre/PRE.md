@@ -9,7 +9,7 @@ preprocessing in out pseudo-language, but we can think more broadly about useful
 features that could improve the developer experience and program functionality.
 
 
-1. Enhanced Comments (Meta-Comments):
+__1. Enhanced Comments (Meta-Comments):__
 
 - Comment-based Directives: Allow comments to carry meta-information or directives that can
   influence how the code is processed, such as variable definitions, type information,
@@ -24,7 +24,7 @@ features that could improve the developer experience and program functionality.
   is parsed, similar to #define in C-like languages.
 
 
-2. Macros and Inline Code Expansion:
+__2. Macros and Inline Code Expansion:__
 
 - Macro Substitution: Allow developers to define macros (or templates) that expand into
   reusable code blocks.
@@ -38,7 +38,7 @@ let result = add_two(5);
 - The preprocessor could expand add_two(5) into (5 + 2) before compiling the program.
 
 
-3. Conditional Compilation (if statements in code):
+__3. Conditional Compilation (if statements in code):__
 
 - Platform/Environment-Specific Code: Include code only for certain platforms or conditions.
 
@@ -52,7 +52,7 @@ let debug_message = "Debugging";
 - This could allow certain blocks of code to only be included in the output when the condition is met.
 
 
-4. Code Reordering and Optimization:
+__4. Code Reordering and Optimization:__
 
 - Rearranging Code: The preprocessor could optimize the code in certain ways before the main
   compiler gets it. For example, reordering function calls or moving definitions for better
@@ -62,7 +62,7 @@ let debug_message = "Debugging";
   automatically inlined if they meet certain conditions.
 
 
-5. Annotations or Documentation Generation:
+__5. Annotations or Documentation Generation:__
 
 - Automatic Documentation: Comments or special annotations in the code could be processed to
   automatically generate documentation or additional files.
@@ -75,7 +75,7 @@ function factorial(n) { ... }
 - The preprocessor could then generate a markdown or HTML file with documentation for each function.
 
 
-6. Cross-Language Integration:
+__6. Cross-Language Integration:__
 
 - Foreign Function Interface (FFI): Allow the preprocessor to define bindings to external code
   written in other languages (like C).
