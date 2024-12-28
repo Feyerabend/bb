@@ -77,37 +77,37 @@ than mutable states, and functions can be passed around like any other value.
 ###  Core Differences Between Procedural and Functional Symbol Tables
 
 1. Mutability vs. Immutability:
-	- Procedural: Variables are mutable and can be updated over time. The symbol table reflects this
+	- *Procedural*: Variables are mutable and can be updated over time. The symbol table reflects this
       with the ability to overwrite values.
-	- Functional: Variables are immutable. Once a binding is created, it cannot change. The symbol
+	- *Functional*: Variables are immutable. Once a binding is created, it cannot change. The symbol
       table reflects this with a fixed set of bindings for each scope.
 
 2. Function Handling:
-	- Procedural: Functions are typically defined once and called multiple times. The symbol table
+	- *Procedural*: Functions are typically defined once and called multiple times. The symbol table
       stores the function definition as a reference, and when a function is called, its parameters
       are bound to the arguments.
-	- Functional: Functions are first-class citizens and are treated as values. They can be passed
+	- *Functional*: Functions are first-class citizens and are treated as values. They can be passed
       around like any other value, stored in variables, or returned from other functions. The symbol
       table stores the function itself and manages its parameters as bindings in the scope.
 
 3. Scope Management:
-	- Procedural: Local scopes are created for each function call. Variables within a function are
+	- *Procedural*: Local scopes are created for each function call. Variables within a function are
       only accessible within that scope.
-	- Functional: Scopes are also used, but functions may close over variables from outer scopes.
+	- *Functional*: Scopes are also used, but functions may close over variables from outer scopes.
       The symbol table tracks these closures, managing how functions capture their lexical environment.
 
 4. Function Calls:
-	- Procedural: When a function is called, the symbol table is updated to reflect the local bindings
+	- *Procedural*: When a function is called, the symbol table is updated to reflect the local bindings
       for the parameters, and the function body executes within this local scope.
-	- Functional: Function calls are similar, but there is often the added complexity of handling
+	- *Functional*: Function calls are similar, but there is often the added complexity of handling
       closures and higher-order functions. Functions can be passed around as arguments or returned
       from other functions, meaning the symbol table must handle this dynamism.
 
 
 The difference lies in how state is managed:
-- Procedural programs often focus on managing mutable states (variables) across function calls,
+- *Procedural programs* often focus on managing mutable states (variables) across function calls,
   with symbol tables reflecting changes in those states.
-- Functional programs, on the other hand, focus on immutable bindings and higher-order functions,
+- *Functional programs*, on the other hand, focus on immutable bindings and higher-order functions,
   with symbol tables capturing these immutable relationships, closures, and function environments.
 
 Ultimately, the symbol table serves as a bridge between the source code and the runtime, allowing
@@ -127,15 +127,15 @@ __Procedural Languages__
 In procedural languages like C, Java, or Python, the symbol table maps variables to memory locations
 where their values are stored. The symbol table also tracks function names, parameters, and local
 variables within different scopes (global, local, etc.).
-- Mutable state: Variables are mutable, meaning their values can change during execution.
-- Procedural flow: The program executes in a sequence of steps, and the symbol table must reflect these changes.
+- *Mutable state*: Variables are mutable, meaning their values can change during execution.
+- *Procedural flow*: The program executes in a sequence of steps, and the symbol table must reflect these changes.
 
 __Functional Languages__
 
 Functional languages like Haskell or Lisp emphasize immutability and function closures. The symbol table in functional languages often focuses on managing function bindings, immutable variable bindings, and higher-order functions.
-- Immutability: Once a variable is bound to a value, it cannot change. The symbol table reflects
+- *Immutability*: Once a variable is bound to a value, it cannot change. The symbol table reflects
   this by holding fixed bindings throughout the scope.
-- Higher-order functions: Functions are first-class citizens and can be passed as arguments
+- *Higher-order functions*: Functions are first-class citizens and can be passed as arguments
   or returned as values. The symbol table handles the environment of these functions, ensuring the correct values are available.
 
 __Logical Languages__
@@ -143,9 +143,9 @@ __Logical Languages__
 In logical languages like *Prolog*, the symbol table manages logical variables, predicates, and facts/rules.
 The role of the symbol table is to support unification and backtracking as the logic engine attempts to find
 solutions to queries.
-- Unification: The process of binding variables to values (or other variables) to satisfy a logical predicate.
+- *Unification*: The process of binding variables to values (or other variables) to satisfy a logical predicate.
   The symbol table stores the current set of bindings that result from the unification process.
-- Declarative relationships: The program defines relationships and rules, and the symbol table tracks these
+- *Declarative relationships*: The program defines relationships and rules, and the symbol table tracks these
   definitions to answer queries based on logical inference.
 
 
@@ -156,6 +156,8 @@ The projects cover everything from simple interpreters to advanced optimisations
 a deeper understanding of how symbol tables are used across various paradigms. By working on these
 projects, you will get a hands-on understanding of variable binding, scope management, and the distinctive
 features of each language's approach to symbol management.
+
+
 
 ### 1. Procedural Language Projects
 
