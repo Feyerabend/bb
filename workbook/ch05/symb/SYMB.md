@@ -132,7 +132,8 @@ variables within different scopes (global, local, etc.).
 
 __Functional Languages__
 
-Functional languages like Haskell or Lisp emphasize immutability and function closures. The symbol table in functional languages often focuses on managing function bindings, immutable variable bindings, and higher-order functions.
+Functional languages like Haskell or Lisp emphasise immutability and function closures. The symbol table in
+ functional languages often focuses on managing function bindings, immutable variable bindings, and higher-order functions.
 - *Immutability*: Once a variable is bound to a value, it cannot change. The symbol table reflects
   this by holding fixed bindings throughout the scope.
 - *Higher-order functions*: Functions are first-class citizens and can be passed as arguments
@@ -210,7 +211,7 @@ features of each language's approach to symbol management.
 - Learning Objectives:
 	- Understanding environments and closures in functional languages.
 	- Managing function scopes and variable bindings in a purely functional context.
-	- Exploring optimization techniques like tail-call optimization.
+	- Exploring optimisation techniques like tail-call optimisation.
 
 
 #### Debugging Tool for Functional Programs
@@ -218,7 +219,7 @@ features of each language's approach to symbol management.
 - Goal: Build a tool that helps students debug functional programs by inspecting their environments.
 
 - Tasks:
-	- Implement an environment visualizer that shows function parameters, variable bindings, and closures at each point in the program.
+	- Implement an environment visualiser that shows function parameters, variable bindings, and closures at each point in the program.
 	- Allow users to trace function calls and view the environment at different points in the program.
 	- Extend the tool to support stepping through recursive functions and observing changes in function environments.
 
@@ -249,17 +250,17 @@ working on tasks related to symbol tables can be highly rewarding.
 	- Learn how unification and backtracking work in logical languages.
 	- Explore how the symbol table evolves through the process of logical inference and querying.
 
-#### Visualizing Unification and Backtracking
+#### Visualising Unification and Backtracking
 
-- Goal: Build a tool that visualizes the process of unification and backtracking in a Prolog-like system.
+- Goal: Build a tool that visualises the process of unification and backtracking in a Prolog-like system.
 
 - Tasks:
 	- Implement the unification algorithm that binds variables and matches terms.
-	- Use the symbol table to manage variable bindings and visualize the current state after each unification step.
+	- Use the symbol table to manage variable bindings and visualise the current state after each unification step.
 	- Allow users to input queries and visually step through the backtracking process as different bindings are tried.
 
 - Learning Objectives:
-	- Visualize the relationship between variables and terms during unification.
+	- Visualise the relationship between variables and terms during unification.
 	- Understand how Prolog resolves queries and performs backtracking.
 	- Examine the impact of backtracking on variable bindings and the symbol table.
 
@@ -272,7 +273,7 @@ working on tasks related to symbol tables can be highly rewarding.
 	- Implement a constraint solver using a logic-based language with symbolic representations of variables.
 	- Use the symbol table to manage variable domains and their constraints.
 	- Implement a basic constraint propagation algorithm that updates the symbol table as constraints are enforced.
-	- Allow students to query the system with a set of constraints and examine the symbol table to see how the domains of variables are updated.
+	- Allow you to query the system with a set of constraints and examine the symbol table to see how the domains of variables are updated.
 
 - Learning Objectives:
 	- Learn how logical variables can be constrained.
@@ -304,7 +305,7 @@ working on tasks related to symbol tables can be highly rewarding.
 
 ### 5. Advanced Logical Language Projects
 
-#### Optimizing Symbol Table for Logic-based Reasoning
+#### Optimising Symbol Table for Logic-based Reasoning
 
 - Goal: Implement an optimisation layer over the Prolog-style system where the symbol table
   is used to minimise redundant variable bindings and reduce search space.
@@ -312,9 +313,9 @@ working on tasks related to symbol tables can be highly rewarding.
 - Tasks:
 	- Implement a cache system for variable bindings (memoization) to avoid redundant unification attempts.
 	- Optimise the backtracking search by pruning irrelevant paths based on the state of the symbol table.
-	- Test the optimized system with complex queries and large knowledge bases.
+	- Test the optimised system with complex queries and large knowledge bases.
 
 - Learning Objectives:
-	- Explore optimization strategies for logical programming languages.
+	- Explore optimisation strategies for logical programming languages.
 	- Learn how the symbol table can be used to enhance performance in logic-based systems.
 	- Study the tradeoffs between memory usage and computational efficiency in backtracking systems.
