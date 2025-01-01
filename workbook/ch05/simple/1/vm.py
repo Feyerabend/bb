@@ -46,6 +46,7 @@ class SimpleVirtualMachine:
                 if b == 0:
                     raise RuntimeError("Division by zero")
                 self.stack.append(a // b)
+
             else:
                 raise RuntimeError(f"Unknown instruction: {instruction}")
 

@@ -1,3 +1,4 @@
+
 ## A Simple Compiler
 
 __Basic Grammar__
@@ -14,7 +15,8 @@ or could be considered as the very common expression part. The general grammar i
 ```
 
 - *Expressions*: Mathematical operations with precedence ('x + y * z', or '5 * (2 + 3)').
-- *Statements*: Assignments where an identifier ('x', 'y') is set to an expression, ending with a semicolon.
+- *Statements*: Assignments where an identifier ('x', 'y') is set to an expression,
+  ending with a semicolon.
 - *Programs*: A sequence of statements (in this case expressions) separated by semicolons.
 
 __Scripts for a Compiler__
@@ -25,9 +27,9 @@ We will process the scripts in the following sequence:
 token.py -> parser.py -> comp.py -> vm.py
 ```
 
-Each step produces an output that serves as input for the next stage. To keep things simple, no files are
-saved during the process, though you can easily modify the scripts to add file handling if needed
-to experiment with a more expressions.
+Each step produces an output that serves as input for the next stage. To keep things simple,
+no files are saved during the process, though you can easily modify the scripts to add file
+handling if needed to experiment with a more expressions.
 
 __Expressions to Tokens or Lexical Analysis__
 
@@ -83,7 +85,8 @@ The parser takes the list of tokens and builds an Abstract Syntax Tree (AST). Th
 is a tree representation of the code's structure, where each node represents an operation
 or expression.
 
-For example, when parsing the expression 'x = 345;', the parser will generate a tree like this:
+For example, when parsing the expression 'x = 345;', the parser will generate a tree
+like this:
 
 ```python
 ASTNode(kind='ASSIGN', value=None, children=[
@@ -185,7 +188,7 @@ emitting the corresponding VM instruction.
 __Execution in the Virtual Machine__
 
 Finally, the virtual machine (VM) executes the generated code. The VM interprets each
-instruction and updates its state accordingly. Here’s an example of how the VM might work:
+instruction and updates its state accordingly. Here's an example of how the VM might work:
 - PUSH 345: Pushes the value 345 onto the stack.
 - STORE x: Pops the top value from the stack and stores it in the variable x.
 - LOAD x: Loads the value of x onto the stack.
@@ -197,12 +200,13 @@ The VM has a stack for holding intermediate values, and it operates by manipulat
 
 #### Summary
 
-1.	Tokenisation: Convert the raw source code into a series of tokens.
-2.	Parsing: Build an Abstract Syntax Tree (AST) that represents the structure of the code.
-3.	Symbol Table: Track variable assignments and values during parsing.
-4.	Optimisation: Optionally apply optimisations like constant folding to simplify expressions.
-5.	Code Generation: Generate a list of VM instructions from the AST.
-6.	Execution: Execute the generated code in a virtual machine that interprets the instructions and manages the program’s state.
+1. *Tokenisation*: Convert the raw source code into a series of tokens.
+2. *Parsing*: Build an Abstract Syntax Tree (AST) that represents the structure of the code.
+3. *Symbol Table*: Track variable assignments and values during parsing.
+4. *Optimisation*: Optionally apply optimisations like constant folding to simplify expressions.
+5. *Code Generation*: Generate a list of VM instructions from the AST.
+6. *Execution*: Execute the generated code in a virtual machine that interprets the instructions
+   and manages the program's state.
 
 
 
