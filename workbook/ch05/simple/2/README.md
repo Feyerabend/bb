@@ -158,7 +158,7 @@ Constant folding is an optimisation technique where constant expressions in the 
 are evaluated at compile time rather than runtime. This reduces computational overhead
 during program execution. In the context of Three-Address Code (TAC), constant folding
 simplifies TAC instructions by replacing computations involving only constants with their
-results. See `opt.py`.
+results. See `folding.py`.
 
 Example: If both operands in an expression are constants, the expression is evaluated at
 compile time. Expressions like '7 + 9' are evaluated at compile time and replaced with
