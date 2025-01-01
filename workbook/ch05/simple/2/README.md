@@ -1,5 +1,5 @@
 
-## Simple Compiler: Three-Address Code (TAC)
+## A Simple Compiler: Three-Address Code (TAC)
 
 ..
 
