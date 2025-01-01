@@ -68,6 +68,6 @@ code_lines = [
 optimizer = CodeOptimizer()
 optimized_code = optimizer.optimize_code(code_lines)
 
-print("After Dead Code Elimination and Optimization:")
+print("After Dead Code Elimination and Optimisation:")
 for line in optimized_code:
     print(line)
