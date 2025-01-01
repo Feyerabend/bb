@@ -1,3 +1,4 @@
+
 class ASTNode:
     def __init__(self, kind, value=None, children=None):
         self.kind = kind
@@ -5,10 +6,10 @@ class ASTNode:
         self.children = children or []
 
     def __repr__(self):
-        # Check if the value is a number (int or float), show the raw value
-        if isinstance(self.value, (int, float)):
+        # if value is number (int or float), show the value
+        if isinstance(self.value, (int, float)): # float not tested
             value_repr = str(self.value)
-        # If it's an identifier, show the value as a string (quoted)
+        # if identifier, show value as string (quoted)
         elif self.kind == "IDENTIFIER":
             value_repr = f'"{self.value}"'
         else:
@@ -33,14 +34,12 @@ class Parser:
         raise SyntaxError(f"Expected {expected_kind}, got {token}")
 
     def parse_program(self):
-        """Parse a sequence of statements."""
         statements = []
         while self.current_token():
             statements.append(self.parse_statement())
         return ASTNode(kind="PROGRAM", children=statements)
 
     def parse_statement(self):
-        """Parse a single assignment statement."""
         identifier = self.consume("IDENTIFIER")
         self.consume("ASSIGN")
         expression = self.parse_expression()
@@ -51,7 +50,6 @@ class Parser:
         ])
 
     def parse_expression(self):
-        """Parse an expression with precedence handling."""
         node = self.parse_term()
         while self.current_token() and self.current_token()[0] in ("PLUS", "MINUS"):
             op = self.consume(self.current_token()[0])
@@ -60,7 +58,6 @@ class Parser:
         return node
 
     def parse_term(self):
-        """Handle * and / operations."""
         node = self.parse_factor()
         while self.current_token() and self.current_token()[0] in ("TIMES", "DIVIDE"):
             op = self.consume(self.current_token()[0])
@@ -69,7 +66,6 @@ class Parser:
         return node
 
     def parse_factor(self):
-        """Handle numbers, identifiers, and parenthesized expressions."""
         token = self.current_token()
         if token[0] == "NUMBER":
             self.consume("NUMBER")

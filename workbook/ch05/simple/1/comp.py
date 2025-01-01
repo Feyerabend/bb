@@ -1,3 +1,4 @@
+
 class ASTNode:
     def __init__(self, kind, value=None, children=None):
         self.kind = kind
