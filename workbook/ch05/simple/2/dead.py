@@ -62,7 +62,6 @@ code_lines = [
     "t4 = t3 / 2",
     "t5 = t1 - t4",
     "z = t5",  # 'z' is not used anywhere
-    "t7 = 0",
     "stop_variable = 0" # special
 ]
 
