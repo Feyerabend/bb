@@ -205,7 +205,7 @@ language. The marketplace problem is highly task-driven, whereas the biodiversit
 and crafting a language for it requires capturing nuances and relationships in data.
 
 
-### Summary:
+### Summary
 
 Traditional programming (marketplace web program) is about building a system that solves a problem using
 established tools and frameworks, focusing on practical implementation and integrating existing APIs.
@@ -216,4 +216,4 @@ define and manipulate data through custom constructs (a language) that reflect t
 In essence, the language-based approach is more about designing how to think and talk about a problem,
 while the traditional approach is about building an application that solves the problem using available technology.
 
-With the advancement of future LLMs and AI, the balance could shift.
+__With the advancement of future LLMs and AI, the balance could shift?__
