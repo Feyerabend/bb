@@ -216,4 +216,4 @@ define and manipulate data through custom constructs (a language) that reflect t
 In essence, the language-based approach is more about designing how to think and talk about a problem,
 while the traditional approach is about building an application that solves the problem using available technology.
 
-__With the advancement of future LLMs and AI, the balance could shift?__
+__With the advancement of future LLMs and AI, could the balance shift?__
