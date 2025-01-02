@@ -157,3 +157,4 @@ design and implementation of solutions that truly meet user expectations.
 * [Disaster](DIALOG-DISASTER.md) probes the boundaries of this language-driven reasoning, revealing scenarios
   where its limits become evident and exploring potential solutions.
 
+Then some [contrast](CONTRAST.md) to what we have today ..
