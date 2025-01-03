@@ -197,18 +197,22 @@ toward executable form.
     ```
   - *Generated Code*: 
     ```
-    LOAD 345
+    PUSH 345
     STORE x
-    LOAD 345
+    PUSH 345
     STORE y
-    ADD y
-    SUB 5
-    MUL 16
-    ADD 7
-    ADD 9
-    DIV 2
+    LOAD x
+    LOAD y
+    ADD
+    PUSH 5
+    PUSH 7
+    PUSH 9
+    ADD
+    MUOL
+    SUB
     STORE z
     ```
+
 
 ### 5. Execution
 
