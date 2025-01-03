@@ -148,17 +148,17 @@ Scope 2:
 The core functions are in the Symbol Table Class:
 
 1. Symbol Table Class:
-- self.scopes: A list of dictionaries, each representing a scope. We start with a (empty) global scope and add new scopes as needed.
-- enter_scope(): Adds a new scope (function or block) to the symbol table.
-- exit_scope(): Removes the current scope (useful for function or block exits).
-- insert(): Adds a symbol (variable or function) to the current scope. Typical for symbols tables in general.
-- lookup(): Searches for a symbol in the current and enclosing scopes. Also typical for symbols tables in general.
+- `self.scopes`: A list of dictionaries, each representing a scope. We start with a (empty) global scope and add new scopes as needed.
+- `enter_scope()`: Adds a new scope (function or block) to the symbol table.
+- `exit_scope()`: Removes the current scope (useful for function or block exits).
+- `insert()`: Adds a symbol (variable or function) to the current scope. Typical for symbols tables in general.
+- `lookup()`: Searches for a symbol in the current and enclosing scopes. Also typical for symbols tables in general.
 
 And how we create symbols:
 
 2.	Creating Symbols:
-- create_variable_entry(): Defines variables with their name, type, scope, attributes (e.g., const), and memory location.
-- create_function_entry(): Defines function signatures with their return type, parameters, and scope.
+- `create_variable_entry()`: Defines variables with their name, type, scope, attributes (e.g., const), and memory location.
+- `create_function_entry()`: Defines function signatures with their return type, parameters, and scope.
 
 
 ### Symbol Tables in Functional Languages
