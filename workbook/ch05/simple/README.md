@@ -21,8 +21,41 @@ toward executable form.
   - Ignore whitespace and comments.
 
 - Example:
-  - *Input*: `x = 42 + 8 * (y - 3);`  
-  - *Output Tokens*: `[ID(x), EQ, NUM(42), PLUS, NUM(8), MUL, LPAREN, ID(y), MINUS, NUM(3), RPAREN, SEMI]`
+  - *Input*:
+    ```
+    x = 345;
+    y = 345;
+    z = x + y - 5 * (7 + 9) / 2;
+    ```
+  - *Output Tokens*:
+  ```python
+  tokens = [
+    ('IDENTIFIER', 'x'), 
+    ('ASSIGN', '='), 
+    ('NUMBER', '345'),
+    ('SEMICOLON', ';'),
+    ('IDENTIFIER', 'y'),
+    ('ASSIGN', '='),
+    ('NUMBER', '345'),
+    ('SEMICOLON', ';'),
+    ('IDENTIFIER', 'z'),
+    ('ASSIGN', '='),
+    ('IDENTIFIER', 'x'),
+    ('PLUS', '+'),
+    ('IDENTIFIER', 'y'),
+    ('MINUS', '-'),
+    ('NUMBER', '5'),
+    ('TIMES', '*'),
+    ('LPAREN', '('),
+    ('NUMBER', '7'),
+    ('PLUS', '+'),
+    ('NUMBER', '9'),
+    ('RPAREN', ')'),
+    ('DIVIDE', '/'),
+    ('NUMBER', '2'),
+    ('SEMICOLON', ';')
+    ]
+  ```
 
 
 ### 2. Parsing
@@ -34,23 +67,42 @@ toward executable form.
   - Build an Abstract Syntax Tree (AST).
 
 - Example:
-  - *Input Tokens*: `[ID(x), EQ, NUM(42), PLUS, NUM(8), MUL, LPAREN, ID(y), MINUS, NUM(3), RPAREN, SEMI]`  
+  - *Input Tokens*:
+    ```
+    tokens
+    ``` 
   - *AST*:
     ```
-    statement
-    ├── ID(x)
-    └── expression
-        ├── term
-        │   ├── NUM(42)
-        │   ├── PLUS
-        │   └── term
-        │       ├── NUM(8)
-        │       ├── MUL
-        │       └── factor
-        │           └── expression
-        │               ├── ID(y)
-        │               ├── MINUS
-        │               └── NUM(3)
+    program
+    ├── statement
+    │   ├── IDENTIFIER(x)
+    │   └── expression
+    │       └── NUMBER(345)
+    ├── statement
+    │   ├── IDENTIFIER(y)
+    │   └── expression
+    │       └── NUMBER(345)
+    └── statement
+        ├── IDENTIFIER(z)
+        └── expression
+            ├── term
+            │   ├── IDENTIFIER(x)
+            │   ├── PLUS
+            │   ├── IDENTIFIER(y)
+            │   ├── MINUS
+            │   ├── term
+            │   │   ├── factor
+            │   │   │   ├── NUMBER(5)
+            │   │   │   ├── TIMES
+            │   │   │   └── factor
+            │   │   │       ├── LPAREN
+            │   │   │       ├── expression
+            │   │   │       │   ├── NUMBER(7)
+            │   │   │       │   ├── PLUS
+            │   │   │       │   └── NUMBER(9)
+            │   │   │       ├── RPAREN
+            │   │   │       ├── DIVIDE
+            │   │   │       └── NUMBER(2)
     ```
 
 ### 3. Tree Transformations
@@ -58,21 +110,21 @@ toward executable form.
 - *Goal*: Optimise or transform the AST.
 
 - Examples:
-  - *Constant Folding*: Simplify `42 + 8` to `50`.
+  - *Constant Folding*: Simplify `7 + 9` to `16`.
   - *..*:  ..
 
 - Example:
   - Original Tree:
     ```
     expression
-    ├── NUM(42)
+    ├── NUMBER(7)
     ├── PLUS
-    └── NUM(8)
+    └── NUMBER(9)
     ```
-  - Optimized Tree:
+  - Optimised Tree:
     ```
     expression
-    └── NUM(50)
+    └── NUMBEr(16)
     ```
 
 
@@ -89,14 +141,24 @@ toward executable form.
   - *AST*:
     ```
     statement
-    ├── ID(x)
+    ├── IDENTIFIER(z)
     └── expression
-        ├── NUM(50)
+        └── term
+            ├── IDENTIFIER(x)
+            ├── PLUS
+            ├── IDENTIFIER(y)
+            ├── MINUS
+            ├── factor
+                └── NUMBER(5)
     ```
   - *Generated Code*: 
     ```
-    LOAD 50
-    STORE x
+    LOAD x
+    ADD y
+    SUB 5
+    MUL 16
+    DIV 2
+    STORE z
     ```
 
 ### 5. Execution
