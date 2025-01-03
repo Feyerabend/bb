@@ -45,7 +45,7 @@ solutions to problems. The ultimate goal is to represent these solutions as impl
 programming languages, and at times, in lower-level languages as well.
 
 This linguistic perspective of programming opens a wealth of avenues for exploration. At its heart,
-programming is about translating human thoughts—often ambiguous and multifaceted—into precise,
+programming is about translating human thoughts--often ambiguous and multifaceted--into precise,
 machine-executable instructions. This process is inherently linguistic in nature. Whether natural
 or programming, languages serve as frameworks for structuring, communicating, and reasoning about
 complex ideas.
@@ -67,7 +67,7 @@ When working with APIs (Application Programming Interfaces), you are effectively
 that domain, whether it's web development, data processing, or machine learning. They provide powerful
 abstractions, allowing developers to achieve complex tasks with relatively simple commands. However,
 these abstractions are inherently shaped by the design choices and idioms envisioned by the API's creators.
-This means that your approach to problem-solving is often influenced—if not constrained—by the framework of
+This means that your approach to problem-solving is often influenced--if not constrained--by the framework of
 this pre-defined language.
 
 While APIs and libraries offer convenience and efficiency, they can sometimes create a barrier between you
@@ -127,7 +127,7 @@ offer many of the benefits of custom languages without the overhead of building 
 
 #### Programming as Communication
 
-Thinking about programming in terms of language highlights its essence as a communicative act—between humans
+Thinking about programming in terms of language highlights its essence as a communicative act--between humans
 and machines, and among human collaborators. The act of designing a language is akin to shaping a medium of
 expression, enabling clearer, more precise, and more efficient communication.
 
