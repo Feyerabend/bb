@@ -167,9 +167,9 @@ expressiveness of LOP and the generative, adaptive, and contextual capabilities 
 might work, its feasibility, and its potential to transform programming.
 
 
-How LOP and LLMs Could Work Together
+#### How LOP and LLMs Could Work Together
 
-1. Language Design and Extension
+__1. Language Design and Extension__
 	- Current Practice: Designing a DSL manually requires deep domain knowledge and iterative refinement.
 	- With LLMs:
     	- Assist in Language Creation: LLMs can help identify domain-specific terms, relationships, and operations
@@ -180,13 +180,13 @@ Example: Suppose you're designing a DSL for disaster management. By feeding disa
 and stakeholder interviews to an LLM, it could propose initial syntax and semantics for terms like
 "resource allocation" or "response time."
 
-2. Bridging Between DSLs and Natural Language
-	- Current Practice: Users need to learn DSL syntax and semantics, which can be a barrier for non-technical stakeholders.
-	- With LLMs:
-    	- Natural Language Interface: LLMs can act as interpreters between human natural language and the DSL
-          Users could describe problems in plain language (e.g. "Find all shelters needing medical supplies")
-          and have the LLM translate this into DSL commands.
-    	- Learning Support: LLMs can serve as tutors, explaining DSL concepts and providing examples.
+__2. Bridging Between DSLs and Natural Language__
+- Current Practice: Users need to learn DSL syntax and semantics, which can be a barrier for non-technical stakeholders.
+- With LLMs:
+    - Natural Language Interface: LLMs can act as interpreters between human natural language and the DSL
+      Users could describe problems in plain language (e.g. "Find all shelters needing medical supplies")
+      and have the LLM translate this into DSL commands.
+    - Learning Support: LLMs can serve as tutors, explaining DSL concepts and providing examples.
 
 Example:
 * Input: "Send a team to evaluate damage at Shelter B and prioritize water delivery."
@@ -201,30 +201,31 @@ Example:
 }
 ```
 
-3. Handling Ambiguity and Complexity
-	- Current Practice: DSLs are deterministic and require precise definitions for every operation.
-	- With LLMs:
-    	- Fuzzy Matching: LLMs can interpret ambiguous or incomplete input, making educated guesses or
-          asking clarifying questions.
-    	- Dynamic Adaptation: LLMs can fill gaps when a DSL lacks constructs for a specific situation,
-          offering temporary solutions until the language is formally extended.
+__3. Handling Ambiguity and Complexity__
+- Current Practice: DSLs are deterministic and require precise definitions for every operation.
+- With LLMs:
+    - Fuzzy Matching: LLMs can interpret ambiguous or incomplete input, making educated guesses or
+      asking clarifying questions.
+    - Dynamic Adaptation: LLMs can fill gaps when a DSL lacks constructs for a specific situation,
+      offering temporary solutions until the language is formally extended.
 
 Example:
 * Ambiguous Query: "Optimize rescue operations in the north zone."
 * LLM Clarification: "Do you mean prioritizing medical rescues, or do you want a broader allocation of all resources in that zone?"
 
-4. Real-Time Problem Solving
-	- Current Practice: DSLs rely on predefined syntax and operations, which can limit their ability to address novel or evolving problems.
-	- With LLMs:
+__4. Real-Time Problem Solving__
+
+- Current Practice: DSLs rely on predefined syntax and operations, which can limit their ability to address novel or evolving problems.
+- With LLMs:
 	- Problem Decomposition: LLMs can help users break down complex tasks into smaller, solvable DSL commands.
 	- Scenario Simulation: LLMs can simulate outcomes of DSL commands, helping users refine their approach.
 
 Example:
 * Input: "What happens if we reroute ambulances to avoid Flooded Road A?"
-* LLM Output:
-"Based on current resource data, rerouting ambulances via Road B increases travel time by 20 minutes but avoids the delay caused by flooding."
+* LLM Output: "Based on current resource data, rerouting ambulances via Road B increases
+  travel time by 20 minutes but avoids the delay caused by flooding."
 
-Feasibility of This Approach
+### Feasibility of This Approach
 
 Advantages:
 1. Lower Barrier to Entry: LLMs can make DSLs more accessible to non-programmers by interpreting natural language and providing explanations.
@@ -237,27 +238,27 @@ Challenges:
 2. Resource Intensity: Real-time processing of complex queries by LLMs could be computationally expensive.
 3. Domain Specialization: LLMs require domain-specific fine-tuning to avoid generating irrelevant or incorrect outputs.
 
-How This Could Transform Programming
+### How This Could Transform Programming
 
-1. A New Programming Paradigm
+__1. A New Programming Paradigm__
 
 This approach could shift programming from writing low-level code to designing and evolving domain-specific languages and frameworks.
 LLMs act as interpreters, assistants, and collaborators, enabling users to focus on domain problems rather than technical implementations.
 
-2. Continuous Adaptation
+__2. Continuous Adaptation__
 
 As AI evolves, it could play an increasingly proactive role:
 - Automatically identifying inefficiencies or gaps in DSLs.
 - Suggesting improvements to syntax, semantics, or workflows.
 - Generating documentation, examples, or tutorials tailored to user needs.
 
-3. Real-Time, User-Centric Programming
+__3. Real-Time, User-Centric Programming__
 
 Imagine a future where:
 - A doctor in a hospital describes a data visualization they need, and the system generates a DSL query instantly.
 - An administrator expresses a concern about resource allocation, and the system simulates outcomes, helping refine decisions.
 
-4. Democratization of Software Development
+__4. "Democratisation" of Software Development__
 
 The combination of LOP and LLMs democratizes access to software development, empowering domain experts to design and implement
 solutions directly, without deep programming knowledge.
