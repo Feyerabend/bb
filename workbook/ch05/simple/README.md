@@ -174,23 +174,39 @@ toward executable form.
 - Example:
   - *AST*:
     ```
-    statement
-    ├── IDENTIFIER(z)
-    └── expression
-        └── term
-            ├── IDENTIFIER(x)
-            ├── PLUS
-            ├── IDENTIFIER(y)
-            ├── MINUS
-            ├── factor
-                └── NUMBER(5)
+AST Tree:
+└── PROGRAM(None)
+    ├── ASSIGN(None)
+    │   ├── IDENTIFIER(x)
+    │   └── NUMBER(345)
+    ├── ASSIGN(None)
+    │   ├── IDENTIFIER(y)
+    │   └── NUMBER(345)
+    └── ASSIGN(None)
+        ├── IDENTIFIER(z)
+        └── MINUS(None)
+            ├── PLUS(None)
+            │   ├── IDENTIFIER(x)
+            │   └── IDENTIFIER(y)
+            └── DIVIDE(None)
+                ├── TIMES(None)
+                │   ├── NUMBER(5)
+                │   └── PLUS(None)
+                │       ├── NUMBER(7)
+                │       └── NUMBER(9)
+                └── NUMBER(2)
     ```
   - *Generated Code*: 
     ```
-    LOAD x
+    LOAD 345
+    STORE x
+    LOAD 345
+    STORE y
     ADD y
     SUB 5
     MUL 16
+    ADD 7
+    ADD 9
     DIV 2
     STORE z
     ```
