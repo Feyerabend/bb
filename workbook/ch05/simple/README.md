@@ -85,24 +85,24 @@ toward executable form.
     └── statement
         ├── IDENTIFIER(z)
         └── expression
-            ├── term
-            │   ├── IDENTIFIER(x)
-            │   ├── PLUS
-            │   ├── IDENTIFIER(y)
-            │   ├── MINUS
-            │   ├── term
-            │   │   ├── factor
-            │   │   │   ├── NUMBER(5)
-            │   │   │   ├── TIMES
-            │   │   │   └── factor
-            │   │   │       ├── LPAREN
-            │   │   │       ├── expression
-            │   │   │       │   ├── NUMBER(7)
-            │   │   │       │   ├── PLUS
-            │   │   │       │   └── NUMBER(9)
-            │   │   │       ├── RPAREN
-            │   │   │       ├── DIVIDE
-            │   │   │       └── NUMBER(2)
+            └── term
+                ├── IDENTIFIER(x)
+                ├── PLUS
+                ├── IDENTIFIER(y)
+                ├── MINUS
+                └── term
+                    └── factor
+                        ├── NUMBER(5)
+                        ├── TIMES
+                        └── factor
+                            ├── LPAREN
+                            ├── expression
+                            │   ├── NUMBER(7)
+                            │   ├── PLUS
+                            │   └── NUMBER(9)
+                            ├── RPAREN
+                            ├── DIVIDE
+                            └── NUMBER(2)
     ```
 
 ### 3. Tree Transformations
