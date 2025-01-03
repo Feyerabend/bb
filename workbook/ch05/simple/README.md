@@ -174,8 +174,7 @@ toward executable form.
 - Example:
   - *AST*:
     ```
-    AST Tree:
-    └── PROGRAM(None)
+        PROGRAM(None)
         ├── ASSIGN(None)
         │   ├── IDENTIFIER(x)
         │   └── NUMBER(345)
