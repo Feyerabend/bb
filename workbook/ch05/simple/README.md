@@ -107,13 +107,19 @@ toward executable form.
 
 ### 3. Tree Transformations
 
-- *Goal*: Optimise or transform the AST.
+- *Goal*: Optimise or transform the AST. Here we ignore the earlier parsing
+  to make it simple to read code, and build a new representation in TAC, Three-Address Code.
 
 - Examples:
   - *Constant Folding*: Simplify `7 + 9` to `16`.
-  - *..*:  ..
 
-- Example:
+  - *Common Subexpression Elimination (CSE)*: Expressions like x + y that are computed
+    multiple times in a program and replaces them with a single computation.
+
+  - *Dead Code Elimination*: Code that is not reached, or not making any alternations can
+    be considered "dead" and thus can be eliminated from the executable.
+
+- Example in case AST constant folding:
   - Original Tree:
     ```
     expression
@@ -127,7 +133,35 @@ toward executable form.
     └── NUMBEr(16)
     ```
 
+- Example CSE in a TAC:
+  - Original TAC:
+    ```
+    x = 2025
+    y = 1477
+    t1 = x + y  # first instance
+    t2 = 7 + 9
+    t3 = 5 * t2
+    t4 = t3 / 2
+    t5 = t1 - t4
+    z = t5
+    t6 = x + y  # CSE, second
+    t7 = 0
+    ```
+  - Optimised TAC:
+    ```
+    x = 2025
+    y = 1477
+    t1 = x + y  # only calculation here
+    t2 = 7 + 9
+    t3 = 5 * t2
+    t4 = t3 / 2
+    t5 = t1 - t4
+    z = t5
+    t6 = t1 # replaced
+    t7 = 0
+    ```
 
+  
 ### 4. Code Generation
 
 - *Goal*: Convert the AST into target instructions, such as bytecode or machine code.
