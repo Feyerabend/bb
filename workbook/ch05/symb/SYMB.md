@@ -155,6 +155,7 @@ The core functions are in the Symbol Table Class:
 - lookup(): Searches for a symbol in the current and enclosing scopes. Also typical for symbols tables in general.
 
 And how we create symbols:
+
 2.	Creating Symbols:
 - create_variable_entry(): Defines variables with their name, type, scope, attributes (e.g., const), and memory location.
 - create_function_entry(): Defines function signatures with their return type, parameters, and scope.
