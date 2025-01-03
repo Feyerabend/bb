@@ -1,10 +1,17 @@
 
 ## Outline for a New Paradigm for Solving Problems with Code
 
-It might not come as a surprise that I advocate for a specific perspective on programming and coding.
-After all, nearly every book on the subject can, does, and should make its perspective clear. However,
-the way we approach problem-solving through programming matters deeply, as it shapes how we think,
-what tools we use, and how we eventually arrive at solutions.
+*Project: Discuss "wild ideas" in relation to methodology, methods or philosophy of programming
+and computers. Here are some thoughts to start you with, which you may or may not agree with.
+Come up with your own set of thoughts, or start digging into some existing perspectives.*
+
+As you've likely noticed, I enjoy shifting perspectives and exploring different ways of looking at
+things--some of which I find compelling, others less so. It's probably no surprise, then, that I
+advocate for a particular viewpoint on programming and coding. After all, nearly every book on the
+subject explicitly or implicitly presents a specific perspective. This isn't about claiming
+neutrality or objectivity but rather about offering one (or perhaps a few) lenses through which to
+approach the subject. The approach we take to problem-solving in programming is significant, as it
+influences our thought processes, the tools we adopt, and ultimately the solutions we devise.
 
 My perspective is that programming, at its core, is a *language problem*. When tackling a problem, it's
 not just about writing code; it's about communicating effectively with the client or the problem domain
