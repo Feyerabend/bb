@@ -208,7 +208,7 @@ toward executable form.
     PUSH 7
     PUSH 9
     ADD
-    MUOL
+    MUL
     SUB
     STORE z
     ```
