@@ -39,6 +39,125 @@ These can be thought of as the "state" of the program (variables) and the "actio
   symbol table. When the function is called, the symbol table is updated to bind its parameters
   to the actual arguments passed in the function call.
 
+#### Example
+
+Assume we have an AST ready:
+- A program that performs simple arithmetic (such as x = 5 + 3).
+- A function add(a, b) that adds two numbers.
+- The symbol table will store variable names, types, scopes, attributes, and memory locations.
+
+The Symbol Table will contain:
+1.	Global Scope: For function definitions.
+2.	Local Scope: For variables used inside functions.
+
+
+```python
+class SymbolTable:
+    def __init__(self):
+        # start at an empty list for scopes, beginning with the global scope
+        self.scopes = [{}]  # global scope at index 0
+
+    def enter_scope(self):
+        self.scopes.append({})
+
+    def exit_scope(self):
+        if len(self.scopes) > 1:
+            self.scopes.pop()
+        else:
+            print("Cannot exit global scope")
+
+    def insert(self, name, symbol_info):
+        self.scopes[-1][name] = symbol_info
+
+    def lookup(self, name):
+        for scope in reversed(self.scopes):
+            if name in scope:
+                return scope[name]
+        return None
+
+    # only for show and tell, not needed for the symbol table
+    def print_table(self):
+        for scope_index, scope in enumerate(self.scopes):
+            print(f"Scope {scope_index + 1}:")
+            for name, info in scope.items():
+                print(f"  Name: {name}")
+                for key, value in info.items():
+                    print(f"    {key}: {value}")
+            print()
+
+# symbol information for variables and functions
+def create_variable_entry(var_type, scope, attributes=None, location=None):
+    return {
+        'Type': var_type,
+        'Scope': scope,
+        'Attributes': attributes or [],
+        'Location': location
+    }
+
+def create_function_entry(return_type, parameters, scope):
+    return {
+        'Return Type': return_type,
+        'Parameters': parameters,
+        'Scope': scope
+    }
+
+# symbol table for a simple program with a function and arithmetic
+symbol_table = SymbolTable()
+
+# insert function 'add' into global scope
+symbol_table.insert('add', create_function_entry('int', [('int', 'a'), ('int', 'b')], 'global'))
+
+# insert variable 'x' into local scope (function 'foo')
+symbol_table.enter_scope()
+symbol_table.insert('x', create_variable_entry('float', 'local (function foo)', ['const'], '0x100'))
+
+# simulate the arithmetic operation: x = 5 + 3 (simple arithmetic, add constants)
+symbol_table.insert('5', create_variable_entry('int', 'local (expression)', [], '0x200'))
+symbol_table.insert('3', create_variable_entry('int', 'local (expression)', [], '0x201'))
+
+symbol_table.print_table()
+```
+
+The output will be:
+
+```shell
+Scope 1:
+  Name: add
+    Return Type: int
+    Parameters: [('int', 'a'), ('int', 'b')]
+    Scope: global
+
+Scope 2:
+  Name: x
+    Type: float
+    Scope: local (function foo)
+    Attributes: ['const']
+    Location: 0x100
+  Name: 5
+    Type: int
+    Scope: local (expression)
+    Attributes: []
+    Location: 0x200
+  Name: 3
+    Type: int
+    Scope: local (expression)
+    Attributes: []
+    Location: 0x201
+```
+
+The core functions are in the Symbol Table Class:
+
+1. Symbol Table Class:
+    - self.scopes: A list of dictionaries, each representing a scope. We start with a (empty) global scope and add new scopes as needed.
+	- enter_scope(): Adds a new scope (function or block) to the symbol table.
+	- exit_scope(): Removes the current scope (useful for function or block exits).
+	- insert(): Adds a symbol (variable or function) to the current scope. Typical for symbols tables in general.
+	- lookup(): Searches for a symbol in the current and enclosing scopes. Also typical for symbols tables in general.
+
+And how we create symbols:
+2.	Creating Symbols:
+	- create_variable_entry(): Defines variables with their name, type, scope, attributes (e.g., const), and memory location.
+	- create_function_entry(): Defines function signatures with their return type, parameters, and scope.
 
 
 ### Symbol Tables in Functional Languages
