@@ -1,5 +1,5 @@
 
-## Simple Recursive Descent
+## Really Simple Recursive Descent
 
 We look at a really simple parser which only take care of S-expressions. S-expressions (Symbolic Expressions) are a simple,
 parenthesized syntax for representing data and code in a hierarchical, tree-like structure. Originating in Lisp, they are used
