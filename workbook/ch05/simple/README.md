@@ -174,27 +174,27 @@ toward executable form.
 - Example:
   - *AST*:
     ```
-AST Tree:
-└── PROGRAM(None)
-    ├── ASSIGN(None)
-    │   ├── IDENTIFIER(x)
-    │   └── NUMBER(345)
-    ├── ASSIGN(None)
-    │   ├── IDENTIFIER(y)
-    │   └── NUMBER(345)
-    └── ASSIGN(None)
-        ├── IDENTIFIER(z)
-        └── MINUS(None)
-            ├── PLUS(None)
-            │   ├── IDENTIFIER(x)
-            │   └── IDENTIFIER(y)
-            └── DIVIDE(None)
-                ├── TIMES(None)
-                │   ├── NUMBER(5)
-                │   └── PLUS(None)
-                │       ├── NUMBER(7)
-                │       └── NUMBER(9)
-                └── NUMBER(2)
+    AST Tree:
+    └── PROGRAM(None)
+        ├── ASSIGN(None)
+        │   ├── IDENTIFIER(x)
+        │   └── NUMBER(345)
+        ├── ASSIGN(None)
+        │   ├── IDENTIFIER(y)
+        │   └── NUMBER(345)
+        └── ASSIGN(None)
+            ├── IDENTIFIER(z)
+            └── MINUS(None)
+                ├── PLUS(None)
+                │   ├── IDENTIFIER(x)
+                │   └── IDENTIFIER(y)
+                └── DIVIDE(None)
+                    ├── TIMES(None)
+                    │   ├── NUMBER(5)
+                    │   └── PLUS(None)
+                    │       ├── NUMBER(7)
+                    │       └── NUMBER(9)
+                    └── NUMBER(2)
     ```
   - *Generated Code*: 
     ```
