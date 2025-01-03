@@ -107,7 +107,7 @@ toward executable form.
 
 ### 3. Tree Transformations
 
-- *Goal*: Optimise or transform the AST. Here we ignore the earlier parsing
+- *Goal*: Optimise or transform the AST. Here in [2](./2) we ignore the earlier parsing
   to make it simple to read code, and build a new representation in TAC, Three-Address Code.
 
 - Examples:
