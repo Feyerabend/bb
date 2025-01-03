@@ -170,11 +170,11 @@ might work, its feasibility, and its potential to transform programming.
 #### How LOP and LLMs Could Work Together
 
 __1. Language Design and Extension__
-	- Current Practice: Designing a DSL manually requires deep domain knowledge and iterative refinement.
-	- With LLMs:
-    	- Assist in Language Creation: LLMs can help identify domain-specific terms, relationships, and operations
-          by analyzing relevant texts, data, and documentation.
-	    - Adaptation: LLMs could suggest modifications to the DSL as the domain evolves or new use cases arise.
+- Current Practice: Designing a DSL manually requires deep domain knowledge and iterative refinement.
+- With LLMs:
+    - Assist in Language Creation: LLMs can help identify domain-specific terms, relationships, and operations
+      by analyzing relevant texts, data, and documentation.
+	- Adaptation: LLMs could suggest modifications to the DSL as the domain evolves or new use cases arise.
 
 Example: Suppose you're designing a DSL for disaster management. By feeding disaster reports, response protocols,
 and stakeholder interviews to an LLM, it could propose initial syntax and semantics for terms like
