@@ -130,7 +130,7 @@ toward executable form.
   - Optimised Tree:
     ```
     expression
-    └── NUMBEr(16)
+    └── NUMBER(16)
     ```
 
 - Example CSE in a TAC:
@@ -227,11 +227,11 @@ toward executable form.
 
 The compilation pipeline involves transforming a program through stages aligned with its grammar:
 
-1. *Tokenization*: Recognize grammar constructs as tokens.
+1. *Tokenisation*: Recognize grammar constructs as tokens.
 
 2. *Parsing*: Build an AST matching the grammar structure.
 
-3. *Transformations*: Optimize the AST.
+3. *Transformations*: Optimise the AST.
 
 4. *Code Generation*: Map grammar constructs to executable instructions.
 
