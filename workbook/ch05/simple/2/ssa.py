@@ -1,3 +1,4 @@
+
 ssa_program = [
     {"type": "assignment", "left": "x_0", "right": {"type": "term", "value": 10}},
     {"type": "assignment", "left": "t1_0", "right": {"type": "binary_op", "left": "x_0", "operator": "<", "right": 15}},
@@ -21,16 +22,16 @@ def optimize_program_first(program):
             right = instruction["right"]
 
             if right["type"] == "term" and isinstance(right["value"], (int, float)):
-                # Handle constant assignment
+                # constant assignment
                 constants[left] = right["value"]
                 optimized_program.append({"type": "assignment", "left": left, "right": {"type": "term", "value": right["value"]}})
             elif right["type"] == "binary_op":
-                # Handle binary operations
+                # binary operations
                 left_operand = constants.get(right["left"], right["left"])
                 right_operand = constants.get(right["right"], right["right"])
 
                 if isinstance(left_operand, (int, float)) and isinstance(right_operand, (int, float)):
-                    # Perform constant folding
+                    # constant folding
                     if right["operator"] == "+":
                         value = left_operand + right_operand
                     elif right["operator"] == "-":
@@ -47,10 +48,10 @@ def optimize_program_first(program):
                         constants[left] = value
                         optimized_program.append({"type": "assignment", "left": left, "right": {"type": "term", "value": value}})
                 else:
-                    # Leave the binary operation as-is if operands aren't constants
+                    # leave binary operation as-is if operands aren't constants
                     optimized_program.append({"type": "assignment", "left": left, "right": {"type": "binary_op", "left": left_operand, "operator": right["operator"], "right": right_operand}})
             else:
-                # General case: Keep the assignment as-is
+                # general case: Keep the assignment as-is
                 optimized_program.append(instruction)
         elif instruction["type"] == "if":
             condition = instruction["condition"]["value"]
@@ -62,7 +63,7 @@ def optimize_program_first(program):
         elif instruction["type"] == "label":
             optimized_program.append({"type": "label", "name": instruction["name"]})
         else:
-            # Handle unrecognized instructions
+            # unrecognized instructions
             optimized_program.append(instruction)
 
     return optimized_program
@@ -76,13 +77,13 @@ def resolve_phi_after_optimization(program):
             left = instruction["left"]
             args = instruction["args"]
             if len(set(args)) == 1:
-                phi_nodes[left] = args[0]  # Single unique value, directly assign it
+                phi_nodes[left] = args[0]  # single unique value, directly assign it
             else:
-                phi_nodes[left] = args  # Retain `phi` if unresolved
+                phi_nodes[left] = args  # retain `phi` if unresolved
         else:
             resolved_program.append(instruction)
 
-    # Replace `phi` nodes in assignments
+    # replace `phi` nodes in assignments
     for instruction in resolved_program:
         if isinstance(instruction, dict) and instruction["type"] == "assignment":
             right = instruction["right"]
@@ -91,10 +92,10 @@ def resolve_phi_after_optimization(program):
     
     return resolved_program
 
-# Step 1: Optimize the program
+# 1: optimize the program
 optimized_program = optimize_program_first(ssa_program)
 
-# Step 2: Resolve phi functions
+# 2: resolve phi functions
 fully_resolved_program = resolve_phi_after_optimization(optimized_program)
 
 def print_program(program):
@@ -124,5 +125,6 @@ def print_program(program):
         else:
             print(f"Unknown line format: {line}")
 
-print("Final Optimized and Resolved Program:")
+print("Final Optimised and Resolved Program:")
 print_program(fully_resolved_program)
+

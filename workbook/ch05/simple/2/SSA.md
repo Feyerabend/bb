@@ -329,3 +329,97 @@ due to branching and are an essential feature of SSA-based intermediate represen
 allow compilers to reason more effectively about variables, optimize code, and perform advanced
 analyses like constant propagation, dead code elimination, and more.
 
+
+### SSA Optimisation
+
+From the above SSA code transformed from TAC, we use the already parsed variant:
+
+```python
+ssa_program = [
+    {"type": "assignment", "left": "x_0", "right": {"type": "term", "value": 10}},
+    {"type": "assignment", "left": "t1_0", "right": {"type": "binary_op", "left": "x_0", "operator": "<", "right": 15}},
+    {"type": "label", "name": "label_1"},
+    {"type": "if", "condition": {"type": "term", "value": "t1_0"}, "label": "label_2"},
+    {"type": "assignment", "left": "t2_0", "right": {"type": "binary_op", "left": "x_0", "operator": "+", "right": 1}},
+    {"type": "assignment", "left": "x_1", "right": {"type": "term", "value": "t2_0"}},
+    {"type": "goto", "label": "label_1"},
+    {"type": "label", "name": "label_2"},
+    {"type": "phi", "left": "x", "args": ["x_0", "x_1"]},
+    {"type": "assignment", "left": "t1", "right": {"type": "term", "value": "t1_0"}}
+]
+```
+
+This is used in the program 'ssa.py'. Not iterating what the program is, the result from running it becomes:
+
+```
+x_0 = 10
+label label_1:
+if t1_0 goto label_2
+t2_0 = 11
+x_1 = t2_0
+goto label_1
+label label_2:
+t1 = t1_0
+```
+
+So what happends here?
+
+```
+x_0 = 10                    # x_0 is initialized to 10 as per the original program.
+label label_1:              # This marks the beginning of the loop.
+if t1_0 goto label_2        # The condition t1_0 is evaluated. Since it remains unresolved as a control flow decision, it is retained as is.
+t2_0 = 11                   # The constant propagation optimization simplified t2_0 = x_0 + 1 to t2_0 = 11 because x_0 was known to be 10.
+x_1 = t2_0                  # The assignment x_1 = t2_0 remains unchanged, directly assigning the result of t2_0.
+goto label_1                # This loops back to label_1.
+label label_2:              # This marks the exit point of the loop when t1_0 evaluates to false.
+t1 = t1_0                   # Since t1 is simply a copy of t1_0, this assignment remains untouched.
+```
+
+Why the phi functions disappear: The phi function for x was resolved based on the two possible values (`x_0` and `x_1`),
+but the control flow logic didn't require an explicit phi node in this simplified form because the variable updates were
+inline and consistent. Then `t1 = phi(t1_0)` simplifies to `t1 = t1_0` since there's no branching ambiguity.
+
+This form is both optimised and resolved, reflecting a simplified intermediate representation suitable for further analysis
+or direct code generation.
+
+
+
+
+1. Constant Propagation:
+	- What it does: Replaces variables with their known constant values throughout the program.
+	- Example in your program:
+	- Original: t2_0 = x_0 + 1
+	- x_0 is known to be 10, so this becomes:
+	- Optimized: t2_0 = 11
+
+Benefit: Removes unnecessary variable dependencies and simplifies computations.
+
+2. Removal of Redundant phi Nodes:
+	- What it does: Resolves phi functions when the control flow paths can be simplified or when
+      the input values to phi nodes are the same or no longer needed.
+	- Example in your program:
+	- Original: x = phi(x_0, x_1)
+	- After examining the flow, x is updated directly as part of the loop, and there’s no ambiguity
+      about its value in label_2. Thus, the phi node for x is no longer needed.
+	- Optimized: phi(x_0, x_1) is entirely removed.
+	- Similarly: t1 = phi(t1_0) simplifies to t1 = t1_0.
+
+Benefit: Simplifies control flow and removes unnecessary SSA artifacts.
+
+3. Simplified Arithmetic:
+	- What it does: Combines constants during compile time to reduce runtime calculations.
+	- Example in your program:
+	- Original: t2_0 = x_0 + 1
+	- Since x_0 is a constant (10), the calculation is performed at compile time:
+	- Optimized: t2_0 = 11.
+
+Benefit: Reduces runtime overhead by precomputing constant expressions.
+
+4. Dead Code Elimination (Implicit):
+	- What it does: Although not explicitly visible in this example, some branches, instructions,
+      or phi nodes that would have been unused due to constant propagation and folding were removed.
+
+What Stayed Unchanged?
+1.	Control Flow: The if t1_0 goto label_2 and the loop structure (goto label_1) were left untouched since they depend on dynamic evaluation at runtime.
+2.	t1 Assignment: The t1 = t1_0 assignment is left unchanged because there was no optimization opportunity (it simply copies t1_0).
+
