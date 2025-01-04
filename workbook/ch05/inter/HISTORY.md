@@ -26,7 +26,7 @@ Format is an example of an UNCOL in this sense, as are various bytecode systems 
 "The Problem of Programming Communication with Changing Machines: A Proposed Solution".
 Communications of the ACM. 1 (8): 12-18. doi:10.1145/368892.368915. Retrieved 21 February 2022.
 
-[^3] John English, Introduction to Operating Systems: Behind the Desktop, Palgrave MacMillan 2005, ISBN 0230374085, p. 10
+[^3]: John English, Introduction to Operating Systems: Behind the Desktop, Palgrave MacMillan 2005, ISBN 0230374085, p. 10
 
 
 UNCOL, short for "Universal Computer Oriented Language," was a theoretical intermediate language proposed in the 1950s. 
