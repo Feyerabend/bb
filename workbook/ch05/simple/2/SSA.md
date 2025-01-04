@@ -385,41 +385,45 @@ This form is both optimised and resolved, reflecting a simplified intermediate r
 or direct code generation.
 
 
-1. Constant Propagation:
-	- What it does: Replaces variables with their known constant values throughout the program.
-	- Example in your program:
-	- Original: t2_0 = x_0 + 1
-	- x_0 is known to be 10, so this becomes:
-	- Optimized: t2_0 = 11
+__1. Constant Propagation:__
+
+Replaces variables with their known constant values throughout the program.
+- Example in the program:
+- Original: t2_0 = x_0 + 1
+- x_0 is known to be 10, so this becomes:
+- Optimised: t2_0 = 11
 
 Benefit: Removes unnecessary variable dependencies and simplifies computations.
 
-2. Removal of Redundant phi Nodes:
-	- What it does: Resolves phi functions when the control flow paths can be simplified or when
-      the input values to phi nodes are the same or no longer needed.
-	- Example in your program:
-	- Original: x = phi(x_0, x_1)
-	- After examining the flow, x is updated directly as part of the loop, and there’s no ambiguity
-      about its value in label_2. Thus, the phi node for x is no longer needed.
-	- Optimized: phi(x_0, x_1) is entirely removed.
-	- Similarly: t1 = phi(t1_0) simplifies to t1 = t1_0.
+__2. Removal of Redundant phi Nodes__
+
+Resolves phi functions when the control flow paths can be simplified or when
+the input values to phi nodes are the same or no longer needed.
+
+- Example in the program:
+- Original: x = phi(x_0, x_1)
+- After examining the flow, x is updated directly as part of the loop, and there’s no ambiguity
+  about its value in label_2. Thus, the phi node for x is no longer needed.
+- Optimised: phi(x_0, x_1) is entirely removed.
+- Similarly: t1 = phi(t1_0) simplifies to t1 = t1_0.
 
 Benefit: Simplifies control flow and removes unnecessary SSA artifacts.
 
-3. Simplified Arithmetic:
-	- What it does: Combines constants during compile time to reduce runtime calculations.
-	- Example in your program:
-	- Original: t2_0 = x_0 + 1
-	- Since x_0 is a constant (10), the calculation is performed at compile time:
-	- Optimized: t2_0 = 11.
+__3. Simplified Arithmetic__
+
+Combines constants during compile time to reduce runtime calculations.
+- Example in your program:
+- Original: t2_0 = x_0 + 1
+- Since x_0 is a constant (10), the calculation is performed at compile time:
+- Optimised: t2_0 = 11.
 
 Benefit: Reduces runtime overhead by precomputing constant expressions.
 
-4. Dead Code Elimination (Implicit):
-	- What it does: Although not explicitly visible in this example, some branches, instructions,
-      or phi nodes that would have been unused due to constant propagation and folding were removed.
+__4. Dead Code Elimination (Implicit)__
+Although not explicitly visible in this example, some branches, instructions,
+or phi nodes that would have been unused due to constant propagation and folding were removed.
 
 What Stayed Unchanged?
-1.	Control Flow: The if t1_0 goto label_2 and the loop structure (goto label_1) were left untouched since they depend on dynamic evaluation at runtime.
-2.	t1 Assignment: The t1 = t1_0 assignment is left unchanged because there was no optimization opportunity (it simply copies t1_0).
+1. *Control Flow*: The if t1_0 goto label_2 and the loop structure (goto label_1) were left untouched since they depend on dynamic evaluation at runtime.
+2. *t1 Assignment*: The t1 = t1_0 assignment is left unchanged because there was no optimization opportunity (it simply copies t1_0).
 
