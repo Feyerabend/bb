@@ -54,12 +54,12 @@ and labels. In SSA, every variable is versioned, and at the points where control
 if statement or goto), we introduce phi functions.
 
 
-1. Initial Setup:
+__1. Initial Setup__
 - We initialize a SSAConverter class, which takes the TAC program and prepares to convert it into SSA form.
 - The converter uses `self.variable_versions` to keep track of versions of variables (so `x_0`, `t1_0`), ensuring
   each variable is assigned exactly once.
 
-2. Processing the Program:
+__2. Processing the Program__
 - The program is processed instruction by instruction:
 - Assignments: For every assignment, the variable on the left-hand side (LHS) is assigned a new version
   (`x_0`, `t1_0` ..).
@@ -70,12 +70,12 @@ if statement or goto), we introduce phi functions.
 - Labels: At the labels where control flow converges, phi functions are inserted to handle different variable
   versions that may arrive from different branches.
 
-3. Handling Phi Functions:
+__3. Handling Phi Functions__
 - At labels where variables' values may come from different branches (after an if or goto), we add phi functions.
   These functions select the appropriate value based on the execution path.
 - The `add_phi_function` method records the phi functions for variables that may have different values at a label.
 
-4. SSA Output:
+__4. SSA Output__
 - After processing all statements, the SSA form of the program is produced, with updated versions of variables
   and phi functions at control flow merge points.
 
@@ -167,7 +167,7 @@ The `add_phi_function` inserts phi functions at the appropriate labels where con
         return self.ssa_program
 ```
 
-Conversion: The convert method processes each TAC statement:
+The convert method processes each TAC statement:
 - Assignments are updated with new versions.
 - Conditions are modified to use the current versions.
 - Phi functions are added at labels where control flow merges.
