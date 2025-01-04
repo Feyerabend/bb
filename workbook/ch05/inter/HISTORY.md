@@ -4,7 +4,7 @@
 ### UNCOL
 
 Many would probably start the history of intermediate code with UNCOL (Universal Computer Oriented Language), which is a universal
-intermediate language for compilers. The idea was introduced in 1958, by a SHARE ad-hoc committee.[1] It was never fully specified
+intermediate language for compilers. The idea was introduced in 1958, by a SHARE ad-hoc committee.[^1] It was never fully specified
 or implemented; in many ways it was more a concept than a language.
 
 UNCOL was intended to make compilers economically available for each new instruction set architecture and programming language.
@@ -19,16 +19,14 @@ independent persons as long ago as 1954." Macrakis (1993) summarizes its fate:
 > that UNCOL set itself: the economical production of compilers for new languages and new machines.
 
 UNCOL is sometimes used as a generic term for the idea of a universal intermediate language. The Architecture Neutral Distribution
-Format is an example of an UNCOL in this sense, as are various bytecode systems such as UCSD Pascal's p-code, and most notably Java bytecode.[3]
+Format is an example of an UNCOL in this sense, as are various bytecode systems such as UCSD Pascal's p-code, and most notably Java bytecode.[^3]
 
 
-[1]: Strong, J.; Wegstein, J.; Tritter, A.; Olsztyn, J.; Mock, O.; Steel, T. (August 1958).
+[^1]: Strong, J.; Wegstein, J.; Tritter, A.; Olsztyn, J.; Mock, O.; Steel, T. (August 1958).
 "The Problem of Programming Communication with Changing Machines: A Proposed Solution".
 Communications of the ACM. 1 (8): 12-18. doi:10.1145/368892.368915. Retrieved 21 February 2022.
 
-[2] John Levine (23 November 2021). "UNCOL and Reversing modifications from mailing lists". dmarc-ietf (Mailing list). Retrieved 24 November 2021.
-
-[3] John English, Introduction to Operating Systems: Behind the Desktop, Palgrave MacMillan 2005, ISBN 0230374085, p. 10
+[^3] John English, Introduction to Operating Systems: Behind the Desktop, Palgrave MacMillan 2005, ISBN 0230374085, p. 10
 
 
 UNCOL, short for "Universal Computer Oriented Language," was a theoretical intermediate language proposed in the 1950s. 
