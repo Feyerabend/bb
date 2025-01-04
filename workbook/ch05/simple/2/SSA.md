@@ -423,7 +423,7 @@ __4. Dead Code Elimination (Implicit)__
 Although not explicitly visible in this example, some branches, instructions,
 or phi nodes that would have been unused due to constant propagation and folding were removed.
 
-What Stayed Unchanged?
+__What Stayed Unchanged?__
 1. *Control Flow*: The if t1_0 goto label_2 and the loop structure (goto label_1) were left untouched since they depend on dynamic evaluation at runtime.
 2. *t1 Assignment*: The t1 = t1_0 assignment is left unchanged because there was no optimization opportunity (it simply copies t1_0).
 
