@@ -41,6 +41,8 @@ In summary, while UNCOL did not achieve its goal of becoming the universal inter
 4.	Steel, T. B., Jr. (1960). UNCOL: Universal Computer Oriented Language Revisited, Datamation, Jan/Feb. p. 18.
 
 
+---
+
 ### Pascal P-Code
 
 Pascal P-Code (Portable Code) is an intermediate code used by the UCSD (University of California, San Diego) Pascal system in the 1970s. It was a design aimed at improving the portability of Pascal programs across different machine architectures. The concept behind P-code was to have a virtual machine that could execute an intermediate language, allowing Pascal programs to be compiled once into P-code, and then run on any machine with a suitable interpreter. This represented a key step in the evolution of language portability and compiler design.
@@ -79,9 +81,13 @@ Despite these challenges, Pascal P-code was an important milestone in the develo
 
 For further details on the impact of Pascal P-code and its role in the evolution of modern virtual machines, you may want to consult specific works on the history of programming languages or compiler design, such as Wirth's original texts or papers on the UCSD Pascal system.
 
+---
+
 ### Java
 
 ..
+
+---
 
 ### LLVM
 
