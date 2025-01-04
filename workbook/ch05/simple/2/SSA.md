@@ -2,8 +2,8 @@
 ## Simple Compiler: Static Single Assignment (SSA) Form
 
 Static Single Assignment (SSA) is an intermediate representation (IR) used in compilers and program
-analysis to simplify certain optimization techniques. In SSA form, each variable is assigned exactly
-once, and every variable is defined by a unique assignment. This makes control flow analysis and optimization
+analysis to simplify certain optimisation techniques. In SSA form, each variable is assigned exactly
+once, and every variable is defined by a unique assignment. This makes control flow analysis and optimisation
 easier.
 
 1. *One Assignment per Variable*: Each variable in the program is assigned a value exactly once. If a variable
@@ -14,8 +14,8 @@ easier.
    of the control flow.
 
 3. *Simplified Control Flow*: Since variables are assigned only once, SSA eliminates the need for complex data
-   flow analysis and simplifies optimizations like constant propagation, dead code elimination, and loop
-   optimizations.
+   flow analysis and simplifies optimisations like constant propagation, dead code elimination, and loop
+   optimisations.
 
 
 ### Example Program and Conversion Process
@@ -298,7 +298,6 @@ if condition:
     x = 5
 else:
     x = 10
-
 y = x + 1
 ```
 
@@ -326,7 +325,7 @@ Here, x takes the correct value depending on whether the if or else branch was e
 
 Phi functions are critical for keeping track of variables that could change at multiple points
 due to branching and are an essential feature of SSA-based intermediate representations. They 
-allow compilers to reason more effectively about variables, optimize code, and perform advanced
+allow compilers to reason more effectively about variables, optimise code, and perform advanced
 analyses like constant propagation, dead code elimination, and more.
 
 
@@ -408,7 +407,7 @@ Example in the program:
 - Optimised: phi(x_0, x_1) is entirely removed.
 - Similarly: t1 = phi(t1_0) simplifies to t1 = t1_0.
 
-Benefit: Simplifies control flow and removes unnecessary SSA artifacts.
+Benefit: Simplifies control flow and removes unnecessary SSA artefacts.
 
 __3. Simplified Arithmetic__
 
