@@ -1,8 +1,8 @@
 ## Debugging, Optimisations and Tests
 
-This section of the book delves into debugging, optimization, and testing in programming,
-highlighting their critical role in software development and offering detailed insights
-into each concept.
+This section of the book delves into debugging, optimisation/optimization, and testing
+in programming, highlighting their critical role in software development and offering
+detailed insights into each concept.
 
 In this workbook, you are encouraged to explore and refine your own set of tools, choosing
 those best suited to the task at hand while also broadening your repertoire. From the less
