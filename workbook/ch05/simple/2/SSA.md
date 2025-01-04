@@ -229,7 +229,7 @@ execution.
 
 A phi function is typically represented as:
 
-$$var = φ(var{1}, var{2}, ..., var{n})$$
+$$var = φ(var_1, var_2, ..., var_n)$$
 
 This means that at this point in the program, var can take any of the values var1, var2, .., varn,
 depending on which control flow path was taken to reach this point.
