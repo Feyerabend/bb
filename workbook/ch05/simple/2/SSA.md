@@ -178,7 +178,7 @@ The convert method processes each TAC statement:
 
 For the provided TAC input, the resulting SSA program would look something like this:
 
-```python
+```
 x_0 = 10
 t1_0 = x_0 < 15
 label label_1:
@@ -349,20 +349,22 @@ ssa_program = [
 ]
 ```
 
-This is used in the program 'ssa.py'. Not iterating what the program is, the result from running it becomes:
+This is used in the program 'ssa.py'. Not iterating what the program is, but iterate the data:
 
 ```
 x_0 = 10
+t1_0 = x_0 < 15
 label label_1:
 if t1_0 goto label_2
-t2_0 = 11
+t2_0 = x_0 + 1
 x_1 = t2_0
 goto label_1
 label label_2:
-t1 = t1_0
+x = phi(x_0)
+t1 = phi(t1_0)
 ```
 
-So what happends here?
+Running the program 'ssa.py' the result from it becomes the following:
 
 ```
 x_0 = 10                    # x_0 is initialized to 10 as per the original program.
@@ -375,14 +377,12 @@ label label_2:              # This marks the exit point of the loop when t1_0 ev
 t1 = t1_0                   # Since t1 is simply a copy of t1_0, this assignment remains untouched.
 ```
 
-Why the phi functions disappear: The phi function for x was resolved based on the two possible values (`x_0` and `x_1`),
+Why the phi functions disappear? The phi function for x was resolved based on the two possible values (`x_0` and `x_1`),
 but the control flow logic didn't require an explicit phi node in this simplified form because the variable updates were
 inline and consistent. Then `t1 = phi(t1_0)` simplifies to `t1 = t1_0` since there's no branching ambiguity.
 
 This form is both optimised and resolved, reflecting a simplified intermediate representation suitable for further analysis
 or direct code generation.
-
-
 
 
 1. Constant Propagation:
