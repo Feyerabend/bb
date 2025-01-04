@@ -243,7 +243,7 @@ These optimisations improve the efficiency of the generated code in terms of bot
     or redundant computations.
 	- This makes the program smaller and faster because unnecessary instructions are not executed.
 
-The last one hasn't been exemplified yet, but more on this type can be seen in [DEAD](./DEAD.md)
+The last one hasn't been exemplified yet, but more on this type can be seen in [DEAD](./DEAD.md).
 
 
 ### Intermediate Representations (IRs)
@@ -266,7 +266,7 @@ These IRs act as a bridge between the high-level code and the low-level machine 
 3. *Static Single Assignment (SSA)*
 - SSA ensures each variable is assigned exactly once, making the program's data flow clearer. It is
   particularly useful for optimisations because it makes it easy to track where values come from and
-  where they are used.
+  where they are used. See [SSA](./SSA.md).
 - In SSA, dead code is easy to find because if a variable is never used after assignment, it can be
   eliminated.
 
