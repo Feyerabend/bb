@@ -231,8 +231,8 @@ A phi function is typically represented as:
 
 $$var = φ(var_1, var_2, ..., var_n)$$
 
-This means that at this point in the program, var can take any of the values var1, var2, .., varn,
-depending on which control flow path was taken to reach this point.
+This means that at this point in the program, var can take any of the values $var_1$, $var_2$,
+.., $var_n$, depending on which control flow path was taken to reach this point.
 
 #### When Do You Need Phi Functions?
 
