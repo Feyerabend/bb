@@ -270,6 +270,7 @@ These IRs act as a bridge between the high-level code and the low-level machine 
 - In SSA, dead code is easy to find because if a variable is never used after assignment, it can be
   eliminated.
 
+#### Summary
 
 * TAC is simple and linear, making it easy to apply optimisations like Dead Code Elimination (DCE)
   and Common Subexpression Elimination (CSE). The code can be simplified and cleaned up.
