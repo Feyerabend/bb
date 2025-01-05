@@ -121,6 +121,7 @@ toward executable form.
 	- *Rule Enforcement*: Validate adherence to specific language rules,
       such as const correctness or naming conventions.
 
+
 ### 4. Tree Transformations
 
 - *Goal*: Optimise or transform the AST. Here in [2](./2) we ignore the earlier parsing
