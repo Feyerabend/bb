@@ -4,7 +4,7 @@ class TACParser:
     def __init__(self, code):
         self.tokens = code.splitlines()
         self.current = 0
-        self.constants = set()  # Keeps track of constant values
+        self.constants = set()
 
     def parse(self):
         program = []
@@ -107,9 +107,6 @@ class TACParser:
         return self.current >= len(self.tokens)
 
     def is_constant(self, value):
-        """
-        Check if the value is a constant (numeric).
-        """
         return re.match(r"^\d+$", value) is not None  # integer constants
 
 

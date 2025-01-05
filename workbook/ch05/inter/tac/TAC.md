@@ -138,7 +138,9 @@ label_end:
 
 __9. Advanced Features__
 
-Phi Functions (for SSA): To handle merging variables at control flow joins.
+Phi Functions (for SSA[^ssa]): To handle merging variables at control flow joins.
+
+[^ssa]: See [SSA](./../../simple/2/SSA.md).
 
 ```assembly
 t1 = phi(x1, x2)
@@ -149,7 +151,7 @@ Inline Assembly: To include specific low-level instructions directly.
 
 ### Example: Full TAC Program
 
-Here’s a TAC representation of a simple program:
+Here's a TAC representation of a simple program:
 
 ```c
 int factorial(int n) {
@@ -278,5 +280,3 @@ Improvements in the Annotated TAC
 This annotated TAC format offers an intuitive way to model and manipulate programs while retaining compatibility
 with the simpler plain TAC representation above.
 
-
-..
