@@ -105,7 +105,23 @@ toward executable form.
                             └── NUMBER(2)
     ```
 
-### 3. Tree Transformations
+### 3. Static Checking
+
+- *Goal*: Identify and report errors or inconsistencies in the source code without executing it.
+  This process ensures code correctness by catching issues early in the compilation pipeline.
+
+- *Examples*:
+	- *Type Checking*: Verify that operations are performed on compatible types
+      (e.g. adding a number to a string raises an error).
+
+	- *Scope Validation*: Ensure variables are declared before use and are within accessible scope.
+
+	- *Control Flow Analysis*: Detect unreachable code or improperly formed loops and conditionals.
+
+	- *Rule Enforcement*: Validate adherence to specific language rules,
+      such as const correctness or naming conventions.
+
+### 4. Tree Transformations
 
 - *Goal*: Optimise or transform the AST. Here in [2](./2) we ignore the earlier parsing
   to make it simple to read code, and build a new representation in TAC, Three-Address Code.
@@ -162,7 +178,7 @@ toward executable form.
     ```
 
   
-### 4. Code Generation
+### 5. Code Generation
 
 - *Goal*: Convert the AST into target instructions, such as bytecode or machine code.
 
@@ -214,7 +230,7 @@ toward executable form.
     ```
 
 
-### 5. Execution
+### 6. Execution
 
 - *Goal*: Execute the generated instructions.
 
@@ -231,10 +247,12 @@ The compilation pipeline involves transforming a program through stages aligned 
 
 2. *Parsing*: Build an AST matching the grammar structure.
 
-3. *Transformations*: Optimise the AST.
+3. *Static Checking*: Enforce language rules, validate variable scopes, type correctness, semantic consistency.
 
-4. *Code Generation*: Map grammar constructs to executable instructions.
+4. *Transformations*: Optimise the AST.
 
-5. *Execution*: Run the final code.
+5. *Code Generation*: Map grammar constructs to executable instructions.
+
+6. *Execution*: Run the final code.
 
 See [1](./1) for a simple compiler overview.
