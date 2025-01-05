@@ -22,7 +22,7 @@ Historically, optimisation techniques were largely manual, with developers writi
 assembly code. Over time, compilers evolved to include sophisticated optimisation strategies, such
 as loop unrolling, instruction pipelining, and inlining, reducing the burden on programmers. However,
 these optimisations always come with trade-offs, including increased code complexity or longer compilation
-times. (See more on this in [Chapter 5](../../ch05/).)
+times. (See more on this topic in [Chapter 5](../../ch05/), esp. [Chapter 5](../../ch05/simple/2/README.md).)
 
 Today, optimisation remains a critical aspect of computing, driven by fields like machine learning,
 high-performance computing, and mobile app development. Balancing human-readable, maintainable code
