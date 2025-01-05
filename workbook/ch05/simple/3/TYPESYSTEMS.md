@@ -46,11 +46,11 @@ languages).
    providing strong guarantees about correctness.
 
 
-### How Type Systems Work
+#### How Type Systems Work
 
 1. Declarations and Assignments: In most programming languages, variables must be declared with a
    type or inferred from context. For example, in C, a variable is declared with a specific type,
-   and the compiler checks that the variable’s value matches that type.
+   and the compiler checks that the variable's value matches that type.
 
 ```c
 int x = 5;  // x is an integer
@@ -86,7 +86,7 @@ class Eq a where
    where variables can change type during execution.
 
 
-### Types of Type Systems
+#### Types of Type Systems
 
 1. Static vs Dynamic Typing:
 	- Static Typing: Types are determined at compile time, and the type of every variable is known before
@@ -116,13 +116,14 @@ class Eq a where
 5. Dependent Types:
 	- In dependent types, the type of a value can depend on the value itself. This is a feature seen in some
       advanced functional programming languages like Agda and Coq, where types can be constructed depending
-      on the actual data (for example, a type that defines a vector of a specific length).
+      on the actual data (for example, a type that defines a vector of a specific length). This implies that
+      the type can also handle constrians on how variables of the type are used, such as limiting a buffer.
 
 
 #### How Type Systems Are Implemented
 
 1. Type Checking Algorithms: The implementation of type systems in compilers or interpreters typically involves
-   algorithms that traverse the program’s abstract syntax tree (AST) or intermediate representations (IR).
+   algorithms that traverse the program's abstract syntax tree (AST) or intermediate representations (IR).
    The type checker will verify that expressions and variables are used correctly according to their types.
 
 2. Type Inference: Many modern languages use type inference algorithms to automatically deduce types for variables
