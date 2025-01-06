@@ -12,7 +12,7 @@ type safety, custom data structures, and advanced control flow mechanisms.
 
 ### Exercises and Extensions
 
-1. Implement Type Coercion
+__1. Implement Type Coercion__
 
 *Modify the interpreter to handle implicit type coercion where appropriate.*
 
@@ -23,7 +23,7 @@ Expected Outcome:
 - Ability to handle mixed-type expressions like x = 5 + 3.14 with x inferred as float.
 
 
-2. Add Support for Strings
+__2. Add Support for Strings__
 
 *Extend the TAC language and interpreter to support string types and operations.*
 
@@ -38,7 +38,7 @@ Expected Outcome:
 - Strings integrate seamlessly with the existing type system.
 
 
-3. Introduce Function Support
+__3. Introduce Function Support__
 
 *Add the ability to define and call functions in the TAC language.*
 
@@ -59,7 +59,7 @@ Expected Outcome:
 - The runtime environment handles function calls, arguments, and return values.
 
 
-4. Add Static Type Checking
+__4. Add Static Type Checking__
 
 *Introduce static type checking to the TAC language.*
 
@@ -73,7 +73,7 @@ Expected Outcome:
 - A static type-checking phase runs before execution.
 
 
-5. Visualize Control Flow
+__5. Visualize Control Flow__
 
 *Build a tool to visualize the control flow of TAC programs, including labels, jumps, and branches.*
 
@@ -87,7 +87,7 @@ Expected Outcome:
 - Ability to step through execution paths interactively.
 
 
-6. Extend Arrays with Dynamic Sizing
+__6. Extend Arrays with Dynamic Sizing__
 
 *Modify the TAC interpreter to allow dynamically sized arrays.*
 
@@ -100,7 +100,7 @@ Expected Outcome:
 - Access beyond declared sizes results in meaningful runtime errors.
 
 
-7. Build a Debugger for the Interpreter
+__7. Build a Debugger for the Interpreter__
 
 *Create a debugging tool for TAC programs.*
 
