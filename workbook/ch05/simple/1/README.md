@@ -29,7 +29,7 @@ token.py -> parser.py -> comp.py -> vm.py
 
 Each step produces an output that serves as input for the next stage. To keep things simple,
 no files are saved during the process, though you can easily modify the scripts to add file
-handling if needed to experiment with a more expressions.
+handling if needed to experiment with more expressions.
 
 __Expressions to Tokens or Lexical Analysis__
 
