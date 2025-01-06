@@ -222,20 +222,20 @@ class REGVM:
 program = [
     "MOV A 1",   # Init A
     "MOV B 5",   # Init B with 5
-    "start:",    # Label for start
-    "CALL factorial",  # Call factorial function
+    "START:",    # Label for start
+    "CALL FACT", # Call factorial function
     "PRINT A",   # Print result in A
     "HALT",      # End program (HALT is a placeholder)
 
     # Function to calculate factorial
-    "factorial:",  # Label for factorial function
-    "CMP B 0",     # Compare B with 0
-    "JZ end_fact", # If B is 0, jump to end_fact (return 1)
-    "MUL A B",     # Multiply A by B
-    "SUB B 1",     # Subtract 1 from B
-    "CALL factorial", # Recursive call to factorial
-    "end_fact:",   # End of factorial function
-    "RETURN",      # Return from factorial function
+    "FACT:",     # Label for factorial function
+    "CMP B 0",   # Compare B with 0
+    "JZ END",    # If B is 0, jump to END (return 1)
+    "MUL A B",   # Multiply A by B
+    "SUB B 1",   # Subtract 1 from B
+    "CALL FACT", # Recursive call to factorial
+    "END:",      # End of factorial function
+    "RETURN",    # Return from factorial function
 ]
 
 '''
@@ -260,28 +260,28 @@ program = [
     "MUL t4, t2",
     "MOV t5, t1 && t2",
     "MOV t6, t1 || t2",
-    "start:",
+    "START:",
     "CMP t1, t2",
-    "JL less_than",
+    "JL LESSTHAN",
     "CMP t1, t2",
-    "JG greater_than",
+    "JG GREATERTHAN",
     "MOV t7, t1",
     "ADD t7, t2",
-    "JMP end",
-    "less_than:",
+    "JMP END",
+    "LESSTHAN:",
     "MOV t7, t2",
     "SUB t7, t1",
-    "JMP end",
-    "greater_than:",
+    "JMP END",
+    "GREATERTHAN:",
     "MOV t7, t1",
     "SUB t7, t2",
-    "CALL my_function",
-    "JMP end",
-    "my_function:",
+    "CALL SOMEFUNC",
+    "JMP END",
+    "SOMEFUNC:",
     "MOV t8, t1",
     "MUL t8, t2",
     "RETURN",
-    "end:",
+    "END:",
     "PRINT t7",
     "PRINT t8",
     "HALT"
