@@ -1,5 +1,5 @@
 import unittest
-from fixed import FixedPoint, sqrt_fixed  # Replace with the actual filename/module name
+from fixed import FixedPoint, sqrt_fixed
 
 class TestFixedPoint(unittest.TestCase):
     def setUp(self):

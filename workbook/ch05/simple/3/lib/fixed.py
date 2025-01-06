@@ -47,7 +47,7 @@ class FixedPoint:
         return f"FixedPoint(value={self.value}, float_equiv={self.to_float():.6f})"
 
 
-# Example mathematical functions
+# Example mathematical function
 def sqrt_fixed(fp):
     """Fixed-point square root using the Newton-Raphson method."""
     if fp.value < 0:
@@ -61,25 +61,3 @@ def sqrt_fixed(fp):
         result = next_result
     return FixedPoint(result / FixedPoint.SCALE)
 
-
-# Example usage
-if __name__ == "__main__":
-    # Represent 2.3 and 1.5 in fixed-point
-    fp1 = FixedPoint(2.3)
-    fp2 = FixedPoint(1.5)
-
-    print(f"Fixed-point 1: {fp1}")
-    print(f"Fixed-point 2: {fp2}")
-
-    # Perform arithmetic operations
-    print("\nArithmetic Operations:")
-    print(f"Addition: {fp1 + fp2}")
-    print(f"Subtraction: {fp1 - fp2}")
-    print(f"Multiplication: {fp1 * fp2}")
-    print(f"Division: {fp1 / fp2}")
-
-    # Square root example
-    print("\nSquare Root:")
-    fp_sqrt = sqrt_fixed(fp1)
-    print(f"Square root of {fp1}: {fp_sqrt}")
-    
