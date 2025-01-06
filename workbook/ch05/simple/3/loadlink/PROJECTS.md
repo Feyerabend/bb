@@ -43,7 +43,7 @@
       registers or memory locations. For example, you can print out the result of FixedPoint operations
       and monitor the values during program execution.
 	- Goal: Learn how to add debugging features to your VM, making it easier to trace and monitor the
-      behavior of fixed-point math.
+      behaviour of fixed-point math.
 
 7.	Performance Benchmarking:
 	- Task: Create a benchmarking program that compares the performance of arithmetic operations between
@@ -65,7 +65,7 @@
 2.	Fixed-Point Math Extension with Trigonometric Functions:
 	- Project: Extend the FixedPoint class with support for more advanced mathematical functions, such as
       trigonometric functions (sin, cos, tan). Implement these using fixed-point approximations or the much simpler:
-      lookup tables. Then, create a VM program that computes these functions and visualize the results
+      lookup tables. Then, create a VM program that computes these functions and visualise the results
       (e.g. plotting sine waves).
 	- Goal: Deepen your understanding of both fixed-point arithmetic and VM programming. This will also
       involve research into how to efficiently approximate functions like trigonometric ones using fixed-point
@@ -78,11 +78,11 @@
 	- Goal: Gain experience in building modular systems where external components (like libraries) can be
       easily integrated. This project teaches you about runtime flexibility and extensibility in software design.
 
-4.	Optimization of Fixed-Point Calculations in the VM:
-	- Project: Analyze the performance of fixed-point operations within the VM and optimize them. For example,
-      you could replace some FixedPoint operations with more efficient algorithms, optimize memory usage, or
+4.	Optimisation of Fixed-Point Calculations in the VM:
+	- Project: Analyse the performance of fixed-point operations within the VM and optimise them. For example,
+      you could replace some FixedPoint operations with more efficient algorithms, optimise memory usage, or
       reduce the number of operations for specific calculations.
-	- Goal: Focus on performance and optimization. This project would help you explore ways to make fixed-point
+	- Goal: Focus on performance and optimisation. This project would help you explore ways to make fixed-point
       arithmetic more efficient in a virtual machine environment.
 
 5.	Cross-Library Integration Project:
