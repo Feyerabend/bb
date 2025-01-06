@@ -1,14 +1,14 @@
 
 ## REGVM overview
 
-The `REGVM` Python class defines a simple register-based virtual machine (VM) capable
+The REGVM Python class defines a simple register-based virtual machine (VM) capable
 of executing a set of instructions and supporting program control with labels, arithmetic
 operations, and stack-based function calls.
 
 
 ### Structure
 
-The `REGVM` class contains:
+The REGVM class contains:
 - Program Counter (`pc`): Tracks the next instruction to execute.
 - Registers (`registers`): A dictionary representing dynamically initialized registers.
 - Flags (`flags`): A dictionary with:
