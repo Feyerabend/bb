@@ -78,22 +78,14 @@
 	- Goal: Gain experience in building modular systems where external components (like libraries) can be
       easily integrated. This project teaches you about runtime flexibility and extensibility in software design.
 
-4.	Virtual Machine with Graphical User Interface (GUI):
-	- Project: Create a simple GUI application (using a library like Tkinter or PyQt) that visualizes the
-      VM's execution process, including step-by-step program execution, variable values, and stack contents.
-      You can also include a graphical interface to load and run programs dynamically, as well as inspect
-      results for fixed-point operations.
-	- Goal: Learn how to create interactive software and how to represent a virtual machine's state visually.
-      This is a great project if you want to combine low-level programming with user interface design.
-
-5.	Optimization of Fixed-Point Calculations in the VM:
+4.	Optimization of Fixed-Point Calculations in the VM:
 	- Project: Analyze the performance of fixed-point operations within the VM and optimize them. For example,
       you could replace some FixedPoint operations with more efficient algorithms, optimize memory usage, or
       reduce the number of operations for specific calculations.
 	- Goal: Focus on performance and optimization. This project would help you explore ways to make fixed-point
       arithmetic more efficient in a virtual machine environment.
 
-6.	Cross-Library Integration Project:
+5.	Cross-Library Integration Project:
 	- Project: Write a complex program that makes use of both the factorial and fibonacci libraries, while also
       performing operations with fixed-point numbers. The program can compute values like fibonacci(n) * factorial(m)
       using both libraries and fixed-point arithmetic.
