@@ -19,7 +19,7 @@ The `REGVM` class contains:
 - *Label Map (`label_map`)*: Maps labels to corresponding instruction indices.
 - *Program Lines (`program_lines`)*: Stores the raw instructions for program execution.
 
-### Key Functions
+### Functions
 
 1. `load_program(program)`
    Loads a program (list of instructions) into `program_lines` and maps labels to instruction indices for control flow.
@@ -47,7 +47,7 @@ The `REGVM` class contains:
    Prepares the `label_map` by associating labels in the program with their corresponding instruction indices.
 
 
-### Ideas of the `REGVM` Class
+### Ideas of the REGVM Class
 
 - *Dynamic Register Initialization*: Any named register (e.g., `R1`, `R2`) is created on-the-fly with an initial value of 0 when referenced.
 - *Error Handling*: Some safeguards against errors such as division by zero or accessing undefined labels.
