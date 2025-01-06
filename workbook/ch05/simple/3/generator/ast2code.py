@@ -1,3 +1,4 @@
+
 class ASTNode:
     def __init__(self, kind, value=None, children=None):
         self.kind = kind
@@ -25,8 +26,8 @@ class AssemblyGenerator:
                 self.generate_tac(child)
 
         elif node.kind == "ASSIGN":
-            var_name = node.children[0].value  # Left-hand side (variable)
-            expr = node.children[1]  # Right-hand side (expression)
+            var_name = node.children[0].value  # left-hand: variable
+            expr = node.children[1]  # right-hand: expression
             result = self.generate_expression(expr)
             self.tac.append(f"{var_name} = {result}")
 
@@ -80,13 +81,13 @@ class AssemblyGenerator:
         for instruction in self.tac:
             parts = instruction.split(" = ")
             if len(parts) == 2:
-                # Assignment operation
+                # assignment
                 lhs = parts[0]
                 rhs = parts[1]
-                if rhs.isdigit():  # It's a constant
+                if rhs.isdigit():  # a constant
                     self.assembly.append(f"MOV {lhs}, #{rhs}")
-                else:  # It's a variable or temp
-                    # Break down into the proper three-address instruction
+                else:  # a variable or temp
+                    # break down into the proper three-address instruction
                     op_parts = rhs.split(" ")
                     if len(op_parts) == 3:
                         lhs_reg = op_parts[0]
@@ -107,7 +108,7 @@ class AssemblyGenerator:
         print("\n".join(self.assembly))
 
 
-# Example AST creation
+# example AST creation
 ast = ASTNode(kind="PROGRAM", value=None, children=[
     ASTNode(kind="ASSIGN", value=None, children=[
         ASTNode(kind="IDENTIFIER", value="x", children=[]),
@@ -138,18 +139,18 @@ ast = ASTNode(kind="PROGRAM", value=None, children=[
     ])
 ])
 
-# Generate TAC from AST
+# generate TAC from AST
 tac_generator = AssemblyGenerator(ast)
 tac_generator.generate_tac()
 
-# Print TAC (for debugging)
+# print TAC
 print("TAC Code:")
 for instruction in tac_generator.get_tac():
     print(instruction)
 
-# Generate Assembly from TAC
+# generate Assembly from TAC
 tac_generator.generate_assembly()
 
-# Print Assembly
+# print Assembly
 print("\nAssembly Code:")
 tac_generator.print_assembly()
