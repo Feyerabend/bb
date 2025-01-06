@@ -87,7 +87,7 @@ class AssemblyGenerator:
                 if rhs.isdigit():  # a constant
                     self.assembly.append(f"MOV {lhs}, #{rhs}")
                 else:  # a variable or temp
-                    # break down into the proper three-address instruction
+                    # break down into the proper three-address instruction (think ARM)
                     op_parts = rhs.split(" ")
                     if len(op_parts) == 3:
                         lhs_reg = op_parts[0]
