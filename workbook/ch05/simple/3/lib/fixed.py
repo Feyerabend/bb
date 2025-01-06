@@ -11,6 +11,10 @@ class FixedPoint:
         else:
             raise ValueError("Unsupported type for FixedPoint initialization.")
 
+    def from_float(f):
+        """Convert a float to a FixedPoint."""
+        return FixedPoint(int(f / FixedPoint.SCALE))
+
     def to_float(self):
         """Convert the fixed-point number to a float."""
         return self.value / self.SCALE
