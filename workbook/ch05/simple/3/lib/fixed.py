@@ -1,3 +1,6 @@
+
+import math
+
 class FixedPoint:
     FRACTIONAL_BITS = 16
     SCALE = 1 << FRACTIONAL_BITS  # 2^16 = 65536
