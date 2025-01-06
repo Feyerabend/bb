@@ -1,4 +1,6 @@
 import re
+import pprint
+
 
 class TACParser:
     def __init__(self, code):
@@ -183,7 +185,6 @@ label_2:
     parser_1 = TACParser(code_1)
     result_1 = parser_1.parse()
     print("\Parse 1")
-    import pprint
     pprint.pprint(result_1)
     print("\nSymbol Table 1:")
     pprint.pprint(parser_1.symbol_table)
@@ -216,8 +217,6 @@ print t2
     parser_3 = TACParser(code_3)
     result_3 = parser_3.parse()
 
-    # Display parsed result and symbol table
-    import pprint
     print("\nParse 3")
     pprint.pprint(result_3)
     print("\nSymbol Table:")
