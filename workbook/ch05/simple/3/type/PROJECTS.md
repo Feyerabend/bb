@@ -120,6 +120,7 @@ By completing these exercises, you will have:
 3. Visualization capabilities to represent the structure and flow of TAC programs.
 4. Extended language support for real-world use cases.
 
-Conclusion
+
+### Conclusion
 
 Through this project, you will not only refine your knowledge of intermediate representations and dynamic/static type systems but also enhance your problem-solving skills by extending a functional parser. The expected outcome is a versatile TAC interpreter capable of handling diverse scenarios, complete with robust debugging and analysis tools.
