@@ -1,4 +1,4 @@
-PYTHON := python
+PYTHON := python3
 TEST_FILE := test_fixed.py
 LIB_FILE := fixed.py
 
