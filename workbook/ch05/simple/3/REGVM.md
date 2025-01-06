@@ -9,15 +9,15 @@ operations, and stack-based function calls.
 ### Structure
 
 The `REGVM` class contains:
-- *Program Counter (`pc`)*: Tracks the next instruction to execute.
-- *Registers (`registers`)*: A dictionary representing dynamically initialized registers.
-- *Flags (`flags`)*: A dictionary with:
+- Program Counter (`pc`): Tracks the next instruction to execute.
+- Registers (`registers`): A dictionary representing dynamically initialized registers.
+- Flags (`flags`): A dictionary with:
   - `Z` (Zero flag): Set if the result of an operation is zero.
   - `N` (Negative flag): Set if the result of an operation is negative.
-- *Memory (`memory`)*: Stores the program's instructions.
-- *Stack (`stack`)*: Supports function calls and returns.
-- *Label Map (`label_map`)*: Maps labels to corresponding instruction indices.
-- *Program Lines (`program_lines`)*: Stores the raw instructions for program execution.
+- Memory (`memory`): Stores the program's instructions.
+- Stack (`stack`): Supports function calls and returns.
+- Label Map (`label_map`): Maps labels to corresponding instruction indices.
+- Program Lines (`program_lines`): Stores the raw instructions for program execution.
 
 ### Functions
 
