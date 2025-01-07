@@ -91,7 +91,7 @@ compilers were relatively simple, translating high-level code into one-to-one as
 As processors became more complex, compilers began to incorporate optimisations for instruction selection,
 register allocation, and memory access patterns to take advantage of the increased hardware capabilities.
 
-Today's compilers do not just generate code—they analyse and optimise code for specific processor
+Today's compilers do not just generate code--they analyse and optimise code for specific processor
 architectures. Techniques like loop unrolling, instruction reordering, and the use of vectorised
 instructions are part of the sophisticated code generation strategies in modern compilers, enabling
 efficient execution on a wide range of architectures from multi-core CPUs to GPUs and specialised
