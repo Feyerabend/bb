@@ -35,16 +35,16 @@ __2. Instruction Types__
 
 The TAC instructions include different types: assignments, conditionals (if), jumps (goto),
 labels, and print operations. Each type is mapped to a corresponding RISC-V-like instruction:
-- Assignment: For example, ADDI x1, x0, 5 translates a simple assignment of 5 to a variable n
+- *Assignment*: For example, ADDI x1, x0, 5 translates a simple assignment of 5 to a variable n
   (stored in register x1).
-- Binary Operations: Operations such as addition, subtraction, multiplication, and division
+- *Binary Operations*: Operations such as addition, subtraction, multiplication, and division
   are represented using RISC-V's corresponding instructions like ADD, SUB, MUL, and DIV.
-- Conditional Branching: The if statement in TAC translates into RISC-V conditional instructions
+- *Conditional Branching*: The if statement in TAC translates into RISC-V conditional instructions
   like SLE (set less than or equal) and BEQ (branch if equal), facilitating conditional execution.
-- Unconditional Jumps: The goto instruction translates to a J (jump) instruction in assembly.
-- Labels: These are simply named locations in the assembly program, which provide targets for
+- *Unconditional Jumps*: The goto instruction translates to a J (jump) instruction in assembly.
+- *Labels*: These are simply named locations in the assembly program, which provide targets for
   jump and branch instructions.
-- Print: PRINT in TAC corresponds to outputting the value in a register in assembly.
+- *Print*: PRINT in TAC corresponds to outputting the value in a register in assembly.
 
 __3. Control Flow__
 
