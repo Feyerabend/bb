@@ -256,4 +256,4 @@ The compilation pipeline involves transforming a program through stages aligned 
 
 6. *Execution*: Run the final code.
 
-See [1](./1) for a simple compiler overview.
+See [1](./1) for a simple compiler overview. For step 5 and 6, see [3](./3/).
