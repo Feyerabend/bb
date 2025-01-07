@@ -9,50 +9,50 @@ Three-Address Code (TAC). These programs have their own "types" and structures.
 
 __1. Primitive Types__
 
-	- Integer (int): Represent whole numbers, such as 42 or 0. These are used
-        for constants, assignments, or arithmetic operations.
+- Integer (int): Represent whole numbers, such as 42 or 0. These are used
+  for constants, assignments, or arithmetic operations.
 
-	- Floating-Point (float): Represent real numbers with decimal points, such
-        as 3.14 or 20.786. These are inferred from the presence of a decimal point
-        in constants.
+- Floating-Point (float): Represent real numbers with decimal points, such
+  as 3.14 or 20.786. These are inferred from the presence of a decimal point
+  in constants.
 
-	- Boolean (bool): While not explicitly represented, conditional statements
-        (if t1 goto label) rely on boolean values derived from comparisons like
-        <, >, ==. The comparison operators produce implicit boolean values.
+- Boolean (bool): While not explicitly represented, conditional statements
+  (if t1 goto label) rely on boolean values derived from comparisons like
+  <, >, ==. The comparison operators produce implicit boolean values.
 
 
 __2. Derived Types__
 
-	- Array (array[type, size]): Arrays are explicitly declared using syntax
-        like int_array = int[10]. Each array has:
-	      - A base type (int, float, etc.).
-	      - A size (such as 10 in int[10]).
-	      - A value representation, which could be thought of as a list or
-              dictionary-like mapping for indices to values.
+- Array (array[type, size]): Arrays are explicitly declared using syntax
+  like int_array = int[10]. Each array has:
+    - A base type (int, float, etc.).
+	- A size (such as 10 in int[10]).
+    - A value representation, which could be thought of as a list or
+      dictionary-like mapping for indices to values.
 
 __3. Labels__
 
-	- Labels (example 'label_1:') act as named markers for control flow. These are
-        technically strings but are treated as unique identifiers for jumping in
-        the control flow ('goto label_1').
+Labels (example 'label_1:') act as named markers for control flow. These are
+technically strings but are treated as unique identifiers for jumping in
+the control flow ('goto label_1').
 
 __4. Implicit Types__
 
-	- Temporary Variables: Variables like t1 or t2 store intermediate results.
-        Their types are inferred dynamically based on the expressions they evaluate:
-	      - t1 = x + 5 implies t1 is of type int if x and 5 are integers.
-	      - t2 = y + 3.14 implies t2 is of type float if y is a float(ing point).
+Temporary Variables: Variables like t1 or t2 store intermediate results.
+Their types are inferred dynamically based on the expressions they evaluate:
+- t1 = x + 5 implies t1 is of type int if x and 5 are integers.
+- t2 = y + 3.14 implies t2 is of type float if y is a float(ing point).
 
 __5. Expressions__
 
-	- Expressions involve terms and operators. The types of expressions depend on the operands:
-      	- Arithmetic: int + int -> int, float + float -> float, etc.
-	      - Comparisons: int < int -> bool, float == float -> bool, etc.
+Expressions involve terms and operators. The types of expressions depend on the operands:
+- Arithmetic: int + int -> int, float + float -> float, etc.
+- Comparisons: int < int -> bool, float == float -> bool, etc.
 
 __6. Output Types__
 
-	- The print statements output values, which could be of any type (int, float, etc.).
-        This is the only interaction between the program and the "outside world."
+The print statements output values, which could be of any type (int, float, etc.).
+This is the only interaction between the program and the "outside world."
 
 
 #### Dynamic Type Handling
