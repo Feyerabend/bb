@@ -1,4 +1,6 @@
 
+## A Simple Compiler: Code Generation & Linkers and Loaders
+
 ### Code Generation
 
 Code generation is the final phase of a compiler where the intermediate representation (IR)
