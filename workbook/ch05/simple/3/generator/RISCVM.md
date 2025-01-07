@@ -1,5 +1,5 @@
 
-## RISC VM
+## Code Generation: RISC VM Simulation
 
 The RISC-V-like virtual machine in this example executes *assembly-like instructions*,
 manipulating registers and control flow to simulate a CPU's behavior.
