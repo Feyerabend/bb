@@ -1,9 +1,9 @@
 class ARMAssembler:
     def __init__(self):
         self.instructions = []
-        self.register_map = {}  # Maps variables to registers
-        self.register_counter = 0  # To allocate registers
-        self.label_counter = 0  # To generate unique labels if needed
+        self.register_map = {}  # maps variables to registers
+        self.register_counter = 0  # to allocate registers
+        self.label_counter = 0  # to generate unique labels if needed
 
     def new_register(self):
         reg = f"r{self.register_counter}"
@@ -42,8 +42,8 @@ class ARMAssembler:
             elif statement["type"] == "print":
                 variable = statement["value"]
                 reg = self.get_register(variable)
-                self.instructions.append(f"MOV r0, {reg}")  # Move variable to r0
-                self.instructions.append(f"BL printf")  # Call printf function (assumed in runtime)
+                self.instructions.append(f"MOV r0, {reg}")  # move variable to r0
+                self.instructions.append(f"BL printf")  # call printf function (assumed in runtime)
 
             elif statement["type"] == "call":
                 func_name = statement["identifier"]
@@ -51,23 +51,23 @@ class ARMAssembler:
                 for i in range(arg_count):
                     arg_key = f"arg{i}"
                     arg_reg = self.get_register(arg_key)
-                    self.instructions.append(f"MOV r{i}, {arg_reg}")  # Pass arguments in r0, r1, ...
+                    self.instructions.append(f"MOV r{i}, {arg_reg}")  # pass arguments in r0, r1, ...
                 self.instructions.append(f"BL {func_name}")
 
             elif statement["type"] == "return":
-                self.instructions.append(f"BX lr")  # Return to caller (link register)
+                self.instructions.append(f"BX lr")  # return to caller (link register)
 
             elif statement["type"] == "halt":
-                self.instructions.append(f"BL exit")  # Exit the program
+                self.instructions.append(f"BL exit")  # exit the program
 
         self.add_postamble()
 
     def generate_rhs(self, dest, rhs):
         if rhs["type"] == "term":
             value = rhs["value"]
-            if isinstance(value, str) and value.isdigit():  # Immediate value
+            if isinstance(value, str) and value.isdigit():  # immediate value
                 self.instructions.append(f"MOV {dest}, #{value}")
-            else:  # Variable
+            else:  # variable
                 reg = self.get_register(value)
                 self.instructions.append(f"MOV {dest}, {reg}")
         elif rhs["type"] == "binary_op":
@@ -117,8 +117,8 @@ class ARMAssembler:
 
     def add_postamble(self):
         self.instructions.append("exit:")
-        self.instructions.append("MOV r7, #1")  # Syscall for exit
-        self.instructions.append("SVC #0")      # Trigger syscall
+        self.instructions.append("MOV r7, #1")  # syscall for exit
+        self.instructions.append("SVC #0")      # trigger syscall
 
     def get_code(self):
         return "\n".join(self.instructions)
@@ -141,9 +141,10 @@ assembler.generate_arm(tac_program)
 print(assembler.get_code())
 
 
+# only simulation, not tested
 factorial_tac = [
     {"type": "label", "identifier": "start"},
-    {"type": "assignment", "dest": "n", "rhs": {"type": "term", "value": "5"}},  # Compute factorial of 5
+    {"type": "assignment", "dest": "n", "rhs": {"type": "term", "value": "5"}},  # factorial of 5
     {"type": "assignment", "dest": "result", "rhs": {"type": "term", "value": "1"}},  # result = 1
     {"type": "label", "identifier": "loop"},
     {"type": "if", "condition": {"type": "binary_op", "left": {"type": "term", "value": "n"}, "operator": "==", "right": {"type": "term", "value": "0"}}, "label": "end"},
@@ -151,11 +152,11 @@ factorial_tac = [
     {"type": "assignment", "dest": "n", "rhs": {"type": "binary_op", "left": {"type": "term", "value": "n"}, "operator": "-", "right": {"type": "term", "value": "1"}}},  # n -= 1
     {"type": "goto", "label": "loop"},
     {"type": "label", "identifier": "end"},
-    {"type": "print", "value": "result"},  # Print result
+    {"type": "print", "value": "result"},  # print result
     {"type": "halt"}
 ]
 
-
+# only for simulation, not tested
 fibonacci_tac = [
     {"type": "label", "identifier": "start"},
     {"type": "assignment", "dest": "count", "rhs": {"type": "term", "value": "10"}},  # count = 10
