@@ -12,7 +12,7 @@
 - Virtual Machine (VM): The virtual machine is the "execution environment" where the
   program runs. It executes the instructions (e.g., assignments, function calls) and
   uses the libraries that have been linked and loaded dynamically. The VM abstract
-  away the underlying hardware and makes the program run on a virtualized environment.
+  away the underlying hardware and makes the program run on a virtualised environment.
 
 #### Linking
 
