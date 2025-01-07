@@ -70,17 +70,17 @@ For the given factorial program, the assembly output is:
 
 ```assembly
 start:
-  ADDI x1, x0, 5  # n = 5
-  ADDI x2, x0, 1  # result = 1
+  ADDI x1, x0, 5   # n = 5
+  ADDI x2, x0, 1   # result = 1
 loop:
-  SLE x4, x1, x3  # if n <= 0, exit loop
+  SLE x4, x1, x3   # if n <= 0, exit loop
   BEQ x4, x0, end  # if condition is true, jump to end
-  MUL x2, x2, x1  # result = result * n
-  SUB x1, x1, x5  # n = n - 1
-  J loop  # jump back to loop
+  MUL x2, x2, x1   # result = result * n
+  SUB x1, x1, x5   # n = n - 1
+  J loop           # jump back to loop
 end:
-  PRINT x2  # print result
-  HALT  # stop execution
+  PRINT x2         # print result
+  HALT             # stop execution
 ```
 
 This output assembly code closely resembles what would be produced by an assembler from a
