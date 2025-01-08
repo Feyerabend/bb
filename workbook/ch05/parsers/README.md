@@ -102,3 +102,10 @@ These parsers start with the input tokens and attempt to reconstruct the start s
 	- Implements each grammar rule as a function, where non-terminals are recursive calls.
 	- Parsing decisions are guided by lookahead (one token ahead in LL(1)).
 	- Direct and clear for grammar constructs, making it excellent for prototyping parsers.
+
+6. [Packrat](./packrat/) Parsing:
+	- Employs memoization to cache results of parsing rules at specific input positions, enabling linear time complexity.
+	- Supports grammars that require more than one-token lookahead without sacrificing efficiency.
+	- Can handle left-recursive rules by rewriting them into equivalent right-recursive forms, avoiding infinite loops.
+	- Always produces a single, deterministic parse tree due to its greedy rule selection.
+	- Space-Intensive: Requires significant memory to store memoized results for large inputs or complex grammars.
