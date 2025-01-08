@@ -47,3 +47,55 @@ data processing, and many other domains that involve structured text. From parsi
 to processing JSON data and markup languages, parsing remains a foundational component of modern computing. Its history
 reflects the ongoing efforts to automate and optimise the way machines interpret human-readable information.
 
+
+### Timeline
+
+__1950s-1960s: The Dawn of Parsing__
+
+- Context-Free Grammars (CFGs): Introduced by Noam Chomsky in 1956, CFGs 
+  formalised the structure of programming languages.
+
+- Early Compilers:
+	The first compilers, such as FORTRAN (1957), included hand-crafted
+    parsers designed for specific languages. Parsing was tightly coupled
+    with code generation, often using ad-hoc methods.
+
+
+__1960s: Automating Parsing__
+
+- Backus-Naur Form (BNF): Invented for ALGOL 60, BNF became the standard
+  notation for describing programming language grammars.
+
+- Top-Down Parsing: Techniques like Recursive Descent Parsing emerged,
+  where grammar rules were directly translated into recursive functions.
+
+- Bottom-Up Parsing: Donald Knuth introduced LR parsing in 1965, enabling
+  more powerful parsers capable of handling a broader class of grammars.
+
+- Parser Generators: Tools like YACC (Yet Another Compiler Compiler, 1970s)
+  automated parser generation from grammar specifications.
+
+
+__1970s-1990s: Optimised Parsing Techniques__
+
+- LL Parsing: The LL(k) family of parsers (top-down, lookahead parsers)
+  gained traction for their simplicity.
+
+- LALR Parsing: A refinement of LR parsing, LALR became popular for its
+  balance between efficiency and expressive power, used in tools like Bison.
+
+- Object-Oriented Parsing: Parsers began incorporating modular and reusable
+  components, enabling more maintainable designs.
+
+
+__2000s-Present: Modern Parsers__
+
+- Packrat Parsing: Enabled parsing of complex grammars with guaranteed
+  linear time (e.g. PEG parsers).
+
+- Abstract Syntax Tree (AST): ASTs became standard for decoupling parsing
+  from code generation and analysis.
+
+- Parsing Libraries: Tools like ANTLR (Another Tool for Language Recognition)
+  dominate modern parser design, with high-level specifications and support
+  for multiple languages.
