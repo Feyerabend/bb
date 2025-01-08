@@ -20,7 +20,7 @@ processors in assembly was almost a necessity, as higher-level languages either 
 weren't efficient enough for the hardware.
 
 When I began around 1979, assembly was essentially the only way to optimise program performance.
-My experience with the Z80 at that time was positive, as it offered a user-friendly language and
+My experience with the Zilog Z80 at that time was positive, as it offered a user-friendly language and
 mnemonics that were easy to remember and work with. However, the real challenge was the assemblers,
 which, despite their relatively low cost, were still beyond my reach at the time as a teenager.
 The only alternative was hand-assembly.
