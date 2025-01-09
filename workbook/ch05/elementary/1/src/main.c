@@ -5,7 +5,7 @@
 #include "tokens.h"
 
 
-void processFile(const char* sourceFilename, const char* tokenFilename, const char* astFilename, const char* symbolTableFilename) {
+void processFile(const char* sourceFilename, const char* tokenFilename) {
     printf("\nparsing file: %s ..\n", sourceFilename);
 
     printf("tokenizing input ..\n");
@@ -20,17 +20,14 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
 
 int main(int argc, char* argv[]) {
     if (argc != 5) {
-        fprintf(stderr, "Usage: %s <source-file> <token-output-file> <ast-output-file> <symbol-table-output-file>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <source-file> <token-output-file>\n", argv[0]);
         return EXIT_FAILURE;
     }
 
     const char* sourceFile = argv[1];
     const char* tokenFile = argv[2];
-    const char* astFile = argv[3];
-    const char* symbolTableFile = argv[4];
 
-    processFile(sourceFile, tokenFile, astFile, symbolTableFile);
+    processFile(sourceFile, tokenFile);
 
     return EXIT_SUCCESS;
 }
-

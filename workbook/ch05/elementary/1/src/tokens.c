@@ -5,41 +5,6 @@
 
 #include "tokens.h"
 
-typedef enum {
-    NOP,
-    IDENT,
-    NUMBER,
-    LPAREN,     // (
-    RPAREN,     // )
-    TIMES,      // *
-    SLASH,      // /
-    PLUS,       // +
-    MINUS,      // -
-    EQL,        // =
-    NEQ,        // #
-    LSS,        // <
-    LEQ,        // <=
-    GTR,        // >
-    GEQ,        // >=
-    CALLSYM,    // call
-    BEGINSYM,   // begin
-    SEMICOLON,  // ;
-    ENDSYM,     // end
-    IFSYM,      // if
-    WHILESYM,   // while
-    BECOMES,    // :=
-    THENSYM,    // then
-    DOSYM,      // do
-    CONSTSYM,   // const
-    COMMA,      // ,
-    VARSYM,     // var
-    PROCSYM,    // proc
-    PERIOD,     // .
-    ODDSYM,     // odd
-    ENDOFLINE,
-    ENDOFFILE
-} Symbol;
-
 FILE *outputFile;
 
 char currentChar;
@@ -104,8 +69,8 @@ void handleNumber() {
     fprintf(outputFile, "NUMBER %s ", buffer);
 }
 
-// scan and tokenize input
-void lexer() {
+// scan and tokenise input
+void tokenizer() {
     char buffer[128];
     skipWhitespace();
 
@@ -211,7 +176,7 @@ int fromSourceToTokens(const char *sourceFilename, const char *tokenFilename) {
     // lexing ..
     currentIndex = 0;
     nextChar(); // first char ..
-    lexer();
+    tokenizer();
 
     // clean up
     fclose(sourceFile);
