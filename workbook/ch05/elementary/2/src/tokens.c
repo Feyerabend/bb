@@ -44,11 +44,15 @@ void handleIdentifier(char *buffer) {
         fprintf(outputFile, "IFSYM ");
     } else if (strcmp(buffer, "while") == 0) {
         fprintf(outputFile, "WHILESYM ");
+    } else if (strcmp(buffer, "then") == 0) {
+        fprintf(outputFile, "THENSYM ");
+    } else if (strcmp(buffer, "do") == 0) {
+        fprintf(outputFile, "DOSYM ");
     } else if (strcmp(buffer, "const") == 0) {
         fprintf(outputFile, "CONSTSYM ");
     } else if (strcmp(buffer, "var") == 0) {
         fprintf(outputFile, "VARSYM ");
-    } else if (strcmp(buffer, "proc") == 0) {
+    } else if (strcmp(buffer, "procedure") == 0) {
         fprintf(outputFile, "PROCSYM ");
     } else if (strcmp(buffer, "odd") == 0) {
         fprintf(outputFile, "ODDSYM ");
@@ -56,6 +60,7 @@ void handleIdentifier(char *buffer) {
         fprintf(outputFile, "IDENT %s ", buffer);
     }
 }
+
 
 // number literals
 void handleNumber() {

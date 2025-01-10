@@ -4,19 +4,8 @@
 #include <ctype.h>
 
 #include "tokens.h"
+#include "lexer.h"
 
-#define MAX_TOKENS 1000
-#define MAX_SYM_LEN 128
-
-typedef struct {
-    Symbol type;
-    char value[MAX_SYM_LEN];  // store the value of the token (such as identifier or number) < 128
-    int line;                 // line number where the token was found
-    int column;               // column number where the token was found
-} Token;
-
-// global array of tokens
-Token tokens[MAX_TOKENS];
 int currentTokenIndex = 0;
 int totalTokens = 0;
 
@@ -119,6 +108,11 @@ void readTokens(const char *filename) {
     fclose(file);
 }
 
+// reset tokens
+void resetTokens() {
+    currentTokenIndex = 0;
+}
+
 // get next token
 Token nextToken() {
     if (currentTokenIndex < totalTokens) {
@@ -138,7 +132,7 @@ int readTokensFromFile(const char *tokenFilename) {
 
 // used by main
 void printTokens() {
-    currentTokenIndex = 0; // reset
+    resetTokens();
     Token token;
     while ((token = nextToken()).type != ENDOFFILE) {
         printf("Token: %d, Value: %s, Line: %d, Column: %d\n", 
@@ -156,7 +150,7 @@ int saveTokensToJson(const char *filename) {
 
     fprintf(jsonFile, "[\n"); // start
 
-    currentTokenIndex = 0; // reset
+    resetTokens();
     Token token;
     int first = 1; // keep track of ,
     while ((token = nextToken()).type != ENDOFFILE) {

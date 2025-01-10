@@ -6,5 +6,4 @@ make samples
 
 This will tokenise inputs from the samples directory, and read back from the tokenised file to print.
 It will also annotate tokens with approximately where they can be found in the source.
-Some guess (as we are not using the grammar yet) on which token is a reserved word.
-In this case we only will not allow the use of reserved word anywhere else.
+
