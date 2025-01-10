@@ -6,7 +6,7 @@
 #include "lexer.h"
 
 
-void processFile(const char* sourceFilename, const char* tokenFilename) {
+void processFile(const char* sourceFilename, const char* tokenFilename, const char* annotatedTokenFilename) {
     printf("\nparsing file: %s ..\n", sourceFilename);
 
     printf("tokenizing input ..\n");
@@ -23,19 +23,23 @@ void processFile(const char* sourceFilename, const char* tokenFilename) {
     }
     printTokens(); // DEBUG
 
+    saveTokensToJson(annotatedTokenFilename);
+    printf("Tokens saved to %s\n", annotatedTokenFilename);
+
     printf("done.\n");
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 5) {
-        fprintf(stderr, "Usage: %s <source-file> <token-output-file>\n", argv[0]);
+    if (argc != 6) {
+        fprintf(stderr, "Usage: %s <source-file> <token-output-file> <token-annotated-output-file> .. (%d)\n", argv[0], argc);
         return EXIT_FAILURE;
     }
 
     const char* sourceFile = argv[1];
     const char* tokenFile = argv[2];
+    const char* annTokenFile = argv[3];
 
-    processFile(sourceFile, tokenFile);
+    processFile(sourceFile, tokenFile, annTokenFile);
 
     return EXIT_SUCCESS;
 }

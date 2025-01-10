@@ -144,3 +144,35 @@ void printTokens() {
             token.type, token.value, token.line, token.column);
     }
 }
+
+// used by main
+int saveTokensToJson(const char *filename) {
+    FILE *jsonFile = fopen(filename, "w");
+    if (!jsonFile) {
+        fprintf(stderr, "Error: Unable to open file %s for writing\n", filename);
+        exit(EXIT_FAILURE);
+    }
+
+    fprintf(jsonFile, "[\n"); // start
+
+    currentTokenIndex = 0; // reset
+    Token token;
+    int first = 1; // keep track of ,
+    while ((token = nextToken()).type != ENDOFFILE) {
+        if (!first) {
+            fprintf(jsonFile, ",\n");
+        }
+        first = 0;
+
+        fprintf(jsonFile, "  {\n");
+        fprintf(jsonFile, "    \"type\": %d,\n", token.type);
+        fprintf(jsonFile, "    \"value\": \"%s\",\n", token.value);
+        fprintf(jsonFile, "    \"line\": %d,\n", token.line);
+        fprintf(jsonFile, "    \"column\": %d\n", token.column);
+        fprintf(jsonFile, "  }");
+    }
+
+    fprintf(jsonFile, "\n]\n"); // end
+    fclose(jsonFile);
+    return 0;
+}
