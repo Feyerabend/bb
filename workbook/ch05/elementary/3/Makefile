@@ -8,6 +8,8 @@ SAMPLESDIR = ./samples
 BINDIR = .
 OUTPUTDIR = ./output
 TOKENSDIR = ./tokens
+ASTDIR = ./ast
+SYMBOLDIR = ./symbol
 
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 OBJECTS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SOURCES))
@@ -23,17 +25,19 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJDIR) $(TARGET) $(OUTPUTDIR) $(TOKENSDIR)
+	rm -rf $(OBJDIR) $(TARGET) $(OUTPUTDIR) $(TOKENSDIR) $(ASTDIR) $(SYMBOLDIR)
 
 samples: $(TARGET)
+	@mkdir -p $(SYMBOLDIR)  # 'symbol' directory exists
+	@mkdir -p $(ASTDIR)  # 'ast' directory exists
 	@mkdir -p $(OUTPUTDIR)  # 'output' directory exists
 	@mkdir -p $(TOKENSDIR)  # 'token' directory exists
 	@for file in $(SAMPLESDIR)/sample*.pas; do \
 		base=$$(basename $$file .pas); \
 		tokens_output="$(TOKENSDIR)/$$base.token"; \
 		annotated_tokens_output="$(TOKENSDIR)/$$base.antok"; \
-		ast_output="$(OUTPUTDIR)/$$base.json"; \
-		symbol_table_output="$(OUTPUTDIR)/symbol_table_$$base.json"; \
+		ast_output="$(ASTDIR)/$$base.json"; \
+		symbol_table_output="$(SYMBOLDIR)/symbol_table_$$base.json"; \
 		echo "\n- - - - - - -"; \
 		echo "Running $$file -> $$tokens_output, $$annotated_tokens_output, $$ast_output, $$symbol_table_output"; \
 		./main $$file $$tokens_output $$annotated_tokens_output $$ast_output $$symbol_table_output; \

@@ -4,8 +4,6 @@
 
 #include "tokens.h"
 
-// quick and dirty way to
-// check if a word is a reserved keyword
 int isReserved(const char *word) {
     return
         strcmp(word, "begin") == 0 ||
@@ -19,7 +17,6 @@ int isReserved(const char *word) {
         strcmp(word, "procedure") == 0;
 }
 
-// symbol to string
 const char* symbolToString(int symb) {
     switch (symb) {
         case EQL:
@@ -39,42 +36,8 @@ const char* symbolToString(int symb) {
     }
 }
 
-// -- reserved words --
-
-typedef struct {
-    const char *keyword;
-    Symbol token;
-} ReservedWord;
-
-
-const ReservedWord reservedWords[] = {
-    {"procedure", PROCSYM},
-    {"var",       VARSYM},
-    {"const",     CONSTSYM},
-    {"do",        DOSYM},
-    {"while",     WHILESYM},
-    {"if",        IFSYM},
-    {"then",      THENSYM},
-    {"end",       ENDSYM},
-    {"begin",     BEGINSYM},
-    {"call",      CALLSYM},
-    {"odd",       ODDSYM}
-};
-
-
-Symbol getReservedWordSymbol(const char *word) {
-    const int reservedWordCount = sizeof(reservedWords) / sizeof(reservedWords[0]);
-    for (int i = 0; i < reservedWordCount; i++) {
-        if (!strcmp(word, reservedWords[i].keyword)) {
-            return reservedWords[i].token;
-        }
-    }
-    return IDENT;
-}
-
 void printsymbol(Symbol s, char *buf) {
 
-    // yet another table for symbol names ..
     static const char *symbolNames[] = {
         [NOP] = "NOP",
         [IDENT] = "IDENT",

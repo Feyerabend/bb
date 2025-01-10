@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symbol Table JSON Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .tree-node {
+            margin-left: 20px;
+            list-style: none;
+        }
+        .toggle {
+            cursor: pointer;
+            margin-right: 5px;
+            user-select: none;
+        }
+        .children {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Symbol Table JSON Viewer (first attempt)</h1>
+    <div>
+        <label for="json-file">Upload JSON file:</label>
+        <input type="file" id="json-file" accept=".json">
+        <button onclick="displayJson()">Display JSON</button>
+    </div>
+    <div id="json-viewer" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;"></div>
+
+    <script>
+        let loadedJson = null;
+
+        function groupByScopeLevel(data) {
+            return data.reduce((groups, item) => {
+                const level = item.scopeLevel || "Unknown"; // default to 'Unknown', if no scopeLevel
+                if (!groups[level]) {
+                    groups[level] = [];
+                }
+                groups[level].push(item);
+                return groups;
+            }, {});
+        }
+
+        // create a tree node
+        function createTreeNode(content, isGroup = false) {
+            const li = document.createElement('li');
+            const container = document.createElement('div');
+
+            if (isGroup) {
+                const toggle = document.createElement('span');
+                toggle.textContent = '▶';
+                toggle.classList.add('toggle');
+                container.prepend(toggle);
+
+                const label = document.createTextNode(content);
+                container.appendChild(label);
+
+                toggle.onclick = () => {
+                    const children = li.querySelector('.children');
+                    const isHidden = children.style.display === 'none';
+                    children.style.display = isHidden ? 'block' : 'none';
+                    toggle.textContent = isHidden ? '▼' : '▶';
+                };
+            } else {
+                container.textContent = content;
+            }
+
+            li.appendChild(container);
+            return li;
+        }
+
+        function renderGroupedJson(groups) {
+            const ul = document.createElement('ul');
+
+            Object.entries(groups).forEach(([scopeLevel, items]) => {
+                const groupNode = createTreeNode(`Scope Level ${scopeLevel}`, true);
+
+                const childrenUl = document.createElement('ul');
+                childrenUl.classList.add('children');
+                childrenUl.style.display = 'none';
+
+                items.forEach(item => {
+                    const itemText = Object.entries(item)
+                        .map(([key, value]) => `${key}: ${value}`)
+                        .join(', ');
+                    childrenUl.appendChild(createTreeNode(itemText));
+                });
+
+                groupNode.appendChild(childrenUl);
+                ul.appendChild(groupNode);
+            });
+
+            return ul;
+        }
+
+        function displayJson() {
+            const jsonViewer = document.getElementById('json-viewer');
+            if (!loadedJson) {
+                alert('Please upload a valid JSON file first.');
+                return;
+            }
+
+            const groupedJson = groupByScopeLevel(loadedJson);
+            jsonViewer.innerHTML = ''; // clear (no refresh tough)
+            jsonViewer.appendChild(renderGroupedJson(groupedJson));
+        }
+
+        // input listener to load the JSON file
+        document.getElementById('json-file').addEventListener('change', event => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    try {
+                        loadedJson = JSON.parse(reader.result);
+                        alert('JSON file loaded successfully. Click "Display JSON" to view.');
+                    } catch (e) {
+                        alert('Invalid JSON file.');
+                        loadedJson = null;
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+    </script>
+</body>
+</html>
