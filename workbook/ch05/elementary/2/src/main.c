@@ -23,8 +23,11 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
     }
     printTokens(); // DEBUG
 
-    saveTokensToJson(annotatedTokenFilename);
-    printf("Tokens saved to %s\n", annotatedTokenFilename);
+    flag = saveTokensToJson(annotatedTokenFilename);
+    if (flag) {
+        printf("failed to save annotated tokens to file %s.\n", annotatedTokenFilename);
+    }
+    printf("annotated tokens saved to %s\n", annotatedTokenFilename);
 
     printf("done.\n");
 }
