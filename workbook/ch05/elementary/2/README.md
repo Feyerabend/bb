@@ -4,7 +4,8 @@ make
 make samples
 ```
 
-This will tokenise inputs from the samples directory, and read back from the tokenised file to print.
-It will also annotate tokens with approximately where they can be found in the source.
-Some guess (as we are not using the grammar yet) on which token is a reserved word.
-In this case we only will not allow the use of reserved word anywhere else.
+This system processes input files from the samples directory, tokenises their content,
+and reads back the tokenised output for display. Tokens are marked with approximate
+source code locations. While the grammar isn't yet applied, the system attempts to
+identify reserved words (later ensuring they are not used inappropriately elsewhere).
+
