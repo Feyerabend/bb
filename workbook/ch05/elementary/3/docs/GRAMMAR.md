@@ -35,7 +35,7 @@ EBNF is a notation for formalising the grammar rules of a language.
 <while-statement> ::= "while" <condition> "do" <statement> .
 
 <condition>     ::= "odd" <expression>
-                 | <expression> <relational-operator> <expression> .
+                 | "(" <expression> <relational-operator> <expression> ")" .
 
 <relational-operator> ::= "=" | "#" | "<" | "<=" | ">" | ">=" .
 
@@ -99,9 +99,9 @@ begin
       if (arg / i * i = arg) then
         begin
           ret := 0;
-          i := arg
+          i := arg;
         end;
-      i := i + 1
+      i := i + 1;
     end
 end;
 
@@ -111,7 +111,7 @@ begin
     begin
       call isprime;
       if (ret = 1) then answer := arg;
-      arg := arg + 1
+      arg := arg + 1;
     end
 end.
 ```
