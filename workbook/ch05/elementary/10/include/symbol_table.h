@@ -66,7 +66,7 @@ static const SymbolMapping symbolTableNames[] = {
 extern void initSymbolTable();
 int addSymbol(const char *name, Symbol type, int scopeLevel, int data);
 int findSymbol(const char *name, int currentScopeLevel);
-void freeSymbolTable();
+extern void freeSymbolTable();
 
 extern void printSymbolTable();
 extern void writeSymbolTableToFile(const char *filename);

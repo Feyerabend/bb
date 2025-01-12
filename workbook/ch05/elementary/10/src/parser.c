@@ -20,6 +20,17 @@ void initParser() {
     initSymbolTable();
 }
 
+void destroyScopeManager(ScopeManager *manager) {
+    while (manager->currentScopeLevel >= 0) {
+        exitScope(manager);
+    }
+}
+
+void leaveParser() {
+    freeSymbolTable();
+    destroyScopeManager(&manager);
+}
+
 Symbol symbol;
 char buf[MAX_SYM_LEN];
 
@@ -38,8 +49,11 @@ void nextSymbol() {
 }
 
 void error(const char msg[]) {
-    printf("\tError: %s (buffer: \"%s\")\n", msg, buf);
-    exit(1);  // exit on error
+    printf("Error: %s (buffer: \"%s\")\n", msg, buf);
+
+    freeSymbolTable();
+    destroyScopeManager(&manager);
+    exit(EXIT_FAILURE);
 }
 
 int accept(Symbol s) {

@@ -52,6 +52,9 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
     writeSymbolTableToFile(symbolFilename);
     printf("symbol table saved to %s\n", symbolFilename);
 
+    if (root) {
+        freeNode(root);
+    }
     printf("done.\n");
 }
 
