@@ -4,25 +4,42 @@
 #include <ctype.h>
 
 #include "tokens.h"
-#include "lexer.h"
 
+#define MAX_TOKENS 1000
+#define MAX_SYM_LEN 128
+
+typedef struct {
+    Symbol type;
+    char value[MAX_SYM_LEN];  // store the value of the token (such as identifier or number) < 128
+    int line;                 // line number where the token was found
+    int column;               // column number where the token was found
+} Token;
+
+// global array of tokens
+Token tokens[MAX_TOKENS];
 int currentTokenIndex = 0;
 int totalTokens = 0;
 
 // read tokenized file and populate token array
-void readTokens(const char *filename) {
+int readTokens(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (!file) {
-        printf("Error: Could not open tokenized file %s\n", filename);
-        exit(1);
+        fprintf(stderr, "Error: Could not open tokenized file %s\n", filename);
+        return -1; // failure
     }
 
     char tokenType[MAX_SYM_LEN];
-    int line = 1;  // start line
-    int column = 1;  // start column
+    int line = 1;
+    int column = 1;
 
+    totalTokens = 0; // reset token count
     while (fscanf(file, "%s", tokenType) != EOF) {
-        // init token with line and column info
+        if (totalTokens >= MAX_TOKENS) {
+            fprintf(stderr, "Error: Maximum token limit exceeded\n");
+            fclose(file);
+            return -2; // limit exceeded
+        }
+
         Token token = { NOP, "", line, column };
 
         if (strcmp(tokenType, "IDENT") == 0) {
@@ -91,29 +108,23 @@ void readTokens(const char *filename) {
             token.type = NOP;
         }
 
-        // add token to array
         tokens[totalTokens++] = token;
-
-        // update column count
-        // assumes space or newline after token
         column += strlen(token.value) + 1;
 
-        // check if need to increment line number
-        // ENDOFLINE really only used here
         if (token.type == ENDOFLINE) {
             line++;
             column = 1; // reset column on new line
         }
     }
+
     fclose(file);
+    return 0;
 }
 
-// reset tokens
 void resetTokens() {
     currentTokenIndex = 0;
 }
 
-// get next token
 Token nextToken() {
     if (currentTokenIndex < totalTokens) {
         return tokens[currentTokenIndex++];
@@ -124,15 +135,13 @@ Token nextToken() {
     }
 }
 
-// used by main
 int readTokensFromFile(const char *tokenFilename) {
     readTokens(tokenFilename);
     return 0; // future check
 }
 
-// used by main
 void printTokens() {
-    resetTokens();
+    currentTokenIndex = 0; // reset
     Token token;
     while ((token = nextToken()).type != ENDOFFILE) {
         printf("Token: %d, Value: %s, Line: %d, Column: %d\n", 
@@ -140,19 +149,18 @@ void printTokens() {
     }
 }
 
-// used by main
 int saveTokensToJson(const char *filename) {
     FILE *jsonFile = fopen(filename, "w");
     if (!jsonFile) {
         fprintf(stderr, "Error: Unable to open file %s for writing\n", filename);
-        exit(EXIT_FAILURE);
+        return -1;
     }
 
-    fprintf(jsonFile, "[\n"); // start
+    fprintf(jsonFile, "[\n");
 
-    resetTokens();
+    currentTokenIndex = 0;
     Token token;
-    int first = 1; // keep track of ,
+    int first = 1;
     while ((token = nextToken()).type != ENDOFFILE) {
         if (!first) {
             fprintf(jsonFile, ",\n");
@@ -167,7 +175,7 @@ int saveTokensToJson(const char *filename) {
         fprintf(jsonFile, "  }");
     }
 
-    fprintf(jsonFile, "\n]\n"); // end
+    fprintf(jsonFile, "\n]\n");
     fclose(jsonFile);
     return 0;
 }

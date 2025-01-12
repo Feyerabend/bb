@@ -11,9 +11,10 @@ void processFile(const char* sourceFilename, const char* tokenFilename) {
     printf("tokenizing input ..\n");
     int flag = fromSourceToTokens(sourceFilename, tokenFilename);
     if (flag) {
-        printf("failed saving tokens to file %s.\n", tokenFilename);
+        fprintf(stderr, "Error: Failed saving tokens to file %s.\n", tokenFilename);
+        return;
     }
-    printf("tokens written to %s.\n", tokenFilename);
+    printf("tokens successfully written to %s.\n", tokenFilename);
 
     printf("done.\n");
 }

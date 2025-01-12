@@ -151,12 +151,20 @@ void tokenizer() {
     fprintf(outputFile, "ENDOFFILE\n");
 }
 
+void cleanup(FILE *sourceFile, FILE *outputFile, char *sourceCode) {
+    if (sourceFile) fclose(sourceFile);
+    if (outputFile) fclose(outputFile);
+    if (sourceCode) free(sourceCode);
+}
 
 // main entry point
 int fromSourceToTokens(const char *sourceFilename, const char *tokenFilename) {
+    FILE *sourceFile = NULL;
+    FILE *outputFile = NULL;
+    sourceCode = NULL;
 
     // input source file
-    FILE *sourceFile = fopen(sourceFilename, "r");
+    sourceFile = fopen(sourceFilename, "r");
     if (!sourceFile) {
         printf("Error opening file %s\n", sourceFilename);
         return EXIT_FAILURE;
@@ -167,6 +175,11 @@ int fromSourceToTokens(const char *sourceFilename, const char *tokenFilename) {
     long fileSize = ftell(sourceFile);
     fseek(sourceFile, 0, SEEK_SET);
     sourceCode = (char *)malloc(fileSize + 1);
+    if (!sourceCode) {
+        printf("Memory allocation failed\n");
+        cleanup(sourceFile, NULL, NULL);
+        return EXIT_FAILURE;
+    }
     fread(sourceCode, 1, fileSize, sourceFile);
     sourceCode[fileSize] = '\0'; // null-terminate string
 
@@ -174,6 +187,7 @@ int fromSourceToTokens(const char *sourceFilename, const char *tokenFilename) {
     outputFile = fopen(tokenFilename, "w");
     if (!outputFile) {
         printf("Error opening output file %s\n", tokenFilename);
+        cleanup(sourceFile, NULL, sourceCode);
         return EXIT_FAILURE;
     }
 
@@ -183,9 +197,7 @@ int fromSourceToTokens(const char *sourceFilename, const char *tokenFilename) {
     tokenizer();
 
     // clean up
-    fclose(sourceFile);
-    fclose(outputFile);
+    cleanup(sourceFile, outputFile, sourceCode);
 
     return 0;
 }
-
