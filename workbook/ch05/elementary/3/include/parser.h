@@ -3,6 +3,7 @@
 
 #include "ast.h"
 
+extern void initParser();
 extern ASTNode *program();
 
 #endif  // PARSER_H

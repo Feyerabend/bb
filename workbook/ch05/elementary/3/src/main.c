@@ -6,9 +6,17 @@
 #include "lexer.h"
 #include "parser.h"
 #include "symbol_table.h"
+#include "scope.h"
 
 
 void processFile(const char* sourceFilename, const char* tokenFilename, const char* annotatedTokenFilename, const char* astFilename, const char* symbolFilename) {
+
+    initParser();
+
+//    initSymbolTable();
+//    ScopeManager manager;
+    
+
     printf("\nparsing file: %s ..\n", sourceFilename);
 
     // tokenisation / lexical analysis
@@ -34,7 +42,6 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
     }
     printf("annotated tokens saved to %s\n", annotatedTokenFilename);
 
-    initSymbolTable();
     ASTNode *root = program();
     traverseAST(root, 0);
     printSymbolTable();
