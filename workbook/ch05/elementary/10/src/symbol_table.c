@@ -114,7 +114,7 @@ void serializeSymbolTable(FILE *output) {
     fprintf(output, "[\n");
     for (int i = 0; i < symbolTable.size; i++) {
         fprintf(output, "  {\n");
-        fprintf(output, "    \"id\": \"%d\",\n", symbolTable.entries[i].symbolID);
+        fprintf(output, "    \"uid\": \"%d\",\n", symbolTable.entries[i].symbolID);
         fprintf(output, "    \"name\": \"%s\",\n", symbolTable.entries[i].name);
         fprintf(output, "    \"type\": \"%s\",\n", getSymbolName((Symbol)symbolTable.entries[i].type));
         fprintf(output, "    \"scopeLevel\": %d,\n", symbolTable.entries[i].scopeLevel);

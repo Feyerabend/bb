@@ -20,7 +20,7 @@ void processFile(const char* sourceFilename, const char* tokenFilename) {
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 5) {
+    if (argc != 3) {
         fprintf(stderr, "Usage: %s <source-file> <token-output-file> .. (%d)\n", argv[0], argc);
         return EXIT_FAILURE;
     }

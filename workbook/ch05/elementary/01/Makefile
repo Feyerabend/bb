@@ -31,11 +31,9 @@ samples: $(TARGET)
 	@for file in $(SAMPLESDIR)/sample*.pas; do \
 		base=$$(basename $$file .pas); \
 		tokens_output="$(TOKENSDIR)/$$base.token"; \
-		ast_output="$(OUTPUTDIR)/$$base.json"; \
-		symbol_table_output="$(OUTPUTDIR)/symbol_table_$$base.json"; \
 		echo "\n- - - - - - -"; \
-		echo "Running $$file -> $$tokens_output, $$ast_output, $$symbol_table_output"; \
-		./main $$file $$tokens_output $$ast_output $$symbol_table_output; \
+		echo "Running $$file -> $$tokens_output"; \
+		./main $$file $$tokens_output; \
 	done
 
 # make -- compiles
