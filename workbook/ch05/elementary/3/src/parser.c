@@ -7,10 +7,18 @@
 #include "ast.h"
 #include "parser.h"
 #include "symbol_table.h"
+#include "scope.h"
 #include "util.h"
 
 #define TRUE 1
 #define FALSE 0
+
+ScopeManager manager;
+
+void initParser() {
+    initScopeManager(&manager);
+    initSymbolTable();
+}
 
 Symbol symbol;
 char buf[MAX_SYM_LEN];
@@ -66,7 +74,7 @@ ASTNode *factor();
 ASTNode *factor() {
     if (accept(IDENT)) {
         if (!isReserved(buf)) {
-            if (!findSymbol(buf, 0)) {
+            if (!findSymbol(buf, getCurrentScopeLevel(&manager))) {
                 error("factor: undefined identifier");
             }
         }
@@ -137,7 +145,7 @@ ASTNode *condition() {
 
 ASTNode *statement() {
     if (accept(IDENT)) {
-        if (!findSymbol(buf, 0)) {
+        if (!findSymbol(buf, getCurrentScopeLevel(&manager))) {
             error("statement: undefined identifier");
         }
         ASTNode *assignNode = createNode(NODE_ASSIGNMENT, strdup(buf), 0);
@@ -146,7 +154,7 @@ ASTNode *statement() {
         return assignNode;
     } else if (accept(CALLSYM)) {
         expect(IDENT);
-        if (!findSymbol(buf, 0)) {
+        if (!findSymbol(buf, getCurrentScopeLevel(&manager))) {
             error("statement: undefined procedure");
         }
         return createNode(NODE_CALL, strdup(buf), 0);
@@ -182,6 +190,7 @@ ASTNode *statement() {
 }
 
 ASTNode *block() {
+    enterScope(&manager);
     ASTNode *blockNode = createNode(NODE_BLOCK, NULL, 0);
     if (accept(CONSTSYM)) {
         do {
@@ -189,7 +198,7 @@ ASTNode *block() {
             char *name = strdup(buf);
             expect(EQL);
             expect(NUMBER);
-            int uid = addSymbol(name, CONSTSYM, 0, atoi(buf));
+            int uid = addSymbol(name, CONSTSYM, getCurrentScopeLevel(&manager), atoi(buf));
             ASTNode *constNode = createNode(NODE_CONST_DECL, name, uid);
             addChild(constNode, createNode(NODE_NUMBER, buf, 0));
             addChild(blockNode, constNode);
@@ -199,14 +208,14 @@ ASTNode *block() {
     if (accept(VARSYM)) {
         do {
             expect(IDENT);
-            int uid = addSymbol(buf, VARSYM, 0, 0);
+            int uid = addSymbol(buf, VARSYM, getCurrentScopeLevel(&manager), 0);
             addChild(blockNode, createNode(NODE_VAR_DECL, buf, uid));
         } while (accept(COMMA));
         expect(SEMICOLON);
     }
     while (accept(PROCSYM)) {
         expect(IDENT);
-        int uid = addSymbol(buf, PROCSYM, 0, 0);
+        int uid = addSymbol(buf, PROCSYM, getCurrentScopeLevel(&manager), 0);
         ASTNode *procNode = createNode(NODE_PROC_DECL, buf, uid);
         expect(SEMICOLON);
         addChild(procNode, block());
@@ -214,6 +223,7 @@ ASTNode *block() {
         expect(SEMICOLON);
     }
     addChild(blockNode, statement());
+    exitScope(&manager);
     return blockNode;
 }
 
@@ -225,3 +235,4 @@ ASTNode *program() {
     expect(PERIOD);
     return programNode;
 }
+
