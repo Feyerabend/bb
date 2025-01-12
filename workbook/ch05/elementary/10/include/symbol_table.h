@@ -63,7 +63,7 @@ static const SymbolMapping symbolTableNames[] = {
     {ENDOFFILE, "ENDOFFILE"}
 };
 
-extern void initSymbolTable();
+extern int initSymbolTable();
 int addSymbol(const char *name, Symbol type, int scopeLevel, int data);
 int findSymbol(const char *name, int currentScopeLevel);
 extern void freeSymbolTable();

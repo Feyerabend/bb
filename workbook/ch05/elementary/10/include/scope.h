@@ -11,8 +11,8 @@ typedef struct {
 extern ScopeManager manager; // decl of global scope manager
 
 extern void initScopeManager(ScopeManager *manager);
-extern void enterScope(ScopeManager *manager);
-extern void exitScope(ScopeManager *manager);
+extern int enterScope(ScopeManager *manager);
+extern int exitScope(ScopeManager *manager);
 extern int getCurrentScopeLevel(ScopeManager *manager);
 
 #endif  // SCOPE_H

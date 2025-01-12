@@ -16,14 +16,15 @@ void resetIDGenerator() {
     nextID = 1;
 }
 
-void initSymbolTable() {
+int initSymbolTable() {
     symbolTable.entries = malloc(INITIAL_CAPACITY * sizeof(SymbolTableEntry));
     if (!symbolTable.entries) {
         perror("Failed to initialize symbol table");
-        exit(1);
+        return -1;
     }
     symbolTable.capacity = INITIAL_CAPACITY;
     symbolTable.size = 0;
+    return 0;
 }
 
 int addSymbol(const char *name, Symbol type, int scopeLevel, int dataValueOrAddress) {
@@ -76,10 +77,15 @@ int findSymbolAtLevel(const char *name, int level) {
 }
 
 void freeSymbolTable() {
-    for (int i = 0; i < symbolTable.size; i++) {
-        free(symbolTable.entries[i].name);
+    if (symbolTable.entries) {
+        for (int i = 0; i < symbolTable.size; i++) {
+            free(symbolTable.entries[i].name);  // Free each symbol name
+        }
+        free(symbolTable.entries);  // Free the entries array
+        symbolTable.entries = NULL;  // Reset to NULL to prevent double free
+        symbolTable.size = 0;
+        symbolTable.capacity = 0;
     }
-    free(symbolTable.entries);
 }
 
 const char *getSymbolName(Symbol type) {

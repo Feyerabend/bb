@@ -10,22 +10,31 @@ void initScopeManager(ScopeManager *manager) {
     manager->currentScopeLevel = 0;
 }
 
-void enterScope(ScopeManager *manager) {
+int enterScope(ScopeManager *manager) {
     if (manager->currentScopeLevel < MAX_SCOPE_LEVELS) {
         manager->scopeStack[manager->currentScopeLevel++] = manager->currentScopeLevel;
+        return 0;
     } else {
-        printf("Error: Maximum scope levels exceeded\n");
-        exit(1);  // or handle error more gracefully
+        fprintf(stderr, "Error: Maximum scope levels exceeded\n");
+        return -1;
     }
 }
 
-void exitScope(ScopeManager *manager) {
+int exitScope(ScopeManager *manager) {
     if (manager->currentScopeLevel > 0) {
         manager->currentScopeLevel--;
+        return 0;
     } else {
-        printf("Error: Scope underflow\n");
-        exit(1);  // or handle error more gracefully
+        fprintf(stderr, "Error: Scope underflow\n");
+        return -1;
     }
+}
+
+void cleanupScopeManager(ScopeManager *manager) {
+    while (manager->currentScopeLevel > 0) {
+        exitScope(manager);
+    }
+    // if added allocated fields free them ..
 }
 
 int getCurrentScopeLevel(ScopeManager *manager) {
