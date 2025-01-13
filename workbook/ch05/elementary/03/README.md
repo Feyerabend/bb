@@ -225,4 +225,9 @@ ASTNode *factor() {
 
 ### Conclusion
 
-This parser, designed with recursive descent, processes the tokens generated from a lexer and builds an Abstract Syntax Tree (AST) representing the structure of the program. Each function in the parser corresponds to a specific rule in the grammar, and the tree nodes represent language constructs like variables, expressions, statements, and blocks. The parser constructs this tree step-by-step by recursively calling the appropriate parsing functions and building the corresponding AST nodes.
+This parser, designed with recursive descent, processes the tokens generated from a lexer and
+builds an Abstract Syntax Tree (AST) representing the structure of the program. Each function
+in the parser corresponds to a specific rule in the grammar, and the tree nodes represent language
+constructs like variables, expressions, statements, and blocks. The parser constructs this tree
+step-by-step by recursively calling the appropriate parsing functions and building the corresponding
+AST nodes.
