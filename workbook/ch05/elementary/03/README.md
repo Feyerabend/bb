@@ -215,7 +215,7 @@ ASTNode *factor() {
 
 ### AST Nodes
 - NODE_PROGRAM: Represents the entire program.
-- NODE_BLOCK: Represents the body of the program, which can include declarations and statements.
+- NODE_BLOCK: Represents a certain part of the program, which can include declarations and statements. Limits the scope.
 - NODE_STATEMENT: Represents a single statement, such as an assignment or a function call.
 - NODE_EXPRESSION: Represents an expression, including terms and factors.
 - NODE_IDENTIFIER: Represents a variable or function identifier.
