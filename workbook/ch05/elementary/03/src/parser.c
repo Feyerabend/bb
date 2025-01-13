@@ -6,7 +6,6 @@
 #include "lexer.h"
 #include "ast.h"
 #include "parser.h"
-//#include "symbol_table.h"
 #include "util.h"
 
 #define TRUE 1
@@ -67,9 +66,9 @@ ASTNode *factor();
 ASTNode *factor() {
     char *temp = strdup(buf);
     if (accept(IDENT)) {
-        return createNode(NODE_IDENTIFIER, temp, 0);
+        return createNode(NODE_IDENTIFIER, temp);
     } else if (accept(NUMBER)) {
-        return createNode(NODE_NUMBER, temp, 0);
+        return createNode(NODE_NUMBER, temp);
     } else if (accept(LPAREN)) {
         ASTNode *expr = expression();
         expect(RPAREN);
@@ -86,7 +85,7 @@ ASTNode *term() {
     while (symbol == TIMES || symbol == SLASH) {
         char *op = strdup(symbol == TIMES ? "*" : "/");
         nextSymbol();
-        ASTNode *opNode = createNode(NODE_TERM, op, 0);
+        ASTNode *opNode = createNode(NODE_TERM, op);
         addChild(opNode, node);          // left child is the current term
         addChild(opNode, factor());      // right child is the next factor
         node = opNode;                   // update node to the new operator node
@@ -95,14 +94,14 @@ ASTNode *term() {
 }
 
 ASTNode *expression() {
-    ASTNode *node = createNode(NODE_EXPRESSION, NULL, 0);
+    ASTNode *node = createNode(NODE_EXPRESSION, NULL);
     if (symbol == PLUS || symbol == MINUS) {
-        addChild(node, createNode(NODE_OPERATOR, symbol == PLUS ? "+" : "-", 0));
+        addChild(node, createNode(NODE_OPERATOR, symbol == PLUS ? "+" : "-"));
         nextSymbol();
     }
     addChild(node, term());
     while (symbol == PLUS || symbol == MINUS) {
-        ASTNode *opNode = createNode(NODE_OPERATOR, symbol == PLUS ? "+" : "-", 0);
+        ASTNode *opNode = createNode(NODE_OPERATOR, symbol == PLUS ? "+" : "-");
         nextSymbol();
         addChild(opNode, node);
         addChild(opNode, term());
@@ -113,13 +112,13 @@ ASTNode *expression() {
 
 ASTNode *condition() {
     if (accept(ODDSYM)) {
-        ASTNode *node = createNode(NODE_CONDITION, "ODD", 0);
+        ASTNode *node = createNode(NODE_CONDITION, "ODD");
         addChild(node, expression());
         return node;
     } else if (accept(LPAREN)) { // enforce parentheses
         ASTNode *leftExpr = expression();
         if (symbol == EQL || symbol == NEQ || symbol == LSS || symbol == LEQ || symbol == GTR || symbol == GEQ) {
-            ASTNode *node = createNode(NODE_CONDITION, symbolToString(symbol), 0);
+            ASTNode *node = createNode(NODE_CONDITION, symbolToString(symbol));
             nextSymbol();
             addChild(node, leftExpr);        // left-hand side expression
             addChild(node, expression());    // right-hand side expression
@@ -135,16 +134,16 @@ ASTNode *condition() {
 ASTNode *statement() {
     char *temp = strdup(buf);
     if (accept(IDENT)) {
-        ASTNode *assignNode = createNode(NODE_ASSIGNMENT, temp, 0);
+        ASTNode *assignNode = createNode(NODE_ASSIGNMENT, temp);
         expect(BECOMES);
         addChild(assignNode, expression());
         return assignNode;
     } else if (accept(CALLSYM)) {
         char *name = strdup(buf);
         expect(IDENT);
-        return createNode(NODE_CALL, name, 0);
+        return createNode(NODE_CALL, name);
     } else if (accept(BEGINSYM)) {
-        ASTNode *beginNode = createNode(NODE_BEGIN, NULL, 0);
+        ASTNode *beginNode = createNode(NODE_BEGIN, NULL);
         do {
             addChild(beginNode, statement());           // *HACK* C-like termination
             if (!accept(SEMICOLON)) {                   // 'begin s1; s2; end'
@@ -156,13 +155,13 @@ ASTNode *statement() {
         }
         return beginNode;
     } else if (accept(IFSYM)) {
-        ASTNode *ifNode = createNode(NODE_IF, NULL, 0);
+        ASTNode *ifNode = createNode(NODE_IF, NULL);
         addChild(ifNode, condition());
         expect(THENSYM);
         addChild(ifNode, statement());
         return ifNode;
     } else if (accept(WHILESYM)) {
-        ASTNode *whileNode = createNode(NODE_WHILE, NULL, 0);
+        ASTNode *whileNode = createNode(NODE_WHILE, NULL);
         addChild(whileNode, condition());
         expect(DOSYM);
         addChild(whileNode, statement());
@@ -175,7 +174,7 @@ ASTNode *statement() {
 }
 
 ASTNode *block() {
-    ASTNode *blockNode = createNode(NODE_BLOCK, NULL, 0);
+    ASTNode *blockNode = createNode(NODE_BLOCK, NULL);
     char *name = NULL;
     char *num = NULL;
     if (accept(CONSTSYM)) {
@@ -185,8 +184,8 @@ ASTNode *block() {
             expect(EQL);
             num = strdup(buf);
             expect(NUMBER);
-            ASTNode *constNode = createNode(NODE_CONST_DECL, name, 0); // uid
-            addChild(constNode, createNode(NODE_NUMBER, num, 0));
+            ASTNode *constNode = createNode(NODE_CONST_DECL, name);
+            addChild(constNode, createNode(NODE_NUMBER, num));
             addChild(blockNode, constNode);
         } while (accept(COMMA));
         expect(SEMICOLON);
@@ -195,14 +194,14 @@ ASTNode *block() {
         do {
             name = strdup(buf);
             expect(IDENT);
-            addChild(blockNode, createNode(NODE_VAR_DECL, name, 0)); // uid
+            addChild(blockNode, createNode(NODE_VAR_DECL, name));
         } while (accept(COMMA));
         expect(SEMICOLON);
     }
     while (accept(PROCSYM)) {
         name = strdup(buf);
         expect(IDENT);
-        ASTNode *procNode = createNode(NODE_PROC_DECL, name, 0);
+        ASTNode *procNode = createNode(NODE_PROC_DECL, name);
         expect(SEMICOLON);
         addChild(procNode, block());
         addChild(blockNode, procNode);
@@ -217,7 +216,7 @@ ASTNode *block() {
 ASTNode *program() {
     resetTokens();
     nextSymbol();
-    ASTNode *programNode = createNode(NODE_PROGRAM, NULL, 0);
+    ASTNode *programNode = createNode(NODE_PROGRAM, NULL);
     addChild(programNode, block());
     expect(PERIOD);
     return programNode;

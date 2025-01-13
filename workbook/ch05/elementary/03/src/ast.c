@@ -4,13 +4,12 @@
 
 #include "ast.h"
 
-ASTNode *createNode(ASTNodeType type, const char *value, int uid) {
+ASTNode *createNode(ASTNodeType type, const char *value) {
     ASTNode *node = malloc(sizeof(ASTNode));
     if (!node) {
         printf("Error: Failed to allocate memory for ASTNode\n");
         exit(1);
     }
-    node->symbolID = uid;
     node->type = type;
     node->value = value ? strdup(value) : strdup("noname"); // ---
     node->children = NULL;
@@ -45,9 +44,6 @@ void traverseAST(ASTNode *node, int depth) {
         printf("  ");
     }
     printf("%s", getASTNodeTypeName(node->type));
-    if (node->symbolID != 0) {
-        printf(" (%d)", node->symbolID);
-    }
     if (node->value) {
         if (strcmp(node->value, "noname") != 0) {
             printf(": %s", node->value);
@@ -73,9 +69,6 @@ const char *getASTNodeTypeName(ASTNodeType type) {
 void serializeAST(ASTNode *node, FILE *output) {
     fprintf(output, "{");
     fprintf(output, "\"type\": \"%s\"", getASTNodeTypeName(node->type));
-    if (node->symbolID != 0) {
-        fprintf(output, ", \"uid\": \"%d\"", node->symbolID); // ID if present
-    }
     if (node->value) {
         fprintf(output, ", \"value\": \"%s\"", node->value); // value if present
     }
