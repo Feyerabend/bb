@@ -4,7 +4,7 @@
 
 #include "tokens.h"
 
-int isReserved(const char *word) {
+/*int isReserved(const char *word) {
     return
         strcmp(word, "begin") == 0 ||
         strcmp(word, "end") == 0 || 
@@ -15,7 +15,17 @@ int isReserved(const char *word) {
         strcmp(word, "var") == 0 ||
         strcmp(word, "const") == 0 || 
         strcmp(word, "procedure") == 0;
+}*/
+
+int isReserved(const char *word) {
+    const char *reserved[] = {
+        "begin", "const", "do", "end", "if", "procedure", "then", "var", "while"
+    };
+    size_t numReserved = sizeof(reserved) / sizeof(reserved[0]);    
+    return bsearch(&word, reserved, numReserved, sizeof(reserved[0]),
+        (int(*)(const void*, const void*))strcmp) != NULL;
 }
+
 
 const char* symbolToString(int symb) {
     switch (symb) {

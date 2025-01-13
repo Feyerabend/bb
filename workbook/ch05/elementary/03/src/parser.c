@@ -6,30 +6,12 @@
 #include "lexer.h"
 #include "ast.h"
 #include "parser.h"
-#include "symbol_table.h"
-#include "scope.h"
+//#include "symbol_table.h"
 #include "util.h"
 
 #define TRUE 1
 #define FALSE 0
 
-ScopeManager manager;
-
-void initParser() {
-    initScopeManager(&manager);
-    initSymbolTable();
-}
-
-void destroyScopeManager(ScopeManager *manager) {
-    while (manager->currentScopeLevel >= 0) {
-        exitScope(manager);
-    }
-}
-
-void leaveParser() {
-    freeSymbolTable();
-    destroyScopeManager(&manager);
-}
 
 Symbol symbol;
 char buf[MAX_SYM_LEN];
@@ -44,15 +26,12 @@ void nextSymbol() {
     symbol = token.type;
     strncpy(buf, token.value, MAX_SYM_LEN - 1);
     buf[MAX_SYM_LEN - 1] = '\0';
-
     printsymbol(symbol, buf);
 }
 
 void error(const char msg[]) {
     printf("Error: %s (buffer: \"%s\")\n", msg, buf);
 
-    freeSymbolTable();
-    destroyScopeManager(&manager);
     exit(EXIT_FAILURE);
 }
 
@@ -86,15 +65,11 @@ ASTNode *factor();
 
 
 ASTNode *factor() {
+    char *temp = strdup(buf);
     if (accept(IDENT)) {
-        if (!isReserved(buf)) {
-            if (!findSymbol(buf, getCurrentScopeLevel(&manager))) {
-                error("factor: undefined identifier");
-            }
-        }
-        return createNode(NODE_IDENTIFIER, buf, 0);
+        return createNode(NODE_IDENTIFIER, temp, 0);
     } else if (accept(NUMBER)) {
-        return createNode(NODE_NUMBER, buf, 0);
+        return createNode(NODE_NUMBER, temp, 0);
     } else if (accept(LPAREN)) {
         ASTNode *expr = expression();
         expect(RPAREN);
@@ -158,20 +133,16 @@ ASTNode *condition() {
 }
 
 ASTNode *statement() {
+    char *temp = strdup(buf);
     if (accept(IDENT)) {
-        if (!findSymbol(buf, getCurrentScopeLevel(&manager))) {
-            error("statement: undefined identifier");
-        }
-        ASTNode *assignNode = createNode(NODE_ASSIGNMENT, strdup(buf), 0);
+        ASTNode *assignNode = createNode(NODE_ASSIGNMENT, temp, 0);
         expect(BECOMES);
         addChild(assignNode, expression());
         return assignNode;
     } else if (accept(CALLSYM)) {
+        char *name = strdup(buf);
         expect(IDENT);
-        if (!findSymbol(buf, getCurrentScopeLevel(&manager))) {
-            error("statement: undefined procedure");
-        }
-        return createNode(NODE_CALL, strdup(buf), 0);
+        return createNode(NODE_CALL, name, 0);
     } else if (accept(BEGINSYM)) {
         ASTNode *beginNode = createNode(NODE_BEGIN, NULL, 0);
         do {
@@ -204,40 +175,42 @@ ASTNode *statement() {
 }
 
 ASTNode *block() {
-    enterScope(&manager);
     ASTNode *blockNode = createNode(NODE_BLOCK, NULL, 0);
+    char *name = NULL;
+    char *num = NULL;
     if (accept(CONSTSYM)) {
         do {
             expect(IDENT);
-            char *name = strdup(buf);
+            name = strdup(buf);
             expect(EQL);
+            num = strdup(buf);
             expect(NUMBER);
-            int uid = addSymbol(name, CONSTSYM, getCurrentScopeLevel(&manager), atoi(buf));
-            ASTNode *constNode = createNode(NODE_CONST_DECL, name, uid);
-            addChild(constNode, createNode(NODE_NUMBER, buf, 0));
+            ASTNode *constNode = createNode(NODE_CONST_DECL, name, 0); // uid
+            addChild(constNode, createNode(NODE_NUMBER, num, 0));
             addChild(blockNode, constNode);
         } while (accept(COMMA));
         expect(SEMICOLON);
     }
     if (accept(VARSYM)) {
         do {
+            name = strdup(buf);
             expect(IDENT);
-            int uid = addSymbol(buf, VARSYM, getCurrentScopeLevel(&manager), 0);
-            addChild(blockNode, createNode(NODE_VAR_DECL, buf, uid));
+            addChild(blockNode, createNode(NODE_VAR_DECL, name, 0)); // uid
         } while (accept(COMMA));
         expect(SEMICOLON);
     }
     while (accept(PROCSYM)) {
+        name = strdup(buf);
         expect(IDENT);
-        int uid = addSymbol(buf, PROCSYM, getCurrentScopeLevel(&manager), 0);
-        ASTNode *procNode = createNode(NODE_PROC_DECL, buf, uid);
+        ASTNode *procNode = createNode(NODE_PROC_DECL, name, 0);
         expect(SEMICOLON);
         addChild(procNode, block());
         addChild(blockNode, procNode);
         expect(SEMICOLON);
     }
     addChild(blockNode, statement());
-    exitScope(&manager);
+    if (name) free(name);
+    if (num) free(num);
     return blockNode;
 }
 

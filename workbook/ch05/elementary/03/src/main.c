@@ -5,17 +5,9 @@
 #include "tokens.h"
 #include "lexer.h"
 #include "parser.h"
-#include "symbol_table.h"
-#include "scope.h"
 
 
-void processFile(const char* sourceFilename, const char* tokenFilename, const char* annotatedTokenFilename, const char* astFilename, const char* symbolFilename) {
-
-    initParser();
-
-//    initSymbolTable();
-//    ScopeManager manager;
-    
+void processFile(const char* sourceFilename, const char* tokenFilename, const char* annotatedTokenFilename, const char* astFilename) {
 
     printf("\nparsing file: %s ..\n", sourceFilename);
 
@@ -44,13 +36,9 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
 
     ASTNode *root = program();
     traverseAST(root, 0);
-    printSymbolTable();
 
     writeASTToJSON(root, astFilename);
     printf("ast saved to %s\n", astFilename);
-
-    writeSymbolTableToFile(symbolFilename);
-    printf("symbol table saved to %s\n", symbolFilename);
 
     if (root) {
         freeNode(root);
@@ -59,8 +47,8 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 6) {
-        fprintf(stderr, "Usage: %s <source-file> <token-output-file> <token-annotated-output-file> <ast-output-file> <symbol-table-output-dir> .. (%d)\n", argv[0], argc);
+    if (argc != 5) {
+        fprintf(stderr, "Usage: %s <source-file> <token-output-file> <token-annotated-output-file> <ast-output-file> .. (%d)\n", argv[0], argc);
         return EXIT_FAILURE;
     }
 
@@ -68,9 +56,8 @@ int main(int argc, char* argv[]) {
     const char* tokenFile = argv[2];
     const char* annTokenFile = argv[3];
     const char* astFile = argv[4];
-    const char* symbolFile = argv[5];
 
-    processFile(sourceFile, tokenFile, annTokenFile, astFile, symbolFile);
+    processFile(sourceFile, tokenFile, annTokenFile, astFile);
 
     return EXIT_SUCCESS;
 }
