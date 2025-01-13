@@ -45,7 +45,7 @@ AST incrementally, starting from the root and breaking the input down into small
 #### Main Parser Functions and AST Construction
 
 
-__`program()`__
+__program()__
 
 This function is the entry point for parsing the program. It initializes the parsing process and
 creates the root of the AST.
@@ -64,7 +64,7 @@ ASTNode *program() {
 }
 ```
 
-__`block()`__
+__block()__
 
 A block is a key structure in the language (similar to a function or procedure scope).
 It can contain constant declarations, variable declarations, procedure declarations,
@@ -108,7 +108,7 @@ ASTNode *block() {
 ```
 
 
-__`statement()`__
+__statement()__
 
 A statement is an action that the program performs, such as assignments, calls, conditionals, and loops.
 
@@ -149,7 +149,7 @@ ASTNode *statement() {
 ```
 
 
-__`expression() and term()`__
+__expression() and term()__
 
 These functions handle arithmetic expressions and their components (like terms and factors).
 
@@ -187,7 +187,7 @@ ASTNode *term() {
 ```
 
 
-__`factor()`__
+__factor()__
 
 This function parses the basic building blocks of an expression, like numbers, variables, or sub-expressions in parentheses.
 
