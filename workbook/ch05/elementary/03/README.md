@@ -73,37 +73,34 @@ and a list of statements.
 ```c
 ASTNode *block() {
     ASTNode *blockNode = createNode(NODE_BLOCK, NULL);
-
-    // parse constant declarations
     if (accept(CONSTSYM)) {
         do {
-            expect(IDENT);       // expect an identifier (constant name)
-            expect(EQL);         // expect equality symbol (=)
-            expect(NUMBER);      // expect a number (constant value)
-        } while (accept(COMMA)); // allow comma-separated constants
-        expect(SEMICOLON);       // end of constants declaration
+            expect(IDENT);
+            ASTNode *constNode = createNode(NODE_CONST_DECL, strdup(buf));
+            expect(EQL);
+            addChild(constNode, createNode(NODE_NUMBER, strdup(buf)));
+            expect(NUMBER);
+            addChild(blockNode, constNode);
+        } while (accept(COMMA));
+        expect(SEMICOLON);
     }
-
-    // parse variable declarations
     if (accept(VARSYM)) {
         do {
-            expect(IDENT);       // expect an identifier (variable name)
-        } while (accept(COMMA)); // allow comma-separated variables
-        expect(SEMICOLON);       // end of variables declaration
+            addChild(blockNode, createNode(NODE_VAR_DECL, strdup(buf)));
+            expect(IDENT);
+        } while (accept(COMMA));
+        expect(SEMICOLON);
     }
-
-    // parse procedure declarations (recursive)
     while (accept(PROCSYM)) {
-        expect(IDENT);            // expect a procedure name
-        expect(SEMICOLON);        // expect a semicolon before the body of the procedure
-        blockNode->children.push_back(block()); // recursively add the procedure's block
-        expect(SEMICOLON);        // end of procedure declaration
+        ASTNode *procNode = createNode(NODE_PROC_DECL, strdup(buf));
+        expect(IDENT);
+        expect(SEMICOLON);
+        addChild(procNode, block());
+        addChild(blockNode, procNode);
+        expect(SEMICOLON);
     }
-
-    // parse the statement(s) in the block
-    statement();  // a block always ends with at least one statement
-
-    return blockNode;  // return the created AST node for the block
+    addChild(blockNode, statement());
+    return blockNode;
 }
 ```
 
@@ -114,37 +111,45 @@ A statement is an action that the program performs, such as assignments, calls, 
 
 ```c
 ASTNode *statement() {
-    ASTNode *stmtNode = createNode(NODE_STATEMENT, NULL);
-    
-    if (accept(IDENT)) {
-        expect(BECOMES);       // expect the assignment operator ":="
-        stmtNode->children.push_back(expression()); // parse the right-hand side expression
+    if (recognize(IDENT)) {
+        ASTNode *assignNode = createNode(NODE_ASSIGNMENT, strdup(buf));
+        nextSymbol();
+        expect(BECOMES);
+        addChild(assignNode, expression());
+        return assignNode;
     } else if (accept(CALLSYM)) {
-        expect(IDENT);         // expect an identifier (procedure name)
-        stmtNode->type = NODE_CALL;
+        ASTNode *callNode = createNode(NODE_CALL, strdup(buf));
+        expect(IDENT);
+        return callNode;
     } else if (accept(BEGINSYM)) {
-        // handle compound statement (block of statements)
+        ASTNode *beginNode = createNode(NODE_BEGIN, NULL);
         do {
-            stmtNode->children.push_back(statement());
-        } while (accept(SEMICOLON));
-        expect(ENDSYM);        // expect 'END' to close the block
+            addChild(beginNode, statement());           // *HACK* C-like termination
+            if (!accept(SEMICOLON)) {                   // 'begin s1; s2; end'
+                break; // exit if no SEMICOLON found    // rather than Pascal separation
+            }                                           // 'begin s1 ; s2 end'
+        } while (symbol != ENDSYM && symbol != ENDOFFILE);
+        if (!accept(ENDSYM)) {
+            error("statement: expected END");
+        }
+        return beginNode;
     } else if (accept(IFSYM)) {
-        // handle if-else condition
-        condition();
+        ASTNode *ifNode = createNode(NODE_IF, NULL);
+        addChild(ifNode, condition());
         expect(THENSYM);
-        stmtNode->children.push_back(statement());
+        addChild(ifNode, statement());
+        return ifNode;
     } else if (accept(WHILESYM)) {
-        // handle while loop
-        condition();
+        ASTNode *whileNode = createNode(NODE_WHILE, NULL);
+        addChild(whileNode, condition());
         expect(DOSYM);
-        stmtNode->children.push_back(statement());
+        addChild(whileNode, statement());
+        return whileNode;
     } else {
         error("statement: syntax error");
         nextSymbol();
         return NULL;
     }
-
-    return stmtNode;  // return the constructed statement node
 }
 ```
 
@@ -193,23 +198,23 @@ This function parses the basic building blocks of an expression, like numbers, v
 
 ```c
 ASTNode *factor() {
-    ASTNode *factorNode;
-    char *temp = strdup(buf);  // small memory leak: duplicate the string for the identifier or number
-
-    if (accept(IDENT)) {
-        factorNode = createNode(NODE_IDENTIFIER, temp);  // create a node for an identifier
-    } else if (accept(NUMBER)) {
-        factorNode = createNode(NODE_NUMBER, temp);  // create a node for a number
+    if (recognize(IDENT)) {
+        ASTNode *identNode = createNode(NODE_IDENTIFIER, strdup(buf));
+        nextSymbol();
+        return identNode;
+    } else if (recognize(NUMBER)) {
+        ASTNode *numberNode = createNode(NODE_NUMBER, strdup(buf));
+        nextSymbol();
+        return numberNode;
     } else if (accept(LPAREN)) {
-        factorNode = expression();  // handle parenthesized expressions
+        ASTNode *expr = expression();
         expect(RPAREN);
+        return expr;
     } else {
         error("factor: syntax error");
-        nextSymbol();  // move to the next symbol on error
+        nextSymbol();
         return NULL;
     }
-
-    return factorNode;  // return the created factor node
 }
 ```
 

@@ -25,13 +25,17 @@ void nextSymbol() {
     symbol = token.type;
     strncpy(buf, token.value, MAX_SYM_LEN - 1);
     buf[MAX_SYM_LEN - 1] = '\0';
-    printsymbol(symbol, buf);
+    printsymbol(symbol, buf); // DEBUG
 }
 
 void error(const char msg[]) {
     printf("Error: %s (buffer: \"%s\")\n", msg, buf);
 
     exit(EXIT_FAILURE);
+}
+
+void warning(const char msg[]) {
+    printf("Warning: %s (buffer: \"%s\")\n", msg, buf);
 }
 
 int accept(Symbol s) {
@@ -52,11 +56,7 @@ int expect(Symbol s) {
 }
 
 int recognize(Symbol s) {
-    if (symbol == s) {
-        return TRUE;
-    } else {
-        return FALSE;
-    }
+    return symbol == s ? TRUE : FALSE;
 }
 
 
@@ -156,10 +156,11 @@ ASTNode *statement() {
     } else if (accept(BEGINSYM)) {
         ASTNode *beginNode = createNode(NODE_BEGIN, NULL);
         do {
-            addChild(beginNode, statement());           // *HACK* C-like termination
-            if (!accept(SEMICOLON)) {                   // 'begin s1; s2; end'
-                break; // exit if no SEMICOLON found    // rather than Pascal separation
-            }                                           // 'begin s1 ; s2 end'
+            addChild(beginNode, statement());   // *HACK* C-like termination 'begin s1; s2; end'
+            if (!accept(SEMICOLON)) {           // rather that Pascal separation 'begin s1 ; s2 end'
+                // warning("statement: missing SEMICOLON");
+                break;
+            }
         } while (symbol != ENDSYM && symbol != ENDOFFILE);
         if (!accept(ENDSYM)) {
             error("statement: expected END");
