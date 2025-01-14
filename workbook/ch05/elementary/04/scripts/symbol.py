@@ -4,6 +4,7 @@ import json
 import getopt
 
 def extract_symbols(ast, current_scope=None, global_scope=None):
+
     if global_scope is None:
         global_scope = {}  # The global symbol table
     if current_scope is None:
@@ -45,60 +46,6 @@ def extract_symbols(ast, current_scope=None, global_scope=None):
 
     return global_scope
 
-def print_symbol_relationships(ast, symbol_table, scope_stack=None):
-    if scope_stack is None:
-        scope_stack = ["global"]
-
-    # Handling different node types in the AST
-    if isinstance(ast, dict):
-        if ast.get("type") == "VAR_DECL":
-            # Variable declaration - Add to symbol table and print out the relationship with the scope
-            var_name = ast.get("value")
-            current_scope = scope_stack[-1]
-            if current_scope not in symbol_table:
-                symbol_table[current_scope] = {"variables": [], "procedures": []}
-            symbol_table[current_scope]["variables"].append(var_name)
-            print(f"Variable '{var_name}' declared in scope '{current_scope}'.")
-
-        elif ast.get("type") == "PROC_DECL":
-            # Procedure declaration - Add to symbol table and print out the relationship with the scope
-            proc_name = ast.get("value")
-            current_scope = scope_stack[-1]
-            if current_scope not in symbol_table:
-                symbol_table[current_scope] = {"variables": [], "procedures": []}
-            symbol_table[current_scope]["procedures"].append(proc_name)
-            print(f"Procedure '{proc_name}' declared in scope '{current_scope}'.")
-
-            # Recurse into the procedure block to print relationships for local variables
-            for child in ast.get("children", []):
-                print_symbol_relationships(child, symbol_table, scope_stack)
-
-        elif ast.get("type") == "BEGIN" or ast.get("type") == "BLOCK":
-            # Block - process its scope
-            block_scope = f"{scope_stack[-1]}_block"
-            scope_stack.append(block_scope)
-            print(f"Entering block scope '{block_scope}' from scope '{scope_stack[-2]}'.")
-
-            for child in ast.get("children", []):
-                print_symbol_relationships(child, symbol_table, scope_stack)
-
-            # After processing the block, we exit the scope
-            print(f"Exiting block scope '{block_scope}'.")
-            scope_stack.pop()
-
-        elif ast.get("type") == "IDENTIFIER":
-            # Identifier usage - Print its relationship with the scope
-            identifier_name = ast.get("value")
-            current_scope = scope_stack[-1]
-            if current_scope in symbol_table and identifier_name in symbol_table[current_scope]["variables"]:
-                print(f"Identifier '{identifier_name}' used in scope '{current_scope}'.")
-            elif current_scope in symbol_table and identifier_name in symbol_table[current_scope]["procedures"]:
-                print(f"Procedure '{identifier_name}' used in scope '{current_scope}'.")
-
-        # Recursively handle children nodes
-        for child in ast.get("children", []):
-            print_symbol_relationships(child, symbol_table, scope_stack)
-
 
 def main(argv):
     inputfile = ''
@@ -135,7 +82,6 @@ def main(argv):
         json.dump(global_scope, output_file, indent=4)
 
     if verbose == 1:
-        print_symbol_relationships(ast, global_scope)
         print("done.")
 
 
