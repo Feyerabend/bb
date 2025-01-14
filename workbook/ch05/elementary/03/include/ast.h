@@ -62,7 +62,7 @@ extern const char *getASTNodeTypeName(ASTNodeType type);
 extern void writeASTToJSON(ASTNode *root, const char *filename);
 extern void traverseAST(ASTNode *node, int depth);
 extern void freeNode(ASTNode *node);
-extern ASTNode *createNode(ASTNodeType type, const char *value, int uid);
+extern ASTNode *createNode(ASTNodeType type, const char *value);
 extern void addChild(ASTNode *parent, ASTNode *child);
 extern void prettyPrintAST(ASTNode *node, int depth);
 
