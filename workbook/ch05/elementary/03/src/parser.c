@@ -73,13 +73,13 @@ ASTNode *factor();
 
 ASTNode *factor() {
     if (recognize(IDENT)) {
-        ASTNode *node = createNode(NODE_IDENTIFIER, strdup(buf));
+        ASTNode *identNode = createNode(NODE_IDENTIFIER, strdup(buf));
         nextSymbol();
-        return node;
+        return identNode;
     } else if (recognize(NUMBER)) {
-        ASTNode *node = createNode(NODE_NUMBER, strdup(buf));
+        ASTNode *numberNode = createNode(NODE_NUMBER, strdup(buf));
         nextSymbol();
-        return node;
+        return numberNode;
     } else if (accept(LPAREN)) {
         ASTNode *expr = expression();
         expect(RPAREN);
@@ -123,9 +123,9 @@ ASTNode *expression() {
 
 ASTNode *condition() {
     if (accept(ODDSYM)) {
-        ASTNode *node = createNode(NODE_CONDITION, "ODD");
-        addChild(node, expression());
-        return node;
+        ASTNode *oddNode = createNode(NODE_CONDITION, "ODD");
+        addChild(oddNode, expression());
+        return oddNode;
     } else if (accept(LPAREN)) { // enforce parentheses
         ASTNode *leftExpr = expression();
         if (symbol == EQL || symbol == NEQ || symbol == LSS || symbol == LEQ || symbol == GTR || symbol == GEQ) {
@@ -150,9 +150,9 @@ ASTNode *statement() {
         addChild(assignNode, expression());
         return assignNode;
     } else if (accept(CALLSYM)) {
-        ASTNode *node = createNode(NODE_CALL, strdup(buf)); // name
+        ASTNode *callNode = createNode(NODE_CALL, strdup(buf));
         expect(IDENT);
-        return node;
+        return callNode;
     } else if (accept(BEGINSYM)) {
         ASTNode *beginNode = createNode(NODE_BEGIN, NULL);
         do {
@@ -189,9 +189,9 @@ ASTNode *block() {
     if (accept(CONSTSYM)) {
         do {
             expect(IDENT);
-            ASTNode *constNode = createNode(NODE_CONST_DECL, strdup(buf)); // name
+            ASTNode *constNode = createNode(NODE_CONST_DECL, strdup(buf));
             expect(EQL);
-            addChild(constNode, createNode(NODE_NUMBER, strdup(buf))); // number
+            addChild(constNode, createNode(NODE_NUMBER, strdup(buf)));
             expect(NUMBER);
             addChild(blockNode, constNode);
         } while (accept(COMMA));
@@ -199,7 +199,7 @@ ASTNode *block() {
     }
     if (accept(VARSYM)) {
         do {
-            addChild(blockNode, createNode(NODE_VAR_DECL, strdup(buf))); // name
+            addChild(blockNode, createNode(NODE_VAR_DECL, strdup(buf)));
             expect(IDENT);
         } while (accept(COMMA));
         expect(SEMICOLON);
