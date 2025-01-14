@@ -6,7 +6,6 @@
 #include "lexer.h"
 #include "ast.h"
 #include "parser.h"
-//#include "symbol_table.h"
 #include "util.h"
 
 #define TRUE 1
@@ -52,6 +51,14 @@ int expect(Symbol s) {
     return FALSE;
 }
 
+int recognize(Symbol s) {
+    if (symbol == s) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
 
 // --- parsing ---
 
@@ -65,11 +72,14 @@ ASTNode *factor();
 
 
 ASTNode *factor() {
-    char *temp = strdup(buf);
-    if (accept(IDENT)) {
-        return createNode(NODE_IDENTIFIER, temp, 0);
-    } else if (accept(NUMBER)) {
-        return createNode(NODE_NUMBER, temp, 0);
+    if (recognize(IDENT)) {
+        ASTNode *node = createNode(NODE_IDENTIFIER, strdup(buf), 0);
+        nextSymbol();
+        return node;
+    } else if (recognize(NUMBER)) {
+        ASTNode *node = createNode(NODE_NUMBER, strdup(buf), 0);
+        nextSymbol();
+        return node;
     } else if (accept(LPAREN)) {
         ASTNode *expr = expression();
         expect(RPAREN);
@@ -133,16 +143,16 @@ ASTNode *condition() {
 }
 
 ASTNode *statement() {
-    char *temp = strdup(buf);
-    if (accept(IDENT)) {
-        ASTNode *assignNode = createNode(NODE_ASSIGNMENT, temp, 0);
+    if (recognize(IDENT)) {
+        ASTNode *assignNode = createNode(NODE_ASSIGNMENT, strdup(buf), 0);
+        nextSymbol();
         expect(BECOMES);
         addChild(assignNode, expression());
         return assignNode;
     } else if (accept(CALLSYM)) {
-        char *name = strdup(buf);
+        ASTNode *node = createNode(NODE_CALL, strdup(buf), 0); // name
         expect(IDENT);
-        return createNode(NODE_CALL, name, 0);
+        return node;
     } else if (accept(BEGINSYM)) {
         ASTNode *beginNode = createNode(NODE_BEGIN, NULL, 0);
         do {
@@ -176,41 +186,33 @@ ASTNode *statement() {
 
 ASTNode *block() {
     ASTNode *blockNode = createNode(NODE_BLOCK, NULL, 0);
-    char *name = NULL;
-    char *num = NULL;
     if (accept(CONSTSYM)) {
         do {
             expect(IDENT);
-            name = strdup(buf);
+            ASTNode *constNode = createNode(NODE_CONST_DECL, strdup(buf), 0); // name
             expect(EQL);
-            num = strdup(buf);
+            addChild(constNode, createNode(NODE_NUMBER, strdup(buf), 0)); // number
             expect(NUMBER);
-            ASTNode *constNode = createNode(NODE_CONST_DECL, name, 0); // uid
-            addChild(constNode, createNode(NODE_NUMBER, num, 0));
             addChild(blockNode, constNode);
         } while (accept(COMMA));
         expect(SEMICOLON);
     }
     if (accept(VARSYM)) {
         do {
-            name = strdup(buf);
+            addChild(blockNode, createNode(NODE_VAR_DECL, strdup(buf), 0)); // name
             expect(IDENT);
-            addChild(blockNode, createNode(NODE_VAR_DECL, name, 0)); // uid
         } while (accept(COMMA));
         expect(SEMICOLON);
     }
     while (accept(PROCSYM)) {
-        name = strdup(buf);
+        ASTNode *procNode = createNode(NODE_PROC_DECL, strdup(buf), 0);
         expect(IDENT);
-        ASTNode *procNode = createNode(NODE_PROC_DECL, name, 0);
         expect(SEMICOLON);
         addChild(procNode, block());
         addChild(blockNode, procNode);
         expect(SEMICOLON);
     }
     addChild(blockNode, statement());
-    if (name) free(name);
-    if (num) free(num);
     return blockNode;
 }
 
