@@ -1,7 +1,7 @@
 
 ## Tokeniser, or Tokenizer, Lexer ..
 
-__build__
+__Build__
 
 ```shell
 make clean
@@ -18,7 +18,7 @@ This code implements a simple tokeniser (lexer) for a programming language simil
 have been made). The tokeniser reads a source file containing code, identifies individual tokens based on
 language grammar, and writes these tokens to an output file.
 
-__view__
+__View__
 
 In the directory of 'tools' you'll find a HTML-file: tokens.html. Open the file locally, and search
 for the tokenised representation in the 'tokens' folder.
