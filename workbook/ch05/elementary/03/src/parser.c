@@ -18,7 +18,7 @@ char buf[MAX_SYM_LEN];
 void nextSymbol() {
     Token token = nextToken();
     // skip
-    while (token.type == NOP || token.type == ENDOFLINE) {
+    while (token.type == NOP || token.type == ENDOFLINE || token.type == ERROR) {
         token = nextToken();
     }
     // transfer to local use
