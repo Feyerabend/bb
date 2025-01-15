@@ -86,10 +86,10 @@ __Roadmap__
 1. Phase 1: Implement the basic tokeniser with annotation support. DONE.
 2. Phase 2: Add error detection and basic correction suggestions.
 3. Phase 3: Extend to handle more complex language features and integrate with a parser.
-4. Phase 4: Optimize for performance and release a production-ready version.
+4. Phase 4: Optimise for performance and release a production-ready version.
 
 __Implementation Languages__
 
-- Python: Ideal for rapid development, string manipulation, and prototyping error-detection features.
-- JavaScript: Suitable for browser-based tokenisation tools or integrating into web development workflows.
-- C: Provides performance benefits for large-scale or production-grade systems, especially in embedded environments.
+- *Python*: Ideal for rapid development, string manipulation, and prototyping error-detection features.
+- *JavaScript*: Suitable for browser-based tokenisation tools, illustrating process or integrating into web development workflows.
+- *C*: Provides performance benefits for large-scale or production-grade systems, especially in embedded environments.
