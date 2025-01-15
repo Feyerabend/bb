@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Hierarchy Viewer</title>
+    <title>YAML Hierarchy Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
 
-        #json-tree {
+        #yaml-tree {
             margin-top: 20px;
         }
 
@@ -61,17 +61,18 @@
 </head>
 <body>
 
-    <h2>JSON Hierarchy Viewer</h2>
+    <h2>YAML Hierarchy Viewer</h2>
 
     <div id="upload-container">
-        <label for="json-upload">Upload JSON File</label>
-        <input type="file" id="json-upload" accept=".symbol" />
+        <label for="yaml-upload">Upload YAML File</label>
+        <input type="file" id="yaml-upload" accept=".symbol" />
     </div>
 
-    <div id="json-tree"></div>
+    <div id="yaml-tree"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
     <script>
-        document.getElementById('json-upload').addEventListener('change', function(event) {
+        document.getElementById('yaml-upload').addEventListener('change', function(event) {
             const file = event.target.files[0];
 
             if (!file) return;
@@ -79,10 +80,16 @@
             const reader = new FileReader();
 
             reader.onload = function(e) {
-                const jsonData = JSON.parse(e.target.result);
-                // Clear existing tree and generate new tree
-                document.getElementById("json-tree").innerHTML = '';
-                document.getElementById("json-tree").appendChild(generateTree(jsonData));
+                try {
+                    // Parse the YAML data
+                    const yamlData = jsyaml.load(e.target.result);
+
+                    // Clear existing tree and generate new tree
+                    document.getElementById("yaml-tree").innerHTML = '';
+                    document.getElementById("yaml-tree").appendChild(generateTree(yamlData));
+                } catch (err) {
+                    alert("Error parsing YAML file: " + err.message);
+                }
             };
 
             reader.readAsText(file);
@@ -97,19 +104,15 @@
                 const item = data[key];
                 const span = document.createElement("span");
 
-                // Check if item has a "type" property and display it
-                if (item && typeof item === 'object' && item.type) {
-                    span.textContent = `${key} (${item.type})`;
-                } else {
+                // Check if item is an object or array
+                if (item && typeof item === 'object') {
                     span.textContent = key;
-                }
 
-                if (item && typeof item === 'object' && item.type === undefined) {
-                    // If the item is an object but doesn't have a "type" (like a scope), generate a nested list
                     const expandSpan = document.createElement("span");
                     expandSpan.classList.add('expand');
                     const nestedUl = generateTree(item);
                     nestedUl.classList.add('nested');
+
                     li.appendChild(expandSpan);
                     li.appendChild(span);
                     li.appendChild(nestedUl);
@@ -128,6 +131,8 @@
                         }
                     });
                 } else {
+                    // If item is not an object, display its value
+                    span.textContent = `${key}: ${item}`;
                     li.appendChild(span);
                 }
 

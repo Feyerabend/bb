@@ -1,5 +1,5 @@
 
-## Abstract Syntax Tree (AST)
+## Symbol Tables
 
 __Build__
 
@@ -7,232 +7,122 @@ __Build__
 make clean
 make
 make samples
+make table
 ```
 
-The provided code fragments illustrate the basic structure of a simple recursive descent parser for a
-language close to PL/0. The parser builds an *Abstract Syntax Tree* (AST) while parsing the program's
-input according to the language's grammar.
-
-__1. Parser Workflow__
-
-The parser reads the tokenised input and processes it using a series of functions corresponding to
-various grammar rules. Each function tries to match a specific pattern in the language's grammar.
-If a match is found, the parser consumes the matching token and proceeds. If no match is found,
-an error is raised. (A very rudimentary error check.)
-
-__2. AST Construction__
-
-Each grammar rule corresponds to creating a node in the abstract syntax tree (AST). This tree represents
-the structure of the parsed input, reflecting the program's syntactic structure. Each node in the
-tree contains information about the language construct it represents (e.g. expressions, statements,
-terms, etc.).
-
-__3. Expected Output__
-
-The parser is expected to construct an AST, where each node represents a construct in the source
-language. The program's top-level node is a NODE_PROGRAM, and this root node's child would be a
-NODE_BLOCK, which holds the core of the program (e.g. variable declarations, statements, and
-procedure calls).
+The provided code fragments illustrate the basic structure for a simple symbol table build in a
+language close to PL/0. The symbol table relies on an *Abstract Syntax Tree* (AST) for the extraction
+of information, and thus the AST has to be built *before* extraction of the symbol table.
 
 
-### Adding Context and Completing the Code
+### Overview and Uses
 
-The provided snippets show functions that handle individual components of the grammar, such as
-parsing factors, terms, expressions, statements, conditions, and blocks. The parser builds the
-AST incrementally, starting from the root and breaking the input down into smaller components.
+A symbol table is a data structure used in programming languages, particularly in compilers and interpreters.
+It stores information about the various symbols (identifiers) in a program, such as variables, constants,
+procedures, and functions.
+
+1. Name: The identifier (such as variable name, procedure name).
+2. Attributes: Information about the identifier, such as:
+	- Type: Integer, real, procedure, etc.
+	- Scope: Where the symbol is valid (local, global).
+	- Memory location: Address or offset for storage.
+	- Other properties: Parameter count, size, modifiers, etc.
+
+Symbol tables essentially maps symbol names and their attributes.
+
+#### Common Uses
+
+1. Compilation and Interpretation: Symbol tables are essential during both compilation and interpretation,
+   as they help the compiler/interpreter understand what each symbol represents.
+2. Scope Resolution: They help resolve scopes by maintaining separate entries for global, local, and nested blocks.
+3. Type Checking: Type information stored in the symbol table allows the compiler to enforce type rules.
+4. Code Optimisation: They enable optimisations such as constant folding and register allocation.
+5. Error Detection: A symbol table helps identify undeclared variables or mismatched types during semantic analysis.
+
+The importance of symbol tables depends on the task: In compilers, they are indispensable for parsing,
+semantic analysis, and code generation. In simple interpreters or one-pass translators, a lightweight
+implementation of symbol tables might suffice, or they may not be explicitly constructed if the program
+doesn't need complex scoping or type checking.
 
 
-#### Main Parser Functions and AST Construction
+### Symbol Tables in a PL/0 Compiler
+
+PL/0 is a simple teaching-oriented language, and its compiler typically uses symbol tables for tasks like
+handling variables, constants, and procedures.
+
+1. Lexical and Syntactic Analysis:
+	- During lexical analysis, tokens representing identifiers are created.
+	- In syntactic analysis (parsing), entries are created or updated in the symbol table for each identifier encountered.
+      As it is done here: the AST takes care of the symbols, they symbols are then extracted from the resulting tree.
+
+2. Handling Scopes:
+	- PL/0 supports nested procedures, which means the symbol table must manage nested scopes. This is often
+      implemented as a stack of symbol tables or a tree structure.
+	- When entering a new block, a new table or scope level is created.
+	- When exiting a block, the corresponding scope is removed.
+
+3. Type Checking:
+	- PL/0's symbol table stores type information for variables and constants. This allows the compiler to
+      ensure that expressions are semantically correct.
+
+4. Procedure Management:
+	- Information about procedures, such as parameter counts and local variable sizes, can be stored in the symbol table.
+
+5.	Code Generation:
+	- The symbol table either provides memory locations or offsets for identifiers, or can help with such tasks,
+      allowing the code generator to produce correct machine or intermediate code.
 
 
-__program()__
+#### Example
 
-This function is the entry point for parsing the program. It initializes the parsing process and
-creates the root of the AST.
+Let’s consider a simple PL/0 program:
 
-```c
-ASTNode *program() {
-    resetTokens();              // reset token buffer (e.g. prepare lexer)
-    nextSymbol();               // move to the next symbol (token)
-    
-    ASTNode *programNode = createNode(NODE_PROGRAM, NULL);  // create the root AST node (program)
-    
-    addChild(programNode, block());  // parse the block (which includes statements, variable declarations, etc.)
-    
-    expect(PERIOD);              // expect the period at the end of the program
-    return programNode;          // return the constructed AST for the program
-}
+```pascal
+const x = 10;
+var y;
+procedure square;
+    var z;
+    begin
+        z := y * y
+    end;
+begin
+    y := x + 1;
+    call square
+end.
 ```
 
-__block()__
+The symbol table will store:
 
-A block is a key structure in the language (similar to a function or procedure scope).
-It can contain constant declarations, variable declarations, procedure declarations,
-and a list of statements.
+1. Constants.
+    - x: Type const, value 10.
 
-```c
-ASTNode *block() {
-    ASTNode *blockNode = createNode(NODE_BLOCK, NULL);
-    if (accept(CONSTSYM)) {
-        do {
-            expect(IDENT);
-            ASTNode *constNode = createNode(NODE_CONST_DECL, strdup(buf));
-            expect(EQL);
-            addChild(constNode, createNode(NODE_NUMBER, strdup(buf)));
-            expect(NUMBER);
-            addChild(blockNode, constNode);
-        } while (accept(COMMA));
-        expect(SEMICOLON);
-    }
-    if (accept(VARSYM)) {
-        do {
-            addChild(blockNode, createNode(NODE_VAR_DECL, strdup(buf)));
-            expect(IDENT);
-        } while (accept(COMMA));
-        expect(SEMICOLON);
-    }
-    while (accept(PROCSYM)) {
-        ASTNode *procNode = createNode(NODE_PROC_DECL, strdup(buf));
-        expect(IDENT);
-        expect(SEMICOLON);
-        addChild(procNode, block());
-        addChild(blockNode, procNode);
-        expect(SEMICOLON);
-    }
-    addChild(blockNode, statement());
-    return blockNode;
-}
-```
+2. Variables.
+    - y: Type var, scope global.
+	- z: Type var, scope square.
+
+3. Procedures.
+	- square: Type procedure, local scope includes z.
+
+At runtime or during code generation:
+- The constant x might directly map to a value.
+- The variable y and local variable z are assigned memory offsets or registers.
+- The procedure square includes metadata to manage calls.
 
 
-__statement()__
+#### Implementation Techniques
 
-A statement is an action that the program performs, such as assignments, calls, conditionals, and loops.
-
-```c
-ASTNode *statement() {
-    if (recognize(IDENT)) {
-        ASTNode *assignNode = createNode(NODE_ASSIGNMENT, strdup(buf));
-        nextSymbol();
-        expect(BECOMES);
-        addChild(assignNode, expression());
-        return assignNode;
-    } else if (accept(CALLSYM)) {
-        ASTNode *callNode = createNode(NODE_CALL, strdup(buf));
-        expect(IDENT);
-        return callNode;
-    } else if (accept(BEGINSYM)) {
-        ASTNode *beginNode = createNode(NODE_BEGIN, NULL);
-        do {
-            addChild(beginNode, statement());           // *HACK* C-like termination
-            if (!accept(SEMICOLON)) {                   // 'begin s1; s2; end'
-                break; // exit if no SEMICOLON found    // rather than Pascal separation
-            }                                           // 'begin s1 ; s2 end'
-        } while (symbol != ENDSYM && symbol != ENDOFFILE);
-        if (!accept(ENDSYM)) {
-            error("statement: expected END");
-        }
-        return beginNode;
-    } else if (accept(IFSYM)) {
-        ASTNode *ifNode = createNode(NODE_IF, NULL);
-        addChild(ifNode, condition());
-        expect(THENSYM);
-        addChild(ifNode, statement());
-        return ifNode;
-    } else if (accept(WHILESYM)) {
-        ASTNode *whileNode = createNode(NODE_WHILE, NULL);
-        addChild(whileNode, condition());
-        expect(DOSYM);
-        addChild(whileNode, statement());
-        return whileNode;
-    } else {
-        error("statement: syntax error");
-        nextSymbol();
-        return NULL;
-    }
-}
-```
-
-
-__expression() and term()__
-
-These functions handle arithmetic expressions and their components (like terms and factors).
-
-```c
-ASTNode *expression() {
-    ASTNode *exprNode = createNode(NODE_EXPRESSION, NULL);
-    
-    if (sym == PLUS || sym == MINUS) {
-        nextSymbol();  // handle unary plus or minus
-    }
-    
-    exprNode->children.push_back(term());  // start with a term
-    
-    // continue with additional terms for the expression (addition or subtraction)
-    while (sym == PLUS || sym == MINUS) {
-        nextSymbol();
-        exprNode->children.push_back(term());
-    }
-    
-    return exprNode;
-}
-
-ASTNode *term() {
-    ASTNode *termNode = createNode(NODE_TERM, NULL);
-    termNode->children.push_back(factor());  // a term starts with a factor
-
-    // continue with multiplication or division if necessary
-    while (sym == TIMES || sym == SLASH) {
-        nextSymbol();
-        termNode->children.push_back(factor());
-    }
-
-    return termNode;
-}
-```
-
-
-__factor()__
-
-This function parses the basic building blocks of an expression, like numbers, variables, or sub-expressions in parentheses.
-
-```c
-ASTNode *factor() {
-    if (recognize(IDENT)) {
-        ASTNode *identNode = createNode(NODE_IDENTIFIER, strdup(buf));
-        nextSymbol();
-        return identNode;
-    } else if (recognize(NUMBER)) {
-        ASTNode *numberNode = createNode(NODE_NUMBER, strdup(buf));
-        nextSymbol();
-        return numberNode;
-    } else if (accept(LPAREN)) {
-        ASTNode *expr = expression();
-        expect(RPAREN);
-        return expr;
-    } else {
-        error("factor: syntax error");
-        nextSymbol();
-        return NULL;
-    }
-}
-```
-
-### AST Nodes
-- NODE_PROGRAM: Represents the entire program.
-- NODE_BLOCK: Represents a certain part of the program, which can include declarations and statements. Limits the scope.
-- NODE_STATEMENT: Represents a single statement, such as an assignment or a function call.
-- NODE_EXPRESSION: Represents an expression, including terms and factors.
-- NODE_IDENTIFIER: Represents a variable or function identifier.
-- NODE_NUMBER: Represents a constant number.
-- NODE_CALL: Represents a procedure call.
+1. Data Structures:
+	- Hash tables: For fast symbol lookup.
+	- Linked lists or trees: To handle nested scopes efficiently.
+2.	Nested Scopes:
+	- Use a stack of symbol tables, where the top of the stack represents the current scope.
+3.	Lifetime Management:
+	- When a scope ends, its corresponding table or entries are removed.
 
 
 ### Conclusion
 
-This parser, designed with recursive descent, processes the tokens generated from a lexer and
-builds an Abstract Syntax Tree (AST) representing the structure of the program. Each function
-in the parser corresponds to a specific rule in the grammar, and the tree nodes represent language
-constructs like variables, expressions, statements, and blocks. The parser constructs this tree
-step-by-step by recursively calling the appropriate parsing functions and building the corresponding
-AST nodes.
+Symbol tables are used in compiling and interpreting PL/0 and other programming languages. They bridge
+the gap between the code written by developers and the low-level operations performed by the machine.
+While their implementation can vary in complexity, their role in ensuring correct, efficient, but also
+optimised program execution is fundamental.
