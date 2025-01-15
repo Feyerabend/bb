@@ -13,6 +13,12 @@ The provided code fragments illustrate the basic structure of a simple recursive
 language close to PL/0. The parser builds an *Abstract Syntax Tree* (AST) while parsing the program's
 input according to the language's grammar.
 
+__View__
+
+In the directory of 'tools' you'll find a HTML-file: ast_json.html. Open the file locally, and search
+for the AST representation in the 'ast' folder.
+
+
 __1. Parser Workflow__
 
 The parser reads the tokenised input and processes it using a series of functions corresponding to
