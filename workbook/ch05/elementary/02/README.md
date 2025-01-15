@@ -83,10 +83,13 @@ The aim of this project is to build a flexible and robust tokeniser for a simple
 
 __Roadmap__
 
-1. Phase 1: Implement the basic tokeniser with annotation support. DONE.
-2. Phase 2: Add error detection and basic correction suggestions.
-3. Phase 3: Extend to handle more complex language features and integrate with a parser.
-4. Phase 4: Optimise for performance and release a production-ready version.
+Phase 1: Implement the basic tokeniser with annotation support. DONE.
+
+Phase 2: Add error detection and basic correction suggestions.
+
+Phase 3: Extend to handle more complex language features and integrate with a parser.
+
+Phase 4: Optimise for performance and release a production-ready version.
 
 __Implementation Languages__
 
