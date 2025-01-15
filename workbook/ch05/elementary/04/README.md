@@ -57,8 +57,9 @@ handling variables, constants, and procedures.
 
 1. Lexical and Syntactic Analysis:
 	- During lexical analysis, tokens representing identifiers are created.
-	- In syntactic analysis (parsing), entries are created or updated in the symbol table for each identifier encountered.
-      As it is done here: the AST takes care of the symbols, they symbols are then extracted from the resulting tree.
+	- In syntactic analysis (parsing), entries in the symbol table are created or updated for each identifier
+	  encountered. In this case, the Abstract Syntax Tree (AST) manages the symbols, which are then extracted
+	  from the resulting tree.
 
 2. Handling Scopes:
 	- PL/0 supports nested procedures, which means the symbol table must manage nested scopes. This is often
