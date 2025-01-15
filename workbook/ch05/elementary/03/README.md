@@ -9,7 +9,7 @@ make
 make samples
 ```
 
-The provided code fragments illustrate the basic structure of a simple recursive descent parser for a
+The provided code fragments illustrate the basic structure of a simple *recursive descent parser* for a
 language close to PL/0. The parser builds an *Abstract Syntax Tree* (AST) while parsing the program's
 input according to the language's grammar.
 
@@ -19,6 +19,112 @@ The parser reads the tokenised input and processes it using a series of function
 various grammar rules. Each function tries to match a specific pattern in the language's grammar.
 If a match is found, the parser consumes the matching token and proceeds. If no match is found,
 an error is raised. (A very rudimentary error check.)
+
+Here is the skeleton of the parser in incomplete or pseduo-code:
+
+```c
+void factor() {
+    if (accept(ident)) {
+        ;
+    } else if (accept(number)) {
+        ;
+    } else if (accept(lparen)) {
+        expression();
+        expect(rparen);
+    } else {
+        error("factor: syntax error");
+        nextsym();
+    }
+}
+
+void term() {
+    factor();
+    while (sym == times || sym == slash) {
+        nextsym();
+        factor();
+    }
+}
+
+void expression() {
+    if (sym == plus || sym == minus)
+        nextsym();
+    term();
+    while (sym == plus || sym == minus) {
+        nextsym();
+        term();
+    }
+}
+
+void condition() {
+    if (accept(oddsym)) {
+        expression();
+    } else {
+        expression();
+        if (sym == eql || sym == neq || sym == lss || sym == leq || sym == gtr || sym == geq) {
+            nextsym();
+            expression();
+        } else {
+            error("condition: invalid operator");
+            nextsym();
+        }
+    }
+}
+
+void statement() {
+    if (accept(ident)) {
+        expect(becomes);
+        expression();
+    } else if (accept(callsym)) {
+        expect(ident);
+    } else if (accept(beginsym)) {
+        do {
+            statement();
+        } while (accept(semicolon));
+        expect(endsym);
+    } else if (accept(ifsym)) {
+        condition();
+        expect(thensym);
+        statement();
+    } else if (accept(whilesym)) {
+        condition();
+        expect(dosym);
+        statement();
+    } else {
+        error("statement: syntax error");
+        nextsym();
+    }
+}
+
+void block() {
+    if (accept(constsym)) {
+        do {
+            expect(ident);
+            expect(eql);
+            expect(number);
+        } while (accept(comma));
+        expect(semicolon);
+    }
+    if (accept(varsym)) {
+        do {
+            expect(ident);
+        } while (accept(comma));
+        expect(semicolon);
+    }
+    while (accept(procsym)) {
+        expect(ident);
+        expect(semicolon);
+        block();
+        expect(semicolon);
+    }
+    statement();
+}
+
+void program() {
+    nextsym();
+    block();
+    expect(period);
+}
+```
 
 __2. AST Construction__
 
