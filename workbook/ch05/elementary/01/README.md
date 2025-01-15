@@ -159,3 +159,19 @@ This tokeniser is a simple implementation for a small programming language. It e
 classifies input characters into tokens while handling common constructs like identifiers,
 keywords, numbers, and operators. It produces a tokenized representation of the input code,
 which is an essential step before parsing and compiling.
+
+
+### Exercise
+
+Thus far, we have primarily focused on scenarios where parsing is successful. However, as you
+are likely aware, parsing frequently encounters failures, leading to the generation of error
+messages. During tokenisation, there is a possibility that reserved or expected keywords do
+not align with the input. Consider implementing a Python script or a C program to handle these
+errors, which may be represented as replacement tokens.
+
+Reflect on the following:
+- Can the program recover from such errors and continue parsing effectively?
+- Or are the errors (likely) too severe, requiring the parsing process to terminate?
+
+Explore mechanisms for error recovery and determine whether the parser can proceed or if the
+input requires correction before resuming.
