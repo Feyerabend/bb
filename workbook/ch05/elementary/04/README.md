@@ -14,6 +14,11 @@ The provided code fragments illustrate the basic structure for a simple symbol t
 language close to PL/0. The symbol table relies on an *Abstract Syntax Tree* (AST) for the extraction
 of information, and thus the AST has to be built *before* extraction of the symbol table.
 
+__View__
+
+In the directory of 'tools' you'll find a HTML-file: table_yaml.html. Open the file locally, and search
+for the tokenised representation in the 'table' folder.
+
 
 ### Overview and Uses
 
