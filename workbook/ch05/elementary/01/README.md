@@ -10,9 +10,8 @@ make samples
 ```
 
 This system tokenises input files from the samples directory and reads the tokenised output to display it.
-Tokens are annotated with approximate locations in the source code. Although the grammar isn't applied yet,
-the system makes a best-effort guess to identify reserved words, which are prohibited from being used as
-anything else.
+Although the grammar isn't applied yet, the system makes a best-effort guess to identify reserved words,
+which are prohibited from being used as anything else.
 
 This code implements a simple tokeniser (lexer) for a programming language similar to PL/0 (some adjustments
 have been made). The tokeniser reads a source file containing code, identifies individual tokens based on
