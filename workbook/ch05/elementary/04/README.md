@@ -17,7 +17,7 @@ of information, and thus the AST has to be built *before* extraction of the symb
 __View__
 
 In the directory of 'tools' you'll find a HTML-file: table_yaml.html. Open the file locally, and search
-for the tokenised representation in the 'table' folder.
+for the symbol table representation in the 'table' folder.
 
 
 ### Overview and Uses
