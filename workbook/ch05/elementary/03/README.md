@@ -124,10 +124,11 @@ ASTNode *statement() {
     } else if (accept(BEGINSYM)) {
         ASTNode *beginNode = createNode(NODE_BEGIN, NULL);
         do {
-            addChild(beginNode, statement());           // *HACK* C-like termination
-            if (!accept(SEMICOLON)) {                   // 'begin s1; s2; end'
-                break; // exit if no SEMICOLON found    // rather than Pascal separation
-            }                                           // 'begin s1 ; s2 end'
+            addChild(beginNode, statement());   // *HACK* C-like termination 'begin s1; s2; end'
+            if (!accept(SEMICOLON)) {           // rather that Pascal separation 'begin s1 ; s2 end'
+                // warning("statement: missing SEMICOLON");
+                break;
+            }
         } while (symbol != ENDSYM && symbol != ENDOFFILE);
         if (!accept(ENDSYM)) {
             error("statement: expected END");
