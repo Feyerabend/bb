@@ -3,6 +3,7 @@ CFLAGS = -Wall -std=c99 -I./include
 
 SRCDIR = src
 OBJDIR = obj
+SCRIPTS = ./scripts
 TESTDIR = ./tests
 SAMPLESDIR = ./samples
 BINDIR = .
@@ -41,6 +42,16 @@ samples: $(TARGET)
 		./main $$file $$tokens_output $$annotated_tokens_output $$ast_output; \
 	done
 
+table: $(SCRIPTS)/symbol.py
+	@mkdir -p $(SYMBOLDIR)  # 'table' directory exists
+	@for file in $(ASTDIR)/*.json; do \
+		base=$$(basename $$file .json); \
+		symbol_output="$(SYMBOLDIR)/$$base.symbol"; \
+		echo "Generating symbol table for $$file -> $$symbol_output"; \
+		python3 $(SCRIPTS)/symbol.py -i $$file -o $$symbol_output; \
+	done
+
 # make -- compiles
 # make clean -- clean up
 # make samples -- make outputs: here from samples to tokens
+# make table -- generate symbol tables from samples, assume ast
