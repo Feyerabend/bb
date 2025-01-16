@@ -34,6 +34,16 @@ functional tests ensure that the application delivers the expected results when 
 scenarios. These tests may involve interacting with a user interface, testing entire workflows,
 or running a series of commands that reflect how the application will be used in practice.
 
+### Acceptance
+
+Acceptance tests verify whether a system meets the intended requirements and works as expected
+from an end-user perspective. They focus on simulating real-world usage scenarios, ensuring that
+the system behaves correctly across various interactions or workflows, such as adding, modifying,
+or deleting data. These tests confirm that the features are functional and that the system satisfies
+the business needs without delving into the underlying implementation details. Acceptance tests
+typically cover higher-level functionalities and integration points, often representing the final
+step before releasing a product. (Acceptance tests work with scenarios, in contrast to functional
+tests that works from workflows.)
 
 ### Code
 
@@ -101,16 +111,22 @@ function correctly, such as how a database integrates with the application logic
 services communicate with each other. Integration tests help uncover issues that arise when components
 are combined, ensuring they cooperate as intended.
 
-3. Finally, we conduct functional tests to assess the system’s overall behavior in real-world
-scenarios. These tests simulate user interactions and workflows, validating that the application
+3. Next, we conduct functional tests to assess the system's overall behavior in real-world
+scenarios. These tests simulate user interactions and *workflows*, validating that the application
 delivers the expected results when used as an end product. Functional tests focus on end-to-end
 functionality, confirming that the system behaves as users would expect, covering everything from
-processing input to generating output. This final stage ensures that the application is not only
+processing input to generating output. This stage ensures that the application is not only
 technically sound but also practical and reliable for its intended use.
+
+4. Finally, the acceptance tests validate key user *scenarios* for the database system by simulating
+realistic interactions: adding a record, incrementing its value, and then deleting it; verifying
+that non-numeric values cannot be incremented; and ensuring bulk deletion works correctly for
+keys with a specific prefix. These tests focus on confirming that the system behaves as expected
+from a user's perspective, emphasising high-level functionality rather than implementation details.
 
 ### Exercises or Projects
 
-1. *How can the ‘bulk_delete’ feature be incorporated into the existing database structure?*
+1. *How can the 'bulk_delete' feature be incorporated into the existing database structure?*
     - Analyze the requirements for implementing the bulk_delete method and discuss the necessary modifications to ensure it integrates seamlessly with the current functionality.
 
 2. *What steps are required to organise tests into a hierarchy of unit, integration, and functional tests?*
