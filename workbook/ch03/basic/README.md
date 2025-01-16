@@ -33,7 +33,7 @@ components and their interactions, functional tests ensure that the application 
 outcomes when used in practical, real-world situations. These tests may involve testing entire
 *workflows*, interacting with a user interface, or running commands that reflect typical user actions.
 
-Acceptance
+### Acceptance
 
 Acceptance tests are focused on verifying whether a system meets the specified requirements and
 fulfills the business needs from an end-user perspective. These tests simulate real-world scenarios
