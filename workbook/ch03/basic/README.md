@@ -24,26 +24,25 @@ across multiple components.
 
 ### Functional
 
-Functional tests are designed to ensure that the application behaves correctly from an end-user
-perspective, simulating real-world usage scenarios. These tests typically focus on the system as
-a whole, verifying that features and functions work as expected when executed in the correct sequence.
-Functional tests are often more user-focused, aiming to confirm that the software performs its
-intended tasks, such as processing input, generating output, and managing user interactions.
-While unit and integration tests focus on the correctness of components and their interactions,
-functional tests ensure that the application delivers the expected results when used in real-world
-scenarios. These tests may involve interacting with a user interface, testing entire workflows,
-or running a series of commands that reflect how the application will be used in practice.
+Functional tests are designed to verify that the software behaves as expected from an end-user
+perspective. They simulate real-world usage scenarios, ensuring that the system performs its
+intended tasks—such as processing input, generating output, and managing user interactions--when
+executed in the correct sequence. These tests focus on the system as a whole, confirming that the
+features and functions operate as expected. Unlike unit or integration tests, which focus on individual
+components and their interactions, functional tests ensure that the application delivers the desired
+outcomes when used in practical, real-world situations. These tests may involve testing entire
+*workflows*, interacting with a user interface, or running commands that reflect typical user actions.
 
-### Acceptance
+Acceptance
 
-Acceptance tests verify whether a system meets the intended requirements and works as expected
-from an end-user perspective. They focus on simulating real-world usage scenarios, ensuring that
-the system behaves correctly across various interactions or workflows, such as adding, modifying,
-or deleting data. These tests confirm that the features are functional and that the system satisfies
-the business needs without delving into the underlying implementation details. Acceptance tests
-typically cover higher-level functionalities and integration points, often representing the final
-step before releasing a product. (Acceptance tests work with scenarios, in contrast to functional
-tests that works from workflows.)
+Acceptance tests are focused on verifying whether a system meets the specified requirements and
+fulfills the business needs from an end-user perspective. These tests simulate real-world scenarios
+to ensure the system behaves correctly across different interactions and workflows, such as adding,
+modifying, or deleting data. They confirm that the system’s features are functioning correctly and
+that the overall behavior aligns with the intended objectives. Unlike functional tests, which focus
+on testing workflows, acceptance tests are based on *scenarios*. They generally represent the final
+validation step before product release, ensuring that the system meets the expected standards and
+requirements without delving into the technical implementation.
 
 ### Code
 
