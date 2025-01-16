@@ -112,13 +112,13 @@ services communicate with each other. Integration tests help uncover issues that
 are combined, ensuring they cooperate as intended.
 
 3. Next, we conduct functional tests to assess the system's overall behavior in real-world
-scenarios. These tests simulate user interactions and workflows, validating that the application
+scenarios. These tests simulate user interactions and *workflows*, validating that the application
 delivers the expected results when used as an end product. Functional tests focus on end-to-end
 functionality, confirming that the system behaves as users would expect, covering everything from
-processing input to generating output. This final stage ensures that the application is not only
+processing input to generating output. This stage ensures that the application is not only
 technically sound but also practical and reliable for its intended use.
 
-4. Finally, the acceptance tests validate key user scenarios for the database system by simulating
+4. Finally, the acceptance tests validate key user *scenarios* for the database system by simulating
 realistic interactions: adding a record, incrementing its value, and then deleting it; verifying
 that non-numeric values cannot be incremented; and ensuring bulk deletion works correctly for
 keys with a specific prefix. These tests focus on confirming that the system behaves as expected
