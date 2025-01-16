@@ -19,6 +19,8 @@ In the directory of 'tools' you'll find a HTML-file: ast_json.html. Open the fil
 for the AST representation in the 'ast' folder.
 
 
+### Parsing
+
 __1. Parser Workflow__
 
 The parser reads the tokenised input and processes it using a series of functions corresponding to
