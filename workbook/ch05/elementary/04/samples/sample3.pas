@@ -1,19 +1,17 @@
-var x;
-
-procedure func0;
-var x0;
-begin
-  x0 := 456;
-end;
-
-procedure func1;
-var x1;
-begin
-  x1 := 789;
-  call func0;
-end;
+const max = 10;
+var a, b, fib, counter;
 
 begin
-  x := 123;
-  call func0;
+    a := 0;
+    b := 1;
+    counter := 1;
+    fib := a;
+
+    while (counter <= max) do
+    begin
+        fib := a + b;
+        a := b;
+        b := fib;
+        counter := counter + 1;
+    end;
 end.

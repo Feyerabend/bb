@@ -18,7 +18,7 @@ char buf[MAX_SYM_LEN];
 void nextSymbol() {
     Token token = nextToken();
     // skip
-    while (token.type == NOP || token.type == ENDOFLINE || token.type == ERROR) {
+    while (token.type == NOP || token.type == ENDOFLINE) { //token.type == ERROR
         token = nextToken();
     }
     // transfer to local use
@@ -189,8 +189,8 @@ ASTNode *block() {
     ASTNode *blockNode = createNode(NODE_BLOCK, NULL);
     if (accept(CONSTSYM)) {
         do {
-            expect(IDENT);
             ASTNode *constNode = createNode(NODE_CONST_DECL, strdup(buf));
+            expect(IDENT);
             expect(EQL);
             addChild(constNode, createNode(NODE_NUMBER, strdup(buf)));
             expect(NUMBER);
