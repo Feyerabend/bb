@@ -16,7 +16,7 @@ code. Another part of sematic analysis are error checks. Here they are simplifie
 
 __Execute__
 
-In the directory of 'tools' you'll find a Python file: ast_interpreter. Run the file to see an execution
+In the directory of 'tools' you'll find a Python file: `ast_interpreter.py`. Run the file to see an execution
 of the programs.
 
 
