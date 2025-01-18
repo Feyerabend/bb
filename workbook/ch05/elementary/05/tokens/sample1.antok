@@ -1,0 +1,224 @@
+[
+  {
+    "type": 24,
+    "value": "",
+    "line": 1,
+    "column": 1
+  },
+  {
+    "type": 1,
+    "value": "max",
+    "line": 1,
+    "column": 2
+  },
+  {
+    "type": 9,
+    "value": "",
+    "line": 1,
+    "column": 6
+  },
+  {
+    "type": 2,
+    "value": "10",
+    "line": 1,
+    "column": 7
+  },
+  {
+    "type": 17,
+    "value": "",
+    "line": 1,
+    "column": 10
+  },
+  {
+    "type": 30,
+    "value": "",
+    "line": 1,
+    "column": 11
+  },
+  {
+    "type": 26,
+    "value": "",
+    "line": 2,
+    "column": 1
+  },
+  {
+    "type": 1,
+    "value": "counter",
+    "line": 2,
+    "column": 2
+  },
+  {
+    "type": 17,
+    "value": "",
+    "line": 2,
+    "column": 10
+  },
+  {
+    "type": 30,
+    "value": "",
+    "line": 2,
+    "column": 11
+  },
+  {
+    "type": 30,
+    "value": "",
+    "line": 3,
+    "column": 1
+  },
+  {
+    "type": 16,
+    "value": "",
+    "line": 4,
+    "column": 1
+  },
+  {
+    "type": 30,
+    "value": "",
+    "line": 4,
+    "column": 2
+  },
+  {
+    "type": 20,
+    "value": "",
+    "line": 5,
+    "column": 1
+  },
+  {
+    "type": 3,
+    "value": "",
+    "line": 5,
+    "column": 2
+  },
+  {
+    "type": 1,
+    "value": "counter",
+    "line": 5,
+    "column": 3
+  },
+  {
+    "type": 11,
+    "value": "",
+    "line": 5,
+    "column": 11
+  },
+  {
+    "type": 1,
+    "value": "max",
+    "line": 5,
+    "column": 12
+  },
+  {
+    "type": 4,
+    "value": "",
+    "line": 5,
+    "column": 16
+  },
+  {
+    "type": 23,
+    "value": "",
+    "line": 5,
+    "column": 17
+  },
+  {
+    "type": 30,
+    "value": "",
+    "line": 5,
+    "column": 18
+  },
+  {
+    "type": 16,
+    "value": "",
+    "line": 6,
+    "column": 1
+  },
+  {
+    "type": 30,
+    "value": "",
+    "line": 6,
+    "column": 2
+  },
+  {
+    "type": 1,
+    "value": "counter",
+    "line": 7,
+    "column": 1
+  },
+  {
+    "type": 21,
+    "value": "",
+    "line": 7,
+    "column": 9
+  },
+  {
+    "type": 1,
+    "value": "counter",
+    "line": 7,
+    "column": 10
+  },
+  {
+    "type": 7,
+    "value": "",
+    "line": 7,
+    "column": 18
+  },
+  {
+    "type": 2,
+    "value": "1",
+    "line": 7,
+    "column": 19
+  },
+  {
+    "type": 17,
+    "value": "",
+    "line": 7,
+    "column": 21
+  },
+  {
+    "type": 30,
+    "value": "",
+    "line": 7,
+    "column": 22
+  },
+  {
+    "type": 18,
+    "value": "",
+    "line": 8,
+    "column": 1
+  },
+  {
+    "type": 17,
+    "value": "",
+    "line": 8,
+    "column": 2
+  },
+  {
+    "type": 30,
+    "value": "",
+    "line": 8,
+    "column": 3
+  },
+  {
+    "type": 18,
+    "value": "",
+    "line": 9,
+    "column": 1
+  },
+  {
+    "type": 28,
+    "value": "",
+    "line": 9,
+    "column": 2
+  },
+  {
+    "type": 30,
+    "value": "",
+    "line": 9,
+    "column": 3
+  },
+  {
+    "type": 0,
+    "value": "",
+    "line": 10,
+    "column": 1
+  }
+]

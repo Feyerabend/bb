@@ -15,7 +15,7 @@
 Symbol symbol;
 char buf[MAX_SYM_LEN];
 
-int final = TRUE;
+int final = FALSE;
 
 void nextSymbol() {
     Token token = nextToken();
@@ -187,7 +187,7 @@ ASTNode *statement() {
 }
 
 ASTNode *block() {
-    ASTNode *blockNode = createNode(NODE_BLOCK, NULL);
+    ASTNode *blockNode = createNode(NODE_BLOCK, final ? "main" : NULL);
     if (accept(CONSTSYM)) {
         do {
             ASTNode *constNode = createNode(NODE_CONST_DECL, strdup(buf));
@@ -210,11 +210,16 @@ ASTNode *block() {
         ASTNode *procNode = createNode(NODE_PROC_DECL, strdup(buf));
         expect(IDENT);
         expect(SEMICOLON);
+
+        // reset `final` to FALSE for nested blocks
+        int wasFinal = final;
+        final = FALSE;
         addChild(procNode, block());
+        final = wasFinal;
+
         addChild(blockNode, procNode);
         expect(SEMICOLON);
     }
-    final = TRUE;
     addChild(blockNode, statement());
     final = FALSE;
     return blockNode;
@@ -224,6 +229,7 @@ ASTNode *program() {
     resetTokens();
     nextSymbol();
     ASTNode *programNode = createNode(NODE_PROGRAM, NULL);
+    final = TRUE;
     addChild(programNode, block());
     expect(PERIOD);
     return programNode;

@@ -7,15 +7,11 @@ class Interpreter:
         self.constants = {}
         self.procedures = {}
         self.environment_stack = [{}]
+        self.tracked_variables = []
+        self.variables = {}
 
     def print_env(self):
-        print("Environment Stack:")
-        for i, env in enumerate(self.environment_stack):
-            print(f"  Env {i}: {env}")
-        if self.constants:
-            print("Constants:")
-            for name, value in self.constants.items():
-                print(f"  {name}: {value}")
+        print(self.variables)
         print()
 
     def execute(self):
@@ -32,7 +28,6 @@ class Interpreter:
             raise NotImplementedError(f"Unknown node type: {node['type']}")
         return method(node)
 
-
     def _handle_program(self, node):
         main_block = None
 
@@ -43,42 +38,31 @@ class Interpreter:
             elif child["type"] == "PROC_DECL":
                 self._execute_node(child)  # procedure
             elif child["type"] == "BLOCK":
-                # if this block is the main block
                 if child.get("value") == "main":
                     if main_block is not None:
                         raise ValueError("Multiple 'main' blocks detected")
                     main_block = child
                 else:
-                    # process nested children for procedures
                     for nested_child in child.get("children", []):
                         process_node(nested_child)
 
-        # top-level children
         for child in node.get("children", []):
             process_node(child)
 
         if main_block is None:
             raise ValueError("No 'main' block found in the program")
 
-        # execute main block after setup
         self._execute_node(main_block)
- 
+
     def _handle_block(self, node):
         children = node.get("children", [])
-        
-        # UGLY: if the current block is immediately followed by another BLOCK
-        # skip?
-        if len(children) == 1 and children[0].get("type") == "BLOCK":
-            self._handle_block(children[0])
-            return
 
-        self.environment_stack.append({})  # new scope for block
+        self.environment_stack.append({})
         try:
             for child in children:
                 self._execute_node(child)
         finally:
             self.environment_stack.pop()
-
 
     def _handle_const_decl(self, node):
         for child in node.get("children", []):
@@ -101,6 +85,7 @@ class Interpreter:
         var_name = node["value"]
         value = self._evaluate_expression(node["children"][0])
         self._set_variable(var_name, value)
+        self.variables[var_name] = value
 
     def _handle_expression(self, node):
         return self._evaluate_expression(node["children"][0])
@@ -151,41 +136,35 @@ class Interpreter:
         if condition:
             self._execute_node(node["children"][1])
 
-
     def _handle_call(self, node):
         proc_name = node["value"]
-        
-        # if the procedure exists
+
         if proc_name not in self.procedures:
             raise ValueError(f"Procedure '{proc_name}' not found")
         
         proc_node = self.procedures[proc_name]
-        
-        # validate that procedure node has a 'children' field with a block ..
+
         if not proc_node.get("children") or proc_node["children"][0]["type"] != "BLOCK":
             raise ValueError(f"Procedure '{proc_name}' has an invalid structure. Expected a BLOCK as the first child.")
         
-        # new environment for the procedure (scope)
         current_environment = self._current_environment()
         new_environment = current_environment.copy()
         self.environment_stack.append(new_environment)
-        
+
         try:
-            # Execute the block inside the procedure
             self._execute_node(proc_node["children"][0])
         except:
             try:
                 self._execute_node(proc_node["children"]) # else ..
             except:
-                print(f"No match for execution? {proc_node["children"][0]["value"]}")
-                #pass # holy cr ..
+                pass # holy cr ..
 
         finally:
-            # propagate changes in the procedure's environment back to caller
             for var_name, value in new_environment.items():
                 if var_name in current_environment:
                     current_environment[var_name] = value
             self.environment_stack.pop()
+
 
     def _handle_number(self, node):
         return int(node["value"])
