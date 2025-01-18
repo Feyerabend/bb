@@ -1,14 +1,14 @@
 
 ## Sample no. 2
 
-### Variables
+Variables:
 
 Initially, all variables are declared with `var` and set to `0`.
 
 
-__1. `call multiply`__
+__1. call multiply__
 
-Procedure `multiply` calculates \( z = x \times y \) using a bitwise algorithm.
+Procedure `multiply` calculates \( z = x $\times$ y \) using a bitwise algorithm.
 
 Initial values:
 - \( x = 3 \), \( y = 6 \)
@@ -20,20 +20,20 @@ Iterations:
 3. \( b = 1 \) (odd): \( z = z + a = 18, a = 24, b = 0 \)
 
 Final:
-- \( z = 18 \) (i.e., \( 3 \times 6 \))
+- \( z = 18 \) (i.e. \( 3 $\times$ 6 \))
 
 
-__2. `call divide`__
+__2. call divide__
 
 Procedure `divide` calculates the quotient (\( q \)) and remainder (\( r \))
-of \( x \div y \) using an iterative approach.
+of \( x $\div$ y \) using an iterative approach.
 
 Initial values:
 - \( x = 3 \), \( y = 6 \)
 - \( r = 3 \), \( q = 0 \), \( w = 6 \)
 
 Iterations:
-1. \( w \leq r \): \( w = 12 \) (exit first loop).
+1. \( w $\leq$ r \): \( w = 12 \) (exit first loop).
 2. \( w = 12 > y \): \( q = 0, w = 6 \).
 3. \( w = 6 > r \): \( q = 0, w = 3 \) (no change to \( r \)).
 
@@ -41,7 +41,7 @@ Final:
 - \( q = 0 \), \( r = 3 \)
 
 
-__3. `call gcd`__
+__3. call gcd__
 
 Procedure `gcd` calculates the greatest common divisor (\( z \)) of
 \( x \) and \( y \) using the Euclidean algorithm.
@@ -51,7 +51,7 @@ Initial values:
 - \( f = 3 \), \( g = 6 \)
 
 Iterations:
-1. \( f \neq g \), \( f = 3 < g = 6 \): \( g = g - f = 3 \).
+1. \( f $\neq$ g \), \( f = 3 < g = 6 \): \( g = g - f = 3 \).
 2. \( f = 3, g = 3 \) (exit loop).
 
 Final:
@@ -59,7 +59,7 @@ Final:
 
 
 
-__4. `call fact`__
+__4. call fact__
 
 Procedure `fact` calculates \( f = n! \) recursively.
 
