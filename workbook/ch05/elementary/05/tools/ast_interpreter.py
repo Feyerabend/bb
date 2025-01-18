@@ -7,7 +7,6 @@ class Interpreter:
         self.constants = {}
         self.procedures = {}
         self.environment_stack = [{}]
-        self.tracked_variables = []
         self.variables = {}
 
     def print_env(self):
@@ -15,7 +14,16 @@ class Interpreter:
         print()
 
     def execute(self):
-        self._execute_node(self.ast)
+        try:
+            self._execute_node(self.ast)
+        except ValueError as e:
+            print(f"Error: {e}")
+        except KeyError as e:
+            print(f"Error: Undefined reference {e}")
+        except ZeroDivisionError:
+            print("Error: Division by zero encountered.")
+        except Exception as e:
+            print(f"Runtime Error: {e}")
         self.print_env()
 
     def _current_environment(self):
@@ -25,7 +33,7 @@ class Interpreter:
         method_name = f"_handle_{node['type'].lower()}"
         method = getattr(self, method_name, None)
         if method is None:
-            raise NotImplementedError(f"Unknown node type: {node['type']}")
+            raise ValueError(f"Syntax Error: Unknown node type '{node['type']}'")
         return method(node)
 
     def _handle_program(self, node):
@@ -40,7 +48,7 @@ class Interpreter:
             elif child["type"] == "BLOCK":
                 if child.get("value") == "main":
                     if main_block is not None:
-                        raise ValueError("Multiple 'main' blocks detected")
+                        raise ValueError("Semantic Error: Multiple 'main' blocks detected")
                     main_block = child
                 else:
                     for nested_child in child.get("children", []):
@@ -50,7 +58,7 @@ class Interpreter:
             process_node(child)
 
         if main_block is None:
-            raise ValueError("No 'main' block found in the program")
+            raise ValueError("Semantic Error: No 'main' block found in the program")
 
         self._execute_node(main_block)
 
@@ -67,15 +75,23 @@ class Interpreter:
     def _handle_const_decl(self, node):
         for child in node.get("children", []):
             const_name = node["value"]
+            if const_name in self.constants:
+                raise ValueError(f"Semantic Error: Constant '{const_name}' already declared")
             const_value = self._execute_node(child)
             self.constants[const_name] = const_value
 
     def _handle_var_decl(self, node):
+        var_name = node["value"]
         env = self._current_environment()
-        env[node["value"]] = 0
+        if var_name in env:
+            raise ValueError(f"Semantic Error: Variable '{var_name}' already declared")
+        env[var_name] = 0
 
     def _handle_proc_decl(self, node):
-        self.procedures[node["value"]] = node
+        proc_name = node["value"]
+        if proc_name in self.procedures:
+            raise ValueError(f"Semantic Error: Procedure '{proc_name}' already declared")
+        self.procedures[proc_name] = node
 
     def _handle_begin(self, node):
         for child in node.get("children", []):
@@ -91,8 +107,12 @@ class Interpreter:
         return self._evaluate_expression(node["children"][0])
 
     def _handle_operator(self, node):
-        left = self._evaluate_expression(node["children"][0])
-        right = self._evaluate_expression(node["children"][1])
+        try:
+            left = self._evaluate_expression(node["children"][0])
+            right = self._evaluate_expression(node["children"][1])
+        except ValueError as e:
+            print(f"Error: {e}")
+            return 0
 
         if node["value"] == "+":
             return left + right
@@ -101,9 +121,12 @@ class Interpreter:
         elif node["value"] == "*":
             return left * right
         elif node["value"] == "/":
+            if right == 0:
+                print("Error: Division by zero encountered.")
+                return 0
             return left // right
         else:
-            raise ValueError(f"Unsupported operator: {node['value']}")
+            raise ValueError(f"Semantic Error: Unsupported operator: {node['value']}")
 
     def _handle_condition(self, node):
         left = self._evaluate_expression(node["children"][0])
@@ -122,7 +145,7 @@ class Interpreter:
         elif node["value"] == ">=":
             return left >= right
         else:
-            raise ValueError(f"Unsupported condition operator: {node['value']}")
+            raise ValueError(f"Semantic Error: Unsupported condition operator: {node['value']}")
 
     def _handle_while(self, node):
         condition_node = node["children"][0]
@@ -140,12 +163,12 @@ class Interpreter:
         proc_name = node["value"]
 
         if proc_name not in self.procedures:
-            raise ValueError(f"Procedure '{proc_name}' not found")
+            raise ValueError(f"Semantic Error: Procedure '{proc_name}' not found")
         
         proc_node = self.procedures[proc_name]
 
         if not proc_node.get("children") or proc_node["children"][0]["type"] != "BLOCK":
-            raise ValueError(f"Procedure '{proc_name}' has an invalid structure. Expected a BLOCK as the first child.")
+            raise ValueError(f"Semantic Error: Procedure '{proc_name}' has an invalid structure. Expected a BLOCK as the first child.")
         
         current_environment = self._current_environment()
         new_environment = current_environment.copy()
@@ -176,7 +199,7 @@ class Interpreter:
                 return env[var_name]
         if var_name in self.constants:
             return self.constants[var_name]
-        raise ValueError(f"Undefined variable: {var_name}")
+        raise ValueError(f"Semantic Error: Undefined variable: {var_name}")
 
     def _set_variable(self, var_name, value):
         for env in reversed(self.environment_stack):
@@ -196,6 +219,9 @@ class Interpreter:
             if node["value"] == "*":
                 return left * right
             elif node["value"] == "/":
+                if right == 0:
+                    print("Error: Division by zero encountered.")
+                    return 0
                 return left // right
         elif node["type"] == "OPERATOR":
             left = self._evaluate_expression(node["children"][0])
@@ -207,7 +233,7 @@ class Interpreter:
         elif node["type"] == "EXPRESSION":
             return self._evaluate_expression(node["children"][0])
         else:
-            raise ValueError(f"Unsupported expression type: {node['type']}")
+            raise ValueError(f"Semantic Error: Unsupported expression type: {node['type']}")
 
 if __name__ == "__main__":
     input_file = sys.argv[1]
