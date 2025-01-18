@@ -115,6 +115,6 @@ rules related to program execution.
 
 #### Semantic Constraint
 
-A semantic constraint ensures that there is exactly one BLOCK: main in the program. If multiple blocks are marked as "main", or if
-no "main" block exists, the parser or a subsequent validation step raises an error. This constraint enforces the rule that a program
-must have a single entry point, which is beneficial for correctness and execution consistency.
+A semantic constraint ensures that there is exactly one BLOCK: main in the program. If multiple executable blocks are marked as
+"main", or if no "main" block exists, the parser or a subsequent validation step raises an error. This constraint enforces the
+rule that a program must have a single entry point, which is beneficial for correctness and execution consistency.
