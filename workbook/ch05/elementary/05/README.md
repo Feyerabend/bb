@@ -28,7 +28,7 @@ Semantic analysis ensures logical correctness and adherence to program rules:
 1. *Scope Management*: Each block or procedure maintains its own environment. Variables declared in one
    scope are isolated from others unless explicitly propagated.
 
-2. *Type Checking*: Expressions are evaluated to ensure correct types (e.g. numeric operations).
+2. *Type Checking*: Expressions are evaluated to ensure correct types (e.g. numeric operations). (Only one type here: integers)
 
 3. *Consistency*: Constants and procedures cannot be re-declared. Assignments check for variable existence.
 
