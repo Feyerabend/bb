@@ -177,7 +177,7 @@ class Interpreter:
             try:
                 self._execute_node(proc_node["children"]) # else ..
             except:
-                print(f"No match for execution? {proc_node["children"][0]["value"]}")
+                print(f"No match for execution? {proc_node['children'][0]['value']}")
                 #pass # holy cr ..
 
         finally:
