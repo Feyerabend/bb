@@ -43,3 +43,78 @@ Semantic analysis ensures logical correctness and adherence to program rules:
 
 3. *Runtime Errors*: Issues encountered while executing the interpreted program, such as division by zero or recursive depth limits.
 
+
+### Parser changes
+
+
+The following code demonstrates how the parser introduces the concept of a "main" block by marking certain BLOCK nodes in the Abstract
+Syntax Tree (AST) based on the context of parsing.
+
+```c
+int final = FALSE;
+..
+
+ASTNode *statement() {
+    ..
+    } else if (accept(BEGINSYM)) {
+        ASTNode *blockNode = createNode(NODE_BLOCK, final ? "main" : NULL); // mark for start
+        do {
+    ..
+}
+
+ASTNode *block() {
+    ASTNode *blockNode = createNode(NODE_BLOCK, final ? "main" : NULL);
+    ..
+
+    while (accept(PROCSYM)) {
+        ..
+        // reset `final` to FALSE for nested blocks
+        int wasFinal = final;
+        final = FALSE;
+        addChild(procNode, block());
+        final = wasFinal;
+        ..
+        addChild(blockNode, procNode);
+        ..
+    }
+    addChild(blockNode, statement());
+    final = FALSE;
+    return blockNode;
+}
+```
+
+#### Explanation of Changes
+
+`final`variable:
+
+The final variable is a flag that determines whether the current block being parsed should be marked as the "main" block.
+It helps differentiate the global main block from nested blocks within procedures.
+
+Marking the main Block:
+- When a BEGIN symbol (BEGINSYM) is encountered, a BLOCK node is created. If final is TRUE, the block is labeled as "main".
+- In the context of parsing the global scope, final is typically set to TRUE, ensuring the top-level executable block is marked as "main".
+
+Nested Blocks:
+- For nested blocks, such as those within procedures, the final flag is temporarily reset to FALSE to prevent marking them as "main".
+- After processing a nested block, the original value of final is restored to ensure the parser’s state is consistent.
+
+#### Example Output
+
+This setup produces an AST with the following structure:
+
+```
+PROGRAM
+  BLOCK: main
+        .. // global variables and constants
+    BLOCK: main
+        .. // the main executable
+```
+
+The "main" label distinguishes the primary executable block of the program, allowing the interpreter or semantic analyzer to enforce
+rules related to program execution.
+
+#### Semantic Constraint
+
+A semantic constraint ensures that there is exactly one BLOCK: main in the program. If multiple blocks are marked as "main", or if
+no "main" block exists, the parser or a subsequent validation step raises an error. This constraint enforces the rule that a program
+must have a single entry point, which is beneficial for correctness and execution consistency.
