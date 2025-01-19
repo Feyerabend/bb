@@ -58,13 +58,6 @@ certain BLOCK nodes in the Abstract Syntax Tree (AST) based on the context of pa
 int final = FALSE;
 ..
 
-ASTNode *statement() {
-    ..
-    } else if (accept(BEGINSYM)) {
-        ASTNode *blockNode = createNode(NODE_BLOCK, final ? "main" : NULL); // mark for start
-        do {
-    ..
-}
 
 ASTNode *block() {
     ASTNode *blockNode = createNode(NODE_BLOCK, final ? "main" : NULL);
@@ -114,8 +107,6 @@ This setup produces an AST with the following structure:
 
 ```
 PROGRAM
-  BLOCK: main
-        .. // global variables and constants
     BLOCK: main
         .. // the main executable
 ```

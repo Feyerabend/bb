@@ -156,7 +156,7 @@ ASTNode *statement() {
         expect(IDENT);
         return callNode;
     } else if (accept(BEGINSYM)) {
-        ASTNode *blockNode = createNode(NODE_BLOCK, final ? "main" : NULL); // mark for start
+        ASTNode *blockNode = createNode(NODE_BLOCK, final ? "main" : NULL);
         do {
             addChild(blockNode, statement());
             if (!accept(SEMICOLON)) {
@@ -187,7 +187,7 @@ ASTNode *statement() {
 }
 
 ASTNode *block() {
-    ASTNode *blockNode = createNode(NODE_BLOCK, final ? "main" : NULL);
+    ASTNode *blockNode = createNode(NODE_BLOCK, NULL);
     if (accept(CONSTSYM)) {
         do {
             ASTNode *constNode = createNode(NODE_CONST_DECL, strdup(buf));
@@ -210,13 +210,10 @@ ASTNode *block() {
         ASTNode *procNode = createNode(NODE_PROC_DECL, strdup(buf));
         expect(IDENT);
         expect(SEMICOLON);
-
-        // reset `final` to FALSE for nested blocks
         int wasFinal = final;
         final = FALSE;
         addChild(procNode, block());
         final = wasFinal;
-
         addChild(blockNode, procNode);
         expect(SEMICOLON);
     }
