@@ -8,6 +8,7 @@ make clean
 make
 make samples
 make table
+make interpret
 ```
 
 We go back to the *Abstract Syntax Tree* (AST) for use in a preliminary *interpreter*. This gives us
@@ -16,9 +17,8 @@ code. Another part of sematic analysis are error checks. Here they are simplifie
 
 __Execute__
 
-In the directory of 'tools' you'll find a Python file: ast_interpreter. Run the file to see an execution
-of the programs.
-
+First `make interpret` to see the samples executes. In the directory of 'tools' you'll find a Python
+file: `ast_interpreter.py`. Run the file to see an execution of the programs.
 
 
 ### Analysis
@@ -65,7 +65,6 @@ ASTNode *block() {
 
     while (accept(PROCSYM)) {
         ..
-        // reset `final` to FALSE for nested blocks
         int wasFinal = final;
         final = FALSE;
         addChild(procNode, block());

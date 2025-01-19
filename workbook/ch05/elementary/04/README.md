@@ -16,8 +16,9 @@ of information, and thus the AST has to be built *before* extraction of the symb
 
 __View__
 
-In the directory of 'tools' you'll find a HTML-file: table_yaml.html. Open the file locally, and search
-for the symbol table representation in the 'table' folder.
+First `make table` to generate symbol tables for the samples. Then in the directory of 'tools' you'll
+find a HTML-file: `table_yaml.html`. Open the file locally, and search for the symbol table representation
+in the 'table' folder.
 
 
 ### Overview and Uses
