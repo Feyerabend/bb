@@ -1,5 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -std=c99 -I./include
+PYTH = python3
 
 SRCDIR = src
 OBJDIR = obj
@@ -49,21 +50,21 @@ table: $(SCRIPTS)/symbol.py
 		base=$$(basename $$file .json); \
 		symbol_output="$(SYMBOLDIR)/$$base.symbol"; \
 		echo "Generating symbol table for $$file -> $$symbol_output"; \
-		python3 $(SCRIPTS)/symbol.py -i $$file -o $$symbol_output; \
+		$(PYTH) $(SCRIPTS)/symbol.py -i $$file -o $$symbol_output; \
 	done
 
 valid: $(TOOLSDIR)/ast_checker.py
 	@for file in $(ASTDIR)/*.json; do \
 		base=$$(basename $$file .json); \
 		echo "Check $$file"; \
-		python3 $(TOOLSDIR)/ast_checker.py $$file; \
+		$(PYTH) $(TOOLSDIR)/ast_checker.py $$file; \
 	done
 
 interpret: $(TOOLSDIR)/ast_interpreter.py
 	@for file in $(ASTDIR)/*.json; do \
 		base=$$(basename $$file .json); \
 		echo "Interpreting $$file"; \
-		python3 $(TOOLSDIR)/ast_interpreter.py $$file; \
+		$(PYTH) $(TOOLSDIR)/ast_interpreter.py $$file; \
 	done
 
 
