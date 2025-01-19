@@ -129,6 +129,9 @@ class Interpreter:
             raise ValueError(f"Semantic Error: Unsupported operator: {node['value']}")
 
     def _handle_condition(self, node):
+        if "children" not in node or len(node["children"]) < 2:
+            raise ValueError(f"Semantic Error: Invalid condition node: {node}")
+
         left = self._evaluate_expression(node["children"][0])
         right = self._evaluate_expression(node["children"][1])
 
@@ -175,13 +178,19 @@ class Interpreter:
         self.environment_stack.append(new_environment)
 
         try:
-            self._execute_node(proc_node["children"][0])
-        except:
-            try:
-                self._execute_node(proc_node["children"]) # else ..
-            except:
-                pass # holy cr ..
+            children = proc_node.get("children", [])
+            if not isinstance(children, list) or len(children) == 0:
+                raise ValueError("proc_node['children'] is either not a list or is empty.")
 
+            self._execute_node(children[0])
+        except Exception:
+            if isinstance(proc_node.get("children"), list):
+                for child in proc_node["children"]:
+                    if isinstance(child, dict):
+                        try:
+                            self._execute_node(child)
+                        except Exception:
+                            pass
         finally:
             for var_name, value in new_environment.items():
                 if var_name in current_environment:

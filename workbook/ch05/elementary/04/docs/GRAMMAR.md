@@ -4,7 +4,6 @@
 The grammar of PL/0 can be expressed in Extended Backus-Naur Form (EBNF).
 EBNF is a notation for formalising the grammar rules of a language.
 
-
 ```ebnf
 <program>       ::= <block> "." .
 
@@ -34,8 +33,7 @@ EBNF is a notation for formalising the grammar rules of a language.
 
 <while-statement> ::= "while" <condition> "do" <statement> .
 
-<condition>     ::= "odd" <expression>
-                 | "(" <expression> <relational-operator> <expression> ")" .
+<condition>     ::= "(" <expression> <relational-operator> <expression> ")" .
 
 <relational-operator> ::= "=" | "#" | "<" | "<=" | ">" | ">=" .
 
@@ -75,7 +73,7 @@ Explanation of Grammar
 - Expressions follow arithmetic rules, allowing operators (+, -, *, /) and parentheses.
 
 6. Conditions:
-- Conditions include both logical checks (odd) and relational operators (=, #, <, <=, >, >=).
+- Conditions include relational operators (=, #, <, <=, >, >=).
 
 7. Identifiers and Numbers:
 - Identifiers are alphanumeric names starting with a letter or underscore.

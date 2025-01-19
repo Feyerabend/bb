@@ -55,8 +55,6 @@ void handleIdentifier(char *buffer) {
         fprintf(outputFile, "VARSYM ");
     } else if (strcmp(buffer, "procedure") == 0) {
         fprintf(outputFile, "PROCSYM ");
-    } else if (strcmp(buffer, "odd") == 0) {
-        fprintf(outputFile, "ODDSYM ");
     } else {
         fprintf(outputFile, "IDENT %s ", buffer);
     }

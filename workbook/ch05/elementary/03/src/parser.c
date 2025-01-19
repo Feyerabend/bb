@@ -18,7 +18,7 @@ char buf[MAX_SYM_LEN];
 void nextSymbol() {
     Token token = nextToken();
     // skip
-    while (token.type == NOP || token.type == ENDOFLINE || token.type == ERROR) {
+    while (token.type == NOP || token.type == ENDOFLINE) {
         token = nextToken();
     }
     // transfer to local use
@@ -122,11 +122,7 @@ ASTNode *expression() {
 }
 
 ASTNode *condition() {
-    if (accept(ODDSYM)) {
-        ASTNode *oddNode = createNode(NODE_CONDITION, "ODD");
-        addChild(oddNode, expression());
-        return oddNode;
-    } else if (accept(LPAREN)) { // enforce parentheses
+    if (accept(LPAREN)) { // enforce parentheses
         ASTNode *leftExpr = expression();
         if (symbol == EQL || symbol == NEQ || symbol == LSS || symbol == LEQ || symbol == GTR || symbol == GEQ) {
             ASTNode *node = createNode(NODE_CONDITION, symbolToString(symbol));

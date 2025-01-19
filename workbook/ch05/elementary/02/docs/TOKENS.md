@@ -52,7 +52,6 @@ The list of tokens defined for PL/0 is as follows:
     VARSYM,     // var
     PROCSYM,    // proc
     PERIOD,     // .
-    ODDSYM,     // odd
     ENDOFLINE,
     ENDOFFILE
 ```

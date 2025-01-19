@@ -100,8 +100,6 @@ int readTokens(const char *filename) {
             token.type = PROCSYM;
         } else if (strcmp(tokenType, "PERIOD") == 0) {
             token.type = PERIOD;
-        } else if (strcmp(tokenType, "ODDSYM") == 0) {
-            token.type = ODDSYM;
         } else if (strcmp(tokenType, "ENDOFLINE") == 0) {
             token.type = ENDOFLINE;
         } else {

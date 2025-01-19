@@ -52,6 +52,13 @@ table: $(SCRIPTS)/symbol.py
 		python3 $(SCRIPTS)/symbol.py -i $$file -o $$symbol_output; \
 	done
 
+valid: $(TOOLSDIR)/ast_checker.py
+	@for file in $(ASTDIR)/*.json; do \
+		base=$$(basename $$file .json); \
+		echo "Check $$file"; \
+		python3 $(TOOLSDIR)/ast_checker.py $$file; \
+	done
+
 interpret: $(TOOLSDIR)/ast_interpreter.py
 	@for file in $(ASTDIR)/*.json; do \
 		base=$$(basename $$file .json); \

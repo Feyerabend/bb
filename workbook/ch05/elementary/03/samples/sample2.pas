@@ -8,7 +8,6 @@ begin
   z := 0;
   while (b > 0) do
   begin
-    if odd b then z := z + a;
     a := 2 * a;
     b := b / 2
   end

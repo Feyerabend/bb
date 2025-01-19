@@ -4,18 +4,6 @@
 
 #include "tokens.h"
 
-/*int isReserved(const char *word) {
-    return
-        strcmp(word, "begin") == 0 ||
-        strcmp(word, "end") == 0 || 
-        strcmp(word, "while") == 0 ||
-        strcmp(word, "if") == 0 || 
-        strcmp(word, "then") == 0 ||
-        strcmp(word, "do") == 0 || 
-        strcmp(word, "var") == 0 ||
-        strcmp(word, "const") == 0 || 
-        strcmp(word, "procedure") == 0;
-}*/
 
 int isReserved(const char *word) {
     const char *reserved[] = {
@@ -78,7 +66,6 @@ void printsymbol(Symbol s, char *buf) {
         [VARSYM] = "VARSYM",
         [PROCSYM] = "PROCSYM",
         [PERIOD] = "PERIOD",
-        [ODDSYM] = "ODDSYM",
         [ENDOFFILE] = "ENDOFFILE"
     };
 

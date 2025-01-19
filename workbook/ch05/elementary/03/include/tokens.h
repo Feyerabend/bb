@@ -31,7 +31,6 @@ typedef enum {
     VARSYM,     // var
     PROCSYM,    // procedure
     PERIOD,     // .
-    ODDSYM,     // odd
     ENDOFLINE,
     ENDOFFILE
 } Symbol;
