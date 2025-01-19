@@ -61,6 +61,7 @@ int final = FALSE;
 
 ASTNode *block() {
     ASTNode *blockNode = createNode(NODE_BLOCK, final ? "main" : NULL);
+    if (final) final = FALSE;
     ..
 
     while (accept(PROCSYM)) {
@@ -120,3 +121,4 @@ multiple executable blocks are marked as "main", or if no "main" block exists, t
 or a subsequent validation step raises an error. This constraint enforces the rule that
 a program must have a single entry point, which is beneficial for correctness and execution
 consistency.
+
