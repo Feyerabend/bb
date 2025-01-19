@@ -1,5 +1,5 @@
 
-## Abstract Syntax Tree (AST)
+## Syntax/Semantics: Abstract Syntax Tree (AST)
 
 __Build__
 

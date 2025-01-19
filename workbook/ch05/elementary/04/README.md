@@ -1,5 +1,5 @@
 
-## Symbol Tables
+## Semantics: Symbol Tables
 
 __Build__
 

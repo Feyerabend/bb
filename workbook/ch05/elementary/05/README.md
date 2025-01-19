@@ -1,5 +1,5 @@
 
-## Semantic Analysis
+## Semantics: Analysis and Errors
 
 __Build__
 
@@ -21,7 +21,7 @@ First `make interpret` to see the samples executes. In the directory of 'tools' 
 file: `ast_interpreter.py`. Run the file to see an execution of the programs.
 
 
-### Analysis
+### Analysis in General
 
 Semantic analysis ensures logical correctness and adherence to program rules:
 
@@ -37,7 +37,7 @@ Semantic analysis ensures logical correctness and adherence to program rules:
    malformed code.
 
 
-#### Error Messages
+### Error Messages in Example
 
 1. *Syntax Errors*: Errors in JSON structure (e.g. invalid node types or unexpected formats).
 
@@ -48,7 +48,7 @@ Semantic analysis ensures logical correctness and adherence to program rules:
    by zero or recursive depth limits.
 
 
-### Parser changes
+### Parser changes in Example
 
 
 The following code demonstrates how the parser introduces the concept of a "main" block by marking

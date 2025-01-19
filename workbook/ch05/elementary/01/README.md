@@ -1,5 +1,5 @@
 
-## Tokeniser, or Tokenizer, Lexer ..
+## Syntax: Tokeniser, or Tokenizer, Lexer ..
 
 __Build__
 
