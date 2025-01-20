@@ -12,47 +12,85 @@ def yaml_format(data, indent=0):
             yaml_lines.append(f"{' ' * indent}{key}: {value}")
     return yaml_lines
 
-def extract_symbols(ast, current_scope=None, global_scope=None):
+def extract_constants(ast, global_scope=None):
     if global_scope is None:
-        global_scope = { }
-    if current_scope is None:
-        current_scope = global_scope
-    
+        global_scope = {"constants": {}}
+
     if isinstance(ast, dict):
-        if ast.get("type") == "VAR_DECL":
-            var_name = ast.get("value")
-            current_scope[var_name] = {"type": "variable"}
-        
-        elif ast.get("type") == "CONST_DECL":
+        node_type = ast.get("type")
+
+        if node_type == "CONST_DECL":
             const_name = ast.get("value")
             const_value = None
             if ast.get("children"):
-                # Assuming the first child contains the value
                 const_child = ast["children"][0]
                 if const_child.get("type") == "NUMBER":
                     const_value = const_child.get("value")
-            current_scope[const_name] = {"type": "constant", "value": const_value}
-
-        elif ast.get("type") == "PROC_DECL":
-            proc_name = ast.get("value")
-            proc_scope = { }
-            current_scope[proc_name] = {"type": "procedure", "scope": proc_scope}
-
-            for child in ast.get("children", []):
-                extract_symbols(child, current_scope=proc_scope, global_scope=global_scope)
-        
-        elif ast.get("type") == "BEGIN" or ast.get("type") == "BLOCK":
-            block_scope = { }
-            for child in ast.get("children", []):
-                extract_symbols(child, current_scope=block_scope, global_scope=global_scope)
-        
-        elif ast.get("type") == "IDENTIFIER":
-            identifier_name = ast.get("value")
-            if identifier_name not in current_scope:
-                current_scope[identifier_name] = {"type": "variable"}
+            if const_name:
+                global_scope["constants"][const_name] = {"type": "constant", "value": const_value}
 
         for child in ast.get("children", []):
-            extract_symbols(child, current_scope=current_scope, global_scope=global_scope)
+            extract_constants(child, global_scope)
+
+    return global_scope
+
+def extract_symbols(ast, global_scope=None, scope_stack=None):
+    if global_scope is None:
+        global_scope = {"variables": {}, "procedures": {}}
+    if scope_stack is None:
+        scope_stack = [global_scope]
+
+    current_scope = scope_stack[-1]
+
+    if isinstance(ast, dict):
+        node_type = ast.get("type")
+
+        if node_type == "VAR_DECL":
+            var_name = ast.get("value")
+            if var_name in current_scope["variables"]:
+                print(f"Warning: Variable '{var_name}' redeclared in the same scope.")
+            else:
+
+                # global or local
+                scope_type = "global" if len(scope_stack) == 1 else "local"
+                current_scope["variables"][var_name] = {"type": "variable", "scope": scope_type}
+                print(f"Declared {scope_type} variable: {var_name}.")
+
+        elif node_type == "PROC_DECL":
+            proc_name = ast.get("value")
+            if proc_name in global_scope["procedures"]:
+                print(f"Warning: Procedure '{proc_name}' redeclared in the global scope.")
+            else:
+                global_scope["procedures"][proc_name] = {"type": "procedure", "scope": {}}
+                print(f"Declared procedure: {proc_name} with its own scope.")
+
+            # new scope for procedure
+            proc_scope = {"variables": {}}
+            global_scope["procedures"][proc_name]["scope"] = proc_scope
+            scope_stack.append(proc_scope)
+
+            # children nodes in the procedure's scope
+            for child in ast.get("children", []):
+                extract_symbols(child, global_scope, scope_stack)
+
+            # pop the procedure's scope when done
+            scope_stack.pop()
+
+        elif node_type == "IDENTIFIER":
+            var_name = ast.get("value")
+            resolved_scope = None
+            for scope in reversed(scope_stack):
+                if var_name in scope.get("variables", {}):
+                    resolved_scope = scope
+                    break
+            if not resolved_scope:
+                print(f"Warning: Identifier '{var_name}' used before declaration.")
+            else:
+                print(f"Resolved variable '{var_name}' in scope: {resolved_scope}.")
+
+        # recursively process children
+        for child in ast.get("children", []):
+            extract_symbols(child, global_scope, scope_stack)
 
     return global_scope
 
@@ -63,12 +101,12 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
     except getopt.GetoptError:
-        print('symbol.py -i <inputfile> -o <outputfile>')
+        print('Usage: symbols.py -i <inputfile> -o <outputfile>')
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == '-h':
-            print('usage: symbol.py -i <inputfile> -o <outputfile>')
+            print('Usage: symbols.py -i <inputfile> -o <outputfile>')
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg
@@ -78,11 +116,27 @@ def main(argv):
     with open(inputfile, 'r') as input_file:
         ast = json.load(input_file)
 
-    global_scope = extract_symbols(ast)
+    constants = extract_constants(ast)
+    variables_procedures = extract_symbols(ast)
 
-    with open(outputfile, 'w') as output_file:
-        yaml_output = yaml_format(global_scope)
-        output_file.write("\n".join(yaml_output))
+    const_output = yaml_format(constants["constants"])
+    varproc_output = yaml_format(variables_procedures)
+
+    if outputfile:
+        with open(outputfile, 'w') as output_file:
+            # Combine the outputs into a single block with section headers
+            combined_output = (
+                ["# Constants"] + const_output +
+                ["", "# Variables and Procedures"] + varproc_output
+            )
+            # Write the combined output to the file
+            output_file.write("\n".join(combined_output))
+    else:
+        # Print the combined output to the console
+        print("# Constants")
+        print("\n".join(const_output))
+        print("\n# Variables and Procedures")
+        print("\n".join(varproc_output))
 
 if __name__ == "__main__":
    main(sys.argv[1:])
