@@ -12,6 +12,28 @@ def yaml_format(data, indent=0):
             yaml_lines.append(f"{' ' * indent}{key}: {value}")
     return yaml_lines
 
+def extract_constants(ast, global_scope=None):
+    if global_scope is None:
+        global_scope = {"constants": {}}
+
+    if isinstance(ast, dict):
+        node_type = ast.get("type")
+
+        if node_type == "CONST_DECL":
+            const_name = ast.get("value")
+            const_value = None
+            if ast.get("children"):
+                const_child = ast["children"][0]
+                if const_child.get("type") == "NUMBER":
+                    const_value = const_child.get("value")
+            if const_name:
+                global_scope["constants"][const_name] = {"type": "constant", "value": const_value}
+
+        for child in ast.get("children", []):
+            extract_constants(child, global_scope)
+
+    return global_scope
+
 def extract_symbols(ast, global_scope=None, scope_stack=None):
     if global_scope is None:
         global_scope = {"variables": {}, "procedures": {}}
@@ -94,15 +116,27 @@ def main(argv):
     with open(inputfile, 'r') as input_file:
         ast = json.load(input_file)
 
-    global_scope = extract_symbols(ast)
+    constants = extract_constants(ast)
+    variables_procedures = extract_symbols(ast)
+
+    const_output = yaml_format(constants["constants"])
+    varproc_output = yaml_format(variables_procedures)
 
     if outputfile:
         with open(outputfile, 'w') as output_file:
-            yaml_output = yaml_format(global_scope)
-            output_file.write("\n".join(yaml_output))
+            # Combine the outputs into a single block with section headers
+            combined_output = (
+                ["# Constants"] + const_output +
+                ["", "# Variables and Procedures"] + varproc_output
+            )
+            # Write the combined output to the file
+            output_file.write("\n".join(combined_output))
     else:
-        yaml_output = yaml_format(global_scope)
-        print("\n".join(yaml_output))
+        # Print the combined output to the console
+        print("# Constants")
+        print("\n".join(const_output))
+        print("\n# Variables and Procedures")
+        print("\n".join(varproc_output))
 
 if __name__ == "__main__":
    main(sys.argv[1:])
