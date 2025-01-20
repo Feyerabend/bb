@@ -150,18 +150,17 @@ ASTNode *statement() {
         expect(IDENT);
         return callNode;
     } else if (accept(BEGINSYM)) {
-        ASTNode *beginNode = createNode(NODE_BEGIN, NULL);
+        ASTNode *blockNode = createNode(NODE_BLOCK, NULL);
         do {
-            addChild(beginNode, statement());   // *HACK* C-like termination 'begin s1; s2; end'
-            if (!accept(SEMICOLON)) {           // rather that Pascal separation 'begin s1 ; s2 end'
-                // warning("statement: missing SEMICOLON");
-                break;
+            addChild(blockNode, statement());
+            if (!accept(SEMICOLON)) {
+                break;  // allow for optional final semicolon
             }
         } while (symbol != ENDSYM && symbol != ENDOFFILE);
         if (!accept(ENDSYM)) {
             error("statement: expected END");
         }
-        return beginNode;
+        return blockNode;
     } else if (accept(IFSYM)) {
         ASTNode *ifNode = createNode(NODE_IF, NULL);
         addChild(ifNode, condition());
@@ -185,8 +184,8 @@ ASTNode *block() {
     ASTNode *blockNode = createNode(NODE_BLOCK, NULL);
     if (accept(CONSTSYM)) {
         do {
-            expect(IDENT);
             ASTNode *constNode = createNode(NODE_CONST_DECL, strdup(buf));
+            expect(IDENT);
             expect(EQL);
             addChild(constNode, createNode(NODE_NUMBER, strdup(buf)));
             expect(NUMBER);
@@ -221,4 +220,3 @@ ASTNode *program() {
     expect(PERIOD);
     return programNode;
 }
-

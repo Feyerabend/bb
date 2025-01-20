@@ -4,6 +4,7 @@
 
 #include "tokens.h"
 
+
 int isReserved(const char *word) {
     const char *reserved[] = {
         "begin", "const", "do", "end", "if", "procedure", "then", "var", "while"
