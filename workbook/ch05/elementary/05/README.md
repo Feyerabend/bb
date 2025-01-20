@@ -78,6 +78,13 @@ ASTNode *block() {
     final = FALSE;
     return blockNode;
 }
+
+ASTNode *program() {
+   ..
+    final = TRUE;
+    addChild(programNode, block());
+   ..
+}
 ```
 
 #### Explanation of Changes
