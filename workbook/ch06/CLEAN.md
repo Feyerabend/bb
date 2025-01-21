@@ -317,8 +317,10 @@ __Finding a Balance__
 The debate doesn't have to be binary. Here are ways to integrate both perspectives:
 - Context Matters: Apply clean principles where they provide value. In prototypes or
   throwaway scripts, prioritise *speed*. For long-term projects, invest in *maintainability*.
-- Iterative Improvement: Start with working, pragmatic solutions, then refactor and clean as the project stabilizes.
-- Critical Use of Principles: Avoid dogmatism. Understand why each clean code principle exists and apply it judiciously.
+- Iterative Improvement: Start with working, pragmatic solutions, then refactor and clean as
+  the project stabilizes.
+- Critical Use of Principles: Avoid dogmatism. Understand why each clean code principle exists
+  and apply it judiciously.
 - Testing as a Pillar: Instead of chasing perfection in code, ensure rigorous testing.
   Well-tested, "messy" code might be more reliable than theoretically clean but poorly tested code.
 
