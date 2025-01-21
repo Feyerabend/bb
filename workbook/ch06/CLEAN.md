@@ -355,3 +355,99 @@ Review each other's work to identify areas for improvement in clarity and struct
 
 *Example Task:* Implement a backend for a task management system with a focus on modular design and reusable components.
 
+
+__5. Rewrite a Legacy Script__
+
+Take an old or poorly maintained script and rewrite it to align with clean code practices. Focus on enhancing readability
+and maintainability while preserving the script’s functionality.
+
+*Example Task:* Refactor a Python script that processes CSV files, replacing hard-coded paths, magic numbers, and ambiguous
+variable names with clean, modular code.
+
+
+__6. Create a Unit Testing Framework__
+
+Design a simple unit testing framework or suite for a small application. Use clean code principles to ensure the framework is
+intuitive and maintainable.
+
+*Example Task:* Build a Python testing framework that supports assertions for functions like add(a, b) and subtract(a, b),
+while keeping the code modular and reusable for future extensions.
+
+
+__7. Refactor a UI Component__
+
+Take a basic frontend component, such as a form or a dropdown menu, and refactor it using clean code practices. Focus on
+separating concerns like logic, styling, and user interactions.
+
+*Example Task:* Refactor a JavaScript form validation function by separating input checks, error handling, and UI updates
+into distinct, reusable modules.
+
+
+__8. Build a Configuration Manager__
+
+Create a tool to handle application configurations, ensuring clean, modular code that separates different environments
+(e.g. development, testing, production).
+
+*Example Task:* Develop a Python class that reads configurations from .env files, validates them, and provides clear
+error messages when required settings are missing.
+
+
+__9. Refactor Error-Prone Code__
+
+Identify or write a script with multiple potential failure points and refactor it to include clean, robust error-handling
+techniques.
+
+*Example Task:* Refactor a file parser that frequently crashes due to missing or malformed input files. Add clear error
+messages, validations, and test cases for edge scenarios.
+
+
+__10. Implement a REST API__
+
+Build a simple REST API while adhering to clean code principles, including modular route handling, clear documentation,
+and reusable code.
+
+*Example Task:* Create a Python Flask API to manage a to-do list, ensuring each endpoint is implemented as a separate,
+well-documented function.
+
+
+__11. Automate Code Quality Checks__
+
+Develop a script that integrates with CI/CD pipelines to enforce clean code standards by running linters, formatters,
+and unit tests.
+
+*Example Task:* Create a script to run ESLint, Prettier, and Mocha tests for a JavaScript project, ensuring clean and
+consistent code is pushed to production.
+
+
+__12. Modularize a Monolithic Codebase__
+
+Take a small monolithic project and refactor it into smaller, modular components. The goal is to improve clarity,
+maintainability, and scalability.
+
+*Example Task:* Split a single Python script for user management (register, login, reset password) into separate modules,
+such as auth.py and user_profile.py.
+
+
+__13. Implement a Clean CLI Tool__
+
+Design and implement a command-line interface (CLI) tool with clean code principles, focusing on modularity,
+intuitive usage, and error handling.
+
+*Example Task:* Build a CLI tool in Python for managing tasks (add, list, remove tasks), ensuring each command is
+implemented as a reusable function.
+
+
+__14. Build a Code Formatter__
+
+Create a basic code formatter that enforces consistent style rules (e.g. indentation, spacing, and line breaks)
+for a chosen programming language.
+
+*Example Task:* Write a Python script that reformats Python code according to PEP 8 standards, focusing on modular
+and testable design.
+
+
+__15. Refactor a Recursive Function__
+
+Take a recursive algorithm and refactor it for readability and performance while adhering to clean code principles.
+
+*Example Task:* Refactor a recursive Fibonacci function to use memoization, meaningful naming, and clear comments for edge cases.
