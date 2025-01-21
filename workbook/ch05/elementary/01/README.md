@@ -35,15 +35,15 @@ encountering it for the first time.
 The second adjustment introduces parentheses around conditions, similar to the convention used in
 programming languages such as C. For instance, a condition in the original PL/0 might appear without
 parentheses, whereas our modified grammar will require conditions to be enclosed within parentheses
-e.g. (x < y). This change not only makes the syntax more explicit and visually structured but also
+e.g. '(x < y)'. This change not only makes the syntax more explicit and visually structured but also
 aligns with the familiarity that many programmers already have with conditional syntax in widely-used
 languages.
 
 Finally, we adapt the handling of statement terminations by introducing semicolons (;) to mark the
 end of statements rather than using them as separators. In the original PL/0, semicolons acted as
 delimiters between consecutive statements, which differs from the more common convention of treating
-semicolons as terminators. For example, instead of writing begin a := b; c := d end, the new grammar
-would use begin a := b; c := d; end with each semicolon clearly indicating the conclusion of a statement.
+semicolons as terminators. For example, instead of writing 'begin a := b; c := d end', the new grammar
+would use 'begin a := b; c := d; end' with each semicolon clearly indicating the conclusion of a statement.
 This adjustment simplifies the parsing process and aligns PL/0's syntax more closely with modern
 programming languages, making it easier for students to grasp and work with.
 
