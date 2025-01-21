@@ -32,17 +32,17 @@ language itself.
 
 ### References
 
-1. *Wirth, Niklaus. "Algorithms + Data Structures = Programs."*
+1. Wirth, Niklaus. *Algorithms + Data Structures = Programs.*
    Prentice-Hall, 1976.
    - This is the original book where PL/0 was introduced. It covers
    the language and provides a full explanation of how to build a
    compiler for PL/0.
 
-2. *Wirth, Niklaus. "Compiler Construction."* Addison-Wesley, 1996.
+2. *Wirth, Niklaus. *Compiler Construction.* Addison-Wesley, 1996.
    - This book is another valuable resource by Wirth that discusses
    compiler design and includes a more detailed discussion of PL/0.
 
-3. *Wirth, Niklaus. "PL/0: A Portable Compiler."* ETH Zurich, 1977.
+3. *Wirth, Niklaus. *PL/0: A Portable Compiler.* ETH Zurich, 1977.
    - A paper that discusses the implementation of PL/0 and its
    portability across different computer systems.
 
