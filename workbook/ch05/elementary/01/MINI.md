@@ -1,13 +1,121 @@
 
+## Compiling in Practice: A Mini Compiler
 
-## Mini Compiler: Overview of Compiling in Practice
+Here we explore the practical aspects of building a simple compiler for arithmetic expressions.
+While the concepts of compilers and interpreters have been discussed previously, here we focus
+on a hands-on example. The goal is to create a minimal compiler that translates arithmetic expressions
+into assembly-like instructions. This example demonstrates each step of the compilation process, 
+from lexical analysis to code generation.
 
-This example demonstrates a simple compiler for arithmetic expressions, converting
+The assembly-like language we'll target is deliberately simple, designed for a hypothetical
+stack-based virtual machine. While we won't provide the full implementation of this virtual
+machine, we encourage you to extend the example by creating one, turning this simple compiler
+into a complete system as a first project or exercise.
+
+### The Input Language: Arithmetic Expressions
+
+The input language for our compiler consists of basic arithmetic expressions using the following elements:
+- Operands: Non-negative integers (e.g., 0, 42, 123).
+- Operators: Standard arithmetic operators: addition (+), subtraction (-), multiplication (*), and division (/).
+- Precedence and Associativity: Operators follow standard precedence rules:
+- Multiplication and division have higher precedence than addition and subtraction.
+- Operators of the same precedence are evaluated from left to right (left-associative).
+- Whitespace: Spaces between tokens are allowed but ignored during compilation.
+
+Example Input:
+
+```
+3 + 7 * 2 - 4
+```
+
+The Output: Assembly-Like Instructions
+
+The compiler's output is a series of stack-based assembly instructions. These instructions are designed
+to be executed by a simple virtual machine with the following properties:
+1.	Stack-Based Execution:
+- All calculations are performed using a stack.
+- Operands are pushed onto the stack, and operators pop operands, perform the operation, and push the result back.
+
+2. Instruction Set:
+- PUSH <value>: Push a constant value onto the stack.
+- ADD: Pop the top two values from the stack, add them, and push the result.
+- SUB: Pop the top two values, subtract the second from the first, and push the result.
+- MUL: Multiply the top two values.
+- DIV: Divide the second value on the stack by the top value.
+
+Example Output for '3 + 7 * 2 - 4':
+
+```assembly
+PUSH 3
+PUSH 7
+PUSH 2
+MUL
+ADD
+PUSH 4
+SUB
+```
+
+#### Compilation Steps
+
+1. Lexical Analysis (Tokenization):
+   The compiler reads the input string and breaks it into tokens (e.g. numbers and operators).
+   Each token has a type (such as NUMBER, PLUS, MINUS) and possibly a value (e.g. 3).
+
+2. Syntax Analysis (Parsing):
+   Using a recursive descent parser, the compiler processes the tokens to construct an
+   Abstract Syntax Tree (AST). This tree represents the structure of the expression and
+   respects operator precedence and associativity.
+
+3. Semantic Analysis:
+   The compiler ensures the AST is valid. For example, it verifies that division by zero
+   is not attempted.
+
+4. Code Generation:
+   The AST is traversed, and stack-based assembly instructions are generated. These
+   instructions correspond to the operations required to evaluate the expression.
+
+
+#### Extending the Compiler: Implementing the Virtual Machine
+
+While the compiler produces stack-based assembly, we do not include a complete virtual
+machine in this chapter. However, the provided assembly language is straightforward to
+implement.
+
+- Stack Implementation:
+  Use an array to simulate a stack. Operations like PUSH add values to the stack,
+  while operations like ADD pop the top two values, perform the operation, and push the result.
+
+- Execution Loop:
+  Implement a loop that reads each instruction, performs the corresponding operation
+  on the stack, and proceeds to the next instruction.
+
+
+#### Example Virtual Machine Pseudocode:
+
+```
+initialize stack
+for each instruction in program:
+    if instruction is PUSH:
+        push value onto stack
+    if instruction is ADD:
+        pop two values, add them, and push result
+    if instruction is SUB:
+        pop two values, subtract them, and push result
+    if instruction is MUL:
+        pop two values, multiply them, and push result
+    if instruction is DIV:
+        pop two values, divide them, and push result
+print top of stack as the final result
+```
+
+### Mini Compiler: Overview
+
+Let's recapitulate the simple compiler for arithmetic expressions, converting
 high-level input into a pseudo-assembly language.
 1. Lexical Analysis: Tokenise the input.
 2. Syntax Analysis: Parse tokens into an Abstract Syntax Tree (AST).
-3. Semantic Analysis: Ensure the AST is valid.
-4. Intermediate Code Generation: Transform the AST into a simpler representation.
+3. Semantic Analysis: Ensure the AST is valid. (Example division by zero.)
+4. Intermediate Code Generation: Transform the AST into a simpler representation. (Not implemented here.)
 5. Code Generation: Generate pseudo-assembly from the intermediate representation.
 
 
@@ -185,6 +293,8 @@ int main() {
 }
 ```
 
+#### Explanation
+
 1. Lexical Analysis:
 - next_token scans the input and produces tokens (TOKEN_NUMBER, TOKEN_PLUS, etc.).
 
@@ -199,10 +309,10 @@ int main() {
 - Traverses the AST in postorder and generates stack-based pseudo-assembly.
 
 
+#### Example
 
 Input:
-
-Enter an arithmetic expression: '3 + 5 * 2'
+- Enter an arithmetic expression: '3 + 5 * 2'
 
 Output:
 
@@ -214,5 +324,3 @@ PUSH 2
 MUL
 ADD
 ```
-It can be extended further with additional features like variable handling
-or more complex language constructs.
