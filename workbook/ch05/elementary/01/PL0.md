@@ -46,14 +46,3 @@ language itself.
    - A paper that discusses the implementation of PL/0 and its
    portability across different computer systems.
 
-4. *Hennessy, John L., and David A. Patterson. "Computer Organization
-   and Design: The Hardware/Software Interface."* Morgan Kaufmann, 2011.
-   - While not directly about PL/0, this book provides additional
-   context on computer architecture, which is useful when understanding
-   the target architecture for which PL/0 compilers are often designed.
-
-5. *Gough, John. "Compiling for the .NET Common Language Runtime."*
-   Prentice Hall PTR, 2002.
-   - This book discusses modern compilation techniques and provides
-   a contrast to the simplicity of PL/0, showing how compiler concepts
-   have evolved.
