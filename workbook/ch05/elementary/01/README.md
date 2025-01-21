@@ -1,5 +1,5 @@
 
-## Compiling in Practice
+## Elementary: Compiling in Practice
 
 We start off with a simple mini compiler for arithmetical expressions. Most of the essential parts in included for illustration.
 
