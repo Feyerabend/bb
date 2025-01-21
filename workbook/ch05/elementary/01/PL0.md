@@ -38,7 +38,7 @@ language itself.
    the language and provides a full explanation of how to build a
    compiler for PL/0.
 
-2. *Wirth, Niklaus. *Compiler Construction.* Addison-Wesley, 1996.
+2. Wirth, Niklaus. *Compiler Construction.* Addison-Wesley, 1996.
    - This book is another valuable resource by Wirth that discusses
    compiler design and includes a more detailed discussion of PL/0.
 
