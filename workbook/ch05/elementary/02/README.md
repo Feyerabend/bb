@@ -22,14 +22,14 @@ language grammar, and writes these tokens to an output file.
 
 The aim of this project is to build a flexible and robust tokeniser for a simple programming language. The tokeniser will:
 
-1. Identify Tokens: Recognise identifiers, numbers, keywords, operators, delimiters, and other syntactic components.
+1. *Identify Tokens*: Recognise identifiers, numbers, keywords, operators, delimiters, and other syntactic components.
 
-2. Annotate Locations: Attach precise location metadata (e.g., line and column numbers) to each token to facilitate debugging.
+2. *Annotate Locations*: Attach precise location metadata (e.g., line and column numbers) to each token to facilitate debugging.
 
-3. Handle Errors: Detect invalid tokens, highlight their location, and provide meaningful annotations to help the user
+3. *Handle Errors*: Detect invalid tokens, highlight their location, and provide meaningful annotations to help the user
    understand and correct mistakes.
 
-4. Suggest Corrections: For errors such as misspelled keywords or invalid identifiers, the system will offer suggestions
+4. *Suggest Corrections*: For errors such as misspelled keywords or invalid identifiers, the system will offer suggestions
    or guesses for what might have been intended.
 
 
