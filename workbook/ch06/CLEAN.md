@@ -6,6 +6,9 @@ to read, understand, and maintain. Popularized by Robert C. Martin (Uncle Bob) i
 *Clean Code: A Handbook of Agile Software Craftsmanship*, the concept is rooted in principles
 of simplicity, clarity, and responsibility.
 
+Some projects follow below, but perhaps even more imporant: discuss in a group the
+pro and cons of "clean code."
+
 __Core Principles of Clean Code__
 
 1. Readable and Understandable:
@@ -25,7 +28,7 @@ __Core Principles of Clean Code__
 	- Clean code encourages the creation of testable units, ensuring functionality and reliability.
 
 6. Avoid Duplication:
-	- Follow the *DRY* (Don’t Repeat Yourself) principle. Duplicate logic leads to inconsistencies and maintenance headaches.
+	- Follow the DRY (Don’t Repeat Yourself) principle. Duplicate logic leads to inconsistencies and maintenance headaches.
 
 7. Descriptive Naming:
 	- Names should reflect the purpose of variables, functions, classes, etc., making the code self-documenting.
@@ -34,7 +37,7 @@ __Core Principles of Clean Code__
 	- Internal details should be hidden behind clear interfaces, following the principle of information hiding.
 
 
-#### Practical Examples
+### Practical Examples
 
 __1. Clear Naming__
 
@@ -126,7 +129,7 @@ total_price = calculate_total(price, quantity)
 total_cost = calculate_total(cost, quantity)
 ```
 
-#### Common Practices and Guidelines
+### Common Practices and Guidelines
 
 Naming Conventions
 - Use meaningful, descriptive names (e.g. is_active instead of a).
@@ -143,7 +146,7 @@ Error Handling
 
 Formatting
 - Consistent indentation, line breaks, and spacing improve readability.
-- Adhere to style guides like PEP 8 (Python) or PSR-12 (PHP).
+- dhere to style guides like PEP 8 (Python) or PSR-12 (PHP).
 
 Benefits of Clean Code
 
@@ -156,20 +159,8 @@ Benefits of Clean Code
 3. Collaboration:
 - Teams can work together more effectively when code is clear and consistent.
 
-4. Reduced Technical Debt:[^debt]
+4. Reduced Technical Debt:
 - Clean code minimizes the cost and effort of future changes.
-
-[^debt]: Technical debt refers to the additional work or cost incurred in the future due to
-shortcuts, suboptimal solutions, or rushed decisions made during software development. It's
-often the result of prioritising speed over quality, such as writing quick but messy code to
-meet deadlines. While technical debt can sometimes be a pragmatic trade-off, if not addressed,
-it accumulates over time, making the system harder to maintain, scale, or debug, ultimately
-increasing development costs and risks. There is also sometime reference to entropy in this
-context. The growing disorder makes the system harder to maintain and adapt, much like how
-increasing entropy in a closed system makes it less structured and efficient. Without deliberate
-effort to reduce technical debt, such as regular cleanup or refactoring, the software inevitably
-becomes less predictable and harder to work with, mirroring the principle of entropy in other
-domains.
 
 5. Fewer Bugs:
 - Simplicity and clarity help identify and prevent errors.
@@ -191,7 +182,7 @@ Influential References
 	- Formatters (e.g., Prettier, Black).
 	- Static analysis tools (e.g., SonarQube).
 
-#### Summary
+### Summary
 
 Clean code emphasizes simplicity, clarity, and maintainability. It is a guiding philosophy for building
 robust and understandable software, particularly for large teams or long-term projects. While there are
@@ -317,17 +308,50 @@ __Finding a Balance__
 The debate doesn't have to be binary. Here are ways to integrate both perspectives:
 - Context Matters: Apply clean principles where they provide value. In prototypes or
   throwaway scripts, prioritise *speed*. For long-term projects, invest in *maintainability*.
-- Iterative Improvement: Start with working, pragmatic solutions, then refactor and clean as
-  the project stabilizes.
-- Critical Use of Principles: Avoid dogmatism. Understand why each clean code principle exists
-  and apply it judiciously.
+- Iterative Improvement: Start with working, pragmatic solutions, then refactor and clean as the project stabilizes.
+- Critical Use of Principles: Avoid dogmatism. Understand why each clean code principle exists and apply it judiciously.
 - Testing as a Pillar: Instead of chasing perfection in code, ensure rigorous testing.
   Well-tested, "messy" code might be more reliable than theoretically clean but poorly tested code.
 
 
-#### Conclusion
+### Conclusion
 
 In conclusion, the argument against clean code highlights the inevitability of imperfection
 and the practicalities of development. However, clean code principles remain valuable for reducing
 long-term costs and improving collaboration. The key is to apply these ideas flexibly, with a
 focus on the specific context of the project.
+
+
+### Projects
+
+__1. Refactor a Messy Codebase__
+
+Take a small, poorly written codebase (you can find examples online or intentionally write messy code
+yourself) and refactor it to adhere to clean code principles. Focus on improving naming, modularity, and readability.
+
+*Example Task:* Rewrite a simple program that calculates employee bonuses but is cluttered with cryptic variable names and large functions.
+
+
+__2. Create a Simple Library__
+
+Design and implement a small library (e.g. for arithmetic operations or string manipulation) using clean
+code principles. Emphasise modularity, consistent naming, and testability.
+
+*Example Task:* Create a library to calculate metrics like average, median, and standard deviation, ensuring each
+calculation is implemented in its own well-named function.
+
+
+__3. Build a Mini-Linter__
+
+Develop a basic code linter that enforces some clean code principles, such as flagging inconsistent naming conventions or overly long functions.
+
+*Example Task:* Build a Python script that checks for functions longer than 15 lines or variables with single-character names.
+
+
+__4. Collaborative Coding Challenge__
+
+Work on a group project, such as building a basic to-do list app, where each participant follows clean code practices.
+Review each other's work to identify areas for improvement in clarity and structure.
+
+*Example Task:* Implement a backend for a task management system with a focus on modular design and reusable components.
+
