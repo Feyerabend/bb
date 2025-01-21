@@ -4,7 +4,7 @@
 
 This example demonstrates a simple compiler for arithmetic expressions, converting
 high-level input into a pseudo-assembly language.
-1. Lexical Analysis: Tokenize the input.
+1. Lexical Analysis: Tokenise the input.
 2. Syntax Analysis: Parse tokens into an Abstract Syntax Tree (AST).
 3. Semantic Analysis: Ensure the AST is valid.
 4. Intermediate Code Generation: Transform the AST into a simpler representation.
