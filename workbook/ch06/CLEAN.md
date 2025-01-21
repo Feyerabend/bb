@@ -25,7 +25,7 @@ __Core Principles of Clean Code__
 	- Clean code encourages the creation of testable units, ensuring functionality and reliability.
 
 6. Avoid Duplication:
-	- Follow the DRY (Don’t Repeat Yourself) principle. Duplicate logic leads to inconsistencies and maintenance headaches.
+	- Follow the *DRY* (Don’t Repeat Yourself) principle. Duplicate logic leads to inconsistencies and maintenance headaches.
 
 7. Descriptive Naming:
 	- Names should reflect the purpose of variables, functions, classes, etc., making the code self-documenting.
@@ -143,7 +143,7 @@ Error Handling
 
 Formatting
 - Consistent indentation, line breaks, and spacing improve readability.
-- dhere to style guides like PEP 8 (Python) or PSR-12 (PHP).
+- Adhere to style guides like PEP 8 (Python) or PSR-12 (PHP).
 
 Benefits of Clean Code
 
@@ -156,8 +156,20 @@ Benefits of Clean Code
 3. Collaboration:
 - Teams can work together more effectively when code is clear and consistent.
 
-4. Reduced Technical Debt:
+4. Reduced Technical Debt:[^debt]
 - Clean code minimizes the cost and effort of future changes.
+
+[^debt]: Technical debt refers to the additional work or cost incurred in the future due to
+shortcuts, suboptimal solutions, or rushed decisions made during software development. It's
+often the result of prioritising speed over quality, such as writing quick but messy code to
+meet deadlines. While technical debt can sometimes be a pragmatic trade-off, if not addressed,
+it accumulates over time, making the system harder to maintain, scale, or debug, ultimately
+increasing development costs and risks. There is also sometime reference to entropy in this
+context. The growing disorder makes the system harder to maintain and adapt, much like how
+increasing entropy in a closed system makes it less structured and efficient. Without deliberate
+effort to reduce technical debt, such as regular cleanup or refactoring, the software inevitably
+becomes less predictable and harder to work with, mirroring the principle of entropy in other
+domains.
 
 5. Fewer Bugs:
 - Simplicity and clarity help identify and prevent errors.
