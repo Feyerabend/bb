@@ -1,7 +1,7 @@
 
 ## Errors and Warnings
 
-Errors and warnings are vital components of a compiler’s interaction with programmers.
+Errors and warnings are vital components of a compiler's interaction with programmers.
 They provide feedback about issues in the code, which helps improve both the program's
 correctness and the programmer's understanding of the language and tools being used.
 
@@ -18,19 +18,19 @@ The primary purpose of a compiler is to translate source code into a form that a
 can execute. However, the process of writing source code is inherently error-prone.
 Compilers act as guides, pointing out mistakes and inconsistencies.
 
-1. Promotes Correctness:
-   Errors ensure that the code adheres to the language’s rules, catching syntax errors,
+1. *Promotes Correctness:*
+   Errors ensure that the code adheres to the language's rules, catching syntax errors,
    type mismatches, and other violations before the code is executed.
 
-2. Improves Code Quality:
+2. *Improves Code Quality:*
    Warnings highlight potential issues that may not break the program but could lead to
    bugs, inefficiencies, or unintended behavior.
 
-3. Enhances Learning:
+3. *Enhances Learning:*
    For novice programmers, clear and actionable error messages can teach language rules,
    common pitfalls, and best practices.
 
-4. Saves Time:
+4. *Saves Time:*
    A robust error-reporting mechanism helps programmers locate and fix issues quickly,
    reducing debugging time.
 
@@ -82,19 +82,19 @@ __1. Clear__
 
 The message should precisely describe the issue. Avoid technical jargon that
 may confuse programmers, especially beginners.
-- Bad: “Parser failed at token ‘x’.”
-- Good: “Syntax error: unexpected token ‘x’; expected an operator or semicolon.”
+- Bad: "Parser failed at token 'x'."
+- Good: "Syntax error: unexpected token 'x'; expected an operator or semicolon."
 
 __2. Contextual__
 
 Messages should include the line number, column, and surrounding code, making it
 easy for programmers to locate and understand the issue.
-- Example: “Line 42: expected ‘;’ at the end of the statement. Found: ‘}’.”
+- Example: "Line 42: expected ';' at the end of the statement. Found: '}'."
 
 __3. Actionable__
 
 Where possible, provide guidance on how to fix the problem.
-- Example: “Warning: variable ‘y’ is used uninitialized. Initialize ‘y’ before using it.”
+- Example: "Warning: variable 'y' is used uninitialized. Initialize 'y' before using it."
 
 __4. Non-Intrusive__
 
@@ -111,11 +111,12 @@ elevate specific warnings based on their preferences or project guidelines.
 
 Consider the following examples of improving error and warning messages:
 
-Example 1: Syntax Error
+__Example 1: Syntax Error__
 
 Original Message:
-
+```
 Error: unexpected token ';' on line 5.
+```
 
 Improved Message:
 
@@ -126,11 +127,12 @@ Line 5: Syntax error: unexpected ';' after '+'. Did you forget an operand?
        ^
 ```
 
-Example 2: Type Error
+__Example 2: Type Error__
 
 Original Message:
-
+```
 Error: incompatible types.
+```
 
 Improved Message:
 
@@ -138,15 +140,15 @@ Improved Message:
 Line 8: Type error: cannot assign 'string' to 'int'.
    8 | int x = "hello";
            ^^^^^^^^^^
+Hint: Did you mean to use a numeric value or change the type of 'x' to 'string'?
 ```
 
-Hint: Did you mean to use a numeric value or change the type of 'x' to 'string'?
-
-Example 3: Warning
+__Example 3: Warning__
 
 Original Message:
-
+```
 Warning: unused variable.
+```
 
 Improved Message:
 
@@ -160,16 +162,16 @@ Hint: If 'temp' is unnecessary, consider removing it to clean up your code.
 
 When implementing error and warning systems in compilers, consider the following best practices:
 1. Provide Detailed Feedback:
-Include the error’s location, nature, and possible solutions.
+   Include the error's location, nature, and possible solutions.
 
 2. Categorise Messages:
-Distinguish between errors and warnings and allow programmers to configure their levels of strictness.
+   Distinguish between errors and warnings and allow programmers to configure their levels of strictness.
 
 3. Use Examples:
-Whenever possible, show examples of both the incorrect and correct usage of a construct.
+   Whenever possible, show examples of both the incorrect and correct usage of a construct.
 
 4. Emphasize Readability:
-Use consistent formatting and avoid overwhelming the programmer with excessively verbose or overly technical messages.
+   Use consistent formatting and avoid overwhelming the programmer with excessively verbose or overly technical messages.
 
 
 
@@ -184,7 +186,7 @@ typedef enum {
     SUCCESS = 0,          // Operation successful
     ERR_ALLOCATION = 1,   // Memory allocation error
     ERR_FILE = 2,         // File operation error
-    ERR_OVERFLOW = 3,     // Overflow (e.g., unique ID, scope levels)
+    ERR_OVERFLOW = 3,     // Overflow (e.g. unique ID, scope levels)
     ERR_NOT_FOUND = 4,    // Symbol not found
     ERR_INVALID = 5,      // Invalid input or state
 } ReturnCode;
@@ -363,7 +365,7 @@ void logErrorToFile(ReturnCode code, const char *context, const char *logFile) {
 }
 ```
 
-Benefits
+Benefits:
 - Consistency: All functions handle errors in a uniform way.
 - Readability: Clear and standardised return codes.
 - Scalability: Easy to add new error types or improve error handling without changing all functions.
