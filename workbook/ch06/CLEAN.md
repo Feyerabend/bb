@@ -6,8 +6,10 @@ to read, understand, and maintain. Popularized by Robert C. Martin (Uncle Bob) i
 *Clean Code: A Handbook of Agile Software Craftsmanship*, the concept is rooted in principles
 of simplicity, clarity, and responsibility.
 
-Some projects follow below, but perhaps even more imporant: discuss in a group the
-pro and cons of "clean code."
+Below are some project ideas to explore, but perhaps even more important is engaging in a
+group discussion about the pros and cons of "clean code." Such discussions can deepen your
+understanding of its principles, reveal practical challenges, and help you critically evaluate
+when and how to apply clean code practices effectively.
 
 __Core Principles of Clean Code__
 
