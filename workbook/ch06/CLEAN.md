@@ -34,7 +34,7 @@ __Core Principles of Clean Code__
 	- Internal details should be hidden behind clear interfaces, following the principle of information hiding.
 
 
-### Practical Examples
+#### Practical Examples
 
 __1. Clear Naming__
 
@@ -126,7 +126,7 @@ total_price = calculate_total(price, quantity)
 total_cost = calculate_total(cost, quantity)
 ```
 
-### Common Practices and Guidelines
+#### Common Practices and Guidelines
 
 Naming Conventions
 - Use meaningful, descriptive names (e.g. is_active instead of a).
@@ -191,7 +191,7 @@ Influential References
 	- Formatters (e.g., Prettier, Black).
 	- Static analysis tools (e.g., SonarQube).
 
-### Summary
+#### Summary
 
 Clean code emphasizes simplicity, clarity, and maintainability. It is a guiding philosophy for building
 robust and understandable software, particularly for large teams or long-term projects. While there are
@@ -323,7 +323,7 @@ The debate doesn't have to be binary. Here are ways to integrate both perspectiv
   Well-tested, "messy" code might be more reliable than theoretically clean but poorly tested code.
 
 
-### Conclusion
+#### Conclusion
 
 In conclusion, the argument against clean code highlights the inevitability of imperfection
 and the practicalities of development. However, clean code principles remain valuable for reducing
