@@ -15,7 +15,7 @@ into a complete system as a first project or exercise.
 ### The Input Language: Arithmetic Expressions
 
 The input language for our compiler consists of basic arithmetic expressions using the following elements:
-- Operands: Non-negative integers (e.g., 0, 42, 123).
+- Operands: Non-negative integers (e.g. 0, 42, 123).
 - Operators: Standard arithmetic operators: addition (+), subtraction (-), multiplication (*), and division (/).
 - Precedence and Associativity: Operators follow standard precedence rules:
 - Multiplication and division have higher precedence than addition and subtraction.
@@ -57,7 +57,7 @@ SUB
 
 #### Compilation Steps
 
-1. Lexical Analysis (Tokenization):
+1. Lexical Analysis (Tokenisation, Tokenization):
    The compiler reads the input string and breaks it into tokens (e.g. numbers and operators).
    Each token has a type (such as NUMBER, PLUS, MINUS) and possibly a value (e.g. 3).
 
@@ -93,7 +93,7 @@ implement.
 #### Example Virtual Machine Pseudocode:
 
 ```
-initialize stack
+initialise stack
 for each instruction in program:
     if instruction is PUSH:
         push value onto stack
