@@ -50,7 +50,8 @@ EBNF is a notation for formalising the grammar rules of a language.
 <number>        ::= [0-9]+ .
 ```
 
-Explanation of Grammar
+### Explanation of Grammar
+
 1. Program Structure:
 - A program consists of a block followed by a `.` to signify its end.
 
@@ -67,13 +68,14 @@ Explanation of Grammar
 - Assignments (:=).
 - Procedure calls (call).
 - Compound statements enclosed in begin and end.
+- A statement can be ended with a semicolon.
 - Control flow like if and while.
 
 5. Expressions:
 - Expressions follow arithmetic rules, allowing operators (+, -, *, /) and parentheses.
 
 6. Conditions:
-- Conditions include relational operators (=, #, <, <=, >, >=).
+- Conditions include relational operators (=, #, <, <=, >, >=). They are enclosed by parentheses.
 
 7. Identifiers and Numbers:
 - Identifiers are alphanumeric names starting with a letter or underscore.
