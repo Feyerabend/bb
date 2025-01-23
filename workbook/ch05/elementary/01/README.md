@@ -65,16 +65,188 @@ construction. They also allow learners to focus on core concepts without being b
 idiosyncrasies that may not translate to other programming environments.
 
 
+### Steps in Compiling ...
 
-### Tokenisation ...
+A traditional compiler operates in distinct phases: lexical analysis, syntax analysis, semantic analysis,
+optimisation, and code generation. Each of these phases can be refined or expanded based on the complexity
+of the programming language, the target platform, or optimisation goals.
 
-### Parsing ..
-
-### Analysis
-
-### IR ..
-
-### Code ..
-
+The refinement of compilers often involves *modular design*, where each phase is implemented as a pipeline,
+enabling developers to tweak or replace individual phases for specific goals.
+These can be e.g. optimizations for certain hardware: GPUs, or enhanced debugging capabilities.
 
 
+__Lexical Analysis__
+
+Typically,
+- Beyond tokenisation, more sophisticated error detection for malformed tokens can be added.
+- Preprocessing steps like macro expansion or conditional compilation (e.g. in C/C++) can be
+  integrated into this stage.
+
+Specifically,
+- Convert the source code into a stream of tokens (e.g., keywords, operators, identifiers).
+	- Implementation: Use a finite state machine or a library (like Flex or a custom tokeniser
+      in Python/C++). Here: we make our own tokeniser.
+	- Tokens for PL/0:
+        - Keywords: const, var, procedure, call, begin, end, if, then, while, do.
+	    - Symbols: =, +, -, *, /, (, ), ;, ..
+	    - Identifiers: variable names, procedure names and numbers.
+
+Example:
+
+```pascal
+var x, y; begin x := 10; y := x + 1 end.
+```
+
+Could be tokenised to:
+
+```
+VAR, IDENTIFIER(x), COMMA, IDENTIFIER(y), SEMICOLON, BEGIN, IDENTIFIER(x), ASSIGN, NUMBER(10), SEMICOLON, IDENTIFIER(y), ASSIGN, IDENTIFIER(x), PLUS, NUMBER(1), END, PERIOD
+```
+
+
+__Syntax Analysis__
+
+Typically,
+- Refined with better error recovery strategies, ensuring that the parser continues to analyse
+  code even after encountering errors.
+- Use of more advanced parsing techniques like GLR parsing for ambiguous grammars (useful
+  in natural language programming).
+
+Specifically,
+- Parse the token stream into a syntax tree based on PL/0 grammar. This step ensures the program
+  adheres to the language's grammar rules.
+- Use a recursive descent parser or a parser generator like ANTLR. The parser will build a
+  abstract syntax tree (AST) for further stages. Here, we will make our own parser.
+
+Example:
+
+```pascal
+begin x := 10; y := x + 1 end.
+```
+
+Output AST:
+
+```
+Program
+└── Block
+    └── Statements
+        ├── Assignment (x := 10)
+        └── Assignment (y := x + 1)
+```
+
+
+__Semantic Analysis__
+
+Typically,
+- Enrich type checking to include flow-sensitive type inference (e.g. checking variable
+  initialisation across branches).
+- Add support for advanced features like dependent types or type-driven program synthesis.
+
+Specifically,
+- Ensure the program is semantically correct (e.g., no undefined variables, type mismatches).
+	- Symbol Table: Track declarations (const, var, procedure) and ensure variables are
+      declared before use.
+	- Type Checking: PL/0 doesn't have complex types, but ensure numbers and variables are
+      used correctly.
+	- Scope Management: Handle scopes for procedure declarations, divided into local and global.
+
+Example:
+
+```pascal
+begin x := 10; z := x + 1 end.
+```
+
+Output:
+
+```
+Error: z is not declared.
+```
+
+
+__Intermediate Code Generation__
+
+Typically,
+- Introduce high-level Intermediate Representations (IR) for easier analysis and optimisation.
+  For example, SSA (Static Single Assignment) form is widely used for optimisation.
+- Multi-level IRs: A high-level IR (close to source) and a low-level IR (close to assembly)
+  can provide better optimization opportunities.
+
+Specifically,
+- Translate the AST into an intermediate representation (IR) like three-address code (TAC)
+  or a stack-based code (often used for PL/0).
+- PL/0 typically targets a stack-based virtual machine (e.g. instructions like
+  PUSH, ADD, CALL, etc.).
+
+Example: AST for y := x + 1:
+
+```
+Assignment
+├── LHS: y   -- left hand side
+└── RHS: +   -- right hand side 
+    ├── x
+    └── 1
+```
+
+IR for stack machine:
+
+```
+LOAD x
+PUSH 1
+ADD
+STORE y
+```
+
+
+__Optimisation__
+
+Typically,
+- Refined into high-level optimisations (e.g. loop transformations, constant folding)
+  and low-level optimizations (e.g. register allocation, instruction scheduling).
+- Profile-guided optimisations (using runtime data to inform compilation) can enhance
+  performance.
+
+Specifically,
+- Optimise the intermediate code for performance.
+    - For PL/0, optimisations can include:
+	    - Constant Folding: Replace x := 5 + 3 with x := 8 at compile time.
+	    - Dead Code Elimination: Remove unreachable or unused code.
+	    - Peephole Optimisation: Simplify redundant instructions
+          (e.g. replace PUSH 0; ADD with NOP).
+
+
+__Code Generation__
+
+Typically,
+- Refine to support multiple backends, allowing cross-compilation for different architectures.
+- Techniques like Just-In-Time (JIT) compilation or Ahead-Of-Time (AOT) compilation can be layered on top for different deployment scenarios.
+
+Specifically,
+- Generate target code for the PL/0 virtual machine or hardware.
+    - PL/0 VM Code Example:
+
+```
+PUSH 10     ; Push constant 10 to stack
+STORE x     ; Store to variable x
+LOAD x      ; Load x to stack
+PUSH 1      ; Push constant 1 to stack
+ADD         ; Add top two values on the stack
+STORE y     ; Store result to variable y
+```
+
+
+__Post-Compilation__
+
+Typically,
+- Tools like linkers and loaders can perform additional optimizations, such as
+  dead code elimination and binary rewriting.
+- Static analysis tools can further check for issues like memory safety or
+  undefined behavior.
+
+Specifically,
+- Handle final steps, such as linking (if targeting real hardware) or loading
+  the code into a virtual machine.
+
+For PL/0, this step often involves:
+- Writing the binary or assembly-like code into a file.
+- Providing a virtual machine to execute the generated code.
