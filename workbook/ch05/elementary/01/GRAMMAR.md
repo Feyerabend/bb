@@ -3,14 +3,19 @@
 
 The grammar of PL/0 can be expressed in Extended Backus-Naur Form (EBNF).
 EBNF is a notation for formalising the grammar rules of a language.
+Here we will though introduce a modified version of PL/0.
 
 ```ebnf
 <program>       ::= <block> "." .
 
 <block>         ::= [ "const" <const-declaration> ";" ]
                     [ "var" <var-declaration> ";" ]
-                    { "procedure" <ident> ";" <block> ";" }
+                    { "procedure" <ident> ";" <procedure-body> ";" }
                     <statement> .
+
+<procedure-body> ::= [ "const" <const-declaration> ";" ]
+                     [ "var" <var-declaration> ";" ]
+                     <statement> .
 
 <const-declaration> ::= <ident> "=" <number> { "," <ident> "=" <number> } .
 
@@ -57,6 +62,7 @@ __1. Program Structure__
 
 __2. Block__
 - A block may declare constants, variables, and procedures, followed by a main statement.
+- No nested procedures are allowed; only one level procedures.
 
 __3. Declarations__
 - const declarations assign constant values to identifiers.
