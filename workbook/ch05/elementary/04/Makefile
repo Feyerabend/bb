@@ -4,7 +4,7 @@ PYTH = python3
 
 SRCDIR = src
 OBJDIR = obj
-SCRIPTS = ./scripts
+SCRIPTS = ./tools
 TESTDIR = ./tests
 SAMPLESDIR = ./samples
 BINDIR = .
