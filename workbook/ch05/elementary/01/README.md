@@ -47,7 +47,7 @@ would use 'begin a := b; c := d; end' with each semicolon clearly indicating the
 This adjustment simplifies the parsing process and aligns PL/0's syntax more closely with modern
 programming languages, making it easier for students to grasp and work with.
 
-Limiting procedures to the top level in PL/0 simplifies scoping and improves readability by avoiding the complexity of managing nested scopes and variable access. This change makes the interpreter or compiler easier to implement, as it eliminates the need for complex call stacks or environment management. While it reduces the language’s expressiveness by removing the ability to encapsulate helper functions within procedures, it aligns with PL/0’s minimalist and educational focus. The trade-off sacrifices the power of closures and localized abstractions but keeps the language straightforward for learners and implementers.
+Limiting procedures to the top level in PL/0 simplifies scoping and improves readability by avoiding the complexity of managing nested scopes and variable access. This change makes the interpreter or compiler easier to implement, as it eliminates the need for complex call stacks or environment management. While it reduces the language’s expressiveness by removing the ability to encapsulate helper functions within procedures, it aligns with PL/0’s minimalist and educational focus. The trade-off sacrifices the power of closures and localised abstractions but keeps the language straightforward for learners and implementers.
 
 Thus,
 - The "odd" keyword is removed to streamline the grammar, as its utility is limited
@@ -73,7 +73,7 @@ of the programming language, the target platform, or optimisation goals.
 
 The refinement of compilers often involves *modular design*, where each phase is implemented as a pipeline,
 enabling developers to tweak or replace individual phases for specific goals.
-These can be e.g. optimizations for certain hardware: GPUs, or enhanced debugging capabilities.
+These can be e.g. optimisations for certain hardware: GPUs, or enhanced debugging capabilities.
 
 
 __Lexical Analysis__
@@ -170,7 +170,7 @@ Typically,
 - Introduce high-level Intermediate Representations (IR) for easier analysis and optimisation.
   For example, SSA (Static Single Assignment) form is widely used for optimisation.
 - Multi-level IRs: A high-level IR (close to source) and a low-level IR (close to assembly)
-  can provide better optimization opportunities.
+  can provide better optimisation opportunities.
 
 Specifically,
 - Translate the AST into an intermediate representation (IR) like three-address code (TAC)
@@ -202,7 +202,7 @@ __Optimisation__
 
 Typically,
 - Refined into high-level optimisations (e.g. loop transformations, constant folding)
-  and low-level optimizations (e.g. register allocation, instruction scheduling).
+  and low-level optimisations (e.g. register allocation, instruction scheduling).
 - Profile-guided optimisations (using runtime data to inform compilation) can enhance
   performance.
 
@@ -238,7 +238,7 @@ STORE y     ; Store result to variable y
 __Post-Compilation__
 
 Typically,
-- Tools like linkers and loaders can perform additional optimizations, such as
+- Tools like linkers and loaders can perform additional optimisations, such as
   dead code elimination and binary rewriting.
 - Static analysis tools can further check for issues like memory safety or
   undefined behavior.
