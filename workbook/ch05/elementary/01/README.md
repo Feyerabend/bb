@@ -39,13 +39,25 @@ e.g. '(x < y)'. This change not only makes the syntax more explicit and visually
 aligns with the familiarity that many programmers already have with conditional syntax in widely-used
 languages.
 
-Finally, we adapt the handling of statement terminations by introducing semicolons (;) to mark the
+Third, we adapt the handling of statement terminations by introducing semicolons (;) to mark the
 end of statements rather than using them as separators. In the original PL/0, semicolons acted as
 delimiters between consecutive statements, which differs from the more common convention of treating
 semicolons as terminators. For example, instead of writing 'begin a := b; c := d end', the new grammar
 would use 'begin a := b; c := d; end' with each semicolon clearly indicating the conclusion of a statement.
 This adjustment simplifies the parsing process and aligns PL/0's syntax more closely with modern
 programming languages, making it easier for students to grasp and work with.
+
+Limiting procedures to the top level in PL/0 simplifies scoping and improves readability by avoiding the complexity of managing nested scopes and variable access. This change makes the interpreter or compiler easier to implement, as it eliminates the need for complex call stacks or environment management. While it reduces the language’s expressiveness by removing the ability to encapsulate helper functions within procedures, it aligns with PL/0’s minimalist and educational focus. The trade-off sacrifices the power of closures and localized abstractions but keeps the language straightforward for learners and implementers.
+
+Thus,
+- The "odd" keyword is removed to streamline the grammar, as its utility is limited
+  and could confuse learners as it is not often represented in languages of today.
+- Parentheses are introduced around conditions, improving clarity and aligning syntax
+  with familiar conventions in languages like C.
+- Semicolons now act as statement terminators instead of separators, simplifying
+  parsing and modernising the syntax.
+- Procedures are limited to the top level, avoiding complex scoping, simplifying
+  implementation, and aligning with PL/0's educational focus.
 
 These changes are not just superficial; they reflect deliberate design choices aimed at making the
 language more intuitive and accessible while providing a better foundation for understanding compiler
