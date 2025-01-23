@@ -52,18 +52,18 @@ EBNF is a notation for formalising the grammar rules of a language.
 
 ### Explanation of Grammar
 
-1. Program Structure:
+__1. Program Structure__
 - A program consists of a block followed by a `.` to signify its end.
 
-2. Block:
+__2. Block__
 - A block may declare constants, variables, and procedures, followed by a main statement.
 
-3. Declarations:
+__3. Declarations__
 - const declarations assign constant values to identifiers.
 - var declarations define variable names.
 - procedure declarations define subprograms that can be invoked.
 
-4. Statements:
+__4. Statements__
 - Statements are the building blocks of the program and include:
 - Assignments (:=).
 - Procedure calls (call).
@@ -71,13 +71,13 @@ EBNF is a notation for formalising the grammar rules of a language.
 - A statement can be ended with a semicolon.
 - Control flow like if and while.
 
-5. Expressions:
+__5. Expressions__
 - Expressions follow arithmetic rules, allowing operators (+, -, *, /) and parentheses.
 
-6. Conditions:
+__6. Conditions__
 - Conditions include relational operators (=, #, <, <=, >, >=). They are enclosed by parentheses.
 
-7. Identifiers and Numbers:
+__7. Identifiers and Numbers__
 - Identifiers are alphanumeric names starting with a letter or underscore.
 - Numbers are sequences of digits.
 
