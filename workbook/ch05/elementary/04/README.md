@@ -121,9 +121,9 @@ At runtime or during code generation:
 1. Data Structures:
 	- Hash tables: For fast symbol lookup.
 	- Linked lists or trees: To handle nested scopes efficiently.
-2.	Nested Scopes:
+2. Nested Scopes:
 	- Use a stack of symbol tables, where the top of the stack represents the current scope.
-3.	Lifetime Management:
+3. Lifetime Management:
 	- When a scope ends, its corresponding table or entries are removed.
 
 
