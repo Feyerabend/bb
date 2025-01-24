@@ -24,7 +24,7 @@ Compilers act as guides, pointing out mistakes and inconsistencies.
 
 2. *Improves Code Quality:*
    Warnings highlight potential issues that may not break the program but could lead to
-   bugs, inefficiencies, or unintended behavior.
+   bugs, inefficiencies, or unintended behaviour.
 
 3. *Enhances Learning:*
    For novice programmers, clear and actionable error messages can teach language rules,
@@ -37,7 +37,7 @@ Compilers act as guides, pointing out mistakes and inconsistencies.
 
 ### 2. Types of Errors and Warnings
 
-Errors and warnings can be categorized based on their source and severity:
+Errors and warnings can be categorised based on their source and severity:
 
 #### Errors
 

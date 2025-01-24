@@ -52,6 +52,6 @@ Each token is associated with its type (such as NUMBER, IDENT) and may have a va
 
 ### Summary
 
-The tokenization process converts the above PL/E program into tokens like CONSTSYM, IDENT, BECOMES, etc.,
+The tokenisation process converts the above PL/E program into tokens like CONSTSYM, IDENT, BECOMES, etc.,
 which are then parsed according to the EBNF grammar rules. This leads to the construction of an Abstract
 Syntax Tree (AST), forming the backbone of the compilation process.

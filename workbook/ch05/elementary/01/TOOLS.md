@@ -76,5 +76,6 @@ by Flex due to Flex’s improvements in performance and features.
 
 * Flex and Lex: Focus on generating lexical analysers (tokenisers).
 * Bison: Focuses on generating parsers (structure analysers).
-* ANTLR: A more modern and powerful tool that combines both lexical analysis and parsing, supporting multiple programming languages.
+* ANTLR: A more modern and powerful tool that combines both lexical analysis and parsing,
+  supporting multiple programming languages.
 
