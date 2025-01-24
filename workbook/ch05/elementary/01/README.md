@@ -64,8 +64,10 @@ language more intuitive and accessible while providing a better foundation for u
 construction. They also allow learners to focus on core concepts without being bogged down by
 idiosyncrasies that may not translate to other programming environments.
 
+To avoid some confusion with PL/0, we will call this new language: *PL/E*.
 
-### Steps in Compiling ...
+
+### Steps in Compiling PL/E ...
 
 A traditional compiler operates in distinct phases: lexical analysis, syntax analysis, semantic analysis,
 optimisation, and code generation. Each of these phases can be refined or expanded based on the complexity
@@ -80,28 +82,38 @@ __Lexical Analysis__
 
 Typically,
 - Beyond tokenisation, more sophisticated error detection for malformed tokens can be added.
-- Preprocessing steps like macro expansion or conditional compilation (e.g. in C/C++) can be
-  integrated into this stage.
+- Preprocessing steps like comments removal, macro expansion or conditional compilation
+  (e.g. in C/C++) can be integrated into this stage.
 
 Specifically,
+
 - Convert the source code into a stream of tokens (e.g., keywords, operators, identifiers).
 	- Implementation: Use a finite state machine or a library (like Flex or a custom tokeniser
-      in Python/C++). Here: we make our own tokeniser.
-	- Tokens for PL/0:
+      in Python/C++). Here: we make our own [tokeniser](TOKENS.md).
+	- Tokens for PL/E:
         - Keywords: const, var, procedure, call, begin, end, if, then, while, do.
-	    - Symbols: =, +, -, *, /, (, ), ;, ..
+	    - Symbols: '=', '+', '-', '*', '/', '(', ')', ';', '.'.
 	    - Identifiers: variable names, procedure names and numbers.
 
 Example:
 
 ```pascal
-var x, y; begin x := 10; y := x + 1 end.
+var x, y; begin x := 10; y := x + 1; end.
 ```
 
 Could be tokenised to:
 
 ```
-VAR, IDENTIFIER(x), COMMA, IDENTIFIER(y), SEMICOLON, BEGIN, IDENTIFIER(x), ASSIGN, NUMBER(10), SEMICOLON, IDENTIFIER(y), ASSIGN, IDENTIFIER(x), PLUS, NUMBER(1), END, PERIOD
+VAR,
+IDENTIFIER(x),
+COMMA,
+IDENTIFIER(y),
+SEMICOLON,
+BEGIN,
+IDENTIFIER(x), ASSIGN, NUMBER(10), SEMICOLON,
+IDENTIFIER(y), ASSIGN, IDENTIFIER(x), PLUS, NUMBER(1),
+END,
+PERIOD
 ```
 
 

@@ -1,5 +1,5 @@
 
-## Rules for Variables and Scope in PL/0
+## Rules for Variables and Scope in the modified PL/0
 
 
 __1. Declaration and Scope__

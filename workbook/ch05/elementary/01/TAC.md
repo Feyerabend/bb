@@ -19,9 +19,9 @@ TAC represents the intermediate steps of program execution in the form of:
   constants, or temporary variables.
 - Examples of TAC instructions:
     - t1 = a + b (binary operation)
-	- if t1 < 10 goto L1 (conditional jump)
-	- param x (function call arguments)
-	- call proc_name (procedure invocation)
+    - if t1 < 10 goto L1 (conditional jump)
+    - param x (function call arguments)
+    - call proc_name (procedure invocation)
 
 
 ### AST to TAC: The General Process
