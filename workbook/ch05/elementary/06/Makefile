@@ -67,12 +67,6 @@ interpret: $(TOOLSDIR)/ast_interpreter.py
 		$(PYTH) $(TOOLSDIR)/ast_interpreter.py $$file; \
 	done
 
-code: $(TOOLSDIR)/ast_generator.py
-	@for file in $(ASTDIR)/*.json; do \
-		base=$$(basename $$file .json); \
-		echo "Generating code $$file"; \
-		$(PYTH) $(TOOLSDIR)/ast_generator.py $$file; \
-	done
 
 # make -- compiles
 # make clean -- clean up

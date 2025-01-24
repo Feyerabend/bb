@@ -11,8 +11,7 @@ BINDIR = .
 OUTPUTDIR = ./output
 TOKENSDIR = ./tokens
 ASTDIR = ./ast
-SYMBOLDIR = ./symbols
-TABLEDIR = ./table
+SYMBOLDIR = ./table
 TOOLSDIR = ./tools
 
 SOURCES = $(wildcard $(SRCDIR)/*.c)
@@ -29,40 +28,51 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJDIR) $(TARGET) $(OUTPUTDIR) $(TOKENSDIR) $(ASTDIR) $(SYMBOLDIR) $(TABLEDIR)
+	rm -rf $(OBJDIR) $(TARGET) $(OUTPUTDIR) $(TOKENSDIR) $(ASTDIR) $(SYMBOLDIR)
 
 samples: $(TARGET)
 	@mkdir -p $(ASTDIR)  # 'ast' directory exists
 	@mkdir -p $(OUTPUTDIR)  # 'output' directory exists
 	@mkdir -p $(TOKENSDIR)  # 'token' directory exists
-	@mkdir -p $(SYMBOLDIR)  # 'table' directory exists
 	@for file in $(SAMPLESDIR)/sample*.pas; do \
 		base=$$(basename $$file .pas); \
 		tokens_output="$(TOKENSDIR)/$$base.token"; \
 		annotated_tokens_output="$(TOKENSDIR)/$$base.antok"; \
 		ast_output="$(ASTDIR)/$$base.json"; \
-		symbol_table_output="$(SYMBOLDIR)/$$base.txt"; \
 		echo "\n- - - - - - -"; \
-		echo "Running $$file -> $$tokens_output, $$annotated_tokens_output, $$ast_output $$symbol_table_output"; \
-		./main $$file $$tokens_output $$annotated_tokens_output $$ast_output $$symbol_table_output; \
+		echo "Running $$file -> $$tokens_output, $$annotated_tokens_output, $$ast_output"; \
+		./main $$file $$tokens_output $$annotated_tokens_output $$ast_output; \
 	done
 
 table: $(SCRIPTS)/symbol.py
-	@mkdir -p $(TABLEDIR)  # 'table' directory exists
+	@mkdir -p $(SYMBOLDIR)  # 'table' directory exists
 	@for file in $(ASTDIR)/*.json; do \
 		base=$$(basename $$file .json); \
-		symbol_output="$(TABLEDIR)/$$base.symbol"; \
+		symbol_output="$(SYMBOLDIR)/$$base.symbol"; \
 		echo "Generating symbol table for $$file -> $$symbol_output"; \
 		$(PYTH) $(SCRIPTS)/symbol.py -i $$file -o $$symbol_output; \
+	done
+
+valid: $(TOOLSDIR)/ast_checker.py
+	@for file in $(ASTDIR)/*.json; do \
+		base=$$(basename $$file .json); \
+		echo "Check $$file"; \
+		$(PYTH) $(TOOLSDIR)/ast_checker.py $$file; \
 	done
 
 interpret: $(TOOLSDIR)/ast_interpreter.py
 	@for file in $(ASTDIR)/*.json; do \
 		base=$$(basename $$file .json); \
 		echo "Interpreting $$file"; \
-		p$(PYTH) $(TOOLSDIR)/ast_interpreter.py $$file; \
+		$(PYTH) $(TOOLSDIR)/ast_interpreter.py $$file; \
 	done
 
+code: $(TOOLSDIR)/ast_generator.py
+	@for file in $(ASTDIR)/*.json; do \
+		base=$$(basename $$file .json); \
+		echo "Generating code $$file"; \
+		$(PYTH) $(TOOLSDIR)/ast_generator.py $$file; \
+	done
 
 # make -- compiles
 # make clean -- clean up

@@ -124,12 +124,15 @@ def main(argv):
 
     if outputfile:
         with open(outputfile, 'w') as output_file:
+            # Combine the outputs into a single block with section headers
             combined_output = (
                 ["# Constants"] + const_output +
                 ["", "# Variables and Procedures"] + varproc_output
             )
+            # Write the combined output to the file
             output_file.write("\n".join(combined_output))
     else:
+        # Print the combined output to the console
         print("# Constants")
         print("\n".join(const_output))
         print("\n# Variables and Procedures")
