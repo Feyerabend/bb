@@ -4,8 +4,8 @@
 
 __1. Declaration and Scope__
 
-- In this implementation we will separate mutable from immutable variables. The immutable
-  variables are corresponding to constants (const declaration) in the programs.
+- In this implementation we will separate *mutable variables* from *immutable variables*.
+  The immutable variables are corresponding to constants (const declaration) in the programs.
 
 - Variables must be declared in the declaration section of a block before they can be used,
   which goes for the constants also. This applies to the main program block as well as procedure
@@ -22,6 +22,7 @@ __2. Global vs. Local Variables__
     - Variables declared in the main program block are global.
     - They are accessible throughout the entire program, including inside procedures,
       unless shadowed by a local variable with the same name.
+
 - Local variables:
     - Variables declared within a procedure block are local to that procedure.
     - They are not accessible outside the procedure in which they are defined.
@@ -53,6 +54,7 @@ __5. Variable Shadowing__
 __6. Procedures and Parameters__
 
 - PL/0 does not support procedure parameters in its standard form. We do not either.
+  A program in our case can look like:
 
 ```pascal
 var x, y;           // global variables
