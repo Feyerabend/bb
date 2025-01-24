@@ -88,7 +88,7 @@ __7. Identifiers and Numbers__
 - Numbers are sequences of digits.
 
 
-### Example PL/0 Program
+### Example Modified PL/0 Program
 
 ```pascal
 const max = 100;
