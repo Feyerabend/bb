@@ -47,7 +47,12 @@ would use 'begin a := b; c := d; end' with each semicolon clearly indicating the
 This adjustment simplifies the parsing process and aligns PL/0's syntax more closely with modern
 programming languages, making it easier for students to grasp and work with.
 
-Limiting procedures to the top level in PL/0 simplifies scoping and improves readability by avoiding the complexity of managing nested scopes and variable access. This change makes the interpreter or compiler easier to implement, as it eliminates the need for complex call stacks or environment management. While it reduces the language’s expressiveness by removing the ability to encapsulate helper functions within procedures, it aligns with PL/0’s minimalist and educational focus. The trade-off sacrifices the power of closures and localised abstractions but keeps the language straightforward for learners and implementers.
+Limiting procedures to the top level in PL/0 simplifies scoping and improves readability by avoiding the
+complexity of managing nested scopes and variable access. This change makes the interpreter or compiler
+easier to implement, as it eliminates the need for complex call stacks or environment management. While
+it reduces the language's expressiveness by removing the ability to encapsulate helper functions within
+procedures, it aligns with PL/0's minimalist and educational focus. The trade-off sacrifices the power
+of closures and localised abstractions but keeps the language straightforward for learners and implementers.
 
 Thus,
 - The "odd" keyword is removed to streamline the grammar, as its utility is limited
@@ -98,18 +103,22 @@ Specifically,
 Example:
 
 ```pascal
-var x, y; begin x := 10; y := x + 1; end.
+var sum;
+
+begin
+    sum := 4 + 2;
+end.
 ```
 
 Could be tokenised to:
 
 ```
-VAR, IDENTIFIER(x), COMMA, IDENTIFIER(y), SEMICOLON,
-BEGIN,
-IDENTIFIER(x), ASSIGN, NUMBER(10), SEMICOLON,
-IDENTIFIER(y), ASSIGN, IDENTIFIER(x), PLUS, NUMBER(1),
-END,
-PERIOD
+VARSYM IDENT sum SEMICOLON ENDOFLINE
+ENDOFLINE
+BEGINSYM ENDOFLINE
+IDENT sum BECOMES NUMBER 4 PLUS NUMBER 2 SEMICOLON ENDOFLINE
+ENDSYM PERIOD
+ENDOFFILE
 ```
 
 
