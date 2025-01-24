@@ -127,11 +127,10 @@ __Syntax Analysis__
 Typically,
 - Refined with better error recovery strategies, ensuring that the parser continues to analyse
   code even after encountering errors.
-- Use of more advanced parsing techniques like GLR parsing for ambiguous grammars (useful
-  in natural language programming).
+- Use of more advanced parsing techniques like Packrat parsing for ambiguous grammars.
 
 Specifically,
-- Parse the token stream into a syntax tree based on PL/0 grammar. This step ensures the program
+- Parse the token stream into a syntax tree based on PL/E grammar. This step ensures the program
   adheres to the language's grammar rules.
 - Use a recursive descent parser or a parser generator like ANTLR. The parser will build a
   abstract syntax tree (AST) for further stages. Here, we will make our own parser.
@@ -139,17 +138,25 @@ Specifically,
 Example:
 
 ```pascal
-begin x := 10; y := x + 1 end.
+var sum;
+
+begin
+    sum := 4 + 2;
+end.
 ```
 
 Output AST:
 
 ```
-Program
-└── Block
-    └── Statements
-        ├── Assignment (x := 10)
-        └── Assignment (y := x + 1)
+PROGRAM
+  BLOCK
+    VAR_DECL: sum
+    BLOCK
+      ASSIGNMENT: sum
+        OPERATOR: +
+          EXPRESSION
+            NUMBER: 4
+          NUMBER: 2
 ```
 
 
@@ -161,24 +168,32 @@ Typically,
 - Add support for advanced features like dependent types or type-driven program synthesis.
 
 Specifically,
-- Ensure the program is semantically correct (e.g., no undefined variables, type mismatches).
+- Ensure the program is semantically correct (e.g. no undefined variables, type mismatches).
 	- Symbol Table: Track declarations (const, var, procedure) and ensure variables are
-      declared before use.
-	- Type Checking: PL/0 doesn't have complex types, but ensure numbers and variables are
-      used correctly.
+    declared before use.
+	- Type Checking: PL/E doesn't have complex types, but ensure numbers and variables are
+    used correctly.
 	- Scope Management: Handle scopes for procedure declarations, divided into local and global.
 
 Example:
 
 ```pascal
-begin x := 10; z := x + 1 end.
+var sum;
+
+begin
+    sum := 4 + 2 + z;
+end.
 ```
 
 Output:
 
 ```
-Error: z is not declared.
+Warning: Identifier 'z' used before declaration.
 ```
+
+(We have some error checking outside of the core compilation pipeline, to avoid introduce
+too many concepts at once. Therefore, the warning can be seen if the Python script for
+symbol.py is invoked.)
 
 
 __Intermediate Code Generation__
@@ -193,7 +208,7 @@ Specifically,
 - Translate the AST into an intermediate representation (IR) like three-address code (TAC)
   or a stack-based code (often used for PL/0).
 - PL/0 typically targets a stack-based virtual machine (e.g. instructions like
-  PUSH, ADD, CALL, etc.).
+  PUSH, ADD, CALL, etc.). Which we will also do with PL/E.
 
 Example: AST for y := x + 1:
 
@@ -236,11 +251,12 @@ __Code Generation__
 
 Typically,
 - Refine to support multiple backends, allowing cross-compilation for different architectures.
-- Techniques like Just-In-Time (JIT) compilation or Ahead-Of-Time (AOT) compilation can be layered on top for different deployment scenarios.
+- Techniques like Just-In-Time (JIT) compilation or Ahead-Of-Time (AOT) compilation can be
+  layered on top for different deployment scenarios.
 
 Specifically,
 - Generate target code for the PL/0 virtual machine or hardware.
-    - PL/0 VM Code Example:
+    - PL/0/E VM Code Example:
 
 ```
 PUSH 10     ; Push constant 10 to stack
