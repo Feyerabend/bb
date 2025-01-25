@@ -23,7 +23,22 @@ class TACVM:
         self.frames = [Frame("global")]
         self.current_frame = self.frames[0]
         self.labels = {}
-        self.call_stack = []
+        self.call_stack = []  # (return_pc, previous_frame)
+
+    def get_variable(self, name):
+        # current frame first
+        value = self.current_frame.get_var(name)
+        if value is not None:
+            return value
+        # fall back: global frame
+        return self.frames[0].get_var(name)
+
+    def set_variable(self, name, value):
+        # update global if exists, else use current frame
+        if self.frames[0].get_var(name) is not None:
+            self.frames[0].set_var(name, value)
+        else:
+            self.current_frame.set_var(name, value)
 
     def run(self):
         for idx, instr in enumerate(self.tac):
@@ -37,7 +52,10 @@ class TACVM:
             op = instr["op"]
 
             if op == "LOAD":
-                value = int(instr["arg1"]) if instr["arg1"].isdigit() else self.current_frame.get_var(instr["arg1"])
+                if instr["arg1"].isdigit():
+                    value = int(instr["arg1"])
+                else:
+                    value = self.get_variable(instr["arg1"])
                 self.current_frame.set_temp(instr["result"], value)
 
             elif op in ("+", "-", "!=", ">", "<="):
@@ -53,11 +71,11 @@ class TACVM:
                     result = 1 if left > right else 0
                 elif op == "<=":
                     result = 1 if left <= right else 0
-                self.current_frame.set_temp(instr["result"], result) 
+                self.current_frame.set_temp(instr["result"], result)
 
             elif op == "=":
                 value = self.current_frame.get_temp(instr["arg1"])
-                self.current_frame.set_var(instr["result"], value)
+                self.set_variable(instr["result"], value)
 
             elif op == "IF_NOT":
                 if not self.current_frame.get_temp(instr["arg1"]):
@@ -69,13 +87,22 @@ class TACVM:
                 continue
 
             elif op == "CALL":
-                self.call_stack.append(self.pc + 1)
+                # save return address and current frame
+                self.call_stack.append((self.pc + 1, self.current_frame))
+                # create new procedure frame
+                new_frame = Frame(instr["arg1"])
+                self.frames.append(new_frame)
+                self.current_frame = new_frame
                 self.pc = self.labels[instr["arg1"]]
                 continue
 
             elif op == "RETURN":
                 if self.call_stack:
-                    self.pc = self.call_stack.pop()
+                    ret_pc, prev_frame = self.call_stack.pop()
+                    # restore previous frame
+                    self.frames.pop()
+                    self.current_frame = prev_frame
+                    self.pc = ret_pc
                     continue
                 else:
                     break
@@ -121,8 +148,11 @@ tac = [
 ]
 
 vm = TACVM(tac)
+
+vm.frames[0].set_var("a", 0)
+vm.frames[0].set_var("b", 0)
 vm.run()
 
-print("GCD =", vm.current_frame.get_var("gcd"))  # GCD = 6
-print("a =", vm.current_frame.get_var("a"))      # a = 6
-print("b =", vm.current_frame.get_var("b"))      # b = 0
+print("GCD =", vm.frames[0].get_var("gcd"))  #  GCD = 6
+print("a =", vm.frames[0].get_var("a"))      #  a = 6
+print("b =", vm.frames[0].get_var("b"))      #  b = 0
