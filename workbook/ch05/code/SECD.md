@@ -101,5 +101,5 @@ Applications of the SECD Machine
 Advantages of the SECD Model
 - Simplicity: Its minimal architecture makes it an excellent tool for teaching the basics of functional language execution.
 - Modularity: The separation of concerns between stack, environment, control, and dump helps clarify the steps in expression evaluation.
-- Foundation for Optimization: Many modern functional language optimizations (e.g., tail recursion, garbage collection) have roots in SECD implementations.
+- Foundation for Optimisation: Many modern functional language optimisations (e.g. tail recursion, garbage collection) have roots in SECD implementations.
 
