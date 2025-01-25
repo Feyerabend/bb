@@ -1,5 +1,5 @@
 
-## Semantics: Symbol Tables
+## Internedeiate Code: Three Address Code (TAC)
 
 __Build__
 
