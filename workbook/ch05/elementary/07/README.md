@@ -5,7 +5,6 @@ __Build__
 
 ```shell
 make clean
-make
 make samples
 ```
 
