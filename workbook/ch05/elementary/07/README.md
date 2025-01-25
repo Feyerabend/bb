@@ -38,19 +38,19 @@ __Characteristics of TAC__
 
 __Typical TAC Instructions__
 
-- *Assignment*: `x = y op z` (e.g., `t1 = a + b`)
+- *Assignment*: `x = y op z` (e.g. `t1 = a + b`)
 
-- *Copy*: `x = y` (e.g., `t2 = t1`)
+- *Copy*: `x = y` (e.g. `t2 = t1`)
 
-- *Unary Operations*: `x = op y` (e.g., `t3 = -t2`)
+- *Unary Operations*: `x = op y` (e.g. `t3 = -t2`)
 
-- *Conditional Jumps*: `if x relop y goto L` (e.g., `if t1 < t2 goto L1`)
+- *Conditional Jumps*: `if x relop y goto L` (e.g. `if t1 < t2 goto L1`)
 
-- *Unconditional Jumps*: `goto L` (e.g., `goto L2`)
+- *Unconditional Jumps*: `goto L` (e.g. `goto L2`)
 
-- *Function Calls*: `call func, args` (e.g., `call foo, t1, t2`)
+- *Function Calls*: `call func, args` (e.g. `call foo, t1, t2`)
 
-- *Return*: `return x` (e.g., `return t3`)
+- *Return*: `return x` (e.g. `return t3`)
 
 
 __Example__
@@ -122,3 +122,7 @@ __Cons__
 In summary, Three-Address Code is a crucial intermediate representation in compilers, bridging the gap between
 high-level source code and low-level machine code. It simplifies optimization, analysis, and code generation,
 making it a fundamental tool in compiler design.
+
+
+### Example
+
