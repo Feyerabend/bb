@@ -1,5 +1,5 @@
 
-## Internedeiate Code: Three Address Code (TAC)
+## Intermediate Code: Three Address Code (TAC)
 
 __Build__
 
