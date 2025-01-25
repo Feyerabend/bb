@@ -157,7 +157,7 @@ ASTNode *statement() {
         do {
             addChild(blockNode, statement());
             if (!accept(SEMICOLON)) {
-                break;  // allow for optional final semicolon
+                break;
             }
         } while (symbol != ENDSYM && symbol != ENDOFFILE);
         if (!accept(ENDSYM)) {

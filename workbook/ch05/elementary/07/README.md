@@ -7,129 +7,119 @@ __Build__
 make clean
 make
 make samples
-make table
 ```
 
-The provided code fragments illustrate the basic structure for a simple symbol table build in a
-language close to PL/0. The symbol table relies on an *Abstract Syntax Tree* (AST) for the extraction
-of information, and thus the AST has to be built *before* extraction of the symbol table.
+From the richness of the *Abstract Syntax Tree* (AST) we can build our code. This time it
+will be intermediate into Three Address Code, a step before building the ultimate goal of
+more executable code.
 
 __View__
 
-First `make table` to generate symbol tables for the samples. Then in the directory of 'tools' you'll
-find a HTML-file: `table_yaml.html`. Open the file locally, and search for the symbol table representation
-in the 'table' folder.
-
+..
 
 ### Overview and Uses
 
-A symbol table is a data structure used in programming languages, particularly in compilers and interpreters.
-It stores information about the various symbols (identifiers) in a program, such as variables, constants,
-procedures, and functions.
-
-1. Name: The identifier (such as variable name, procedure name).
-2. Attributes: Information about the identifier, such as:
-	- Type: Integer, real, procedure, etc.
-	- Scope: Where the symbol is valid (local, global).
-	- Memory location: Address or offset for storage.
-	- Other properties: Parameter count, size, modifiers, etc.
-
-Symbol tables essentially maps symbol names and their attributes.
-
-#### Common Uses
-
-1. Compilation and Interpretation: Symbol tables are essential during both compilation and interpretation,
-   as they help the compiler/interpreter understand what each symbol represents.
-2. Scope Resolution: They help resolve scopes by maintaining separate entries for global, local, and nested blocks.
-3. Type Checking: Type information stored in the symbol table allows the compiler to enforce type rules.
-4. Code Optimisation: They enable optimisations such as constant folding and register allocation.
-5. Error Detection: A symbol table helps identify undeclared variables or mismatched types during semantic analysis.
-
-The importance of symbol tables depends on the task: In compilers, they are indispensable for parsing,
-semantic analysis, and code generation. In simple interpreters or one-pass translators, a lightweight
-implementation of symbol tables might suffice, or they may not be explicitly constructed if the program
-doesn't need complex scoping or type checking.
+*Three-Address Code (TAC)* is an intermediate representation used in compilers. It is a low-level,
+linear representation of code that simplifies the translation from high-level source code to
+machine code. TAC is called "three-address" because each instruction typically involves at most
+three operands: two for the input and one for the output. This makes it easier to optimise and
+translate into machine code.
 
 
-### Symbol Tables in a PL/0 Compiler
+__Characteristics of TAC__
 
-PL/0 is a simple teaching-oriented language, and its compiler typically uses symbol tables for tasks like
-handling variables, constants, and procedures.
+1. *Simplicity*: Each TAC instruction is simple and typically performs a single operation.
 
-1. Lexical and Syntactic Analysis:
-	- During lexical analysis, tokens representing identifiers are created.
-	- In syntactic analysis (parsing), entries in the symbol table are created or updated for each identifier
-	  encountered. In this case, the Abstract Syntax Tree (AST) manages the symbols, which are then extracted
-	  from the resulting tree.
+2. *Explicit Temporaries*: Intermediate results are stored in temporary variables, making the flow of data explicit.
 
-2. Handling Scopes:
-	- PL/0 supports nested procedures, which means the symbol table must manage nested scopes. This is often
-      implemented as a stack of symbol tables or a tree structure.
-	- When entering a new block, a new table or scope level is created.
-	- When exiting a block, the corresponding scope is removed.
+3. *Low-Level Abstraction*: TAC is closer to machine code than high-level languages but still retains some abstraction.
 
-3. Type Checking:
-	- PL/0's symbol table stores type information for variables and constants. This allows the compiler to
-      ensure that expressions are semantically correct.
-
-4. Procedure Management:
-	- Information about procedures, such as parameter counts and local variable sizes, can be stored in the symbol table.
-
-5.	Code Generation:
-	- The symbol table either provides memory locations or offsets for identifiers, or can help with such tasks,
-      allowing the code generator to produce correct machine or intermediate code.
+4. *Linear Structure*: TAC is represented as a sequence of instructions, making it easy to manipulate and optimize.
 
 
-#### Example
+__Typical TAC Instructions__
 
-Let’s consider a simple PL/0 program:
+- *Assignment*: `x = y op z` (e.g., `t1 = a + b`)
 
-```pascal
-const x = 10;
-var y;
-procedure square;
-    var z;
-    begin
-        z := y * y
-    end;
-begin
-    y := x + 1;
-    call square
-end.
+- *Copy*: `x = y` (e.g., `t2 = t1`)
+
+- *Unary Operations*: `x = op y` (e.g., `t3 = -t2`)
+
+- *Conditional Jumps*: `if x relop y goto L` (e.g., `if t1 < t2 goto L1`)
+
+- *Unconditional Jumps*: `goto L` (e.g., `goto L2`)
+
+- *Function Calls*: `call func, args` (e.g., `call foo, t1, t2`)
+
+- *Return*: `return x` (e.g., `return t3`)
+
+
+__Example__
+
+```c
+a = b + c * d;
+if (a > 10) {
+    x = a - 5;
+} else {
+    x = a + 5;
+}
 ```
 
-The symbol table will store:
+The corresponding TAC might look like:
 
-1. Constants.
-    - x: Type const, value 10.
+```
+t1 = c * d
+t2 = b + t1
+a = t2
+if a > 10 goto L1
+t3 = a + 5
+x = t3
+goto L2
+L1:
+t4 = a - 5
+x = t4
+L2:
+```
 
-2. Variables.
-    - y: Type var, scope global.
-	- z: Type var, scope square.
+__TAC in Compilers__
 
-3. Procedures.
-	- square: Type procedure, local scope includes z.
+1. *Intermediate Representation*:
+   - After parsing the source code, the compiler generates TAC as an intermediate step between the
+     high-level code and the target machine code.
+   - TAC is easier to optimise and analyse than the original source code.
 
-At runtime or during code generation:
-- The constant x might directly map to a value.
-- The variable y and local variable z are assigned memory offsets or registers.
-- The procedure square includes metadata to manage calls.
+2. *Optimization*:
+   - Many compiler optimisations, such as constant folding, dead code elimination, and common
+     subexpression elimination, are performed on TAC.
+   - The linear structure of TAC makes it easier to apply these transformations.
+
+3. *Code Generation*:
+   - TAC is closer to machine code, so it simplifies the process of generating assembly or machine code.
+   - Each TAC instruction can be directly mapped to one or more machine instructions.
+
+4. *Control Flow Analysis*:
+   - TAC makes control flow explicit through jump instructions (`goto`, `if-goto`), which helps in
+     analysing loops, conditionals, and other control structures.
+
+5. *Temporary Variables*:
+   - TAC introduces temporary variables to store intermediate results, which helps in managing registers
+     and memory during code generation.
 
 
-#### Implementation Techniques
+__Pros__
 
-1. Data Structures:
-	- Hash tables: For fast symbol lookup.
-	- Linked lists or trees: To handle nested scopes efficiently.
-2.	Nested Scopes:
-	- Use a stack of symbol tables, where the top of the stack represents the current scope.
-3.	Lifetime Management:
-	- When a scope ends, its corresponding table or entries are removed.
+- *Portability*: TAC is independent of the target machine architecture, making it easier to retarget the
+  compiler to different platforms.
+- *Modularity*: Separates the front-end (parsing) and back-end (code generation) of the compiler, allowing
+  for easier maintenance and extension.
+- *Optimisation*: The explicit nature of TAC makes it suitable for applying various optimisations.
 
 
-### Conclusion
+__Cons__
 
-Symbol tables are used in compiling and interpreting PL/0 and other programming languages. They bridge
-the gap between the code written by developers and the low-level operations performed by the machine.
-While their implementation can vary in complexity, their role in ensuring correct, efficient, but also
-optimised program execution is fundamental.
+- *Verbosity*: TAC can be more verbose than high-level code, as it breaks down complex expressions into simpler instructions.
+- *Temporary Variables*: The use of temporary variables can increase the complexity of the code, especially for large programs.
+
+In summary, Three-Address Code is a crucial intermediate representation in compilers, bridging the gap between
+high-level source code and low-level machine code. It simplifies optimization, analysis, and code generation,
+making it a fundamental tool in compiler design.
