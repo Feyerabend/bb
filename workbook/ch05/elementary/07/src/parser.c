@@ -19,11 +19,11 @@ int final = FALSE;
 
 void nextSymbol() {
     Token token = nextToken();
-    // skip
+
     while (token.type == NOP || token.type == ENDOFLINE) {
         token = nextToken();
     }
-    // transfer to local use
+
     symbol = token.type;
     strncpy(buf, token.value, MAX_SYM_LEN - 1);
     buf[MAX_SYM_LEN - 1] = '\0';
@@ -99,9 +99,9 @@ ASTNode *term() {
         char *op = strdup(symbol == TIMES ? "*" : "/");
         nextSymbol();
         ASTNode *opNode = createNode(NODE_TERM, op);
-        addChild(opNode, node);          // left child is the current term
-        addChild(opNode, factor());      // right child is the next factor
-        node = opNode;                   // update node to the new operator node
+        addChild(opNode, node);
+        addChild(opNode, factor());
+        node = opNode;
     }
     return node;
 }
@@ -124,13 +124,13 @@ ASTNode *expression() {
 }
 
 ASTNode *condition() {
-    if (accept(LPAREN)) { // enforce parentheses
+    if (accept(LPAREN)) {
         ASTNode *leftExpr = expression();
         if (symbol == EQL || symbol == NEQ || symbol == LSS || symbol == LEQ || symbol == GTR || symbol == GEQ) {
             ASTNode *node = createNode(NODE_CONDITION, symbolToString(symbol));
             nextSymbol();
-            addChild(node, leftExpr);        // left-hand side expression
-            addChild(node, expression());    // right-hand side expression
+            addChild(node, leftExpr);
+            addChild(node, expression());
             expect(RPAREN);
             return node;
         }
@@ -157,7 +157,7 @@ ASTNode *statement() {
         do {
             addChild(blockNode, statement());
             if (!accept(SEMICOLON)) {
-                break;  // allow for optional final semicolon
+                break;
             }
         } while (symbol != ENDSYM && symbol != ENDOFFILE);
         if (!accept(ENDSYM)) {
