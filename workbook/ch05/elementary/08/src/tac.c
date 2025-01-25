@@ -91,6 +91,18 @@ char *generateTAC(ASTNode *node) {
         }
 
         case NODE_CONDITION: {
+            if (node->childCount != 2) {
+                fprintf(stderr, "Error: CONDITION node must have two children\n");
+                exit(1);
+            }
+            if (strcmp(node->value, "#") == 0) {
+                // Map "#" to "!="
+                char *left = generateTAC(node->children[0]);
+                char *right = generateTAC(node->children[1]);
+                char *result = newTemp();
+                emitTAC("!=", left, right, result); // Use "!=" instead of "#"
+                return result;
+            }
             char *left = generateTAC(node->children[0]);
             char *right = generateTAC(node->children[1]);
             char *result = newTemp();
@@ -110,10 +122,13 @@ char *generateTAC(ASTNode *node) {
             return NULL;
         }
 
-        case NODE_ASSIGNMENT: { // double == ?
-            // assignment (e.g. a = ...)
+        case NODE_ASSIGNMENT: {
             char *temp = generateTAC(node->children[0]);
-            emitTAC("=", temp, NULL, node->value); // a = t8
+            if (temp) {
+                emitTAC("=", temp, NULL, node->value); // squ = t2
+            } else {
+                fprintf(stderr, "Error: Assignment has no value\n");
+            }
             return NULL;
         }
 
@@ -144,6 +159,12 @@ char *generateTAC(ASTNode *node) {
             char *temp = newTemp();
             emitTAC("LOAD", node->value, NULL, temp); // t1 = LOAD 0
             return temp;
+        }
+
+        case NODE_CONST_DECL: {
+            char *value_temp = generateTAC(node->children[0]);
+            emitTAC("=", value_temp, NULL, node->value);
+            return NULL;
         }
 
         case NODE_CALL: {
@@ -181,6 +202,9 @@ void printTAC() {
 
         } else if (strcmp(current->op, "RETURN") == 0) {
             printf("RETURN\n"); // procedure return
+
+        } else if (strcmp(current->op, "=") == 0) {  // assignments
+            printf("%s = %s\n", current->result, current->arg1);
 
         } else {
             // standard ops (+, -, !=)
