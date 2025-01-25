@@ -84,7 +84,7 @@ Final Result:
 - The result, 5, is at the top of the stack.
 
 
-Applications of the SECD Machine
+__Applications of the SECD Machine__
 
 1. Functional Language Execution:
 	- The SECD machine is used as a conceptual foundation for implementing interpreters and compilers for functional languages like Lisp, Scheme, or ML.
@@ -98,7 +98,7 @@ Applications of the SECD Machine
 4. Research and Historical Importance:
 	- The SECD machine has influenced modern virtual machines like the Java Virtual Machine (JVM) and implementations of intermediate representations like the Spineless Tagless G-machine (STG) for Haskell.
 
-Advantages of the SECD Model
+__Advantages of the SECD Model__
 - Simplicity: Its minimal architecture makes it an excellent tool for teaching the basics of functional language execution.
 - Modularity: The separation of concerns between stack, environment, control, and dump helps clarify the steps in expression evaluation.
 - Foundation for Optimisation: Many modern functional language optimisations (e.g. tail recursion, garbage collection) have roots in SECD implementations.
