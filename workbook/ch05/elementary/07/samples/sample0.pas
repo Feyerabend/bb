@@ -1,5 +1,5 @@
 var sum;
 
 begin
-    sum := 4 + 2;
+    sum := 4 + 2 + z;
 end.
