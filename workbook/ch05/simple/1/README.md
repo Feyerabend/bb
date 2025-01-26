@@ -271,6 +271,7 @@ __7. A Memory-Safe Language (with a Garbage Collector)__
 __8. Language for Logic Programming (Mini Prolog)__
 
 - *Build a simple logic programming language, similar to Prolog, which supports basic facts and rules.*
+    - Starter: To kick off your ideas, take a look at some [stubs](./8/).
 	- Challenge: Implement a system for defining facts and rules, and query the database using a simple backward-chaining approach.
 	- Enhancement: Implement recursion in rules and queries.
 	- Extension: Add constraints and logic operators to enhance expressiveness.
