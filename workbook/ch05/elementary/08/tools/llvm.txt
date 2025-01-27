@@ -1,0 +1,8 @@
+
+clang print.ll -o print
+
+https://releases.llvm.org/1.1/docs/LangRef.html
+
+llc -filetype=obj -mtriple=wasm32-unknown-unknown-wasm print.ll -o print.wasm
+
+wasm-ld --no-entry --export-all --lto-O3 print.wasm -o prnt.wasm
