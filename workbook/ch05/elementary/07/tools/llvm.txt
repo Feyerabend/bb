@@ -1,0 +1,4 @@
+
+clang print.ll -o print
+
+https://releases.llvm.org/1.1/docs/LangRef.html
