@@ -54,7 +54,7 @@ char *generateTAC(ASTNode *node) {
 
         case NODE_BLOCK: {
             if (strcmp(node->value, "main") == 0) {
-                emitTAC("LABEL", NULL, NULL, "main"); // Label: main:
+                emitTAC("LABEL", NULL, NULL, "main"); // Label: 'main'
                 for (int i = 0; i < node->childCount; i++) {
                     generateTAC(node->children[i]); // assignments and CALL
                 }
@@ -100,7 +100,7 @@ char *generateTAC(ASTNode *node) {
                 char *left = generateTAC(node->children[0]);
                 char *right = generateTAC(node->children[1]);
                 char *result = newTemp();
-                emitTAC("!=", left, right, result); // Use "!=" instead of "#"
+                emitTAC("!=", left, right, result); // "!=" instead of the less common "#"
                 return result;
             }
             char *left = generateTAC(node->children[0]);
@@ -173,7 +173,7 @@ char *generateTAC(ASTNode *node) {
         }
 
         default:
-            // other nodes (VAR_DECL, misc BLOCK, etc.)
+            // other nodes (VAR_DECL, etc.)
             for (int i = 0; i < node->childCount; i++) {
                 generateTAC(node->children[i]);
             }
