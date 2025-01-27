@@ -139,7 +139,6 @@ Example:
 
 ```pascal
 var sum;
-
 begin
     sum := 4 + 2;
 end.
@@ -179,7 +178,6 @@ Example:
 
 ```pascal
 var sum;
-
 begin
     sum := 4 + 2 + z;
 end.
@@ -245,6 +243,7 @@ Specifically,
 	    - Dead Code Elimination: Remove unreachable or unused code.
 	    - Peephole Optimisation: Simplify redundant instructions
           (e.g. replace PUSH 0; ADD with NOP).
+    - For PL/E show in TAC?
 
 
 __Code Generation__
@@ -256,7 +255,7 @@ Typically,
 
 Specifically,
 - Generate target code for the PL/0 virtual machine or hardware.
-    - PL/0/E VM Code Example:
+    - PL/0 VM Code Example:
 
 ```
 PUSH 10     ; Push constant 10 to stack
@@ -266,6 +265,9 @@ PUSH 1      ; Push constant 1 to stack
 ADD         ; Add top two values on the stack
 STORE y     ; Store result to variable y
 ```
+
+PL/E .. LLVM .. WASM
+
 
 
 __Post-Compilation__
@@ -280,6 +282,16 @@ Specifically,
 - Handle final steps, such as linking (if targeting real hardware) or loading
   the code into a virtual machine.
 
-For PL/0, this step often involves:
-- Writing the binary or assembly-like code into a file.
-- Providing a virtual machine to execute the generated code.
+  For PL/0, this step often involves:
+  - Writing the binary or assembly-like code into a file.
+  - Providing a virtual machine to execute the generated code.
+
+  PL/E
+  - Linking from WASM to browser ..
+
+
+__Omitted steps__
+
+To keep it brief:
+- Error handling is poor.
+- Optimisation is also poor.
