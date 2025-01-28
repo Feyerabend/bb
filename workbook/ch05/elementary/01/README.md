@@ -310,7 +310,7 @@ the following components have been excluded:
 
 - *Type Checking*: Since this compiler exclusively handles integers, there
   is no type system or semantic checks, eliminating the need for type
-  enforcement or verification. See more on [Types](./types/).
+  enforcement or verification. See more on [Types](./types/TYPES.md).
 
 To address these omitted topics and provide opportunities for deeper learning,
 the following additional projects are proposed to extend and enhance the concepts.
