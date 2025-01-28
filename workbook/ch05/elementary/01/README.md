@@ -132,8 +132,8 @@ Typically,
 Specifically,
 - Parse the token stream into a syntax tree based on PL/E grammar. This step ensures the program
   adheres to the language's grammar rules.
-- Use a recursive descent parser or a parser generator like ANTLR. The parser will build a
-  abstract syntax tree (AST) for further stages. Here, we will make our own parser.
+- We will use a recursive descent parser, where the parser will build a abstract syntax tree
+  (AST) for further stages. See [AST](AST.md).
 
 Example:
 
@@ -172,7 +172,8 @@ Specifically,
     declared before use.
 	- Type Checking: PL/E doesn't have complex types, but ensure numbers and variables are
     used correctly.
-	- Scope Management: Handle scopes for procedure declarations, divided into local and global.
+	- Scope Management: Handle scopes for procedure declarations, simplified by only dividing them
+    into local and global (and no nested cases).
 
 Example:
 
