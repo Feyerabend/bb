@@ -209,7 +209,7 @@ Specifically,
 - PL/0 typically targets a stack-based virtual machine (e.g. instructions like
   PUSH, ADD, CALL, etc.). Which we will also do with PL/E.
 
-Example: AST for y := x + 1:
+Example: AST for 'y := x + 1':
 
 ```
 Assignment
