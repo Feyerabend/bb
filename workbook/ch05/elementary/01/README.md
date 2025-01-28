@@ -290,8 +290,133 @@ Specifically,
   - Linking from WASM to browser ..
 
 
-__Omitted steps__
 
-To keep it brief:
-- Error handling is poor.
-- Optimisation is also poor.
+### Projects for Omitted Steps
+
+From the discussion above, it is evident that certain steps in the compiler
+development process have been deliberately omitted. These omissions were made
+to maintain clarity and focus on the core concepts, avoiding unnecessary
+complexity that might obscure the main learning objectives. Specifically,
+the following components have been excluded:
+
+- *Error Handling*: The current implementation provides limited or no
+  mechanisms for detecting and reporting errors. This simplifies the
+  core implementation but leaves an important aspect of compiler design
+  unexplored. See more on [Errors](ERRORS.md).
+
+- *Optimisation*: No optimisations are applied to the generated code,
+  meaning there is no consideration for improving performance, minimising
+  resource usage, or simplifying the final output.
+
+- *Type Checking*: Since this compiler exclusively handles integers, there
+  is no type system or semantic checks, eliminating the need for type
+  enforcement or verification. See more on [Types](./types/).
+
+To address these omitted topics and provide opportunities for deeper learning,
+the following additional projects are proposed to extend and enhance the concepts.
+
+
+__1. Implement Comprehensive Error Handling__
+
+*Develop a robust error-handling mechanism for the compiler to detect, report,
+and guide users through various issues in the source code.*
+
+- Add support for syntax errors, semantic errors, and warnings.
+- Design error messages to be clear, actionable, and contextual
+  (e.g. use inclusion of line numbers, offending code snippets,
+  and suggestions for fixes).
+- Implement a hierarchical error system that distinguishes between
+  critical errors (which halt compilation) and warnings (which
+  allow compilation to proceed).
+
+Challenge: Build a recovery mechanism that enables the compiler to continue
+parsing after encountering errors, instead of stopping abruptly.
+
+Advanced extension: Make the error system configurable, allowing developers
+to customize which warnings/errors are shown or suppressed.
+
+
+__2. Add Basic and Advanced Optimisations__
+
+Introduce a new phase in the compilation process to optimize the generated
+code for performance and efficiency.
+
+- Start with basic optimisations, such as:
+  - Constant folding: Evaluate constant expressions at compile-time
+    (e.g. replace 2 + 3 with 5).
+	- Dead code elimination: Remove unreachable or unnecessary code.
+	- Inline expansion: Replace short function calls with their body
+    to reduce overhead.
+- Progress to more advanced optimizations:
+	- Peephole optimization: Scan small sections of code to simplify
+    or replace inefficient instruction sequences.
+	- Loop optimizations: Unroll loops, reduce loop overhead, or move
+    invariant calculations outside the loop.
+	- Register allocation: Minimize memory access by efficiently using
+    CPU registers.
+	
+Challenge: Develop a visualisation tool to compare pre- and post-optimisation
+code, helping users understand the impact of these transformations.
+
+
+__3. Introduce a Type System__
+
+Expand the compiler to handle multiple data types and implement type-checking
+rules to ensure correctness.
+- Add support for data types such as integers, floats, and strings.
+- Implement type inference and explicit type annotations in the source language.
+- Design and enforce type-checking rules for operations, such as ensuring operands
+  in arithmetic expressions are compatible.
+- Provide informative error messages for type-related issues (e.g. "Cannot assign
+  a string to an integer variable").
+- Advanced extension: Add support for user-defined types (e.g. structs or enums)
+  and create a mechanism for type equivalence and subtyping.
+
+4. Create a Warning System for Potential Issues
+
+Design a mechanism to detect and report potential problems that don't prevent
+compilation but could cause bugs or inefficiencies.
+- Examples include:
+	- Unused variables: Report variables that are declared but never used.
+	- Deprecated constructs: Warn about outdated language features.
+	- Potential logical errors: Identify suspicious code patterns, such as
+    assignments within conditional expressions, e.g. 'if (x = 0) ..'.
+	- Implement a severity system (e.g., low, medium, high) and allow users to
+    configure which warnings are displayed or ignored.
+
+Challenge: Incorporate machine learning to analyze and predict common coding
+mistakes, improving warning accuracy.
+
+
+__5. Extend the Compiler with Modular Features__
+
+Explore modular extensions to handle omitted components independently or
+integrate them into the current compiler.
+- Error handling module: Build a standalone library for managing errors,
+  which can be plugged into the compiler.
+- Optimization pipeline: Design a framework that supports adding new optimisation
+  passes without altering the compiler core.
+- Type-checking module: Implement a reusable type-checker that can support
+  multiple languages.
+
+This modular approach not only reinforces the core concepts but also demonstrates how real-world compilers are built with extensibility in mind.
+
+
+__6. Design a Debugging and Logging Tool__
+
+Develop a debugging tool to trace the compiler's internal processes.
+- Add features to log parsing steps, code generation, and any errors
+  or warnings encountered.
+- Visualize the abstract syntax tree (AST) and intermediate representations
+  to aid in understanding the compilation process.
+- Provide detailed stack traces for runtime errors, helping users diagnose issues.
+- Advanced extension: Build an interactive debugging interface that allows
+  users to step through compilation phases and modify inputs dynamically.
+
+
+### Summary
+
+These projects not only deepen your understanding of compiler design but also provide
+practical experience with critical features that are often essential in real-world applications.
+By addressing the omitted components, you'll gain a more comprehensive view of how compilers
+interact with programming languages and their users.
