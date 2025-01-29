@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASM Example</title>
+</head>
+<body>
+    <h1>WebAssembly Function: Compute</h1>
+    <p>Enter two integers:</p>
+    <input id="a" type="number" placeholder="Enter a" />
+    <input id="b" type="number" placeholder="Enter b" />
+    <button id="computeButton">Compute</button>
+    <p>Result: <span id="result"></span></p>
+
+    <script>
+        const computeButton = document.getElementById('computeButton');
+        const result = document.getElementById('result');
+        const a = document.getElementById('a');
+        const b = document.getElementById('b');
+
+        computeButton.addEventListener('click', async () => {
+            const { instance } = await WebAssembly.instantiateStreaming(fetch('print.wasm'));
+            const compute = instance.exports.compute;
+            const aVal = parseInt(a.value);
+            const bVal = parseInt(b.value);
+            const resultVal = compute(aVal, bVal);
+            result.textContent = resultVal;
+        });
+    </script>
+</body>
+</html>

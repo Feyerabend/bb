@@ -334,12 +334,12 @@ Challenge: Build a recovery mechanism that enables the compiler to continue
 parsing after encountering errors, instead of stopping abruptly.
 
 Advanced extension: Make the error system configurable, allowing developers
-to customize which warnings/errors are shown or suppressed.
+to customise which warnings/errors are shown or suppressed.
 
 
 __2. Add Basic and Advanced Optimisations__
 
-Introduce a new phase in the compilation process to optimize the generated
+Introduce a new phase in the compilation process to optimise the generated
 code for performance and efficiency.
 
 - Start with basic optimisations, such as:
@@ -348,12 +348,12 @@ code for performance and efficiency.
 	- Dead code elimination: Remove unreachable or unnecessary code.
 	- Inline expansion: Replace short function calls with their body
     to reduce overhead.
-- Progress to more advanced optimizations:
-	- Peephole optimization: Scan small sections of code to simplify
+- Progress to more advanced optimisations:
+	- Peephole optimisation: Scan small sections of code to simplify
     or replace inefficient instruction sequences.
-	- Loop optimizations: Unroll loops, reduce loop overhead, or move
+	- Loop optimisations: Unroll loops, reduce loop overhead, or move
     invariant calculations outside the loop.
-	- Register allocation: Minimize memory access by efficiently using
+	- Register allocation: Minimise memory access by efficiently using
     CPU registers.
 	
 Challenge: Develop a visualisation tool to compare pre- and post-optimisation
@@ -395,7 +395,7 @@ Explore modular extensions to handle omitted components independently or
 integrate them into the current compiler.
 - Error handling module: Build a standalone library for managing errors,
   which can be plugged into the compiler.
-- Optimization pipeline: Design a framework that supports adding new optimisation
+- Optimisation pipeline: Design a framework that supports adding new optimisation
   passes without altering the compiler core.
 - Type-checking module: Implement a reusable type-checker that can support
   multiple languages.
@@ -408,7 +408,7 @@ __6. Design a Debugging and Logging Tool__
 Develop a debugging tool to trace the compiler's internal processes.
 - Add features to log parsing steps, code generation, and any errors
   or warnings encountered.
-- Visualize the abstract syntax tree (AST) and intermediate representations
+- Visualise the abstract syntax tree (AST) and intermediate representations
   to aid in understanding the compilation process.
 - Provide detailed stack traces for runtime errors, helping users diagnose issues.
 - Advanced extension: Build an interactive debugging interface that allows
