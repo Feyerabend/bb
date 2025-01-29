@@ -1,7 +1,7 @@
 
 ## Elementary: Compiling in Practice
 
-We begin with a straightforward implementation of a [mini](MINI.md) compiler designed to handle basic
+We begin with a straightforward implementation of a [mini](./mini/MINI.md) compiler designed to handle basic
 arithmetic expressions. This simple compiler serves as an introductory example, illustrating the fundamental
 components of the compilation process. It encompasses key stages such as lexical analysis (tokenising
 the input), parsing (building a syntax tree), semantic analysis (ensuring correctness of operations),
@@ -83,7 +83,7 @@ enabling developers to tweak or replace individual phases for specific goals.
 These can be e.g. optimisations for certain hardware: GPUs, or enhanced debugging capabilities.
 
 
-__Lexical Analysis__
+#### Lexical Analysi
 
 Typically,
 - Beyond tokenisation, more sophisticated error detection for malformed tokens can be added.
@@ -122,7 +122,7 @@ ENDOFFILE
 ```
 
 
-__Syntax Analysis__
+#### Syntax Analysis
 
 Typically,
 - Refined with better error recovery strategies, ensuring that the parser continues to analyse
@@ -159,7 +159,7 @@ PROGRAM
 ```
 
 
-__Semantic Analysis__
+#### Semantic Analysis
 
 Typically,
 - Enrich type checking to include flow-sensitive type inference (e.g. checking variable
@@ -195,7 +195,7 @@ too many concepts at once. Therefore, the warning can be seen if the Python scri
 symbol.py is invoked.)
 
 
-__Intermediate Code Generation__
+#### Intermediate Code Generation
 
 Typically,
 - Introduce high-level Intermediate Representations (IR) for easier analysis and optimisation.
@@ -229,7 +229,7 @@ STORE y
 ```
 
 
-__Optimisation__
+#### Optimisation
 
 Typically,
 - Refined into high-level optimisations (e.g. loop transformations, constant folding)
@@ -247,7 +247,7 @@ Specifically,
     - For PL/E show in TAC?
 
 
-__Code Generation__
+#### Code Generation
 
 Typically,
 - Refine to support multiple backends, allowing cross-compilation for different architectures.
@@ -271,7 +271,7 @@ PL/E .. LLVM .. WASM
 
 
 
-__Post-Compilation__
+#### Post-Compilation
 
 Typically,
 - Tools like linkers and loaders can perform additional optimisations, such as
