@@ -14,19 +14,43 @@
     <p>Result: <span id="result"></span></p>
 
     <script>
-        const computeButton = document.getElementById('computeButton');
-        const result = document.getElementById('result');
-        const a = document.getElementById('a');
-        const b = document.getElementById('b');
-
-        computeButton.addEventListener('click', async () => {
-            const { instance } = await WebAssembly.instantiateStreaming(fetch('print.wasm'));
-            const compute = instance.exports.compute;
-            const aVal = parseInt(a.value);
-            const bVal = parseInt(b.value);
-            const resultVal = compute(aVal, bVal);
-            result.textContent = resultVal;
+async function loadWasm() {
+    try {
+        const response = await fetch("print.wasm");
+        if (!response.ok) {
+            throw new Error(`Failed to fetch WASM: ${response.statusText}`);
+        }
+        const bytes = await response.arrayBuffer();
+        const { instance } = await WebAssembly.instantiate(bytes, {
+            env: {
+                __linear_memory: new WebAssembly.Memory({ initial: 256 }) // Provide a Memory instance
+            }
         });
-    </script>
+        return instance;
+    } catch (error) {
+        console.error("Error loading WASM:", error);
+    }
+}
+
+document.getElementById('computeButton').addEventListener('click', async () => {
+    const instance = await loadWasm();
+    if (!instance) return;
+
+    console.log("WASM exports:", instance.exports); // Debugging
+
+    if (!instance.exports.compute) {
+        console.error("compute function not found in exports!");
+        return;
+    }
+
+    const compute = instance.exports.compute;
+    const aVal = parseInt(document.getElementById('a').value) || 0;
+    const bVal = parseInt(document.getElementById('b').value) || 0;
+
+    document.getElementById('result').textContent = compute(aVal, bVal);
+});
+
+
+</script>
 </body>
 </html>
