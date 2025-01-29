@@ -11,11 +11,9 @@
 TAC *tac_head = NULL;
 TAC *tac_tail = NULL;
 
-
 // counter for generating temporary variables
 int temp_counter = 0;
 int label_counter = 0;
-
 
 // generate a new temporary variable
 char *newTemp() {
@@ -32,10 +30,15 @@ char *newLabel() {
 
 void emitTAC(const char *op, const char *arg1, const char *arg2, const char *result) {
     TAC *new_tac = malloc(sizeof(TAC));
-    strncpy(new_tac->op, op, sizeof(new_tac->op) - 1);
-    strncpy(new_tac->arg1, arg1 ? arg1 : "", sizeof(new_tac->arg1) - 1);
-    strncpy(new_tac->arg2, arg2 ? arg2 : "", sizeof(new_tac->arg2) - 1);
-    strncpy(new_tac->result, result ? result : "", sizeof(new_tac->result) - 1);
+    if (!new_tac) {
+        fprintf(stderr, "Memory allocation failed for TAC instruction\n");
+        exit(EXIT_FAILURE);
+    }
+
+    new_tac->op = strdup(op);
+    new_tac->arg1 = arg1 ? strdup(arg1) : NULL;
+    new_tac->arg2 = arg2 ? strdup(arg2) : NULL;
+    new_tac->result = result ? strdup(result) : NULL;
     new_tac->next = NULL;
 
     if (!tac_head) {
@@ -46,6 +49,20 @@ void emitTAC(const char *op, const char *arg1, const char *arg2, const char *res
     }
 }
 
+void freeTAC() {
+    TAC *current = tac_head;
+    while (current) {
+        TAC *next = current->next;
+        free(current->op);
+        free(current->arg1);
+        free(current->arg2);
+        free(current->result);
+        free(current);
+        current = next;
+    }
+    tac_head = tac_tail = NULL;
+}
+
 
 char *generateTAC(ASTNode *node) {
     if (!node) return NULL;
@@ -54,7 +71,7 @@ char *generateTAC(ASTNode *node) {
 
         case NODE_BLOCK: {
             if (strcmp(node->value, "main") == 0) {
-                emitTAC("LABEL", NULL, NULL, "main"); // Label: 'main'
+                emitTAC("LABEL", NULL, NULL, "main"); // label: 'main'
                 for (int i = 0; i < node->childCount; i++) {
                     generateTAC(node->children[i]); // assignments and CALL
                 }
@@ -68,7 +85,7 @@ char *generateTAC(ASTNode *node) {
         }
 
         case NODE_PROC_DECL: {
-            emitTAC("LABEL", NULL, NULL, node->value); // Label: procedure name
+            emitTAC("LABEL", NULL, NULL, node->value); // label: procedure name
             generateTAC(node->children[0]); // procedure body
             emitTAC("RETURN", NULL, NULL, NULL); // return from procedure
             return NULL;
@@ -96,11 +113,11 @@ char *generateTAC(ASTNode *node) {
                 exit(1);
             }
             if (strcmp(node->value, "#") == 0) {
-                // Map "#" to "!="
+                //  "#" --> "!="
                 char *left = generateTAC(node->children[0]);
                 char *right = generateTAC(node->children[1]);
                 char *result = newTemp();
-                emitTAC("!=", left, right, result); // "!=" instead of the less common "#"
+                emitTAC("!=", left, right, result);
                 return result;
             }
             char *left = generateTAC(node->children[0]);
@@ -214,12 +231,52 @@ void printTAC() {
     }
 }
 
-void freeTAC() {
+void exportTACFile(FILE *file) {
     TAC *current = tac_head;
     while (current) {
-        TAC *next = current->next;
-        free(current);
-        current = next;
+        fprintf(file, "TYPE: %s\n", current->op);
+        fprintf(file, "ARG1: %s\n", current->arg1 ? current->arg1 : "NULL");
+        fprintf(file, "ARG2: %s\n", current->arg2 ? current->arg2 : "NULL");
+        fprintf(file, "RESULT: %s\n\n", current->result ? current->result : "NULL");  // Empty line as separator
+        current = current->next;
     }
-    tac_head = tac_tail = NULL;
+}
+
+void exportTAC(const char *filename) {
+    FILE *file = fopen(filename, "w");
+    if (!file) {
+        perror("Error opening file");
+        exit(1);
+    }
+    exportTACFile(file);
+    fclose(file);
+}
+
+// --- TAC parser ---
+
+void parseTAC(const char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Error opening file");
+        return;
+    }
+
+    char line[128], op[32], arg1[32], arg2[32], result[32];
+
+    while (fgets(line, sizeof(line), file)) {
+        if (strncmp(line, "TYPE:", 5) == 0) {
+            sscanf(line, "TYPE: %s", op);
+        } else if (strncmp(line, "ARG1:", 5) == 0) {
+            sscanf(line, "ARG1: %s", arg1);
+        } else if (strncmp(line, "ARG2:", 5) == 0) {
+            sscanf(line, "ARG2: %s", arg2);
+        } else if (strncmp(line, "RESULT:", 7) == 0) {
+            sscanf(line, "RESULT: %s", result);
+            // Now we have a complete instruction
+            printf("Parsed TAC - OP: %s, ARG1: %s, ARG2: %s, RESULT: %s\n",
+                   op, arg1, arg2, result);
+        }
+    }
+
+    fclose(file);
 }
