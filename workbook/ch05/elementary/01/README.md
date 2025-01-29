@@ -1,7 +1,7 @@
 
 ## Elementary: Compiling in Practice
 
-We begin with a straightforward implementation of a [mini](MINI.md) compiler designed to handle basic
+We begin with a straightforward implementation of a [mini](./mini/MINI.md) compiler designed to handle basic
 arithmetic expressions. This simple compiler serves as an introductory example, illustrating the fundamental
 components of the compilation process. It encompasses key stages such as lexical analysis (tokenising
 the input), parsing (building a syntax tree), semantic analysis (ensuring correctness of operations),
