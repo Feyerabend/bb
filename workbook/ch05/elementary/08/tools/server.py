@@ -1,7 +1,11 @@
 import http.server
 import socketserver
+import mimetypes
 
 PORT = 8000
+
+# ? correct MIME type
+mimetypes.add_type('application/wasm', '.wasm')
 
 class CustomHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
