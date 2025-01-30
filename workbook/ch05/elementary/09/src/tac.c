@@ -63,8 +63,51 @@ void freeTAC() {
     tac_head = tac_tail = NULL;
 }
 
+// append the appropriate suffix to variable names
+char* getModifiedName(const char* name, int isGlobal) {
+    char* modifiedName = malloc(strlen(name) + 3); // +3 for the suffix and null terminator
+    if (isGlobal) {
+        sprintf(modifiedName, "%s.g", name); // global = .g
+    } else {
+        sprintf(modifiedName, "%s.l", name); // local = .l
+    }
+    return modifiedName;
+}
 
-char *generateTAC(ASTNode *node) {
+// check if a variable is local to procedure
+int isLocalVariable(const char* proc_name, const char* var_name) {
+    Procedure* proc = procedures;
+    while (proc) {
+        if (strcmp(proc->name, proc_name) == 0) {
+            // found procedure, check its local variables
+            Variable* local_var = proc->local_vars;
+            while (local_var) {
+                if (strcmp(local_var->name, var_name) == 0) {
+                    return 1; // variable local
+                }
+                local_var = local_var->next;
+            }
+            break; // procedure found, but variable not local
+        }
+        proc = proc->next;
+    }
+    return 0; // variable not local
+}
+
+// check if a variable global
+int isGlobalVariable(const char* var_name) {
+    Variable* global_var = global_vars;
+    while (global_var) {
+        if (strcmp(global_var->name, var_name) == 0) {
+            return 1; // global
+        }
+        global_var = global_var->next;
+    }
+    return 0; // variable not global
+}
+
+
+char *generateTAC(ASTNode *node, const char* proc_name) {
     if (!node) return NULL;
 
     switch (node->type) {
@@ -73,12 +116,12 @@ char *generateTAC(ASTNode *node) {
             if (strcmp(node->value, "main") == 0) {
                 emitTAC("LABEL", NULL, NULL, "main"); // label: 'main'
                 for (int i = 0; i < node->childCount; i++) {
-                    generateTAC(node->children[i]); // assignments and CALL
+                    generateTAC(node->children[i], "main"); // assignments and CALL
                 }
             } else {
                 // generic block (no label)
                 for (int i = 0; i < node->childCount; i++) {
-                    generateTAC(node->children[i]);
+                    generateTAC(node->children[i], proc_name);
                 }
             }
             return NULL;
@@ -86,7 +129,7 @@ char *generateTAC(ASTNode *node) {
 
         case NODE_PROC_DECL: {
             emitTAC("LABEL", NULL, NULL, node->value); // label: procedure name
-            generateTAC(node->children[0]); // procedure body
+            generateTAC(node->children[0], node->value); // procedure body
             emitTAC("RETURN", NULL, NULL, NULL); // return from procedure
             return NULL;
         }
@@ -97,10 +140,10 @@ char *generateTAC(ASTNode *node) {
             emitTAC("LABEL", NULL, NULL, start_label); // L0:
 
             // evaluate condition (e.g. b != 0)
-            char *cond_temp = generateTAC(node->children[0]); // t2 = != t0 t1
+            char *cond_temp = generateTAC(node->children[0], proc_name); // t2 = != t0 t1
             emitTAC("IF_NOT", cond_temp, end_label, NULL); // IF_NOT t2 GOTO L1
 
-            generateTAC(node->children[1]); // nested block
+            generateTAC(node->children[1], proc_name); // nested block
 
             emitTAC("GOTO", start_label, NULL, NULL); // GOTO L0
             emitTAC("LABEL", NULL, NULL, end_label); // L1:
@@ -114,35 +157,45 @@ char *generateTAC(ASTNode *node) {
             }
             if (strcmp(node->value, "#") == 0) {
                 //  "#" --> "!="
-                char *left = generateTAC(node->children[0]);
-                char *right = generateTAC(node->children[1]);
+                char *left = generateTAC(node->children[0], proc_name);
+                char *right = generateTAC(node->children[1], proc_name);
                 char *result = newTemp();
                 emitTAC("!=", left, right, result);
                 return result;
             }
-            char *left = generateTAC(node->children[0]);
-            char *right = generateTAC(node->children[1]);
+            char *left = generateTAC(node->children[0], proc_name);
+            char *right = generateTAC(node->children[1], proc_name);
             char *result = newTemp();
             emitTAC(node->value, left, right, result); // t5 = > t3 t4
             return result;
         }
 
         case NODE_IF: {
-            char *cond_temp = generateTAC(node->children[0]); // eval condition
+            char *cond_temp = generateTAC(node->children[0], proc_name); // eval condition
             char *skip_label = newLabel();
             emitTAC("IF_NOT", cond_temp, skip_label, NULL); // IF_NOT cond_temp GOTO L2
 
             // IF body (assignment)
-            generateTAC(node->children[1]);
+            generateTAC(node->children[1], proc_name);
 
             emitTAC("LABEL", NULL, NULL, skip_label); // L2:
             return NULL;
         }
 
         case NODE_ASSIGNMENT: {
-            char *temp = generateTAC(node->children[0]);
+            char* temp = generateTAC(node->children[0], proc_name);
             if (temp) {
-                emitTAC("=", temp, NULL, node->value); // squ = t2
+                if (isLocalVariable(proc_name, node->value)) {
+                    char* modifiedName = getModifiedName(node->value, 0); // Local variable
+                    emitTAC("=", temp, NULL, modifiedName);
+                    free(modifiedName);
+                } else if (isGlobalVariable(node->value)) {
+                    char* modifiedName = getModifiedName(node->value, 1); // Global variable
+                    emitTAC("=", temp, NULL, modifiedName);
+                    free(modifiedName);
+                } else {
+                    emitTAC("=", temp, NULL, node->value); // Temporary variable or unknown
+                }
             } else {
                 fprintf(stderr, "Error: Assignment has no value\n");
             }
@@ -151,8 +204,8 @@ char *generateTAC(ASTNode *node) {
 
         case NODE_OPERATOR: {
             // operator (e.g. -, +)
-            char *left = generateTAC(node->children[0]);
-            char *right = generateTAC(node->children[1]);
+            char *left = generateTAC(node->children[0], proc_name);
+            char *right = generateTAC(node->children[1], proc_name);
             char *result = newTemp();
             emitTAC(node->value, left, right, result); // t8 = - t6 t7
             return result;
@@ -161,13 +214,23 @@ char *generateTAC(ASTNode *node) {
         case NODE_EXPRESSION: {
             // expression (forward to child)
             // asymmetric tree, so we can't just return the result of the left child!
-            return generateTAC(node->children[0]);
+            return generateTAC(node->children[0], proc_name);
         }
 
         case NODE_IDENTIFIER: {
             // load variable into temporary
-            char *temp = newTemp();
-            emitTAC("LOAD", node->value, NULL, temp); // t0 = LOAD b
+            char* modifiedName = NULL;
+            if (isLocalVariable(proc_name, node->value)) {
+                modifiedName = getModifiedName(node->value, 0); // Local variable
+            } else if (isGlobalVariable(node->value)) {
+                modifiedName = getModifiedName(node->value, 1); // Global variable
+            } else {
+                modifiedName = strdup(node->value); // Temporary variable or unknown
+            }
+
+            char* temp = newTemp();
+            emitTAC("LOAD", modifiedName, NULL, temp); // t0 = LOAD b
+            free(modifiedName);
             return temp;
         }
 
@@ -179,7 +242,7 @@ char *generateTAC(ASTNode *node) {
         }
 
         case NODE_CONST_DECL: {
-            char *value_temp = generateTAC(node->children[0]);
+            char *value_temp = generateTAC(node->children[0], proc_name);
             emitTAC("=", value_temp, NULL, node->value);
             return NULL;
         }
@@ -192,10 +255,14 @@ char *generateTAC(ASTNode *node) {
         default:
             // other nodes (VAR_DECL, etc.)
             for (int i = 0; i < node->childCount; i++) {
-                generateTAC(node->children[i]);
+                generateTAC(node->children[i], proc_name);
             }
             return NULL;
     }
+}
+
+char *genTAC(ASTNode *node) {
+    return generateTAC(node, "main");
 }
 
 void printTAC() {
