@@ -83,7 +83,7 @@ enabling developers to tweak or replace individual phases for specific goals.
 These can be e.g. optimisations for certain hardware: GPUs, or enhanced debugging capabilities.
 
 
-#### Lexical Analysi
+#### Lexical Analysis
 
 Typically,
 - Beyond tokenisation, more sophisticated error detection for malformed tokens can be added.

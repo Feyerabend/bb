@@ -1,5 +1,5 @@
 
-## Intermediate Code: Three Address Code (TAC)
+## Intermediate Code: LLVM
 
 __Build__
 
@@ -9,7 +9,7 @@ make samples
 ```
 
 From the richness of the *Abstract Syntax Tree* (AST) we can build our code. This time it
-will be intermediate into *Three Address Code* (TAC), one step closer to the ultimate goal of
+will be intermediate into *Three Address Code* (TAC), a step before building the ultimate goal of
 more executable code.
 
 __View__
@@ -33,60 +33,51 @@ __Characteristics of TAC__
 
 3. *Low-Level Abstraction*: TAC is closer to machine code than high-level languages but still retains some abstraction.
 
-4. *Linear Structure*: TAC is represented as a sequence of instructions, making it easy to manipulate and optimise.
+4. *Linear Structure*: TAC is represented as a sequence of instructions, making it easy to manipulate and optimize.
 
 
-__TAC Instructions__
+__Typical TAC Instructions__
 
-- *Assignment*: `x = LOAD y` (e.g. `t6 = LOAD 43`)
-
-- *Assignment from Expression*: `x = op y z` (e.g. `t6 = + t4 x`)
+- *Assignment*: `x = y op z` (e.g. `t1 = a + b`)
 
 - *Copy*: `x = y` (e.g. `t2 = t1`)
 
-- *Conditional Jumps*: `IF_NOT x GOTO L` (e.g. `IF_NOT t3 GOTO L1`)
+- *Unary Operations*: `x = op y` (e.g. `t3 = -t2`)
 
-- *Unconditional Jumps*: `GOTO L` (e.g. `GOTO L2`)
+- *Conditional Jumps*: `if x relop y goto L` (e.g. `if t1 < t2 goto L1`)
 
-- *Function Calls*: `CALL func` (e.g. `CALL gcd`)
+- *Unconditional Jumps*: `goto L` (e.g. `goto L2`)
 
-- *Return*: `RETURN`
+- *Function Calls*: `call func, args` (e.g. `call foo, t1, t2`)
 
-- *Labels*: `Ln:` (e.g. `L2:`)
-
+- *Return*: `return x` (e.g. `return t3`)
 
 
 __Example__
 
 ```c
-const max = 10;
-var counter;
-
-begin
-    while (counter < max) do
-    begin
-        counter := counter + 1;
-    end;
-end.
+a = b + c * d;
+if (a > 10) {
+    x = a - 5;
+} else {
+    x = a + 5;
+}
 ```
 
 The corresponding TAC might look like:
 
-```tac
-t0 = LOAD 10
-max = t0
-main:
-L0:
-t1 = LOAD counter
-t2 = LOAD max
-t3 = < t1 t2
-IF_NOT t3 GOTO L1
-t4 = LOAD counter
-t5 = LOAD 1
-t6 = + t4 t5
-counter = t6
-GOTO L0
+```
+t1 = c * d
+t2 = b + t1
+a = t2
+if a > 10 goto L1
+t3 = a + 5
+x = t3
+goto L2
 L1:
+t4 = a - 5
+x = t4
+L2:
 ```
 
 __TAC in Compilers__
@@ -96,7 +87,7 @@ __TAC in Compilers__
      high-level code and the target machine code.
    - TAC is easier to optimise and analyse than the original source code.
 
-2. *Optimisation*:
+2. *Optimization*:
    - Many compiler optimisations, such as constant folding, dead code elimination, and common
      subexpression elimination, are performed on TAC.
    - The linear structure of TAC makes it easier to apply these transformations.
@@ -106,7 +97,7 @@ __TAC in Compilers__
    - Each TAC instruction can be directly mapped to one or more machine instructions.
 
 4. *Control Flow Analysis*:
-   - TAC makes control flow explicit through jump instructions (`GOTO`, `IF_NOT`), which helps in
+   - TAC makes control flow explicit through jump instructions (`goto`, `if-goto`), which helps in
      analysing loops, conditionals, and other control structures.
 
 5. *Temporary Variables*:
@@ -128,7 +119,11 @@ __Cons__
 - *Verbosity*: TAC can be more verbose than high-level code, as it breaks down complex expressions into simpler instructions.
 - *Temporary Variables*: The use of temporary variables can increase the complexity of the code, especially for large programs.
 
-In summary, Three-Address Code is a way of intermediate representation in compilers, bridging the gap between
-high-level source code and low-level machine code. It simplifies optimisation, analysis, and code generation,
+In summary, Three-Address Code is a crucial intermediate representation in compilers, bridging the gap between
+high-level source code and low-level machine code. It simplifies optimization, analysis, and code generation,
 making it a fundamental tool in compiler design.
 
+
+### Example
+
+..

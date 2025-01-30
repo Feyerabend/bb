@@ -2,16 +2,18 @@
 #define TAC_H
 
 typedef struct TAC {
-    char op[16];          // operation (e.g. "+", "-", "=", "CALL")
-    char arg1[16];        // first argument
-    char arg2[16];        // second argument (if applicable)
-    char result[16];      // result
-    struct TAC *next;     // linked list TAC instructions
+    char *op;
+    char *arg1;
+    char *arg2;
+    char *result;
+    struct TAC *next;
 } TAC;
 
-//extern void generateTAC(ASTNode *node);
+extern void exportTAC(const char *filename);
 extern char *generateTAC(ASTNode *node);
 extern void printTAC();
+extern void freeTAC();
 
+extern void parseTAC(const char *filename) ;
 
 #endif  // TAC_H
