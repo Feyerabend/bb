@@ -33,7 +33,7 @@ __Characteristics of TAC__
 
 3. *Low-Level Abstraction*: TAC is closer to machine code than high-level languages but still retains some abstraction.
 
-4. *Linear Structure*: TAC is represented as a sequence of instructions, making it easy to manipulate and optimize.
+4. *Linear Structure*: TAC is represented as a sequence of instructions, making it easy to manipulate and optimise.
 
 
 __Typical TAC Instructions__
@@ -87,7 +87,7 @@ __TAC in Compilers__
      high-level code and the target machine code.
    - TAC is easier to optimise and analyse than the original source code.
 
-2. *Optimization*:
+2. *Optimisation*:
    - Many compiler optimisations, such as constant folding, dead code elimination, and common
      subexpression elimination, are performed on TAC.
    - The linear structure of TAC makes it easier to apply these transformations.
@@ -119,8 +119,8 @@ __Cons__
 - *Verbosity*: TAC can be more verbose than high-level code, as it breaks down complex expressions into simpler instructions.
 - *Temporary Variables*: The use of temporary variables can increase the complexity of the code, especially for large programs.
 
-In summary, Three-Address Code is a crucial intermediate representation in compilers, bridging the gap between
-high-level source code and low-level machine code. It simplifies optimization, analysis, and code generation,
+In summary, Three-Address Code is a way of intermediate representation in compilers, bridging the gap between
+high-level source code and low-level machine code. It simplifies optimisation, analysis, and code generation,
 making it a fundamental tool in compiler design.
 
 
