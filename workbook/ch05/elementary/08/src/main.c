@@ -52,7 +52,8 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
     saveSymbolTable(symbolFilename);
     printf("symbol table saved to %s\n", symbolFilename);
 
-    generateTAC(root);
+    // genTAC(root);
+    generateTAC(root, "main");
     printTAC();
 
     // export TAC to file

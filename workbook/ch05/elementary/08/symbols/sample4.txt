@@ -1,0 +1,4 @@
+GLOBAL_VARIABLE ID: 3 Name: answer Type: 1
+GLOBAL_VARIABLE ID: 2 Name: squ Type: 1
+GLOBAL_VARIABLE ID: 1 Name: x Type: 1
+PROCEDURE ID: 4 Name: square

@@ -1,6 +1,9 @@
 
 ## Intermediate Code: Three Address Code (TAC)
 
+Flattened structure with local procedure names "proc.var.l".
+
+
 __Build__
 
 ```shell

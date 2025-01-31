@@ -64,12 +64,14 @@ void freeTAC() {
 }
 
 // append the appropriate suffix to variable names
-char* getModifiedName(const char* name, int isGlobal) {
-    char* modifiedName = malloc(strlen(name) + 3); // +3 for the suffix and null terminator
+char* getModifiedName(const char* name, const char* proc_name, int isGlobal) {
+    char* modifiedName;
     if (isGlobal) {
-        sprintf(modifiedName, "%s.g", name); // global = .g
+        modifiedName = malloc(strlen(name) + 3); // +3 for ".g\0"
+        sprintf(modifiedName, "%s.g", name);
     } else {
-        sprintf(modifiedName, "%s.l", name); // local = .l
+        modifiedName = malloc(strlen(proc_name) + strlen(name) + 4); // proc_name + "." + name + ".l\0"
+        sprintf(modifiedName, "%s.%s.l", proc_name, name);
     }
     return modifiedName;
 }
@@ -186,11 +188,11 @@ char *generateTAC(ASTNode *node, const char* proc_name) {
             char* temp = generateTAC(node->children[0], proc_name);
             if (temp) {
                 if (isLocalVariable(proc_name, node->value)) {
-                    char* modifiedName = getModifiedName(node->value, 0); // Local variable
+                    char* modifiedName = getModifiedName(node->value, proc_name, 0); // Local variable
                     emitTAC("=", temp, NULL, modifiedName);
                     free(modifiedName);
                 } else if (isGlobalVariable(node->value)) {
-                    char* modifiedName = getModifiedName(node->value, 1); // Global variable
+                    char* modifiedName = getModifiedName(node->value, proc_name, 1); // Global variable
                     emitTAC("=", temp, NULL, modifiedName);
                     free(modifiedName);
                 } else {
@@ -221,9 +223,9 @@ char *generateTAC(ASTNode *node, const char* proc_name) {
             // load variable into temporary
             char* modifiedName = NULL;
             if (isLocalVariable(proc_name, node->value)) {
-                modifiedName = getModifiedName(node->value, 0); // Local variable
+                modifiedName = getModifiedName(node->value, proc_name, 0); // Local variable
             } else if (isGlobalVariable(node->value)) {
-                modifiedName = getModifiedName(node->value, 1); // Global variable
+                modifiedName = getModifiedName(node->value, proc_name, 1); // Global variable
             } else {
                 modifiedName = strdup(node->value); // Temporary variable or unknown
             }
