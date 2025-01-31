@@ -1,12 +1,12 @@
-| Op Code | Syntax      | Description                                                                                          |
-|---------|-------------|------------------------------------------------------------------------------------------------------|
-| 1       | LIT 0, M    | Push constant value (literal) M onto the stack                                                       |
-| 2       | OPR 0, M    | Operation to be performed on the data at the top of the stack                                          |
-|         | OPR 0, 0    | Return; used to return to the caller from a procedure                                                |
-|         | OPR 0, 1    | Negation; pop the stack and return the negative of the value                                          |
-|         | OPR 0, 2    | Addition; pop two values from the stack, add and push the sum                                        |
-|         | OPR 0, 3    | Subtraction; pop two values from the stack, subtract second from first and push the difference        |
-|         | OPR 0, 4    | Multiplication; pop two values from the stack, multiply and push the product                          |
+| Op&nbsp;Code | Syntax&nbsp;Menmonics     | Description                                                                                          |
+|---------|----------------------|------------------------------------------------------------------------------------------------------|
+| 1       | LIT 0, M             | Push constant value (literal) M onto the stack                                                       |
+| 2       | OPR 0, M             | Operation to be performed on the data at the top of the stack                                          |
+|         | OPR 0, 0             | Return; used to return to the caller from a procedure                                                |
+|         | OPR 0, 1             | Negation; pop the stack and return the negative of the value                                          |
+|         | OPR 0, 2             | Addition; pop two values from the stack, add and push the sum                                        |
+|         | OPR 0, 3             | Subtraction; pop two values from the stack, subtract second from first and push the difference        |
+|         | OPR 0, 4             | Multiplication; pop two values from the stack, multiply and push the product                          |
 |         | OPR 0, 5    | Division; pop two values from the stack, divide second by first and push the quotient                 |
 |         | OPR 0, 6    | Is odd? (divisible by two); pop the stack and push 1 if odd, 0 if even                              |
 |         | OPR 0, 7    | Modulus; pop two values from the stack, divide second by first and push the remainder                 |
