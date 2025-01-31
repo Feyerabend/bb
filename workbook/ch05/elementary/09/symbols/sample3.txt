@@ -1,5 +1,0 @@
-GLOBAL_VARIABLE ID: 5 Name: counter Type: 1
-GLOBAL_VARIABLE ID: 4 Name: fib Type: 1
-GLOBAL_VARIABLE ID: 3 Name: b Type: 1
-GLOBAL_VARIABLE ID: 2 Name: a Type: 1
-GLOBAL_VARIABLE ID: 1 Name: max Type: 2

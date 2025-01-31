@@ -1,2 +1,0 @@
-GLOBAL_VARIABLE ID: 2 Name: counter Type: 1
-GLOBAL_VARIABLE ID: 1 Name: max Type: 2

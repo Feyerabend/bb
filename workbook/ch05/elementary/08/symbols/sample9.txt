@@ -1,4 +1,0 @@
-GLOBAL_VARIABLE ID: 2 Name: b Type: 1
-GLOBAL_VARIABLE ID: 1 Name: a Type: 1
-PROCEDURE ID: 3 Name: increment_a
-  LOCAL_VARIABLE ID: 4 Name: b Type: 1
