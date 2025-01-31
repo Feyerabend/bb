@@ -1,0 +1,140 @@
+multiply:
+t0 = LOAD x.g
+multiply.a.l = t0
+t1 = LOAD y.g
+multiply.b.l = t1
+t2 = LOAD 0
+z.g = t2
+L0:
+t3 = LOAD multiply.b.l
+t4 = LOAD 0
+t5 = > t3 t4
+IF_NOT t5 GOTO L1
+t6 = LOAD 2
+t7 = LOAD multiply.a.l
+t8 = * t6 t7
+multiply.a.l = t8
+t9 = LOAD multiply.b.l
+t10 = LOAD 2
+t11 = / t9 t10
+multiply.b.l = t11
+GOTO L0
+L1:
+RETURN
+divide:
+t12 = LOAD x.g
+r.g = t12
+t13 = LOAD 0
+q.g = t13
+t14 = LOAD y.g
+divide.w.l = t14
+L2:
+t15 = LOAD divide.w.l
+t16 = LOAD r.g
+t17 = <= t15 t16
+IF_NOT t17 GOTO L3
+t18 = LOAD 2
+t19 = LOAD divide.w.l
+t20 = * t18 t19
+divide.w.l = t20
+GOTO L2
+L3:
+L4:
+t21 = LOAD divide.w.l
+t22 = LOAD y.g
+t23 = > t21 t22
+IF_NOT t23 GOTO L5
+t24 = LOAD 2
+t25 = LOAD q.g
+t26 = * t24 t25
+q.g = t26
+t27 = LOAD divide.w.l
+t28 = LOAD 2
+t29 = / t27 t28
+divide.w.l = t29
+t30 = LOAD divide.w.l
+t31 = LOAD r.g
+t32 = <= t30 t31
+IF_NOT t32 GOTO L6
+t33 = LOAD r.g
+t34 = LOAD divide.w.l
+t35 = - t33 t34
+r.g = t35
+t36 = LOAD q.g
+t37 = LOAD 1
+t38 = + t36 t37
+q.g = t38
+L6:
+GOTO L4
+L5:
+RETURN
+gcd:
+t39 = LOAD x.g
+gcd.f.l = t39
+t40 = LOAD y.g
+gcd.g.l = t40
+L7:
+t41 = LOAD gcd.f.l
+t42 = LOAD gcd.g.l
+t43 = != t41 t42
+IF_NOT t43 GOTO L8
+t44 = LOAD gcd.f.l
+t45 = LOAD gcd.g.l
+t46 = < t44 t45
+IF_NOT t46 GOTO L9
+t47 = LOAD gcd.g.l
+t48 = LOAD gcd.f.l
+t49 = - t47 t48
+gcd.g.l = t49
+L9:
+t50 = LOAD gcd.g.l
+t51 = LOAD gcd.f.l
+t52 = < t50 t51
+IF_NOT t52 GOTO L10
+t53 = LOAD gcd.f.l
+t54 = LOAD gcd.g.l
+t55 = - t53 t54
+gcd.f.l = t55
+L10:
+GOTO L7
+L8:
+t56 = LOAD gcd.f.l
+z.g = t56
+RETURN
+fact:
+t57 = LOAD n.g
+t58 = LOAD 1
+t59 = > t57 t58
+IF_NOT t59 GOTO L11
+t60 = LOAD n.g
+t61 = LOAD f.g
+t62 = * t60 t61
+f.g = t62
+t63 = LOAD n.g
+t64 = LOAD 1
+t65 = - t63 t64
+n.g = t65
+CALL fact
+L11:
+RETURN
+main:
+t66 = LOAD 3
+x.g = t66
+t67 = LOAD 6
+y.g = t67
+CALL multiply
+t68 = LOAD 3
+x.g = t68
+t69 = LOAD 6
+y.g = t69
+CALL divide
+t70 = LOAD 3
+x.g = t70
+t71 = LOAD 6
+y.g = t71
+CALL gcd
+t72 = LOAD 1
+f.g = t72
+t73 = LOAD 10
+n.g = t73
+CALL fact

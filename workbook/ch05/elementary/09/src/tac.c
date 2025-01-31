@@ -213,6 +213,32 @@ char *generateTAC(ASTNode *node, const char* proc_name) {
             return result;
         }
 
+        case NODE_TERM: {
+            if (node->childCount != 2) {
+                fprintf(stderr, "Error: TERM node must have two children\n");
+                exit(1);
+            }
+            char *left = generateTAC(node->children[0], proc_name);
+            char *right = generateTAC(node->children[1], proc_name);
+            char *result = newTemp();
+            emitTAC(node->value, left, right, result); // e.g., t4 = * t2 t3
+            return result;
+        }
+
+        case NODE_FACTOR: {
+            if (node->childCount == 1) {
+                return generateTAC(node->children[0], proc_name); // fwrd single child
+            } else if (node->childCount == 2 && strcmp(node->value, "-") == 0) {
+                char *operand = generateTAC(node->children[1], proc_name);
+                char *result = newTemp();
+                emitTAC("NEG", operand, NULL, result); // negate factor: t6 = NEG t5
+                return result;
+            } else {
+                fprintf(stderr, "Error: Invalid FACTOR node\n");
+                exit(1);
+            }
+        }
+
         case NODE_EXPRESSION: {
             // expression (forward to child)
             // asymmetric tree, so we can't just return the result of the left child!
@@ -267,38 +293,44 @@ char *genTAC(ASTNode *node) {
     return generateTAC(node, "main");
 }
 
-void printTAC() {
+void printTACToFile(FILE *output) {
     TAC *current = tac_head;
     while (current) {
-
         if (strcmp(current->op, "LABEL") == 0) {
-            printf("%s:\n", current->result);
-
+            fprintf(output, "%s:\n", current->result);
         } else if (strcmp(current->op, "IF_NOT") == 0) {
-            printf("IF_NOT %s GOTO %s\n", current->arg1, current->arg2); // conditional jumps
-
+            fprintf(output, "IF_NOT %s GOTO %s\n", current->arg1, current->arg2);
         } else if (strcmp(current->op, "GOTO") == 0) {
-            printf("GOTO %s\n", current->arg1); // unconditional jumps
-
+            fprintf(output, "GOTO %s\n", current->arg1);
         } else if (strcmp(current->op, "CALL") == 0) {
-            printf("CALL %s\n", current->arg1); // procedure calls
-
+            fprintf(output, "CALL %s\n", current->arg1);
         } else if (strcmp(current->op, "LOAD") == 0) {
-            printf("%s = LOAD %s\n", current->result, current->arg1); // loads
-
+            fprintf(output, "%s = LOAD %s\n", current->result, current->arg1);
         } else if (strcmp(current->op, "RETURN") == 0) {
-            printf("RETURN\n"); // procedure return
-
-        } else if (strcmp(current->op, "=") == 0) {  // assignments
-            printf("%s = %s\n", current->result, current->arg1);
-
+            fprintf(output, "RETURN\n");
+        } else if (strcmp(current->op, "=") == 0) {
+            fprintf(output, "%s = %s\n", current->result, current->arg1);
         } else {
-            // standard ops (+, -, !=)
-            printf("%s = %s %s %s\n", current->result, current->op, current->arg1, current->arg2);
+            fprintf(output, "%s = %s %s %s\n", current->result, current->op, current->arg1, current->arg2);
         }
         current = current->next;
     }
 }
+
+void printTAC(const char *filename) {
+    if (filename) {
+        FILE *file = fopen(filename, "w");
+        if (!file) {
+            perror("Error opening file");
+            return;
+        }
+        printTACToFile(file);
+        fclose(file);
+    } else {
+        printTACToFile(stdout);
+    }
+}
+
 
 void exportTACFile(FILE *file) {
     TAC *current = tac_head;

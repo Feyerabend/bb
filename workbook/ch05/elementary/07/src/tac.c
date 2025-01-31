@@ -158,6 +158,32 @@ char *generateTAC(ASTNode *node) {
             return result;
         }
 
+        case NODE_TERM: {
+            if (node->childCount != 2) {
+                fprintf(stderr, "Error: TERM node must have two children\n");
+                exit(1);
+            }
+            char *left = generateTAC(node->children[0]);
+            char *right = generateTAC(node->children[1]);
+            char *result = newTemp();
+            emitTAC(node->value, left, right, result); // e.g., t4 = * t2 t3
+            return result;
+        }
+
+        case NODE_FACTOR: {
+            if (node->childCount == 1) {
+                return generateTAC(node->children[0]); // fwrd single child
+            } else if (node->childCount == 2 && strcmp(node->value, "-") == 0) {
+                char *operand = generateTAC(node->children[1]);
+                char *result = newTemp();
+                emitTAC("NEG", operand, NULL, result); // negate factor: t6 = NEG t5
+                return result;
+            } else {
+                fprintf(stderr, "Error: Invalid FACTOR node\n");
+                exit(1);
+            }
+        }
+
         case NODE_EXPRESSION: {
             // expression (forward to child)
             // asymmetric tree, so we can't just return the result of the left child!
