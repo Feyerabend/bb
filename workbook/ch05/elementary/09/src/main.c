@@ -62,13 +62,11 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
     printf("tac saved to %s\n", tacFilename);
     // free TAC
 
-//    exportLLVM("output.ll");
-
 
     // read TAC from file
     parseTAC(tacFilename);
 
-
+    // free at last
     freeTAC();
     freeSymbolTable();
     if (root) {
