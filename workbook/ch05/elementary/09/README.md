@@ -62,34 +62,65 @@ __TAC Instructions__
 __Example__
 
 ```c
-const max = 10;
-var counter;
+var a, b, gcd;
+
+procedure computeGCD;
+begin
+    while (b # 0) do
+    begin
+        if (a > b) then
+            a := a - b;
+        if (a <= b) then
+            b := b - a;
+    end;
+    gcd := a;
+end;
 
 begin
-    while (counter < max) do
-    begin
-        counter := counter + 1;
-    end;
+    a := 48;
+    b := 18;
+    call computeGCD;
 end.
 ```
 
 The corresponding TAC might look like:
 
 ```tac
-t0 = LOAD 10
-max = t0
-main:
+computeGCD:
 L0:
-t1 = LOAD counter
-t2 = LOAD max
-t3 = < t1 t2
-IF_NOT t3 GOTO L1
-t4 = LOAD counter
-t5 = LOAD 1
-t6 = + t4 t5
-counter = t6
+t0 = LOAD b.g
+t1 = LOAD 0
+t2 = != t0 t1
+IF_NOT t2 GOTO L1
+t3 = LOAD a.g
+t4 = LOAD b.g
+t5 = > t3 t4
+IF_NOT t5 GOTO L2
+t6 = LOAD a.g
+t7 = LOAD b.g
+t8 = - t6 t7
+a.g = t8
+L2:
+t9 = LOAD a.g
+t10 = LOAD b.g
+t11 = <= t9 t10
+IF_NOT t11 GOTO L3
+t12 = LOAD b.g
+t13 = LOAD a.g
+t14 = - t12 t13
+b.g = t14
+L3:
 GOTO L0
 L1:
+t15 = LOAD a.g
+gcd.g = t15
+RETURN
+main:
+t16 = LOAD 48
+a.g = t16
+t17 = LOAD 18
+b.g = t17
+CALL computeGCD
 ```
 
 __TAC in Compilers__

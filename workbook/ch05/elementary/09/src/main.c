@@ -55,7 +55,7 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
     // genTAC(root);
     generateTAC(root, "main");
     printTAC(tacFilename);
-    printTAC();
+    printTAC(NULL);
 
     // export TAC to file
  //   exportTAC(tacFilename);
