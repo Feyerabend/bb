@@ -20,117 +20,163 @@ __View__
 
 ### Overview and Uses
 
-*Three-Address Code (TAC)* is an intermediate representation used in compilers. It is a low-level,
-linear representation of code that simplifies the translation from high-level source code to
-machine code. TAC is called "three-address" because each instruction typically involves at most
-three operands: two for the input and one for the output. This makes it easier to optimise and
-translate into machine code.
-
-
-__Characteristics of TAC__
-
-1. *Simplicity*: Each TAC instruction is simple and typically performs a single operation.
-
-2. *Explicit Temporaries*: Intermediate results are stored in temporary variables, making the flow of data explicit.
-
-3. *Low-Level Abstraction*: TAC is closer to machine code than high-level languages but still retains some abstraction.
-
-4. *Linear Structure*: TAC is represented as a sequence of instructions, making it easy to manipulate and optimise.
-
-
-__TAC Instructions__
-
-- *Assignment*: `x = LOAD y` (e.g. `t6 = LOAD 43`)
-
-- *Assignment from Expression*: `x = op y z` (e.g. `t6 = + t4 x`)
-
-- *Copy*: `x = y` (e.g. `t2 = t1`)
-
-- *Conditional Jumps*: `IF_NOT x GOTO L` (e.g. `IF_NOT t3 GOTO L1`)
-
-- *Unconditional Jumps*: `GOTO L` (e.g. `GOTO L2`)
-
-- *Function Calls*: `CALL func` (e.g. `CALL gcd`)
-
-- *Return*: `RETURN`
-
-- *Labels*: `Ln:` (e.g. `L2:`)
-
-
-
-__Example__
-
-```c
-const max = 10;
-var counter;
-
-begin
-    while (counter < max) do
-    begin
-        counter := counter + 1;
-    end;
-end.
-```
-
-The corresponding TAC might look like:
-
-```tac
-t0 = LOAD 10
-max = t0
-main:
+```llvm
+; Function: computeGCD
+define void @computeGCD() {
 L0:
-t1 = LOAD counter
-t2 = LOAD max
-t3 = < t1 t2
-IF_NOT t3 GOTO L1
-t4 = LOAD counter
-t5 = LOAD 1
-t6 = + t4 t5
-counter = t6
-GOTO L0
+    ; t0 = LOAD b.g
+    %t0 = load i32, i32* @b_g
+    ; t1 = LOAD 0
+    %t1 = load i32, i32* @zero
+    ; t2 = != t0 t1
+    %t2 = icmp ne i32 %t0, %t1
+    ; IF_NOT t2 GOTO L1
+    br i1 %t2, label %L2, label %L1
+
 L1:
+    ; t15 = LOAD a.g
+    %t15 = load i32, i32* @a_g
+    ; gcd.g = t15
+    store i32 %t15, i32* @gcd_g
+    ret void
+
+L2:
+    ; t3 = LOAD a.g
+    %t3 = load i32, i32* @a_g
+    ; t4 = LOAD b.g
+    %t4 = load i32, i32* @b_g
+    ; t5 = > t3 t4
+    %t5 = icmp sgt i32 %t3, %t4
+    ; IF_NOT t5 GOTO L3
+    br i1 %t5, label %L4, label %L5
+
+L3:
+    ; t6 = LOAD a.g
+    %t6 = load i32, i32* @a_g
+    ; t7 = LOAD b.g
+    %t7 = load i32, i32* @b_g
+    ; t8 = - t6 t7
+    %t8 = sub i32 %t6, %t7
+    ; a.g = t8
+    store i32 %t8, i32* @a_g
+    br label %L0
+
+L4:
+    ; t9 = LOAD a.g
+    %t9 = load i32, i32* @a_g
+    ; t10 = LOAD b.g
+    %t10 = load i32, i32* @b_g
+    ; t11 = <= t9 t10
+    %t11 = icmp sle i32 %t9, %t10
+    ; IF_NOT t11 GOTO L5
+    br i1 %t11, label %L6, label %L3
+
+L5:
+    ; t12 = LOAD b.g
+    %t12 = load i32, i32* @b_g
+    ; t13 = LOAD a.g
+    %t13 = load i32, i32* @a_g
+    ; t14 = - t12 t13
+    %t14 = sub i32 %t12, %t13
+    ; b.g = t14
+    store i32 %t14, i32* @b_g
+    br label %L0
+
+L6:
+    ret void
+}
+
+; Function: main
+define void @main() {
+    ; t16 = LOAD 48
+    %t16 = load i32, i32* @const_48
+    ; a.g = t16
+    store i32 %t16, i32* @a_g
+
+    ; t17 = LOAD 18
+    %t17 = load i32, i32* @const_18
+    ; b.g = t17
+    store i32 %t17, i32* @b_g
+
+    ; CALL computeGCD
+    call void @computeGCD()
+
+    ret void
+}
+
+; Global variables
+@a_g = global i32 0
+@b_g = global i32 0
+@gcd_g = global i32 0
+@zero = global i32 0
+@const_48 = global i32 48
+@const_18 = global i32 18
 ```
 
-__TAC in Compilers__
-
-1. *Intermediate Representation*:
-   - After parsing the source code, the compiler generates TAC as an intermediate step between the
-     high-level code and the target machine code.
-   - TAC is easier to optimise and analyse than the original source code.
-
-2. *Optimisation*:
-   - Many compiler optimisations, such as constant folding, dead code elimination, and common
-     subexpression elimination, are performed on TAC.
-   - The linear structure of TAC makes it easier to apply these transformations.
-
-3. *Code Generation*:
-   - TAC is closer to machine code, so it simplifies the process of generating assembly or machine code.
-   - Each TAC instruction can be directly mapped to one or more machine instructions.
-
-4. *Control Flow Analysis*:
-   - TAC makes control flow explicit through jump instructions (`GOTO`, `IF_NOT`), which helps in
-     analysing loops, conditionals, and other control structures.
-
-5. *Temporary Variables*:
-   - TAC introduces temporary variables to store intermediate results, which helps in managing registers
-     and memory during code generation.
 
 
-__Pros__
+```llvm
+; Global variables
+@a.g = global i32 0
+@b.g = global i32 0
+@gcd.g = global i32 0
 
-- *Portability*: TAC is independent of the target machine architecture, making it easier to retarget the
-  compiler to different platforms.
-- *Modularity*: Separates the front-end (parsing) and back-end (code generation) of the compiler, allowing
-  for easier maintenance and extension.
-- *Optimisation*: The explicit nature of TAC makes it suitable for applying various optimisations.
+; Function: computeGCD
+define void @computeGCD() {
+entry:
+  br label %L0
 
+L0:
+  %t0 = load i32, i32* @b.g
+  %t1 = icmp ne i32 %t0, 0
+  br i1 %t1, label %L0_body, label %L1
 
-__Cons__
+L0_body:
+  %t3 = load i32, i32* @a.g
+  %t4 = load i32, i32* @b.g
+  %t5 = icmp sgt i32 %t3, %t4
+  br i1 %t5, label %L2, label %L2_skip
 
-- *Verbosity*: TAC can be more verbose than high-level code, as it breaks down complex expressions into simpler instructions.
-- *Temporary Variables*: The use of temporary variables can increase the complexity of the code, especially for large programs.
+L2:
+  %t6 = load i32, i32* @a.g
+  %t7 = load i32, i32* @b.g
+  %t8 = sub i32 %t6, %t7
+  store i32 %t8, i32* @a.g
+  br label %L2_skip
 
-In summary, Three-Address Code is a way of intermediate representation in compilers, bridging the gap between
-high-level source code and low-level machine code. It simplifies optimisation, analysis, and code generation,
-making it a fundamental tool in compiler design.
+L2_skip:
+  %t9 = load i32, i32* @a.g
+  %t10 = load i32, i32* @b.g
+  %t11 = icmp sle i32 %t9, %t10
+  br i1 %t11, label %L3, label %L3_skip
+
+L3:
+  %t12 = load i32, i32* @b.g
+  %t13 = load i32, i32* @a.g
+  %t14 = sub i32 %t12, %t13
+  store i32 %t14, i32* @b.g
+  br label %L3_skip
+
+L3_skip:
+  br label %L0
+
+L1:
+  %t15 = load i32, i32* @a.g
+  store i32 %t15, i32* @gcd.g
+  ret void
+}
+
+; Function: main
+define void @main() {
+entry:
+  ; Initialize a.g and b.g
+  store i32 48, i32* @a.g
+  store i32 18, i32* @b.g
+
+  ; Call computeGCD
+  call void @computeGCD()
+
+  ret void
+}
+```
 
