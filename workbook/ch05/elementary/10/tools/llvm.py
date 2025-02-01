@@ -1,127 +1,120 @@
+
 import sys
 
-# Global variables for LLVM IR generation
-llvm_code = []
-temp_counter = 0
-label_counter = 0
+class TACToLLVM:
+    def __init__(self):
+        self.variables = set()
+        self.label_positions = {}
+        self.llvm_code = []
+        self.temp_count = 0
 
-# Function to generate a new temporary variable
-def new_temp():
-    global temp_counter
-    temp_counter += 1
-    return f"%t{temp_counter}"
+    def fresh_temp(self):
+        self.temp_count += 1
+        return f"%t{self.temp_count}"
 
-# Function to generate a new label
-def new_label():
-    global label_counter
-    label_counter += 1
-    return f"L{label_counter}"
+    def parse_tac(self, tac_lines):
+        # 1: Collect labels and variables
+        for line in tac_lines:
+            line = line.strip()
+            if not line or line.startswith("#"):  # empty lines, comments ..
+                continue
+            if line.endswith(":"):
+                self.label_positions[line[:-1]] = None  # Labels are placeholders
+            else:
+                parts = line.split()
+                if len(parts) >= 3 and parts[1] == '=':
+                    self.variables.add(parts[0])  # destination variables
 
-# Function to emit LLVM IR
-def emit(op, arg1=None, arg2=None, result=None):
-    if op == "LOAD":
-        llvm_code.append(f"{result} = load i32, i32* @{arg1}")
-    elif op == "STORE":
-        llvm_code.append(f"store i32 {arg1}, i32* @{result}")
-    elif op == "ADD":
-        llvm_code.append(f"{result} = add i32 {arg1}, {arg2}")
-    elif op == "SUB":
-        llvm_code.append(f"{result} = sub i32 {arg1}, {arg2}")
-    elif op == "MUL":
-        llvm_code.append(f"{result} = mul i32 {arg1}, {arg2}")
-    elif op == "DIV":
-        llvm_code.append(f"{result} = sdiv i32 {arg1}, {arg2}")
-    elif op == "CMP":
-        llvm_code.append(f"{result} = icmp eq i32 {arg1}, {arg2}")
-    elif op == "BR":
-        llvm_code.append(f"br i1 {arg1}, label %{result}, label %{arg2}")
-    elif op == "LABEL":
-        llvm_code.append(f"{arg1}:")
-    elif op == "RETURN":
-        llvm_code.append("ret void")
-    elif op == "CALL":
-        llvm_code.append(f"call void @{arg1}()")
-    else:
-        raise ValueError(f"Unknown operation: {op}")
+        # start LLVM Code
+        self.llvm_code.append("define i32 @main() {")
+        self.llvm_code.append("entry:")
 
-# Function to process a single line of TAC
-def process_tac_line(line):
-    parts = line.strip().split()
-    if not parts:
-        return
+        # allocate space for variables
+        for var in self.variables:
+            self.llvm_code.append(f"  %{var} = alloca i32")
 
-    op = parts[0]
-    if op == "LOAD":
-        _, src, dest = parts
-        emit("LOAD", src, result=dest)
-    elif op == "STORE":
-        _, src, dest = parts
-        emit("STORE", src, result=dest)
-    elif op == "ADD":
-        _, src1, src2, dest = parts
-        emit("ADD", src1, src2, dest)
-    elif op == "SUB":
-        _, src1, src2, dest = parts
-        emit("SUB", src1, src2, dest)
-    elif op == "MUL":
-        _, src1, src2, dest = parts
-        emit("MUL", src1, src2, dest)
-    elif op == "DIV":
-        _, src1, src2, dest = parts
-        emit("DIV", src1, src2, dest)
-    elif op == "CMP":
-        _, src1, src2, dest = parts
-        emit("CMP", src1, src2, dest)
-    elif op == "IF_NOT":
-        _, cond, label = parts
-        emit("BR", cond, label, new_label())
-    elif op == "GOTO":
-        _, label = parts
-        emit("BR", "1", label, label)
-    elif op == "LABEL":
-        _, label = parts
-        emit("LABEL", label)
-    elif op == "RETURN":
-        emit("RETURN")
-    elif op == "CALL":
-        _, func = parts
-        emit("CALL", func)
-    else:
-        raise ValueError(f"Unknown operation: {op}")
+        # 2: Generate LLVM instructions
+        for idx, line in enumerate(tac_lines):
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if line.endswith(":"):
+                label = line[:-1]
+                self.llvm_code.append(f"{label}:")
+                self.label_positions[label] = len(self.llvm_code)
+                continue
 
-# Function to generate LLVM IR from TAC
-def generate_llvm(tac_lines):
-    global llvm_code
-    llvm_code = []
+            parts = line.split()
+            if len(parts) == 3 and parts[1] == '=':
+                # assignment (x = y)
+                self.llvm_code.append(f"  %{parts[0]} = load i32, i32* %{parts[2]}")
+            elif len(parts) == 4 and parts[2] == "LOAD":
+                # immediate load (x = LOAD 3)
+                self.llvm_code.append(f"  store i32 {parts[3]}, i32* %{parts[0]}")
+            elif len(parts) == 5 and parts[1] == '=':
+                # arithmetic operations (t0 = + t1 t2)
+                dest, op, src1, src2 = parts[0], parts[2], parts[3], parts[4]
+                llvm_op = {
+                    '+': 'add',
+                    '-': 'sub',
+                    '*': 'mul',
+                    '/': 'sdiv',
+                    '>': 'icmp sgt',
+                    '<': 'icmp slt',
+                    '!=': 'icmp ne',
+                    '<=': 'icmp sle'
+                }.get(op)
 
-    # Emit global variable declarations
-    llvm_code.append("@a.g = global i32 0")
-    llvm_code.append("@b.g = global i32 0")
-    llvm_code.append("@gcd.g = global i32 0")
+                if llvm_op:
+                    temp1 = self.fresh_temp()
+                    temp2 = self.fresh_temp()
+                    self.llvm_code.append(f"  {temp1} = load i32, i32* %{src1}")
+                    self.llvm_code.append(f"  {temp2} = load i32, i32* %{src2}")
+                    result = self.fresh_temp()
+                    self.llvm_code.append(f"  {result} = {llvm_op} i32 {temp1}, {temp2}")
+                    self.llvm_code.append(f"  store i32 {result}, i32* %{dest}")
+                else:
+                    raise ValueError(f"Unknown operation: {op}")
+            elif parts[0] == "IF_NOT":
+                # conditional jump (IF_NOT cond GOTO label)
+                temp = self.fresh_temp()
+                self.llvm_code.append(f"  {temp} = load i32, i32* %{parts[1]}")
+                self.llvm_code.append(f"  %cond{self.temp_count} = icmp eq i32 {temp}, 0")
+                self.llvm_code.append(f"  br i1 %cond{self.temp_count}, label %{parts[3]}, label %continue_{idx}")
+                self.llvm_code.append(f"continue_{idx}:")
+            elif parts[0] == "GOTO":
+                # unconditional jump
+                self.llvm_code.append(f"  br label %{parts[1]}")
+            elif parts[0] == "CALL":
+                # function call (not supported yet, treating as jump)
+                self.llvm_code.append(f"  call void @{parts[1]}()")
+            elif parts[0] == "RETURN":
+                # return (assuming returning 0 for now)
+                self.llvm_code.append("  ret i32 0")
+            else:
+                raise ValueError(f"Unknown instruction: {line}")
 
-    # Process each line of TAC
-    for line in tac_lines:
-        process_tac_line(line)
+        self.llvm_code.append("}")
 
-    return llvm_code
+    def write_llvm(self, output_file):
+        with open(output_file, "w") as f:
+            f.write("\n".join(self.llvm_code) + "\n")
 
-# Main function
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python tac_to_llvm.py <tac_file>")
-        return
+    if len(sys.argv) < 3:
+        print("Usage: python3 llvm.py <input_tac_file> <output_llvm_file>")
+        sys.exit(1)
 
-    # Read TAC file
-    tac_file = sys.argv[1]
-    with open(tac_file, "r") as file:
-        tac_lines = file.readlines()
+    input_file = sys.argv[1]
+    output_file = sys.argv[2]
 
-    # Generate LLVM IR
-    llvm_ir = generate_llvm(tac_lines)
+    with open(input_file, "r") as f:
+        tac_lines = f.readlines()
 
-    # Print LLVM IR
-    for line in llvm_ir:
-        print(line)
+    converter = TACToLLVM()
+    converter.parse_tac(tac_lines)
+    converter.write_llvm(output_file)
+    print(f"LLVM IR written to {output_file}")
 
 if __name__ == "__main__":
     main()
