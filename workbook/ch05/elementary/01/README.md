@@ -54,6 +54,8 @@ it reduces the language's expressiveness by removing the ability to encapsulate 
 procedures, it aligns with PL/0's minimalist and educational focus. The trade-off sacrifices the power
 of closures and localised abstractions but keeps the language straightforward for learners and implementers.
 
+Constants can only be declared at the top level. This also simplify handling of constants.
+
 Thus,
 - The "odd" keyword is removed to streamline the grammar, as its utility is limited
   and could confuse learners as it is not often represented in languages of today.
@@ -61,8 +63,9 @@ Thus,
   with familiar conventions in languages like C.
 - Semicolons now act as statement terminators instead of separators, simplifying
   parsing and modernising the syntax.
-- Procedures are limited to the top level, avoiding complex scoping, simplifying
-  implementation, and aligning with PL/0's educational focus.
+- Procedures are limited to bransching from the top level, avoiding complex scoping,
+  simplifying implementation, but still aligning with PL/0's educational focus.
+- Constants can't be declared in other places than at the top level.
 
 These changes are not just superficial; they reflect deliberate design choices aimed at making the
 language more intuitive and accessible while providing a better foundation for understanding compiler
