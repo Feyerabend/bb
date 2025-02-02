@@ -28,6 +28,5 @@ extern void saveSymbolTable(const char *filename);
 extern int generateSymbolId();
 extern void printSymbolTable();
 extern void freeSymbolTable();
-extern Variable *findVariable(const char *proc_name, const char *var_name);
 
 #endif  // SYMBOL_TABLE_H
