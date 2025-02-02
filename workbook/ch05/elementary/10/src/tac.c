@@ -141,7 +141,7 @@ char *generateTAC(ASTNode *node, const char* proc_name) {
             char *end_label = newLabel();
             emitTAC("LABEL", NULL, NULL, start_label); // L0:
 
-            // evaluate condition (e.g. b != 0)
+            // evaluate condition (b != 0)
             char *cond_temp = generateTAC(node->children[0], proc_name); // t2 = != t0 t1
             emitTAC("IF_NOT", cond_temp, end_label, NULL); // IF_NOT t2 GOTO L1
 
@@ -196,13 +196,29 @@ char *generateTAC(ASTNode *node, const char* proc_name) {
                     emitTAC("=", temp, NULL, modifiedName);
                     free(modifiedName);
                 } else {
-                    emitTAC("=", temp, NULL, node->value); // Temporary variable or unknown
+                    emitTAC("=", temp, NULL, node->value); // temp variable or unknown
                 }
             } else {
                 fprintf(stderr, "Error: Assignment has no value\n");
             }
             return NULL;
         }
+
+/*
+case NODE_ASSIGNMENT: {
+    char* temp = generateTAC(node->children[0], proc_name);
+    if (temp) {
+        int is_global = isGlobalVariable(node->value);
+        char* modified_name = getModifiedName(node->value, proc_name, is_global);
+        emitTAC("=", temp, NULL, modified_name);
+        free(modified_name);
+    } else {
+        fprintf(stderr, "Error: Assignment has no value\n");
+    }
+    return NULL;
+}*/
+
+
 
         case NODE_OPERATOR: {
             // operator (e.g. -, +)
@@ -253,7 +269,7 @@ char *generateTAC(ASTNode *node, const char* proc_name) {
             } else if (isGlobalVariable(node->value)) {
                 modifiedName = getModifiedName(node->value, proc_name, 1); // Global variable
             } else {
-                modifiedName = strdup(node->value); // Temporary variable or unknown
+                modifiedName = strdup(node->value); // temp variable or unknown
             }
 
             char* temp = newTemp();
@@ -271,14 +287,54 @@ char *generateTAC(ASTNode *node, const char* proc_name) {
 
         case NODE_CONST_DECL: {
             char *value_temp = generateTAC(node->children[0], proc_name);
-            emitTAC("=", value_temp, NULL, node->value);
+            
+            // if the constant is global or local
+            int is_global = (strcmp(proc_name, "main") == 0); //  "main" is "the" global scope
+            char *modified_name = getModifiedName(node->value, proc_name, is_global);
+            
+            // emit assignment to the scoped constant name
+            emitTAC("=", value_temp, NULL, modified_name);
+            free(modified_name);
+            return NULL;
+        }
+
+        case NODE_VAR_DECL: {
+            // get variable name and scope
+            char *var_name = node->value;
+            int is_global = isGlobalVariable(var_name);
+
+            // check if the variable has an init
+            char *initial_value_temp = NULL;
+            if (node->childCount > 0) {
+                // TAC for the initial value
+                initial_value_temp = generateTAC(node->children[0], proc_name);
+            } else {
+                // default init to 0
+                initial_value_temp = newTemp();
+                emitTAC("LOAD", "0", NULL, initial_value_temp);
+            }
+
+            // modified variable name (e.g. "counter.g" or "proc.counter.l")
+            char *modified_name = getModifiedName(var_name, proc_name, is_global);
+
+            // emit assignment: var = initial_value
+            emitTAC("=", initial_value_temp, NULL, modified_name);
+
+            free(modified_name);
             return NULL;
         }
 
         case NODE_CALL: {
-            emitTAC("CALL", node->value, NULL, NULL);
+            char *return_label = newLabel();
+            emitTAC("CALL", node->value, return_label, NULL);
+            emitTAC("LABEL", NULL, NULL, return_label);
             return NULL;
         }
+
+        /*case NODE_CALL: {
+            emitTAC("CALL", node->value, NULL, NULL);
+            return NULL;
+        }*/
 
         default:
             // other nodes (VAR_DECL, etc.)
@@ -338,7 +394,7 @@ void exportTACFile(FILE *file) {
         fprintf(file, "TYPE: %s\n", current->op);
         fprintf(file, "ARG1: %s\n", current->arg1 ? current->arg1 : "NULL");
         fprintf(file, "ARG2: %s\n", current->arg2 ? current->arg2 : "NULL");
-        fprintf(file, "RESULT: %s\n\n", current->result ? current->result : "NULL");  // Empty line as separator
+        fprintf(file, "RESULT: %s\n\n", current->result ? current->result : "NULL");  // \n separator
         current = current->next;
     }
 }
@@ -373,7 +429,7 @@ void parseTAC(const char *filename) {
             sscanf(line, "ARG2: %s", arg2);
         } else if (strncmp(line, "RESULT:", 7) == 0) {
             sscanf(line, "RESULT: %s", result);
-            // Now we have a complete instruction
+            // complete instruction ..
             printf("Parsed TAC - OP: %s, ARG1: %s, ARG2: %s, RESULT: %s\n",
                    op, arg1, arg2, result);
         }

@@ -8,6 +8,7 @@
 #include "ast.h"
 #include "symbol_table.h"
 #include "tac.h"
+#include "vm.h"
 
 
 void processFile(const char* sourceFilename, const char* tokenFilename, const char* annotatedTokenFilename,
@@ -55,7 +56,7 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
     // genTAC(root);
     generateTAC(root, "main");
     printTAC(tacFilename);
-    printTAC();
+    printTAC(NULL);
 
     // export TAC to file
  //   exportTAC(tacFilename);
@@ -66,7 +67,18 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
 
 
     // read TAC from file
-    parseTAC(tacFilename);
+//    parseTAC(tacFilename);
+
+
+    TACVirtualMachine vm;
+    init_vm(&vm);
+    load_program(&vm, tacFilename);
+    execute_program(&vm);
+
+    for (int i = 0; i < vm.memory_size; i++) {
+        printf("%s = %d\n", vm.memory[i].key, vm.memory[i].value);
+    }
+
 
 
     freeTAC();
