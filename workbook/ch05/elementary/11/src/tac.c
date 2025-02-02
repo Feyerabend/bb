@@ -285,14 +285,11 @@ case NODE_ASSIGNMENT: {
             return temp;
         }
 
-        // FIX: we have to handle the constant declaration before calling main!
-        // at runtime, otherwise we get no constant value when trying to load?
-        // (e.g. "LOAD a" where a is a constant)
         case NODE_CONST_DECL: {
             char *value_temp = generateTAC(node->children[0], proc_name);
             
             // if the constant is global or local
-            int is_global = (strcmp(proc_name, "main") == 0); //  "main" is "the" global scope, no?
+            int is_global = (strcmp(proc_name, "main") == 0); //  "main" is "the" global scope
             char *modified_name = getModifiedName(node->value, proc_name, is_global);
             
             // emit assignment to the scoped constant name
@@ -312,7 +309,7 @@ case NODE_ASSIGNMENT: {
                 // TAC for the initial value
                 initial_value_temp = generateTAC(node->children[0], proc_name);
             } else {
-                // default init to 0 ~ LOAD 0 (not as in C where it's undefined)
+                // default init to 0
                 initial_value_temp = newTemp();
                 emitTAC("LOAD", "0", NULL, initial_value_temp);
             }
