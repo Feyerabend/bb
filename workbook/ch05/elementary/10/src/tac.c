@@ -227,7 +227,7 @@ char *generateTAC(ASTNode *node, const char* proc_name) {
 
         case NODE_FACTOR: {
             if (node->childCount == 1) {
-                return generateTAC(node->children[0], proc_name); // fwrd single child
+                return generateTAC(node->children[0], proc_name); // fwd single child
             } else if (node->childCount == 2 && strcmp(node->value, "-") == 0) {
                 char *operand = generateTAC(node->children[1], proc_name);
                 char *result = newTemp();

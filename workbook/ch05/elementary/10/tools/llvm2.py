@@ -1,124 +1,151 @@
+import re
+import sys
+
+class TACParser:
+    def __init__(self):
+        self.current_function = None
+        self.variables = {}
+        self.tmp_counter = 0
+        self.current_instruction = {}
+
+    def fresh_var(self):
+        self.tmp_counter += 1
+        return f"%t{self.tmp_counter}"
+
+    def parse_tac_lines(self, lines):
+        instructions = []
+        current_block = []
+        for line in lines:
+            if not line.strip():
+                continue
+            
+            line = line.strip()
+            if line.startswith("TYPE:"):
+                if self.current_instruction:
+                    current_block.append(self.current_instruction)
+                    self.current_instruction = {}
+                
+                self.current_instruction["type"] = line[len("TYPE:"):].strip()
+            elif line.startswith("ARG1:"):
+                self.current_instruction["arg1"] = line[len("ARG1:"):].strip()
+            elif line.startswith("ARG2:"):
+                self.current_instruction["arg2"] = line[len("ARG2:"):].strip()
+            elif line.startswith("RESULT:"):
+                self.current_instruction["result"] = line[len("RESULT:"):].strip()
+
+            if "type" in self.current_instruction and "arg1" in self.current_instruction and \
+               "arg2" in self.current_instruction and "result" in self.current_instruction:
+                current_block.append(self.current_instruction)
+                self.current_instruction = {}
+
+        return current_block
+
 class LLVMGenerator:
     def __init__(self):
-        self.temp_count = 0
-        self.variables = {}  # To store global variables (like a.g, b.g)
-        self.instructions = []  # To store the generated LLVM instructions
-    
-    def get_temp(self):
-        temp_var = f"t{self.temp_count}"
-        self.temp_count += 1
-        return temp_var
-    
-    def add_instruction(self, instr):
-        self.instructions.append(instr)
-    
-    def load(self, var):
-        return f"load i32, i32* @{var}"
-    
-    def store(self, var, value):
-        return f"store i32 {value}, i32* @{var}"
-    
-    def icmp(self, op, val1, val2):
-        return f"icmp {op} i32 {val1}, {val2}"
-    
-    def br(self, condition, true_label, false_label):
-        return f"br i1 {condition}, label %{true_label}, label %{false_label}"
+        self.llvm_code = []
+        self.funcs = set()
 
-    def generate_llvm(self, tac_program):
-        for line in tac_program:
-            parts = line.split()
-            op = parts[1]
-            
-            if op == "=":
-                # Simple assignment: result = arg1
-                result, arg1 = parts[0], parts[2]
-                self.add_instruction(f"{result} = {self.load(arg1)}")
-            
-            elif op == "IF_NOT":
-                # Conditional: IF_NOT arg1 GOTO label
-                arg1, label = parts[2], parts[4]
-                t_cond = self.get_temp()
-                self.add_instruction(f"{t_cond} = {self.icmp('ne', arg1, '0')}")
-                self.add_instruction(f"IF_NOT {t_cond} GOTO {label}")
-            
-            elif op == "GOTO":
-                # Unconditional jump: GOTO label
-                label = parts[1]
-                self.add_instruction(f"GOTO {label}")
-            
-            elif op == ">":
-                # Greater than comparison
-                result, arg1, arg2 = parts[0], parts[2], parts[4]
-                t_cmp = self.get_temp()
-                self.add_instruction(f"{t_cmp} = {self.icmp('sgt', arg1, arg2)}")
-                self.add_instruction(f"{result} = {t_cmp}")
-            
-            elif op == "<":
-                # Less than comparison
-                result, arg1, arg2 = parts[0], parts[2], parts[4]
-                t_cmp = self.get_temp()
-                self.add_instruction(f"{t_cmp} = {self.icmp('slt', arg1, arg2)}")
-                self.add_instruction(f"{result} = {t_cmp}")
-            
-            elif op == "-":
-                # Subtraction: result = arg1 - arg2
-                result, arg1, arg2 = parts[0], parts[2], parts[4]
-                t_sub = self.get_temp()
-                self.add_instruction(f"{t_sub} = sub i32 {arg1}, {arg2}")
-                self.add_instruction(f"{result} = {t_sub}")
-            
-            elif op == "LOAD":
-                # LOAD operation: result = LOAD value
-                result, value = parts[0], parts[2]
-                self.add_instruction(f"{result} = {self.load(value)}")
-        
-        return self.instructions
-    
-    def print_llvm(self, output_file=None):
-        llvm_code = "\n".join(self.instructions)
-        if output_file:
-            with open(output_file, "w") as f:
-                f.write(llvm_code)
-        else:
-            print(llvm_code)
+    def start_function(self, name):
+        if name not in self.funcs:
+            self.llvm_code.append(f"define void @{name}() {{")
+            self.funcs.add(name)
+
+    def end_function(self):
+        self.llvm_code.append("  ret void")
+        self.llvm_code.append("}")
+
+    def add_instruction(self, instruction):
+        self.llvm_code.append("  " + instruction)
+
+    def get_or_allocate(self, var):
+        if var == "NULL" or var is None or var == "":
+            return "null"
+        return var
+
+    def generate_llvm(self, parsed_data):
+        instr_type = parsed_data["type"]
+        arg1 = parsed_data["arg1"]
+        arg2 = parsed_data["arg2"]
+        result = parsed_data["result"]
+
+        # Generate based on the instruction type
+        if instr_type == "LABEL":
+            self.add_instruction(f"{result}:")
+
+        elif instr_type == "LOAD":
+            llvm_var = result
+            if arg1 != "NULL":
+                self.add_instruction(f"{llvm_var} = load i32, i32* {arg1}")
+            else:
+                # Special handling for NULL case
+                self.add_instruction(f"{llvm_var} = null")
+
+        elif instr_type == "=":
+            llvm_var = result
+            if arg1 != "NULL":
+                self.add_instruction(f"{llvm_var} = load i32, i32* {arg1}")
+            else:
+                # Special handling for NULL case
+                self.add_instruction(f"{llvm_var} = null")
+
+        elif instr_type in {"+", "-", "*", "/", ">", "<", ">=", "<=", "!="}:
+            llvm_op = {
+                "+": "add", "-": "sub", "*": "mul", "/": "sdiv",
+                ">": "icmp sgt", "<": "icmp slt", ">=": "icmp sge",
+                "<=": "icmp sle", "!=": "icmp ne"
+            }[instr_type]
+            llvm_var = result
+            self.add_instruction(f"{llvm_var} = {llvm_op} i32 {arg1}, {arg2}")
+
+        elif instr_type == "IF_NOT":
+            cond_var = arg1
+            self.add_instruction(f"br i1 {cond_var}, label %{arg2}, label %fail")
+
+        elif instr_type == "GOTO":
+            self.add_instruction(f"br label %{arg1}")
+
+        elif instr_type == "CALL":
+            # Special handling for CALL
+            self.add_instruction(f"call void @{arg1}()")
+
+        elif instr_type == "RETURN":
+            self.add_instruction("ret void")
+
+    def generate_code(self):
+        return "\n".join(self.llvm_code)
 
 
-# Example TAC program as input
-tac_program = [
-    "t0 = LOAD b.g",
-    "t1 = LOAD 0",
-    "t2 = != t0 t1",
-    "IF_NOT t2 GOTO L1",
-    "t3 = LOAD a.g",
-    "t4 = LOAD b.g",
-    "t5 = > t3 t4",
-    "IF_NOT t5 GOTO L2",
-    "t6 = LOAD a.g",
-    "t7 = LOAD b.g",
-    "t8 = - t6 t7",
-    "a.g = t8",
-    "L2:",
-    "t9 = LOAD a.g",
-    "t10 = LOAD b.g",
-    "t11 = <= t9 t10",
-    "IF_NOT t11 GOTO L3",
-    "t12 = LOAD b.g",
-    "t13 = LOAD a.g",
-    "t14 = - t12 t13",
-    "b.g = t14",
-    "L3:",
-    "GOTO L0",
-    "L1:",
-    "t15 = LOAD a.g",
-    "gcd.g = t15",
-    "RETURN"
-]
+def main(input_file):
+    with open(input_file, "r") as f:
+        tac_lines = f.readlines()
 
-# Initialize the LLVM generator
-llvm_gen = LLVMGenerator()
+    parser = TACParser()
+    llvm_generator = LLVMGenerator()
 
-# Generate LLVM IR from the TAC program
-llvm_gen.generate_llvm(tac_program)
+    # Parse the TAC lines into instructions
+    instructions = parser.parse_tac_lines(tac_lines)
 
-# Print the LLVM IR to the screen or save it to a file
-llvm_gen.print_llvm(output_file="output.ll")
+    # Generate LLVM code for each parsed instruction
+    current_function = None
+    for parsed_data in instructions:
+        # Check if the current instruction is a function definition
+        if parsed_data['type'] == 'CALL' and parsed_data['arg1'] not in llvm_generator.funcs:
+            current_function = parsed_data['arg1']
+            llvm_generator.start_function(current_function)
+        llvm_generator.generate_llvm(parsed_data)
+
+    llvm_generator.end_function()  # Close last function
+
+    llvm_output = llvm_generator.generate_code()
+
+    if llvm_output.strip():
+        print(llvm_output)
+    else:
+        print("No LLVM output generated. Check TAC input format.")
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python tac_to_llvm.py <input_tac_file>")
+    else:
+        main(sys.argv[1])

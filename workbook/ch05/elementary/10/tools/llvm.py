@@ -1,127 +1,113 @@
-import sys
+# This function will generate the LLVM IR for the instructions provided
+def generate_llvm_ir(instructions):
+    llvm_ir = []
+    
+    # A dictionary to store variables (to simulate variable names and values)
+    variables = {}
+    
+    for instruction in instructions:
+        # Determine instruction type
+        if instruction["TYPE"] == "LABEL":
+            llvm_ir.append(f"{instruction['RESULT']}:")
+        
+        elif instruction["TYPE"] == "LOAD":
+            var_name = instruction["RESULT"]
+            value = instruction["ARG1"]
+            # Store loaded value in the variable dictionary
+            variables[var_name] = value
+            llvm_ir.append(f"  {var_name} = load i32, i32* {value}, align 4")
+        
+        elif instruction["TYPE"] == "=":
+            var_name = instruction["RESULT"]
+            value = instruction["ARG1"]
+            variables[var_name] = value
+            llvm_ir.append(f"  {var_name} = {value}")
+        
+        elif instruction["TYPE"] == "*":
+            var_name = instruction["RESULT"]
+            operand1 = instruction["ARG1"]
+            operand2 = instruction["ARG2"]
+            llvm_ir.append(f"  {var_name} = mul i32 {operand1}, {operand2}")
+        
+        elif instruction["TYPE"] == "+":
+            var_name = instruction["RESULT"]
+            operand1 = instruction["ARG1"]
+            operand2 = instruction["ARG2"]
+            llvm_ir.append(f"  {var_name} = add i32 {operand1}, {operand2}")
+        
+        elif instruction["TYPE"] == "-":
+            var_name = instruction["RESULT"]
+            operand1 = instruction["ARG1"]
+            operand2 = instruction["ARG2"]
+            llvm_ir.append(f"  {var_name} = sub i32 {operand1}, {operand2}")
+        
+        elif instruction["TYPE"] == "/":
+            var_name = instruction["RESULT"]
+            operand1 = instruction["ARG1"]
+            operand2 = instruction["ARG2"]
+            llvm_ir.append(f"  {var_name} = sdiv i32 {operand1}, {operand2}")
+        
+        elif instruction["TYPE"] == ">":
+            var_name = instruction["RESULT"]
+            operand1 = instruction["ARG1"]
+            operand2 = instruction["ARG2"]
+            llvm_ir.append(f"  {var_name} = icmp sgt i32 {operand1}, {operand2}")
+        
+        elif instruction["TYPE"] == "<":
+            var_name = instruction["RESULT"]
+            operand1 = instruction["ARG1"]
+            operand2 = instruction["ARG2"]
+            llvm_ir.append(f"  {var_name} = icmp slt i32 {operand1}, {operand2}")
+        
+        elif instruction["TYPE"] == "IF_NOT":
+            condition = instruction["ARG1"]
+            label = instruction["ARG2"]
+            llvm_ir.append(f"  br i1 {condition}, label %{label}, label %next")
+        
+        elif instruction["TYPE"] == "GOTO":
+            label = instruction["ARG1"]
+            llvm_ir.append(f"  br label %{label}")
+        
+        elif instruction["TYPE"] == "RETURN":
+            llvm_ir.append("  ret void")
+        
+        elif instruction["TYPE"] == "CALL":
+            function_name = instruction["RESULT"]
+            llvm_ir.append(f"  call void @{function_name}()")
+    
+    # Add the final return for the main function
+    llvm_ir.append("  ret i32 0")
+    
+    return "\n".join(llvm_ir)
 
-# Global variables for LLVM IR generation
-llvm_code = []
-temp_counter = 0
-label_counter = 0
 
-# Function to generate a new temporary variable
-def new_temp():
-    global temp_counter
-    temp_counter += 1
-    return f"%t{temp_counter}"
+# Example instructions from the provided data
+instructions = [
+    {"TYPE": "LABEL", "ARG1": None, "ARG2": None, "RESULT": "multiply"},
+    {"TYPE": "LOAD", "ARG1": "x.g", "ARG2": None, "RESULT": "t0"},
+    {"TYPE": "=", "ARG1": "t0", "ARG2": None, "RESULT": "multiply.a.l"},
+    {"TYPE": "LOAD", "ARG1": "y.g", "ARG2": None, "RESULT": "t1"},
+    {"TYPE": "=", "ARG1": "t1", "ARG2": None, "RESULT": "multiply.b.l"},
+    {"TYPE": "LOAD", "ARG1": "0", "ARG2": None, "RESULT": "t2"},
+    {"TYPE": "=", "ARG1": "t2", "ARG2": None, "RESULT": "z.g"},
+    {"TYPE": "LABEL", "ARG1": None, "ARG2": None, "RESULT": "L0"},
+    {"TYPE": "LOAD", "ARG1": "multiply.b.l", "ARG2": None, "RESULT": "t3"},
+    {"TYPE": "LOAD", "ARG1": "0", "ARG2": None, "RESULT": "t4"},
+    {"TYPE": ">", "ARG1": "t3", "ARG2": "t4", "RESULT": "t5"},
+    {"TYPE": "IF_NOT", "ARG1": "t5", "ARG2": "L1", "RESULT": None},
+    {"TYPE": "LOAD", "ARG1": "2", "ARG2": None, "RESULT": "t6"},
+    {"TYPE": "LOAD", "ARG1": "multiply.a.l", "ARG2": None, "RESULT": "t7"},
+    {"TYPE": "*", "ARG1": "t6", "ARG2": "t7", "RESULT": "t8"},
+    {"TYPE": "=", "ARG1": "t8", "ARG2": None, "RESULT": "multiply.a.l"},
+    {"TYPE": "LOAD", "ARG1": "multiply.b.l", "ARG2": None, "RESULT": "t9"},
+    {"TYPE": "LOAD", "ARG1": "2", "ARG2": None, "RESULT": "t10"},
+    {"TYPE": "/", "ARG1": "t9", "ARG2": "t10", "RESULT": "t11"},
+    {"TYPE": "=", "ARG1": "t11", "ARG2": None, "RESULT": "multiply.b.l"},
+    {"TYPE": "GOTO", "ARG1": "L0", "ARG2": None, "RESULT": None},
+    {"TYPE": "LABEL", "ARG1": None, "ARG2": None, "RESULT": "L1"},
+    {"TYPE": "RETURN", "ARG1": None, "ARG2": None, "RESULT": None},
+]
 
-# Function to generate a new label
-def new_label():
-    global label_counter
-    label_counter += 1
-    return f"L{label_counter}"
-
-# Function to emit LLVM IR
-def emit(op, arg1=None, arg2=None, result=None):
-    if op == "LOAD":
-        llvm_code.append(f"{result} = load i32, i32* @{arg1}")
-    elif op == "STORE":
-        llvm_code.append(f"store i32 {arg1}, i32* @{result}")
-    elif op == "ADD":
-        llvm_code.append(f"{result} = add i32 {arg1}, {arg2}")
-    elif op == "SUB":
-        llvm_code.append(f"{result} = sub i32 {arg1}, {arg2}")
-    elif op == "MUL":
-        llvm_code.append(f"{result} = mul i32 {arg1}, {arg2}")
-    elif op == "DIV":
-        llvm_code.append(f"{result} = sdiv i32 {arg1}, {arg2}")
-    elif op == "CMP":
-        llvm_code.append(f"{result} = icmp eq i32 {arg1}, {arg2}")
-    elif op == "BR":
-        llvm_code.append(f"br i1 {arg1}, label %{result}, label %{arg2}")
-    elif op == "LABEL":
-        llvm_code.append(f"{arg1}:")
-    elif op == "RETURN":
-        llvm_code.append("ret void")
-    elif op == "CALL":
-        llvm_code.append(f"call void @{arg1}()")
-    else:
-        raise ValueError(f"Unknown operation: {op}")
-
-# Function to process a single line of TAC
-def process_tac_line(line):
-    parts = line.strip().split()
-    if not parts:
-        return
-
-    op = parts[0]
-    if op == "LOAD":
-        _, src, dest = parts
-        emit("LOAD", src, result=dest)
-    elif op == "STORE":
-        _, src, dest = parts
-        emit("STORE", src, result=dest)
-    elif op == "ADD":
-        _, src1, src2, dest = parts
-        emit("ADD", src1, src2, dest)
-    elif op == "SUB":
-        _, src1, src2, dest = parts
-        emit("SUB", src1, src2, dest)
-    elif op == "MUL":
-        _, src1, src2, dest = parts
-        emit("MUL", src1, src2, dest)
-    elif op == "DIV":
-        _, src1, src2, dest = parts
-        emit("DIV", src1, src2, dest)
-    elif op == "CMP":
-        _, src1, src2, dest = parts
-        emit("CMP", src1, src2, dest)
-    elif op == "IF_NOT":
-        _, cond, label = parts
-        emit("BR", cond, label, new_label())
-    elif op == "GOTO":
-        _, label = parts
-        emit("BR", "1", label, label)
-    elif op == "LABEL":
-        _, label = parts
-        emit("LABEL", label)
-    elif op == "RETURN":
-        emit("RETURN")
-    elif op == "CALL":
-        _, func = parts
-        emit("CALL", func)
-    else:
-        raise ValueError(f"Unknown operation: {op}")
-
-# Function to generate LLVM IR from TAC
-def generate_llvm(tac_lines):
-    global llvm_code
-    llvm_code = []
-
-    # Emit global variable declarations
-    llvm_code.append("@a.g = global i32 0")
-    llvm_code.append("@b.g = global i32 0")
-    llvm_code.append("@gcd.g = global i32 0")
-
-    # Process each line of TAC
-    for line in tac_lines:
-        process_tac_line(line)
-
-    return llvm_code
-
-# Main function
-def main():
-    if len(sys.argv) != 2:
-        print("Usage: python tac_to_llvm.py <tac_file>")
-        return
-
-    # Read TAC file
-    tac_file = sys.argv[1]
-    with open(tac_file, "r") as file:
-        tac_lines = file.readlines()
-
-    # Generate LLVM IR
-    llvm_ir = generate_llvm(tac_lines)
-
-    # Print LLVM IR
-    for line in llvm_ir:
-        print(line)
-
-if __name__ == "__main__":
-    main()
+# Generate the LLVM IR
+llvm_ir_code = generate_llvm_ir(instructions)
+print(llvm_ir_code)

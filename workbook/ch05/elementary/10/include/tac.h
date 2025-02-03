@@ -14,7 +14,7 @@ typedef struct TAC {
 extern void exportTAC(const char *filename);
 extern char *genTAC(ASTNode *node);
 extern char *generateTAC(ASTNode *node, const char* proc_name);
-extern void printTAC();
+extern void printTAC(const char *filename);
 extern void freeTAC();
 
 extern void parseTAC(const char *filename) ;
