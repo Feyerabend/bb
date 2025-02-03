@@ -66,7 +66,14 @@ interpret: $(TOOLSDIR)/ast_interpreter.py
 	@for file in $(ASTDIR)/*.json; do \
 		base=$$(basename $$file .json); \
 		echo "Interpreting $$file"; \
-		p$(PYTH) $(TOOLSDIR)/ast_interpreter.py $$file; \
+		$(PYTH) $(TOOLSDIR)/ast_interpreter.py $$file; \
+	done
+
+interpret2: $(TOOLSDIR)/tac_interpreter.py
+	@for file in $(TACDIR)/*.txt; do \
+		base=$$(basename $$file .txt); \
+		echo "Interpreting $$file"; \
+		$(PYTH) $(TOOLSDIR)/tac_interpreter.py $$file; \
 	done
 
 

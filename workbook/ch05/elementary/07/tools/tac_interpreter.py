@@ -1,3 +1,6 @@
+
+import sys
+
 class VM:
     def __init__(self):
         self.variables = {}
@@ -83,7 +86,8 @@ class VM:
             result = instr.get('result', 'NULL')
             
             try:
-                # Handle control flow first
+
+                # flow control
                 if op == 'LABEL':
                     self.pc += 1
                     continue
@@ -108,7 +112,7 @@ class VM:
                     self.pc = self.call_stack.pop()
                     continue
 
-                # Handle assignments and operations
+                # assignments and operations
                 val1 = self.get_val(arg1)
                 val2 = self.get_val(arg2) if arg2 != 'NULL' else None
 
@@ -149,18 +153,40 @@ class VM:
                 return
 
 
-# Horrible ... but it works
-        print("Execution completed successfully")
-        vars = {var: value for var, value in self.variables.items() if not (var.startswith('t') and var[1:].isdigit())}
-        print(f"Variables: {vars}")
-        print(f"Labels: {self.labels}")
+def filter_temps(memory):
+    return {k: v for k, v in memory.items() if not k.startswith('t') or not k[1:].isdigit()}
 
-        # Usage example
-        print("---------------\n")
-        filtered_variables = {var: value for var, value in vars.items() if var not in self.labels or not var.startswith('L')}
-        print(filtered_variables)
+def filter_local_vars(memory):
+    return {k: v for k, v in memory.items() if not k.endswith('.l')}
 
-# Usage example
-vm = VM()
-vm.load_instructions_from_file("sample2.txt")
-vm.execute()
+def filter_mutals(memory, memory2):
+    return {k: v for k, v in memory.items() if k not in memory2}
+    
+
+
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: python3 tac_interpreter.py <input_file> [output_file]")
+        sys.exit(1)
+
+    input_file = sys.argv[1]
+    output_file = sys.argv[2] if len(sys.argv) > 2 else None
+
+    vm = VM()
+    vm.load_instructions_from_file(input_file)
+    vm.execute()
+
+    mem = filter_mutals(vm.variables, vm.labels)
+    mem = filter_temps(mem)
+    mem = filter_local_vars(mem)
+
+    final_memory = "\nVariables:\n" + str(vm.variables) + "\n\nLabels:\n" + str(vm.labels) + "\n\nFiltered memory:\n" + str(mem) + "\n"
+
+    if output_file:
+        with open(output_file, 'w') as f:
+            f.write(str(final_memory) + '\n')
+    else:
+        print("Final memory state:\n", final_memory)
+
+if __name__ == "__main__":
+    main()
