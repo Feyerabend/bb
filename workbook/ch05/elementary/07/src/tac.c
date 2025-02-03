@@ -261,7 +261,6 @@ char *generateTAC(ASTNode *node, const char *proc_name) {
                     fprintf(stderr, "Error: Undefined variable '%s' in '%s'\n", node->value, proc_name);
                     exit(EXIT_FAILURE);
                 }
-                //emitTAC("=", temp, NULL, resolved_var->name);  // Use variable name correctly
 
                 char* new_var = strdup(resolved_var->name);
                 if (!new_var) {
@@ -431,6 +430,7 @@ char *generateTAC(ASTNode *node, const char *proc_name) {
 }
 
 
+
 void printTAC() {
     TAC *current = tac_head;
 
@@ -465,6 +465,48 @@ void printTAC() {
         }
         current = current->next;
     }
+}
+
+
+void printTACtoFile(const char *filename) {
+    FILE *file = fopen(filename, "w");
+    if (!file) {
+        fprintf(stderr, "Error: Could not open file %s for writing\n", filename);
+        exit(EXIT_FAILURE);
+    }
+
+    TAC *current = tac_head;
+
+    while (current) {
+        if (strcmp(current->op, "LABEL") == 0) {
+            fprintf(file, "%s:\n", current->result);
+
+        } else if (strcmp(current->op, "IF_NOT") == 0) {
+            fprintf(file, "IF_NOT %s GOTO %s\n", current->arg1, current->arg2);
+
+        } else if (strcmp(current->op, "GOTO") == 0) {
+            fprintf(file, "GOTO %s\n", current->arg1);
+
+        } else if (strcmp(current->op, "CALL") == 0) {
+            fprintf(file, "CALL %s\n", current->arg1);
+
+        } else if (strcmp(current->op, "LOAD") == 0) {
+            fprintf(file, "%s = LOAD %s\n", current->result, current->arg1);
+
+        } else if (strcmp(current->op, "RETURN") == 0) {
+            fprintf(file, "RETURN\n");
+
+        } else if (strcmp(current->op, "=") == 0) {
+            fprintf(file, "%s = %s\n", current->result, current->arg1);
+
+        } else {
+            // Standard operations (+, -, *, /, !=, etc.)
+            fprintf(file, "%s = %s %s %s\n", current->result, current->op, current->arg1, current->arg2);
+        }
+        current = current->next;
+    }
+
+    fclose(file);
 }
 
 
