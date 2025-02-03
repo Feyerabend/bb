@@ -16,7 +16,7 @@ int temp_counter = 0;
 int label_counter = 0;
 
 
-// -- Memory management for temporary variables and labels --
+// -- Memory management --
 
 // struct allocated temporary strings
 typedef struct TempStorage {
@@ -69,6 +69,7 @@ char *newLabel() {
 
 // free all registered temporary variables
 void freeAllTemps() {
+    printf("FREE ALL TEMPS\n");
     TempStorage *current = temp_storage_head;
     while (current) {
         TempStorage *next = current->next;
@@ -77,11 +78,13 @@ void freeAllTemps() {
         current = next;
     }
     temp_storage_head = NULL;
+    printf("FREED ALL TEMPS\n");
 }
 
 // --- TAC memory ---
 void freeTAC() {
     freeAllTemps();
+    printf("[DEBUG] Freeing TAC instructions\n");
     TAC *current = tac_head;
     while (current) {
         TAC *next = current->next;
@@ -95,6 +98,7 @@ void freeTAC() {
     tac_head = tac_tail = NULL;
     temp_counter = 0;  // Reset temp counter
     label_counter = 0; // Reset label counter
+    printf("[DEBUG] Freed TAC instructions\n");
 }
 
 // --- TAC generation ---
@@ -181,8 +185,11 @@ char *generateTAC(ASTNode *node, const char *proc_name) {
 
         case NODE_PROC_DECL: {
             emitTAC("LABEL", NULL, NULL, node->value); // label: procedure name
-            generateTAC(node->children[0], proc_name); // procedure body
+            generateTAC(node->children[0], node->value); // procedure body
             emitTAC("RETURN", NULL, NULL, NULL); // return from procedure
+            char* old_value = strdup("main"); // restore procedure level
+            registerTemp(old_value);
+            proc_name = old_value;
             return NULL;
         }
 
@@ -251,7 +258,7 @@ char *generateTAC(ASTNode *node, const char *proc_name) {
             if (temp) {
                 Variable* resolved_var = findVariable(proc_name, node->value);
                 if (!resolved_var) {
-                    fprintf(stderr, "Error: Undefined variable '%s'\n", node->value);
+                    fprintf(stderr, "Error: Undefined variable '%s' in '%s'\n", node->value, proc_name);
                     exit(EXIT_FAILURE);
                 }
                 //emitTAC("=", temp, NULL, resolved_var->name);  // Use variable name correctly
@@ -335,17 +342,13 @@ char *generateTAC(ASTNode *node, const char *proc_name) {
             }
         }
 
-        /*case NODE_EXPRESSION: {
-            // expression (forward to child)
-            // asymmetric tree, so we can't just return the result of the left child!
-            return generateTAC(node->children[0], proc_name);
-        }*/
-
-
         case NODE_EXPRESSION: {
+
             if (node->childCount == 1) {
+                // passing the child node to generateTAC?
                 return generateTAC(node->children[0], proc_name);
             } else if (node->childCount == 2) {
+                // binary expression .. ever occurs? see AST
                 char *left = generateTAC(node->children[0], proc_name);
                 char *right = generateTAC(node->children[1], proc_name);
                 if (!left || !right) {
@@ -379,7 +382,6 @@ char *generateTAC(ASTNode *node, const char *proc_name) {
         }
 
         case NODE_NUMBER: {
-            // Debug: Check if the node value is NULL
             if (!node->value) {
                 fprintf(stderr, "[ERROR] NODE_NUMBER has NULL value!\n");
                 exit(EXIT_FAILURE);
@@ -387,17 +389,15 @@ char *generateTAC(ASTNode *node, const char *proc_name) {
             
             printf("[DEBUG] Processing NUMBER: %s\n", node->value);
 
-            // Create a new temporary variable
             char *temp = newTemp();
 
-            // Debug: Ensure temp is allocated
             if (!temp) {
                 fprintf(stderr, "[ERROR] newTemp() returned NULL!\n");
                 exit(EXIT_FAILURE);
             }
             printf("[DEBUG] Created temp variable: %s\n", temp);
 
-            // Emit TAC instruction
+
             emitTAC("LOAD", node->value, NULL, temp);
             printf("[DEBUG] Emitted TAC: LOAD %s -> %s\n", node->value, temp);
 
@@ -430,12 +430,6 @@ char *generateTAC(ASTNode *node, const char *proc_name) {
     }
 }
 
-
-/*      printf("[DEBUG] TAC: OP=%s, ARG1=%s, ARG2=%s, RESULT=%s\n",
-               current->op,
-               current->arg1 ? current->arg1 : "NULL",
-               current->arg2 ? current->arg2 : "NULL",
-               current->result ? current->result : "NULL"); */
 
 void printTAC() {
     TAC *current = tac_head;
@@ -495,43 +489,6 @@ void exportTAC(const char *filename) {
     exportTACFile(file);
     fclose(file);
 }
-
-// --- TAC parser ---
-
-/*void parseTAC(const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (!file) {
-        perror("Error opening file");
-        return;
-    }
-
-    char line[128], op[32], arg1[32], arg2[32], result[32];
-
-    while (fgets(line, sizeof(line), file)) {
-        if (strncmp(line, "TYPE:", 5) == 0) {
-            sscanf(line, "TYPE: %s", op);
-        } else if (strncmp(line, "ARG1:", 5) == 0) {
-            sscanf(line, "ARG1: %s", arg1);
-        } else if (strncmp(line, "ARG2:", 5) == 0) {
-            sscanf(line, "ARG2: %s", arg2);
-        } else if (strncmp(line, "RESULT:", 7) == 0) {
-            sscanf(line, "RESULT: %s", result);
-
-            // Lookup symbols
-            Variable *var1 = findVariable(arg1);
-            Variable *var2 = findVariable(arg2);
-            Variable *res = findVariable(result);
-
-            printf("Parsed TAC - OP: %s, ARG1: %s (%s), ARG2: %s (%s), RESULT: %s (%s)\n",
-                   op,
-                   var1 ? var1->name : arg1, var1 ? "resolved" : "unknown",
-                   var2 ? var2->name : arg2, var2 ? "resolved" : "unknown",
-                   res ? res->name : result, res ? "resolved" : "unknown");
-        }
-    }
-
-    fclose(file);
-}*/
 
 void parseTAC(const char *filename) {
     FILE *file = fopen(filename, "r");

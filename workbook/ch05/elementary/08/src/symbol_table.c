@@ -45,68 +45,35 @@ void addLocalToProcedure(int proc_id, int var_id, const char *name, int type_id)
 }
 
 
-char *lookupVariable(const char* proc_name, const char* var_name) {
-    // First check if it's a local variable in the current procedure
-    Procedure* proc = procedures;
+Variable *findVariable(const char *proc_name, const char *var_name) {
+    // search for procedure by name
+    Procedure *proc = procedures;
     while (proc) {
         if (strcmp(proc->name, proc_name) == 0) {
-            Variable* local_var = proc->local_vars;
+            // procedure found, search local variables
+            Variable *local_var = proc->local_vars;
             while (local_var) {
                 if (strcmp(local_var->name, var_name) == 0) {
-                    return strdup(var_name);  // Found in local scope, return original name
+                    return local_var; // return local variable, if found
                 }
                 local_var = local_var->next;
             }
-            break; // Stop searching if procedure is found
+            break; // procedure found but variable not, stop
         }
         proc = proc->next;
     }
 
-    // Check if it's a global variable
-    Variable* global_var = global_vars;
-    while (global_var) {
-        if (strcmp(global_var->name, var_name) == 0) {
-            return strdup(var_name);  // Found in global scope, return original name
+    // if not found in procedure's local scope, search global space
+    Variable *vars = global_vars;
+    while (vars) {
+        if (strcmp(vars->name, var_name) == 0) {
+            return vars; // return global variable if found
         }
-        global_var = global_var->next;
+        vars = vars->next;
     }
 
-    // Not found in local or global scope
-    fprintf(stderr, "Error: Undefined variable '%s'\n", var_name);
-    exit(1);
-}
-
-
-
-Variable* findVariable(const char* proc_name, const char* var_name) {
-    // First check in local scope
-    Procedure* proc = procedures;
-    while (proc) {
-        if (strcmp(proc->name, proc_name) == 0) {
-            Variable* local_var = proc->local_vars;
-            while (local_var) {
-                if (strcmp(local_var->name, var_name) == 0) {
-                    return local_var;  // Return pointer to existing variable
-                }
-                local_var = local_var->next;
-            }
-            break; // Procedure found, but variable is not local
-        }
-        proc = proc->next;
-    }
-
-    // Check global variables
-    Variable* global_var = global_vars;
-    while (global_var) {
-        if (strcmp(global_var->name, var_name) == 0) {
-            return global_var; // Return pointer to global variable
-        }
-        global_var = global_var->next;
-    }
-
-    // Not found
-    fprintf(stderr, "Error: Undefined variable '%s'\n", var_name);
-    exit(1);
+    // variable not found
+    return NULL;
 }
 
 

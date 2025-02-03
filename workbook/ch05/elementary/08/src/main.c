@@ -52,21 +52,16 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
     saveSymbolTable(symbolFilename);
     printf("symbol table saved to %s\n", symbolFilename);
 
-    generateTAC(root);
+    generateTAC(root, "main");
     printTAC();
 
     // export TAC to file
     exportTAC(tacFilename);
     printf("tac saved to %s\n", tacFilename);
-    // free TAC
-
-//    exportLLVM("output.ll");
-
-
-    // read TAC from file
     parseTAC(tacFilename);
 
 
+    // free at last
     freeTAC();
     freeSymbolTable();
     if (root) {

@@ -29,6 +29,7 @@ void addChild(ASTNode *parent, ASTNode *child) {
 }
 
 void freeNode(ASTNode *node) {
+    if (!node) return;
     if (node->value) {
         free(node->value);
     }

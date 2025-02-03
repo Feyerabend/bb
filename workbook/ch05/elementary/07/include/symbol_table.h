@@ -6,16 +6,19 @@
 #define IMMUTABLE 1 // constant
 #define MUTABLE 2 // variable
 
+#define VARNAMELEN 16
+#define PROCNAMELEN 16
+
 typedef struct Variable {
     int id; // unique ID
-    char name[16];
+    char name[VARNAMELEN];
     int type_id; // used for mutable or immutable types
     struct Variable *next;
 } Variable;
 
 typedef struct Procedure {
     int id; // unique ID
-    char name[16];
+    char name[PROCNAMELEN];
     struct Variable *local_vars; // linked list of local variables
     struct Procedure *next;
 } Procedure;
