@@ -9,10 +9,12 @@ typedef struct TAC {
     struct TAC *next;
 } TAC;
 
-extern void exportTAC(const char *filename);
-extern char *generateTAC(ASTNode *node);
+extern char *generateTAC(ASTNode *node, const char *proc_name);
 extern void printTAC();
 extern void freeTAC();
+
+extern void exportTAC(const char *filename);
+extern void printTACtoFile(const char *filename);
 
 extern void parseTAC(const char *filename) ;
 

@@ -370,3 +370,5 @@ Benefits:
 - Readability: Clear and standardised return codes.
 - Scalability: Easy to add new error types or improve error handling without changing all functions.
 - Debugging: Centralised error logging aids debugging and maintenance.
+
+To get further help: more specific error messages in an excerpt from a [manual](./ERRCODES.md) on PL/0.

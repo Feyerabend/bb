@@ -11,7 +11,7 @@
 
 
 void processFile(const char* sourceFilename, const char* tokenFilename, const char* annotatedTokenFilename,
-        const char* astFilename, const char* symbolFilename, const char* tacFilename) {
+        const char* astFilename, const char* symbolFilename, const char* tacFilename, const char* easyTacFilename) {
 
     printf("\nparsing file: %s ..\n", sourceFilename);
 
@@ -52,21 +52,16 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
     saveSymbolTable(symbolFilename);
     printf("symbol table saved to %s\n", symbolFilename);
 
-    generateTAC(root);
+    generateTAC(root, "main");
     printTAC();
-
-    // export TAC to file
     exportTAC(tacFilename);
+
+    printTACtoFile(easyTacFilename); // easy to parse format
     printf("tac saved to %s\n", tacFilename);
-    // free TAC
-
-//    exportLLVM("output.ll");
-
-
-    // read TAC from file
     parseTAC(tacFilename);
 
 
+    // free at last
     freeTAC();
     freeSymbolTable();
     if (root) {
@@ -76,8 +71,8 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
 }
 
 int main(int argc, char* argv[]) {
-    if (argc != 7) {
-        fprintf(stderr, "Usage: %s <source-file> <token-output-file> <token-annotated-output-file> <ast-output-file> <symbol-table-output-file> <tac-output-file> .. (%d)\n", argv[0], argc);
+    if (argc != 8) {
+        fprintf(stderr, "Usage: %s <source-file> <token-output-file> <token-annotated-output-file> <ast-output-file> <symbol-table-output-file> <tac-output-file> <easy-tac-output-file> .. (%d)\n", argv[0], argc);
         return EXIT_FAILURE;
     }
 
@@ -87,8 +82,9 @@ int main(int argc, char* argv[]) {
     const char* astFile = argv[4];
     const char* symbolFile = argv[5];
     const char* tacFile = argv[6];
+    const char* esyTacFile = argv[7];
 
-    processFile(sourceFile, tokenFile, annTokenFile, astFile, symbolFile, tacFile);
+    processFile(sourceFile, tokenFile, annTokenFile, astFile, symbolFile, tacFile, esyTacFile);
 
     return EXIT_SUCCESS;
 }
