@@ -17,13 +17,12 @@ class VM:
         }
 
     def load_instruction(self, instruction):
-        """Load instruction and track labels/variables"""
         if instruction.get('op') == 'LABEL':
             label = instruction.get('result')
             if label:
                 self.labels[label] = len(self.instructions)
         
-        # Track variables in all fields
+        # track variables in all fields
         for field in ['arg1', 'arg2', 'result']:
             val = instruction.get(field)
             if val and not val.isdigit() and val != 'NULL':
@@ -32,7 +31,6 @@ class VM:
         self.instructions.append(instruction)
 
     def load_instructions_from_file(self, filename):
-        """Load instructions from file with robust parsing"""
         try:
             with open(filename, 'r') as file:
                 current = {}
@@ -44,7 +42,7 @@ class VM:
                             current = {}
                         continue
                     
-                    # Handle all possible fields
+                    # all possible fields
                     if line.startswith('TYPE:'):
                         current['op'] = line.split('TYPE: ')[1]
                     elif line.startswith('ARG1:'):
@@ -62,13 +60,11 @@ class VM:
             raise
 
     def get_val(self, arg):
-        """Get value from variable or literal"""
         if arg == 'NULL': return None
         if arg.isdigit(): return int(arg)
         return self.variables.get(arg, 0)
 
     def execute(self):
-        """Execute loaded program with full feature support"""
         print("Starting execution...")
         self.pc = 0
 
