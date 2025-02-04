@@ -45,7 +45,7 @@ samples: $(TARGET)
 		tokens_output="$(TOKENSDIR)/$$base.token"; \
 		annotated_tokens_output="$(TOKENSDIR)/$$base.antok"; \
 		ast_output="$(ASTDIR)/$$base.json"; \
-		symbol_table_output="$(SYMBOLDIR)/$$base.txt"; \
+		symbol_table_output="$(SYMBOLDIR)/$$base.symbol"; \
 		tac_output="$(TACDIR)/$$base.txt"; \
 		easy_tac_output="$(EASYTACDIR)/$$base.txt"; \
 		echo "\n- - - - - - -"; \
@@ -54,10 +54,10 @@ samples: $(TARGET)
 	done
 
 table: $(SCRIPTS)/symbol.py
-	@mkdir -p $(TABLEDIR)  # 'table' directory exists
+	@mkdir -p $(SYMBOLDIR)  # 'table' directory exists
 	@for file in $(ASTDIR)/*.json; do \
 		base=$$(basename $$file .json); \
-		symbol_output="$(TABLEDIR)/$$base.symbol"; \
+		symbol_output="$(SYMBOLDIR)/$$base.symbol"; \
 		echo "Generating symbol table for $$file -> $$symbol_output"; \
 		$(PYTH) $(SCRIPTS)/symbol.py -i $$file -o $$symbol_output; \
 	done
@@ -65,8 +65,9 @@ table: $(SCRIPTS)/symbol.py
 interpret: $(TOOLSDIR)/tac_interpreter.py
 	@for file in $(TACDIR)/*.txt; do \
 		base=$$(basename $$file .txt); \
+		symbol_table="$(SYMBOLDIR)/$$base.symbol"; \
 		echo "Interpreting $$file"; \
-		$(PYTH) $(TOOLSDIR)/tac_interpreter.py $$file; \
+		$(PYTH) $(TOOLSDIR)/tac_interpreter.py $$symbol_table $$file; \
 	done
 
 
