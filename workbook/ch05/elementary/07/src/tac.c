@@ -363,8 +363,6 @@ char *generateTAC(ASTNode *node, const char *proc_name) {
             }
         }
 
-
-
         case NODE_IDENTIFIER: {
             Variable* resolved_var = findVariable(proc_name, node->value);
             if (!resolved_var) {
