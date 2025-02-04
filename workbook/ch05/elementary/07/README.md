@@ -132,3 +132,58 @@ In summary, Three-Address Code is a way of intermediate representation in compil
 high-level source code and low-level machine code. It simplifies optimisation, analysis, and code generation,
 making it a fundamental tool in compiler design.
 
+
+
+
+### Structure of a Quadruple
+
+In the context of Intermediate Representation (IR) for compilers or interpreters, a quadruple is a data structure
+used to represent a single instruction in a simplified, low-level form. The concept is commonly used in many 
+ompiler designs, especially in cases of representing the operations between variables or constants in a more
+abstract form that can be translated into machine code or assembly language.
+
+A quadruple typically consists of four fields (hence the name quadruple), which represent the components of a
+simple instruction.
+1. Operator: The operation or instruction to be performed (e.g., addition, subtraction, multiplication, assignment).
+2. Argument 1: The first operand, which could be a constant, a variable, or a temporary variable.
+3. Argument 2: The second operand, which can also be a constant, a variable, or another temporary variable.
+4. Result: The variable or temporary variable that will store the result of the operation.
+
+Example of a Quadruple:
+
+Let’s say we have a simple addition operation like a = b + c.
+Or, represented as a = + b c.
+
+The corresponding quadruple might look like this:
+
+Operator	Argument 1	Argument 2	Result
++	b	c	a
+
+This quadruple represents the operation a = b + c, where:
+* + is the operator (the operation to perform),
+* b is Argument 1,
+* c is Argument 2,
+* a is the Result of the operation.
+
+Optimisations Using Quadruples
+
+Because quadruples are abstract representations, they are often used during the optimisation
+phase of compilation.
+- Constant folding: Replacing operations with known constant results (e.g., 3 + 4 becomes 7).
+- Common subexpression elimination: If the same expression appears multiple times, it can be computed once and reused.
+- Dead code elimination: Removing operations where the result is never used.
+
+A Simple Code Example and Its Quadruple Representation:
+
+Consider the following simple code:
+
+a = + b c
+d = * a 2
+
+In quadruples, it would be represented as:
+1. '+ b c t1' (where t1 is a temporary variable for the result of b + c)
+2. '* t1 2 d' (multiplying the temporary result t1 by 2 and storing it in d)
+
+This representation breaks the code down into simpler steps, with temporary variables holding
+intermediate results. The quadruples form a linear sequence of operations that can be optimised
+and translated into machine code or further IR formats.
