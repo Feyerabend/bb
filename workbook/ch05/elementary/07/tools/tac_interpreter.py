@@ -16,7 +16,7 @@ class VM:
         }
         self.debug = debug
         self.breakpoints = set()
-        self.current_frame = "main"
+        self.current_frame = "main" # start at something
 
     def load_instruction(self, instruction):
         if instruction.get('op') == 'LABEL':
@@ -69,13 +69,15 @@ class VM:
 
                     if line.startswith('GLOBAL_VARIABLE'):
                         parts = line.split()
-                        var_name = parts[3]
-                        var_type = parts[5]
+                        var_name = parts[4]
+                        var_type = parts[6]
                         self.variables[var_name] = 0  # init first to 0
+
                     elif line.startswith('PROCEDURE'):
                         parts = line.split()
-                        proc_name = parts[3]
+                        proc_name = parts[4]
                         self.labels[proc_name] = len(self.instructions)  # procedure labels
+
         except Exception as e:
             print(f"Symbol table load error: {str(e)}")
             raise
@@ -84,7 +86,7 @@ class VM:
         for instr in self.instructions:
             op = instr['op']
             arg1 = instr.get('arg1', 'NULL')
-            arg2 = instr.get('arg2', 'NULL')
+            #arg2 = instr.get('arg2', 'NULL')
             result = instr.get('result', 'NULL')
 
             if op == 'LOAD':
@@ -236,7 +238,7 @@ def main():
 
     debug = '-d' in sys.argv or '--debug' in sys.argv
     args = [arg for arg in sys.argv[1:] if arg not in ['-d', '--debug']]
-    
+
     symbol_table_file = args[0]
     tac_file = args[1]
     output_file = args[2] if len(args) > 2 else None
