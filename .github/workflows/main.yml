@@ -16,6 +16,8 @@ jobs:
     # repository code
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
 
     # set up
     - name: Set up Python
