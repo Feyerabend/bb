@@ -85,7 +85,7 @@ Final:
 ## Final Values
 
 At the end of the program:
-- \( x = 3 \), \( y = 6 \), \( z = 3 \) (from `gcd`)
-- \( q = 0 \), \( r = 3 \) (from `divide`)
-- \( n = 1 \) (from `fact`)
-- \( f = 3628800 \) (\( 10! \))
+- $` x = 3 `$, $` y = 6 `$, $` z = 3 `$ (from `gcd`)
+- $` q = 0 `$, $` r = 3 `$ (from `divide`)
+- $` n = 1 `$ (from `fact`)
+- $` f = 3628800 `$ ($` 10! `$)
