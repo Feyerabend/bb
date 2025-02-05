@@ -8,7 +8,7 @@ Initially, all variables are declared with `var` and set to `0`.
 
 __1. call divide__
 
-Procedure `divide` calculates the quotient $`q `$ and remainder $`r`$
+Procedure `divide` calculates the quotient $` q `$ and remainder $` r `$
 of $`x \div y`$ using an iterative approach.
 
 ```pascal
@@ -38,12 +38,12 @@ Initial values:
 - $` r = 3 `$, $` q = 0 `$, $` w = 6 `$
 
 Iterations:
-1. \( w $\leq$ r \): \( w = 12 \) (exit first loop).
-2. \( w = 12 > y \): \( q = 0, w = 6 \).
-3. \( w = 6 > r \): \( q = 0, w = 3 \) (no change to \( r \)).
+1. $` w \leq r `$: $` w = 12 `$ (exit first loop).
+2. $` w = 12 > y `$: $` q = 0, w = 6 `$.
+3. $` w = 6 > r `$: $` q = 0, w = 3 `$ (no change to $` r `$).
 
 Final:
-- \( q = 0 \), \( r = 3 \)
+- $` q = 0 \), $` r = 3 \)
 
 
 __2. call gcd__
