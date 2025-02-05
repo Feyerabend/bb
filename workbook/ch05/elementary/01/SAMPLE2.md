@@ -20,17 +20,17 @@ Iterations:
 3. $` b = 1 `$ (odd):  $` z = z + a = 18, a = 24, b = 0 `$
 
 Final:
-- $` z = 18 `$ (i.e. $` 3 $\times$ 6 `$)
+- $` z = 18 `$ (i.e. $` 3 \times 6 `$)
 
 
 __2. call divide__
 
-Procedure `divide` calculates the quotient (\( q \)) and remainder (\( r \))
-of \( x $\div$ y \) using an iterative approach.
+Procedure `divide` calculates the quotient $`q `$ and remainder $`r`$
+of $`x \div y`$ using an iterative approach.
 
 Initial values:
-- \( x = 3 \), \( y = 6 \)
-- \( r = 3 \), \( q = 0 \), \( w = 6 \)
+- $` x = 3 `$, $` y = 6 `$
+- $` r = 3 `$, $` q = 0 `$, $` w = 6 `$
 
 Iterations:
 1. \( w $\leq$ r \): \( w = 12 \) (exit first loop).
