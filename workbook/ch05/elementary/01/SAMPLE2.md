@@ -71,7 +71,7 @@ Initial values:
 - $` f = 3 `$, $` g = 6 `$
 
 Iterations:
-1. $` f $\neq$ g `$, $` f = 3 < g = 6 `$: $` g = g - f = 3 `$.
+1. $` f \neq g `$, $` f = 3 < g = 6 `$: $` g = g - f = 3 `$.
 2. $` f = 3, g = 3 `$ (exit loop).
 
 Final:
