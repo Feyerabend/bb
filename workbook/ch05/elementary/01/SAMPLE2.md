@@ -15,12 +15,12 @@ Initial values:
 - $` z = 0 `$, $` a = 3 `$, $` b = 6 `$
 
 Iterations:
-1. \( b = 6 \) (even): \( a = 6, b = 3, z = 0 \)
-2. \( b = 3 \) (odd): \( z = z + a = 6, a = 12, b = 1 \)
-3. \( b = 1 \) (odd): \( z = z + a = 18, a = 24, b = 0 \)
+1. $` b = 6 `$ (even): $` a = 6, b = 3, z = 0 `$
+2. $` b = 3 `$ (odd):  $` z = z + a = 6, a = 12, b = 1 `$
+3. $` b = 1 `$ (odd):  $` z = z + a = 18, a = 24, b = 0 `$
 
 Final:
-- \( z = 18 \) (i.e. \( 3 $\times$ 6 \))
+- $` z = 18 `$ (i.e. $` 3 $\times$ 6 `$)
 
 
 __2. call divide__
