@@ -11,8 +11,8 @@ __1. call multiply__
 Procedure `multiply` calculates $`z = x \times y`$ using a bitwise algorithm.
 
 Initial values:
-- \( x = 3 \), \( y = 6 \)
-- \( z = 0 \), \( a = 3 \), \( b = 6 \)
+- $` x = 3 `$, $` y = 6 `$
+- $` z = 0 `$, $` a = 3 `$, $` b = 6 `$
 
 Iterations:
 1. \( b = 6 \) (even): \( a = 6, b = 3, z = 0 \)
