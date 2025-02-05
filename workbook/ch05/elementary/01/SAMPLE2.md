@@ -6,27 +6,32 @@ Variables:
 Initially, all variables are declared with `var` and set to `0`.
 
 
-__1. call multiply__
-
-Procedure `multiply` calculates $`z = x \times y`$ using a bitwise algorithm.
-
-Initial values:
-- $` x = 3 `$, $` y = 6 `$
-- $` z = 0 `$, $` a = 3 `$, $` b = 6 `$
-
-Iterations:
-1. $` b = 6 `$ (even): $` a = 6, b = 3, z = 0 `$
-2. $` b = 3 `$ (odd):  $` z = z + a = 6, a = 12, b = 1 `$
-3. $` b = 1 `$ (odd):  $` z = z + a = 18, a = 24, b = 0 `$
-
-Final:
-- $` z = 18 `$ (i.e. $` 3 \times 6 `$)
-
-
-__2. call divide__
+__1. call divide__
 
 Procedure `divide` calculates the quotient $`q `$ and remainder $`r`$
 of $`x \div y`$ using an iterative approach.
+
+```pascal
+procedure divide;
+var w;
+begin
+  r := x;
+  q := 0;
+  w := y;
+  while (w <= r) do
+    w := 2 * w;
+  while (w > y) do
+  begin
+    q := 2 * q;
+    w := w / 2;
+    if (w <= r) then
+    begin
+      r := r - w;
+      q := q + 1
+    end
+  end
+end;
+```
 
 Initial values:
 - $` x = 3 `$, $` y = 6 `$
@@ -41,10 +46,25 @@ Final:
 - \( q = 0 \), \( r = 3 \)
 
 
-__3. call gcd__
+__2. call gcd__
 
 Procedure `gcd` calculates the greatest common divisor (\( z \)) of
 \( x \) and \( y \) using the Euclidean algorithm.
+
+```pascal
+procedure gcd;
+var f, g;
+begin
+  f := x;
+  g := y;
+  while (f # g) do
+  begin
+    if (f < g) then g := g - f;
+    if (g < f) then f := f - g
+  end;
+  z := f
+end;
+```
 
 Initial values:
 - \( x = 3 \), \( y = 6 \)
@@ -59,9 +79,21 @@ Final:
 
 
 
-__4. call fact__
+__3. call fact__
 
 Procedure `fact` calculates \( f = n! \) recursively.
+
+```pascal
+procedure fact;
+begin
+  if (n > 1) then
+  begin
+    f := n * f;
+    n := n - 1;
+    call fact;
+  end;
+end;
+```
 
 Initial values:
 - \( n = 10 \), \( f = 1 \)

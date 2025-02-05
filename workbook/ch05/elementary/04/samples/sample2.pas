@@ -1,17 +1,4 @@
-var x, y, z, q, r, n, f;
-
-procedure multiply;
-var a, b;
-begin
-  a := x;
-  b := y;
-  z := 0;
-  while (b > 0) do
-  begin
-    a := 2 * a;
-    b := b / 2
-  end
-end;
+var x, y, q, r, n, f;
 
 procedure divide;
 var w;
@@ -58,10 +45,6 @@ end;
 
 
 begin
-  x := 3;
-  y := 6;
-  call multiply;
-
   x := 3;
   y := 6;
   call divide;
