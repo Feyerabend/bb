@@ -8,7 +8,7 @@ Initially, all variables are declared with `var` and set to `0`.
 
 __1. call multiply__
 
-Procedure `multiply` calculates $`z = x $\times$ y`$ using a bitwise algorithm.
+Procedure `multiply` calculates $`z = x \times y`$ using a bitwise algorithm.
 
 Initial values:
 - \( x = 3 \), \( y = 6 \)
