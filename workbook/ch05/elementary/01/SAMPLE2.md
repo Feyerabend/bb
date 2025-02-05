@@ -43,7 +43,7 @@ Iterations:
 3. $` w = 6 > r `$: $` q = 0, w = 3 `$ (no change to $` r `$).
 
 Final:
-- $` q = 0 \), $` r = 3 \)
+- $` q = 0 `$, $` r = 3 `$
 
 
 __2. call gcd__
