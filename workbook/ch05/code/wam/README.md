@@ -31,31 +31,32 @@ The front-end might generate an intermediate representation, often involving the
 construction of a WAM code. The WAM code is then executed by the WAM interpreter,
 which simulates the execution of the Prolog program on a hardware-independent
 virtual machine.
-This makes the WAM a key component in optimizing and managing the execution of
-Prolog code across different platforms without needing to write a custom backend for each one.
+
+This makes the WAM a key component in optimising and managing the execution of
+Prolog code across different platforms without needing to write a custom backend
+for each one.
 
 
 ### 3. Role in Relation to Compilers and VMs
 
-In the context of compilers:
 The WAM is part of the back-end of a Prolog compiler. After the Prolog code is
 compiled into an intermediate form, this intermediate code is executed by the WAM.
 The WAM code is not machine code but a low-level intermediate form that is easier
 to execute than high-level Prolog source code. This allows for cross-platform
 portability (since the WAM can be implemented on different architectures), 
-efficient execution, and optimization.
+efficient execution, and optimisation.
 
 Thus, the WAM is a bridge between high-level language (Prolog) and machine-level
 execution. It helps with the portability of Prolog implementations across different
 platforms.
 
-In the context of virtual machines:
-The WAM is a specialized virtual machine designed specifically for Prolog. It
+The WAM is a specialised virtual machine designed specifically for Prolog. It
 operates at a higher level of abstraction than machine code but is much more
 efficient than interpreting Prolog directly.
+
 It can be considered an abstract machine because it defines a model of computation
 for Prolog programs, with its own instructions, stack management, and execution strategy.
-Like other VMs (e.g., Java Virtual Machine or Python’s CPython interpreter), the WAM
+Like other VMs (e.g. Java Virtual Machine or Python’s CPython interpreter), the WAM
 abstracts away the details of the underlying hardware, which makes it easier to
 implement Prolog on different systems without needing to rewrite the compiler
 for each architecture.
@@ -67,7 +68,7 @@ To sum it up, the WAM's role in the context of compilers and virtual machines
 can be viewed as follows:
 
 - Compiler: It is the target for Prolog compilers. Once the Prolog code is parsed
-and analyzed, the compiler generates WAM code as an intermediate representation,
+and analysed, the compiler generates WAM code as an intermediate representation,
 which is then executed by the WAM virtual machine. The compiler translates the
 Prolog source into this more efficient intermediate code.
 
@@ -86,7 +87,7 @@ Is designed to make execution more efficient.
 Offers portability across different platforms (as long as the WAM
 interpreter is implemented for those platforms).
 However, unlike more general-purpose VMs (such as the Java Virtual
-Machine or the Python VM), the WAM is specialized for executing
+Machine or the Python VM), the WAM is specialised for executing
 Prolog code, so its design is tailored to the specific needs and
 characteristics of Prolog's logical execution model, such as
 backtracking and unification.
