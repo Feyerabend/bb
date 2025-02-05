@@ -60,6 +60,8 @@ void processFile(const char* sourceFilename, const char* tokenFilename, const ch
     printf("tac saved to %s\n", tacFilename);
     parseTAC(tacFilename);
 
+    example();
+
     // free at last
     freeTAC();
     freeSymbolTable();
