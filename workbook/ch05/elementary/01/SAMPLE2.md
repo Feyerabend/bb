@@ -48,8 +48,8 @@ Final:
 
 __2. call gcd__
 
-Procedure `gcd` calculates the greatest common divisor (\( z \)) of
-\( x \) and \( y \) using the Euclidean algorithm.
+Procedure `gcd` calculates the greatest common divisor ($` z `$) of
+$` x `$ and $` y `$ using the Euclidean algorithm.
 
 ```pascal
 procedure gcd;
@@ -67,15 +67,15 @@ end;
 ```
 
 Initial values:
-- \( x = 3 \), \( y = 6 \)
-- \( f = 3 \), \( g = 6 \)
+- $` x = 3 `$, $` y = 6 `$
+- $` f = 3 `$, $` g = 6 `$
 
 Iterations:
-1. \( f $\neq$ g \), \( f = 3 < g = 6 \): \( g = g - f = 3 \).
-2. \( f = 3, g = 3 \) (exit loop).
+1. $` f $\neq$ g `$, $` f = 3 < g = 6 `$: $` g = g - f = 3 `$.
+2. $` f = 3, g = 3 `$ (exit loop).
 
 Final:
-- \( z = 3 \) (GCD of \( 3 \) and \( 6 \)).
+- $` z = 3 `$ (GCD of $` 3 `$ and $` 6 `$).
 
 
 
