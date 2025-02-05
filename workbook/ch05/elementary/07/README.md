@@ -198,7 +198,16 @@ further IR formats.
 
 ### Sample 1
 
-An example of how the quadruples might look in our case like, is the following:
+An example of how the quadruples in our casse might look like.
+Each quadruple consists of four fields:
+1. *TYPE (Operator)*: Specifies the operation being performed (e.g. LOAD, +, GOTO).
+2. *ARG1*: The first operand of the operation (if applicable).
+3. *ARG2*: The second operand (if applicable).
+4. *RESULT*: Where to store the result of the operation.
+
+We have broadened the first item from "operator" to "type" to better
+encompass different kinds of instructions, such as labels, which might
+also be present.
 
 ```
 TYPE: LOAD
