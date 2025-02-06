@@ -5,8 +5,8 @@ An Abstract Syntax Tree (AST) is a hierarchical, tree-like representation
 of the structure of source code. Each node in the tree represents a construct
 occurring in the source code, such as an expression, statement, or variable
 declaration. Unlike raw text or token streams, an AST abstracts away low-level
-syntactical details and organizes the code into a form that is easier for a
-compiler or interpreter to analyze and process.
+syntactical details and organises the code into a form that is easier for a
+compiler or interpreter to analyse and process.
 
 - Nodes: Each node in an AST represents a syntactic construct, such as a variable,
   function call, or operator (cf. the grammar).
@@ -42,13 +42,13 @@ ASTNode *createNode(ASTNodeType type, const char *value) {
 }
 ```
 
-Purpose: Creates and initializes an AST node.
+Purpose: Creates and initialises an AST node.
 Key Points:
 - Allocates memory for the node dynamically using malloc.
 - The type field specifies what kind of AST construct this node represents.
 - The value field stores additional information, like a variable name or
   literal value. If no value is provided, it defaults to "noname".
-- Initializes the children array to hold child nodes, but starts empty
+- Initialises the children array to hold child nodes, but starts empty
   (NULL and childCount = 0).
 
 __2. Adding Child Nodes (addChild)__
@@ -119,7 +119,7 @@ Key Points:
 
 __5. Exporting the AST as JSON__
 
-Serialization (serializeAST)
+Serialisation (serializeAST)
 
 ```c
 void serializeAST(ASTNode *node, FILE *output) {
@@ -142,9 +142,9 @@ void serializeAST(ASTNode *node, FILE *output) {
 }
 ```
 
-Purpose: Serializes the AST into a JSON-like format, making it easier to analyze or use in external tools.
+Purpose: Serialises the AST into a JSON-like format, making it easier to analyse or use in external tools.
 Key Points:
 - Encodes each node's type, value, and children into JSON.
-- Recursively serializes child nodes.
+- Recursively serialises child nodes.
 - Handles arrays of children efficiently using commas to separate entries.
 

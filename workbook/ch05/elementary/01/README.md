@@ -10,7 +10,7 @@ mini compiler provides a hands-on foundation for understanding the core principl
 
 From this starting point, we can systematically build upon our knowledge and skills to tackle more advanced
 and complex examples. A natural progression is to explore a more substantial compiler for the educational
-programming language [PL/0](PL0.md). PL/0 is a well-known minimalist language often used for teaching compiler
+programming language [PL/0](./syntax/PL0.md). PL/0 is a well-known minimalist language often used for teaching compiler
 construction. It introduces additional concepts like variable declarations, procedures, control flow
 (such as loops and conditionals), and a more comprehensive symbol table for managing scopes and identifiers.
 
@@ -23,7 +23,7 @@ increasingly challenging problems in a structured and manageable way.
 
 ### Some changes
 
-To begin our exploration of PL/0, we will make some modifications to its [grammar](GRAMMAR.md) to
+To begin our exploration of PL/0, we will make some modifications to its [grammar](./syntax/GRAMMAR.md) to
 better align it with modern programming practices and simplify its usage. The first change involves
 removing the "odd" keyword. In the original grammar, the "odd" keyword was used within conditional
 statements to evaluate whether a given numeric expression (on the right-hand side of the condition)
@@ -97,7 +97,7 @@ Specifically,
 
 - Convert the source code into a stream of tokens (e.g., keywords, operators, identifiers).
 	- Implementation: Use a finite state machine or a library (like Flex or a custom tokeniser
-      in Python/C++). Here: we make our own [tokeniser](TOKENS.md).
+      in Python/C++). Here: we make our own [tokeniser](./syntax/TOKENS.md).
 	- Tokens for PL/E:
         - Keywords: const, var, procedure, call, begin, end, if, then, while, do.
 	    - Symbols: '=', '+', '-', '*', '/', '(', ')', ';', '.'.
@@ -136,7 +136,7 @@ Specifically,
 - Parse the token stream into a syntax tree based on PL/E grammar. This step ensures the program
   adheres to the language's grammar rules.
 - We will use a recursive descent parser, where the parser will build a abstract syntax tree
-  (AST) for further stages. See [AST](AST.md).
+  (AST) for further stages. See [AST](./syntax/AST.md).
 
 Example:
 
@@ -306,7 +306,7 @@ the following components have been excluded:
 - *Error Handling*: The current implementation provides limited or no
   mechanisms for detecting and reporting errors. This simplifies the
   core implementation but leaves an important aspect of compiler design
-  unexplored. See more on [Errors](ERRORS.md).
+  unexplored. See more on [Errors](./semantics/ERRORS.md).
 
 - *Optimisation*: No optimisations are applied to the generated code,
   meaning there is no consideration for improving performance, minimising
@@ -322,8 +322,9 @@ the following additional projects are proposed to extend and enhance the concept
 
 __1. Implement Comprehensive Error Handling__
 
-*Develop a robust error-handling mechanism for the compiler to detect, report,
-and guide users through various issues in the source code.*
+*Develop a robust error-handling mechanism for the compiler to
+detect, report, and guide users through various issues in the
+source code.*
 
 - Add support for syntax errors, semantic errors, and warnings.
 - Design error messages to be clear, actionable, and contextual
@@ -333,10 +334,11 @@ and guide users through various issues in the source code.*
   critical errors (which halt compilation) and warnings (which
   allow compilation to proceed).
 
-Challenge: Build a recovery mechanism that enables the compiler to continue
+
+*Challenge:* Build a recovery mechanism that enables the compiler to continue
 parsing after encountering errors, instead of stopping abruptly.
 
-Advanced extension: Make the error system configurable, allowing developers
+*Advanced extension:* Make the error system configurable, allowing developers
 to customise which warnings/errors are shown or suppressed.
 
 
@@ -359,7 +361,7 @@ code for performance and efficiency.
 	- Register allocation: Minimise memory access by efficiently using
     CPU registers.
 	
-Challenge: Develop a visualisation tool to compare pre- and post-optimisation
+*Challenge:* Develop a visualisation tool to compare pre- and post-optimisation
 code, helping users understand the impact of these transformations.
 
 
@@ -388,7 +390,7 @@ compilation but could cause bugs or inefficiencies.
 	- Implement a severity system (e.g., low, medium, high) and allow users to
     configure which warnings are displayed or ignored.
 
-Challenge: Incorporate machine learning to analyze and predict common coding
+*Challenge:* Incorporate machine learning to analyse and predict common coding
 mistakes, improving warning accuracy.
 
 
@@ -403,7 +405,8 @@ integrate them into the current compiler.
 - Type-checking module: Implement a reusable type-checker that can support
   multiple languages.
 
-This modular approach not only reinforces the core concepts but also demonstrates how real-world compilers are built with extensibility in mind.
+This modular approach not only reinforces the core concepts but also demonstrates
+how real-world compilers are built with extensibility in mind.
 
 
 __6. Design a Debugging and Logging Tool__
@@ -421,6 +424,6 @@ Develop a debugging tool to trace the compiler's internal processes.
 ### Summary
 
 These projects not only deepen your understanding of compiler design but also provide
-practical experience with critical features that are often essential in real-world applications.
-By addressing the omitted components, you'll gain a more comprehensive view of how compilers
-interact with programming languages and their users.
+practical experience with critical features that are often essential in real-world
+applications. By addressing the omitted components, you'll gain a more comprehensive
+view of how compilers interact with programming languages and their users.
