@@ -45,15 +45,15 @@ In this example:
 - z is local to the foo procedure.
 
 
-Lexical Scope in Practice
+#### Lexical Scope in Practice
 
 Languages like C, JavaScript (modern ES6+ with let and const), and Python use lexical scope. A function defined
 in a specific block can access variables from that block and its parent blocks.
 
 
-2. Other Types of Scope
+### 2. Other Types of Scope
 
-Dynamic Scope
+*Dynamic Scope*
 - Definition: The visibility of variables is determined by the runtime call stack rather than the program's lexical structure.
 - Principles: Variables are resolved by searching the call stack, starting from the most recently called function.
 - Example (Conceptual, not supported in most modern languages):
@@ -68,7 +68,7 @@ Dynamic Scope
 
 - Languages: Older languages like Lisp (original) and Bash use dynamic scoping.
 
-Global Scope
+*Global Scope*
 - Definition: Variables declared in the global scope are accessible throughout the entire program unless shadowed by a local variable.
 - Example:
 
@@ -81,7 +81,7 @@ void func() {
 ```
 
 
-Local Scope
+*Local Scope*
 - Definition: Variables declared within a function or block are only accessible within that specific context.
 - Example:
 
@@ -94,7 +94,7 @@ print(x)  # Error: `x` is not defined
 ```
 
 
-Function Scope
+*Function Scope*
 - Definition: Variables are visible within the function where they are declared (common in older JavaScript with var).
 - Example:
 
@@ -108,11 +108,11 @@ function foo() {
 ```
 
 
-Module Scope
+*Module Scope*
 - Definition: Variables are scoped to a module or file and cannot be accessed outside it.
 - Languages: Python, JavaScript (ES6 Modules).
 
-Namespace Scope
+*Namespace Scope*
 - Definition: Variables are scoped within a specific namespace, used to avoid name collisions.
 - Example in C++:
 
@@ -130,7 +130,7 @@ int main() {
 }
 ```
 
-Key Considerations Across Scopes
+__Considerations Across Scopes__
 1. Shadowing: When a local variable in an inner scope has the same name as a variable in an outer scope, the local variable takes precedence.
 
 ```python
@@ -154,6 +154,3 @@ print(x)  # 10
 |Debugging|	Easier|	Harder|
 |Usage|	Modern languages (C, Python)|	Older languages (Lisp)|
 
-Understanding scope is important for managing variable accessibility, avoiding errors like unintended overwrites, 
-and writing clear, maintainable code. Lexical scope, as in PL/0, provides a clear and predictable framework for
-variable resolution, forming the foundation for many modern programming languages.
