@@ -1,10 +1,10 @@
 
 ## Symbol Tables
 
-A symbol table is a crucial data structure used in compilers and interpreters to store
+A symbol table is a data structure used in compilers and interpreters to store
 information about identifiers (variables, functions, classes, etc.) in a program. It
-helps in semantic analysis, scope resolution, type checking, optimisation, and code
-generation.
+helps in *semantic analysis*, *scope resolution*, *type checking*, *optimisation*, and
+*code generation*.
 
 A symbol table is typically implemented as a hash table, tree, or stack-based structure.
 Typically each entry (symbol) in the table stores:
@@ -68,12 +68,11 @@ To resolve an identifier, the compiler:
 Example (Stack-Based Symbol Table):
 
 ```
-Scope 3 (Block) -> { x: int }
+Scope 3 (Block)    -> { x: int }
 Scope 2 (Function) -> { y: float, f: function }
-Scope 1 (Global) -> { g: int }
+Scope 1 (Global)   -> { g: int }
 ```
-
-Looking up x first checks Scope 3, then moves to Scope 2, etc.
+Looking up x first checks Scope 3, then moves to Scope 2, etc. moving outwards.
 
 #### Implementation Strategies
 
@@ -95,7 +94,7 @@ Looking up x first checks Scope 3, then moves to Scope 2, etc.
 int g = 10;
 void f() {
     int x = 5;
-    {
+    { // block
         int y = 20;
         x = y + g;
     }
