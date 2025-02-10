@@ -149,6 +149,7 @@ print(x)  # 10
 ### Comparison of Lexical and Dynamic Scoping
 
 |Feature|	Lexical Scope|	Dynamic Scope|
+|--|--|--|
 |Resolution|	Determined by code structure|	Determined by call stack|
 |Runtime Impact|	Faster (resolved at compile-time)|	Slower (resolved at runtime)|
 |Debugging|	Easier|	Harder|
