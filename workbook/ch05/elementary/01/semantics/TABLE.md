@@ -75,7 +75,7 @@ Scope 1 (Global) -> { g: int }
 
 Looking up x first checks Scope 3, then moves to Scope 2, etc.
 
-Implementation Strategies
+#### Implementation Strategies
 
 1. Hash Table (Most Common)
 - Fast lookup and insertion (O(1) on average).
