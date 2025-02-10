@@ -1,4 +1,4 @@
-var x, y, q, r, n, f;
+var x, y, q, r, n, f, z;
 
 procedure divide;
 var w;
