@@ -1,5 +1,5 @@
 
-### Scope in Programming
+## Scope in Programming
 
 *Scope* refers to the region of a program where a particular variable, function, or identifier is accessible.
 It defines the visibility and lifetime of entities within a program. There are several types of scope, each
