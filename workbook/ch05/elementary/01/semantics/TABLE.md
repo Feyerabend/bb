@@ -3,7 +3,7 @@
 
 A symbol table is a crucial data structure used in compilers and interpreters to store
 information about identifiers (variables, functions, classes, etc.) in a program. It
-helps in semantic analysis, scope resolution, type checking, optimization, and code
+helps in semantic analysis, scope resolution, type checking, optimisation, and code
 generation.
 
 A symbol table is typically implemented as a hash table, tree, or stack-based structure.
@@ -25,15 +25,15 @@ Example:
 
 #### Role of Symbol Tables in Compilation
 
-1. Lexical Analysis (Tokenization)
+__1. Lexical Analysis (Tokenisation)__
 - The lexer identifies identifiers and passes them to the symbol table.
 - Example: Seeing int x = 5; causes x to be entered into the symbol table.
 
-2. Parsing (Syntax Analysis)
+__2. Parsing (Syntax Analysis)__
 - The parser ensures correct syntax and updates the symbol table with additional structure (e.g., function parameters).
 - Example: int f(int a, int b) { return a + b; } adds f, a, and b to the table.
 
-3. Semantic Analysis
+__3. Semantic Analysis__
 - Resolves scope and checks for undeclared variables, type mismatches, or redeclaration errors.
 - Example:
 
@@ -43,13 +43,13 @@ float x = 5.5;  // Error: x redeclared in the same scope
 ```
 
 
-4. Intermediate Code Generation
+__4. Intermediate Code Generation__
 - Uses symbol table to generate correct addresses, types, and function calls.
 
-5. Optimisation
+__5. Optimisation__
 - Symbol tables help identify constant folding, dead code elimination, and variable inlining.
 
-6. Code Generation
+__6. Code Generation__
 - Assigns memory locations to variables and determines correct register allocations.
 
 
@@ -67,9 +67,11 @@ To resolve an identifier, the compiler:
 
 Example (Stack-Based Symbol Table):
 
+```
 Scope 3 (Block) -> { x: int }
 Scope 2 (Function) -> { y: float, f: function }
 Scope 1 (Global) -> { g: int }
+```
 
 Looking up x first checks Scope 3, then moves to Scope 2, etc.
 
@@ -86,9 +88,8 @@ Implementation Strategies
 - Uses a stack where entering a scope pushes a new table, and leaving pops it.
 - Efficient for languages with nested block scopes (C, Java).
 
-Example: Symbol Table in Action
 
-Given this code:
+#### Example:
 
 ```c
 int g = 10;
@@ -100,8 +101,6 @@ void f() {
     }
 }
 ```
-
-#### Symbol table structure:
 
 *Global Scope*
 
