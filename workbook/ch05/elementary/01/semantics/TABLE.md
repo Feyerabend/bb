@@ -30,8 +30,9 @@ __1. Lexical Analysis (Tokenisation)__
 - Example: Seeing int x = 5; causes x to be entered into the symbol table.
 
 __2. Parsing (Syntax Analysis)__
-- The parser ensures correct syntax and updates the symbol table with additional structure (e.g., function parameters).
-- Example: int f(int a, int b) { return a + b; } adds f, a, and b to the table.
+- The parser ensures correct syntax and updates the symbol table with additional
+  structure (e.g. function parameters).
+- Example: 'int f(int a, int b) { return a + b; }' adds 'f', 'a', and 'b' to the table.
 
 __3. Semantic Analysis__
 - Resolves scope and checks for undeclared variables, type mismatches, or redeclaration errors.
