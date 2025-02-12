@@ -22,7 +22,7 @@ Project 2: Increase Resolution
   before classification.
 - Use edge detection to enhance features before flattening.
 - Convert to grayscale intensity values (0-255) instead of binary pixels (0 or 1).
-- Use better format or saving the images: JPEG, PNG, etc.
+- Use better format for saving the images: JPEG, PNG, etc.
 
 
 __2. Enhancing Classification Accuracy__
