@@ -11,7 +11,7 @@ and outputs a binary decision.
 
 Rosenblatt's perceptron was implemented both as a mathematical model and as a hardware
 device called the Mark I Perceptron, which was built using a 20×20 array of cadmium sulfide
-photoresistors to recognize simple patterns. His early experiments demonstrated that
+photoresistors to recognise simple patterns. His early experiments demonstrated that
 perceptrons could learn to classify linearly separable patterns, leading to widespread
 optimism that these machines could eventually "think" and recognize complex patterns
 just as humans do.
@@ -61,7 +61,7 @@ generalizing, and handling real-world uncertainty.
 ### The Revival of Neural Networks (1980s-1990s): Backpropagation and Deep Learning Beginnings
 
 The major breakthrough that revived neural networks came in 1986, when Geoffrey Hinton,
-David Rumelhart, and Ronald Williams reintroduced and popularized the *backpropagation*
+David Rumelhart, and Ronald Williams reintroduced and popularised the *backpropagation*
 algorithm. While backpropagation had been known in some form earlier (notably by Paul Werbos
 in 1974), it was not widely adopted. This algorithm allowed multi-layer perceptrons (MLPs)
 to adjust their weights across multiple layers, enabling them to learn nonlinear functions.
@@ -87,8 +87,8 @@ By the 2010s, deep learning took off thanks to several factors:
 1. Big Data: More data was available than ever before, fueling learning.
 2. Hardware Advances: GPUs and TPUs enabled large-scale neural network training.
 3. Better Architectures: Innovations like transformers (Vaswani et al., 2017)
-   revolutionized natural language processing (NLP).
-4. Improved Training Techniques: Methods such as dropout, batch normalization,
+   revolutionised natural language processing (NLP).
+4. Improved Training Techniques: Methods such as dropout, batch normalisation,
    and better activation functions (e.g., ReLU) helped deep networks converge
    faster and avoid overfitting.
 
