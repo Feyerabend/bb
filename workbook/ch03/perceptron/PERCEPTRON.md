@@ -126,7 +126,7 @@ def generate_training_data(num_samples=100):
 #### Step 3: Train the Perceptron
 
 Now let's train the perceptron using the synthetic training data. We'll train the
-perceptron to recognize circles, squares, and lines.
+perceptron to recognise circles, squares, and lines.
 
 ```python
 # init perceptron
@@ -222,28 +222,27 @@ or deep learning models.
 
 ### More Detailed Attempt ..
 
-Save Images to Files: We will generate and save the training and test images in PPM format.
+*Save Images to Files:* We will generate and save the training and test images in PPM format.
 These images will be labeled and saved in different directories for training and testing.
 
-Read Images from Files: During training, we will load these images from the saved PPM files
+*Read Images from Files:* During training, we will load these images from the saved PPM files
 and preprocess them into the format needed by the perceptron (flattened pixel arrays).
 
-Accuracy Statistics: After training, we'll test the perceptron on the test images and calculate
+*Accuracy Statistics:* After training, we'll test the perceptron on the test images and calculate
 the accuracy. We'll also print detailed statistics on how well the model performs.
 
-hm.
 
 ### Step-by-Step
 
-Image Generation: We'll save the images in directories (e.g., train/, test/), with each shape
+*Image Generation:* We'll save the images in directories (e.g., train/, test/), with each shape
 type in its own subdirectory (e.g., train/circle/, train/square/, etc.).
 
-Saving Images: The images will be saved in PPM format.
+*Saving Images:* The images will be saved in PPM format.
 
-Loading Images: The program will read these images from files, flatten them, and use them
+*Loading Images:* The program will read these images from files, flatten them, and use them
 for training and testing.
 
-Accuracy Calculation: We'll print the accuracy and confusion matrix for better insights.
+*Accuracy Calculation:* We'll print the accuracy and confusion matrix for better insights.
 
 
 #### 1. Save Training and Test Images
@@ -291,7 +290,7 @@ def save_image_ppm(image, filename):
     height = len(image)
     width = len(image[0])
     with open(filename, 'w') as f:
-        # Write PPM header
+        # PPM3 header
         f.write(f'P3\n{width} {height}\n255\n')
         for row in image:
             for pixel in row:
