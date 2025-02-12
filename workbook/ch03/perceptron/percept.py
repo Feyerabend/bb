@@ -71,39 +71,33 @@ def generate_and_save_data(num_samples=100, size=8):
             image = globals()[f'generate_{shape}_image'](size)
             save_image_ppm(image, f"{folder}/{shape}_{i}.ppm")
 
-#generate_and_save_data()
-
-# Perceptron Code
-
-import os
-import random
 
 class Perceptron:
-    def __init__(self, input_size, num_classes):
+    def __init__(self, input_size, num_classes, l2_lambda=0.01):
         self.num_classes = num_classes
         self.input_size = input_size
-        # each class has its own weight vector
         self.weights = [[random.uniform(-1, 1) for _ in range(input_size)] for _ in range(num_classes)]
         self.bias = [random.uniform(-1, 1) for _ in range(num_classes)]
         self.learning_rate = 0.1
+        self.l2_lambda = l2_lambda  #regularization strength
 
     def activation(self, x):
-        return 1 if x >= 0 else 0  # step function
+        return 1 if x >= 0 else 0
 
     def predict(self, inputs):
-        # score for each class and choose the highest one
         scores = [sum(w * i for w, i in zip(self.weights[c], inputs)) + self.bias[c] for c in range(self.num_classes)]
-        return scores.index(max(scores))  # pick class with the highest score
+        return scores.index(max(scores))
 
     def train(self, training_data, labels, epochs):
         for _ in range(epochs):
             for inputs, label in zip(training_data, labels):
                 prediction = self.predict(inputs)
                 if prediction != label:
-                    # update the weights for the correct and incorrect class
+                    # update weights with L2 regularization
                     for i in range(len(self.weights[label])):
-                        self.weights[label][i] += self.learning_rate * inputs[i]
-                        self.weights[prediction][i] -= self.learning_rate * inputs[i]  # penalize incorrect class
+                        self.weights[label][i] += self.learning_rate * (inputs[i] - self.l2_lambda * self.weights[label][i])
+                        self.weights[prediction][i] -= self.learning_rate * (inputs[i] + self.l2_lambda * self.weights[prediction][i])
+                    # update biases
                     self.bias[label] += self.learning_rate
                     self.bias[prediction] -= self.learning_rate
 
@@ -131,6 +125,9 @@ def load_all_data():
     
     return train_images, train_labels, test_images, test_labels
 
+
+generate_and_save_data()
+
 input_size = 64  # 8x8 image
 perceptron = Perceptron(input_size, num_classes=3)
 train_data, train_labels, test_data, test_labels = load_all_data()
@@ -139,3 +136,4 @@ perceptron.train(train_data, train_labels, epochs=10)
 correct_predictions = sum(1 for inputs, label in zip(test_data, test_labels) if perceptron.predict(inputs) == label)
 accuracy = correct_predictions / len(test_labels) * 100
 print(f"Accuracy: {accuracy:.2f}%")
+

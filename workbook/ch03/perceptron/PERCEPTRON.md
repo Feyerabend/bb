@@ -1,366 +1,193 @@
 
-## Perceptron
+## The Perceptron
 
-A perceptron is a single-layer neural network (a type of classifier). It consists of an input layer,
-a single output, and an activation function (often a step function or a sigmoid function).
-The perceptron learns to classify data based on a set of features (input pixels in this case),
-and you can train it using the Perceptron learning rule.
+The perceptron is one of the earliest machine learning models, originally introduced
+by Frank Rosenblatt in 1958. It was designed as a simplified model of how neurons in
+the brain process information. The perceptron is a type of binary classifier, meaning
+it decides between two categories by applying a weighted sum to inputs and passing the
+result through an activation function (usually a step function).
+
+While the original perceptron could only solve linearly separable problems, it laid
+the foundation for modern neural networks. The introduction of the multi-layer perceptron
+(MLP) and backpropagation in the 1980s allowed for more complex decision boundaries,
+leading to deep learning as we know it today.
 
 
-### Synthetic Image Generation
+### Overview
 
-We'll create simple binary images (black and white) with basic shapes like circles, squares, and lines,
-where each shape will be labeled for training. These images will be small (e.g., 8x8 or 16x16 pixels)
-for simplicity.
+The program 'percept.py' program builds a simple multi-class perceptron to classify
+shapes (circles, squares, and lines) from 8×8 pixel images.
+
+The code is split into three main parts:
+1. Image Generation: Creates synthetic training images of circles, squares, and lines.
+2. Perceptron Model: Implements a multi-class perceptron with weight updates.
+3. Training and Testing: Loads image data, trains the perceptron, and evaluates accuracy.
 
 
-### Training the Perceptron
 
-The perceptron will take pixel values (flattened to a 1D vector) as input and output a prediction
-(a simple class label, e.g., 0 for circle, 1 for square). You'll use randomised synthetic shapes
-to generate both training and testing data.
+__1. Perceptron Model__
 
-Image Representation (PPM format):
-
-We'll use the PPM3 format to save the images for simplicity. You can easily create images using
-basic file I/O operations, similar to how you would generate random data.
-
-#### Step 1: Create the Perceptron
-
-Here's a simple implementation of a perceptron to classify shapes based on synthetic pixel data:
+This is the heart of the program. The perceptron model is responsible for learning and
+predicting shapes based on the pixel data.
 
 ```python
-import random
-
 class Perceptron:
-    def __init__(self, input_size):
-        # init weights and bias to random values between -1 and 1
-        self.weights = [random.uniform(-1, 1) for _ in range(input_size)]
-        self.bias = random.uniform(-1, 1)
+    def __init__(self, input_size, num_classes, l2_lambda=0.01):
+        self.num_classes = num_classes
+        self.input_size = input_size
+        self.weights = [[random.uniform(-1, 1) for _ in range(input_size)] for _ in range(num_classes)]
+        self.bias = [random.uniform(-1, 1) for _ in range(num_classes)]
         self.learning_rate = 0.1
+        self.l2_lambda = l2_lambda  # regularisation strength
+```
+- input_size: Number of pixels in the input image (8×8 = 64).
+- num_classes: Number of shapes (circle, square, line → 3 classes).
+- self.weights: A list of weight vectors for each class, initialised randomly.
+- self.bias: A separate bias term for each class.
+- self.l2_lambda: L2 regularisation strength to prevent overfitting.
 
-    def activation(self, x):
-        # step function (for binary classification)
-        return 1 if x >= 0 else 0
 
-    def predict(self, inputs):
-        # weighted sum of inputs + bias
-        summation = sum([w * i for w, i in zip(self.weights, inputs)]) + self.bias
-        return self.activation(summation)
-    
-    def train(self, training_data, labels, epochs):
-        # train the perceptron using the Perceptron learning rule
-        for _ in range(epochs):
-            for inputs, label in zip(training_data, labels):
-                prediction = self.predict(inputs)
-                error = label - prediction
-                # update weights and bias
-                for i in range(len(self.weights)):
-                    self.weights[i] += self.learning_rate * error * inputs[i]
-                self.bias += self.learning_rate * error
+__2. Activation Function & Prediction__
+
+The perceptron uses a step activation function to determine class labels.
+
+```python
+def activation(self, x):
+    return 1 if x >= 0 else 0
 ```
 
-#### Step 2: Generate Simple Synthetic Images
-
-We will create synthetic *binary images* with simple shapes like circles, squares, and lines.
-Each shape will be labeled with a unique class.
+This function returns 1 for positive values and 0 otherwise.
 
 ```python
-import os
-import random
+def predict(self, inputs):
+    scores = [sum(w * i for w, i in zip(self.weights[c], inputs)) + self.bias[c] for c in range(self.num_classes)]
+    return scores.index(max(scores))
+```
+- Computes the score for each class using the weighted sum of inputs plus bias.
+- Returns the class with the highest score (argmax).
 
+
+__3. Training Algorithm__
+
+```python
+def train(self, training_data, labels, epochs):
+    for _ in range(epochs):
+        for inputs, label in zip(training_data, labels):
+            prediction = self.predict(inputs)
+            if prediction != label:
+                # update weights with L2 regularisation
+                for i in range(len(self.weights[label])):
+                    self.weights[label][i] += self.learning_rate * (inputs[i] - self.l2_lambda * self.weights[label][i])
+                    self.weights[prediction][i] -= self.learning_rate * (inputs[i] + self.l2_lambda * self.weights[prediction][i])
+                # update biases
+                self.bias[label] += self.learning_rate
+                self.bias[prediction] -= self.learning_rate
+```
+1. Iterates through the dataset for multiple epochs to refine weights.
+2. Makes a prediction and compares it to the correct label.
+3. If wrong, updates weights:
+- Increases weights of the correct class.
+- Decreases weights of the wrongly predicted class.
+- Uses L2 regularisation to prevent excessive weight growth.
+4. Bias updates work the same way to shift decision boundaries.
+
+
+__4. Image Generation (Synthetic Training Data)__
+
+The dataset consists of binary 8×8 images representing three shapes: circle, square, and line.
+
+
+#### Generating a Circle
+
+```python
 def generate_circle_image(size=8, noise_level=0.1):
-    image = [[0] * size for _ in range(size)]  # 0 is background
+    image = [[0] * size for _ in range(size)]
     cx, cy = random.randint(size // 4, 3 * size // 4), random.randint(size // 4, 3 * size // 4)
     radius = random.randint(size // 4, size // 3)
-    
+
     for x in range(size):
         for y in range(size):
             if (x - cx) ** 2 + (y - cy) ** 2 <= radius ** 2:
                 image[x][y] = 1
-    
+
     add_noise(image, noise_level)
     return image
+```
+- Creates a blank grid (0s for black pixels).
+- Picks a random center (cx, cy) and random radius.
+- Fills pixels inside the circle using the equation of a circle:
+    - Calls add_noise() to introduce random noise.
 
+
+#### Generating a Square
+
+```python
 def generate_square_image(size=8, noise_level=0.1):
-    image = [[0] * size for _ in range(size)]  # 0 is background
-    start_x = random.randint(1, size // 3)
-    start_y = random.randint(1, size // 3)
-    end_x = random.randint(2 * size // 3, size - 1)
-    end_y = random.randint(2 * size // 3, size - 1)
-    
+    image = [[0] * size for _ in range(size)]
+    start_x, start_y = random.randint(1, size // 3), random.randint(1, size // 3)
+    end_x, end_y = random.randint(2 * size // 3, size - 1), random.randint(2 * size // 3, size - 1)
+
     for x in range(start_x, end_x):
         for y in range(start_y, end_y):
             image[x][y] = 1
-    
+
     add_noise(image, noise_level)
     return image
+```
+- Picks random start and end points for the square.
+- Fills the bounding box with 1s to create the square.
 
+
+#### Generating a Line
+
+```python
 def generate_line_image(size=8, noise_level=0.1):
-    image = [[0] * size for _ in range(size)]  # 0 is background
+    image = [[0] * size for _ in range(size)]
     slope = random.uniform(-1, 1)
     intercept = random.randint(0, size - 1)
-    
+
     for x in range(size):
         y = int(slope * x + intercept)
         if 0 <= y < size:
             image[x][y] = 1
-    
+
     add_noise(image, noise_level)
     return image
+```
+- Generates a random slope and intercept for a line equation:
+    - Rounds y to the nearest pixel and sets it to 1.
 
-# random noise to an image (flip some pixels)
+
+#### Adding Noise
+
+```python
 def add_noise(image, noise_level=0.1):
     size = len(image)
     num_pixels = int(size * size * noise_level)
-    
+
     for _ in range(num_pixels):
         x, y = random.randint(0, size - 1), random.randint(0, size - 1)
-        image[x][y] = 1 if image[x][y] == 0 else 0  # flip pixel
+        image[x][y] = 1 if image[x][y] == 0 else 0
+```
+- Randomly flips a percentage of pixels to simulate noise.
 
-# 2D image to a 1D list
-def flatten_image(image):
-    return [pixel for row in image for pixel in row]
 
-def save_image_ppm(image, filename):
-    height, width = len(image), len(image[0])
-    with open(filename, 'w') as f:
-        f.write(f'P3\n{width} {height}\n255\n')
-        for row in image:
-            for pixel in row:
-                color = '255 255 255' if pixel == 1 else '0 0 0'
-                f.write(f'{color} ')
-            f.write('\n')
+__5. Training and Evaluating the Perceptron__
 
-def generate_and_save_data(num_samples=100, size=8):
-    for folder in ["train/circle", "train/square", "train/line", "test/circle", "test/square", "test/line"]:
-        os.makedirs(folder, exist_ok=True)
-
-    for i in range(num_samples):
-        for shape, folder in zip(["circle", "square", "line"], ["train/circle", "train/square", "train/line"]):
-            if shape == "circle":
-                image = generate_circle_image(size)
-            elif shape == "square":
-                image = generate_square_image(size)
-            elif shape == "line":
-                image = generate_line_image(size)
-            save_image_ppm(image, f"{folder}/{shape}_{i}.ppm")
-
-        for shape, folder in zip(["circle", "square", "line"], ["test/circle", "test/square", "test/line"]):
-            if shape == "circle":
-                image = generate_circle_image(size)
-            elif shape == "square":
-                image = generate_square_image(size)
-            elif shape == "line":
-                image = generate_line_image(size)
-            save_image_ppm(image, f"{folder}/{shape}_{i}.ppm")
-
+```python
 generate_and_save_data()
-```
 
-#### Step 3: Train the Perceptron
-
-Now let's train the perceptron using the synthetic training data. We'll train the
-perceptron to recognise circles, squares, and lines.
-
-```python
-# init perceptron
-input_size = 64  # 8x8 image (flattened to 64)
-perceptron = Perceptron(input_size)
-
-# generate training data
-training_data, labels = generate_training_data(num_samples=500)
-
-# train the perceptron
-perceptron.train(training_data, labels, epochs=10)
-
-# test the perceptron on new data
-test_data, test_labels = generate_training_data(num_samples=100)
-
-# evaluate the perceptron
-correct_predictions = 0
-for inputs, label in zip(test_data, test_labels):
-    prediction = perceptron.predict(inputs)
-    if prediction == label:
-        correct_predictions += 1
-
-print(f"Accuracy: {correct_predictions / len(test_labels) * 100:.2f}%")
-```
-
-
-__Perceptron:__
-
-The perceptron has random initial weights and biases. It uses a step activation function
-(activation method) to decide whether the input belongs to a particular class
-(circle, square, or line). The train method adjusts the weights and bias using the *Perceptron*
-learning rule.
-
-
-__Image Generation:__
-
-Simple shapes (circle, square, and line) are generated using basic geometry principles.
-The images are converted to 1D arrays by flattening the 2D pixel arrays for use as input
-to the perceptron.
-
-
-__Synthetic Data:__
-
-The training data consists of 100 random synthetic images for each shape
-(circle, square, and line), which are labeled as 0, 1, and 2, respectively.
-
-
-__Training and Testing:__
-
-The perceptron is trained on the generated data, and we evaluate its performance
-by testing it on new randomly generated images.
-
-
-__PPM Format:__
-
-The PPM image format (P3) is used for saving the images. The pixel values are
-either 0 0 0 (black) or 255 255 255 (white) for simplicity.
-
-
-### Conclusion
-
-By following this approach, you've created a simple perceptron that can classify
-synthetically generated shapes (circle, square, line) from basic pixel data.
-
-This simple perceptron model can classify basic shapes and serves as a foundation
-to explore more advanced machine learning concepts such as multi-layer perceptrons
-or deep learning models.
-
-
-
-
-*Save Images to Files:* We will generate and save the training and test images in PPM format.
-These images will be labeled and saved in different directories for training and testing.
-
-*Read Images from Files:* During training, we will load these images from the saved PPM files
-and preprocess them into the format needed by the perceptron (flattened pixel arrays).
-
-*Accuracy Statistics:* After training, we'll test the perceptron on the test images and calculate
-the accuracy. We'll also print detailed statistics on how well the model performs.
-
-
-### Step-by-Step
-
-*Image Generation:* We'll save the images in directories (e.g., train/, test/), with each shape
-type in its own subdirectory (e.g., train/circle/, train/square/, etc.).
-
-*Saving Images:* The images will be saved in PPM format.
-
-*Loading Images:* The program will read these images from files, flatten them, and use them
-for training and testing.
-
-*Accuracy Calculation:* We'll print the accuracy and confusion matrix for better insights.
-
-
-
-#### 2. Load Images for Training and Testing
-
-Now, we will write a function to load the images from the saved files and
-flatten them for input into the perceptron.
-
-```python
-import os
-
-# load images from a directory and assign labels
-def load_images_from_directory(directory, label):
-    images = []
-    labels = []
-    for filename in os.listdir(directory):
-        if filename.endswith(".ppm"):
-            # read image data from PPM file
-            with open(os.path.join(directory, filename), 'r') as f:
-                lines = f.readlines()
-                pixels = []
-                for line in lines[3:]:  # skip header
-                    pixels += [int(val) for val in line.split()]
-                images.append(pixels)
-                labels.append(label)
-    return images, labels
-
-# load all training and test data
-def load_all_data():
-    train_images = []
-    train_labels = []
-    test_images = []
-    test_labels = []
-
-    # load training data
-    for shape, label in zip(["circle", "square", "line"], [0, 1, 2]):
-        shape_images, shape_labels = load_images_from_directory(f"train/{shape}", label)
-        train_images += shape_images
-        train_labels += shape_labels
-
-    # load test data
-    for shape, label in zip(["circle", "square", "line"], [0, 1, 2]):
-        shape_images, shape_labels = load_images_from_directory(f"test/{shape}", label)
-        test_images += shape_images
-        test_labels += shape_labels
-
-    return train_images, train_labels, test_images, test_labels
-```
-
-#### 3. Train the Perceptron
-
-Now we will train the perceptron using the images that were loaded from the files.
-
-```python
-# init perceptron
-input_size = 64  # 8x8 image (flattened to 64)
-perceptron = Perceptron(input_size)
-
-# load training and testing data
+input_size = 64  # 8x8 image
+perceptron = Perceptron(input_size, num_classes=3)
 train_data, train_labels, test_data, test_labels = load_all_data()
-
-# train perceptron
 perceptron.train(train_data, train_labels, epochs=10)
 
-# evaluate perceptron on the test data
-correct_predictions = 0
-total_predictions = len(test_labels)
-confusion_matrix = {0: {0: 0, 1: 0, 2: 0}, 1: {0: 0, 1: 0, 2: 0}, 2: {0: 0, 1: 0, 2: 0}}
-
-for inputs, label in zip(test_data, test_labels):
-    prediction = perceptron.predict(inputs)
-    if prediction == label:
-        correct_predictions += 1
-    confusion_matrix[label][prediction] += 1
-
-accuracy = correct_predictions / total_predictions * 100
+correct_predictions = sum(1 for inputs, label in zip(test_data, test_labels) if perceptron.predict(inputs) == label)
+accuracy = correct_predictions / len(test_labels) * 100
 print(f"Accuracy: {accuracy:.2f}%")
-
-print("Confusion Matrix:")
-for actual in range(3):
-    print(f"Actual {actual}: {confusion_matrix[actual]}")
 ```
-
-#### 4. Results and Statistics
-When you run the code, it will print the accuracy of the perceptron on the test data,
-along with a confusion matrix showing how many times each predicted class matches the
-actual class.
-
-
-Example Output:
-
-```
-Accuracy: 85.00%
-Confusion Matrix:
-Actual 0: {0: 25, 1: 2, 2: 3}
-Actual 1: {0: 3, 1: 28, 2: 4}
-Actual 2: {0: 4, 1: 3, 2: 29}
-```
-
-
-Conclusion
-
-- Saved images for both training and testing.
-- Loaded images from files and flattened them for input into the perceptron.
-- Trained the perceptron on the training data and evaluated it on the test data.
-- Printed the accuracy and confusion matrix to assess how well the perceptron recognizes the shapes.
-
-This approach allows you to train and test a simple perceptron on synthetic images,
-and it provides some useful statistics to evaluate the performance of the model.
+- Generates training/testing data.
+- Loads and flattens images into feature vectors.
+- Trains the perceptron for 10 epochs.
+- Evaluates accuracy on test data.
 
