@@ -55,7 +55,9 @@ During this time, symbolic AI (also known as GOFAI, or "Good Old-Fashioned AI")
 dominated research. Instead of using statistical learning, researchers focused on
 rule-based systems, expert systems, and logic programming. While these systems could
 encode human knowledge explicitly, they struggled with learning from data,
-generalizing, and handling real-world uncertainty.
+generalising, and handling real-world uncertainty. Both mathematics and formal logic,
+which were some of the contemporary inspiration, might be interpreted in a different form
+in the future expansion of AI.
 
 
 ### The Revival of Neural Networks (1980s-1990s): Backpropagation and Deep Learning Beginnings
