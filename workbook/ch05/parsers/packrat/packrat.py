@@ -39,7 +39,7 @@ class PackratParser:
 
     @memoize
     def expr(self):
-        """Expr <- Term (('+' / '-') Term)*"""
+        """Expr <- Term (('+' | '-') Term)*"""
         node = self.term()
         while True:
             if self.consume(r'\+'):
@@ -52,7 +52,7 @@ class PackratParser:
 
     @memoize
     def term(self):
-        """Term <- Factor (('*' / '/') Factor)*"""
+        """Term <- Factor (('*' | '/') Factor)*"""
         node = self.factor()
         while True:
             if self.consume(r'\*'):
@@ -65,7 +65,7 @@ class PackratParser:
 
     @memoize
     def factor(self):
-        """Factor <- Number / '(' Expr ')'"""
+        """Factor <- Number | '(' Expr ')'"""
         number = self.consume(r'\d+')
         if number:
             return int(number)
