@@ -13,7 +13,7 @@ Rosenblatt's perceptron was implemented both as a mathematical model and as a ha
 device called the Mark I Perceptron, which was built using a 20×20 array of cadmium sulfide
 photoresistors to recognise simple patterns. His early experiments demonstrated that
 perceptrons could learn to classify linearly separable patterns, leading to widespread
-optimism that these machines could eventually "think" and recognize complex patterns
+optimism that these machines could eventually "think" and recognise complex patterns
 just as humans do.
 
 
