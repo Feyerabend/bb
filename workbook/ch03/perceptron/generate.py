@@ -1,44 +1,62 @@
 import os
 import random
 
-# create binary image with a circle
-def generate_circle_image(size=8):
+def generate_circle_image(size=8, noise_level=0.1):
     image = [[0] * size for _ in range(size)]  # 0 is background
-    cx, cy = size // 2, size // 2  # circle center
-    radius = size // 3
+    cx, cy = random.randint(size // 4, 3 * size // 4), random.randint(size // 4, 3 * size // 4)
+    radius = random.randint(size // 4, size // 3)
+    
     for x in range(size):
         for y in range(size):
             if (x - cx) ** 2 + (y - cy) ** 2 <= radius ** 2:
-                image[x][y] = 1  # set pixel to white (circle)
+                image[x][y] = 1
+    
+    add_noise(image, noise_level)
     return image
 
-# create binary image with a square
-def generate_square_image(size=8):
+def generate_square_image(size=8, noise_level=0.1):
     image = [[0] * size for _ in range(size)]  # 0 is background
-    start = size // 3
-    end = size - start
-    for x in range(start, end):
-        for y in range(start, end):
-            image[x][y] = 1  # set pixel to white (square)
+    start_x = random.randint(1, size // 3)
+    start_y = random.randint(1, size // 3)
+    end_x = random.randint(2 * size // 3, size - 1)
+    end_y = random.randint(2 * size // 3, size - 1)
+    
+    for x in range(start_x, end_x):
+        for y in range(start_y, end_y):
+            image[x][y] = 1
+    
+    add_noise(image, noise_level)
     return image
 
-# create a binary image with a diagonal line
-def generate_line_image(size=8):
+def generate_line_image(size=8, noise_level=0.1):
     image = [[0] * size for _ in range(size)]  # 0 is background
-    for i in range(size):
-        image[i][i] = 1  # set pixel to white (line)
+    slope = random.uniform(-1, 1)
+    intercept = random.randint(0, size - 1)
+    
+    for x in range(size):
+        y = int(slope * x + intercept)
+        if 0 <= y < size:
+            image[x][y] = 1
+    
+    add_noise(image, noise_level)
     return image
 
-# convert a 2D image (list of lists) to a 1D list for perceptron
+# random noise to an image (flip some pixels)
+def add_noise(image, noise_level=0.1):
+    size = len(image)
+    num_pixels = int(size * size * noise_level)
+    
+    for _ in range(num_pixels):
+        x, y = random.randint(0, size - 1), random.randint(0, size - 1)
+        image[x][y] = 1 if image[x][y] == 0 else 0  # flip pixel
+
+# 2D image to a 1D list
 def flatten_image(image):
     return [pixel for row in image for pixel in row]
 
-# ave a 2D image as a PPM3 file
 def save_image_ppm(image, filename):
-    height = len(image)
-    width = len(image[0])
+    height, width = len(image), len(image[0])
     with open(filename, 'w') as f:
-        # PPM3 header
         f.write(f'P3\n{width} {height}\n255\n')
         for row in image:
             for pixel in row:
@@ -46,24 +64,11 @@ def save_image_ppm(image, filename):
                 f.write(f'{color} ')
             f.write('\n')
 
-# generate and save training and testing data
 def generate_and_save_data(num_samples=100, size=8):
-    # dirs save images
-    if not os.path.exists("train/circle"):
-        os.makedirs("train/circle")
-    if not os.path.exists("train/square"):
-        os.makedirs("train/square")
-    if not os.path.exists("train/line"):
-        os.makedirs("train/line")
-    if not os.path.exists("test/circle"):
-        os.makedirs("test/circle")
-    if not os.path.exists("test/square"):
-        os.makedirs("test/square")
-    if not os.path.exists("test/line"):
-        os.makedirs("test/line")
+    for folder in ["train/circle", "train/square", "train/line", "test/circle", "test/square", "test/line"]:
+        os.makedirs(folder, exist_ok=True)
 
     for i in range(num_samples):
-        # create and save training images
         for shape, folder in zip(["circle", "square", "line"], ["train/circle", "train/square", "train/line"]):
             if shape == "circle":
                 image = generate_circle_image(size)
@@ -72,8 +77,7 @@ def generate_and_save_data(num_samples=100, size=8):
             elif shape == "line":
                 image = generate_line_image(size)
             save_image_ppm(image, f"{folder}/{shape}_{i}.ppm")
-        
-        # create and save testing images (more samples for testing)
+
         for shape, folder in zip(["circle", "square", "line"], ["test/circle", "test/square", "test/line"]):
             if shape == "circle":
                 image = generate_circle_image(size)
