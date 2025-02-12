@@ -137,3 +137,33 @@ correct_predictions = sum(1 for inputs, label in zip(test_data, test_labels) if 
 accuracy = correct_predictions / len(test_labels) * 100
 print(f"Accuracy: {accuracy:.2f}%")
 
+
+# Initialize confusion matrix for 3 classes (circle, square, line)
+num_classes = 3
+confusion_matrix = [[0] * num_classes for _ in range(num_classes)]
+
+# Populate confusion matrix
+for inputs, true_label in zip(test_data, test_labels):
+    predicted_label = perceptron.predict(inputs)
+    confusion_matrix[true_label][predicted_label] += 1
+
+# Labels for classes
+class_labels = ["Circle", "Square", "Line"]
+
+# Print header
+print("\nConfusion Matrix:\n")
+print(" " * 12 + " ".join(f"{label:^10}" for label in class_labels))  # Column headers
+
+# Print matrix rows
+for i, row in enumerate(confusion_matrix):
+    actual_label = f"{class_labels[i]:<10}"  # Align left
+    row_values = " ".join(f"{value:^10}" for value in row)  # Center values
+    print(f"{actual_label} {row_values}")
+
+# Explanation of confusion matrix
+print("\nExplanation:")
+print("Each row represents the actual class, while each column represents the predicted class.")
+print("Diagonal values (top-left to bottom-right) show correct predictions for each class.")
+print("Off-diagonal values indicate misclassifications:")
+print("  - A number in row i, column j means that instances of class i were predicted as class j.")
+print("  - For example, if row 0, column 1 is 3, it means 3 circles were misclassified as squares.")
