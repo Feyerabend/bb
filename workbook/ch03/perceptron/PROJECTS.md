@@ -4,6 +4,12 @@
 There are several interesting projects you could explore. Here are a few that focus
 on improving representation, classification accuracy, and extending the functionality.
 
+You have to remember or keep in mind that this perceptron only distinguishes between
+three types of generated images. They might not even resemble what we perceive as
+circles, squares, or lines.
+
+Threre is plently of room for improvement ..
+
 
 __1. Improving Image Representations__
 
