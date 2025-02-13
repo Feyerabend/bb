@@ -94,10 +94,11 @@ By the 2010s, deep learning took off thanks to several factors:
    and better activation functions (e.g., ReLU) helped deep networks converge
    faster and avoid overfitting.
 
-Today, neural networks are far beyond the simple perceptron. We now have architectures
+Today, *neural networks* are far beyond the simple perceptron. We now have architectures
 like GPT (Generative Pre-trained Transformer), DALL·E, AlphaFold, and others, which
 can generate human-like text, create images from descriptions, and solve complex
-biological problems.
+biological problems. They might even be responsible for Nobel Prize-winning
+discoveries.
 
 
 ### Conclusion: Minsky Was Right, but Only Temporarily
