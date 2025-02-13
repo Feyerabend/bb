@@ -88,9 +88,13 @@ def train(self, training_data, labels, epochs):
 3. If wrong, updates weights:
 - Increases weights of the correct class.
 - Decreases weights of the wrongly predicted class.
-- Uses L2 regularisation to prevent excessive weight growth.
+- Uses L2 regularisation to prevent excessive weight growth.[^L2]
 4. Bias updates work the same way to shift decision boundaries.
 
+[^L2]: The effect of L2 regularization is that it discourages overly complex models by shrinking
+the weights toward smaller values, making the model more robust and less sensitive to variations
+in the training data. This helps improve generalization and prevents the model from memorising
+training examples instead of learning meaningful patterns.
 
 __4. Image Generation (Synthetic Training Data)__
 
