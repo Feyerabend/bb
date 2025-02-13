@@ -51,13 +51,14 @@ Since perceptrons were one of the main hopes for machine learning at the time, t
 criticism led to reduced funding and interest in the field, contributing to what
 is now known as the first AI winter.
 
-During this time, symbolic AI (also known as GOFAI, or "Good Old-Fashioned AI")
-dominated research. Instead of using statistical learning, researchers focused on
-rule-based systems, expert systems, and logic programming. While these systems could
-encode human knowledge explicitly, they struggled with learning from data,
-generalising, and handling real-world uncertainty. Both mathematics and formal logic,
-which were some of the contemporary inspiration, might be interpreted in a different form
-in the future expansion of AI.
+During this period, symbolic AI—also known as GOFAI ("Good Old-Fashioned AI")—dominated
+research. Instead of relying on statistical learning, researchers focused on rule-based
+systems, expert systems, and logic programming. While these approaches allowed for
+explicit encoding of human knowledge, they struggled with learning from data, generalisation,
+and handling real-world uncertainty. Mathematics and formal logic, which were key sources
+of inspiration at the time, may be reinterpreted in new ways as AI continues to evolve.
+One could say that logic was the foundation of early AI, much like statistics is the driving
+force behind AI today.
 
 
 ### The Revival of Neural Networks (1980s-1990s): Backpropagation and Deep Learning Beginnings
