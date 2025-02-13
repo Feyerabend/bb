@@ -7,8 +7,11 @@ on improving representation, classification accuracy, and extending the function
 
 __1. Improving Image Representations__
 
-The current representations for circles, squares, and lines are quite crude and noisy.
-You could improve them using the following techniques.
+The current representations of circles, squares, and lines are rough and noisy, making
+it difficult to determine whether they truly resemble their intended shapes. This issue
+stems partly from how the figures are represented, with low resolution and other constraints
+making both generation and interpretation challenging. Their clarity could be significantly
+improved using the following techniques.
 
 Project 1: Better Shape Generation
 - Use anti-aliasing to make shapes smoother.
