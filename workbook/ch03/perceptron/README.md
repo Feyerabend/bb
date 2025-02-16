@@ -96,7 +96,7 @@ By the 2010s, deep learning took off thanks to several factors:
    and better activation functions (e.g., ReLU) helped deep networks converge
    faster and avoid overfitting.
 
-[^wasvani]: Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). *Attention is All You Need.* Advances in Neural Information Processing Systems (NeurIPS), 30. arXiv:1706.03762.
+[^vaswani]: Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). *Attention is All You Need.* Advances in Neural Information Processing Systems (NeurIPS), 30. arXiv:1706.03762.
 
 
 Today, *neural networks* are far beyond the simple perceptron. We now have architectures
