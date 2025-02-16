@@ -29,7 +29,7 @@ The XOR function outputs 1 when its two inputs differ and 0 otherwise, but no si
 straight line can separate the (0,0) → 0, (1,1) → 0, (0,1) → 1, and (1,0) → 1 points
 correctly.
 
-This and other limitations were rigorously demonstrated in the book "Perceptrons"
+This and other limitations were rigorously demonstrated in the book "Perceptrons"[^perceptrons]
 (1969) by Marvin Minsky and Seymour Papert, two of the most influential figures in
 artificial intelligence research at the time. They showed that a single-layer perceptron
 could not solve parity functions (like XOR) or even determine if a given pattern had
@@ -43,6 +43,7 @@ network might not help significantly—though they did not rigorously explore mu
 perceptrons, they left the impression that perceptron-based networks were not worth
 pursuing.
 
+[^perceptrons]: Minsky, M., & Papert, S. (1969). *Perceptrons: An Introduction to Computational Geometry.* MIT Press.
 
 ### The AI Winter: The Decline of Neural Networks (1970s-1980s)
 
@@ -89,11 +90,14 @@ From the 1990s onwards, more sophisticated neural architectures emerged:
 By the 2010s, deep learning took off thanks to several factors:
 1. Big Data: More data was available than ever before, fueling learning.
 2. Hardware Advances: GPUs and TPUs enabled large-scale neural network training.
-3. Better Architectures: Innovations like transformers (Vaswani et al., 2017)
+3. Better Architectures: Innovations like transformers (Vaswani et al., 2017[^vaswani])
    revolutionised natural language processing (NLP).
 4. Improved Training Techniques: Methods such as dropout, batch normalisation,
    and better activation functions (e.g., ReLU) helped deep networks converge
    faster and avoid overfitting.
+
+[^wasvani]: Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). *Attention is All You Need.* Advances in Neural Information Processing Systems (NeurIPS), 30. arXiv:1706.03762.
+
 
 Today, *neural networks* are far beyond the simple perceptron. We now have architectures
 like GPT (Generative Pre-trained Transformer), DALL·E, AlphaFold, and others, which
