@@ -1,8 +1,16 @@
 ## Code
 
-These folders include the complete code corresponding to the examples presented in the book.
-While they may occasionally expand upon the book's suggested code, they primarily consist of
-direct code references from the text.
+These folders contain the complete code for the book’s examples, save for cases where the
+book itself exhausts the need. In such instances, the printed code suffices, and repetition serves
+no further end. The workbook, on occasion, takes the liberty of expanding upon the book’s
+proposals, extending its reach beyond their immediate intent. Where the book offers a scaffold,
+the workbook sometimes builds, at times extrapolates, and at others, diverges.
+
+The book seeks to deepen your grasp of computation and programming, often through direct
+engagement with code as a starting point. Code is not merely demonstration but inquiry, and the
+workbook, in kind, takes the liberty of pursuing a line where the book may leave off.
+The endeavour is not to repeat but to reveal, to press on where the book gestures, making
+explicit what is left implicit and raising questions where none yet stand.
 
 The code examples in this book are written in standard Python (version 3), ANSI C, MicroPython
 for the Raspberry Pi Pico, and sometimes JavaScript compatible with most modern web browsers.
