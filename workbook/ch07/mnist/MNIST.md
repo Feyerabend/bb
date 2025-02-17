@@ -81,8 +81,8 @@ where the output vector $\` \mathbf{p} \in \mathbb{R}^{10} \`$ represents the pr
 ### Error and Backpropagation
 
 ##### 1. Output Error
-The target (true label) is one-hot encoded: \( \mathbf{t} \in \{0, 1\}^{10} \).  
-The error for each output neuron \( k \) is given by:
+The target (true label) is one-hot encoded: $\` \mathbf{t} \in \{0, 1\}^{10} \`$.  
+The error for each output neuron $\` k \`$ is given by:
 
 ```math
 \delta_k = p_k - t_k.
@@ -95,7 +95,7 @@ Backpropagate the error to the hidden layer:
 \delta_j = \left( \sum_{k=1}^{10} \delta_k w_{jk} \right) \cdot h_j \cdot (1 - h_j),
 ```
 
-where the term \( h_j \cdot (1 - h_j) \) comes from the derivative of the sigmoid activation function.
+where the term $\` h_j \cdot (1 - h_j) \`$ comes from the derivative of the sigmoid activation function.
 
 ##### 3. Gradient Updates
 The weights and biases are updated using gradient descent as follows:
@@ -108,7 +108,7 @@ w_{jk} \gets w_{jk} - \eta \cdot \delta_k \cdot h_j,
 b_k \gets b_k - \eta \cdot \delta_k,
 ```
 
-where \( \eta \) is the learning rate.
+where $\` \eta \`$ is the learning rate.
     
 - Update weights and biases for the hidden layer:
 
