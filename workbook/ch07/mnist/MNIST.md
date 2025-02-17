@@ -48,9 +48,9 @@ h_j = \sigma\left(\sum_{i=1}^{784} x_i w_{ij} + b_j\right),
 ```
 
 where:
-- \( w_{ij} \) is the weight connecting input \( i \) to hidden neuron \( j \),
-- \( b_j \) is the bias for hidden neuron \( j \),
-- \( \sigma(x) = \frac{1}{1 + e^{-x}} \) is the sigmoid activation function.
+- $\` w_{ij} \`$ is the weight connecting input $\` i \`$ to hidden neuron $\` j \`$,
+- $\` b_j \`$ is the bias for hidden neuron $\` j \`$,
+- $\` \sigma(x) = \frac{1}{1 + e^{-x}} \`$ is the sigmoid activation function.
 
 The hidden layer output is:
 
@@ -59,15 +59,15 @@ The hidden layer output is:
 ```
 
 ##### 3. Output Layer
-For each output neuron \( k \), compute the input:
+For each output neuron $\` k \`$, compute the input:
 
 ```math
 o_k = \sum_{j=1}^{64} h_j w_{jk} + b_k,
 ```
 
 where:
-- \( w_{jk} \) is the weight connecting hidden neuron \( j \) to output neuron \( k \),
-- \( b_k \) is the bias for output neuron \( k \).
+- $\` w_{jk} \`$ is the weight connecting hidden neuron $\` j \`$ to output neuron $\` k \`$,
+- $\` b_k \`$ is the bias for output neuron $\` k \`$.
 
 The final output probabilities are computed using the *softmax function*:
 
@@ -75,7 +75,7 @@ The final output probabilities are computed using the *softmax function*:
 p_k = \frac{e^{o_k}}{\sum_{l=1}^{10} e^{o_l}},
 ```
 
-where the output vector \( \mathbf{p} \in \mathbb{R}^{10} \) represents the probabilities for each of the 10 classes.
+where the output vector $\` \mathbf{p} \in \mathbb{R}^{10} \`$ represents the probabilities for each of the 10 classes.
 
 
 ### Error and Backpropagation
@@ -115,6 +115,7 @@ where \( \eta \) is the learning rate.
 ```math
 w_{ij} \gets w_{ij} - \eta \cdot \delta_j \cdot x_i,
 ```
+
 ```math
 b_j \gets b_j - \eta \cdot \delta_j.
 ```
@@ -123,8 +124,7 @@ b_j \gets b_j - \eta \cdot \delta_j.
 
 ### Accuracy
 
-After training, the model's performance is evaluated on unseen data by comparing the predicted labels with the true labels.  
-The accuracy is given by:
+After training, the model's performance is evaluated on unseen data by comparing the predicted labels with the true labels. The accuracy is given by:
 
 ```math
 \text{Accuracy} = \frac{\text{Number of Correct Predictions}}{\text{Total Number of Predictions}} \times 100.
