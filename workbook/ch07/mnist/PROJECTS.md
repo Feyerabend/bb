@@ -5,7 +5,7 @@ As you might have noticed by running the included code, it hasn't got very good 
 This is one things of which you might improve further.
 
 
-__Project 1: Building a Simple Neural Network from Scratch__
+### Project 1: Building a Simple Neural Network from Scratch
 
 You will develop a simple feedforward neural network with one hidden layer, using only
 Python's built-in libraries. The network will be trained using the MNIST dataset and will
@@ -28,7 +28,7 @@ Extensions & Challenges:
 - Implement batch training instead of single-image updates
 
 
-__Project 2: Neural Networks Without Libraries: Why Optimisation Matters__
+### Project 2: Neural Networks Without Libraries: Why Optimisation Matters
 
 While the provided neural network works, it lacks efficiency and advanced optimisation techniques.
 In this project, students will analyse the bottlenecks in the implementation and improve the model's
@@ -49,7 +49,7 @@ Extensions & Challenges:
 - Reduce memory consumption by optimising data structures
 
 
-__Project 3: Understanding Backpropagation with Visualization
+### Project 3: Understanding Backpropagation with Visualization
 
 Backpropagation is the backbone of modern neural networks. You will modify the existing
 code to visualise weight updates and loss values over time. They will use simple plots
@@ -69,7 +69,7 @@ Extensions & Challenges:
 - Experiment with different hyperparameters and plot their effects
 
 
-__Project 4: Neural Networks on a Budget: Training on Limited Data__
+### Project 4: Neural Networks on a Budget: Training on Limited Data
 
 This project challenges students to achieve reasonable accuracy using fewer training examples.
 The focus is on improving generalisation with limited data, by implementing techniques such
@@ -89,7 +89,7 @@ Extensions & Challenges:
 - Compare performance with a full dataset training
 
 
-__Project 5: Rebuilding This Model with NumPy for Speed__
+### Project 5: Rebuilding This Model with NumPy for Speed
 
 This project challenges students to rewrite the current neural network using NumPy, replacing
 Python's inefficient loops with vectorised operations. This will improve training speed and
@@ -109,7 +109,7 @@ Extensions & Challenges:
 - Add support for different activation functions
 
 
-__Project 6: From Fully Connected to Convolutional Networks__
+### Project 6: From Fully Connected to Convolutional Networks
 
 The current model processes images as 1D vectors, which discards spatial relationships.
 This project involves modifying the neural network to use convolutional layers, preserving
@@ -132,7 +132,7 @@ Extensions & Challenges:
 - Compare training speed and accuracy against the original fully connected model
 
 
-__Project 7: Building a Small-Scale Autoencoder for MNIST__
+### Project 7: Building a Small-Scale Autoencoder for MNIST
 
 Instead of classification, this project focuses on learning efficient representations
 of MNIST digits using an autoencoder. Students will implement an encoder-decoder architecture,
@@ -152,7 +152,7 @@ Extensions & Challenges:
 - Compare learned features from different architectures
 
 
-__Project 8: Handwritten Digit Recognition with KNN vs. Neural Networks__
+### Project 8: Handwritten Digit Recognition with KNN vs. Neural Networks
 
 This project challenges students to implement a k-NN classifier for MNIST and compare its accuracy,
 training time, and inference speed against the neural network. This provides insight into when deep
@@ -172,7 +172,7 @@ Extensions & Challenges:
 - Explore using an SVM as another traditional machine learning alternative
 
 
-__Project 9: Neural Network Training with Genetic Algorithms__
+### Project 9: Neural Network Training with Genetic Algorithms
 
 This project moves away from gradient-based learning and instead optimises the neural network's
 weights using a genetic algorithm (GA). Students will implement mutation, crossover, and selection
@@ -192,7 +192,7 @@ Extensions & Challenges:
 - Apply the genetic approach to hyperparameter tuning instead of weights
 
 
-__Project 10: Adversarial Attacks on MNIST Classifiers__
+### Project 10: Adversarial Attacks on MNIST Classifiers
 
 This project explores adversarial machine learning by slightly modifying MNIST images to trick
 the model into misclassifying them. The goal is to understand model vulnerabilities and how to
@@ -212,7 +212,7 @@ Extensions & Challenges:
 - Explore real-world implications of adversarial vulnerabilities in AI
 
 
-__Project 11: Reinforcement Learning for Digit Recognition__
+### Project 11: Reinforcement Learning for Digit Recognition
 
 Instead of standard supervised learning, this project explores using reinforcement learning
 (RL) for classification. The agent receives rewards for correct predictions and updates its
