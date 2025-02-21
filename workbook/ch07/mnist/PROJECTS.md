@@ -115,8 +115,7 @@ The current model processes images as 1D vectors, which discards spatial relatio
 This project involves modifying the neural network to use convolutional layers, preserving
 spatial structure for better performance.
 
----
-A prebuilt script can be seen in [CNN](./cnn.py).
+> A prebuilt script can be seen in [CNN](./cnn.py).
 
 Running the code we e.g. get dominant recognition of the numbers,
 derived from the confusion matrix:
