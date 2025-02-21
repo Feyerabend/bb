@@ -145,3 +145,18 @@ print(header)
 for i in range(OUTPUT_SIZE):
     row = f"{i:2}: " + " ".join(f"{confusion_matrix[i][j]:5}" for j in range(OUTPUT_SIZE))
     print(row)
+
+# ASCII bar chart
+max_value = max(max(row) for row in confusion_matrix)
+bar_char = "█"
+max_bar_length = 50  # adjust for wider/narrower bars
+
+# normalise function
+def scale_bar(value, max_v, max_len):
+    return int((value / max_v) * max_len)
+
+print("\nConfusion Matrix as Bar Chart:\n")
+for i, row in enumerate(confusion_matrix):
+    total = sum(row)
+    bar_length = scale_bar(total, max_value, max_bar_length)
+    print(f"{i}: {bar_char * bar_length:<{max_bar_length}}  {total}")
