@@ -120,18 +120,6 @@ A prebuilt script can be seen in [CNN](./cnn.py).
 Objective: Transition from a simple fully connected neural network to a
 *convolutional neural network* (CNN) for image classification.
 
-
-Key Learning Points:
-- Understanding convolutional layers and why they are effective for image classification
-- Implementing feature extraction through convolution and pooling layers
-- Comparing fully connected networks vs. CNNs in terms of accuracy and efficiency
-
-Extensions & Challenges:
-- Implement a basic CNN with 1-2 convolutional layers and ReLU activation
-- Use max pooling to reduce spatial dimensions
-- Compare training speed and accuracy against the original fully connected model
-
-
 Running the code we e.g. get dominant recognition of the numbers,
 derived from the confusion matrix:
 
@@ -149,6 +137,17 @@ derived from the confusion matrix:
 ```
 
 Accuracy: 60.14%
+
+
+Key Learning Points:
+- Understanding convolutional layers and why they are effective for image classification
+- Implementing feature extraction through convolution and pooling layers
+- Comparing fully connected networks vs. CNNs in terms of accuracy and efficiency
+
+Extensions & Challenges:
+- Implement a basic CNN with 1-2 convolutional layers and ReLU activation
+- Use max pooling to reduce spatial dimensions
+- Compare training speed and accuracy against the original fully connected model
 
 
 ### Project 7: Building a Small-Scale Autoencoder for MNIST
