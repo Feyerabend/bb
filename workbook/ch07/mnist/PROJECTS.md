@@ -117,8 +117,7 @@ spatial structure for better performance.
 
 > A prebuilt script can be seen in [CNN](./cnn.py).
 
-Running the code we e.g. get dominant recognition of the numbers,
-derived from the confusion matrix:
+> Running the code we e.g. get dominant recognition of the numbers, derived from the confusion matrix:
 
 ```
 0:  ██████████████████████████████  378
@@ -133,7 +132,7 @@ derived from the confusion matrix:
 9:  ███████████████████████████  736
 ```
 
-Accuracy: 60.14%
+> Accuracy: 60.14%
 ---
 
 Objective: Transition from a simple fully connected neural network to a
