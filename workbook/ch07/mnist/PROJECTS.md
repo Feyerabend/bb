@@ -117,9 +117,6 @@ spatial structure for better performance.
 
 A prebuilt script can be seen in [CNN](./cnn.py).
 
-Objective: Transition from a simple fully connected neural network to a
-*convolutional neural network* (CNN) for image classification.
-
 Running the code we e.g. get dominant recognition of the numbers,
 derived from the confusion matrix:
 
@@ -137,6 +134,10 @@ derived from the confusion matrix:
 ```
 
 Accuracy: 60.14%
+
+
+Objective: Transition from a simple fully connected neural network to a
+*convolutional neural network* (CNN) for image classification.
 
 
 Key Learning Points:
