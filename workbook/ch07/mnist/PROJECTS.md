@@ -132,6 +132,23 @@ Extensions & Challenges:
 - Compare training speed and accuracy against the original fully connected model
 
 
+Running the code we e.g. get dominant recognition of the numbers,
+derived from the confusion matrix:
+
+0:  ██████████████████████████████  378
+1:  ████████████████████████████████████████████████████  1042
+2:  ██████████████████  336
+3:  ██████████████████████████  748
+4:  ██████████████████  642
+5:  ██████████  308
+6:  ███████████████████████████████████████  840
+7:  ███████████████████████████  710
+8:  ██████████████  274
+9:  ███████████████████████████  736
+
+Accuracy: 60.14%
+
+
 ### Project 7: Building a Small-Scale Autoencoder for MNIST
 
 Instead of classification, this project focuses on learning efficient representations
