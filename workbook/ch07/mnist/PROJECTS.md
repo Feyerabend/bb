@@ -115,9 +115,11 @@ The current model processes images as 1D vectors, which discards spatial relatio
 This project involves modifying the neural network to use convolutional layers, preserving
 spatial structure for better performance.
 
-> A prebuilt script can be seen in [CNN](./cnn.py).
+<details>
+<summary>A prebuilt script</summary>
+A prebuilt script can be seen in [CNN](./cnn.py).
 
-> Running the code we e.g. get dominant recognition of the numbers, derived from the confusion matrix:
+Running the code we e.g. get dominant recognition of the numbers, derived from the confusion matrix:
 
 ```
 0:  ██████████████████████████████  378
@@ -132,8 +134,8 @@ spatial structure for better performance.
 9:  ███████████████████████████  736
 ```
 
-> Accuracy: 60.14%
----
+Accuracy: 60.14%
+</details>
 
 Objective: Transition from a simple fully connected neural network to a
 *convolutional neural network* (CNN) for image classification.
