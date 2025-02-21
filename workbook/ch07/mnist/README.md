@@ -19,7 +19,7 @@ dataset. However, it has played a crucial role in advancing computer vision and 
 research, influencing practical applications in several ways.
 
 
-__1.	Precursor to Modern Handwriting Recognition__
+__1. Precursor to Modern Handwriting Recognition__
 
 While MNIST is a simplified version of handwritten digit recognition, its techniques have been extended
 to real-world systems like postal address recognition, bank check processing, and form digitization.
@@ -27,21 +27,21 @@ Early OCR (Optical Character Recognition) systems for postal services and bankin
 handwritten digit datasets.
 
 
-__2.	Benchmarking for Deep Learning Models__
+__2. Benchmarking for Deep Learning Models__
 
 MNIST has been a foundational dataset for testing and comparing new machine learning models. Techniques
 developed and validated on MNIST often generalize to more complex datasets, such as ImageNet for large-scale
 image classification, which directly impacts industries like autonomous driving, security, and healthcare.
 
 
-__3.	Transferable Techniques__
+__3. Transferable Techniques__
 
 Many optimization methods, architectures (such as convolutional neural networks, first tested on MNIST by
 LeNet-5), and training strategies developed using MNIST have been applied in real-world applications like
 facial recognition, medical imaging, and fraud detection.
 
 
-__4.	Embedded Systems and Edge AI__
+__4. Embedded Systems and Edge AI__
 
 MNIST has been used to test lightweight neural network implementations for embedded devices, including mobile
 applications and IoT (Internet of Things) systems. Real-world use cases include digit recognition on low-power

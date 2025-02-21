@@ -22,12 +22,12 @@ Search for the following files online:
    - *Hidden Layer*: Contains 64 neurons. This layer processes the input features using weights and biases, then applies a sigmoid activation function to introduce non-linearity.
    - *Output Layer*: Contains 10 neurons (one for each digit). The network produces a probability distribution over the 10 classes using the softmax function.
 
-3. *Initialization*:
+3. *Initialisation*:
    - Random weights and biases are assigned to both layers and updated during training.
 
 4. *Training Process*:
    - *Feedforward*: Data flows from the input to the output, computing intermediate values for the hidden and output layers.
-   - *Backpropagation*: The network computes the error (difference between predicted and true labels) and adjusts weights and biases using gradient descent to minimize this error.
+   - *Backpropagation*: The network computes the error (difference between predicted and true labels) and adjusts weights and biases using gradient descent to minimise this error.
 
 5. *Prediction*:
    - After training, the network is tested on unseen data to evaluate accuracy.
