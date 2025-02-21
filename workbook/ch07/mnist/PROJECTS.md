@@ -115,8 +115,7 @@ The current model processes images as 1D vectors, which discards spatial relatio
 This project involves modifying the neural network to use convolutional layers, preserving
 spatial structure for better performance.
 
-
-A prebuilt script can be seen in [CNN](./cnn.py)
+A prebuilt script which you can start with, can be seen in [CNN](./cnn.py).
 <details>
 <summary>Results from running the script.</summary> 
 
@@ -135,7 +134,7 @@ Running the code we e.g. get dominant recognition of the numbers, derived from t
 9:  ███████████████████████████  736
 ```
 
-Accuracy: 60.14%
+Accuracy at 60.14%
 </details>
 
 Objective: Transition from a simple fully connected neural network to a
