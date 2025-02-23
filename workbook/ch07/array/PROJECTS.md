@@ -1,8 +1,7 @@
 
 ## Projects
 
-> [!NOTE] You might have to change the APLArray quite a bit to get working for
-any practical use, as it hasn't been thoroughly tested for any serious extension.
+> [!NOTE] You might have to change the APLArray quite a bit to get working for any practical use, as it hasn't been thoroughly tested for any serious extension.
 
 
 ### 1. Build a Domain-Specific Language (DSL) for Array Operations
