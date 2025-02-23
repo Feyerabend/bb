@@ -29,10 +29,10 @@ array ⍴ 2 3
 ```
 
 #### Tools:
-- Use a parsing library like [Lark](https://github.com/lark-parser/lark) or [PLY](https://github.com/dabeaz/ply) for building the DSL.
+- Use a parsing library like [Lark](https://github.com/lark-parser/lark)
+   or [PLY](https://github.com/dabeaz/ply) for building the DSL.
 - Map DSL operations to `APLArray` methods.
 
----
 
 ### 2. Create an Interactive Array Calculator
 Build an interactive calculator that allows users to perform array operations using a command-line interface (CLI) or a graphical user interface (GUI).
@@ -45,7 +45,8 @@ Build an interactive calculator that allows users to perform array operations us
 #### Implementation:
 - Use the `APLArray` class for backend computations.
 - For CLI: Use Python's `input()` and `print()` functions.
-- For GUI: Use a library like [Tkinter](https://docs.python.org/3/library/tkinter.html) or [PyQt](https://www.riverbankcomputing.com/software/pyqt/).
+- For GUI: Use a library like [Tkinter](https://docs.python.org/3/library/tkinter.html)
+   or [PyQt](https://www.riverbankcomputing.com/software/pyqt/).
 
 #### Example CLI Interaction:
 ```
@@ -56,7 +57,7 @@ Result:
  [4 5 6]]
 ```
 
----
+
 
 ### 3. Extend the `APLArray` Class with New Functionality
 Add new features to the `APLArray` class to make it more powerful and versatile.
@@ -89,10 +90,12 @@ class APLArray:
         plt.show()
 ```
 
----
+
 
 ### 4. Build a Data Analysis Toolkit
-Create a toolkit for data analysis using the `APLArray` class. This toolkit can include functions for cleaning, transforming, and analyzing datasets.
+
+Create a toolkit for data analysis using the `APLArray` class. This toolkit can include functions
+for cleaning, transforming, and analysing datasets.
 
 #### Features:
 - Data cleaning: Handle missing values, remove duplicates.
@@ -113,14 +116,15 @@ total_sales = data[:, 'Quantity'] * data[:, 'Price']
 print("Total Sales:", total_sales.sum())
 ```
 
----
+
 
 ### 5. Create a Compiler for APL-like Expressions
-Build a compiler that translates APL-like expressions into Python code or machine code. This project will involve writing a lexer, parser, and code generator.
+Build a compiler that translates APL-like expressions into Python code or machine code.
+This project will involve writing a lexer, parser, and code generator.
 
 #### Steps:
 1. Define the grammar for APL-like expressions.
-2. Implement a lexer to tokenize the input.
+2. Implement a lexer to tokenise the input.
 3. Implement a parser to generate an abstract syntax tree (AST).
 4. Generate Python code or machine code from the AST.
 
@@ -142,10 +146,11 @@ C = B.reshape(2, 3)
 - Use a parsing library like [Lark](https://github.com/lark-parser/lark) or [ANTLR](https://www.antlr.org/).
 - Generate Python code using the `ast` module.
 
----
+
 
 ### 6. Build a Machine Learning Library
-Create a lightweight machine learning library that uses the `APLArray` class for numerical computations. Focus on basic algorithms like linear regression, k-means clustering, and decision trees.
+Create a lightweight machine learning library that uses the `APLArray` class for numerical computations.
+Focus on basic algorithms like linear regression, k-means clustering, and decision trees.
 
 #### Features:
 - Support for vectorized operations using `APLArray`.
@@ -166,10 +171,11 @@ model.fit(X, y)
 predictions = model.predict(X)
 ```
 
----
+
 
 ### 7. Create a Game Using Array Operations
-Build a simple game that relies heavily on array operations. For example, you could create a puzzle game where players manipulate arrays to solve challenges.
+Build a simple game that relies heavily on array operations. For example, you could create a
+puzzle game where players manipulate arrays to solve challenges.
 
 #### Game Ideas:
 - Array Puzzle: Players reshape, rotate, and filter arrays to match a target configuration.
@@ -192,21 +198,23 @@ Result:
 Puzzle Solved!
 ```
 
----
 
-### 8. Build a Visualization Tool for Array Operations
-Create a tool that visualizes array operations step-by-step. This can help users understand how operations like reshaping, reversing, and sorting work.
+
+### 8. Build a Visualisation Tool for Array Operations
+Create a tool that visualises array operations step-by-step. This can help users understand
+how operations like reshaping, reversing, and sorting work.
 
 #### Features:
-- Visualize the input array and the result of each operation.
+- Visualise the input array and the result of each operation.
 - Support for common operations like reshape, reverse, sort, and reduce.
 - Interactive interface for users to experiment with array operations.
 
 #### Implementation:
-- Use a GUI library like [Tkinter](https://docs.python.org/3/library/tkinter.html) or [PyQt](https://www.riverbankcomputing.com/software/pyqt/).
-- Use [Matplotlib](https://matplotlib.org/) for visualizing arrays.
+- Use a GUI library like [Tkinter](https://docs.python.org/3/library/tkinter.html)
+  or [PyQt](https://www.riverbankcomputing.com/software/pyqt/).
+- Use [Matplotlib](https://matplotlib.org/) for visualising arrays.
 
----
+
 
 ### Conclusion
 These projects range from building a full-fledged DSL to creating practical applications
