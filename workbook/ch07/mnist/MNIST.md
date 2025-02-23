@@ -4,14 +4,16 @@
 This script implements a basic neural network to classify images from the MNIST dataset of handwritten digits (0-9).
 
 ### Missing Data
+
+> [!IMPORTANT] 
+> The program/script will not work without data!
+
 Search for the following files online:
 - `train-images.idx3-ubyte`
 - `train-labels.idx1-ubyte`
 - `t10k-images.idx3-ubyte`
 - `t10k-labels.idx1-ubyte`
 
-> [!IMPORTANT] 
-> The program/script will not work without data!
 
 
 ### Explanation
