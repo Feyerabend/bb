@@ -81,3 +81,6 @@ or production-ready system but rather on deepening the understanding of array
 computing principles. This serves as an educational exercise rather than a
 foundation for developing a full-fledged compiler or interpreter for an
 array-oriented language.
+
+> [!IMPORTANT]
+> You must install the NumPy library for Python to get `APLAarray` to work.
