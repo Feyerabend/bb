@@ -10,6 +10,10 @@ Search for the following files online:
 - `t10k-images.idx3-ubyte`
 - `t10k-labels.idx1-ubyte`
 
+> [!IMPORTANT] 
+> The program/script will not work without data!
+
+
 ### Explanation
 
 1. *MNIST Dataset*:
