@@ -1,5 +1,5 @@
 
-## APL Extended
+## APL Extended: Array Programming Language Extension
 
 APL (A Programming Language) is a high-level, concise, and expressive programming language designed
 for array processing. It is known for its use of unique symbols (e.g., `⍴`, `⌽`, `⍋`) to represent
@@ -8,7 +8,9 @@ operates on arrays as its fundamental data structure, enabling vectorised operat
 efficient and elegant.
 
 The `APLArray` class is inspired by APL's array-oriented paradigm, bringing its functionality to
-Python using NumPy for efficient array operations.
+Python using NumPy for efficient array operations. So the reading should go like:
+*Array Programming Language Extension*.
+
 
 ### Group Summaries
 
@@ -17,7 +19,8 @@ Python using NumPy for efficient array operations.
 - Key Methods:
   - `__init__`: Converts input data (lists, scalars, or arrays) into a NumPy array.
   - `__repr__`: Returns a string representation of the array for debugging.
-- Summary: This group handles the creation and display of `APLArray` objects, ensuring compatibility with various input types.
+- Summary: This group handles the creation and display of `APLArray` objects, ensuring compatibility
+  with various input types.
 
 
 #### Array Manipulation
@@ -27,7 +30,8 @@ Python using NumPy for efficient array operations.
   - `flatten`: Converts the array into a 1D array.
   - `transpose`: Swaps the axes of a 2D array.
   - `diagonal`: Extracts the diagonal elements of a 2D array.
-- Summary: These methods allow for flexible manipulation of array shapes and structures, similar to APL's powerful reshaping capabilities.
+- Summary: These methods allow for flexible manipulation of array shapes and structures, similar
+  to APL's powerful reshaping capabilities.
 
 
 
@@ -37,15 +41,18 @@ Python using NumPy for efficient array operations.
   - `__getitem__`: Implements 1-based indexing (APL-style).
   - `take`: Extracts the first `n` elements (or last `n` if negative).
   - `drop`: Removes the first `n` elements (or last `n` if negative).
-- Summary: This group provides APL-style indexing and slicing, making it easier to work with arrays in a way that aligns with APL's conventions.
+- Summary: This group provides APL-style indexing and slicing, making it easier to work with arrays
+  in a way that aligns with APL's conventions.
 
 
 
 #### Arithmetic
 - Purpose: Perform element-wise arithmetic operations on arrays.
 - Key Methods:
-  - `__add__`, `__sub__`, `__mul__`, `__truediv__`: Implement addition, subtraction, multiplication, and division.
-- Summary: These methods enable vectorized arithmetic operations, a core feature of APL's array-oriented programming.
+  - `__add__`, `__sub__`, `__mul__`, `__truediv__`: Implement addition, subtraction,
+    multiplication, and ("true") division.
+- Summary: These methods enable vectorized arithmetic operations, a core feature of APL's
+  array-oriented programming.
 
 
 
@@ -54,7 +61,8 @@ Python using NumPy for efficient array operations.
 - Key Methods:
   - `outer_sum`: Computes the outer sum of two arrays.
   - `outer_product`: Computes the outer product of two arrays.
-- Summary: These methods replicate APL's ability to perform outer operations, which are useful for matrix and tensor computations.
+- Summary: These methods replicate APL's ability to perform outer operations, which are useful
+  for matrix and tensor computations.
 
 
 
@@ -65,7 +73,8 @@ Python using NumPy for efficient array operations.
   - `rotate`: Rotates the array by a specified number of positions.
   - `unique`: Returns unique elements in the array.
   - `grade_up`, `grade_down`: Return indices for sorting in ascending or descending order.
-- Summary: This group encapsulates APL's iconic functions, providing a Pythonic way to perform array transformations.
+- Summary: This group encapsulates APL's iconic functions, providing a Pythonic way to perform array
+  transformations.
 
 
 
@@ -74,7 +83,8 @@ Python using NumPy for efficient array operations.
 - Key Methods:
   - `reduce`: Reduces the array using a binary operation.
   - `scan`: Performs a cumulative operation (e.g., cumulative sum).
-- Summary: These methods replicate APL's reduction (`/`) and scan (`\`) operators, which are essential for array processing.
+- Summary: These methods replicate APL's reduction (`/`) and scan (`\`) operators, which are essential
+  for array processing.
 
 
 
@@ -93,7 +103,8 @@ Python using NumPy for efficient array operations.
   - `dot`: Computes the dot product of two arrays.
   - `cross`: Computes the cross product of two 3D vectors.
   - `det`: Computes the determinant of a 2D array.
-- Summary: These methods bring APL's matrix manipulation capabilities to Python, leveraging NumPy's linear algebra functions.
+- Summary: These methods bring APL's matrix manipulation capabilities to Python, leveraging NumPy's
+  linear algebra functions.
 
 
 
@@ -103,7 +114,8 @@ Python using NumPy for efficient array operations.
   - `eig`: Computes eigenvalues and eigenvectors.
   - `svd`: Computes the singular value decomposition.
   - `qr`: Computes the QR decomposition.
-- Summary: This group provides advanced matrix decomposition techniques, inspired by APL's mathematical prowess.
+- Summary: This group provides advanced matrix decomposition techniques, inspired by APL's
+  mathematical prowess.
 
 
 
@@ -113,7 +125,8 @@ Python using NumPy for efficient array operations.
   - `vstack`, `hstack`: Stack arrays vertically or horizontally.
   - `concatenate`: Concatenate arrays along a specified axis.
   - `split`: Split the array into subarrays.
-- Summary: These methods enable flexible array manipulation, similar to APL's array concatenation and splitting capabilities.
+- Summary: These methods enable flexible array manipulation, similar to APL's array concatenation
+  and splitting capabilities.
 
 
 
