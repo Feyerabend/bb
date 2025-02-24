@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "scheme.h"
-
+#include "memory.h"
 
 Expr* create_number(int num);
 Expr* create_symbol(const char *sym);
@@ -17,35 +17,20 @@ Expr* env_get(Env *env, const char *name);
 Expr* builtin_add(struct Expr **args, struct Env *env);
 Expr* eval(Expr *expr, Env *env);
 Expr* apply(Expr *func, Expr **args, Env *env);
-void free_expr(Expr *expr);
-void free_env(Env *env);
 void print_expr(Expr *expr);
 void print_env(Env *env);
 
 
-
 Expr* create_number(int num) {
-    Expr *expr = malloc(sizeof(Expr));
-    expr->type = NUMBER;
-    expr->value.num = num;
-    return expr;
+    return alloc_number(num);
 }
-
 
 Expr* create_symbol(const char *sym) {
-    Expr *expr = malloc(sizeof(Expr));
-    expr->type = SYMBOL;
-    expr->value.sym = strdup(sym);
-    return expr;
+    return alloc_symbol(sym);
 }
 
-
 Expr* create_cons(Expr *car, Expr *cdr) {
-    Expr *expr = malloc(sizeof(Expr));
-    expr->type = LIST;
-    expr->value.pair.car = car;
-    expr->value.pair.cdr = cdr;
-    return expr;
+    return alloc_cons(car, cdr);
 }
 
 
@@ -66,7 +51,6 @@ Expr* cdr(Expr *list) {
     return NULL;
 }
 
-
 Expr* create_list(Expr **elements) {
     Expr *result = NULL;
     for (int i = 0; elements[i] != NULL; i++) {
@@ -75,47 +59,29 @@ Expr* create_list(Expr **elements) {
     return result;
 }
 
-Expr* create_builtin(struct Expr* (*func)(struct Expr **args, struct Env *env)) {
-    Expr *expr = malloc(sizeof(Expr));
-    if (!expr) {
-        fprintf(stderr, "Error: Failed to allocate memory for built-in function\n");
-        exit(1);
-    }
-
-    expr->type = BUILTIN;
-    expr->value.builtin = func;
-    return expr;
+Expr* create_builtin(Expr* (*func)(Expr **args, Env *env)) {
+    return alloc_builtin(func);
 }
-
 
 Env* create_env(Env *parent) {
-    Env *env = malloc(sizeof(Env));
-    if (!env) {
-        fprintf(stderr, "Error: Failed to allocate memory for environment\n");
-        exit(1);
-    }
+    Env *env = alloc_env(parent);
 
-    env->parent = parent;
-    env->names = NULL;
-    env->values = NULL;
-    env->size = 0;
-
-
-    env_set(env, "+", create_builtin(builtin_add));
-
+    env_set(env, "+", alloc_builtin(builtin_add));
     return env;
 }
+
 
 
 void env_set(Env *env, const char *name, Expr *value) {
     for (int i = 0; i < env->size; i++) {
         if (strcmp(env->names[i], name) == 0) {
-            free_expr(env->values[i]);
-            env->values[i] = value;
+            free_expr(env->values[i]); // Free the old value
+            env->values[i] = value;    // Set the new value
             return;
         }
     }
 
+    // Resize the names and values arrays
     env->names = realloc(env->names, sizeof(char *) * (env->size + 1));
     env->values = realloc(env->values, sizeof(Expr *) * (env->size + 1));
 
@@ -124,6 +90,7 @@ void env_set(Env *env, const char *name, Expr *value) {
         exit(1);
     }
 
+    // Add the new name and value
     env->names[env->size] = strdup(name);
     env->values[env->size] = value;
     env->size++;
@@ -170,7 +137,7 @@ Expr **eval_args(Expr *args_list, Env *env) {
         return NULL;
     }
 
-    Expr **args = malloc(sizeof(Expr *) * (arg_count));
+    Expr **args = malloc(sizeof(Expr *) * (arg_count + 1)); // +1 for NULL terminator
     if (!args) {
         fprintf(stderr, "Memory allocation failed in eval_args\n");
         exit(EXIT_FAILURE);
@@ -181,8 +148,12 @@ Expr **eval_args(Expr *args_list, Env *env) {
         args_list = cdr(args_list);
     }
 
+    // NULL-terminate the argument list
+    args[arg_count] = NULL;
+
     return args;
 }
+
 
 Expr* eval(Expr *expr, Env *env) {
     if (!expr) return NULL;
@@ -232,12 +203,12 @@ Expr* eval(Expr *expr, Env *env) {
                 } else if (strcmp(first->value.sym, "begin") == 0) {
                     Expr *current = cdr(expr);
                     Expr *result = NULL;
-    
+                
                     while (current != NULL && current->type == LIST) {
-                            result = eval(car(current), env);
-                            current = cdr(current);
+                        result = eval(car(current), env);
+                        current = cdr(current);
                     }
-                    return result;    
+                    return result;
 
                 } else if (strcmp(first->value.sym, "quote") == 0) {
                     return car(cdr(expr));
@@ -277,22 +248,44 @@ Expr* eval(Expr *expr, Env *env) {
                     Expr *bindings = car(cdr(expr));
                     Expr *body = cdr(cdr(expr));
                     Env *local_env = create_env(env);
-
+                
+                    printf("Evaluating let form:\n");
+                
+                    // Evaluate bindings
                     while (bindings != NULL && bindings->type == LIST) {
                         Expr *binding = car(bindings);
                         const char *var_name = car(binding)->value.sym;
                         Expr *value = eval(car(cdr(binding)), env);
+                
+                        printf("  Binding %s to ", var_name);
+                        print_expr(value);
+                        printf("\n");
+                
                         env_set(local_env, var_name, value);
-
+                
                         bindings = cdr(bindings);
                     }
-
+                
+                    // Evaluate body
                     Expr *result = NULL;
                     while (body != NULL && body->type == LIST) {
+                        printf("  Evaluating body expression: ");
+                        print_expr(car(body));
+                        printf("\n");
+                
                         result = eval(car(body), local_env);
+                
+                        printf("  Result: ");
+                        print_expr(result);
+                        printf("\n");
+                
                         body = cdr(body);
                     }
-
+                
+                    printf("Let form result: ");
+                    print_expr(result);
+                    printf("\n");
+                
                     free_env(local_env);
                     return result;
 
@@ -360,20 +353,23 @@ Expr* eval(Expr *expr, Env *env) {
     return NULL;
 }
 
+
 Expr* apply(Expr *func, Expr **args, Env *env) {
+
     if (func->type == BUILTIN) {
         return func->value.builtin(args, env);
+
     } else if (func->type != FUNCTION) {
         fprintf(stderr, "Error: Not a function\n");
         return NULL;
     }
 
-    // function consists of parameter list + body
+    // Function consists of parameter list + body
     Expr *params = car(func);
     Expr *body = cdr(func);
     Env *local_env = create_env(env);
 
-    // bind params to args in new env
+    // Bind params to args in new env
     while (params != NULL && params->type == LIST && args != NULL) {
         const char *param_name = car(params)->value.sym;
         Expr *arg_value = *args;
@@ -388,69 +384,8 @@ Expr* apply(Expr *func, Expr **args, Env *env) {
         return NULL;
     }
 
-    // eval body of function in new env
+    // Eval body of function in new env
     return eval(body, local_env);
-}
-
-
-// crap
-void free_expr(Expr *expr) {
-    if (!expr) {
-        printf("Attempted to free NULL expression.\n");
-        return;
-    }
-
-    printf("Freeing expression of type %d at address %p\n", expr->type, (void*)expr);
-
-    switch (expr->type) {
-        case NUMBER:
-            printf("  Number: %d\n", expr->value.num);
-            break;
-
-        case SYMBOL:
-            printf("  Symbol: %s\n", expr->value.sym);
-            free(expr->value.sym);
-            break;
-
-        case LIST:
-        case FUNCTION:
-            printf("  List/Function: car = %p, cdr = %p\n", (void*)expr->value.pair.car, (void*)expr->value.pair.cdr);
-            free_expr(expr->value.pair.car);
-            free_expr(expr->value.pair.cdr);
-            break;
-
-        case BUILTIN:
-            printf("  Builtin function\n");
-            break;
-    }
-
-    free(expr);
-}
-
-// crap
-void free_env(Env *env) {
-    if (!env) {
-        printf("Attempted to free NULL environment.\n");
-        return;
-    }
-
-    printf("Freeing environment at address %p\n", (void*)env);
-
-    for (int i = 0; i < env->size; i++) {
-        printf("  Freeing name: %s\n", env->names[i]);
-        free(env->names[i]);
-
-        printf("  Freeing value at address %p\n", (void*)env->values[i]);
-        free_expr(env->values[i]);
-    }
-
-    free(env->names);
-    free(env->values);
-
-    printf("Freeing parent environment at address %p\n", (void*)env->parent);
-    free_env(env->parent);
-
-    free(env);
 }
 
 

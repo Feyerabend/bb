@@ -4,26 +4,34 @@
 #include <string.h>
 
 #include "scheme.h"
+#include "memory.h"
 
 
 void test_create_number() {
     Expr *num = create_number(42);
+
     assert(num != NULL);
     assert(num->type == NUMBER);
     assert(num->value.num == 42);
-    free(num);
+
+    free_expr(num);
+
     printf("test_create_number passed.\n");
 }
 
+
 void test_create_symbol() {
     Expr *sym = create_symbol("hello");
+
     assert(sym != NULL);
     assert(sym->type == SYMBOL);
     assert(strcmp(sym->value.sym, "hello") == 0);
-    free(sym->value.sym);
-    free(sym);
+
+    free_expr(sym);
+
     printf("test_create_symbol passed.\n");
 }
+
 
 void test_create_cons_and_accessors() {
     Expr *num = create_number(42);
@@ -35,12 +43,13 @@ void test_create_cons_and_accessors() {
     assert(car(pair) == num);
     assert(cdr(pair) == sym);
 
-    free(sym->value.sym);
-    free(sym);
-    free(num);
-    free(pair);
+//  free_expr(sym);
+//  free_expr(num);
+    free_expr(pair); // free from top only
+
     printf("test_create_cons_and_accessors passed.\n");
 }
+
 
 void test_env_set_and_get() {
     Env *env = create_env(NULL);
@@ -53,15 +62,18 @@ void test_env_set_and_get() {
     assert(retrieved->type == NUMBER);
     assert(retrieved->value.num == 42);
 
-    free(num);
-    for (int i = 0; i < env->size; i++) {
-        free(env->names[i]);
-    }
-    free(env->names);
-    free(env->values);
-    free(env);
+//  free_expr(num);
+
+//  for (int i = 0; i < env->size; i++) {
+//      free(env->names[i]);
+//  }
+//  free(env->names);
+//  free(env->values);
+    free_env(env);
+
     printf("test_env_set_and_get passed.\n");
 }
+
 
 void test_eval_number() {
     Env *env = create_env(NULL);
@@ -72,15 +84,18 @@ void test_eval_number() {
     assert(result->type == NUMBER);
     assert(result->value.num == 42);
 
-    free(num);
-    free(env);
+//  free(num);
+
+    free_env(env);
+
     printf("test_eval_number passed.\n");
 }
+
 
 void test_quote() {
     Env *env = create_env(NULL);
 
-    // Create the expression: (quote (1 2 3))
+    // (quote (1 2 3))
     Expr *quoted_list = create_cons(
         create_number(1),
         create_cons(
@@ -107,11 +122,14 @@ void test_quote() {
     assert(car(cdr(result))->type == NUMBER && car(cdr(result))->value.num == 2);
     assert(car(cdr(cdr(result)))->type == NUMBER && car(cdr(cdr(result)))->value.num == 3);
 
-    free(quote_expr);
-    free(quoted_list);
+//  free(quote_expr);
+//  free(quoted_list);
+
     free_env(env);
+
     printf("test_quote passed.\n");
 }
+
 
 void test_eval() {
     Env *env = create_env(NULL);
@@ -148,12 +166,15 @@ void test_eval() {
     assert(result->type == NUMBER);
     assert(result->value.num == 3);
 
-    free(eval_expr);
-    free(quoted_add_expr);
-    free(add_expr);
+//  free(eval_expr);
+//  free(quoted_add_expr);
+//  free(add_expr);
+
     free_env(env);
+
     printf("test_eval passed.\n");
 }
+
 
 void test_eval_symbol() {
     Env *env = create_env(NULL);
@@ -167,17 +188,20 @@ void test_eval_symbol() {
     assert(result->type == NUMBER);
     assert(result->value.num == 42);
 
-    free(sym->value.sym);
-    free(sym);
-    free(num);
-    for (int i = 0; i < env->size; i++) {
-        free(env->names[i]);
-    }
-    free(env->names);
-    free(env->values);
-    free(env);
+//  free(sym->value.sym);
+//  free(sym);
+//  free(num);
+//  for (int i = 0; i < env->size; i++) {
+//      free(env->names[i]);
+//  }
+//  free(env->names);
+//  free(env->values);
+
+    free_env(env);
+
     printf("test_eval_symbol passed.\n");
 }
+
 
 void test_eval_define() {
     Env *env = create_env(NULL);
@@ -193,17 +217,20 @@ void test_eval_define() {
     assert(result->type == NUMBER);
     assert(result->value.num == 42);
 
-    for (int i = 0; i < env->size; i++) {
-        free(env->names[i]);
-    }
-    free(env->names);
-    free(env->values);
-    free(define_expr->value.pair.cdr->value.pair.cdr);
-    free(define_expr->value.pair.cdr);
-    free(define_expr);
-    free(env);
+//    for (int i = 0; i < env->size; i++) {
+//        free(env->names[i]);
+//    }
+//    free(env->names);
+//    free(env->values);
+//    free(define_expr->value.pair.cdr->value.pair.cdr);
+//    free(define_expr->value.pair.cdr);
+//   free(define_expr);
+
+    free_env(env);
+
     printf("test_eval_define passed.\n");
 }
+
 
 void test_eval_if() {
     Env *env = create_env(NULL);
@@ -220,13 +247,15 @@ void test_eval_if() {
     assert(result->type == NUMBER);
     assert(result->value.num == 42);
 
-    free(if_expr->value.pair.cdr->value.pair.cdr->value.pair.cdr);
-    free(if_expr->value.pair.cdr->value.pair.cdr);
-    free(if_expr->value.pair.cdr);
-    free(if_expr);
+//    free(if_expr->value.pair.cdr->value.pair.cdr->value.pair.cdr);
+//    free(if_expr->value.pair.cdr->value.pair.cdr);
+//    free(if_expr->value.pair.cdr);
+//    free(if_expr);
+
     free(env);
     printf("test_eval_if passed.\n");
 }
+
 
 void test_eval_set() {
     Env *env = create_env(NULL);
@@ -253,18 +282,19 @@ void test_eval_set() {
     assert(x_value->type == NUMBER);
     assert(x_value->value.num == 100);
 
-    for (int i = 0; i < env->size; i++) {
-        free(env->names[i]);
-    }
-    free(env->names);
-    free(env->values);
-    free(define_expr->value.pair.cdr->value.pair.cdr);
-    free(define_expr->value.pair.cdr);
-    free(define_expr);
-    free(set_expr->value.pair.cdr->value.pair.cdr);
-    free(set_expr->value.pair.cdr);
-    free(set_expr);
-    free(env);
+//    for (int i = 0; i < env->size; i++) {
+//        free(env->names[i]);
+//    }
+//    free(env->names);
+//    free(env->values);
+//    free(define_expr->value.pair.cdr->value.pair.cdr);
+//    free(define_expr->value.pair.cdr);
+//    free(define_expr);
+//    free(set_expr->value.pair.cdr->value.pair.cdr);
+//    free(set_expr->value.pair.cdr);
+//    free(set_expr);
+
+    free_env(env);
 
     printf("test_eval_set passed.\n");
 }
@@ -306,23 +336,22 @@ void test_begin() {
         )
     );
 
+
+    // Evaluate the begin expression
     Expr *result = eval(begin_expr, env);
 
+    // Verify the result
     assert(result != NULL);
     assert(result->type == NUMBER);
     assert(result->value.num == 30);
 
-    for (int i = 0; i < env->size; i++) {
-        free(env->names[i]);
-    }
-    free(env->names);
-    free(env->values);
-    free(begin_expr->value.pair.cdr->value.pair.cdr);
-    free(begin_expr->value.pair.cdr);
-    free(begin_expr);
-    free(env);
+    // Clean up
+//    free_expr(begin_expr);
+    free_env(env);
+
     printf("test_begin passed.\n");
 }
+
 
 void test_let() {
     Env *env = create_env(NULL);
@@ -357,16 +386,21 @@ void test_let() {
         )
     );
 
+    // Evaluate the let expression
     Expr *result = eval(let_expr, env);
 
+    // Verify the result
     assert(result != NULL);
     assert(result->type == NUMBER);
     assert(result->value.num == 30);
 
-    free(let_expr);
-    free(env);
+    // Clean up
+    free_expr(let_expr);
+    free_env(env);
+
     printf("test_let passed.\n");
 }
+
 
 void create_and_eval_define(Env *env, const char *var_name, Expr *value) {
     Expr *define_expr = create_cons(
@@ -467,37 +501,32 @@ void test_eval_while() {
     }
 
     printf("create_and_eval_define\n");
-
     create_and_eval_define(env, "x", create_number(0));
 
     printf("verify_x_value\n");
-
     verify_x_value(env, "x", 0);
 
     printf("create_condition\n");
-
     Expr *condition = create_condition("x", 5);
 
     printf("create_body\n");
-
     Expr *body = create_body("x");
 
     printf("create_and_eval_while\n");
-
     create_and_eval_while(env, condition, body);
 
     printf("verify_x_value\n");
-
     verify_x_value(env, "x", 5);
 
 
-    for (int i = 0; i < env->size; i++) {
-        free(env->names[i]);
-    }
-    free(env->names);
-    free(env->values);
-    free(env);
+//    for (int i = 0; i < env->size; i++) {
+//        free(env->names[i]);
+//    }
+//    free(env->names);
+//    free(env->values);
+//    free(env);
 
+    free_env(env);
     printf("test_eval_while passed.\n");
 }
 
@@ -506,15 +535,15 @@ int main() {
     test_create_symbol();
     test_create_cons_and_accessors();
     test_env_set_and_get();
+    test_eval_number();
     test_quote();
     test_eval();
-//    test_begin();
-//  test_let();
-    test_eval_number();
-    test_eval_symbol();
     test_eval_define();
     test_eval_if();
     test_eval_set();
+    test_begin();
+//    test_let();
+    test_eval_symbol();
     test_eval_while();
 
     printf("All tests passed.\n");
