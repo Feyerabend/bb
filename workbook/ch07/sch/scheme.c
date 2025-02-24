@@ -108,7 +108,6 @@ Env* create_env(Env *parent) {
 
 
 void env_set(Env *env, const char *name, Expr *value) {
-
     for (int i = 0; i < env->size; i++) {
         if (strcmp(env->names[i], name) == 0) {
             free_expr(env->values[i]);
@@ -121,7 +120,7 @@ void env_set(Env *env, const char *name, Expr *value) {
     env->values = realloc(env->values, sizeof(Expr *) * (env->size + 1));
 
     if (!env->names || !env->values) {
-        fprintf(stderr, "Error: Failed to allocate memory for environment\n");
+        fprintf(stderr, "Error: Failed to (re)allocate memory for environment\n");
         exit(1);
     }
 
@@ -158,6 +157,32 @@ Expr* builtin_add(struct Expr **args, struct Env *env) {
 }
 
 
+Expr **eval_args(Expr *args_list, Env *env) {
+    int arg_count = 0;
+    Expr *temp_args = args_list;
+
+    while (temp_args != NULL && temp_args->type == LIST) {
+        arg_count++;
+        temp_args = cdr(temp_args);
+    }
+
+    if (arg_count == 0) {
+        return NULL;
+    }
+
+    Expr **args = malloc(sizeof(Expr *) * (arg_count));
+    if (!args) {
+        fprintf(stderr, "Memory allocation failed in eval_args\n");
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i < arg_count; i++) {
+        args[i] = eval(car(args_list), env);
+        args_list = cdr(args_list);
+    }
+
+    return args;
+}
 
 Expr* eval(Expr *expr, Env *env) {
     if (!expr) return NULL;
@@ -213,10 +238,8 @@ Expr* eval(Expr *expr, Env *env) {
                     }
 
                 } else if (strcmp(first->value.sym, "set!") == 0) {
-
                     const char *var_name = car(cdr(expr))->value.sym;
                     Expr *value_expr = eval(car(cdr(cdr(expr))), env);
-
 
                     Env *current_env = env;
                     while (current_env) {
@@ -253,30 +276,14 @@ Expr* eval(Expr *expr, Env *env) {
                     while (1) {
                         Expr *cond_result = eval(condition, env);
                         if (!cond_result || cond_result->value.num == 0) {
-                            break; // exit if condition is false
+                            break; // condition false
                         }
                         eval(body, env); // exec body
                     }
-                    return NULL; // while loops don't return value
+                    return NULL;
 
                 } else if (strcmp(first->value.sym, "+") == 0) {
-                    Expr *args_list = cdr(expr);
-                    int arg_count = 0;
-
-                    // number of args
-                    Expr *temp_args = args_list;
-                    while (temp_args != NULL && temp_args->type == LIST) {
-                        arg_count++;
-                        temp_args = cdr(temp_args);
-                    }
-
-                    // eval args and store in array
-                    Expr **args = malloc(sizeof(Expr *) * arg_count);
-                    for (int i = 0; i < arg_count; i++) {
-                        args[i] = eval(car(args_list), env);
-                        args_list = cdr(args_list);
-                    }
-
+                    Expr **args = eval_args(cdr(expr), env);
                     return builtin_add(args, env);
 
                 } else {
@@ -293,24 +300,7 @@ Expr* eval(Expr *expr, Env *env) {
                         fprintf(stderr, "Function found, avoiding car/cdr on function\n");
                     }
 
-                    // eval args into list
-                    Expr *args_list = cdr(expr);
-                    int arg_count = 0;
-
-                    // number of args
-                    Expr *temp_args = args_list;
-                    while (temp_args != NULL && temp_args->type == LIST) {
-                        arg_count++;
-                        temp_args = cdr(temp_args);
-                    }
-
-                    // eval args and store in array
-                    Expr **args = malloc(sizeof(Expr *) * arg_count);
-                    for (int i = 0; i < arg_count; i++) {
-                        args[i] = eval(car(args_list), env);
-                        args_list = cdr(args_list);
-                    }
-
+                    Expr **args = eval_args(cdr(expr), env);
                     return apply(func, args, env);
                 }
 
@@ -461,48 +451,13 @@ void print_env(Env *env) {
     print_env(env->parent);
 }
 
+
 /*
-// Main function
-int main() {
-    // Create a simple environment
-    Env *env = create_env(NULL);
-
-    // Define a function
-    Expr *func = create_list((Expr *[]){
-        create_symbol("lambda"),
-        create_list((Expr *[]){
-            create_symbol("x"),
-            create_symbol("y"),
-            NULL
-        }),
-        create_list((Expr *[]){
-            create_symbol("+"),
-            create_symbol("x"),
-            create_symbol("y"),
-            NULL
-        }),
-        NULL
-    });
-
-    // Bind the function to a variable
-    env_set(env, "add", func);
-
-    // Evaluate an expression
-    Expr *expr = create_list((Expr *[]){
-        create_symbol("add"),
-        create_number(10),
-        create_number(20),
-        NULL
-    });
-
-    Expr *result = eval(expr, env);
-    print_expr(result);
-    printf("\n");
-
-    // Free the environment and expression
-    free_env(env);
-    free_expr(result);
-
-    return 0;
-}
+	+, -, *, /
+    and, or, not
+    =, <, >, <=, >=
+	null?, cons, car, cdr, list
+	quote, (eval)
+	begin, (let)
+	eq?, equal?, number?, pair?, symbol?
 */
