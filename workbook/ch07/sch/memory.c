@@ -71,28 +71,33 @@ void free_expr(Expr *expr) {
 
     switch (expr->type) {
         case NUMBER:
+            free(expr);
             break;
 
         case SYMBOL:
-            free(expr->value.sym);
+            free(expr->value.sym); // symbol string
+            free(expr);           // expression itself
             break;
 
         case LIST:
         case FUNCTION:
             free_expr(expr->value.pair.car);
             free_expr(expr->value.pair.cdr);
+            free(expr);   // expression itself
             break;
 
         case BUILTIN:
+            // Built-in no need
             break;
     }
-
-    free(expr);
 }
 
 // free environment
 void free_env(Env *env) {
-    if (!env) return;
+    if (!env) {
+        printf("Attempted to free NULL environment.\n");
+        return;
+    }
 
     for (int i = 0; i < env->size; i++) {
         free(env->names[i]);
@@ -101,10 +106,10 @@ void free_env(Env *env) {
 
     free(env->names);
     free(env->values);
-    free_env(env->parent);
 
     free(env);
 }
+
 
 // mark an expression for garbage collection
 void gc_mark_expr(Expr *expr) {

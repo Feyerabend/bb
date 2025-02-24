@@ -396,7 +396,7 @@ void test_let() {
 
     // Clean up
     free_expr(let_expr);
-    free_env(env);
+    free_env(env); // Free the parent environment separately
 
     printf("test_let passed.\n");
 }
@@ -542,7 +542,7 @@ int main() {
     test_eval_if();
     test_eval_set();
     test_begin();
-//    test_let();
+    test_let();
     test_eval_symbol();
     test_eval_while();
 

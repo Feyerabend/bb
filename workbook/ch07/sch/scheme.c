@@ -71,17 +71,17 @@ Env* create_env(Env *parent) {
 }
 
 
-
 void env_set(Env *env, const char *name, Expr *value) {
     for (int i = 0; i < env->size; i++) {
         if (strcmp(env->names[i], name) == 0) {
-            free_expr(env->values[i]); // Free the old value
-            env->values[i] = value;    // Set the new value
+            printf("  Updating existing binding for %s\n", name);
+            free_expr(env->values[i]); // old value free
+            env->values[i] = value;    // set new value
             return;
         }
     }
 
-    // Resize the names and values arrays
+    // resize the names and values arrays
     env->names = realloc(env->names, sizeof(char *) * (env->size + 1));
     env->values = realloc(env->values, sizeof(Expr *) * (env->size + 1));
 
@@ -90,7 +90,7 @@ void env_set(Env *env, const char *name, Expr *value) {
         exit(1);
     }
 
-    // Add the new name and value
+    // add new name and value
     env->names[env->size] = strdup(name);
     env->values[env->size] = value;
     env->size++;
@@ -137,7 +137,7 @@ Expr **eval_args(Expr *args_list, Env *env) {
         return NULL;
     }
 
-    Expr **args = malloc(sizeof(Expr *) * (arg_count + 1)); // +1 for NULL terminator
+    Expr **args = malloc(sizeof(Expr *) * (arg_count + 1));
     if (!args) {
         fprintf(stderr, "Memory allocation failed in eval_args\n");
         exit(EXIT_FAILURE);
@@ -148,7 +148,6 @@ Expr **eval_args(Expr *args_list, Env *env) {
         args_list = cdr(args_list);
     }
 
-    // NULL-terminate the argument list
     args[arg_count] = NULL;
 
     return args;
@@ -169,7 +168,6 @@ Expr* eval(Expr *expr, Env *env) {
             Expr *first = car(expr);
             if (first && first->type == SYMBOL) {
 
-                // conditions
                 if (strcmp(first->value.sym, "<") == 0) {
                     Expr *arg1 = eval(car(cdr(expr)), env);
                     Expr *arg2 = eval(car(cdr(cdr(expr))), env);
@@ -248,44 +246,21 @@ Expr* eval(Expr *expr, Env *env) {
                     Expr *bindings = car(cdr(expr));
                     Expr *body = cdr(cdr(expr));
                     Env *local_env = create_env(env);
-                
-                    printf("Evaluating let form:\n");
-                
-                    // Evaluate bindings
+
                     while (bindings != NULL && bindings->type == LIST) {
                         Expr *binding = car(bindings);
                         const char *var_name = car(binding)->value.sym;
                         Expr *value = eval(car(cdr(binding)), env);
                 
-                        printf("  Binding %s to ", var_name);
-                        print_expr(value);
-                        printf("\n");
-                
                         env_set(local_env, var_name, value);
-                
                         bindings = cdr(bindings);
                     }
                 
-                    // Evaluate body
                     Expr *result = NULL;
                     while (body != NULL && body->type == LIST) {
-                        printf("  Evaluating body expression: ");
-                        print_expr(car(body));
-                        printf("\n");
-                
                         result = eval(car(body), local_env);
-                
-                        printf("  Result: ");
-                        print_expr(result);
-                        printf("\n");
-                
                         body = cdr(body);
                     }
-                
-                    printf("Let form result: ");
-                    print_expr(result);
-                    printf("\n");
-                
                     free_env(local_env);
                     return result;
 
@@ -364,12 +339,10 @@ Expr* apply(Expr *func, Expr **args, Env *env) {
         return NULL;
     }
 
-    // Function consists of parameter list + body
     Expr *params = car(func);
     Expr *body = cdr(func);
     Env *local_env = create_env(env);
 
-    // Bind params to args in new env
     while (params != NULL && params->type == LIST && args != NULL) {
         const char *param_name = car(params)->value.sym;
         Expr *arg_value = *args;
@@ -384,7 +357,6 @@ Expr* apply(Expr *func, Expr **args, Env *env) {
         return NULL;
     }
 
-    // Eval body of function in new env
     return eval(body, local_env);
 }
 
