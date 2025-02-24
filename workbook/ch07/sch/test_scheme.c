@@ -77,6 +77,84 @@ void test_eval_number() {
     printf("test_eval_number passed.\n");
 }
 
+void test_quote() {
+    Env *env = create_env(NULL);
+
+    // Create the expression: (quote (1 2 3))
+    Expr *quoted_list = create_cons(
+        create_number(1),
+        create_cons(
+            create_number(2),
+            create_cons(
+                create_number(3),
+                NULL
+            )
+        )
+    );
+    Expr *quote_expr = create_cons(
+        create_symbol("quote"),
+        create_cons(
+            quoted_list,
+            NULL
+        )
+    );
+
+    Expr *result = eval(quote_expr, env);
+
+    assert(result != NULL);
+    assert(result->type == LIST);
+    assert(car(result)->type == NUMBER && car(result)->value.num == 1);
+    assert(car(cdr(result))->type == NUMBER && car(cdr(result))->value.num == 2);
+    assert(car(cdr(cdr(result)))->type == NUMBER && car(cdr(cdr(result)))->value.num == 3);
+
+    free(quote_expr);
+    free(quoted_list);
+    free_env(env);
+    printf("test_quote passed.\n");
+}
+
+void test_eval() {
+    Env *env = create_env(NULL);
+
+    // (eval '(+ 1 2))
+    Expr *add_expr = create_cons(
+        create_symbol("+"),
+        create_cons(
+            create_number(1),
+            create_cons(
+                create_number(2),
+                NULL
+            )
+        )
+    );
+    Expr *quoted_add_expr = create_cons(
+        create_symbol("quote"),
+        create_cons(
+            add_expr,
+            NULL
+        )
+    );
+    Expr *eval_expr = create_cons(
+        create_symbol("eval"),
+        create_cons(
+            quoted_add_expr,
+            NULL
+        )
+    );
+
+    Expr *result = eval(eval_expr, env);
+
+    assert(result != NULL);
+    assert(result->type == NUMBER);
+    assert(result->value.num == 3);
+
+    free(eval_expr);
+    free(quoted_add_expr);
+    free(add_expr);
+    free_env(env);
+    printf("test_eval passed.\n");
+}
+
 void test_eval_symbol() {
     Env *env = create_env(NULL);
     Expr *num = create_number(42);
@@ -192,6 +270,104 @@ void test_eval_set() {
 }
 
 
+void test_begin() {
+    Env *env = create_env(NULL);
+
+    // (begin (define x 10) (define y 20) (+ x y))
+    Expr *begin_expr = create_cons(
+        create_symbol("begin"),
+        create_cons(
+            create_cons(
+                create_symbol("define"),
+                create_cons(
+                    create_symbol("x"),
+                    create_cons(create_number(10), NULL)
+                )
+            ),
+            create_cons(
+                create_cons(
+                    create_symbol("define"),
+                    create_cons(
+                        create_symbol("y"),
+                        create_cons(create_number(20), NULL)
+                    )
+                ),
+                create_cons(
+                    create_cons(
+                        create_symbol("+"),
+                        create_cons(
+                            create_symbol("x"),
+                            create_cons(create_symbol("y"), NULL)
+                        )
+                    ),
+                    NULL
+                )
+            )
+        )
+    );
+
+    Expr *result = eval(begin_expr, env);
+
+    assert(result != NULL);
+    assert(result->type == NUMBER);
+    assert(result->value.num == 30);
+
+    for (int i = 0; i < env->size; i++) {
+        free(env->names[i]);
+    }
+    free(env->names);
+    free(env->values);
+    free(begin_expr->value.pair.cdr->value.pair.cdr);
+    free(begin_expr->value.pair.cdr);
+    free(begin_expr);
+    free(env);
+    printf("test_begin passed.\n");
+}
+
+void test_let() {
+    Env *env = create_env(NULL);
+
+    // (let ((x 10) (y 20)) (+ x y))
+    Expr *let_expr = create_cons(
+        create_symbol("let"),
+        create_cons(
+            create_cons(
+                create_cons(
+                    create_symbol("x"),
+                    create_cons(create_number(10), NULL)
+                ),
+                create_cons(
+                    create_cons(
+                        create_symbol("y"),
+                        create_cons(create_number(20), NULL)
+                    ),
+                    NULL
+                )
+            ),
+            create_cons(
+                create_cons(
+                    create_symbol("+"),
+                    create_cons(
+                        create_symbol("x"),
+                        create_cons(create_symbol("y"), NULL)
+                    )
+                ),
+                NULL
+            )
+        )
+    );
+
+    Expr *result = eval(let_expr, env);
+
+    assert(result != NULL);
+    assert(result->type == NUMBER);
+    assert(result->value.num == 30);
+
+    free(let_expr);
+    free(env);
+    printf("test_let passed.\n");
+}
+
 void create_and_eval_define(Env *env, const char *var_name, Expr *value) {
     Expr *define_expr = create_cons(
         create_symbol("define"),
@@ -203,7 +379,6 @@ void create_and_eval_define(Env *env, const char *var_name, Expr *value) {
     }
     eval(define_expr, env);
 }
-
 
 Expr* create_condition(const char *var_name, int compare_value) {
     Expr *condition = create_cons(
@@ -331,12 +506,17 @@ int main() {
     test_create_symbol();
     test_create_cons_and_accessors();
     test_env_set_and_get();
+    test_quote();
+    test_eval();
+//    test_begin();
+//  test_let();
     test_eval_number();
     test_eval_symbol();
     test_eval_define();
     test_eval_if();
     test_eval_set();
     test_eval_while();
+
     printf("All tests passed.\n");
     return 0;
 }

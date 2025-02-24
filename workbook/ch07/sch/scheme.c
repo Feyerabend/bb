@@ -229,6 +229,23 @@ Expr* eval(Expr *expr, Env *env) {
                         return NULL;
                     }
 
+                } else if (strcmp(first->value.sym, "begin") == 0) {
+                    Expr *current = cdr(expr);
+                    Expr *result = NULL;
+    
+                    while (current != NULL && current->type == LIST) {
+                            result = eval(car(current), env);
+                            current = cdr(current);
+                    }
+                    return result;    
+
+                } else if (strcmp(first->value.sym, "quote") == 0) {
+                    return car(cdr(expr));
+
+                } else if (strcmp(first->value.sym, "eval") == 0) {
+                    Expr *arg = eval(car(cdr(expr)), env);
+                    return eval(arg, env);
+
                 } else if (strcmp(first->value.sym, "if") == 0) {
                     Expr *condition = eval(car(cdr(expr)), env);
                     if (condition && condition->value.num != 0) {
@@ -255,6 +272,29 @@ Expr* eval(Expr *expr, Env *env) {
 
                     fprintf(stderr, "Error: Unbound variable '%s' in set!\n", var_name);
                     return NULL;
+
+                } else if (strcmp(first->value.sym, "let") == 0) {
+                    Expr *bindings = car(cdr(expr));
+                    Expr *body = cdr(cdr(expr));
+                    Env *local_env = create_env(env);
+
+                    while (bindings != NULL && bindings->type == LIST) {
+                        Expr *binding = car(bindings);
+                        const char *var_name = car(binding)->value.sym;
+                        Expr *value = eval(car(cdr(binding)), env);
+                        env_set(local_env, var_name, value);
+
+                        bindings = cdr(bindings);
+                    }
+
+                    Expr *result = NULL;
+                    while (body != NULL && body->type == LIST) {
+                        result = eval(car(body), local_env);
+                        body = cdr(body);
+                    }
+
+                    free_env(local_env);
+                    return result;
 
                 } else if (strcmp(first->value.sym, "define") == 0) {
                     const char *var_name = car(cdr(expr))->value.sym;
@@ -353,46 +393,63 @@ Expr* apply(Expr *func, Expr **args, Env *env) {
 }
 
 
+// crap
 void free_expr(Expr *expr) {
-    if (!expr) return;
+    if (!expr) {
+        printf("Attempted to free NULL expression.\n");
+        return;
+    }
+
+    printf("Freeing expression of type %d at address %p\n", expr->type, (void*)expr);
 
     switch (expr->type) {
         case NUMBER:
+            printf("  Number: %d\n", expr->value.num);
             break;
 
         case SYMBOL:
+            printf("  Symbol: %s\n", expr->value.sym);
             free(expr->value.sym);
             break;
 
         case LIST:
-            free_expr(expr->value.pair.car);
-            free_expr(expr->value.pair.cdr);
-            break;
-
         case FUNCTION:
+            printf("  List/Function: car = %p, cdr = %p\n", (void*)expr->value.pair.car, (void*)expr->value.pair.cdr);
             free_expr(expr->value.pair.car);
             free_expr(expr->value.pair.cdr);
             break;
 
         case BUILTIN:
-            // Built-in don't need to be freed
+            printf("  Builtin function\n");
             break;
     }
 
     free(expr);
 }
 
-
+// crap
 void free_env(Env *env) {
-    if (!env) return;
+    if (!env) {
+        printf("Attempted to free NULL environment.\n");
+        return;
+    }
+
+    printf("Freeing environment at address %p\n", (void*)env);
 
     for (int i = 0; i < env->size; i++) {
+        printf("  Freeing name: %s\n", env->names[i]);
         free(env->names[i]);
+
+        printf("  Freeing value at address %p\n", (void*)env->values[i]);
         free_expr(env->values[i]);
     }
 
     free(env->names);
     free(env->values);
+
+    printf("Freeing parent environment at address %p\n", (void*)env->parent);
+    free_env(env->parent);
+
     free(env);
 }
 
@@ -457,7 +514,6 @@ void print_env(Env *env) {
     and, or, not
     =, <, >, <=, >=
 	null?, cons, car, cdr, list
-	quote, (eval)
 	begin, (let)
 	eq?, equal?, number?, pair?, symbol?
 */

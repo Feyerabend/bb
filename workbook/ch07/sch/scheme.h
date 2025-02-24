@@ -47,9 +47,10 @@ Expr* env_get(Env *env, const char *name);
 Expr* builtin_add(struct Expr **args, struct Env *env);
 Expr* eval(Expr *expr, Env *env);
 Expr* apply(Expr *func, Expr **args, Env *env);
-void free_expr(Expr *expr);
-void free_env(Env *env);
 void print_expr(Expr *expr);
 void print_env(Env *env);
+
+extern void free_expr(Expr *expr);
+extern void free_env(Env *env);
 
 #endif // SCHEME_H
