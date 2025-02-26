@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -g
 TARGET = test_scheme
-OBJS = scheme.o memory.o test_scheme.o
+OBJS = scheme.o memory.o builtins.o test_scheme.o
 
 .PHONY: all clean
 
@@ -16,7 +16,10 @@ scheme.o: scheme.c scheme.h
 memory.o: memory.c memory.h
 	$(CC) $(CFLAGS) -c memory.c
 
-test_scheme.o: test_scheme.c scheme.h memory.h
+builtins.o: builtins.c builtins.h
+	$(CC) $(CFLAGS) -c builtins.c
+
+test_scheme.o: test_scheme.c scheme.h memory.h builtins.h
 	$(CC) $(CFLAGS) -c test_scheme.c
 
 clean:
