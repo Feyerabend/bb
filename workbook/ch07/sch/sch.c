@@ -47,7 +47,6 @@ typedef struct Environment {
 } Environment;
 
 LispObject *make_number(double value) {
-    DEBUG("Creating number: %f", value);
     LispObject *obj = malloc(sizeof(LispObject));
     obj->type = TYPE_NUMBER;
     obj->number = value;
@@ -55,7 +54,6 @@ LispObject *make_number(double value) {
 }
 
 LispObject *make_symbol(char *value) {
-    DEBUG("Creating symbol: %s", value);
     LispObject *obj = malloc(sizeof(LispObject));
     obj->type = TYPE_SYMBOL;
     obj->symbol = strdup(value);
@@ -63,7 +61,6 @@ LispObject *make_symbol(char *value) {
 }
 
 LispObject *make_list(LispList *list) {
-    DEBUG("Creating list");
     LispObject *obj = malloc(sizeof(LispObject));
     obj->type = TYPE_LIST;
     obj->list = list;
@@ -71,7 +68,6 @@ LispObject *make_list(LispList *list) {
 }
 
 LispObject *make_function(LispFunction *fn) {
-    DEBUG("Creating function");
     LispObject *obj = malloc(sizeof(LispObject));
     obj->type = TYPE_FUNCTION;
     obj->fn = fn;
@@ -79,7 +75,6 @@ LispObject *make_function(LispFunction *fn) {
 }
 
 LispList *cons(LispObject *car, LispList *cdr) {
-    DEBUG("Creating cons: car=%p, cdr=%p", car, cdr);
     LispList *list = malloc(sizeof(LispList));
     list->car = car;
     list->cdr = cdr;
@@ -87,60 +82,77 @@ LispList *cons(LispObject *car, LispList *cdr) {
 }
 
 LispObject *env_lookup(Environment *env, char *symbol) {
-    DEBUG("Looking up symbol: %s", symbol);
     while (env != NULL) {
-        if (env->symbol != NULL && strcmp(env->symbol, symbol) == 0) {
-            DEBUG("Found symbol: %s -> %p", symbol, env->value);
-            return env->value;
+        Environment *frame = env;
+        while (frame != NULL) {
+            if (frame->symbol != NULL && strcmp(frame->symbol, symbol) == 0) {
+                return frame->value;
+            }
+            frame = frame->next;
         }
-        env = env->next;
+        env = env->parent;
     }
-    DEBUG("Unbound symbol: %s", symbol);
     fprintf(stderr, "Unbound symbol: %s\n", symbol);
     exit(1);
 }
 
 void env_define(Environment *env, char *symbol, LispObject *value) {
-    DEBUG("Defining symbol: %s -> %p", symbol, value);
     Environment *frame = malloc(sizeof(Environment));
+    frame->parent = NULL;
     frame->symbol = strdup(symbol);
     frame->value = value;
-    frame->parent = env->parent;
     frame->next = env->next;
     env->next = frame;
 }
 
+LispObject *eval(LispObject *expr, Environment *env);
+
+LispObject *apply_function(LispObject *fn, LispList *args) {
+    if (fn->fn->is_builtin) {
+        return fn->fn->builtin(args);
+    } else {
+        LispFunction *user_fn = fn->fn;
+        Environment *new_env = malloc(sizeof(Environment));
+        new_env->parent = user_fn->env;
+        new_env->symbol = NULL;
+        new_env->value = NULL;
+        new_env->next = NULL;
+
+        LispList *params = user_fn->params;
+        LispList *arg_values = args;
+        while (params != NULL && arg_values != NULL) {
+            env_define(new_env, params->car->symbol, arg_values->car);
+            params = params->cdr;
+            arg_values = arg_values->cdr;
+        }
+
+        return eval(user_fn->body, new_env);
+    }
+}
+
 LispObject *eval(LispObject *expr, Environment *env) {
-    DEBUG("Evaluating expression: %p", expr);
     switch (expr->type) {
         case TYPE_NUMBER:
-            DEBUG("Number: %f", expr->number);
             return expr;
         case TYPE_SYMBOL:
-            DEBUG("Symbol: %s", expr->symbol);
             return env_lookup(env, expr->symbol);
+        case TYPE_FUNCTION:
+            return expr;
         case TYPE_LIST: {
-            DEBUG("List");
             LispList *list = expr->list;
-            if (list == NULL) {
-                DEBUG("Empty list");
-                return expr;
-            }
+            if (list == NULL) return expr;
             LispObject *car = list->car;
             LispList *cdr = list->cdr;
 
             if (car->type == TYPE_SYMBOL) {
                 if (strcmp(car->symbol, "quote") == 0) {
-                    DEBUG("Quote");
                     return cdr->car;
                 } else if (strcmp(car->symbol, "define") == 0) {
-                    DEBUG("Define");
                     LispObject *name = cdr->car;
                     LispObject *value = eval(cdr->cdr->car, env);
                     env_define(env, name->symbol, value);
                     return value;
                 } else if (strcmp(car->symbol, "lambda") == 0) {
-                    DEBUG("Lambda");
                     LispFunction *fn = malloc(sizeof(LispFunction));
                     fn->is_builtin = false;
                     fn->params = cdr->car->list;
@@ -150,51 +162,21 @@ LispObject *eval(LispObject *expr, Environment *env) {
                 }
             }
 
-            DEBUG("Function application");
             LispObject *fn = eval(car, env);
             LispList *args = NULL;
             while (cdr != NULL) {
                 args = cons(eval(cdr->car, env), args);
                 cdr = cdr->cdr;
             }
-
-            if (fn->type == TYPE_FUNCTION) {
-                if (fn->fn->is_builtin) {
-                    return fn->fn->builtin(args);
-                } else {
-                    DEBUG("Calling user-defined function");
-                    LispFunction *user_fn = fn->fn;
-                    Environment *new_env = malloc(sizeof(Environment));
-                    new_env->parent = user_fn->env;
-                    new_env->symbol = NULL;
-                    new_env->value = NULL;
-                    new_env->next = NULL;
-
-                    LispList *params = user_fn->params;
-                    LispList *arg_values = args;
-                    while (params != NULL && arg_values != NULL) {
-                        env_define(new_env, params->car->symbol, arg_values->car);
-                        params = params->cdr;
-                        arg_values = arg_values->cdr;
-                    }
-
-                    return eval(user_fn->body, new_env);
-                }
-            } else {
-                DEBUG("Invalid function type");
-                fprintf(stderr, "Invalid function type\n");
-                exit(1);
-            }
+            return apply_function(fn, args);
         }
         default:
-            DEBUG("Invalid expression type");
             fprintf(stderr, "Invalid expression type\n");
             exit(1);
     }
 }
 
 LispObject *builtin_add(LispList *args) {
-    DEBUG("Built-in add");
     double result = 0;
     while (args != NULL) {
         result += args->car->number;
@@ -203,18 +185,7 @@ LispObject *builtin_add(LispList *args) {
     return make_number(result);
 }
 
-LispObject *builtin_multiply(LispList *args) {
-    DEBUG("Built-in multiply");
-    double result = 1;
-    while (args != NULL) {
-        result *= args->car->number;
-        args = args->cdr;
-    }
-    return make_number(result);
-}
-
 Environment *default_environment() {
-    DEBUG("Creating default environment");
     Environment *env = malloc(sizeof(Environment));
     env->parent = NULL;
     env->symbol = NULL;
@@ -226,22 +197,35 @@ Environment *default_environment() {
     add_fn->builtin = builtin_add;
     env_define(env, "+", make_function(add_fn));
 
-    LispFunction *multiply_fn = malloc(sizeof(LispFunction));
-    multiply_fn->is_builtin = true;
-    multiply_fn->builtin = builtin_multiply;
-    env_define(env, "*", make_function(multiply_fn));
-
     return env;
 }
 
 LispList *make_list_from_array(LispObject **objects, int count) {
-    DEBUG("Creating list from array");
     LispList *list = NULL;
     for (int i = count - 1; i >= 0; i--) {
         list = cons(objects[i], list);
     }
     return list;
 }
+
+
+/*void run_tests() {
+    Environment *env = default_environment();
+
+    LispObject *lambda = make_symbol("lambda");
+    LispObject *params = make_list(cons(make_symbol("x"), NULL));
+    LispObject *body = make_list(cons(make_symbol("+"), cons(make_symbol("x"), cons(make_number(1), NULL))));
+    LispObject *lambda_args[] = {lambda, params, body};
+    LispList *lambda_expr = make_list_from_array(lambda_args, 3);
+    LispObject *lambda_fn = eval(make_list(lambda_expr), env);
+
+    LispObject *arg = make_number(5);
+    LispObject *apply_args[] = {lambda_fn, arg};
+    LispList *apply_expr = make_list_from_array(apply_args, 2);
+    LispObject *result = eval(make_list(apply_expr), env);
+    printf("Test 5: %f (expected: 6.0)\n", result->number);
+}*/
+
 
 void run_tests() {
     DEBUG("Running tests");
