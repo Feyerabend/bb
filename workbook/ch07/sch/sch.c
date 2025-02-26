@@ -208,25 +208,6 @@ LispList *make_list_from_array(LispObject **objects, int count) {
     return list;
 }
 
-
-/*void run_tests() {
-    Environment *env = default_environment();
-
-    LispObject *lambda = make_symbol("lambda");
-    LispObject *params = make_list(cons(make_symbol("x"), NULL));
-    LispObject *body = make_list(cons(make_symbol("+"), cons(make_symbol("x"), cons(make_number(1), NULL))));
-    LispObject *lambda_args[] = {lambda, params, body};
-    LispList *lambda_expr = make_list_from_array(lambda_args, 3);
-    LispObject *lambda_fn = eval(make_list(lambda_expr), env);
-
-    LispObject *arg = make_number(5);
-    LispObject *apply_args[] = {lambda_fn, arg};
-    LispList *apply_expr = make_list_from_array(apply_args, 2);
-    LispObject *result = eval(make_list(apply_expr), env);
-    printf("Test 5: %f (expected: 6.0)\n", result->number);
-}*/
-
-
 void run_tests() {
     DEBUG("Running tests");
     Environment *env = default_environment();
