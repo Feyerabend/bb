@@ -93,7 +93,7 @@ LispObject *env_lookup(Environment *env, char *symbol) {
             DEBUG("Found symbol: %s -> %p", symbol, env->value);
             return env->value;
         }
-        env = env->parent;
+        env = env->next;
     }
     DEBUG("Unbound symbol: %s", symbol);
     fprintf(stderr, "Unbound symbol: %s\n", symbol);
@@ -105,8 +105,8 @@ void env_define(Environment *env, char *symbol, LispObject *value) {
     Environment *frame = malloc(sizeof(Environment));
     frame->symbol = strdup(symbol);
     frame->value = value;
-    frame->parent = env;
-    frame->next = NULL;
+    frame->parent = env->parent;
+    frame->next = env->next;
     env->next = frame;
 }
 
@@ -157,7 +157,34 @@ LispObject *eval(LispObject *expr, Environment *env) {
                 args = cons(eval(cdr->car, env), args);
                 cdr = cdr->cdr;
             }
-            return fn->fn->builtin(args);
+
+            if (fn->type == TYPE_FUNCTION) {
+                if (fn->fn->is_builtin) {
+                    return fn->fn->builtin(args);
+                } else {
+                    DEBUG("Calling user-defined function");
+                    LispFunction *user_fn = fn->fn;
+                    Environment *new_env = malloc(sizeof(Environment));
+                    new_env->parent = user_fn->env;
+                    new_env->symbol = NULL;
+                    new_env->value = NULL;
+                    new_env->next = NULL;
+
+                    LispList *params = user_fn->params;
+                    LispList *arg_values = args;
+                    while (params != NULL && arg_values != NULL) {
+                        env_define(new_env, params->car->symbol, arg_values->car);
+                        params = params->cdr;
+                        arg_values = arg_values->cdr;
+                    }
+
+                    return eval(user_fn->body, new_env);
+                }
+            } else {
+                DEBUG("Invalid function type");
+                fprintf(stderr, "Invalid function type\n");
+                exit(1);
+            }
         }
         default:
             DEBUG("Invalid expression type");
