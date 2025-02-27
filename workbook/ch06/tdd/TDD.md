@@ -248,7 +248,7 @@ Generalize the `JMP_IF` logic to handle all cases and prevent infinite loops.
 
 Additional Tests and Features
 
-1. Negative Tests: Ensure the jump doesn’t happen if the condition is not met.
+1. Negative Tests: Ensure the jump doesn't happen if the condition is not met.
 
 ```python
 def test_jmp_if_not_met():
@@ -277,7 +277,7 @@ Recap: TDD in Action
 
 ### Loops or nested conditional logic
 
-To explore loops and nested conditional logic, we’ll enhance the virtual machine’s behavior
+To explore loops and nested conditional logic, we'll enhance the virtual machine's behavior
 step-by-step using TDD. Loops and nested logic often involve a combination of comparison (`CMP`),
 conditional jumps (`JMP_IF`), and sometimes unconditional jumps (`JMP`).
 
@@ -285,7 +285,7 @@ conditional jumps (`JMP_IF`), and sometimes unconditional jumps (`JMP`).
 
 Behavior Definition
 
-We’ll implement a loop that decrements a register value until it reaches zero.
+We'll implement a loop that decrements a register value until it reaches zero.
 
 ```pseudo
 R0 = 5
@@ -296,7 +296,7 @@ while (R0 > 0):
 
 Test Case
 
-Write a test to validate the loop’s behavior.
+Write a test to validate the loop's behavior.
 
 ```python
 def test_loop_with_counter():
@@ -396,7 +396,7 @@ Implementation
 
 Update the VM to handle nested jumps by respecting the instruction pointer.
 - Ensure CMP updates flags independently for each conditional block.
-- Ensure JMP_IF doesn’t interfere with subsequent instructions unless explicitly skipped.
+- Ensure JMP_IF doesn't interfere with subsequent instructions unless explicitly skipped.
 
 And so on ..
 
@@ -420,7 +420,7 @@ that emphasizes clarity, correctness, and flexibility.
 
 3. Refactoring for Generalization: After passing initial tests, refactoring the implementation
    to handle edge cases and new scenarios promotes code reuse and flexibility, as seen with
-   the CMP instruction’s generalization to handle both registers and literals.
+   the CMP instruction's generalization to handle both registers and literals.
 
 4. Testing Edge Cases: Incorporating tests for skipped loops, nested conditionals, and invalid
    scenarios ensures the VM handles unexpected inputs gracefully, reinforcing its robustness.
@@ -429,7 +429,7 @@ that emphasizes clarity, correctness, and flexibility.
    jumps enables complex program structures, including loops and nested logic, which are essential
    for more realistic programs.
 
-6. Simplicity in Design: By adhering to TDD’s “minimum effort to pass” philosophy, the implementation
+6. Simplicity in Design: By adhering to TDD's “minimum effort to pass” philosophy, the implementation
    avoids unnecessary complexity, focusing only on functionality demanded by the tests.
 
 This TDD-driven approach not only builds confidence in the correctness of the virtual
