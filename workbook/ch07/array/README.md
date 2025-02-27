@@ -71,6 +71,7 @@ found in today's CPUs. The project demonstrated both the potential and the
 challenges of large-scale parallel computing, shaping future research in
 efficient data processing techniques.
 
+- https://en.wikipedia.org/wiki/Array_programming
 
 ### APLE: Array Programming Language Extension
 
