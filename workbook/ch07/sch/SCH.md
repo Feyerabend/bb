@@ -1,5 +1,5 @@
 
-## Minimal Scheme: Sch
+## A Minimal Scheme: Sch
 
 The code 'sch.c' implements a minimalist Scheme-like interpreter in C, capturing
 the core features of Lisp: symbolic expressions (S-expressions), lists, function
@@ -145,5 +145,5 @@ Despite its simplicity, this implementation captures fundamental Lisp features:
 - First-class functions via lambda
 - Function application via apply
 
-It lacks macros, tail-call optimization, and garbage collection, but as a "minimal Scheme,"
+It lacks macros, tail-call optimisation, and garbage collection, but as a "minimal Scheme,"
 it is a great starting point for understanding Lisp interpreters.
