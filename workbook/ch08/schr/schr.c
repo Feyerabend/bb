@@ -5,7 +5,7 @@
 
 #define DEBUG(msg, ...) printf("[DEBUG] " msg "\n", ##__VA_ARGS__)
 
-// Types
+
 typedef enum {
     TYPE_NUMBER,
     TYPE_SYMBOL,
@@ -47,7 +47,7 @@ typedef struct Environment {
     struct Environment *next;
 } Environment;
 
-// Function prototypes
+
 LispObject *make_number(double value);
 LispObject *make_symbol(char *value);
 LispObject *make_list(LispList *list);
@@ -59,7 +59,7 @@ LispObject *eval(LispObject *expr, Environment *env);
 LispObject *apply_function(LispObject *fn, LispList *args);
 LispList *make_list_from_array(LispObject **objects, int count);
 
-// Helper functions
+
 LispObject *make_number(double value) {
     LispObject *obj = malloc(sizeof(LispObject));
     obj->type = TYPE_NUMBER;
@@ -139,7 +139,7 @@ LispObject *eval(LispObject *expr, Environment *env) {
                 LispObject *car = list->car;
                 LispList *cdr = list->cdr;
 
-                // Handle special forms
+
                 if (car->type == TYPE_SYMBOL) {
                     DEBUG("Handling special form: %s", car->symbol);
                     if (strcmp(car->symbol, "quote") == 0) {
@@ -162,7 +162,7 @@ LispObject *eval(LispObject *expr, Environment *env) {
                     }
                 }
 
-                // Evaluate the function
+
                 DEBUG("Evaluating function");
                 LispObject *fn_obj = eval(car, env);
                 if (fn_obj->type != TYPE_FUNCTION) {
@@ -170,7 +170,7 @@ LispObject *eval(LispObject *expr, Environment *env) {
                     exit(1);
                 }
 
-                // Evaluate arguments in correct order
+
                 DEBUG("Evaluating arguments");
                 LispList *args = NULL;
                 LispList **tail = &args;
@@ -186,21 +186,20 @@ LispObject *eval(LispObject *expr, Environment *env) {
                     return fn_obj->fn->builtin(args);
                 } else {
                     DEBUG("Applying user-defined function");
-                    // Tail call: set expr to body and env to new_env
                     expr = fn_obj->fn->body;
                     env = fn_obj->fn->env;
-                    continue; // Continue the loop to evaluate body without recursion
+                    continue;
                 }
                 break;
             }
             default:
                 fprintf(stderr, "Invalid expression type: %d\n", expr->type);
-                exit(1);
+                exit(EXIT_FAILURE);
         }
     }
 }
 
-// Built-in functions
+
 LispObject *builtin_add(LispList *args) {
     double result = 0;
     while (args != NULL) {
@@ -242,7 +241,7 @@ LispObject *builtin_eq(LispList *args) {
     return (a->number == b->number) ? make_number(1) : make_number(0);
 }
 
-// Memoization for factorial
+
 typedef struct MemoEntry {
     double n;
     double result;
@@ -259,7 +258,7 @@ double memo_lookup(double n) {
         }
         entry = entry->next;
     }
-    return -1; // Not found
+    return -1; // not found
 }
 
 void memo_store(double n, double result) {
@@ -289,7 +288,7 @@ LispObject *builtin_fact(LispList *args) {
     return make_number(result);
 }
 
-// Default environment
+
 Environment *default_environment() {
     Environment *env = malloc(sizeof(Environment));
     env->parent = NULL;
@@ -325,7 +324,35 @@ Environment *default_environment() {
     return env;
 }
 
-// Helper function to create a list from an array
+LispObject *apply_function(LispObject *fn, LispList *args) {
+    if (fn->fn->is_builtin) {
+        DEBUG("Applying built-in function");
+        return fn->fn->builtin(args);
+    } else {
+        DEBUG("Applying user-defined function");
+        LispFunction *user_fn = fn->fn;
+        Environment *new_env = malloc(sizeof(Environment));
+        new_env->parent = user_fn->env;
+        new_env->symbol = NULL;
+        new_env->value = NULL;
+        new_env->next = NULL;
+
+        // Bind parameters to arguments
+        LispList *params = user_fn->params;
+        LispList *arg_values = args;
+        while (params != NULL && arg_values != NULL) {
+            DEBUG("Binding %s to %f", params->car->symbol, arg_values->car->number);
+            env_define(new_env, params->car->symbol, arg_values->car);
+            params = params->cdr;
+            arg_values = arg_values->cdr;
+        }
+
+        // Evaluate the body in the new environment
+        DEBUG("Evaluating function body");
+        return eval(user_fn->body, new_env);
+    }
+}
+
 LispList *make_list_from_array(LispObject **objects, int count) {
     LispList *list = NULL;
     for (int i = count - 1; i >= 0; i--) {
@@ -334,12 +361,11 @@ LispList *make_list_from_array(LispObject **objects, int count) {
     return list;
 }
 
-// Test cases
+
 void run_tests() {
     DEBUG("Running tests");
     Environment *env = default_environment();
 
-    // Declare variables for factorial and sum tests
     LispObject *n = make_symbol("n");
     LispObject *acc = make_symbol("acc");
 
@@ -372,7 +398,6 @@ void run_tests() {
     LispList *quote_expr = make_list_from_array(quote_args, 2);
     result = eval(make_list(quote_expr), env);
 
-    // Check list length correctly
     int length = 0;
     LispList *current = result->list;
     while (current != NULL) {
@@ -383,13 +408,13 @@ void run_tests() {
 
     // Test 5: Lambda
     LispObject *lambda = make_symbol("lambda");
-    LispObject *x = make_symbol("x"); // Parameter
-    LispObject *params = make_list(cons(x, NULL)); // Parameter list: (x)
+    LispObject *x = make_symbol("x");
+    LispObject *params = make_list(cons(x, NULL));
     LispObject *body = make_list(
         cons(
             make_symbol("+"),
             cons(
-                x, // Use the parameter x
+                x, // parameter x
                 cons(make_number(1), NULL)
             )
         )
@@ -398,7 +423,6 @@ void run_tests() {
     LispList *lambda_expr = make_list_from_array(lambda_args, 3);
     LispObject *lambda_fn = eval(make_list(lambda_expr), env);
 
-    // Apply the lambda function to the argument 5
     LispObject *arg = make_number(5);
     LispObject *apply_args[] = {lambda_fn, arg};
     LispList *apply_expr = make_list_from_array(apply_args, 2);
@@ -416,9 +440,57 @@ void run_tests() {
     );
     result = eval(fact_call, env);
     printf("Test 6: Factorial of 5: %f (expected: 120.0)\n", result->number);
+
+    // Test 7: Tail-recursive sum
+
+    // Define PARAMETERS as FRESH SYMBOLS (critical!)
+    LispObject *param_n = make_symbol("n");
+    LispObject *param_acc = make_symbol("acc");
+
+    // Define BODY REFERENCES using the SAME SYMBOLS
+    LispObject *body_n = make_symbol("n");
+    LispObject *body_acc = make_symbol("acc");
+
+    // Build the parameter list: (n acc)
+    LispList *params = cons(param_n, cons(param_acc, NULL));
+
+    // Build the body: (if (eq? n 0) acc (sum (- n 1) (+ acc n)))
+    LispObject *sum_body = make_list(
+        make_list_from_array((LispObject*[]){
+            make_symbol("if"),
+            make_list(make_list_from_array((LispObject*[]){make_symbol("eq?"), body_n, make_number(0)}, 3)),
+            body_acc,
+            make_list(make_list_from_array((LispObject*[]){
+                make_symbol("sum"),
+                make_list(make_list_from_array((LispObject*[]){make_symbol("-"), body_n, make_number(1)}, 3)),
+                make_list(make_list_from_array((LispObject*[]){make_symbol("+"), body_acc, body_n}, 3))
+            }, 3))
+        }, 4)
+    );
+
+    // Define the lambda: (lambda (n acc) ...)
+    LispObject *lambda_sum = make_list(
+        make_list_from_array((LispObject*[]){
+            make_symbol("lambda"),
+            make_list(params),
+            sum_body
+        }, 3)
+    );
+
+    // Add to environment
+    env_define(env, "sum", eval(lambda_sum, env));
+
+    // Apply: (sum 1000 0)
+    LispObject *sum_call = make_list(
+        make_list_from_array((LispObject*[]){
+            make_symbol("sum"),
+            make_number(1000),
+            make_number(0)
+        }, 3)
+    );
+    result = eval(sum_call, env);
 }
 
-// Main function
 int main() {
     run_tests();
     return 0;
