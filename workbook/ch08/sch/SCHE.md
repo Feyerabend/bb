@@ -218,8 +218,8 @@ it continually marks and sweeps unused objects, preventing memory leaks.
 
 ```c
 void gc(Environment *env) {
-    mark_environment(env);  // Mark all reachable objects
-    sweep();  // Sweep away unmarked objects
+    mark_environment(env);  // mark all reachable objects
+    sweep();  // Sseep away unmarked objects
 }
 ```
 
