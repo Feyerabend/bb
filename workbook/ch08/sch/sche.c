@@ -59,7 +59,7 @@ void init_object_pool() {
     object_pool.capacity = 1024;
     object_pool.count = 0;
     object_pool.objects = malloc(object_pool.capacity * sizeof(LispObject *));
-    DEBUG("Initialized object pool with capacity %zu", object_pool.capacity);
+    DEBUG("Init object pool with capacity %zu", object_pool.capacity);
 }
 
 void free_object_pool() {

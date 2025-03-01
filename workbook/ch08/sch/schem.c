@@ -92,6 +92,7 @@ LispObject *builtin_fact(LispList *args, Environment *env);
 LispObject *builtin_delay(LispList *args, Environment *env);
 LispObject *builtin_force(LispList *args, Environment *env);
 Environment *default_environment();
+void print_lisp_list(LispList *list);
 LispList *make_list_from_array(LispObject **objects, int count);
 void run_tests();
 
@@ -325,13 +326,16 @@ LispObject *eval_tail_recursive(LispObject *expr, Environment *env) {
                 LispList *cdr = list->cdr;
 
                 if (car->type == TYPE_SYMBOL) {
+
                     if (strcmp(car->symbol, "quote") == 0) {
                         return cdr->car;
+
                     } else if (strcmp(car->symbol, "define") == 0) {
                         LispObject *name = cdr->car;
                         LispObject *value = eval_tail_recursive(cdr->cdr->car, env);
                         env_define(env, name->symbol, value);
                         return value;
+
                     } else if (strcmp(car->symbol, "lambda") == 0) {
                         LispFunction *fn = malloc(sizeof(LispFunction));
                         if (!fn) error("Failed to allocate memory for function");
@@ -624,6 +628,56 @@ LispList *make_list_from_array(LispObject **objects, int count) {
     return list;
 }
 
+void print_expression(LispObject *expr) {
+    if (expr == NULL) {
+        printf("NULL");
+        return;
+    }
+
+    switch (expr->type) {
+        case TYPE_NUMBER:
+            printf("%f", expr->number);
+            break;
+        case TYPE_SYMBOL:
+            printf("%s", expr->symbol);
+            break;
+        case TYPE_LIST: {
+            printf("(");
+            LispList *list = expr->list;
+            while (list != NULL) {
+                print_expression(list->car);
+                if (list->cdr != NULL) printf(" ");
+                list = list->cdr;
+            }
+            printf(")");
+            break;
+        }
+        case TYPE_FUNCTION:
+            if (expr->fn->is_builtin) {
+                printf("<builtin-function>");
+            } else {
+                printf("(lambda ");
+                print_expression((LispObject *)expr->fn->params);
+                printf(" ");
+                print_expression(expr->fn->body);
+                printf(")\n");
+            }
+            break;
+        default:
+            printf("<unknown>");
+            break;
+    }
+}
+
+void print_lisp_list(LispList *list) {
+    printf("(");
+    while (list != NULL) {
+        print_expression(list->car);
+        if (list->cdr != NULL) printf(" ");
+        list = list->cdr;
+    }
+    printf(")");
+}
 
 void run_tests() {
     Environment *env = default_environment();
@@ -650,7 +704,6 @@ void run_tests() {
     result = eval(make_list(expr), env);
     printf("Test 3: %f (expected: 6.0)\n", result->number);
 
-    /*
     // Test 4: Map
     LispObject *double_fn = env_lookup(env, "double");
     if (double_fn == NULL || double_fn->type != TYPE_FUNCTION) {
@@ -660,11 +713,16 @@ void run_tests() {
     LispList *map_list = create_cons(one, create_cons(two, create_cons(three, NULL)));
     LispObject *map_args[] = {double_fn, make_list(map_list)};
     LispList *map_expr = make_list_from_array(map_args, 2);
+
+    print_lisp_list(map_expr);
+
     result = eval(make_list(map_expr), env);
 
+    /*
     if (result->type == TYPE_LIST) {
         LispList *result_list = result->list;
         printf("Test 4: Map result: ");
+
         while (result_list != NULL) {
             printf("%f ", result_list->car->number);
             result_list = result_list->cdr;
@@ -673,7 +731,6 @@ void run_tests() {
     } else {
         printf("Test 4: Map failed (expected a list)\n");
     }
-
 
 
     // Test 5: Reduce
@@ -685,6 +742,7 @@ void run_tests() {
 
     */
 
+    printf("GC\n");
     gc(env);
 }
 
