@@ -1,5 +1,5 @@
 
-## A Minimal Scheme: Sch
+## A Minimal Scheme (improved): Sche
 
 Some addtions: tail recursion and garbage collection.
 
