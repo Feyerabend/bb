@@ -7,6 +7,11 @@ operations, making it highly compact and powerful for mathematical and data mani
 operates on arrays as its fundamental data structure, enabling vectorised operations that are both
 efficient and elegant.
 
+* https://youtu.be/8kUQWuK1L4w The Origins of APL - 1974
+
+* https://youtu.be/_DTpQ4Kk2wA APL Demonstration 1975
+
+
 The `APLArray` class is inspired by APL's array-oriented paradigm, bringing its functionality to
 Python using NumPy for efficient array operations. So the reading should go like:
 *Array Programming Language Extension*.
