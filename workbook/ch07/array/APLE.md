@@ -7,8 +7,8 @@ operations, making it highly compact and powerful for mathematical and data mani
 operates on arrays as its fundamental data structure, enabling vectorised operations that are both
 efficient and elegant.
 
+* APL wikipedia: https://en.wikipedia.org/wiki/APL_(programming_language)
 * https://youtu.be/8kUQWuK1L4w The Origins of APL - 1974
-
 * https://youtu.be/_DTpQ4Kk2wA APL Demonstration 1975
 
 
