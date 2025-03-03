@@ -109,7 +109,7 @@
 ### Summary Table of Data Structures
 
 | Data Structure       | Type                       | Time Complexity for Search/Insert/Delete | Common Use Cases                                     |
-|-|-|--||
+|-|-|--|-|
 | *AVL Tree*          | Balanced Binary Tree       | O(log n) for all operations             | Efficient search, insertion, deletion in dynamic datasets |
 | *Binary Tree*       | Tree                       | O(n) for search, O(log n) for insert/delete | Hierarchical data representation                    |
 | *Disjoint Set*      | Union-Find                 | O(log n) with path compression          | Dynamic connectivity problems, Kruskal’s algorithm   |
