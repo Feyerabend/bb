@@ -6,7 +6,7 @@ were transitioning from niche tools of academia and industry to ubiquitous force
 life. "The Technological Condition," was a lecture I held at Reykjavik, Iceland 1997 under the auspices
 of The Nordic Summer University.
 
-It emerges against this backdrop--a period marked by the rise of personal computing, the internet's
+It emerges against this backdrop: a period marked by the rise of personal computing, the internet's
 nascent mainstream adoption, and the accelerating pace of software innovation. Written at a time when
 Pentium processors powered desktop PCs, Windows 95 reigned supreme, and HTML was still in its infancy,
 the paper reflects an era of both optimism and uncertainty about technology's trajectory, particularly
