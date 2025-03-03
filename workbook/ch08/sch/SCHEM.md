@@ -47,7 +47,7 @@ function's parameters bound to arguments before executing the body.
 While the Scheme/Lisp interpreter demonstrates fundamental Lisp concepts, it has several
 fragile aspects and areas for improvement.
 
-1. Fragile Memory Management
+__1. Fragile Memory Management__
 - Manual Garbage Collection: The mark-and-sweep garbage collector, while functional, lacks
   automatic triggering. If `gc_collect` isn't called at the right time, memory leaks or
   excessive memory consumption can occur. Ideally, garbage collection should be triggered
@@ -56,7 +56,7 @@ fragile aspects and areas for improvement.
   need for full garbage collection sweeps. This would prevent unnecessary heap usage between
   full GC cycles.
 
-2. Lack of Proper Error Handling
+__2. Lack of Proper Error Handling__
 - Many functions assume valid input and do not check for NULL pointers or malformed Lisp
   expressions. A malformed list (e.g. (1 . 2 3)) could cause undefined behavior.
 - The interpreter should have explicit error reporting, returning structured error messages
@@ -65,21 +65,21 @@ fragile aspects and areas for improvement.
 - Example: `env_lookup` should return an explicit "unbound variable" error rather than
   returning NULL and causing a crash later.
 
-3. Missing Tail-Call Optimization (TCO) for All Recursive Cases
+__3. Missing Tail-Call Optimization (TCO) for All Recursive Cases__
 - While `eval_tail_recursive` attempts tail-call optimisation, it might not handle all cases.
   Specifically, nested recursive calls `((define (fact n) (if (= n 0) 1 (* n (fact (- n 1))))))`
   may still overflow the stack.
 - A proper TCO implementation would rewrite recursive calls into iteration, rather than just
   avoiding extra stack frames.
 
-4. Limited Standard Library and Built-ins
+__4. Limited Standard Library and Built-ins__
 The interpreter lacks essential Lisp functions such as:
 - List manipulation (filter, foldr, reverse)
 - String handling (there's no string?, string-length, concat)
 - Input/Output support (reading/writing files, interacting with the OS)
 Without these, writing non-trivial Lisp programs is difficult.
 
-5. Lexical Scope is Limited
+__5. Lexical Scope is Limited__
 - While environments support function scoping, closures may not work fully if variables are
   captured outside their original scope. For example:
 ```lisp
@@ -87,11 +87,11 @@ Without these, writing non-trivial Lisp programs is difficult.
 ```
 If x is not retained in the closure, the function may not behave as expected.
 
-6. No Macro System
+__6. No Macro System__
 - Lisp's power comes from macros, which allow modifying code before evaluation. The interpreter
   lacks a macro system (define-macro), limiting metaprogramming abilities.
 
-7. Performance Issues
+__7. Performance Issues__
 - Linked lists for everything: Lists are dynamically allocated and traversed linearly, making
   operations like map and reduce inefficient. Using a vector-based representation or optimising
   cons allocation could help.
@@ -101,29 +101,29 @@ If x is not retained in the closure, the function may not behave as expected.
 
 ### Making the Code More Robust
 
-1. Improve Garbage Collection
+__1. Improve Garbage Collection__
 - Introduce automatic GC triggering based on heap usage.
 - Implement reference counting for frequently used objects.
 - Optimize mark phase by using a worklist instead of recursion (avoids stack overflow in deep graphs).
 
-2. Better Error Handling
+__2. Better Error Handling__
 - Add an explicit LispError type with structured error messages.
 - Ensure all functions check for NULL pointers or invalid syntax before processing.
 
-3. Implement a Proper Closure System
+__3. Implement a Proper Closure System__
 - Modify LispFunction to store captured variables.
 - Ensure closures can be passed around and invoked properly.
 
-4. Add a Macro System
+__4. Add a Macro System__
 - Implement define-macro to allow AST transformations.
 - Use Lisp itself to expand macros before evaluation.
 
-5. Implement Core Library
+__5. Implement Core Library__
 - Add basic list operations (reverse, filter, assoc).
 - Include string handling.
 - Provide basic file I/O functions.
 
-6. Performance Optimizations
+__6. Performance Optimisations__
 - Use hash tables for environment lookups instead of linked lists.
 - Cache frequently used built-in functions.
 - Introduce bytecode compilation instead of interpreting raw lists.
