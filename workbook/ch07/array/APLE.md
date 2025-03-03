@@ -8,12 +8,12 @@ operates on arrays as its fundamental data structure, enabling vectorised operat
 efficient and elegant.
 
 * APL wikipedia: https://en.wikipedia.org/wiki/APL_(programming_language)
-* https://youtu.be/8kUQWuK1L4w The Origins of APL - 1974
-* https://youtu.be/_DTpQ4Kk2wA APL Demonstration 1975
+* The Origins of APL - 1974: https://youtu.be/8kUQWuK1L4w
+* APL Demonstration 1975: https://youtu.be/_DTpQ4Kk2wA
 
 
 The `APLArray` class is inspired by APL's array-oriented paradigm, bringing its functionality to
-Python using NumPy for efficient array operations. So the reading should go like:
+Python using `NumPy` for efficient array operations. So the reading should go like:
 *Array Programming Language Extension*.
 
 
