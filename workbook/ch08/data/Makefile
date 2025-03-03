@@ -3,12 +3,12 @@ CC = gcc
 CFLAGS = -Wall -g
 
 # List of C source files and output executables
-C_SOURCES = avl.c bintree.c btree.c disjoint.c dlist.c hash.c hashs.c heap.c kdtree.c kruskal.c list.c pqueue.c queue.c rmq.c segtree.c
+C_SOURCES = avl.c bintree.c bloom.c btree.c disjoint.c dlist.c hash.c hashs.c heap.c kdtree.c kruskal.c list.c pqueue.c queue.c rmq.c segtree.c
 C_OBJECTS = $(C_SOURCES:.c=.o)
-EXECUTABLES = avl bintree btree disjoint dlist hash hashs heap kdtree kruskal list pqueue queue rmq segtree
+EXECUTABLES = avl bintree bloom btree disjoint dlist hash hashs heap kdtree kruskal list pqueue queue rmq segtree
 
 # Python files
-PYTHON_SCRIPTS = avl.py bintree.py btree.py disjoint.py dlist.py hash.py heap.py kdtree.py kruskal.py list.py pqueue.py queue.py rmq.py segtree.py
+PYTHON_SCRIPTS = avl.py bintree.py bloom.py btree.py disjoint.py dlist.py hash.py heap.py kdtree.py kruskal.py list.py pqueue.py queue.py rmq.py segtree.py
 
 # Default target: build all C programs and run Python scripts
 all: $(EXECUTABLES) run_python
