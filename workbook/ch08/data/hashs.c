@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define INITIAL_SIZE 8  
-#define LOAD_FACTOR 0.75  
+#define TABLE_SIZE 16
+#define LOAD_FACTOR 0.75
 
 typedef struct Node {
     char* key;
@@ -17,83 +17,62 @@ typedef struct HashTable {
     int count;
 } HashTable;
 
-unsigned int hash(const char* key, int size) {
-    unsigned int hash = 5381;
-    while (*key) {
-        hash = ((hash << 5) + hash) + *key++; 
+unsigned int hash(char* key) {
+    unsigned int hashValue = 0;
+    for (int i = 0; key[i] != '\0'; i++) {
+        hashValue = (hashValue * 31) + key[i];
     }
-    return hash % size;
+    return hashValue % TABLE_SIZE;
 }
 
-Node* createNode(const char* key, int value) {
+Node* createNode(char* key, int value) {
     Node* newNode = (Node*)malloc(sizeof(Node));
-    if (!newNode) {
-        perror("Memory allocation failed");
-        exit(EXIT_FAILURE);
-    }
     newNode->key = strdup(key);
     newNode->value = value;
     newNode->next = NULL;
     return newNode;
 }
 
-HashTable* createTable(int size) {
-    HashTable* ht = (HashTable*)malloc(sizeof(HashTable));
-    if (!ht) {
-        perror("Memory allocation failed");
-        exit(EXIT_FAILURE);
-    }
-    ht->size = size;
-    ht->count = 0;
-    ht->table = (Node**)calloc(size, sizeof(Node*));
-    if (!ht->table) {
-        perror("Memory allocation failed");
-        exit(EXIT_FAILURE);
-    }
-    return ht;
+HashTable* createTable() {
+    HashTable* table = (HashTable*)malloc(sizeof(HashTable));
+    table->size = TABLE_SIZE;
+    table->count = 0;
+    table->table = (Node**)calloc(table->size, sizeof(Node*));
+    return table;
 }
-
-void insert(HashTable* ht, const char* key, int value);
 
 void resize(HashTable* ht) {
     int newSize = ht->size * 2;
     Node** newTable = (Node**)calloc(newSize, sizeof(Node*));
-    if (!newTable) {
-        perror("Memory allocation failed");
-        exit(EXIT_FAILURE);
-    }
 
-    Node** oldTable = ht->table;
-    int oldSize = ht->size;
-    ht->table = newTable;
-    ht->size = newSize;
-    ht->count = 0;
-
-    for (int i = 0; i < oldSize; i++) {
-        Node* current = oldTable[i];
+    for (int i = 0; i < ht->size; i++) {
+        Node* current = ht->table[i];
         while (current) {
-            insert(ht, current->key, current->value);
-            Node* temp = current;
-            current = current->next;
-            free(temp->key);
-            free(temp);
+            unsigned int newIndex = hash(current->key) % newSize;
+            Node* next = current->next;
+            current->next = newTable[newIndex];
+            newTable[newIndex] = current;
+            current = next;
         }
     }
-    free(oldTable);
+
+    free(ht->table);
+    ht->table = newTable;
+    ht->size = newSize;
 }
 
-void insert(HashTable* ht, const char* key, int value) {
+void insert(HashTable* ht, char* key, int value) {
     if ((float)ht->count / ht->size >= LOAD_FACTOR) {
         resize(ht);
     }
 
-    unsigned int index = hash(key, ht->size);
+    unsigned int index = hash(key);
     Node* current = ht->table[index];
-
+    
     while (current) {
         if (strcmp(current->key, key) == 0) {
             current->value = value;
-            return;
+                return;
         }
         current = current->next;
     }
@@ -104,20 +83,20 @@ void insert(HashTable* ht, const char* key, int value) {
     ht->count++;
 }
 
-int get(HashTable* ht, const char* key) {
-    unsigned int index = hash(key, ht->size);
+Node* search(HashTable* ht, char* key) {
+    unsigned int index = hash(key);
     Node* current = ht->table[index];
     while (current) {
         if (strcmp(current->key, key) == 0) {
-            return current->value;
+            return current;
         }
         current = current->next;
     }
-    return -1;
+    return NULL;
 }
 
-void delete(HashTable* ht, const char* key) {
-    unsigned int index = hash(key, ht->size);
+void delete(HashTable* ht, char* key) {
+    unsigned int index = hash(key);
     Node* current = ht->table[index];
     Node* prev = NULL;
 
@@ -138,52 +117,65 @@ void delete(HashTable* ht, const char* key) {
     }
 }
 
-void display(HashTable* ht) {
-    for (int i = 0; i < ht->size; i++) {
-        printf("Index %d: ", i);
-        Node* current = ht->table[i];
-        while (current) {
-            printf("(%s: %d) -> ", current->key, current->value);
-            current = current->next;
-        }
-        printf("NULL\n");
-    }
-}
-
 void freeTable(HashTable* ht) {
     for (int i = 0; i < ht->size; i++) {
         Node* current = ht->table[i];
         while (current) {
-            Node* temp = current;
-            current = current->next;
-            free(temp->key);
-            free(temp);
+            Node* next = current->next;
+            free(current->key);
+            free(current);
+            current = next;
         }
     }
     free(ht->table);
     free(ht);
 }
 
-// exmaple
+void printTable(HashTable* ht) {
+    for (int i = 0; i < ht->size; i++) {
+        Node* current = ht->table[i];
+        if (current == NULL) {
+            printf("Index %d: NULL\n", i);
+        } else {
+            printf("Index %d: ", i);
+            while (current) {
+                printf("(%s: %d) -> ", current->key, current->value);
+                current = current->next;
+            }
+            printf("NULL\n");
+        }
+    }
+}
+
 int main() {
-    HashTable* ht = createTable(INITIAL_SIZE);
+    HashTable* ht = createTable();
+
     insert(ht, "apple", 5);
     insert(ht, "banana", 10);
     insert(ht, "grape", 15);
-    insert(ht, "orange", 20);
-    insert(ht, "strawberry", 25);
-    insert(ht, "mango", 30);
-    insert(ht, "blueberry", 35);
     insert(ht, "kiwi", 40);
     insert(ht, "watermelon", 45);
+    insert(ht, "blueberry", 35);
+    insert(ht, "orange", 20);
+    insert(ht, "mango", 30);
+    insert(ht, "strawberry", 25);
 
-    display(ht);
-    printf("Value for 'apple': %d\n", get(ht, "apple"));
-    printf("Value for 'banana': %d\n", get(ht, "banana"));
+    printTable(ht);
 
-    delete(ht, "banana");
-    printf("After deleting 'banana':\n");
-    display(ht);
+    insert(ht, "apple", 50);  // Test updating an existing key
+
+    Node* result = search(ht, "apple");
+    if (result) {
+        printf("Value for 'apple': %d\n", result->value);  // Should print 50
+    }
+
+    delete(ht, "banana");  // Test deleting an existing key
+    printTable(ht);
+
+    delete(ht, "nonexistent");  // Test deleting a non-existent key
+
+    insert(ht, "newKey", 100);  // Test inserting a new key
+    printTable(ht);
 
     freeTable(ht);
     return 0;
