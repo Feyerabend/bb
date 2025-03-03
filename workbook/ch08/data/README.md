@@ -9,13 +9,11 @@
 - *Operations*: Search, insert, delete, rotate.
 
 
-
 ### 2. Binary Tree
 - *Type*: Hierarchical data structure
 - *Explanation*: A binary tree is a tree where each node has at most two children, typically referred to as the left and right child. It does not necessarily need to be balanced or sorted.
 - *Use Case*: Representing hierarchical structures, such as file systems or organisational charts, or as the foundation for other specialised trees (like BST or heap).
 - *Operations*: Traversals (in-order, pre-order, post-order), search, insert, delete.
-
 
 
 ### 3. Disjoint Set (Union-Find)
@@ -25,13 +23,11 @@
 - *Operations*: `find`, `union`, `connected`.
 
 
-
 ### 4. Double Linked List
 - *Type*: Linked List
 - *Explanation*: A doubly linked list is a type of linked list where each node contains a reference (or link) to both the next and previous node. This allows traversal in both directions.
 - *Use Case*: Used when frequent insertion and deletion at both ends are required, such as in a browser history or an undo/redo system.
 - *Operations*: Insert, delete, traverse forwards/backwards.
-
 
 
 ### 5. Hash Table
@@ -41,13 +37,11 @@
 - *Operations*: Insert, delete, search.
 
 
-
 ### 6. Heap
 - *Type*: Binary Tree-based data structure
 - *Explanation*: A heap is a special tree-based structure that satisfies the heap property: in a max-heap, the value of each node is greater than or equal to its children, and in a min-heap, the value is less than or equal to its children.
 - *Use Case*: Used in priority queues, heap sort, and for efficient access to the maximum or minimum element.
 - *Operations*: Insert, delete (extract), peek.
-
 
 
 ### 7. KD-Tree (K-Dimensional Tree)
@@ -57,13 +51,11 @@
 - *Operations*: Insert, query (range search, nearest neighbour).
 
 
-
 ### 8. Kruskal’s Algorithm
 - *Type*: Algorithm for Minimum Spanning Tree
 - *Explanation*: Kruskal’s algorithm finds the minimum spanning tree of a graph. It sorts the edges of the graph in increasing order and adds edges to the spanning tree, ensuring no cycles form. Disjoint Set is typically used for cycle detection.
 - *Use Case*: Used in network design, such as to find the minimum cable length required to connect a set of computers, or in cluster analysis.
 - *Operations*: Sort edges, union-find.
-
 
 
 ### 9. Linked List
@@ -73,13 +65,11 @@
 - *Operations*: Insert, delete, traverse, search.
 
 
-
 ### 10. Priority Queue
 - *Type*: Queue with priority
 - *Explanation*: A priority queue is a data structure where each element is associated with a priority. Elements with higher priority are dequeued before elements with lower priority. Typically implemented using a heap.
 - *Use Case*: Scheduling tasks with priorities, Dijkstra’s algorithm, Huffman coding.
 - *Operations*: Insert, extract minimum/maximum, peek.
-
 
 
 ### 11. Queue
@@ -89,7 +79,6 @@
 - *Operations*: Enqueue, dequeue, peek.
 
 
-
 ### 12. RMQ (Range Minimum Query)
 - *Type*: Query problem with a data structure
 - *Explanation*: RMQ is a problem where given an array, you need to find the minimum element in a subarray for any given range. Segment trees, sparse tables, or binary indexed trees can be used to solve this problem efficiently.
@@ -97,13 +86,11 @@
 - *Operations*: Query, update.
 
 
-
 ### 13. Segment Tree
 - *Type*: Binary tree for range queries
 - *Explanation*: A segment tree is a binary tree used to store intervals or segments. It allows querying and updating the values of array segments in O(log n) time.
 - *Use Case*: Used for problems involving range queries like sum, minimum, maximum, or GCD, especially when the array is large and requires frequent updates.
 - *Operations*: Build, query, update.
-
 
 
 ### Summary Table of Data Structures
