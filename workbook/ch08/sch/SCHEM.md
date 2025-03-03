@@ -65,7 +65,7 @@ __2. Lack of Proper Error Handling__
 - Example: `env_lookup` should return an explicit "unbound variable" error rather than
   returning NULL and causing a crash later.
 
-__3. Missing Tail-Call Optimization (TCO) for All Recursive Cases__
+__3. Missing Tail-Call Optimisation (TCO) for All Recursive Cases__
 - While `eval_tail_recursive` attempts tail-call optimisation, it might not handle all cases.
   Specifically, nested recursive calls `((define (fact n) (if (= n 0) 1 (* n (fact (- n 1))))))`
   may still overflow the stack.
