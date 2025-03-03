@@ -106,7 +106,7 @@
 |-|-|--|-|
 | *AVL Tree*          | Balanced Binary Tree       | O(log n) for all operations             | Efficient search, insertion, deletion in dynamic datasets |
 | *Binary Tree*       | Tree                       | O(n) for search, O(log n) for insert/delete | Hierarchical data representation                    |
-| Bloom Filter       | Probabilistic Data Structure  | O(k) for check (where k is the number of hash functions) and O(k) for add (where k is the number of hash functions) | Space-efficient membership testing with false positives  |
+| *Bloom Filter*      | Probabilistic Data Structure  | O(k) for check (where k is the number of hash functions) and O(k) for add (where k is the number of hash functions) | Space-efficient membership testing with false positives  |
 | *Disjoint Set*      | Union-Find                 | O(log n) with path compression          | Dynamic connectivity problems, Kruskal’s algorithm   |
 | *Double Linked List*| Linked List                | O(1) for insert/delete at both ends     | Browser history, undo/redo operations                |
 | *Hash Table*        | Hashing                    | O(1) average case, O(n) worst case      | Fast lookup, insertion, caching                      |
