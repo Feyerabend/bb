@@ -2,7 +2,7 @@ CC = gcc           # Compiler to use
 CFLAGS = -Wall     # Compiler flags, e.g., to show warnings
 
 # Targets for each program
-TARGETS = sch sche
+TARGETS = sch sche schem
 
 # Default target (build both executables)
 all: $(TARGETS)
@@ -14,6 +14,10 @@ sch: sch.o
 # Compile sche.c into sche executable
 sche: sche.o
 	$(CC) -o sche sche.o
+
+# Compile schem.c into schem executable
+schem: schem.o
+	$(CC) -o schem schem.o
 
 # Rule for compiling C files into object files
 %.o: %.c
@@ -30,3 +34,7 @@ run_sch: sch
 # Run sche executable
 run_sche: sche
 	./sche
+
+# Run schem executable
+run_schem: schem
+	./schem
