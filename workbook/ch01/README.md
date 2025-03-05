@@ -12,11 +12,11 @@ material more effectively.
 The chapter on fundamentals in the book offers multiple avenues for exploration, each designed to
 deepen your understanding of fundamental concepts.
 
-*Here is a Google NotebookLM
-[podcast](https://notebooklm.google.com/notebook/28847690-a343-454c-bddc-181771d1d88c/audio).*
-
 
 ### Example: Projects on numbers
+
+*Here is a Google NotebookLM
+[podcast](https://notebooklm.google.com/notebook/28847690-a343-454c-bddc-181771d1d88c/audio).*
 
 #### 1. Integer representations in different bases
 
