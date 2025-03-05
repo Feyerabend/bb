@@ -17,6 +17,8 @@ to express what I was exploring. One of the results of that work is a document f
 It's printed on one of the laser printers that were just becoming available back then, probably at
 300 dpi. It represents where I was at that time, both in terms of technology and my own thinking.
 
+*Google's [NotebookLM](https://notebooklm.google.com/notebook/04477bf2-097d-4b1d-b95d-e28abd9f4eba)
+take on my article.*
 
 ### Reflections
 
