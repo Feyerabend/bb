@@ -1,8 +1,8 @@
 ## Exercises
 
-### Simple data types
+### Simple Data Types
 
-####  Integers
+#### Integers
 
 1. *What are the limitations of using an 8-bit binary system to represent integers?*
     - Examine the constraints this system imposes on the range of integers and discuss its effects on overflow errors in computations.
@@ -10,38 +10,47 @@
 2. *Explain the difference between signed and unsigned integer representation.*
     - How does this difference impact the range of representable values, and why is it crucial in certain applications?
 
-3.	*Describe the concept of 2's complement representation in an 8-bit system.*
+3. *Describe the concept of 2's complement representation in an 8-bit system.*
     - Investigate how this approach allows representation of negative integers, and explain how it differs from other binary representations.
 
-4.	*In an 8-bit system, calculate the binary representation of -25 using 2's complement.*
+4. *In an 8-bit system, calculate the binary representation of -25 using 2's complement.*
     - Show each step and discuss why each is necessary to properly encode the value.
 
-5.	*What are the main challenges of converting a decimal integer, such as 123, into binary form?*
+5. *What are the main challenges of converting a decimal integer, such as 123, into binary form?*
     - Analyze the process and potential sources of error, focusing on practical difficulties in manual and programmatic conversion.
 
-6.	*How does sign extension work when converting an 8-bit signed integer to a larger bit size (e.g., 16 bits)?*
+6. *How does sign extension work when converting an 8-bit signed integer to a larger bit size (e.g., 16 bits)?*
     - Explain why this method preserves the integer's value and how it differs for positive and negative numbers.
 
-7.	*Discuss the implications of overflow in an 8-bit integer system.*
+7. *Discuss the implications of overflow in an 8-bit integer system.*
     - When does overflow occur, and how might it impact real-world applications that rely on integer computations?
 
-8.	*Convert the integer 200 to binary in an 8-bit system and interpret its result in both signed and unsigned formats.*
+8. *Convert the integer 200 to binary in an 8-bit system and interpret its result in both signed and unsigned formats.*
     - Compare the meaning of this binary sequence under each interpretation and explain the discrepancy.
 
-9.	*How does using 16-bit or 32-bit systems address some limitations seen in 8-bit integer representation?*
+9. *How does using 16-bit or 32-bit systems address some limitations seen in 8-bit integer representation?*
     - Describe the increased range and precision available and the trade-offs, such as memory usage.
 
-10.	*Investigate the binary representations of 127 and -128 in an 8-bit signed integer system.*
+10. *Investigate the binary representations of 127 and -128 in an 8-bit signed integer system.*
     - Explain how these values are encoded and why they represent the maximum and minimum values, respectively.
 
-11.	*Explain how integer rounding differs from rounding with floating-point numbers in a computer system.*
+11. *Explain how integer rounding differs from rounding with floating-point numbers in a computer system.*
     - Explore the precision limitations and how each system approaches rounding during computations.
 
-12.	*Explore the concept of arithmetic overflow with a signed 8-bit integer during addition.*
+12. *Explore the concept of arithmetic overflow with a signed 8-bit integer during addition.*
     - Provide examples to illustrate how overflow might occur when adding numbers near the upper or lower bounds of the integer range.
 
+13. *What is the significance of zero in signed and unsigned integer representations?*
+    - Discuss how zero is represented differently in signed and unsigned systems and its implications for computations.
 
-#### Floating-point numbers
+14. *How does the choice of integer size (e.g., 8-bit vs. 16-bit) affect performance in embedded systems?*
+    - Analyze the trade-offs between memory usage and computational efficiency in resource-constrained environments.
+
+15. *Explain the concept of endianness and its impact on integer representation in memory.*
+    - Discuss how big-endian and little-endian systems store integers and the implications for data interchange.
+
+
+#### Floating-Point Numbers
 
 1. *What difficulties are there with representing rational numbers in floating point on computers? Limitations?*
     - Investigate the inherent challenges and limitations of using floating-point representation for rational numbers.
@@ -78,6 +87,15 @@
 
 12. *Could you provide me with references for further reading on floating-point numbers?*
     - Seek additional resources to deepen your understanding and broaden your knowledge of floating-point arithmetic.
+
+13. *Explain the concept of precision loss in floating-point arithmetic.*
+    - Discuss how precision loss occurs and provide examples of situations where it can lead to significant errors.
+
+14. *What is the IEEE 754 standard, and why is it important for floating-point representation?*
+    - Explore the history and significance of the IEEE 754 standard in ensuring consistency across computing platforms.
+
+15. *How does floating-point representation handle special values like infinity and NaN (Not a Number)?*
+    - Explain how these special values are encoded and their role in error handling and numerical computations.
 
 
 #### Characters and ASCII
@@ -128,9 +146,7 @@
     - Examine ASCII's control characters (such as newline and carriage return) and their impact on early text processing and communication protocols.
 
 
-
 #### Strings
-
 
 1. *Explain how a string such as `Data` is stored in memory.*
     - Break down each character's ASCII binary representation and explain how these are stored consecutively, including the role of the null character at the end.
@@ -178,8 +194,9 @@
     - Investigate common string operations, such as reversing or encrypting, and explain how these processes affect the underlying binary data.
 
 
-
 ### Variables
+
+#### General Concepts
 
 1. *Define what a variable is in both mathematics and computer science.*
     - Describe the role of variables in both fields and explain why variables are essential for representing data.
@@ -227,7 +244,7 @@
     - Trace the origin of common assignment operators (e.g. +=, -=) and their use in various programming languages.
 
 
-#### memory ??
+#### Memory Management
 
 1. *Describe memory allocation during variable assignment.*
     - Explain the steps involved in allocating memory when a value is assigned to a variable in modern programming languages.
@@ -248,7 +265,7 @@
     - Explain what happens to memory when a variable is reassigned, and discuss any potential memory management issues.
 
 
-#### Mutable and immutable
+#### Mutable and Immutable Variables
 
 1. *Define mutable and immutable variables with examples.*
     - Explain the difference between mutable and immutable variables, providing examples in Python.
@@ -275,30 +292,84 @@
     - Explain why immutable variables are thread-safe and how this impacts concurrent programming.
 
 
+### Control Structures
 
-### Control structures
+1. *What are the basic control structures in programming?*
+    - Describe the role of control structures like loops, conditionals, and branches in program flow.
 
+2. *Compare the use of `if-else` statements in Python and C.*
+    - Discuss the syntax and functionality differences between these languages.
+
+3. *How do loops (e.g., `for`, `while`) manage program flow?*
+    - Explain how loops control repetition and the conditions under which they terminate.
+
+4. *What is the purpose of a `switch` statement, and how does it differ from `if-else`?*
+    - Explore the use cases and limitations of `switch` statements in languages like C and Java.
+
+5. *Discuss the concept of recursion as a control structure.*
+    - Explain how recursion can replace loops and its advantages and disadvantages.
+
+6. *How do control structures impact program readability and maintainability?*
+    - Analyze how well-structured control flow contributes to code quality.
+
+7. *What are the potential pitfalls of nested control structures?*
+    - Discuss how excessive nesting can lead to code that is difficult to debug and maintain.
+
+8. *Explore the historical evolution of control structures in programming languages.*
+    - Trace the development of control structures from early languages like Fortran to modern languages like Python.
+
+9. *How do control structures handle errors and exceptions?*
+    - Explain how control structures like `try-catch` blocks manage unexpected program behavior.
+
+10. *What is the role of control structures in algorithm design?*
+    - Discuss how control structures are used to implement algorithms and solve problems efficiently.
 
 
 ### Functions
 
-#### Calling functions
+#### Calling Functions
 
+1. *What is the purpose of functions in programming?*
+    - Explain how functions encapsulate code and promote reusability and modularity.
 
+2. *Describe the process of calling a function in Python.*
+    - Walk through the steps involved in defining and invoking a function.
 
-1. *Explain why assignment is restricted in functional programming.*
-    - Describe the philosophy behind limiting assignment and reassignments in functional programming languages.
+3. *How do functions handle arguments and return values?*
+    - Discuss the role of parameters and return statements in function execution.
 
-2. *Discuss the benefits of immutability in functional programming.*
-    - Explain how immutability contributes to data consistency and predictability in functional code.
+4. *What is the difference between pass-by-value and pass-by-reference?*
+    - Explain how different languages handle argument passing and the implications for function behavior.
 
-3. *Compare assignment in functional vs. imperative programming languages.*
-    - Discuss the differences in variable handling and assignment between functional and imperative paradigms.
+5. *How do recursive functions work, and what are their limitations?*
+    - Explore the concept of recursion and its use cases, as well as potential issues like stack overflow.
 
-4. *Explore the historical influences that shaped assignment in functional programming.*
-    - Research early functional languages like Lisp and ML, and discuss how they influenced modern functional programming practices.
+6. *What are higher-order functions, and how are they used in functional programming?*
+    - Explain how functions can take other functions as arguments or return them as results.
 
-5. *How does functional programming handle variable-like data?*
-    - Explain how functional programming manages data without reassigning variables and the concept of pure functions.
+7. *Discuss the concept of variable scope in functions.*
+    - Explain how local and global variables are managed within functions.
 
+8. *How do default arguments work in functions?*
+    - Provide examples of functions with default arguments and discuss their utility.
 
+9. *What are lambda functions, and how do they differ from regular functions?*
+    - Explain the syntax and use cases for anonymous functions in languages like Python.
+
+10. *How do functions contribute to code organization and maintainability?*
+    - Discuss how breaking code into functions improves readability and reduces redundancy.
+
+11. *What is function overloading, and how is it implemented in different languages?*
+    - Explore how some languages allow multiple functions with the same name but different parameters.
+
+12. *How do functions handle side effects in functional programming?*
+    - Discuss the importance of avoiding side effects and how pure functions achieve this.
+
+13. *What is the role of the `main` function in C and C++?*
+    - Explain how the `main` function serves as the entry point for program execution.
+
+14. *How do functions interact with control structures?*
+    - Discuss how functions can be used within loops, conditionals, and other control structures.
+
+15. *What are the benefits of using libraries and built-in functions?*
+    - Explain how leveraging existing functions can save time and improve program efficiency.
