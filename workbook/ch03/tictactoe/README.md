@@ -4,9 +4,9 @@
 In the 1983 movie *WarGames*[^war], the plot revolves around a young computer whiz named David Lightman, played by Matthew Broderick,
 who accidentally hacks into a U.S. military supercomputer called WOPR (War Operation Plan Response). Initially believing that
 he is playing a game of chess against a computer, David unwittingly triggers a sequence of events that leads to the simulation
-of a global nuclear conflict. The plot centers on David's realization that the WOPR system, designed to simulate and predict
+of a global nuclear conflict. The plot centres on David's realization that the WOPR system, designed to simulate and predict
 outcomes of military conflicts, has the power to launch real nuclear weapons. The critical moment in the film comes when David, 
-using his knowledge of games and computer systems, realizes that the only way to prevent global catastrophe is to convince the
+using his knowledge of games and computer systems, realises that the only way to prevent global catastrophe is to convince the
 supercomputer that nuclear war is not winnable.
 
 A key moment in *WarGames* is when David, after engaging the WOPR in a game of Tic-Tac-Toe, understands the parallel between the
@@ -17,8 +17,8 @@ is a draw.
 
 This revelation is crucial to the plot, as David uses the simple logic of the game to break through to the supercomputer. He
 demonstrates to the WOPR system that a nuclear conflict is analogous to a game of Tic-Tac-Toe, where the only logical conclusion
-is not to engage at all. The computer, after playing several rounds of Tic-Tac-Toe and analyzing the results, concludes that it
-is a futile exercise--just as a nuclear war would be. This realization leads to the cessation of the simulated global conflict
+is not to engage at all. The computer, after playing several rounds of Tic-Tac-Toe and analysing the results, concludes that it
+is a futile exercise--just as a nuclear war would be. This realisation leads to the cessation of the simulated global conflict
 and ultimately prevents the launch of real-world nuclear weapons.
 
 [^war]: See https://www.imdb.com/title/tt0086567/, https://en.wikipedia.org/wiki/WarGames.

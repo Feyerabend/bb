@@ -19,7 +19,7 @@ by building a tailored language. This language serves as the bridge between the 
 and the solution, providing a clear structure for how the system should behave. Data, the core of what
 needs to be solved, takes precedence over the "how" of the solution. In other words, the problem to be
 solved (data and its dynamics) is the focus, rather than the technical implementation details of how
-the code will run. This is unfourtunately often confused by the developer.
+the code will run. This is unfortunately often confused by the developer.
 
 Rather than approaching problem-solving from the angle of existing software and APIs, I advocate for
 a shift towards *building custom languages* and *defining protocols*. The difference is significant:
@@ -37,6 +37,8 @@ inform our design of new solutions. Using, however, often means adhering to the 
 constraints that those tools impose. This distinction allows us to think more freely and innovatively
 when approaching new problems, rather than being tethered to the paradigms already established by others.
 
+*A introductory [podcast](https://notebooklm.google.com/notebook/024ee9d0-8ad1-4dac-b402-e47249d283f9/audio)
+generated in NotebookLM.*
 
 #### The Importance of Languages in Programming
 
@@ -51,13 +53,13 @@ or programming, languages serve as frameworks for structuring, communicating, an
 complex ideas.
 
 On the other hand, communication with clients (in a typical customer-seller relationship) also heavily
-relies on language. This communication may be supplemented by visual aids, physical artifacts, or other
+relies on language. This communication may be supplemented by visual aids, physical artefacts, or other
 non-verbal means. Not everything in problem-solving or solution implementation must be reduced to language.
 Mathematics, for instance, often bypasses natural language entirely, integrating solutions directly into
 machine-executable forms or abstract representations that align seamlessly with computational processes.
 
 This interplay between linguistic representation, mathematical abstraction, and practical implementation
-highlights the versatility and depth of programming as both a technical and communicative endeavor.
+highlights the versatility and depth of programming as both a technical and communicative endeavour.
 
 
 #### Using APIs and Libraries: Language as a Medium
@@ -71,7 +73,7 @@ This means that your approach to problem-solving is often influenced--if not con
 this pre-defined language.
 
 While APIs and libraries offer convenience and efficiency, they can sometimes create a barrier between you
-and the problem domain itself. Instead of deeply understanding and modeling the domain's intricacies, you may
+and the problem domain itself. Instead of deeply understanding and modelling the domain's intricacies, you may
 find yourself fitting your solutions into the existing constructs of the API. This trade-off between ease
 of use and deeper problem-domain understanding is a recurring theme in programming.
 
@@ -83,7 +85,7 @@ new programming language, the process enables you to design a vocabulary and syn
 concepts and relationships of your domain. This alignment can make reasoning about the problem more intuitive
 and expressing solutions more concise and natural.
 
-Domain-specific languages (DSLs) epitomize the tailored approach to problem-solving. Examples like SQL
+Domain-specific languages (DSLs) epitomise the tailored approach to problem-solving. Examples like SQL
 for database queries or Regex for pattern matching are purpose-built to express solutions in ways that
 feel intuitive and efficient for their respective domains.
 
@@ -94,7 +96,7 @@ with the broader .NET ecosystem. Similarly, Rake in Ruby provides a DSL for auto
 transformations and build processes, while TensorFlow’s computational graph definitions offer a DSL fo
 expressing machine learning workflows within Python.
 
-Game engines often provide their own scripting languages, allowing designers to define behaviors and interactions
+Game engines often provide their own scripting languages, allowing designers to define behaviours and interactions
 at a high level without needing to delve into the complexities of the engine's underlying mechanics. These
 scripting languages empower creators to work efficiently within the specific constraints and requirements
 of their field.
