@@ -37,8 +37,8 @@ inform our design of new solutions. Using, however, often means adhering to the 
 constraints that those tools impose. This distinction allows us to think more freely and innovatively
 when approaching new problems, rather than being tethered to the paradigms already established by others.
 
-A introductory [podcast](https://notebooklm.google.com/notebook/024ee9d0-8ad1-4dac-b402-e47249d283f9/audio)
-generated in NotebookLM.
+*A introductory [podcast](https://notebooklm.google.com/notebook/024ee9d0-8ad1-4dac-b402-e47249d283f9/audio)
+generated in NotebookLM.*
 
 #### The Importance of Languages in Programming
 
