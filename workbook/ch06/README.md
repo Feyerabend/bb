@@ -25,7 +25,7 @@ human endeavour, intertwined with how we process information, construct meaning,
 Innovative approaches to problem-solving are also a recurring topic. One perspective advocates for a language-centric
 approach to programming, where the focus shifts from using existing APIs to designing tailored languages and protocols that
 directly address the problem domain. Another approach explores the integration of logic and testing, blending ideas from
-Test-Driven Development (TDD) with formal methods like preconditions, postconditions, and constraints. This approach even
+*Test-Driven Development* (TDD) with formal methods like preconditions, postconditions, and constraints. This approach even
 considers advanced concepts such as simulating dependent types to ensure correctness.
 
 On the practical side, the texts provide guidance on prototyping and testing techniques. For example, there are detailed
@@ -37,7 +37,7 @@ Sustainability in computing is another area of interest. The texts propose rethi
 the use of energy-efficient, distributed architectures for simpler tasks. This approach draws inspiration from early computing
 philosophies, emphasizing efficiency, modularity, and the development of specialized software.
 
-Established software development methodologies, such as Test-Driven Development (TDD), are also explored. The texts outline
+Established software development methodologies, such as *Test-Driven Development* (TDD), are also explored. The texts outline
 the core principles of TDD, including its iterative cycle of writing tests, implementing code, and refining the design, as
 well as its integration into continuous integration and delivery pipelines.
 
