@@ -7,12 +7,12 @@ easy tasks, like e.g. in an office text processing, and connected things like st
 printing, layout, conversions between legacy formats etc.*
 
 Re-imagining computing in a distributed, energy-efficient way—especially using microcontroller-like
-architectures running simple, specialized programs—could indeed be a promising direction for future,
+architectures running simple, specialised programs—could indeed be a promising direction for future,
 *sustainable computing*. For certain tasks, like text processing, this approach could provide a
 remarkably efficient and lightweight alternative to the current paradigm of general-purpose,
 power-hungry computers. And perhaps also more secure, as the simpler the software gets.
 
-Historically, the early Unix philosophy emphasized small, single-purpose tools that
+Historically, the early Unix philosophy emphasised small, single-purpose tools that
 could be combined in flexible ways, and this model could adapt well to a microcontroller-based,
 distributed computing environment.
 
@@ -28,9 +28,9 @@ distributed computing environment.
    piping the text to another that formats it, which then sends it to yet another that displays it.
    This pipeline would resemble a hardware-implemented version of a Unix shell script, with tasks
    distributed across different microcontrollers. Such a system would be resilient, as individual
-   components could be isolated and optimized for their specific roles.
+   components could be isolated and optimised for their specific roles.
 
-3. *Simplicity and Specialization*: Since each microcontroller would handle a specific, simple task,
+3. *Simplicity and Specialisation*: Since each microcontroller would handle a specific, simple task,
    the software complexity on each node could be minimal. For tasks like document editing, basic
    text transformations, and data manipulation, this model could be very efficient. We wouldn't
    need sophisticated operating systems with memory management, multitasking, or graphical interfaces,
@@ -44,18 +44,18 @@ distributed computing environment.
 
 5. *Adaptation to Modern Needs*: While today's office tasks do require powerful systems for heavy
    multitasking and media-rich applications, simpler, text-centric workflows could indeed be handled
-   by lightweight systems. If society as a whole re-evaluated computing needs—prioritizing function
+   by lightweight systems. If society as a whole re-evaluated computing needs—prioritising function
    over multimedia capabilities in some areas—this model could potentially extend to a broader scope.
    Furthermore, as people grow accustomed to minimalist, function-focused devices, the software
-   design could adapt accordingly, leading to new applications that maximize utility while minimizing
+   design could adapt accordingly, leading to new applications that maximise utility while minimising
    resource requirements.
 
 6. *Communication and Data Offloading*: One of the biggest energy costs in modern computing is data
    transfer, particularly with cloud computing. In a distributed microcontroller system, minimal
-   amounts of data would need to be transferred at a time, and local processing could minimize the
+   amounts of data would need to be transferred at a time, and local processing could minimise the
    need for constant connectivity. For collaborative work, this kind of system could even operate
-   on a peer-to-peer model, with microcontroller networks directly communicating without a centralized
-   server, further reducing energy costs associated with data centers.
+   on a peer-to-peer model, with microcontroller networks directly communicating without a centralised
+   server, further reducing energy costs associated with data centres.
 
 In the context of sustainable computing, this could indeed represent a fascinating alternative,
 especially in low-power applications. Not every computing environment requires the power and
@@ -65,12 +65,17 @@ effective for specific tasks. While it would require a significant shift in how 
 software and interaction design, it's an idea worth exploring as we look to the future of
 sustainable technology.
 
-*A take on this proposal by NotebookLM [podcast](SUSTAIN.wav).*
+*A take on this proposal by NotebookLM: *
+<audio controls>
+  <source src="SUSTAIN.wav" type="audio/wav">
+  Your browser does not support the audio element.
+</audio>
+
 
 ### Software
 
 In a scenario where computing is re-imagined around distributed microcontroller-based systems and modular,
-single-purpose programs, software development would indeed look very different. It would emphasize
+single-purpose programs, software development would indeed look very different. It would emphasise
 efficiency, simplicity, and modularity, drawing from principles of embedded systems programming and
 Unix-like philosophies.
 
@@ -80,10 +85,10 @@ Unix-like philosophies.
    languages like C or Rust, which are known for their efficiency and low memory footprint.
    Rust, in particular, could be ideal for building safe and efficient microcontroller-based
    systems due to its focus on memory safety. Instead of large, monolithic libraries, developers
-   would use lightweight libraries or even write their own, optimized specifically for minimal
+   would use lightweight libraries or even write their own, optimised specifically for minimal
    resource usage.
 
-2. *Modular, Microservice-Oriented Design*: Each piece of software would be a specialized, standalone
+2. *Modular, Microservice-Oriented Design*: Each piece of software would be a specialised, standalone
    module with well-defined input and output interfaces, much like Unix commands. The idea would be
    to create small, reusable modules that can be combined to perform more complex tasks through "piping"
    data between them. Each module might reside on a separate microcontroller, so communication protocols
@@ -131,7 +136,7 @@ computers.
 
 2. *Start with Open Source and Leverage Existing Microcontroller Ecosystems*: Leveraging open-source software
    and community-driven projects could help startups get a head start. Libraries, frameworks, and even hardware
-   interfaces from the embedded systems community could provide a foundation, minimizing upfront costs.
+   interfaces from the embedded systems community could provide a foundation, minimising upfront costs.
    For instance, the Raspberry Pi Pico and ESP32 microcontrollers have large ecosystems and community support,
    which would provide resources and reduce development time.
 
@@ -140,8 +145,8 @@ computers.
    minimal energy footprints. Startups could partner with these sectors to deliver products designed around
    efficiency and distributed functionality.
 
-4. *Hardware Innovation and Optimization*: To create highly energy-efficient modules, the startup might also
-   invest in custom microcontroller boards optimized for specific applications. For instance, they might
+4. *Hardware Innovation and Optimisation*: To create highly energy-efficient modules, the startup might also
+   invest in custom microcontroller boards optimised for specific applications. For instance, they might
    design boards with enhanced communication interfaces or add low-energy memory solutions to store data
    without power.
 
@@ -170,5 +175,5 @@ If successful, such a startup could establish a new model for sustainable comput
 where minimal hardware is used for maximum productivity, specifically in environments
 that don't need multimedia processing or heavy computing. This model could encourage a
 shift back to efficient, purpose-built systems, helping reduce computing energy costs
-industry-wide and influencing software design to prioritize simplicity and modularity.
+industry-wide and influencing software design to prioritise simplicity and modularity.
 
