@@ -66,7 +66,6 @@ software and interaction design, it's an idea worth exploring as we look to the 
 sustainable technology.
 
 *A take on this proposal by NotebookLM:*
-
 <audio controls>
   <source src="SUSTAIN.wav" type="audio/wav">
   Your browser does not support the audio element.
