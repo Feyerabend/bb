@@ -18,6 +18,8 @@ deepen your understanding of fundamental concepts.
 *Here is a Google NotebookLM
 [podcast](https://notebooklm.google.com/notebook/28847690-a343-454c-bddc-181771d1d88c/audio).*
 NB: For now it requires a Google account for login.
+Alternative: Download [podcast](NUMBERS.wav) in WAVE-format.
+
 
 #### 1. Integer representations in different bases
 
