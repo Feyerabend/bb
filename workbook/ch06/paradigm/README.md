@@ -39,6 +39,8 @@ when approaching new problems, rather than being tethered to the paradigms alrea
 
 *A introductory [podcast](https://notebooklm.google.com/notebook/024ee9d0-8ad1-4dac-b402-e47249d283f9/audio)
 generated in NotebookLM.*
+NB: For now it requires a Google account for login.
+Alternative: Download [podcast](PARADIM.wav) in WAVE-format.
 
 #### The Importance of Languages in Programming
 
