@@ -32,7 +32,7 @@ programming models but also thus to illuminate the broader landscape of computat
 The connection between programming language virtual machines (VMs) and a simple AI model like the
 Perceptron lies in their shared foundation of abstraction and computation. Virtual machines abstract
 away the complexities of hardware, providing a platform-independent environment for executing high-level
-code. Similarly, the Perceptron—one of the earliest forms of artificial neural networks—encapsulates
+code. Similarly, the Perceptron--one of the earliest forms of artificial neural networks--encapsulates
 learning and decision-making in a mathematical model. Both systems use layers of abstraction to simplify
 complex tasks, whether by enabling code execution across different architectures or by recognising
 patterns in data. In this sense, both VMs and AI models serve as conceptual frameworks for understanding
