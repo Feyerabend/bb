@@ -22,7 +22,7 @@ is a futile exercise--just as a nuclear war would be. This realisation leads to 
 and ultimately prevents the launch of real-world nuclear weapons.
 
 Google NotebookLM generated [podcast](https://notebooklm.google.com/notebook/bd50ec2c-a921-40ed-908e-0a00bcfb7987/audio). 
-Alternative: Download [podcast](WARGAMES.wav) in WAVE-format.
+Requires Google Account. Alternative: Download [podcast](WARGAMES.wav) in WAVE-format.
 
 
 [^war]: See https://www.imdb.com/title/tt0086567/, https://en.wikipedia.org/wiki/WarGames.
