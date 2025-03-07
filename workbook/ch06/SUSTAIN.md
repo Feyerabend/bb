@@ -65,6 +65,9 @@ effective for specific tasks. While it would require a significant shift in how 
 software and interaction design, it's an idea worth exploring as we look to the future of
 sustainable technology.
 
+A take on this proposal by NotebookLM
+[podacast](https://notebooklm.google.com/notebook/db5bc674-0cb1-4dbf-8c26-328fdee0501a/audio).
+
 
 ### Software
 
