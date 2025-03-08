@@ -51,4 +51,4 @@ At the early days of digital computing von Neumann and Harvard architecure had d
 build computers.
 Here is a [podcast](https://notebooklm.google.com/notebook/917c93b8-780e-48d1-adcf-8533ee83a56f/audio)
 from NotebookLM by Google. It requires a Google Account.
-Alternatively: [Download](HARVARDVONNEUMANN.wav) the audio file in WAVE-format.
+Alternatively: Download the [audio](HARVARDVONNEUMANN.wav) file in WAVE-format.
