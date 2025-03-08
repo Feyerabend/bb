@@ -43,10 +43,15 @@ bridge between the concrete realities of 1990s computing and the abstract concer
 From a 2025 perspective, revisiting this work it captures a moment when computers were still shedding
 their industrial skin, and programming was poised to redefine creativity and power.
 
+*A take on this lecture by NotebookLM [podcast](https://notebooklm.google.com/notebook/139e38f8-c57b-4fe0-aa51-473397c47a10/audio).*
+NB: For now it requires a Google account for login.
+Alternative: Download [podcast](CONDITION.wav) in WAVE-format.
+The podcast often says “they,” but they really mean me.
+
 
 ### Questions
 
-- *Historical Context*: How might the technological limitations of 1997 (e.g., slow internet, basic AI)
+- *Historical Context*: How might the technological limitations of 1997 (e.g. slow internet, basic AI)
   have shaped the author's perspective on computers and programming compared to today's capabilities?
 
 - *Programming as Power*: In what ways does programming reflect human values or biases, and how might
