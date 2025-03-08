@@ -46,3 +46,9 @@ for running software or simulating intelligence, are built on structured, rule-b
 information systematically. The inclusion of the Perceptron in the folder underscores the idea that
 programming and AI are deeply interconnected, as both fields rely on creating and manipulating abstract
 models to solve real-world problems.
+
+At the early days of digital computing von Neumann and Harvard architecure had different solutions to
+build computers.
+Here is a [podcast](https://notebooklm.google.com/notebook/917c93b8-780e-48d1-adcf-8533ee83a56f/audio)
+from NotebookLM by Google. It requires a Google Account.
+Alternatively: [Download](HarvardvonNeumann.wav) the audio file in WAVE-format.
