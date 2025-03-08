@@ -49,6 +49,6 @@ models to solve real-world problems.
 
 At the early days of digital computing von Neumann and Harvard architecure had different solutions to
 build computers.
-Here is a [podcast](https://notebooklm.google.com/notebook/917c93b8-780e-48d1-adcf-8533ee83a56f/audio)
-from NotebookLM by Google. It requires a Google Account.
+*Here is a [podcast](https://notebooklm.google.com/notebook/917c93b8-780e-48d1-adcf-8533ee83a56f/audio)
+from NotebookLM by Google.* It requires a Google Account.
 Alternatively: Download the [audio](HARVARDVONNEUMANN.wav) file in WAVE-format.
