@@ -29,7 +29,7 @@ __2. Computational Complexity: P vs. NP and Beyond__
 Even for problems that are theoretically computable, the time required to solve them
 varies drastically. The P vs. NP problem is one of the biggest open questions in computer
 science. It asks whether every problem whose solution can be verified in polynomial time
-(NP) can also be solved in polynomial time (P). If P = NP, it would mean that problems
+(NP) can also be solved in polynomial time ($\`P\`$). If $\`P = NP$\`, it would mean that problems
 like integer factorisation and the traveling salesman problem could be solved efficiently,
 revolutionising cryptography and optimisation.
 
@@ -41,7 +41,7 @@ based on computational resources.
 __3. Physical Limits: Energy, Heat, and Quantum Mechanics__
 
 Computation is bound by physical laws. The Landauer Limit states that erasing one bit
-of information requires a minimum amount of energy (about $kT \ln 2$ Joules at temperature $T$).
+of information requires a minimum amount of energy (about $\`kT \ln 2\`$ Joules at temperature $\`T\`$).
 This imposes thermodynamic constraints on computation.
 
 The speed of light and minimum transistor size also impose limits. As transistors shrink
