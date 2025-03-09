@@ -54,7 +54,7 @@ human-authored material. Over time, will the creative aspect of content generati
 from human input as interactivity between LLMs and other generative AI systems intensifies? If these models
 continue to train on AI-generated data rather than human-created sources, could this lead to a gradual
 erosion of originality, innovation, or even a distortion of "knowledge" itself? Whatever that might then be
-.. Your thought on this?*
+.. Your thoughts on this?*
 
 
 ### Questions
