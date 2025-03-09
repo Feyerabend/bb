@@ -1,9 +1,9 @@
 
 ## Limits
 
-The limits of computers can be categorised into several fundamental areas: logical
-limits (Gödel, Church-Turing), computational complexity (P vs. NP), physical limits
-(thermodynamics, quantum mechanics), and practical limits (energy consumption, memory
+The limits of computers can be categorised into several fundamental areas: *logical
+limits* (Gödel, Church-Turing), *computational complexity* (P vs. NP), *physical limits*
+(thermodynamics, quantum mechanics), and *practical limits* (energy consumption, memory
 constraints). Each of these imposes constraints on what computers can and cannot do.
 
 
@@ -59,7 +59,7 @@ Even if a problem is theoretically solvable in polynomial time, practical issues
 - Parallelisation limits: Some problems do not scale well with more processors due to
   Amdahl's Law.
 
-Summary
+### Summary
 - Gödel and Turing showed that some problems are undecidable.
 - P vs. NP concerns problems that may be solvable in theory but not efficiently.
 - Physical constraints like energy and quantum mechanics impose practical limitations.
