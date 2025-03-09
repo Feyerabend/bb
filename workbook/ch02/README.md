@@ -51,7 +51,7 @@ In the early days of digital computing, the von Neumann and Harvard architecture
 approaches to computer design. The von Neumann architecture, proposed by John von Neumann in 1945, used a
 single memory for both instructions and data, allowing for flexible programming but also introducing the
 risk of the "von Neumann bottleneck" due to shared memory access. In contrast, the Harvard architecture,
-originally used in early relay-based computers like the Harvard Mark I, separated memory for instructions
+originally used in early relay-based computers like the *Harvard Mark I*, separated memory for instructions
 and data, enabling simultaneous access and improving speed but making programming and memory management
 more rigid. Over time, modern processors have incorporated elements of both architectures to optimise
 performance and flexibility.
