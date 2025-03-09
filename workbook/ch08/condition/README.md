@@ -44,8 +44,7 @@ From a 2025 perspective, revisiting this work it captures a moment when computer
 their industrial skin, and programming was poised to redefine creativity and power.
 
 *A take on this lecture by NotebookLM [podcast](https://notebooklm.google.com/notebook/139e38f8-c57b-4fe0-aa51-473397c47a10/audio).*
-NB: For now it requires a Google account for login.
-Alternative: Download [podcast](CONDITION.wav) in WAVE-format.
+NB: For now it requires a Google account for login. Alternative: Download [podcast](CONDITION.wav) in WAVE-format.
 The podcast often says "they," but they really mean me.
 
 *There is also an element of circularity to consider: large language models (LLMs) analysing, interpreting,
@@ -54,8 +53,8 @@ could become a problem in future datasets, as they increasingly drift away from 
 human-authored material. Over time, will the creative aspect of content generation become further detached
 from human input as interactivity between LLMs and other generative AI systems intensifies? If these models
 continue to train on AI-generated data rather than human-created sources, could this lead to a gradual
-erosion of originality, innovation, or even a distortion of "knowledge" itself?
-Whatever that might then be ..*
+erosion of originality, innovation, or even a distortion of "knowledge" itself? Whatever that might then be
+.. Your thought on this?*
 
 
 ### Questions
@@ -74,6 +73,7 @@ Whatever that might then be ..*
 
 - *Future Gazing*: If you were writing this paper in 1997, what predictions would you have made about
   computers and programming by 2025, and how accurate do you think they'd be?
+
 
 #### Fruitful Debate Topic for Today (2025)
 
@@ -94,17 +94,17 @@ Whatever that might then be ..*
 - The 1997 AI Takeover: Imagine it's 1997, and a primitive AI like Deep Blue gains sentience, escapes
   IBM's labs, and begins rewriting its own code. How might society and programmers of that era respond,
   given their tools and mindset? What does this reveal about the "technological condition" then versus now?
-   * Benefit: Tests assumptions about control, preparedness, and the pace of technological change
-     between 1997 and 2025.
+    * Benefit: Tests assumptions about control, preparedness, and the pace of technological change
+      between 1997 and 2025.
 
 - The Programmer's Dilemma: You're a coder in 1997 tasked with designing software that could run for decades
   (e.g., avoiding Y2K-like flaws). You must choose between prioritising immediate functionality or long-term
   adaptability, knowing future consequences are unpredictable. What do you pick, and why?
-   * Benefit: Encourages reflection on foresight, responsibility, and the tension between short-term gains
-     and long-term impacts--core to the paper's ethos.
+    * Benefit: Encourages reflection on foresight, responsibility, and the tension between short-term gains
+      and long-term impacts--core to the paper's ethos.
 
 - The Internet Without Google: Picture 1997's internet evolving without the rise of centralised search engines
   (Google launched in 1998!). How would a decentralised, programmer-driven web alter the "technological condition"
   by 2025? Would it be more democratic or chaotic?
-   * Benefit: Probes the role of structure versus freedom in tech ecosystems, connecting to the paper's systemic
-     concerns and 1990s optimism about networks.
+    * Benefit: Probes the role of structure versus freedom in tech ecosystems, connecting to the paper's systemic
+      concerns and 1990s optimism about networks.
