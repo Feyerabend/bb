@@ -108,3 +108,14 @@ erosion of originality, innovation, or even a distortion of "knowledge" itself? 
   by 2025? Would it be more democratic or chaotic?
     * Benefit: Probes the role of structure versus freedom in tech ecosystems, connecting to the paper's systemic
       concerns and 1990s optimism about networks.
+
+### Some Reflections on AI
+
+In 1984, I attended The Second Logic Programming Conference in Uppsala. At the time, I had only been at the
+university since 1982, studying theoretical philosophy (formal logic). I was highly optimistic--perhaps overly
+so--about the future of computers, programming, computing in general, and, of course, AI.
+
+Here are Google NotebookLM’s reflections on my experience, interwoven with historical perspectives on AI.
+Download [podcast](REFLECTIONS.wav) in WAVE-format.
+
+Perhaps explore the history of AI and how it connects to today.
