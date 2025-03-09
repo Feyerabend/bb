@@ -118,4 +118,4 @@ so--about the future of computers, programming, computing in general, and, of co
 Here are Google NotebookLM’s reflections on my experience, interwoven with historical perspectives on AI.
 Download [podcast](REFLECTIONS.wav) in WAVE-format.
 
-Perhaps explore the history of AI and how it connects to today.
+Discussion: Perhaps explore the history of AI and how it connects to today.
