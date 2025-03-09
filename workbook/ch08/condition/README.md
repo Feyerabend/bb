@@ -45,7 +45,9 @@ their industrial skin, and programming was poised to redefine creativity and pow
 
 *A take on this lecture by NotebookLM [podcast](https://notebooklm.google.com/notebook/139e38f8-c57b-4fe0-aa51-473397c47a10/audio).*
 NB: For now it requires a Google account for login. Alternative: Download [podcast](CONDITION.wav) in WAVE-format.
-The podcast often says "they," but they really mean me.
+The podcast often says "they," but they really mean me. I also do not get how they so suddenly find
+topics I really do not discuss explicitly. But AI of today is a bit of hit and miss, probablity driven
+exploration ..
 
 *There is also an element of circularity to consider: large language models (LLMs) analysing, interpreting,
 and generating content about other LLMs. This raises the question of whether such self-referential cycles
@@ -109,13 +111,13 @@ erosion of originality, innovation, or even a distortion of "knowledge" itself? 
     * Benefit: Probes the role of structure versus freedom in tech ecosystems, connecting to the paper's systemic
       concerns and 1990s optimism about networks.
 
-### Some (Personal) Reflections on AI
+### Addendum: Some (Personal) Reflections on AI
 
 In 1984, I attended The Second Logic Programming Conference in Uppsala. At the time, I had only been at the
 university since 1982, studying theoretical philosophy (formal logic). I was highly optimistic--perhaps overly
 so--about the future of computers, programming, computing in general, and, of course, AI.
 
-Here are Google NotebookLM’s reflections on my experience, interwoven with historical perspectives on AI.
+Here are Google NotebookLM's reflections on my experience, interwoven with historical perspectives on AI.
 Download [podcast](REFLECTIONS.wav) in WAVE-format.
 
-Discussion: Perhaps explore the history of AI and how it connects to today.
+*Discussion:* Explore the history of AI and how it connects to today. Not necssarily starting from the podcast.
