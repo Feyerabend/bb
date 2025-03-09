@@ -41,7 +41,7 @@ based on computational resources.
 __3. Physical Limits: Energy, Heat, and Quantum Mechanics__
 
 Computation is bound by physical laws. The Landauer Limit states that erasing one bit
-of information requires a minimum amount of energy (about kT \ln 2 Joules at temperature T).
+of information requires a minimum amount of energy (about $kT \ln 2$ Joules at temperature $T$).
 This imposes thermodynamic constraints on computation.
 
 The speed of light and minimum transistor size also impose limits. As transistors shrink
