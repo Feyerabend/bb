@@ -1,5 +1,5 @@
 
-## Overview
+## Overview: Data, Data Structures, Abstract Data Types and Algorithms
 
 No one can realistically learn or master every possible variant of abstract data structures, as the field
 is vast and continuously evolving. However, developing the ability to recognize when and why certain data
