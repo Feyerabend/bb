@@ -109,7 +109,7 @@ erosion of originality, innovation, or even a distortion of "knowledge" itself? 
     * Benefit: Probes the role of structure versus freedom in tech ecosystems, connecting to the paper's systemic
       concerns and 1990s optimism about networks.
 
-### Some Reflections on AI
+### Some (Personal) Reflections on AI
 
 In 1984, I attended The Second Logic Programming Conference in Uppsala. At the time, I had only been at the
 university since 1982, studying theoretical philosophy (formal logic). I was highly optimistic--perhaps overly
