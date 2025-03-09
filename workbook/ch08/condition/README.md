@@ -48,6 +48,15 @@ NB: For now it requires a Google account for login.
 Alternative: Download [podcast](CONDITION.wav) in WAVE-format.
 The podcast often says “they,” but they really mean me.
 
+There is also an element of circularity to consider: large language models (LLMs) analysing, interpreting,
+and generating content about other LLMs. This raises the question of whether such self-referential cycles
+could become a problem in future datasets, as they increasingly drift away from original sources and
+human-authored material. Over time, will the creative aspect of content generation become further detached
+from human input as interactivity between LLMs and other generative AI systems intensifies? If these models
+continue to train on AI-generated data rather than human-created sources, could this lead to a gradual
+erosion of originality, innovation, or even a distortion of "knowledge" itself?
+Whatever that might then be ..
+
 
 ### Questions
 
