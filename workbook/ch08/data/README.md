@@ -65,7 +65,7 @@ Bringing It All Together
 - Algorithms are procedures for processing data using data structures (e.g., searching, sorting).
 
 
-__*Scenario: Implementing a Stack*__
+### Scenario: Implementing a Stack
 
 A stack is an example of an Abstract Data Type (ADT) that follows the Last-In, First-Out (LIFO) principle.
 
