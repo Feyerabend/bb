@@ -174,7 +174,7 @@ Summary
 - Algorithm: Uses the stack to reverse the order of numbers.
 
 
-### Listing of Some Examples
+### Listing of Some Various Examples
 
 ### 1. AVL (Adelson-Velsky and Landis Tree)
 - *Type*: Self-balancing Binary Search Tree (BST)
