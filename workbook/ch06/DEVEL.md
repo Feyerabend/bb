@@ -18,17 +18,17 @@ Take that in mind when you work on the questions below.
 ### Projects
 
 1. Innovation in Programming Practices
-	- *How does relying on AI tools for tasks like coding, debugging, and code completion impac
+	- *How does relying on AI tools for tasks like coding, debugging, and code completion impact
 	  your problem-solving abilities and understanding of algorithms?*
 	- Task: Create a program with minimal AI assistance. Reflect on how using AI in this process
 	  might have changed your approach to problem-solving. Discuss how deepening your understanding
 	  of algorithms and data structures could enhance your coding skills.
 
-2. Standardization and Stagnation in Software
+2. Standardisation and Stagnation in Software
 	- *Do AI-generated solutions tend to follow established patterns, potentially stifling creativity
-	  and leading to homogenization in programming practices?*
+	  and leading to homogenisation in programming practices?*
 	- Task: Develop a piece of software using an AI tool, then replicate the same software manually
-	  without AI assistance. Compare the two solutions and analyze how the AI may have influenced
+	  without AI assistance. Compare the two solutions and analyse how the AI may have influenced
 	  the design and coding choices.
 
 3. Over-Reliance on AI in Development
@@ -83,7 +83,7 @@ and ethical ecosystem.
 ### Some Context
 
 The threats to innovation and the shift towards consumerism are highly relevant to programming and
-computers because these fields are central to the development, deployment, and utilization of AI technologies.
+computers because these fields are central to the development, deployment, and utilisation of AI technologies.
 
 __1. Innovation in Programming Practices__
 
@@ -95,12 +95,12 @@ or optimisation. It can also lead to *shallow understanding of algorithms*. AI m
 developers to learn the nuances of algorithms and data structures, which are foundational for innovation
 in programming.
 
-__2. Standardization and Stagnation in Software__
+__2. Standardisation and Stagnation in Software__
 
 AI models used in programming are trained on existing codebases, which can lead to the propagation of
 established patterns rather than the development of novel approaches. This poses risks such as the
 *reinforcement of legacy practices*. AI tools could perpetuate outdated or suboptimal coding practices
-if they are present in the training data. The *homogenization of code* may be the result by suggesting
+if they are present in the training data. The *homogenisation of code* may be the result by suggesting
 similar solutions to diverse problems, AI may 'inadvertently' stifle creativity and diversity in software design.
 
 __3. Over-Reliance on AI in Development__
@@ -130,7 +130,7 @@ __6. Shifting Roles in Software Development__
 
 AI's increasing role in automating coding tasks could shift the focus of programming. Developers might
 spend more time guiding and fine-tuning AI tools than engaging in traditional programming tasks. This
-could diminish the need for fundamental programming skills and emphasize higher-level abstraction.
+could diminish the need for fundamental programming skills and emphasise higher-level abstraction.
 Beginners who rely on AI for learning and creating might not acquire the deep understanding needed for
 advanced innovation in computing.
 
@@ -153,7 +153,7 @@ tools and approaches, limiting their ability to think creatively.
 
 Ideas on how to mitigate these threats and ensure programming remains a hub for innovation:
 
-1. *Focus on Core Skills.* Educational systems should emphasize computational thinking, problem-solving,
+1. *Focus on Core Skills.* Educational systems should emphasise computational thinking, problem-solving,
    and algorithmic understanding to counterbalance AI dependency.
 
 2. *Promote AI Literacy.* Developers need to understand the limitations and biases of AI tools to use them
@@ -199,7 +199,7 @@ __3. Risk of Algorithmic Bias in Programming__
 
 AI-assisted development introduces risks of propagating biases from training data into software systems.
 AI-generated code might inadvertently perpetuate inequalities, especially in domains like hiring algorithms,
-recommendation systems, or predictive analytics. Tools that favor certain natural languages, frameworks, or
+recommendation systems, or predictive analytics. Tools that favour certain natural languages, frameworks, or
 problem-solving paradigms could marginalise developers from underrepresented regions or backgrounds.
 
 __4. Programmers as Ethical Stewards__
@@ -213,12 +213,12 @@ decisions are made, fostering trust.
 __5. Educational Transformation__
 
 Education systems must adapt to prepare future developers for an AI-driven programming landscape. Instead of
-emphasising syntax, education should prioritize conceptual thinking, debugging strategies, and creativity to
+emphasising syntax, education should prioritise conceptual thinking, debugging strategies, and creativity to
 equip students for working alongside AI. Developers must learn to identify and mitigate biases in AI outputs,
 making ethics a cornerstone of programming education. Encouraging knowledge in fields like mathematics,
 cognitive science, and ethics ensures programmers can approach AI challenges holistically.
 
-__6. Democratization vs. Centralization__
+__6. Democratization vs. Centralisation__
 
 AI tools democratise programming by making development more accessible, but they also risk centralising power.
 This might have been said about the early internet revolution also, which we have experience from.
@@ -236,11 +236,11 @@ While AI is a powerful tool, it should augment--not replace--human creativity an
 Humans must define the problems worth solving and set the goals for AI systems to pursue.
 Developers should actively question and refine AI-generated solutions to maintain innovation and quality.
 Collaborative workflows, where humans focus on creative and strategic tasks while AI handles repetitive work,
-can preserve the essence of programming as a creative endeavor.
+can preserve the essence of programming as a creative endeavour.
 
 __8. Addressing the Risk of Over-Consumerism__
 
-If programmers and users alike lean towards consumerism, innovation could stagnate. To counter thise
+If programmers and users alike lean towards consumerism, innovation could stagnate. To counter these
 encourage individuals and organisations to contribute to open-source projects, create custom solutions,
 and invest in exploratory research. Promote communities and platforms that underlines the process of
 building and experimenting, rather than solely consuming AI-driven products. Provide grants, recognition,
@@ -262,8 +262,8 @@ accessibility, and inclusivity for developers and users alike.
 
 
 The interplay of AI, consumerism, and innovation presents a complex challenge for programming and computing.
-While there are undeniable risks, proactive strategies--emphasizing education, collaboration, ethical
-responsibility, and democratization--can ensure that AI amplifies rather than undermines human creativity.
+While there are undeniable risks, proactive strategies--emphasising education, collaboration, ethical
+responsibility, and democratisation--can ensure that AI amplifies rather than undermines human creativity.
 The field's future depends on balancing efficiency with ingenuity, ensuring that the essence of programming
 remains rooted in curiosity, exploration, and a drive to create.
 

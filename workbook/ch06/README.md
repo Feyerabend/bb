@@ -1,7 +1,7 @@
 
 ## Philosophy and Methodology
 
-This folder for the chapter on "crafting", provides a rich and multifaceted exploration of software development, touching
+This folder for the chapter on "crafting," provides a rich and multifaceted exploration of software development, touching
 on various themes and perspectives. One central theme is the art and discipline of writing high-quality code. Several
 discussions emphasise the importance of creating clean, readable, and maintainable code, highlighting principles such as
 descriptive naming, avoiding redundancy, modular design, and ensuring code is testable. While the benefits of these practices
