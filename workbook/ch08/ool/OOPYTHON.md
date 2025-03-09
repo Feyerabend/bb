@@ -1,6 +1,18 @@
 
 ## Python OO: Overview
 
+Since you have made it this far, we assume that you are already well-acquainted with
+object-oriented programming in its various forms. However, to ensure clarity and provide
+a common foundation, we will still offer a brief overview of the key principles and
+concepts of the field. This introduction will serve as both a refresher for those with
+prior experience and a structured starting point for anyone looking to reinforce their
+understanding.
+
+Object-oriented programming (OOP) is a paradigm that models software design around objects,
+which represent entities with state (data) and behavior (methods). It is based on several
+fundamental principles--*encapsulation*, *inheritance*, and *polymorphism*--but deeper abstraction
+reveals its role in modularity, design architecture, and system evolution.
+
 #### 1. *Classes and Objects*
 - *Class*: A blueprint or template for creating objects. It defines the properties
   (attributes) and behaviors (methods) that the objects created from the class will have.
@@ -58,12 +70,7 @@
   operations like printing, comparison, and arithmetic.
 
 
-### Object-Oriented Programming: Examples and details
-
-Object-oriented programming (OOP) is a paradigm that models software design around objects,
-which represent entities with state (data) and behavior (methods). It is based on several
-fundamental principles--*encapsulation*, *inheritance*, and *polymorphism*--but deeper abstraction
-reveals its role in modularity, design architecture, and system evolution.
+### Examples and details
 
 
 __1. The Nature of Object Orientation: Ontology and Identity__
@@ -197,7 +204,7 @@ Patterns that govern object communication:
 - Observer Pattern: Event-driven programming.
 - Command Pattern: Encapsulating actions as objects.
 
-Example: Strategy Pattern
+*Example: Strategy Pattern*
 
 ```python
 class Strategy:
