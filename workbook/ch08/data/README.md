@@ -1,6 +1,14 @@
 
 ## Data Structures Overview
 
+No one can realistically learn or master every possible variant of abstract data structures, as the field
+is vast and continuously evolving. However, developing the ability to recognize when and why certain data
+structures are useful can be highly valuable. Gaining an intuition for selecting the right structure in
+different scenarios--whether for efficiency, simplicity, or maintainability--can make problem-solving more
+effective. Additionally, with the advent of large language models (LLMs), you can leverage AI to brainstorm
+and explore different data structure choices, comparing their strengths and trade-offs in various contexts.
+This can help refine your understanding and decision-making process when working with real-world applications.
+
 
 ### 1. AVL (Adelson-Velsky and Landis Tree)
 - *Type*: Self-balancing Binary Search Tree (BST)
