@@ -44,12 +44,13 @@ From a 2025 perspective, revisiting this work it captures a moment when computer
 their industrial skin, and programming was poised to redefine creativity and power.
 
 *A take on this lecture by NotebookLM [podcast](https://notebooklm.google.com/notebook/139e38f8-c57b-4fe0-aa51-473397c47a10/audio).*
-NB: For now it requires a Google account for login. Alternative: Download [podcast](CONDITION.wav) in WAVE-format.
-The podcast often says "they," but they really mean me. I also do not get how they so suddenly find
-topics I really do not discuss explicitly. But AI of today is a bit of hit and miss, probablity driven
-exploration ..
+NB: For now it requires a Google account for login. Alternative: Download [podcast](CONDITION2.wav) in WAVE-format.
+The podcast often says "they," but they really mean me.
 
-*There is also an element of circularity to consider: large language models (LLMs) analysing, interpreting,
+An erlier generated [podcast](CONDITION.wav) reveal that NotebookLM really didn't "read" the PDF
+that I included, but from other texts extrapolated content.
+
+*There is also an element of circularity to consider here: large language models (LLMs) analysing, interpreting,
 and generating content about other LLMs. This raises the question of whether such self-referential cycles
 could become a problem in future datasets, as they increasingly drift away from original sources and
 human-authored material. Over time, will the creative aspect of content generation become further detached
