@@ -294,6 +294,76 @@ __6. Runtime Debugging Support__
   useful for understanding or troubleshooting.
 
 
+```text
+//=========================================================================
+// VTABLE IMPLEMENTATION IN THE CODE GENERATOR
+//=========================================================================
+
+// OBJECT STRUCTURES
++-----------------+       +------------------+       +----------------+
+| Object          |       | Animal           |       | Dog            |
++-----------------+       +------------------+       +----------------+
+| vtable*         |<--+   | Object base      |<--+   | Animal base    |
++-----------------+   |   +------------------+   |   +----------------+
+                      |                          |
+                      |                          |
+// VTABLE STRUCTURES   |                          |
++-----------------+   |   +------------------+   |   +----------------+
+| ObjectVTable    |   |   | AnimalVTable     |   |   | DogVTable      |
++-----------------+   |   +------------------+   |   +----------------+
+| destroy() ptr   |---+   | base* (Object)   |---+   | base* (Animal) |
++-----------------+       | destroy() ptr    |       | destroy() ptr  |
+                          | speak() ptr      |-------| speak() ptr    |
+                          +------------------+       +----------------+
+                                    |                        |
+                                    |                        |
+// FUNCTION IMPLEMENTATIONS         |                        |
+                                    |                        |
+              +---------------------+                        |
+              |                                              |
+              v                                              v
++------------------------+                      +------------------------+
+| void Animal_speak()    |                      | void Dog_speak()       |
+| {                      |                      | {                      |
+|   printf("Animal...");  |                      |   printf("Woof!");    |
+| }                      |                      | }                      |
++------------------------+                      +------------------------+
+
+
+// CODE GENERATOR OUTPUT WORKFLOW
+//-----------------------------------------------------------------
+
+// 1. OBJECT CREATION
+Dog* dog = Dog_create();
+// - Allocates memory for Dog structure
+// - Sets vtable pointer: dog->base.base.vtable = &dog_vtable
+
+// 2. POLYMORPHIC USAGE
+Animal* animal = (Animal*)dog;
+// - Points to Dog object but with Animal* type
+
+// 3. METHOD CALL
+((AnimalVTable*)animal->base.vtable)->speak((Object*)animal);
+// - Follows vtable pointer in object
+// - Gets speak() function pointer from vtable
+// - Calls the function with the object as parameter
+// - Results in calling Dog_speak() even though pointer is Animal*
+
+
+// RUNTIME CALL RESOLUTION
+//-----------------------------------------------------------------
+
+animal->speak()  -->  [vtable lookup]  -->  Dog_speak()
+   ^                       |                   ^
+   |                       |                   |
+Animal* pointer     dog_vtable.speak     Dog implementation
+   |                       |                   |
+Points to Dog object     Points to          Outputs "Woof!"
+                      Dog_speak function
+```
+
+
+
 ### Comparing `compiler.py` and `compiler2.py`
 
 - *Scalability*: `compiler2.py` handles multiple classes and arbitrary inheritance, while `compiler.py`
