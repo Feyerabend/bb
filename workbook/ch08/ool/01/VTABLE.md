@@ -309,3 +309,7 @@ The evolution from `compiler.py` to `compiler2.py` illustrates how vtables scale
 features in a low-level language like C. By mapping method calls to runtime-resolved function pointers,
 vtables remain a lightweight, efficient solution for polymorphism. Whether manually crafted or generated,
 they bridge the gap between static code and dynamic behavior, making them a cornerstone of OOP implementation.
+
+
+> [!IMPORTANT]  
+> No animals were harmed in the making of this
