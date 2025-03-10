@@ -382,4 +382,4 @@ they bridge the gap between static code and dynamic behavior, making them a corn
 
 
 > [!IMPORTANT]  
-> No animals were harmed in the making of these compilers
+> No animals were harmed in the making of these compilers.
