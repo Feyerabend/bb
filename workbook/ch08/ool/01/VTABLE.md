@@ -307,7 +307,7 @@ __6. Runtime Debugging Support__
 +-----------------+   |   +------------------+   |   +----------------+
                       |                          |
                       |                          |
-// VTABLE STRUCTURES   |                          |
+// VTABLE STRUCTURES  |                          |
 +-----------------+   |   +------------------+   |   +----------------+
 | ObjectVTable    |   |   | AnimalVTable     |   |   | DogVTable      |
 +-----------------+   |   +------------------+   |   +----------------+
@@ -325,7 +325,7 @@ __6. Runtime Debugging Support__
 +------------------------+                      +------------------------+
 | void Animal_speak()    |                      | void Dog_speak()       |
 | {                      |                      | {                      |
-|   printf("Animal...");  |                      |   printf("Woof!");    |
+|   printf("Animal..."); |                      |   printf("Woof!");    |
 | }                      |                      | }                      |
 +------------------------+                      +------------------------+
 
