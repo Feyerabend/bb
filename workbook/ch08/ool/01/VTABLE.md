@@ -324,7 +324,7 @@ __6. Runtime Debugging Support__
               v                                              v
 +-------------------------+                      +------------------------+
 |  void Animal_speak() {  |                      |  void Dog_speak() {    |
-|    printf("Animal..."); |                      |    printf("Woof!");    |
+|    printf("Animal..");  |                      |    printf("Woof!");    |
 |  }                      |                      |  }                     |
 +-------------------------+                      +------------------------+
 
