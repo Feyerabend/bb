@@ -13,6 +13,7 @@ typedef struct {
     jmp_buf env;
     int state;
     int current_value;
+
     // object-specific properties
     int start;
     int increment;
@@ -159,12 +160,12 @@ int process_run(process_t* self) {
             longjmp(self->context, 1);  // yield
             
             // process first part of data
-            // ...
+            // ..
             self->state = STATE_PAUSED;
             longjmp(self->context, 1);  // yield
             
             // process second part of data
-            // ...
+            // ..
             self->state = STATE_STOPPED;
             return 0;
         }
@@ -235,7 +236,6 @@ derived_object_t* create_derived_object() {
     obj->base.process = derived_process;
     obj->base.finalize = derived_finalize;
     
-    // Initialize the object
     obj->base.initialize(obj);
     
     return obj;
@@ -374,4 +374,6 @@ int main() {
 }
 ```
 
-This example demonstrates how coroutines can help implement a clean, object-oriented approach in C with proper encapsulation, resource management, and state preservation.
+This example demonstrates how coroutines can help implement a clean,
+object-oriented approach in C with proper encapsulation, resource management,
+and state preservation.
