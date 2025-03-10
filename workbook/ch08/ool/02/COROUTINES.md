@@ -3,7 +3,6 @@
 
 Coroutines integrate well with OOP, allowing for:
 
-
 ### 1. Stateful Objects with Pausable Behavior
 
 ```python

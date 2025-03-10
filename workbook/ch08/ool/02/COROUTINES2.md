@@ -1,12 +1,78 @@
 
 ## Implementing Object-Oriented Programming in C with Coroutines
 
-Using coroutines in C can significantly enhance object-oriented implementations by providing elegant solutions for state management and behavior encapsulation. Since C lacks native OOP features, coroutines can bridge this gap effectively.
+Using coroutines in C can significantly enhance object-oriented implementations by
+providing elegant solutions for state management and behavior encapsulation. Since
+C lacks native OOP features, coroutines can bridge this gap effectively.
+
+We will look at some ideas presented through code. This might seem awkward as you usually
+study language constructions from the top down. However, in this case, approaching the concept
+from an example-driven perspective allows us to see the practical benefits before diving into
+the underlying mechanisms.
+
+One of the main challenges of implementing object-oriented behavior in C is maintaining
+state across function calls while keeping the interface clean and intuitive. Coroutines
+help achieve this by enabling functions to retain execution state between invocations,
+allowing for more natural and modular design patterns.
+
+We begin by implementing a simple coroutine mechanism using `setjmp` and `longjmp`.
+These standard C functions allow us to save and restore execution context, mimicking
+the behaviour of coroutine *suspension* and *resumption*.[^co] Consider the following example:
+
+[^co]: *Suspension* happens when `setjmp` captures the execution state and allows the function to exit or pause. *Resumption* occurs when `longjmp` restores that state, allowing execution to continue from where it left off. This technique enables stateful function execution across multiple calls, similar to how coroutines work in languages with built-in support.
+
+```c
+#include <stdio.h>
+#include <setjmp.h>
+
+typedef struct {
+    jmp_buf context;
+    int state;
+} Coroutine;
+
+void coroutine_init(Coroutine *c) {
+    c->state = 0;
+}
+
+void coroutine_function(Coroutine *c) {
+    if (setjmp(c->context) == 0) return;
+    switch (c->state) {
+        case 0:
+            printf("Step 1\n");
+            c->state = 1;
+            longjmp(c->context, 1);
+        case 1:
+            printf("Step 2\n");
+            c->state = 2;
+            longjmp(c->context, 1);
+        case 2:
+            printf("Done\n");
+            return;
+    }
+}
+
+int main() {
+    Coroutine c;
+    coroutine_init(&c);
+    for (int i = 0; i < 3; i++) {
+        coroutine_function(&c);
+    }
+    return 0;
+}
+```
+
+This basic example illustrates how we can structure an object-like coroutine to maintain
+execution state across function calls. Expanding on this idea, we can develop more
+sophisticated coroutine-based patterns to encapsulate behavior in a way that mimics
+object-oriented constructs in C. These patterns can serve both as conceptual tools for
+implementing object-oriented features in language design and as practical techniques for
+bringing object-oriented principles directly into C programming.
 
 
 #### 1. Object State Management
 
-Coroutines naturally maintain their state between invocations, providing a mechanism similar to object state:
+Coroutines naturally maintain their state between invocations, providing a mechanism
+similar to object state:
 
 ```c
 typedef struct {

@@ -1,29 +1,26 @@
-# Compiler and flags
-CC = gcc
-CFLAGS = -Wall -g
+PYTHON ?= python3
+CC ?= gcc
+CFLAGS ?= -Wall -g
 
-# Source file (change this to your .oo file)
-SOURCE = dog.oo
-BASE = $(basename $(SOURCE))
-OUTPUT = $(BASE)
+# Targets
+all: dog animal
 
-all: $(OUTPUT)
+# First compilation chain
+dog: dog.c
+	$(CC) $(CFLAGS) dog.c -o dog
 
-# Generate C code and compile
-$(OUTPUT): $(BASE).c
-	$(CC) $(CFLAGS) -o $@ $<
+# Generate dog.c from dog.oo
+dog.c: dog.oo compiler.py
+	$(PYTHON) compiler.py dog.oo
 
-# Rule to generate C code from OO-Lite
-%.c: %.oo compiler.py
-	python3 compiler.py $<
+# Second compilation chain
+animal: output.c
+	$(CC) $(CFLAGS) output.c -o animal
 
-# Run the program
-run: $(OUTPUT)
-	./$(OUTPUT)
+# Generate output.c
+output.c: compiler2.py
+	$(PYTHON) compiler2.py
 
 # Clean generated files
 clean:
-	rm -f $(BASE).c $(OUTPUT)
-	rm -Rf *.dSYM
-
-.PHONY: all run clean
+	rm -f dog animal dog.c output.c
