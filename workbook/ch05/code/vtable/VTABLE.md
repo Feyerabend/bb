@@ -6,7 +6,7 @@ mechanism (implementation) that enables *dynamic polymorphism*--the ability for 
 different types to respond uniquely to the same method call.
 
 
-### What Problem Do Vtables Solve?  
+### What Problem Do Vtables Solve?
 
 Imagine a scenario where a base class (e.g., "Animal") defines a general behavior (e.g., "makeSound()"),
 and derived classes ("Cat" or "Dog") override this behavior with their own implementations. The challenge

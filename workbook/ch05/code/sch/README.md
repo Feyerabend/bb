@@ -56,7 +56,7 @@ __4. Built-in Functions__
 
 - The interpreters include basic arithmetic operations (`+`, `-`, `*`), conditional (`if`),
   equality check (`eq?`), and list manipulation (`list`, `map`, `reduce` in the more advanced version).
-- These are implemented as C functions that operate on LispList arguments.
+- These are implemented as C functions that operate on `LispList` arguments.
 
 
 __5. Memory Management (Progressive Introduction)__
@@ -72,8 +72,8 @@ __5. Memory Management (Progressive Introduction)__
 
 __6. Tail Recursion Optimisation__
 
-- The eval_tail_recursive function attempts to optimise tail-recursive calls to prevent stack overflow.
-  (The 'continue' keyword in the eval_tail_recursive function demonstrates this.)
+- The `eval_tail_recursive` function attempts to optimise tail-recursive calls to prevent stack overflow.
+  (The 'continue' keyword in the `eval_tail_recursive` function demonstrates this.)
 
 
 ### Conclusion
