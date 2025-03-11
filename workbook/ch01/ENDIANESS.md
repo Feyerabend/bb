@@ -3,8 +3,9 @@
 
 Endianness refers to the order in which bytes are stored in memory when representing multi-byte
 values such as integers and floating-point numbers. The two most common byte orderings are:
+
 1. Big-endian: The most significant byte (MSB) is stored at the lowest memory address.
-- Example: The 4-byte integer 0x12345678 is stored in memory as:
+- Example: The 4-byte integer 0x12345678 (hexadecimal) is stored in memory as:
 
 ```plaintext
 Address:   0   1   2   3
@@ -21,9 +22,11 @@ Value:    78  56  34  12
 
 
 ### Other Byte Orderings
+
 - Middle-endian (Mixed-endian): Some architectures (rare today) use an unconventional mix of big
   and little-endian order. One example is PDP-11's 16-bit words where 32-bit values were stored
   as [byte1 byte0 byte3 byte2].
+
 - Bi-endian: Some modern processors (like ARM and PowerPC) support switching between big and
   little-endian modes.
 
@@ -35,7 +38,6 @@ Value:    78  56  34  12
 2. Networking: Always use network byte order (big-endian) when transmitting data between systems.
 3. File Formats: Some formats specify endianness (e.g., WAV is little-endian, JPEG may use big-endian).
 
-..
 
 
 ### Endianness in Python
@@ -189,7 +191,7 @@ These are useful when sending binary data across a network, as network protocols
 
 #### Memory Representation of Multi-Byte Values
 
-To visualize how numbers are stored in memory:
+To visualise how numbers are stored in memory:
 
 ```c
 #include <stdio.h>
