@@ -103,7 +103,7 @@ computationally overwhelming due to their combinatorial nature, similar to NP-co
 where exact solutions may be infeasible in practice.
 
 
-1. AI in Protein Folding
+__1. AI in Protein Folding__
 
 Protein folding involves predicting the three-dimensional structure of a protein based on
 its amino acid sequence--a problem of staggering complexity. Until recently, it was considered
@@ -118,7 +118,7 @@ While not always perfect, AlphaFold provides solutions that are "good enough" fo
 biological applications, such as drug discovery and understanding disease mechanisms.
 
 
-2. AI and approximation in *NP-like problems*
+__2. AI and approximation in *NP-like problems*__
 
 For NP-complete and combinatorial problems (like protein folding), AI does not necessarily
 guarantee exact solutions but excels at finding approximate solutions that are useful in
@@ -131,7 +131,7 @@ By identifying recurring patterns and structures in the data,
 AI bypasses brute-force methods and narrows the search to likely solutions.
 
 
-3. Why AI is effective in approximation
+__3. Why AI is effective in approximation__
 
 * AI models can adapt to diverse problem types, from physics simulations to combinatorial optimisation.
 
@@ -140,7 +140,8 @@ AI bypasses brute-force methods and narrows the search to likely solutions.
 * AI also scales well with computational resources, allowing it to tackle problems previously thought intractable.
 
 
-4. Other examples of "almost there" solutions
+
+__4. Other examples of "almost there" solutions__
 
 In the Travelling Salesman Problem (TSP) finding the exact shortest path is computationally infeasible
 for large instances, AI-powered methods often find near-optimal routes.
@@ -152,7 +153,7 @@ In games like Go or Chess, AI approximates optimal strategies using reinforcemen
 "superhuman" performance, without brute-forcing every possible outcome.
 
 
-5. Applications beyond protein folding
+__5. Applications beyond protein folding__
 
 AI accelerates the search for potential drug candidates by predicting interactions between molecules and proteins.
 
@@ -162,7 +163,7 @@ where exact computations are impossible.
 AI predicts material properties and molecular interactions, enabling faster development of novel materials.
 
 
-6. Limitations of AI Approximations
+__6. Limitations of AI Approximations__
 
 While AI excels in practical approximations, it has limitations:
 
@@ -173,7 +174,7 @@ While AI excels in practical approximations, it has limitations:
 - Computational Cost: While AI avoids brute force, training and running models can still be resource-intensive.
 
 
-7. How It Relates to P vs NP
+__7. How It Relates to P vs NP__
 
 The success of AI in approximating *NP-like problems*, such as protein folding,
 illustrates a pragmatic approach to tackling problems we might never solve exactly.
