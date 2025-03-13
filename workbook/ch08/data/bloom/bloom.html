@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom Filter Demonstration</title>
+    <style>
+        body {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        h1, h2 {
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .input-section {
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            padding: 8px;
+            margin-right: 10px;
+            width: 250px;
+        }
+        
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .bloom-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            margin-top: 20px;
+        }
+        
+        .bit {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            font-size: 12px;
+            transition: background-color 0.3s;
+        }
+        
+        .bit.set {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .operations {
+            margin-top: 20px;
+        }
+        
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .true {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        
+        .false {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        
+        .neutral {
+            background-color: #d9edf7;
+            color: #31708f;
+        }
+        
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border: 1px solid #ddd;
+        }
+        
+        .reset {
+            background-color: #f44336;
+        }
+        
+        .reset:hover {
+            background-color: #d32f2f;
+        }
+        
+        .advanced-options {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .hash-visualization {
+            margin-top: 15px;
+        }
+        
+        .hash-result {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .hash-item {
+            background-color: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bloom Filter Demonstration</h1>
+    
+    <div class="container">
+        <div class="description">
+            <p>A Bloom filter is a space-efficient probabilistic data structure that is used to test whether an element is a member of a set. <em>It can have false positives but no false negatives.</em></p>
+            <p>This demonstration shows how a Bloom filter works. You can add strings to the filter and then check if a string might be in the set.</p>
+        </div>
+        
+        <div class="advanced-options">
+            <h3>Filter Configuration</h3>
+            <div>
+                <label for="bit-size">Size (bits): </label>
+                <input type="number" id="bit-size" min="10" max="100" value="32">
+                <label for="hash-functions">Hash Functions: </label>
+                <input type="number" id="hash-functions" min="1" max="5" value="3">
+                <button id="initialize-filter">Initialize Filter</button>
+            </div>
+        </div>
+        
+        <div class="input-section">
+            <h2>Add to Filter</h2>
+            <input type="text" id="add-input" placeholder="Enter a string to add">
+            <button id="add-button">Add</button>
+        </div>
+        
+        <div class="input-section">
+            <h2>Check Membership</h2>
+            <input type="text" id="check-input" placeholder="Enter a string to check">
+            <button id="check-button">Check</button>
+        </div>
+        
+        <div class="operations">
+            <h2>Filter Operations</h2>
+            <button id="reset-button" class="reset">Reset Filter</button>
+            <div id="result" class="result neutral">Results will appear here</div>
+        </div>
+        
+        <div class="visualization">
+            <h2>Bloom Filter Visualization</h2>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: white;"></div>
+                    <span>0 (not set)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #4CAF50;"></div>
+                    <span>1 (set)</span>
+                </div>
+            </div>
+            <div id="bloom-filter" class="bloom-filter"></div>
+        </div>
+        
+        <div class="hash-visualization">
+            <h2>Hash Function Results</h2>
+            <div id="hash-results" class="hash-result">
+                <div class="hash-item">No data yet</div>
+            </div>
+        </div>
+        
+        <div class="explanation">
+            <h2>How It Works</h2>
+            <p>A Bloom filter works by using multiple hash functions to map elements to positions in a bit array:</p>
+            <ol>
+                <li><strong>Adding an element:</strong> Each element is hashed by multiple hash functions, and the bits at the resulting positions are set to 1.</li>
+                <li><strong>Checking for membership:</strong> To check if an element is in the set, it is hashed, and if all the positions are set to 1, the element might be in the set (but could be a false positive).</li>
+                <li><strong>False positives:</strong> If all the hashed positions are 1 but the element was never added, that's a false positive.</li>
+                <li><strong>No false negatives:</strong> If any position is 0, the element is definitely not in the set.</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        class BloomFilter {
+            constructor(size, hashFunctions) {
+                this.size = size;
+                this.hashFunctions = hashFunctions;
+                this.bits = new Array(size).fill(0);
+            }
+            
+            // Hash functions
+            hash1(str) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    hash = (hash * 31 + str.charCodeAt(i)) % this.size;
+                }
+                return Math.abs(hash);
+            }
+            
+            hash2(str) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    hash = (hash * 37 + str.charCodeAt(i)) % this.size;
+                }
+                return Math.abs(hash);
+            }
+            
+            hash3(str) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    hash = (hash * 17 + str.charCodeAt(i)) % this.size;
+                }
+                return Math.abs(hash);
+            }
+            
+            hash4(str) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    hash = (hash * 41 + str.charCodeAt(i)) % this.size;
+                }
+                return Math.abs(hash);
+            }
+            
+            hash5(str) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    hash = (hash * 53 + str.charCodeAt(i)) % this.size;
+                }
+                return Math.abs(hash);
+            }
+            
+            getHashFunctions() {
+                const functions = [
+                    this.hash1.bind(this),
+                    this.hash2.bind(this),
+                    this.hash3.bind(this),
+                    this.hash4.bind(this),
+                    this.hash5.bind(this)
+                ];
+                return functions.slice(0, this.hashFunctions);
+            }
+
+            getPositions(str) {
+                const positions = [];
+                const hashFunctions = this.getHashFunctions();
+                
+                for (const hashFn of hashFunctions) {
+                    positions.push(hashFn(str));
+                }
+                
+                return positions;
+            }
+            
+            add(str) {
+                const positions = this.getPositions(str);
+                
+                for (const pos of positions) {
+                    this.bits[pos] = 1;
+                }
+                
+                return positions;
+            }
+            
+            contains(str) {
+                const positions = this.getPositions(str);
+                
+                for (const pos of positions) {
+                    if (this.bits[pos] === 0) {
+                        return { result: false, positions };
+                    }
+                }
+                
+                return { result: true, positions };
+            }
+            
+            reset() {
+                this.bits = new Array(this.size).fill(0);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const addInput = document.getElementById('add-input');
+            const addButton = document.getElementById('add-button');
+            const checkInput = document.getElementById('check-input');
+            const checkButton = document.getElementById('check-button');
+            const resetButton = document.getElementById('reset-button');
+            const resultDiv = document.getElementById('result');
+            const bloomFilterDiv = document.getElementById('bloom-filter');
+            const hashResultsDiv = document.getElementById('hash-results');
+            const bitSizeInput = document.getElementById('bit-size');
+            const hashFunctionsInput = document.getElementById('hash-functions');
+            const initializeButton = document.getElementById('initialize-filter');
+            
+            let bloomFilter = new BloomFilter(32, 3);
+            renderBloomFilter();
+            
+            initializeButton.addEventListener('click', () => {
+                const size = parseInt(bitSizeInput.value);
+                const hashFunctions = parseInt(hashFunctionsInput.value);
+                
+                if (size >= 10 && size <= 100 && hashFunctions >= 1 && hashFunctions <= 5) {
+                    bloomFilter = new BloomFilter(size, hashFunctions);
+                    renderBloomFilter();
+                    resultDiv.textContent = `Filter initialized with ${size} bits and ${hashFunctions} hash functions`;
+                    resultDiv.className = 'result neutral';
+                    hashResultsDiv.innerHTML = '<div class="hash-item">No data yet</div>';
+                }
+            });
+            
+            addButton.addEventListener('click', () => {
+                const str = addInput.value.trim();
+                if (str) {
+                    const positions = bloomFilter.add(str);
+                    renderBloomFilter();
+                    resultDiv.textContent = `Added "${str}" to the filter`;
+                    resultDiv.className = 'result true';
+                    renderHashResults(str, positions);
+                    addInput.value = '';
+                }
+            });
+            
+            checkButton.addEventListener('click', () => {
+                const str = checkInput.value.trim();
+                if (str) {
+                    const { result, positions } = bloomFilter.contains(str);
+                    resultDiv.textContent = result 
+                        ? `"${str}" might be in the filter (but could be a false positive)`
+                        : `"${str}" is definitely not in the filter`;
+                    resultDiv.className = result ? 'result true' : 'result false';
+                    renderHashResults(str, positions);
+                    checkInput.value = '';
+                }
+            });
+            
+            resetButton.addEventListener('click', () => {
+                bloomFilter.reset();
+                renderBloomFilter();
+                resultDiv.textContent = 'Filter has been reset';
+                resultDiv.className = 'result neutral';
+                hashResultsDiv.innerHTML = '<div class="hash-item">No data yet</div>';
+            });
+            
+            function renderBloomFilter() {
+                bloomFilterDiv.innerHTML = '';
+                
+                for (let i = 0; i < bloomFilter.size; i++) {
+                    const bit = document.createElement('div');
+                    bit.className = 'bit';
+                    if (bloomFilter.bits[i] === 1) {
+                        bit.classList.add('set');
+                    }
+                    bit.textContent = i;
+                    bloomFilterDiv.appendChild(bit);
+                }
+            }
+            
+            function renderHashResults(str, positions) {
+                hashResultsDiv.innerHTML = '';
+                
+                const header = document.createElement('div');
+                header.textContent = `Hash results for "${str}":`;
+                hashResultsDiv.appendChild(header);
+                
+                positions.forEach((pos, index) => {
+                    const hashItem = document.createElement('div');
+                    hashItem.className = 'hash-item';
+                    hashItem.textContent = `Hash ${index + 1}: ${pos}`;
+                    hashResultsDiv.appendChild(hashItem);
+                });
+            }
+            
+            addInput.addEventListener('keypress', event => {
+                if (event.key === 'Enter') {
+                    addButton.click();
+                }
+            });
+            
+            checkInput.addEventListener('keypress', event => {
+                if (event.key === 'Enter') {
+                    checkButton.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
