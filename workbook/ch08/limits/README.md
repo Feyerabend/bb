@@ -1,13 +1,12 @@
 
 ## Limits
 
-The limits of computers can be categorised into several fundamental areas: *logical
-limits* ([Gödel, Church-Turing](./GODEL.md)),
-*computational complexity* ([P vs. NP](./PvsNP.md)),
-*physical limits* ([thermodynamics, quantum mechanics](./PHYSICAL.md)), and
-*practical limits*
-(energy consumption, memory constraints). Each of these imposes constraints
-on what computers can and cannot do.
+The limits of computers can be categorised into several fundamental areas:
+[*logical limits*](./GODEL.md) (Gödel, Church-Turing),
+[*computational complexity*](./PvsNP.md) (P vs. NP),
+[*physical limits*](./PHYSICAL.md) (thermodynamics, quantum mechanics), and
+[*practical limits*](./PRACTICAL.md) (energy consumption, memory constraints).
+Each of these imposes constraints on what computers can and cannot do.
 
 
 __1. Logical Limits: Gödel's Incompleteness Theorems and the Halting Problem__
