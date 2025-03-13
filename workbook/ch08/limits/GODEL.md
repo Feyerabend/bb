@@ -14,8 +14,8 @@ which are used to define what computers can and cannot do. It suggests that ther
 system, based on formal rules, can determine.
 
 Alan Turing (1936) extended this line of thought with the Halting Problem, proving that there is no general algorithm that can
-decide whether an arbitrary program will halt or run indefinitely. He formalized computation through the concept of a Turing
-machine, a mathematical model that captures the essence of algorithmic processing. Turing's proof used a diagonalization
+decide whether an arbitrary program will halt or run indefinitely. He formalised computation through the concept of a Turing
+machine, a mathematical model that captures the essence of algorithmic processing. Turing's proof used a diagonalisation
 argument, similar to Gödel's self-referential trick, by constructing a program that takes another program as input and
 determines whether it halts. If such an algorithm existed, one could construct a paradoxical program that contradicts
 itself, proving that no universal "halt-checking" algorithm can exist.
@@ -32,7 +32,7 @@ algorithmically possible. The thesis is not a formal theorem but rather a guidin
 science. It implies that any computational model--whether lambda calculus (Church's approach), register machines, or
 modern programming languages--is ultimately no more powerful than a Turing machine.
 
-One of the most significant consequences of the Church-Turing thesis is the realization that certain problems are
+One of the most significant consequences of the Church-Turing thesis is the realisation that certain problems are
 inherently non-algorithmic. This was demonstrated with Hilbert's *Entscheidungsproblem* (the "decision problem"), which
 sought a general algorithm to determine whether a given logical statement is provable. Turing's and Church's work showed
 that no such algorithm exists, meaning mathematical truth goes beyond what can be mechanically computed.

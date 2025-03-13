@@ -10,7 +10,7 @@ of energy, given by
 E = kT \ln 2
 ```
 
-where k is Boltzmann's constant (\approx 1.38 \times 10^{-23} J/K), and T is the absolute temperature in Kelvin. This
+where $\`k\`$ is Boltzmann's constant $\`\approx 1.38 \times 10^{-23} J/K\`$, and T is the absolute temperature in Kelvin. This
 result arises because erasing a bit corresponds to irreversibly increasing entropy, converting ordered information
 into heat. While logically reversible computations (such as those in reversible computing models) could, in principle,
 avoid this energy cost, practical computers constantly perform irreversible operations (like overwriting memory),
@@ -36,19 +36,19 @@ begin to suffer from quantum mechanical effects, such as:
   causing leakage currents that interfere with reliable computation.
 
 These quantum effects make classical digital computation unreliable at extremely small scales, limiting further
-transistor miniaturization. This has led to the exploration of new computing paradigms, including:
+transistor miniaturisation. This has led to the exploration of new computing paradigms, including:
 
 1. Quantum computing, which harnesses quantum superposition and entanglement to perform
    computations that classical systems struggle with, such as factoring large numbers
    efficiently (Shor's algorithm) or simulating quantum systems.
 
-2. Reversible computing, which aims to minimize energy dissipation by avoiding unnecessary
+2. Reversible computing, which aims to minimise energy dissipation by avoiding unnecessary
    erasure of information.
 
 3. Neuromorphic and alternative architectures, such as memristors and optical computing,
    which attempt to bypass the limitations of classical transistors.
 
 Ultimately, computation is fundamentally bound by the laws of physics, from the thermodynamics of information
-processing to the quantum mechanical behavior of transistors. While classical computing is facing physical
+processing to the quantum mechanical behaviour of transistors. While classical computing is facing physical
 constraints, emerging technologies like quantum computing and energy-efficient architectures offer potential
 paths forward.
