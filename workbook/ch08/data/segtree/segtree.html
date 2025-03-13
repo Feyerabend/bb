@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segment Tree Demo</title>
+    <script>
+        class SegmentTree {
+            constructor(arr) {
+                this.n = arr.length;
+                this.tree = new Array(4 * this.n).fill(0);
+                this.build(arr, 0, 0, this.n - 1);
+            }
+
+            build(arr, node, start, end) {
+                if (start === end) {
+                    this.tree[node] = arr[start];
+                } else {
+                    let mid = Math.floor((start + end) / 2);
+                    this.build(arr, 2 * node + 1, start, mid);
+                    this.build(arr, 2 * node + 2, mid + 1, end);
+                    this.tree[node] = this.tree[2 * node + 1] + this.tree[2 * node + 2];
+                }
+            }
+
+            update(index, value, node = 0, start = 0, end = this.n - 1) {
+                if (start === end) {
+                    this.tree[node] = value;
+                } else {
+                    let mid = Math.floor((start + end) / 2);
+                    if (index <= mid) {
+                        this.update(index, value, 2 * node + 1, start, mid);
+                    } else {
+                        this.update(index, value, 2 * node + 2, mid + 1, end);
+                    }
+                    this.tree[node] = this.tree[2 * node + 1] + this.tree[2 * node + 2];
+                }
+            }
+
+            query(left, right, node = 0, start = 0, end = this.n - 1) {
+                if (right < start || left > end) return 0;
+                if (left <= start && end <= right) return this.tree[node];
+                let mid = Math.floor((start + end) / 2);
+                return this.query(left, right, 2 * node + 1, start, mid) +
+                       this.query(left, right, 2 * node + 2, mid + 1, end);
+            }
+        }
+
+        let tree;
+        function buildTree() {
+            const arr = document.getElementById("inputArray").value.split(',').map(Number);
+            tree = new SegmentTree(arr);
+            document.getElementById("output").textContent = "Segment Tree Built: " + tree.tree.join(', ');
+        }
+
+        function updateTree() {
+            const index = Number(document.getElementById("updateIndex").value);
+            const value = Number(document.getElementById("updateValue").value);
+            tree.update(index, value);
+            document.getElementById("output").textContent = "Updated Tree: " + tree.tree.join(', ');
+        }
+
+        function queryTree() {
+            const left = Number(document.getElementById("queryLeft").value);
+            const right = Number(document.getElementById("queryRight").value);
+            const result = tree.query(left, right);
+            document.getElementById("queryOutput").textContent = "Query Result: " + result;
+        }
+    </script>
+</head>
+<body>
+    <h2>Segment Tree Demo</h2>
+    <p>Enter a comma-separated list of numbers to build the segment tree. You can then update values or query the sum of a range.</p>
+    <label>Enter Array (comma-separated): <input type="text" id="inputArray"></label>
+    <button onclick="buildTree()">Build Segment Tree</button>
+    <br><br>
+    <p>To update a value, enter the index and new value, then click "Update".</p>
+    <label>Update Index: <input type="number" id="updateIndex"></label>
+    <label>New Value: <input type="number" id="updateValue"></label>
+    <button onclick="updateTree()">Update</button>
+    <br><br>
+    <p>To query the sum of a range, enter the left and right indices, then click "Query".</p>
+    <label>Query Left Index: <input type="number" id="queryLeft"></label>
+    <label>Query Right Index: <input type="number" id="queryRight"></label>
+    <button onclick="queryTree()">Query</button>
+    <br><br>
+    <p id="output"></p>
+    <p id="queryOutput"></p>
+</body>
+</html>
