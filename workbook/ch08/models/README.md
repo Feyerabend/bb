@@ -2,8 +2,7 @@
 # Workbook
 
 
-
-|Programming Model/Paradigm/	|Features|
+|Programming Model / Paradigm	|Important Features|
 |--|--|
 |Functional Programming	|First-class functions, immutability, higher-order functions, recursion, lazy evaluation, pure functions, generics|
 |Object-Oriented Programming	|Encapsulation, inheritance, polymorphism, abstraction, method overloading/overriding, interfaces/abstract classes, generics|
@@ -13,5 +12,4 @@
 |Declarative Programming	|SQL, pattern matching, rules, constraints|
 |Procedural Programming	|Procedures, functions, control structures (loops, conditionals), modularity, call stack|
 |Reactive Programming	|Data streams, observers/subscribers, backpressure, push-based updates|
-
 
