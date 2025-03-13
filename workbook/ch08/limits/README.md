@@ -2,12 +2,13 @@
 ## Limits
 
 The limits of computers can be categorised into several fundamental areas: *logical
-limits* (Gödel, Church-Turing), *computational complexity* (P vs. NP), *physical limits*
-(thermodynamics, quantum mechanics), and *practical limits* (energy consumption, memory
-constraints). Each of these imposes constraints on what computers can and cannot do.
+limits* (Gödel, Church-Turing), *computational complexity* ([P vs. NP](./PvsNP.md)),
+*physical limits* (thermodynamics, quantum mechanics), and *practical limits*
+(energy consumption, memory constraints). Each of these imposes constraints
+on what computers can and cannot do.
 
 
-__1. Logical Limits: Gödel’s Incompleteness Theorems and the Halting Problem__
+__1. Logical Limits: Gödel's Incompleteness Theorems and the Halting Problem__
 
 Gödel's incompleteness theorems (1931) show that in any sufficiently powerful formal
 system (such as arithmetic), there exist true statements that cannot be proven within
@@ -21,7 +22,7 @@ meaning no computer can solve them in finite time.
 
 Church-Turing thesis (1936) posits that any "effectively computable" function can be
 computed by a Turing machine. This defines the fundamental scope of computability,
-showing that some problems (like the Entscheidungsproblem) have no algorithmic solution.
+showing that some problems (like the *Entscheidungsproblem*) have no algorithmic solution.
 
 
 __2. Computational Complexity: P vs. NP and Beyond__
@@ -41,8 +42,8 @@ based on computational resources.
 __3. Physical Limits: Energy, Heat, and Quantum Mechanics__
 
 Computation is bound by physical laws. The Landauer Limit states that erasing one bit
-of information requires a minimum amount of energy (about $\`kT \ln 2\`$ Joules at temperature $\`T\`$).
-This imposes thermodynamic constraints on computation.
+of information requires a minimum amount of energy (about $\`kT \ln 2\`$ Joules
+at temperature $\`T\`$). This imposes thermodynamic constraints on computation.
 
 The speed of light and minimum transistor size also impose limits. As transistors shrink
 toward the atomic scale, quantum effects (uncertainty, tunnelling) make classical computation
