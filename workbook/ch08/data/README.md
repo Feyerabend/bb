@@ -222,6 +222,11 @@ Here are some starting points to explore.
 - *Operations*: Add, check (membership query).
 
 
+#### Dijkstra's Algorithm
+
+
+
+
 #### Disjoint Set (Union-Find)
 - *Type*: Data structure for partitioning a set into disjoint subsets
 - *Explanation*: Disjoint Set, or Union-Find, is used to keep track of a collection of disjoint sets and provides efficient methods for union and find operations. It uses techniques like path compression and union by rank to speed up these operations.
@@ -236,8 +241,15 @@ Here are some starting points to explore.
 - *Operations*: Insert, delete, traverse forwards/backwards.
 
 
-#### Fibonacci Heap
+#### Fenwick Tree
 ..
+
+#### Fibonacci Heap
+- *Type*: Advanced priority queue, heap-based
+- *Explanation*: A Fibonacci heap is a collection of heap-ordered trees with better amortized time complexity for operations like decrease-key compared to binary or binomial heaps. It supports quick merging and is particularly efficient for graph algorithms.
+- *Use Case*: Frequently used in Dijkstra's shortest path algorithm and network optimisation problems.
+- *Operations*: Insert, extract-min, decrease-key, delete, merge.
+
 
 #### Hash Table
 - *Type*: Data structure for key-value pairs
@@ -300,6 +312,22 @@ Here are some starting points to explore.
 - *Explanation*: A segment tree is a binary tree used to store intervals or segments. It allows querying and updating the values of array segments in O(log n) time.
 - *Use Case*: Used for problems involving range queries like sum, minimum, maximum, or GCD, especially when the array is large and requires frequent updates.
 - *Operations*: Build, query, update.
+
+
+#### Skip List
+..
+
+
+#### Splay Tree
+- *Type*: Self-adjusting binary search tree
+- *Explanation*: A splay tree performs a "splay" operation, moving accessed elements to the root using rotations, which helps keep frequently accessed elements near the top.
+- *Use Case*: Suitable for applications where recently accessed elements are likely to be accessed again, such as caches and garbage collection.
+- *Operations*: Insert, delete, search, splay (self-adjustment).
+
+
+#### Tread
+..
+
 
 #### Trie
 ..
