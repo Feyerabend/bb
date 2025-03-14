@@ -3,11 +3,11 @@
 
 Here are some project ideas, some of which can make use of the items found in the collection
 within the folder, while others will require you to create them from scratch. The first project
-(1) focuses on visualisation and provides a few examples to get you started. Using LLMs, as I have
-done in this case, can offer valuable insights into how trees and other data structures work,
-even if the primary focus isn't on implementing the visualisation programs themselves. Instead,
-the project shifts towards explaining abstract data types and gaining a deeper understanding
-of them through practical examples and demonstrations.
+(1) focuses on visualisation and provides a few examples to get you started. Using LLMs can
+offer valuable insights into how trees and other data structures work, even if the primary
+focus then isn't on implementing the visualisation programs themselves. Instead, the project
+shifts towards explaining abstract data types and gaining a deeper understanding of them
+through practical examples and demonstrations.
 
 
 ### Trees & Heaps
