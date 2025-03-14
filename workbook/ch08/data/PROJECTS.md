@@ -8,7 +8,7 @@ from scratch.
 Let's take the first project (1) as an example. This project focuses on visualisation
 and provides a few examples to get you started in the relevant folder. Using LLMs can
 offer valuable insights into how trees and other data structures work, even if the
-primary focus then isn't on unerstanding or implementing the visualisation programs
+primary focus then isn't on understanding or implementing the visualisation programs
 themselves. Instead, the project thus shifts towards explaining abstract data types
 and gaining a deeper understanding of them through practical examples and demonstrations.
 
