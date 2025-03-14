@@ -168,8 +168,8 @@ Here, the algorithm follows these steps:
 2. Pop them off in reverse order.
 
 Summary
-- Data: {5, 10, 15, 20} (raw numbers).
-- Stack ADT: Defines operations like push, pop, peek, is_empty.
+- Data: `{5, 10, 15, 20}` (raw numbers).
+- Stack ADT: Defines operations like `push`, `pop`, `peek`, `is_empty`.
 - Data Structure: Implemented using a linked list.
 - Algorithm: Uses the stack to reverse the order of numbers.
 
@@ -177,8 +177,8 @@ Summary
 ### Listing of Arbitrary Examples
 
 For a student of this field, understanding algorithms, data structures, and abstract data
-types is highly beneficial--not necessarily to memorise every detail, but to recognise when
-and why to use them. As modern programming shifts increasingly toward orchestrating systems
+types is highly beneficial--not necessarily to memorise every detail, but to recognise *when*
+and *why* to use them. As modern programming shifts increasingly toward orchestrating systems
 rather than writing everything from scratch, having a broad conceptual overview often proves
 more valuable than deep memorisation of specific algorithms.
 
@@ -223,8 +223,10 @@ Here are some starting points to explore.
 
 
 #### Dijkstra's Algorithm
-
-
+- *Type*: Graph algorithm (Shortest Path)
+- *Explanation*: Dijkstra's algorithm finds the shortest path from a single source vertex to all other vertices in a weighted graph with non-negative edges using a priority queue.
+- *Use Case*: Used in network routing, GPS navigation, and AI pathfinding.
+- *Operations*: Initialise, relax edges, extract-min, update distances.
 
 
 #### Disjoint Set (Union-Find)
@@ -241,8 +243,12 @@ Here are some starting points to explore.
 - *Operations*: Insert, delete, traverse forwards/backwards.
 
 
-#### Fenwick Tree
-..
+#### Fenwick Tree (Binary Indexed Tree, BIT)
+- *Type*: Data structure for cumulative frequency/range queries
+- *Explanation*: A Fenwick tree provides an efficient way to compute prefix sums and perform point updates in logarithmic time while using minimal space.
+- *Use Case*: Used in competitive programming, range sum queries, and frequency analysis.
+- *Operations*: Update, prefix sum query.
+
 
 #### Fibonacci Heap
 - *Type*: Advanced priority queue, heap-based
@@ -315,7 +321,10 @@ Here are some starting points to explore.
 
 
 #### Skip List
-..
+- *Type*: Probabilistic data structure for ordered sets
+- *Explanation*: A skip list is a layered linked list where elements can be accessed faster by skipping over nodes using additional pointers at higher levels. It provides logarithmic search time without explicit balancing.
+- *Use Case*: Used as an alternative to balanced search trees in databases, in-memory storage, and indexing systems.
+- *Operations*: Insert, delete, search, probabilistic balancing.
 
 
 #### Splay Tree
@@ -325,12 +334,19 @@ Here are some starting points to explore.
 - *Operations*: Insert, delete, search, splay (self-adjustment).
 
 
-#### Tread
-..
+#### Treap
+- *Type*: Randomised binary search tree
+- *Explanation*: A treap is a combination of a binary search tree (BST) and a heap, where keys follow BST properties, and priorities maintain a heap structure. This helps balance the tree probabilistically.
+- *Use Case*: Efficient for dynamic ordered data storage, such as in dynamic sets, maps, and range queries.
+- *Operations*: Insert, delete, search, rotation-based balancing.
 
 
-#### Trie
-..
+#### Trie (Prefix Tree)
+- *Type*: Tree-based string data structure
+- *Explanation*: A trie is a multi-way tree used for storing and searching strings efficiently. Each node represents a character, and paths form words.
+- *Use Case*: Used in autocomplete, dictionary applications, and IP routing.
+- *Operations*: Insert, search, delete, prefix matching.
+
 
 
 ### Summary Table of Data Structures
