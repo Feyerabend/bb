@@ -60,7 +60,7 @@ Algorithms are evaluated based on their time complexity (how fast they run) and 
 
 Bringing It All Together
 - Data is raw information (e.g., numbers, text).
-- Data structures define how to organize and store data (e.g., arrays, linked lists, trees).
+- Data structures define how to organise and store data (e.g., arrays, linked lists, trees).
 - Abstract data types (ADTs) describe what operations can be performed on data without specifying how they are implemented (e.g., Stack, Queue).
 - Algorithms are procedures for processing data using data structures (e.g., searching, sorting).
 
@@ -177,23 +177,23 @@ Summary
 ### Listing of Arbitrary Examples
 
 For a student of this field, understanding algorithms, data structures, and abstract data
-types is highly beneficial--not necessarily to memorize every detail, but to recognize when
+types is highly beneficial--not necessarily to memorise every detail, but to recognise when
 and why to use them. As modern programming shifts increasingly toward orchestrating systems
 rather than writing everything from scratch, having a broad conceptual overview often proves
-more valuable than deep memorization of specific algorithms.
+more valuable than deep memorisation of specific algorithms.
 
 Today, many problems can be solved using existing libraries, frameworks, or even AI-assisted
 coding tools. However, knowing the underlying principles allows developers to make informed
-decisions, such as choosing the right data structure for performance optimization or recognizing
+decisions, such as choosing the right data structure for performance optimisation or recognising
 when a certain algorithm would be inefficient. Instead of focusing on rote learning, students
-benefit more from developing algorithmic intuition--the ability to analyze problems and select
+benefit more from developing algorithmic intuition--the ability to analyse problems and select
 appropriate approaches based on trade-offs like time complexity, space usage, and ease of
 implementation.
 
 That said, in fields where performance and efficiency are critical, such as embedded systems,
 real-time computing, or advanced algorithmic problem-solving, a deeper understanding remains
 essential. Even in higher-level development, knowing the fundamentals can make debugging,
-optimizing, or extending code much more effective.
+optimising, or extending code much more effective.
 
 Ultimately, the key is balance: the focus should be on developing a broad understanding of
 algorithms and data structures while diving deeper when necessary. This approach ensures the
