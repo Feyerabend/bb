@@ -383,11 +383,3 @@ Common time complexities include `O(1)` for constant time algorithms, where the 
 
 
 
----
-
-Splay Tree
-Tread
-Dijkstra Algo
-Fenwick Tree
-Skip List
-
