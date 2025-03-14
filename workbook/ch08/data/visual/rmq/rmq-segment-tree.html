@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segment Tree Visualization for RMQ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        
+        h1, h2 {
+            color: #333;
+        }
+        
+        #container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        #array-container, #controls {
+            margin-bottom: 20px;
+        }
+        
+        #tree-container {
+            overflow-x: auto;
+        }
+        
+        .node {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            border: 2px solid #666;
+            text-align: center;
+            line-height: 40px;
+            margin: 5px;
+            font-weight: bold;
+        }
+        
+        .highlight {
+            background-color: #ffcccb;
+            border-color: #ff0000;
+        }
+        
+        .query-result {
+            background-color: #90ee90;
+            border-color: #008000;
+        }
+        
+        .tree-level {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .array-element {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 1px solid #333;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 5px;
+        }
+        
+        button {
+            padding: 8px 12px;
+            margin-right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        input {
+            padding: 8px;
+            width: 50px;
+            margin-right: 5px;
+        }
+        
+        #explanation {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Segment Tree Visualization for Range Minimum Query (RMQ)</h1>
+        
+        <div id="array-container">
+            <h2>Input Array</h2>
+            <div id="array-elements"></div>
+            <br>
+            <label for="array-input">Enter array (comma separated):</label>
+            <input type="text" id="array-input" value="1,3,2,7,9,11,8,5" style="width: 300px;">
+            <button onclick="updateArray()">Update Array</button>
+        </div>
+        
+        <div id="controls">
+            <h2>RMQ Query</h2>
+            <label for="start-range">Range start index:</label>
+            <input type="number" id="start-range" min="0" value="1">
+            
+            <label for="end-range">Range end index:</label>
+            <input type="number" id="end-range" min="0" value="5">
+            
+            <button onclick="performQuery()">Find Minimum</button>
+            <div id="query-result"></div>
+        </div>
+        
+        <div id="tree-container">
+            <h2>Segment Tree</h2>
+            <div id="segment-tree"></div>
+        </div>
+        
+        <div id="explanation">
+            <h2>How It Works</h2>
+            <p><strong>Segment Tree:</strong> A data structure that allows efficient range queries (like finding minimum value in a range) in O(log n) time.</p>
+            <p><strong>Building the tree:</strong></p>
+            <ul>
+                <li>Leaf nodes represent individual array elements</li>
+                <li>Each internal node stores the minimum value of its children</li>
+                <li>Root node stores the minimum value of the entire array</li>
+            </ul>
+            <p><strong>Query process:</strong></p>
+            <ul>
+                <li>Start at the root node</li>
+                <li>If current node's range is completely within our query range, return its value</li>
+                <li>If current node's range doesn't overlap with query range, ignore it</li>
+                <li>Otherwise, recursively query left and right children and combine results</li>
+            </ul>
+            <p>When you run a query above, nodes highlighted in <span style="color: red">red</span> are the ones visited during query processing, and the <span style="color: green">green</span> node shows the final result.</p>
+        </div>
+    </div>
+
+    <script>
+        let array = [1, 3, 2, 7, 9, 11, 8, 5];
+        let segmentTree = [];
+        
+        // Initialize the page
+        window.onload = function() {
+            updateArrayDisplay();
+            buildSegmentTree(array);
+            displaySegmentTree();
+        };
+        
+        // Update the array based on user input
+        function updateArray() {
+            const input = document.getElementById('array-input').value;
+            array = input.split(',').map(x => parseInt(x.trim()));
+            
+            // Reset query result
+            document.getElementById('query-result').innerHTML = '';
+            
+            updateArrayDisplay();
+            buildSegmentTree(array);
+            displaySegmentTree();
+        }
+        
+        // Display the array elements
+        function updateArrayDisplay() {
+            const arrayContainer = document.getElementById('array-elements');
+            arrayContainer.innerHTML = '';
+            
+            for (let i = 0; i < array.length; i++) {
+                const element = document.createElement('div');
+                element.className = 'array-element';
+                element.textContent = array[i];
+                element.title = `Index: ${i}`;
+                arrayContainer.appendChild(element);
+            }
+        }
+        
+        // Build the segment tree
+        function buildSegmentTree(arr) {
+            const n = arr.length;
+            const height = Math.ceil(Math.log2(n));
+            const maxSize = 2 * Math.pow(2, height) - 1;
+            
+            segmentTree = new Array(maxSize).fill(Infinity);
+            buildTreeUtil(arr, 0, n - 1, 0);
+        }
+        
+        function buildTreeUtil(arr, start, end, currentIndex) {
+            // Base case: leaf node
+            if (start === end) {
+                segmentTree[currentIndex] = arr[start];
+                return arr[start];
+            }
+            
+            // Recursively build left and right subtrees
+            const mid = Math.floor((start + end) / 2);
+            const leftMin = buildTreeUtil(arr, start, mid, 2 * currentIndex + 1);
+            const rightMin = buildTreeUtil(arr, mid + 1, end, 2 * currentIndex + 2);
+            
+            // Current node stores the minimum of left and right children
+            segmentTree[currentIndex] = Math.min(leftMin, rightMin);
+            return segmentTree[currentIndex];
+        }
+        
+        // Display the segment tree
+        function displaySegmentTree() {
+            const treeContainer = document.getElementById('segment-tree');
+            treeContainer.innerHTML = '';
+            
+            // Calculate the height of the tree
+            const n = array.length;
+            const height = Math.ceil(Math.log2(n));
+            
+            // Create levels of the tree
+            for (let h = 0; h <= height; h++) {
+                // Create a div for this level
+                const levelDiv = document.createElement('div');
+                levelDiv.className = 'tree-level';
+                
+                // Calculate start and end indices for this level
+                const startIdx = Math.pow(2, h) - 1;
+                const endIdx = Math.min(2 * Math.pow(2, h) - 2, segmentTree.length - 1);
+                
+                // Create nodes for this level
+                for (let i = startIdx; i <= endIdx; i++) {
+                    if (i < segmentTree.length && segmentTree[i] !== Infinity) {
+                        const nodeDiv = document.createElement('div');
+                        nodeDiv.className = 'node';
+                        nodeDiv.id = `node-${i}`;
+                        nodeDiv.textContent = segmentTree[i];
+                        
+                        // Calculate the range this node represents
+                        const range = getNodeRange(i, 0, array.length - 1);
+                        nodeDiv.title = `Range: [${range.start}, ${range.end}]`;
+                        
+                        levelDiv.appendChild(nodeDiv);
+                    }
+                }
+                
+                treeContainer.appendChild(levelDiv);
+            }
+        }
+        
+        // Calculate the range a node represents
+        function getNodeRange(nodeIndex, arrayStart, arrayEnd) {
+            if (nodeIndex === 0) {
+                return { start: arrayStart, end: arrayEnd };
+            }
+            
+            const parentIndex = Math.floor((nodeIndex - 1) / 2);
+            const parentRange = getNodeRange(parentIndex, arrayStart, arrayEnd);
+            
+            const mid = Math.floor((parentRange.start + parentRange.end) / 2);
+            
+            // Check if current node is a left or right child
+            if (nodeIndex === 2 * parentIndex + 1) {
+                // Left child
+                return { start: parentRange.start, end: mid };
+            } else {
+                // Right child
+                return { start: mid + 1, end: parentRange.end };
+            }
+        }
+        
+        // Perform RMQ and visualize the process
+        function performQuery() {
+            // Reset previous highlights
+            const nodes = document.querySelectorAll('.node');
+            nodes.forEach(node => {
+                node.classList.remove('highlight');
+                node.classList.remove('query-result');
+            });
+            
+            const startRange = parseInt(document.getElementById('start-range').value);
+            const endRange = parseInt(document.getElementById('end-range').value);
+            
+            // Validate range
+            if (startRange < 0 || endRange >= array.length || startRange > endRange) {
+                document.getElementById('query-result').innerHTML = 
+                    `<p style="color: red;">Invalid range! Must be 0 ≤ start ≤ end < ${array.length}</p>`;
+                return;
+            }
+            
+            // Track visited nodes and the result node
+            const visitedNodes = [];
+            let resultNodeIndex = null;
+            
+            // Perform RMQ
+            const result = queryRMQ(0, 0, array.length - 1, startRange, endRange, visitedNodes);
+            
+            // Highlight visited nodes
+            setTimeout(() => {
+                visitedNodes.forEach(idx => {
+                    const node = document.getElementById(`node-${idx}`);
+                    if (node) {
+                        node.classList.add('highlight');
+                    }
+                });
+                
+                // Highlight result node
+                if (resultNodeIndex !== null) {
+                    const resultNode = document.getElementById(`node-${resultNodeIndex}`);
+                    if (resultNode) {
+                        resultNode.classList.remove('highlight');
+                        resultNode.classList.add('query-result');
+                    }
+                }
+                
+                // Display result
+                document.getElementById('query-result').innerHTML = 
+                    `<p>Minimum value in range [${startRange}, ${endRange}] is: <strong>${result}</strong></p>`;
+            }, 100);
+        }
+        
+        function queryRMQ(index, segStart, segEnd, queryStart, queryEnd, visitedNodes) {
+            // Store visited node
+            visitedNodes.push(index);
+            
+            // If segment is completely outside query range
+            if (segEnd < queryStart || segStart > queryEnd) {
+                return Infinity;
+            }
+            
+            // If segment is completely inside query range
+            if (segStart >= queryStart && segEnd <= queryEnd) {
+                return segmentTree[index];
+            }
+            
+            // If segment partially overlaps with query range
+            const mid = Math.floor((segStart + segEnd) / 2);
+            const leftMin = queryRMQ(2 * index + 1, segStart, mid, queryStart, queryEnd, visitedNodes);
+            const rightMin = queryRMQ(2 * index + 2, mid + 1, segEnd, queryStart, queryEnd, visitedNodes);
+            
+            return Math.min(leftMin, rightMin);
+        }
+    </script>
+</body>
+</html>
