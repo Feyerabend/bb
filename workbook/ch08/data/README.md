@@ -71,7 +71,8 @@ Algorithms are evaluated based on their time complexity (how fast they run) and 
 Bringing It All Together
 - Data is raw information (e.g., numbers, text).
 - Data structures define how to organise and store data (e.g., arrays, linked lists, trees).
-- Abstract data types (ADTs) describe what operations can be performed on data without specifying how they are implemented (e.g., Stack, Queue).
+- Abstract data types (ADTs) describe what operations can be performed on data without specifying how they are
+  implemented (e.g., Stack, Queue).
 - Algorithms are procedures for processing data using data structures (e.g., searching, sorting).
 
 
@@ -94,10 +95,10 @@ These are just raw data values.
 __2. Abstract Data Type (Stack ADT)__
 
 The Stack ADT defines operations like:
-- push(x): Add x to the top of the stack.
-- pop(): Remove and return the top element.
-- peek(): View the top element without removing it.
-- isEmpty(): Check if the stack is empty.
+- `push(x)`: Add x to the top of the stack.
+- `pop()`: Remove and return the top element.
+- `peek()`: View the top element without removing it.
+- `isEmpty()`: Check if the stack is empty.
 
 Note that the ADT does not specify how the stack is implemented-only how it should behave.
 
@@ -184,7 +185,7 @@ Summary
 - Algorithm: Uses the stack to reverse the order of numbers.
 
 
-### Listing of Arbitrary Examples
+### A Selection of Examples
 
 For a student of this field, understanding algorithms, data structures, and abstract data
 types is highly beneficial--not necessarily to memorise every detail, but to recognise *when*
