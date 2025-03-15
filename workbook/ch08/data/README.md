@@ -184,7 +184,7 @@ Summary
 - Algorithm: Uses the stack to reverse the order of numbers.
 
 
-### Listing of Arbitrary Examples
+### A Selection of Examples
 
 For a student of this field, understanding algorithms, data structures, and abstract data
 types is highly beneficial--not necessarily to memorise every detail, but to recognise *when*
