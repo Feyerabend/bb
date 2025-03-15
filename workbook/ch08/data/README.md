@@ -9,6 +9,16 @@ effective. Additionally, with the advent of large language models (LLMs), you ca
 and explore different data structure choices, comparing their strengths and trade-offs in various contexts.
 This can help refine your understanding and decision-making process when working with real-world applications.
 
+This section dives into data structures, algorithms, and abstract data types with a fresh twist. It skips the
+usual beginner's intro, assuming you're already comfortable with the basics. Instead, it zooms in on giving
+you a big-picture view of the wide variety of code out there--stuff built on years of computer science
+breakthroughs. The approach here is "implementation first," (or "code first") meaning you'll jump straight into
+real code from the get-go. It’s hands-on: you wrestle with the code itself, then strip it down--maybe into
+you preferred pseudo-code--to really get what's going on under the hood. After that, you'll see how it all fits
+into real life, whether you're crunching numbers or wrangling strings. Starting with the code like this lets you
+piece together a solid understanding of how these core ideas play out in practice.
+
+
 #### Data
 
 Data refers to raw facts, numbers, characters, symbols, or other forms of unprocessed information that can be
