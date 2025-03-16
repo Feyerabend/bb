@@ -18,7 +18,8 @@ that Quine himself would likely be far from comfortable having his name associat
 The key point is that this serves as a viewpoint on AI, regardless of its origins, and is meant to provoke
 *discussion*. It is not intended to be memorised or followed rigidly, but rather to illustrate one possible
 perspective from which to begin reasoning. The goal is to stimulate *your* philosophical thinking about AI,
-rather than to offer a definitive interpretation of Quine.
+rather than to offer a definitive interpretation of Quine. So "Quine" in the following rather stands for a
+free-hand construction, and not the actual person.
 
 
 ### Prejudice, LLMs, and AI in a Quinean Framework
