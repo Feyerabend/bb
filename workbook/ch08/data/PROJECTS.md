@@ -11,6 +11,9 @@ offer valuable insights into how trees and other data structures work, even if t
 primary focus then isn't on understanding or implementing the visualisation programs
 themselves. Instead, the project thus shifts towards explaining abstract data types
 and gaining a deeper understanding of them through practical examples and demonstrations.
+Building on this you can translate the algorithms into another language, try to
+profile them to see what can be gained using one rather than the other. And so forth.
+
 
 
 ### Trees & Heaps
