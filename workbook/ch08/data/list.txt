@@ -47,6 +47,8 @@
 ./skipl.py
 ./splayt.c
 ./splayt.py
+./suffix.c
+./suffix.py
 ./treap.c
 ./treap.py
 ./trie.c
