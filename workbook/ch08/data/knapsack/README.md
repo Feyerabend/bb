@@ -4,7 +4,7 @@
 The *Knapsack Problem* is a classic optimisation problem in computer science and mathematics.
 It derives its name from the scenario of a hiker trying to pack the most valuable items into
 a knapsack without exceeding its weight limit. The problem has wide-ranging applications,
-including resource allocation, financial portfolio optimization, and logistics.
+including resource allocation, financial portfolio optimisation, and logistics.
 
 
 ### History of the Knapsack Problem
@@ -16,12 +16,12 @@ including resource allocation, financial portfolio optimization, and logistics.
      late 19th and early 20th centuries.
 
 2. *Mathematical Formulation*:
-   - The problem was later formalized in the 20th century as part of operations research and combinatorial
+   - The problem was later formalised in the 20th century as part of operations research and combinatorial
      optimisation.
 
 3. *Applications*:
    - The Knapsack Problem has been applied in various fields, including:
-     - *Finance*: Selecting investments to maximize returns without exceeding a budget.
+     - *Finance*: Selecting investments to maximise returns without exceeding a budget.
      - *Logistics*: Packing cargo into containers or trucks.
      - *Cryptography*: Designing secure systems based on hard-to-solve instances of the problem.
 
@@ -37,7 +37,7 @@ Given:
 - A knapsack with a maximum *weight capacity*.
 
 Goal:
-- Select a subset of items to maximize the total value without exceeding the knapsack's weight capacity.
+- Select a subset of items to maximise the total value without exceeding the knapsack's weight capacity.
 
 
 ### Variants of the Knapsack Problem
@@ -158,7 +158,7 @@ print("Maximum value in Knapsack:", knapsack(capacity, weights, values, n))
 #### 2. Greedy Algorithm (Fractional Knapsack)
 
 The *Fractional Knapsack Problem* can be solved using a *greedy algorithm*.
-The idea is to prioritize items with the highest value-to-weight ratio.
+The idea is to prioritise items with the highest value-to-weight ratio.
 
 
 ### Implementation in Python (Fractional Knapsack)
@@ -215,4 +215,5 @@ print("Maximum value in Fractional Knapsack:", fractional_knapsack(capacity, wei
    - Time Complexity: \(O(n \log n)\) due to sorting.
 
 3. *Applications*:
-   - Resource allocation, financial optimization, and logistics.
+   - Resource allocation, financial optimisation, and logistics.
+   
