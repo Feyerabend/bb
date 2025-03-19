@@ -23,6 +23,8 @@
 ./hashs.c
 ./heap.c
 ./heap.py
+./huffman.c
+./huffman.py
 ./kdtree.c
 ./kdtree.py
 ./kruskal.c
