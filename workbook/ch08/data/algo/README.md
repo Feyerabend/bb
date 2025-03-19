@@ -1,8 +1,7 @@
 
 Greedy Algorithms: Prim’s Algorithm, Activity Selection -- des. patt. selection
 
-Dynamic Programming: Fibonacci (DP version), Knapsack Problem, Longest Common Subsequence (LCS)
-
+Dynamic Programming: Fibonacci (DP version), Longest Common Subsequence (LCS)
 
 
 Not to include:
