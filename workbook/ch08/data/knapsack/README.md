@@ -7,7 +7,6 @@ a knapsack without exceeding its weight limit. The problem has wide-ranging appl
 including resource allocation, financial portfolio optimization, and logistics.
 
 
-
 ### History of the Knapsack Problem
 
 1. *Origins*:
@@ -30,7 +29,6 @@ including resource allocation, financial portfolio optimization, and logistics.
      cases. However, efficient algorithms exist for specific variants.
 
 
-
 ### Problem Definition
 
 Given:
@@ -39,7 +37,6 @@ Given:
 
 Goal:
 - Select a subset of items to maximize the total value without exceeding the knapsack's weight capacity.
-
 
 
 ### Variants of the Knapsack Problem
@@ -57,7 +54,6 @@ Goal:
    - Multiple knapsacks are available, each with its own capacity.
 
 
-
 ### Solutions to the Knapsack Problem
 
 #### 1. Dynamic Programming (0/1 Knapsack)
@@ -65,7 +61,6 @@ Goal:
 The *0/1 Knapsack Problem* can be solved using dynamic programming. The idea is to build a table where
 each cell `dp[i][w]` represents the maximum value achievable with the first `i` items and a knapsack
 capacity of `w`.
-
 
 
 ### Implementation in C (0/1 Knapsack)
@@ -112,7 +107,6 @@ int main() {
 ```
 
 
-
 ### Implementation in Python (0/1 Knapsack)
 
 ```python
@@ -142,7 +136,6 @@ print("Maximum value in Knapsack:", knapsack(capacity, weights, values, n))
 ```
 
 
-
 ### Explanation of the Dynamic Programming Approach
 
 1. *DP Table*:
@@ -161,12 +154,10 @@ print("Maximum value in Knapsack:", knapsack(capacity, weights, values, n))
    - The value `dp[n][capacity]` gives the maximum value achievable.
 
 
-
 #### 2. Greedy Algorithm (Fractional Knapsack)
 
 The *Fractional Knapsack Problem* can be solved using a *greedy algorithm*.
 The idea is to prioritize items with the highest value-to-weight ratio.
-
 
 
 ### Implementation in Python (Fractional Knapsack)
@@ -224,4 +215,3 @@ print("Maximum value in Fractional Knapsack:", fractional_knapsack(capacity, wei
 
 3. *Applications*:
    - Resource allocation, financial optimization, and logistics.
-
