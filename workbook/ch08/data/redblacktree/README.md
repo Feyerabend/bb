@@ -5,7 +5,7 @@ The point of this folder is to provide an opportunity to recognise and *compare 
 implementations* of the *same algorithm*, in this case across multiple programming languages.
 By examining these implementations, you may notice subtle variations--not only in syntax
 and structure due to language-specific paradigms, but also in certain aspects of the
-algorithm's behavior. Good documentation might therefore be of help for the programmer.
+algorithm's behaviour. Good documentation might therefore be of help for the programmer.
 
 For example, in the case of a red-black tree, the core algorithm does not explicitly
 dictate every detail of its implementation. While it enforces properties such as balancing
@@ -16,15 +16,15 @@ language-specific data structure constraints.
 
 This variability highlights an important aspect of algorithm design: even when working
 from a well-defined pseudo-code description, there is room for interpretation in how
-edge cases, efficiency optimizations, and data handling are approached.
+edge cases, efficiency optimisations, and data handling are approached.
 
 The pseudo-code for a red-black tree typically defines key operations such as insertion,
 deletion, rotations, and rebalancing. However, specific implementations may introduce
-additional logic to handle duplicate keys, enforce ordering constraints, or optimize
+additional logic to handle duplicate keys, enforce ordering constraints, or optimise
 performance in ways that are not explicitly covered in the abstract algorithm.
 
 By studying and comparing these implementations, you can develop a deeper understanding
-of both the algorithm itself and the impact of different programming paradigms on its realization.
+of both the algorithm itself and the impact of different programming paradigms on its realisation.
 
 
 ### Inserting an Item
@@ -33,7 +33,7 @@ In most conventional implementations of a red-black tree (as with other self-bal
 inserting a new node with an existing key usually replaces the previous entry rather than preserving both.
 This follows from the general property of binary search trees (BSTs), where each node has a unique key, and
 updates are handled by replacing the value associated with that key rather than storing duplicates. Some
-variants allow duplicate keys, but this is not the standard behavior.
+variants allow duplicate keys, but this is not the standard behaviour.
 
 
 #### Pseudo-code for Red-Black Tree Insertion
@@ -79,7 +79,7 @@ INSERT(T, z):
 #### Fixing Red-Black Properties After Insertion
 
 Since inserting a new node as red may violate the red-black properties, the tree needs
-to be restructured using rotations and recoloring.
+to be restructured using rotations and recolouring.
 
 ```plaintext
 INSERT_FIXUP(T, z):
@@ -108,7 +108,7 @@ INSERT_FIXUP(T, z):
 This insertion algorithm ensures that:
 - If a key already exists, its value is updated instead of inserting a duplicate node.
 - The new node is always added as red and then balanced using INSERT_FIXUP().
-- The tree remains balanced after insertion using rotations and recoloring.
+- The tree remains balanced after insertion using rotations and recolouring.
 
 
 ### Rotations in Red-Black Trees
@@ -197,7 +197,7 @@ child y of a node x should move up.
 
 #### Pseudo-code for Right Rotation
 
-```plainttext
+```plaintext
 RIGHT-ROTATE(T, x):
     y ← x.left  // Set y as the left child of x
     x.left ← y.right  // Move y’s right subtree to x’s left subtree
@@ -241,8 +241,9 @@ rotations to work. If a node is in a zig-zag pattern, a double rotation is neede
 
 
 #### Summary
+
 - Left rotation moves a right-heavy node down to balance the tree.
 - Right rotation moves a left-heavy node down to restore balance.
 - Double rotations (Left-Right or Right-Left) fix zig-zag patterns.
 - Different implementations may vary in pointer handling, recursion,
-  and data structure details, but the fundamental behavior remains the same.
+  and data structure details, but the fundamental behaviour remains the same.
