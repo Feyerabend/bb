@@ -10,9 +10,10 @@ including resource allocation, financial portfolio optimization, and logistics.
 ### History of the Knapsack Problem
 
 1. *Origins*:
-   - The Knapsack Problem was first formally introduced in the late 19th century by *Tobias Dantzig*,
-     who described it as a problem of selecting the most valuable items to carry in a knapsack without
-     exceeding its weight capacity.
+   - The origins of the Knapsack Problem can be traced back to early mathematical studies on
+     optimisation and decision-making. While the problem itself likely existed informally for
+     centuries in the context of resource allocation, it was first formally introduced in the
+     late 19th and early 20th centuries.
 
 2. *Mathematical Formulation*:
    - The problem was later formalized in the 20th century as part of operations research and combinatorial
