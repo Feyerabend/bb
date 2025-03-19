@@ -2,33 +2,27 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 typedef struct Node Node;
 typedef struct NodeVisitor NodeVisitor;
-
 
 typedef enum {
     EMPTY_NODE,
     NEXT_NODE
 } NodeType;
 
-
 struct Node {
     NodeType type;
     void* data;
     Node* next;
 
-
     void* (*accept)(Node*, NodeVisitor*);
 };
-
 
 struct NodeVisitor {
     void* (*for_empty_node)(NodeVisitor*, Node*);
     void* (*for_next_node)(NodeVisitor*, Node*);
     void* context; // holding visitor-specific data
 };
-
 
 void* empty_node_accept(Node* node, NodeVisitor* visitor) {
     return visitor->for_empty_node(visitor, node);
@@ -37,7 +31,6 @@ void* empty_node_accept(Node* node, NodeVisitor* visitor) {
 void* next_node_accept(Node* node, NodeVisitor* visitor) {
     return visitor->for_next_node(visitor, node);
 }
-
 
 Node* create_empty_node() {
     Node* node = malloc(sizeof(Node));
@@ -152,7 +145,6 @@ NodeVisitor* create_replace_visitor(void* r, void* o) {
     return visitor;
 }
 
-
 void* print_for_empty_node(NodeVisitor* visitor, Node* node) {
     printf("\n");
     return NULL;
@@ -266,9 +258,6 @@ int main() {
     gardener_replace(g, string_dup("0"), string_dup("1"));
     gardener_print_all_elements(g);
     gardener_replace(g, string_dup("0"), string_dup("1"));
-    
-    // free memory
-    gardener_free(g);
-    
+    gardener_free(g); // free memory
     return 0;
 }
