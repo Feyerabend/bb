@@ -27,6 +27,8 @@
 ./huffman.py
 ./kdtree.c
 ./kdtree.py
+./kmp.c
+./kmp.py
 ./kruskal.c
 ./kruskal.py
 ./list.c
@@ -35,6 +37,8 @@
 ./pqueue.py
 ./queue.c
 ./queue.py
+./rabin.c
+./rabin.py
 ./rmq.c
 ./rmq.py
 ./segtree.c
