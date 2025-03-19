@@ -9,10 +9,10 @@ to recursively sort elements around a pivot. The algorithm was first published i
 recognition for its simplicity and efficiency, becoming one of the most widely used sorting algorithms
 in computer science.
 
-Over the years, Quicksort has been refined and optimized, with improvements such as better pivot selectio
+Over the years, Quicksort has been refined and optimised, with improvements such as better pivot selectio
 strategies (e.g. median-of-three) and hybrid approaches that switch to simpler algorithms like Insertion
 Sort for small subarrays. Despite its worst-case time complexity of \(O(n^2)\), Quicksort's average-case
-performance of \(O(n \log n)\) and in-place sorting capability make it a favorite in practice. It has
+performance of \(O(n \log n)\) and in-place sorting capability make it a favourite in practice. It has
 influenced the design of many programming languages' standard libraries, including C's `qsort` and
 Python's `sorted` function. Today, Quicksort remains a cornerstone of algorithm design and a testament
 to the elegance of recursive problem-solving.
@@ -34,12 +34,12 @@ __1. *Index Calculation*__
   it calculates indices and sizes of these subarrays.
 - If the array is extremely large, the calculation of indices or sizes (e.g., `mid = (low + high) / 2`)
   can result in *integer overflow*. For example, if `low` and `high` are both close to the maximum value
-  of a 32-bit integer, their sum can exceed the maximum representable value, causing undefined behavior.
+  of a 32-bit integer, their sum can exceed the maximum representable value, causing undefined behaviour.
 
 
 __2. *Undefined Behavior*__
 
-- When integer overflow occurs, the behavior is undefined in C and C++. This can lead to crashes,
+- When integer overflow occurs, the behaviour is undefined in C and C++. This can lead to crashes,
   incorrect sorting, or security vulnerabilities.
 
 __3. *Real-World Impact*__
