@@ -1,5 +1,5 @@
 
-## Knaopsack
+## Knapsack Problem
 
 The *Knapsack Problem* is a classic optimisation problem in computer science and mathematics.
 It derives its name from the scenario of a hiker trying to pack the most valuable items into
