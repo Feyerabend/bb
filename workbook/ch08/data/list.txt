@@ -50,6 +50,8 @@
 ./msort.py
 ./pqueue.c
 ./pqueue.py
+./prims.c
+./prims.py
 ./rabin.c
 ./rabin.py
 ./rmq.c
