@@ -138,7 +138,11 @@ Here are some starting points to explore.
 - *Operations*: Insert, delete (extract), peek.
 
 
-#### Huffman
+#### Huffman Coding
+- *Type*: Greedy algorithm for lossless data compression
+- *Explanation*: Huffman Coding constructs an optimal prefix-free binary tree based on character frequencies, where more frequent characters get shorter codes and less frequent characters get longer codes. It minimises the average length of encoded messages.
+- *Use Case*: Used in data compression formats like JPEG, PNG, MP3, and in text compression applications such as ZIP files.
+- *Operations*: Compute character frequencies, build a priority queue, construct a Huffman tree, generate binary codes, encode and decode data.
 
 
 #### KD-Tree (K-Dimensional Tree)
