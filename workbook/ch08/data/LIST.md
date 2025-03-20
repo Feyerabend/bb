@@ -75,6 +75,13 @@ Here are some starting points to explore.
 - *Operations*: Initialize a queue, enqueue the starting node, dequeue and process nodes, enqueue unvisited neighbors, repeat until all reachable nodes are visited.
 
 
+#### B-Tree
+- *Type*: Self-balancing search tree
+- *Explanation*: A B-Tree is a balanced tree data structure designed for efficient insertion, deletion, and search operations, particularly in database systems and file systems. It maintains balance by ensuring that nodes have a minimum and maximum number of children, reducing the number of disk accesses required for operations. Unlike binary search trees, B-Trees allow multiple keys per node, making them well-suited for handling large amounts of data.
+- *Use Case*: Commonly used in databases (e.g., indexing in relational databases), file systems, and applications that require efficient large-scale search operations.
+- *Operations*: Insert, delete, search, split nodes, merge nodes, maintain balance.
+
+
 #### Dijkstra's Algorithm
 - *Type*: Graph algorithm (Shortest Path)
 - *Explanation*: Dijkstra's algorithm finds the shortest path from a single source vertex to all other vertices in a weighted graph with non-negative edges using a priority queue.
