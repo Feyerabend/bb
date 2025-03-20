@@ -36,8 +36,8 @@ Here are some starting points to explore.
 #### Activity Selection
 - *Type*: Greedy algorithm
 - *Explanation*: The Activity Selection algorithm solves the problem of selecting the maximum number of non-overlapping activities from a given set, where each activity has a defined start and end time. The greedy approach ensures that activities are chosen in a way that allows the most efficient use of available time.
-- *Use Case*: Commonly used in scheduling problems, such as booking meeting rooms, CPU job scheduling, and optimizing event planning where tasks must be performed without conflicts.
-- *Operations*: Sort activities by finish time, iterate through activities to select non-overlapping ones, maximize total count of selected activities.
+- *Use Case*: Commonly used in scheduling problems, such as booking meeting rooms, CPU job scheduling, and optimising event planning where tasks must be performed without conflicts.
+- *Operations*: Sort activities by finish time, iterate through activities to select non-overlapping ones, maximise total count of selected activities.
 
 
 #### AVL (Adelson-Velsky and Landis Tree)
@@ -70,9 +70,9 @@ Here are some starting points to explore.
 
 #### Breadth-First Search (BFS)
 - *Type*: Graph traversal algorithm
-- *Explanation*: Breadth-First Search (BFS) explores a graph or tree level by level, visiting all neighbors of a node before moving to the next level. It uses a queue to track discovered nodes and ensures all nodes at the current depth are processed before moving deeper.
+- *Explanation*: Breadth-First Search (BFS) explores a graph or tree level by level, visiting all neighbours of a node before moving to the next level. It uses a queue to track discovered nodes and ensures all nodes at the current depth are processed before moving deeper.
 - *Use Case*: Used in shortest path algorithms (like Dijkstra's algorithm for unweighted graphs), network broadcasting, AI pathfinding (e.g., in game development), and web crawling.
-- *Operations*: Initialize a queue, enqueue the starting node, dequeue and process nodes, enqueue unvisited neighbors, repeat until all reachable nodes are visited.
+- *Operations*: Initialise a queue, enqueue the starting node, dequeue and process nodes, enqueue unvisited neighbours, repeat until all reachable nodes are visited.
 
 
 #### B-Tree
