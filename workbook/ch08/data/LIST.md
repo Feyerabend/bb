@@ -177,11 +177,21 @@ Here are some starting points to explore.
 - *Type*: String comparison algorithm
 - *Explanation*: The Longest Common Subsequence (LCS) problem finds the longest subsequence that appears in the same relative order in both given sequences but not necessarily contiguously. It is widely used in text comparison, DNA sequence analysis, and diff tools.
 - *Use Case*: Useful in version control systems for detecting changes between files, bioinformatics for DNA sequence alignment, and natural language processing for similarity measurement.
-- *Operations*: Compute LCS length, reconstruct LCS, optimize space complexity.
+- *Operations*: Compute LCS length, reconstruct LCS, optimise space complexity.
 
 
+#### Merge Sort
+- *Type*: Divide and Conquer sorting algorithm
+- *Explanation*: Merge Sort recursively divides an array into smaller subarrays until each contains a single element, then merges them back in a sorted manner. This guarantees stable, $O(n \log n)$ time complexity sorting for worst, average, and best cases.
+- *Use Case*: Efficient for sorting large datasets, linked lists (due to non-contiguous memory), and external sorting (where data is too large for RAM).
+- *Operations*: Divide array, recursively sort subarrays, merge sorted subarrays.
 
-#### Merge Sort (+ parallel variant)
+
+#### Merge Sort, Parallel
+- *Type*: Parallelised Divide and Conquer sorting algorithm
+- *Explanation*: A variant of Merge Sort that utilises multiple processing units to sort different parts of the array concurrently, reducing execution time by leveraging parallel computation. This is often implemented using multi-threading or distributed computing frameworks.
+- *Use Case*: Suitable for high-performance computing environments, large-scale data processing, and parallel architectures (multi-core CPUs, GPUs, or distributed systems).
+- *Operations*: Parallel divide, concurrent sorting of subarrays, parallel or sequential merge of sorted results.
 
 
 #### Priority Queue
