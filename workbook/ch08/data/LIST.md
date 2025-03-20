@@ -47,6 +47,13 @@ Here are some starting points to explore.
 - *Operations*: Search, insert, delete, rotate.
 
 
+#### Breadth-First Search (BFS)
+- *Type*: Graph traversal algorithm
+- *Explanation*: Breadth-First Search (BFS) explores a graph or tree level by level, visiting all neighbors of a node before moving to the next level. It uses a queue to track discovered nodes and ensures all nodes at the current depth are processed before moving deeper.
+- *Use Case*: Used in shortest path algorithms (like Dijkstra's algorithm for unweighted graphs), network broadcasting, AI pathfinding (e.g., in game development), and web crawling.
+- *Operations*: Initialize a queue, enqueue the starting node, dequeue and process nodes, enqueue unvisited neighbors, repeat until all reachable nodes are visited.
+
+
 #### Binary Tree
 - *Type*: Hierarchical data structure
 - *Explanation*: A binary tree is a tree where each node has at most two children, typically referred to as the left and right child. It does not necessarily need to be balanced or sorted.
