@@ -26,6 +26,20 @@ ability to apply the right tools effectively, rather than merely recalling defin
 Here are some starting points to explore.
 
 
+#### A*
+- *Type*: Pathfinding and graph traversal algorithm
+- *Explanation*: A* is an informed search algorithm that finds the shortest path from a start node to a goal node using a heuristic function. It combines the cost to reach a node (g-cost) and an estimated cost to the goal (h-cost) to prioritise exploration.
+- *Use Case*: Widely used in AI for game development, robotics, GPS navigation, and network routing, where efficient pathfinding is required.
+- *Operations*: Initialise open and closed lists, evaluate neighbours based on cost functions, update paths dynamically, and reconstruct the optimal path once the goal is reached.
+
+
+#### Activity Selection
+- *Type*: Greedy algorithm
+- *Explanation*: The Activity Selection algorithm solves the problem of selecting the maximum number of non-overlapping activities from a given set, where each activity has a defined start and end time. The greedy approach ensures that activities are chosen in a way that allows the most efficient use of available time.
+- *Use Case*: Commonly used in scheduling problems, such as booking meeting rooms, CPU job scheduling, and optimizing event planning where tasks must be performed without conflicts.
+- *Operations*: Sort activities by finish time, iterate through activities to select non-overlapping ones, maximize total count of selected activities.
+
+
 #### AVL (Adelson-Velsky and Landis Tree)
 - *Type*: Self-balancing Binary Search Tree (BST)
 - *Explanation*: AVL trees maintain a balance condition by ensuring that the height difference between the left and right subtrees of any node is at most 1. After every insertion or deletion, the tree performs rotations to maintain this balance.
