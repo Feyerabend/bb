@@ -1,3 +1,5 @@
+./actives.c
+./actives.py
 ./astar.c
 ./astar.py
 ./avl.c
