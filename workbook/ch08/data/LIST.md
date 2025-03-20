@@ -82,6 +82,13 @@ Here are some starting points to explore.
 - *Operations*: Insert, delete, search, split nodes, merge nodes, maintain balance.
 
 
+#### Depth-First Search (DFS)
+- *Type*: Graph traversal algorithm
+- *Explanation*: Depth-First Search (DFS) explores a graph or tree by starting at a root node and diving as deep as possible along one branch before backtracking. It uses recursion or an explicit stack to keep track of visited nodes. DFS is useful for exploring all possible paths, detecting cycles, and solving problems that require exhaustive searches.
+- *Use Case*: Used in maze solving, pathfinding, topological sorting, cycle detection in graphs, and solving puzzles like Sudoku.
+- *Operations*: Visit nodes in depth-first order, track visited nodes, backtrack when needed, detect cycles, find connected components.
+
+
 #### Dijkstra's Algorithm
 - *Type*: Graph algorithm (Shortest Path)
 - *Explanation*: Dijkstra's algorithm finds the shortest path from a single source vertex to all other vertices in a weighted graph with non-negative edges using a priority queue.
