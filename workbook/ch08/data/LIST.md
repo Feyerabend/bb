@@ -54,7 +54,11 @@ Here are some starting points to explore.
 - *Operations*: Traversals (in-order, pre-order, post-order), search, insert, delete.
 
 
-#### Binary Search Tree
+#### Binary Search Tree (BST)
+- *Type*: Hierarchical data structure (tree-based)
+- *Explanation*: A Binary Search Tree (BST) is a node-based structure where each node has at most two children. The left subtree contains nodes with smaller values, while the right subtree contains nodes with larger values. This ordering enables efficient searching, insertion, and deletion.
+- *Use Case*: Used in databases for indexing, in-memory searching, and maintaining ordered data structures in applications like symbol tables and auto-suggestions.
+- *Operations*: Insert a node, delete a node, search for a value, traverse in-order (sorted order), pre-order, and post-order.
 
 
 #### Bloom Filter [Probabilistic]
