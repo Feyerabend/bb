@@ -145,7 +145,7 @@ making x its left child.
    Before rotation:           After rotation:
        x                          y
       / \                        / \
-     α   y        -->            x   γ
+     α   y        -->           x   γ
         / \                    / \
        β   γ                  α   β
 ```
@@ -189,7 +189,7 @@ child y of a node x should move up.
    Before rotation:           After rotation:
        x                          y
       / \                        / \
-     y   γ        -->            α   x
+     y   γ        -->           α   x
     / \                            / \
    α   β                          β   γ
 ```
