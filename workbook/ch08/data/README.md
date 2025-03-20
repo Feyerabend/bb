@@ -14,10 +14,15 @@ This section dives into data structures, algorithms, and abstract data types wit
 usual beginner's intro, assuming you're already comfortable with the basics. Instead, it zooms in on giving
 you a *big-picture view* of the wide variety of code out there--stuff built on years of computer science
 breakthroughs. The approach here is "implementation first," (or "code first") meaning you'll jump straight into
-real code from the get-go. It’s hands-on: you wrestle with the code itself, then strip it down--maybe into
+real code from the get-go. It's hands-on: you wrestle with the code itself, then strip it down--maybe into
 you preferred pseudo-code--to really get what's going on under the hood. After that, you'll see how it all fits
 into real life, whether you're crunching numbers or wrangling strings. Starting with the code like this lets you
 piece together a solid understanding of how these core ideas play out in practice.
+
+Your task is:
+- Get an overview of abstract data types, and algorithms you find interesting and useful,
+- Collect them, and develop them further, write test cases, change them to be more specific or more general.
+- Explore alternatives, and brainstorm around usefulness.
 
 
 #### Data
@@ -208,7 +213,7 @@ real-time computing, or advanced algorithmic problem-solving, a deeper understan
 essential. Even in higher-level development, knowing the fundamentals can make debugging,
 optimising, or extending code much more effective.
 
-Ultimately, the key is balance: the focus should be on developing a broad understanding of
+Ultimately, the key is balance: the focus should be on developing a broad *understanding* of
 algorithms and data structures while diving deeper when necessary. This approach ensures the
 ability to apply the right tools effectively, rather than merely recalling definitions.
 Here are some starting points to explore.
@@ -217,7 +222,7 @@ Here are some starting points to explore.
 #### AVL (Adelson-Velsky and Landis Tree)
 - *Type*: Self-balancing Binary Search Tree (BST)
 - *Explanation*: AVL trees maintain a balance condition by ensuring that the height difference between the left and right subtrees of any node is at most 1. After every insertion or deletion, the tree performs rotations to maintain this balance.
-- *Use Case*: Efficient searching, insertion, and deletion in O(log n) time. Useful in scenarios where frequent insertions and deletions occur, and balanced search time is required.
+- *Use Case*: Efficient searching, insertion, and deletion in $O(log n)$ time. Useful in scenarios where frequent insertions and deletions occur, and balanced search time is required.
 - *Operations*: Search, insert, delete, rotate.
 
 
@@ -228,7 +233,10 @@ Here are some starting points to explore.
 - *Operations*: Traversals (in-order, pre-order, post-order), search, insert, delete.
 
 
-#### Bloom Filter
+#### Binary Search Tree
+
+
+#### Bloom Filter [Probabilistic]
 - *Type*: Probabilistic Data Structure
 - *Explanation*: A Bloom Filter is a space-efficient, probabilistic data structure used to test whether an element is a member of a set. It uses multiple hash functions to map elements to positions in a bit array. If all bits at the hashed positions are set to 1, the element might be in the set; otherwise, it is definitely not in the set. However, it can produce false positives, meaning it may incorrectly indicate that an element is in the set, but it will never produce false negatives.
 - *Use Case*: Bloom Filters are used in scenarios where space is a concern and false positives are acceptable, such as checking membership in large sets, web caching, spell-checking, and network protocols (e.g., in databases or blockchain systems).
@@ -265,7 +273,7 @@ Here are some starting points to explore.
 
 #### Fibonacci Heap
 - *Type*: Advanced priority queue, heap-based
-- *Explanation*: A Fibonacci heap is a collection of heap-ordered trees with better amortized time complexity for operations like decrease-key compared to binary or binomial heaps. It supports quick merging and is particularly efficient for graph algorithms.
+- *Explanation*: A Fibonacci heap is a collection of heap-ordered trees with better amortised time complexity for operations like decrease-key compared to binary or binomial heaps. It supports quick merging and is particularly efficient for graph algorithms.
 - *Use Case*: Frequently used in Dijkstra's shortest path algorithm and network optimisation problems.
 - *Operations*: Insert, extract-min, decrease-key, delete, merge.
 
@@ -282,6 +290,9 @@ Here are some starting points to explore.
 - *Explanation*: A heap is a special tree-based structure that satisfies the heap property: in a max-heap, the value of each node is greater than or equal to its children, and in a min-heap, the value is less than or equal to its children.
 - *Use Case*: Used in priority queues, heap sort, and for efficient access to the maximum or minimum element.
 - *Operations*: Insert, delete (extract), peek.
+
+
+#### Huffman
 
 
 #### KD-Tree (K-Dimensional Tree)
@@ -328,7 +339,7 @@ Here are some starting points to explore.
 
 #### Segment Tree
 - *Type*: Binary tree for range queries
-- *Explanation*: A segment tree is a binary tree used to store intervals or segments. It allows querying and updating the values of array segments in O(log n) time.
+- *Explanation*: A segment tree is a binary tree used to store intervals or segments. It allows querying and updating the values of array segments in $O(log n)$ time.
 - *Use Case*: Used for problems involving range queries like sum, minimum, maximum, or GCD, especially when the array is large and requires frequent updates.
 - *Operations*: Build, query, update.
 
@@ -347,7 +358,7 @@ Here are some starting points to explore.
 - *Operations*: Insert, delete, search, splay (self-adjustment).
 
 
-#### Treap
+#### Treap [probabilistic]
 - *Type*: Randomised binary search tree
 - *Explanation*: A treap is a combination of a binary search tree (BST) and a heap, where keys follow BST properties, and priorities maintain a heap structure. This helps balance the tree probabilistically.
 - *Use Case*: Efficient for dynamic ordered data storage, such as in dynamic sets, maps, and range queries.
