@@ -14,6 +14,19 @@ and gaining a deeper understanding of them through practical examples and demons
 Building on this you can translate the algorithms into another language, try to
 profile them to see what can be gained using one rather than the other. And so forth.
 
+Besides the visualisations, there are folders with some further explorations, than
+code only:
+
+* The *knapsack* problem is an optimization problem where the goal is to
+  maximise the total value of items placed in a knapsack without exceeding its
+  weight capacity.
+* The *listvisitor* design pattern is applied in list-handling algorithms to provide
+  flexible solutions that either allow easy extension of the implementation, or
+  fall back to enable optimisation for performance using more traditional approaches.
+* The *qsort* function has had a notable implementation flaw, serving as a reminder
+  that even well-established implementations of algorithms can contain errors.
+* The *redblacktree* serves as an exploration of various implementations across
+  different programming languages.
 
 
 ### Trees & Heaps
