@@ -47,13 +47,6 @@ Here are some starting points to explore.
 - *Operations*: Search, insert, delete, rotate.
 
 
-#### Breadth-First Search (BFS)
-- *Type*: Graph traversal algorithm
-- *Explanation*: Breadth-First Search (BFS) explores a graph or tree level by level, visiting all neighbors of a node before moving to the next level. It uses a queue to track discovered nodes and ensures all nodes at the current depth are processed before moving deeper.
-- *Use Case*: Used in shortest path algorithms (like Dijkstra's algorithm for unweighted graphs), network broadcasting, AI pathfinding (e.g., in game development), and web crawling.
-- *Operations*: Initialize a queue, enqueue the starting node, dequeue and process nodes, enqueue unvisited neighbors, repeat until all reachable nodes are visited.
-
-
 #### Binary Tree
 - *Type*: Hierarchical data structure
 - *Explanation*: A binary tree is a tree where each node has at most two children, typically referred to as the left and right child. It does not necessarily need to be balanced or sorted.
@@ -73,6 +66,13 @@ Here are some starting points to explore.
 - *Explanation*: A Bloom Filter is a space-efficient, probabilistic data structure used to test whether an element is a member of a set. It uses multiple hash functions to map elements to positions in a bit array. If all bits at the hashed positions are set to 1, the element might be in the set; otherwise, it is definitely not in the set. However, it can produce false positives, meaning it may incorrectly indicate that an element is in the set, but it will never produce false negatives.
 - *Use Case*: Bloom Filters are used in scenarios where space is a concern and false positives are acceptable, such as checking membership in large sets, web caching, spell-checking, and network protocols (e.g., in databases or blockchain systems).
 - *Operations*: Add, check (membership query).
+
+
+#### Breadth-First Search (BFS)
+- *Type*: Graph traversal algorithm
+- *Explanation*: Breadth-First Search (BFS) explores a graph or tree level by level, visiting all neighbors of a node before moving to the next level. It uses a queue to track discovered nodes and ensures all nodes at the current depth are processed before moving deeper.
+- *Use Case*: Used in shortest path algorithms (like Dijkstra's algorithm for unweighted graphs), network broadcasting, AI pathfinding (e.g., in game development), and web crawling.
+- *Operations*: Initialize a queue, enqueue the starting node, dequeue and process nodes, enqueue unvisited neighbors, repeat until all reachable nodes are visited.
 
 
 #### Dijkstra's Algorithm
