@@ -2,16 +2,17 @@
 ## Overview: Data, Data Structures, Abstract Data Types and Algorithms
 
 No one can realistically learn or master every possible variant of abstract data structures, as the field
-is vast and continuously evolving. However, developing the ability to recognise when and why certain data
+is vast and continuously evolving. However, developing the ability to recognise *when* and *why* certain data
 structures are useful can be highly valuable. Gaining an intuition for selecting the right structure in
-different scenarios--whether for efficiency, simplicity, or maintainability--can make problem-solving more
-effective. Additionally, with the advent of large language models (LLMs), you can leverage AI to brainstorm
-and explore different data structure choices, comparing their strengths and trade-offs in various contexts.
-This can help refine your understanding and decision-making process when working with real-world applications.
+different scenarios--whether for efficiency, for an optimal solution, simplicity, or maintainability--can
+make problem-solving more effective. Additionally, with the advent of large language models (LLMs), you
+can leverage AI to brainstorm and explore different data structure choices, comparing their strengths
+and trade-offs in various contexts. This can help refine your understanding and decision-making process
+when working with real-world applications.
 
 This section dives into data structures, algorithms, and abstract data types with a fresh twist. It skips the
 usual beginner's intro, assuming you're already comfortable with the basics. Instead, it zooms in on giving
-you a big-picture view of the wide variety of code out there--stuff built on years of computer science
+you a *big-picture view* of the wide variety of code out there--stuff built on years of computer science
 breakthroughs. The approach here is "implementation first," (or "code first") meaning you'll jump straight into
 real code from the get-go. It’s hands-on: you wrestle with the code itself, then strip it down--maybe into
 you preferred pseudo-code--to really get what's going on under the hood. After that, you'll see how it all fits
@@ -23,7 +24,8 @@ piece together a solid understanding of how these core ideas play out in practic
 
 Data refers to raw facts, numbers, characters, symbols, or other forms of unprocessed information that can be
 stored and manipulated by a computer. Data on its own has no meaning until it is processed or structured in
-a way that provides value. Examples of data include numbers, text, or binary values.
+a way that provides value. Examples of data include numbers, text, or binary values. This is the lesson we
+have learned from Chapter 1 on fundamentals.
 
 
 #### Data Structures
@@ -48,9 +50,9 @@ its implementation details. It defines a set of operations that can be performed
 how these operations are implemented. ADTs provide a high-level abstraction over data structures.
 
 For example:
-- List ADT: Defines operations like insert(), delete(), and find(), but it can be implemented using arrays or linked lists.
-- Stack ADT: Defines push(), pop(), and peek(), but it can be implemented using arrays or linked lists.
-- Queue ADT: Defines enqueue() and dequeue(), but the implementation could be an array, a linked list, or a circular buffer.
+- List ADT: Defines operations like `insert()`, `delete()`, and `find()`, but it can be implemented using arrays or linked lists.
+- Stack ADT: Defines `push()`, `pop()`, and `peek()`, but it can be implemented using arrays or linked lists.
+- Queue ADT: Defines `enqueue()` and `dequeue()`, but the implementation could be an array, a linked list, or a circular buffer.
 
 Think of ADTs as interfaces or blueprints that describe what a data structure should do, while the actual
 data structure provides the implementation.
@@ -61,19 +63,19 @@ data structure provides the implementation.
 We can also mention algorithms here. An algorithm is a step-by-step procedure or set of rules used to solve
 a problem or perform a computation. Algorithms operate on data structures to process and manipulate data efficiently.
 Some well-known algorithms include:
-- Sorting algorithms: Bubble Sort, Merge Sort, Quick Sort.
-- Searching algorithms: Binary Search, Linear Search.
-- Graph algorithms: Dijkstra's Algorithm, Breadth-First Search (BFS), Depth-First Search (DFS).
-- String algorithms: Knuth-Morris-Pratt (KMP) Algorithm, Rabin-Karp Algorithm.
+- Sorting algorithms: *Bubble Sort*, *Merge Sort*, *Quick Sort*.
+- Searching algorithms: *Binary Search*, *Linear Search*.
+- Graph algorithms: *Dijkstra's Algorithm*, *Breadth-First Search* (BFS), *Depth-First Search* (DFS).
+- String algorithms: *Knuth-Morris-Pratt* (KMP) Algorithm, *Rabin-Karp* Algorithm.
 
 Algorithms are evaluated based on their time complexity (how fast they run) and space complexity (how much memory they use).
 
 Bringing It All Together
-- Data is raw information (e.g., numbers, text).
-- Data structures define how to organise and store data (e.g., arrays, linked lists, trees).
+- Data is raw information (such as numbers or text).
+- Data structures define how to organise and store data (e.g. arrays, linked lists, trees).
 - Abstract data types (ADTs) describe what operations can be performed on data without specifying how they are
-  implemented (e.g., Stack, Queue).
-- Algorithms are procedures for processing data using data structures (e.g., searching, sorting).
+  implemented (e.g. Stack, Queue).
+- Algorithms are procedures for processing data using data structures (e.g. searching, sorting).
 
 
 ### Scenario: Implementing a Stack
@@ -189,15 +191,15 @@ Summary
 
 For a student of this field, understanding algorithms, data structures, and abstract data
 types is highly beneficial--not necessarily to memorise every detail, but to recognise *when*
-and *why* to use them. As modern programming shifts increasingly toward orchestrating systems
-rather than writing everything from scratch, having a broad conceptual overview often proves
+and *why* to use them. As modern programming shifts increasingly toward __orchestrating__ systems
+rather than __writing everything from scratch__, having a broad conceptual overview often proves
 more valuable than deep memorisation of specific algorithms.
 
 Today, many problems can be solved using existing libraries, frameworks, or even AI-assisted
 coding tools. However, knowing the underlying principles allows developers to make informed
 decisions, such as choosing the right data structure for performance optimisation or recognising
-when a certain algorithm would be inefficient. Instead of focusing on rote learning, students
-benefit more from developing algorithmic intuition--the ability to analyse problems and select
+when a certain algorithm would be inefficient. Instead of focusing on *rote learning*, students
+benefit more from developing *algorithmic intuition*--the ability to analyse problems and select
 appropriate approaches based on trade-offs like time complexity, space usage, and ease of
 implementation.
 
