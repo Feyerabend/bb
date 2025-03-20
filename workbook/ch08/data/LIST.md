@@ -152,6 +152,13 @@ Here are some starting points to explore.
 - *Operations*: Insert, query (range search, nearest neighbour).
 
 
+#### KMP Search (Knuth-Morris-Pratt Algorithm)
+- *Type*: String searching algorithm
+- *Explanation*: The KMP algorithm efficiently searches for a pattern within a text by preprocessing the pattern to create a partial match Longest Prefix Suffix (LPS) table, which allows it to skip unnecessary comparisons. This avoids backtracking in the text, making the search faster than naive approaches.
+- *Use Case*: Used in text editors for search functionality, pattern matching in DNA sequences, and substring search in large datasets.
+- *Operations*: Preprocess pattern (build LPS table), search for occurrences, optimise for repeated patterns.
+
+
 #### Kruskal's Algorithm
 - *Type*: Algorithm for Minimum Spanning Tree
 - *Explanation*: Kruskal's algorithm finds the minimum spanning tree of a graph. It sorts the edges of the graph in increasing order and adds edges to the spanning tree, ensuring no cycles form. Disjoint Set is typically used for cycle detection.
