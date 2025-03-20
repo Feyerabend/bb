@@ -316,6 +316,17 @@ Here are some starting points to explore.
 - *Operations*: Insert, delete, traverse, search.
 
 
+#### Longest Common Subsequence (LCS) [dynamic programming]
+- *Type*: String comparison algorithm
+- *Explanation*: The Longest Common Subsequence (LCS) problem finds the longest subsequence that appears in the same relative order in both given sequences but not necessarily contiguously. It is widely used in text comparison, DNA sequence analysis, and diff tools.
+- *Use Case*: Useful in version control systems for detecting changes between files, bioinformatics for DNA sequence alignment, and natural language processing for similarity measurement.
+- *Operations*: Compute LCS length, reconstruct LCS, optimize space complexity.
+
+
+
+#### Merge Sort (+ parallel variant)
+
+
 #### Priority Queue
 - *Type*: Queue with priority
 - *Explanation*: A priority queue is a data structure where each element is associated with a priority. Elements with higher priority are dequeued before elements with lower priority. Typically implemented using a heap.
@@ -328,6 +339,9 @@ Here are some starting points to explore.
 - *Explanation*: A queue is a collection where elements are added at the rear (enqueue) and removed from the front (dequeue), following the First In, First Out (FIFO) principle.
 - *Use Case*: Used in situations like task scheduling, breadth-first search, and buffering.
 - *Operations*: Enqueue, dequeue, peek.
+
+
+#### Quick Sort (+ parallel variant)
 
 
 #### RMQ (Range Minimum Query)
