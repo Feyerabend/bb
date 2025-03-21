@@ -295,36 +295,10 @@ Here are some starting points to explore.
 
 ### Summary Table of Data Structures
 
-| Data Structure       | Type                       | Time Complexity for Search/Insert/Delete | Common Use Cases                                     |
-|-|-|--|-|
-| *AVL Tree*          | Balanced Binary Tree       | O(log n) for all operations             | Efficient search, insertion, deletion in dynamic datasets |
-| *Binary Tree*       | Tree                       | O(n) for search, O(log n) for insert/delete | Hierarchical data representation                    |
-| *Bloom Filter*      | Probabilistic Data Structure  | O(k) for check (where k is the number of hash functions) and O(k) for add (where k is the number of hash functions) | Space-efficient membership testing with false positives  |
-| *Dijkstra's Algorithm*        | Graph Algorithm              | O((V + E) log V)                        | Shortest-path finding in graphs |
-| *Disjoint Set*      | Union-Find                 | O(log n) with path compression          | Dynamic connectivity problems, Kruskal's algorithm   |
-| *Double Linked List*| Linked List                | O(1) for insert/delete at both ends     | Browser history, undo/redo operations                |
-| *Fenwick Tree (BIT)*          | Indexed Tree                 | O(log n) update/query                   | Efficient range queries with prefix sums |
-| *Fibonacci Heap*              | Heap/Priority Queue          | O(1) insert, O(log n) extract-min       | Efficient priority queue operations in graph algorithms (e.g., Dijkstra's, Prim's) |
-| *Hash Table*        | Hashing                    | O(1) average case, O(n) worst case      | Fast lookup, insertion, caching                      |
-| *Heap*              | Tree (Binary)              | O(log n) for insert/delete, O(1) for peek | Priority Queue, Heap Sort                            |
-| *KD-Tree*           | Binary Tree                | O(log n) for search, O(log n) for nearest neighbour | Spatial data queries (e.g., nearest neighbours)       |
-| *Kruskal's Algorithm*| Algorithm                  | O(E log E) (where E is the number of edges) | Minimum Spanning Tree, network design               |
-| *Linked List*       | Linear Data Structure      | O(n) for search, O(1) for insert/delete | Dynamic data storage, memory management             |
-| *Priority Queue*    | Queue (Heap-based)         | O(log n) for all operations             | Task scheduling, Huffman coding                     |
-| *Queue*             | Linear Data Structure (FIFO)| O(1) for enqueue/dequeue                | Task scheduling, breadth-first search               |
-| *RMQ*               | Query Problem              | O(log n) for query/update               | Range minimum queries in dynamic arrays             |
-| *Segment Tree*      | Tree (Binary)              | O(log n) for query/update               | Range queries (sum, min, max) in dynamic arrays     |
-| *Skip List*                   | Probabilistic Linked Structure | O(log n) expected                      | Alternative to balanced trees for ordered lists |
-| *Splay Tree*                  | Self-adjusting Binary Search Tree | O(log n) amortised for all operations | Good for caches and frequently accessed elements |
-| *Treap*                       | Randomised Binary Search Tree | O(log n) expected                      | Balancing BSTs while keeping operations simple and efficient |
-| *Trie (Prefix Tree)*          | Tree for Strings             | O(m) (m = length of word)               | Fast string search, auto-completion, dictionary implementations |
-
-----
-
 
 | Data Structure / Algorithm | Type                       | Time Complexity for Search/Insert/Delete/Operations | Common Use Cases                                     |
-|----------------------------|----------------------------|----------------------------------------------------|-------------------------------------------------------|
-| *A* | Pathfinding/Graph          | Varies, typically better than Dijkstra's with heuristic | Game development, robotics, GPS navigation, network routing |
+|-|-|-|-|
+| *A** | Pathfinding/Graph          | Varies, typically better than Dijkstra's with heuristic | Game development, robotics, GPS navigation, network routing |
 | *Activity Selection* | Greedy Algorithm           | O(n log n) (sorting)                              | Scheduling problems (meeting rooms, CPU jobs)         |
 | *AVL Tree* | Balanced Binary Tree       | O(log n) for all operations                         | Efficient search, insertion, deletion in dynamic datasets |
 | *Binary Tree* | Tree                       | O(n) for search, O(log n) for insert/delete (if balanced)| Hierarchical data representation                    |
