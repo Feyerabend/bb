@@ -5,7 +5,7 @@
 
 * Daron Acemoglu on [wikipedia](https://en.wikipedia.org/wiki/Daron_Acemoglu).
 
-* [The Simple Macroeconomics of AI](https://shapingwork.mit.edu/wp-content/uploads/2024/05/Acemoglu_Macroeconomics-of-AI_May-2024.pdf).
+* [The Simple Macroeconomics of AI (2024)](https://shapingwork.mit.edu/wp-content/uploads/2024/05/Acemoglu_Macroeconomics-of-AI_May-2024.pdf).
 
 This paper provides an analysis of the potential macroeconomic implications of recent advances in Artificial Intelligence (AI),
 focusing on productivity, GDP, wages, and inequality. The author, *Daron Acemoglu*, uses a task-based model to evaluate claims
@@ -26,7 +26,7 @@ studies. Research by *Autor*, *Goldin*, *Brynjolfsson*[^erik], and others often 
 on AI's role in shaping the future of work and income distribution. Exploring different sources can help form a more complete
 picture of how AI might reshape economies in both the short and long term.
 
-[^erik]: A book I found interesting some years ago, but maybe somewhat obsolete today: https://en.wikipedia.org/wiki/The_Second_Machine_Age.
+[^erik]: A book I found interesting some years ago (2014), but maybe somewhat obsolete today: https://en.wikipedia.org/wiki/The_Second_Machine_Age.
 
 *   *Modest Productivity Gains:* The paper argues that so long as AI's microeconomic effects are driven by cost savings at the task level, its macroeconomic consequences can be estimated using a version of Hulten's theorem. Based on existing estimates of AI exposure and productivity improvements at the task level, the macroeconomic effects appear nontrivial but modest, with a predicted total factor productivity (TFP) increase of no more than 0.66% over 10 years. This estimate could be even lower (less than 0.53%) when considering that early evidence comes from easy-to-learn tasks, while future effects will involve harder tasks. This suggests that claims of rapid and unparalleled productivity growth may be overstated in the medium term.
 
