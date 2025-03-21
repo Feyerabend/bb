@@ -1,7 +1,7 @@
 
 ## Reflections on "The Simple Macroeconomics of AI"
 
-*Project: Discuss economic implications of AI*
+*Project: Discuss economic implications of AI.*
 
 * Daron Acemoglu on [wikipedia](https://en.wikipedia.org/wiki/Daron_Acemoglu).
 
