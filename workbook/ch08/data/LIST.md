@@ -319,6 +319,52 @@ Here are some starting points to explore.
 | *Treap*                       | Randomised Binary Search Tree | O(log n) expected                      | Balancing BSTs while keeping operations simple and efficient |
 | *Trie (Prefix Tree)*          | Tree for Strings             | O(m) (m = length of word)               | Fast string search, auto-completion, dictionary implementations |
 
+----
+
+
+| Data Structure / Algorithm | Type                       | Time Complexity for Search/Insert/Delete/Operations | Common Use Cases                                     |
+|----------------------------|----------------------------|----------------------------------------------------|-------------------------------------------------------|
+| *A* | Pathfinding/Graph          | Varies, typically better than Dijkstra's with heuristic | Game development, robotics, GPS navigation, network routing |
+| *Activity Selection* | Greedy Algorithm           | O(n log n) (sorting)                              | Scheduling problems (meeting rooms, CPU jobs)         |
+| *AVL Tree* | Balanced Binary Tree       | O(log n) for all operations                         | Efficient search, insertion, deletion in dynamic datasets |
+| *Binary Tree* | Tree                       | O(n) for search, O(log n) for insert/delete (if balanced)| Hierarchical data representation                    |
+| *Binary Search Tree (BST)* | Tree                       | O(log n) average, O(n) worst case                 | Databases, indexing, ordered data structures          |
+| *Bloom Filter* | Probabilistic Data Structure| O(k) for check and add (where k is hash functions)   | Space-efficient membership testing with false positives  |
+| *Breadth-First Search (BFS)*| Graph Traversal            | O(V + E)                                           | Shortest paths (unweighted), network broadcasting, web crawling |
+| *B-Tree* | Balanced Tree              | O(log n)                                           | Databases, file systems, large-scale search           |
+| *Depth-First Search (DFS)* | Graph Traversal            | O(V + E)                                           | Maze solving, pathfinding, cycle detection            |
+| *Dijkstra's Algorithm* | Graph Algorithm              | O((V + E) log V)                                   | Shortest-path finding in graphs                       |
+| *Disjoint Set (Union-Find)*| Data Structure             | O(log n) with path compression                      | Dynamic connectivity problems, Kruskal's algorithm   |
+| *Double Linked List* | Linked List                | O(1) for insert/delete at both ends                 | Browser history, undo/redo operations                |
+| *Fenwick Tree (BIT)* | Indexed Tree                 | O(log n) update/query                               | Efficient range queries with prefix sums             |
+| *Fibonacci Heap* | Heap/Priority Queue          | O(1) insert, O(log n) extract-min                   | Efficient priority queue operations in graph algorithms |
+| *Floyd-Warshall* | Graph Algorithm              | O(V^3)                                              | All-pairs shortest paths in weighted graphs           |
+| *Hash Table* | Hashing                    | O(1) average case, O(n) worst case                  | Fast lookup, insertion, caching                      |
+| *Heap* | Tree (Binary)              | O(log n) for insert/delete, O(1) for peek           | Priority Queue, Heap Sort                            |
+| *Huffman Coding* | Greedy Algorithm           | O(n log n)                                          | Data compression (JPEG, PNG, MP3)                    |
+| *KD-Tree* | Binary Tree                | O(log n) for search, O(log n) for nearest neighbour | Spatial data queries (nearest neighbours)             |
+| *KMP Search* | String Searching           | O(n + m) (n=text, m=pattern)                       | Text editors, DNA sequence analysis                   |
+| *Knapsack Problem* | Optimization Problem       | Varies (depends on type: 0/1, Fractional)           | Resource allocation, investment, cryptography        |
+| *Kruskal's Algorithm* | Graph Algorithm              | O(E log E) (where E is the number of edges)          | Minimum Spanning Tree, network design               |
+| *Linked List* | Linear Data Structure      | O(n) for search, O(1) for insert/delete (if known position) | Dynamic data storage, memory management             |
+| *Longest Common Subsequence (LCS)* | Dynamic Programming | O(m*n) (m,n are string lengths)                    | Version control, bioinformatics, similarity measurement |
+| *Merge Sort* | Sorting Algorithm          | O(n log n)                                          | Large datasets, linked lists, external sorting      |
+| *Merge Sort, Parallel* | Parallel Sorting           | O(n log n) (but faster due to parallelism)           | High-performance computing, large-scale data processing |
+| *Priority Queue* | Queue (Heap-based)         | O(log n) for all operations                         | Task scheduling, Dijkstra's algorithm, Huffman coding |
+| *Queue* | Linear Data Structure (FIFO)| O(1) for enqueue/dequeue                             | Task scheduling, breadth-first search               |
+| *Quick Sort* | Sorting Algorithm          | O(n log n) average, O(n^2) worst case               | General-purpose sorting, databases                   |
+| *Quick Sort, Parallel* | Parallel Sorting           | O(n log n) (but faster due to parallelism)           | Large datasets, high-performance computing          |
+| *Rabin-Karp String Search* | String Searching           | O(n + m) average, O(n*m) worst case                  | Multiple pattern searching, plagiarism detection     |
+| *Red-Black Tree* | Balanced Binary Tree       | O(log n) for all operations                         | Associative containers, databases, scheduling         |
+| *RMQ* | Query Problem              | O(log n) for query/update                             | Range minimum/maximum queries in dynamic arrays      |
+| *Segment Tree* | Tree (Binary)              | O(log n) for query/update                             | Range queries (sum, min, max) in dynamic arrays     |
+| *Skip List* | Probabilistic Linked Structure| O(log n) expected                                  | Alternative to balanced trees for ordered lists      |
+| *Splay Tree* | Self-adjusting Binary Tree | O(log n) amortised for all operations                 | Caches, frequently accessed elements                 |
+| *Treap* | Randomised Binary Search Tree| O(log n) expected                                  | Balancing BSTs for dynamic ordered data               |
+| *Trie (Prefix Tree)* | Tree for Strings             | O(m) (m = length of word)                             | Fast string search, auto-completion, dictionary implementations |
+
+
+
 #### Big-O
 
 Big-O notation is a mathematical representation used to describe the efficiency of an algorithm, specifically how its runtime or space requirements grow as the size of the input increases. It provides an upper bound on the growth rate of the algorithm's time complexity, allowing for the comparison of algorithms in terms of their worst-case performance. Big-O notation is often used to characterise the asymptotic behaviour of an algorithm in terms of the input size `n`. For example, an algorithm with a time complexity of `O(n)` indicates that the running time increases linearly with the input size, while `O(n^2)` suggests that the running time increases quadratically as the input size grows.
