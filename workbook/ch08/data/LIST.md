@@ -318,7 +318,7 @@ Here are some starting points to explore.
 | *Huffman Coding* | Greedy Algorithm           | O(n log n)                                          | Data compression (JPEG, PNG, MP3)                    |
 | *KD-Tree* | Binary Tree                | O(log n) for search, O(log n) for nearest neighbour | Spatial data queries (nearest neighbours)             |
 | *KMP Search* | String Searching           | O(n + m) (n=text, m=pattern)                       | Text editors, DNA sequence analysis                   |
-| *Knapsack Problem* | Optimization Problem       | Varies (depends on type: 0/1, Fractional)           | Resource allocation, investment, cryptography        |
+| *Knapsack Problem* | Optimisation Problem       | Varies (depends on type: 0/1, Fractional)           | Resource allocation, investment, cryptography        |
 | *Kruskal's Algorithm* | Graph Algorithm              | O(E log E) (where E is the number of edges)          | Minimum Spanning Tree, network design               |
 | *Linked List* | Linear Data Structure      | O(n) for search, O(1) for insert/delete (if known position) | Dynamic data storage, memory management             |
 | *Longest Common Subsequence (LCS)* | Dynamic Programming | O(m*n) (m,n are string lengths)                    | Version control, bioinformatics, similarity measurement |
