@@ -124,6 +124,13 @@ Here are some starting points to explore.
 - *Operations*: Insert, extract-min, decrease-key, delete, merge.
 
 
+#### Floyd-Warshall
+- *Type*: All-pairs shortest path algorithm
+- *Explanation*: The Floyd-Warshall algorithm finds the shortest paths between all pairs of vertices in a weighted graph. It works by iteratively updating a distance matrix using dynamic programming, considering each vertex as an intermediate step in potential shortest paths.
+- *Use Case*: Used in network routing, urban transportation planning, and analysing connectivity in graphs where all-pairs shortest paths are needed. It is particularly useful for dense graphs and when multiple shortest paths need to be computed efficiently.
+- *Operations*: Initialise distance matrix, iteratively update distances via intermediate vertices, extract shortest path information.
+
+
 #### Hash Table
 - *Type*: Data structure for key-value pairs
 - *Explanation*: A hash table stores key-value pairs and uses a hash function to compute an index into an array of buckets or slots, from which the desired value can be found. Collisions are resolved using methods like chaining or open addressing.
@@ -157,6 +164,13 @@ Here are some starting points to explore.
 - *Explanation*: The KMP algorithm efficiently searches for a pattern within a text by preprocessing the pattern to create a partial match Longest Prefix Suffix (LPS) table, which allows it to skip unnecessary comparisons. This avoids backtracking in the text, making the search faster than naive approaches.
 - *Use Case*: Used in text editors for search functionality, pattern matching in DNA sequences, and substring search in large datasets.
 - *Operations*: Preprocess pattern (build LPS table), search for occurrences, optimise for repeated patterns.
+
+
+#### Knapsack Problem
+- *Type*: Combinatorial optimisation problem
+- *Explanation*: The Knapsack Problem involves selecting items with given weights and values to maximise total value while staying within a weight limit. The problem exists in multiple variants, including the 0/1 Knapsack (items are either taken or not) and the Fractional Knapsack (items can be taken in fractional amounts). It is commonly solved using dynamic programming, greedy algorithms, or branch-and-bound techniques.
+- *Use Case*: Used in resource allocation, investment decision-making, load balancing, and cryptographic systems such as knapsack-based encryption schemes.
+- *Operations*: Compute maximum value, reconstruct item selection, optimise for space and time complexity.
 
 
 #### Kruskal's Algorithm
@@ -208,7 +222,32 @@ Here are some starting points to explore.
 - *Operations*: Enqueue, dequeue, peek.
 
 
-#### Quick Sort (+ parallel variant)
+#### Quick Sort
+- *Type*: Comparison-based sorting algorithm
+- *Explanation*: Quick Sort is a divide-and-conquer algorithm that selects a pivot element, partitions the array into elements smaller and greater than the pivot, and recursively sorts the partitions. It has an average-case time complexity of O(n \log n) but degrades to O(n^2) in the worst case when poorly implemented.
+- *Use Case*: Common in general-purpose sorting, databases, and applications where in-place sorting is needed with good average-case performance.
+- *Operations*: Partitioning, recursive sorting, randomised pivot selection for performance optimisation.
+
+
+#### Quick Sort, Parallel
+- *Type*: Parallelised version of Quick Sort
+- *Explanation*: Parallel Quick Sort distributes partitioning and sorting tasks across multiple threads or processors. After selecting a pivot, partitioning is performed in parallel, and recursive sorting of partitions is assigned to multiple threads to speed up execution. Performance gains depend on available cores and memory bandwidth.
+- *Use Case*: Useful for large datasets, high-performance computing, and multi-core processors where parallelism significantly reduces sorting time.
+- *Operations*: Parallel partitioning, multi-threaded recursion, load balancing to avoid bottlenecks.
+
+
+#### Rabin-Karp String Search
+- *Type*: String searching (pattern matching) algorithm
+- *Explanation*: Rabin-Karp is a hashing-based algorithm that finds occurrences of a pattern within a text by computing hash values. Instead of checking characters one by one, it uses rolling hash techniques to efficiently compare substrings. It has an average and best-case time complexity of $O(n + m)$ but may degrade to $O(nm)$ in the worst case due to hash collisions.
+- *Use Case*: Ideal for searching multiple patterns in large texts, plagiarism detection, and detecting substrings in DNA sequencing.
+- *Operations*: Compute rolling hash, compare hash values, verify matches, handle hash collisions efficiently.
+
+
+#### Red-Black Tree
+- *Type*: Self-balancing binary search tree
+- *Explanation*: A Red-Black Tree is a binary search tree with additional properties that ensure it remains balanced. Nodes are assigned colours (red or black), and rotations and recolouring operations maintain balance after insertions and deletions. The tree guarantees O(\log n) time complexity for search, insert, and delete operations.
+- *Use Case*: Used in balanced search structures such as associative containers (e.g., std::map in C++), databases, and scheduling algorithms where ordered data with efficient lookups and updates is required.
+- *Operations*: Insert with rebalancing, delete with rebalancing, rotations (left and right), and search.
 
 
 #### RMQ (Range Minimum Query)
