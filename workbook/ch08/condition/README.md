@@ -43,12 +43,17 @@ bridge between the concrete realities of 1990s computing and the abstract concer
 From a 2025 perspective, revisiting this work it captures a moment when computers were still shedding
 their industrial skin, and programming was poised to redefine creativity and power.
 
-*A take on this lecture by NotebookLM [podcast](https://notebooklm.google.com/notebook/139e38f8-c57b-4fe0-aa51-473397c47a10/audio).*
-NB: For now it requires a Google account for login. Alternative: Download [podcast](CONDITION2.wav) in WAVE-format.
-The podcast often says "they," but they really mean me.
+I generated a NotebookLM which compares my paper with Hanna Arendt's *The Human Condition* 1958. 
+The Human Condition, originally published in 1958, offers a profound examination of humanity's
+active life and its changing circumstances, especially in light of technological advancements.
+The book considers how modern society has redefined fundamental human activities such as labour,
+work, and action, impacting our political and social existence. This edition includes an insightful
+introduction by Margaret Canovan, highlighting the enduring relevance of Arendt's analysis. The
+text explores the distinction between the public and private realms and the implications of their
+evolving relationship for human freedom and the common world. Ultimately, the work encourages
+a reconsideration of the essential aspects of human existence in the modern age.
 
-An erlier generated [podcast](CONDITION.wav) reveal that NotebookLM really didn't "read" the PDF
-that I included, but from other texts extrapolated content.
+[NotebookLM on Arendt & my paper](./ARENDT.wav).
 
 *There is also an element of circularity to consider here: large language models (LLMs) analysing, interpreting,
 and generating content about other LLMs. This raises the question of whether such self-referential cycles

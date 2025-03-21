@@ -7,6 +7,9 @@
 
 * [The Simple Macroeconomics of AI (2024)](https://shapingwork.mit.edu/wp-content/uploads/2024/05/Acemoglu_Macroeconomics-of-AI_May-2024.pdf).
 
+* Google's NotebookLM reflections in a [WAVE-file](./MACRO.wav).
+
+
 This paper provides an analysis of the potential macroeconomic implications of recent advances in Artificial Intelligence (AI),
 focusing on productivity, GDP, wages, and inequality. The author, *Daron Acemoglu*, uses a task-based model to evaluate claims
 about large macroeconomic effects of AI, considering both automation and task complementarities.
