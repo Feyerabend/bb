@@ -46,6 +46,8 @@
 ./kmp.py
 ./kruskal.c
 ./kruskal.py
+./lcs.c
+./lcs.py
 ./list.c
 ./list.py
 ./msort.c
