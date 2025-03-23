@@ -1,4 +1,13 @@
 
+## Interpreter Pattern Example
+
+To showcase some object-oriented principles, we use an old (1999) but simple interpreter in Java.
+The original interpreter provides a basic foundation for understanding object-oriented programming,
+but it lacks many features that have become standard in modern object-oriented design. While it successfully
+implements inheritance and basic polymorphism through its expression hierarchy, the code falls short in
+areas like encapsulation, abstraction, and the application of further design patterns.
+
+
 ### Some Object-Oriented Features Demonstrated
 
 1. *Inheritance*: The code makes extensive use of class hierarchies:
@@ -38,7 +47,9 @@
 
 ### Overall Assessment
 
-This code is a good basic illustration of object-oriented principles, particularly inheritance and polymorphism in the context of an interpreter. Its expression hierarchy clearly shows how to model a domain using class inheritance.
+This code is a good basic illustration of object-oriented principles, particularly inheritance and polymorphism
+in the context of an interpreter. Its expression hierarchy clearly shows how to model a domain using class inheritance.
 
-However, it lacks several modern OO best practices and design patterns that would make it a comprehensive illustration of object-oriented programming. It's best viewed as a focused example of the Interpreter pattern rather than a complete showcase of OO capabilities.
-
+However, it lacks several modern OO best practices and design patterns that would make it a comprehensive illustration
+of object-oriented programming. It's best viewed as a focused example of the *Interpreter pattern* rather than a
+complete showcase of OO capabilities.

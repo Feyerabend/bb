@@ -1,5 +1,5 @@
 
-### Modern OO Features Added:
+### Modern OO Features Added
 
 1. *Method Overloading*
    - Multiple `evaluate()` methods with different parameters in `ExpressionEvaluator`
@@ -8,7 +8,7 @@
 
 2. *Constructor Chaining*
    - `IntegerExp` uses constructor chaining for validation
-   - `Context` chains constructors for different initialization scenarios
+   - `Context` chains constructors for different initialisation scenarios
    - `BinaryExpression` uses a common constructor for all subclasses
 
 3. *Static Factory Methods*
@@ -22,7 +22,7 @@
    - Supports method chaining with a terminal `build()` method
 
 5. *Additional Design Patterns*
-   - *Template Method Pattern*: Base behavior in `NumberExp` with specialized subclass implementations
+   - *Template Method Pattern*: Base behaviour in `NumberExp` with specialised subclass implementations
    - *Visitor Pattern*: `ExpressionVisitor` interface for traversing expressions
    - *Facade Pattern*: `ExpressionEvaluator` simplifies interaction with the system
    - *Immutability*: Expression objects are immutable to prevent unexpected changes
