@@ -6,7 +6,7 @@ artificial intelligence (AI). While traditional AI includes rule-based systems
 and symbolic reasoning, deep learning focuses on learning patterns from data
 using neural networks. It has driven advances in computer vision, natural language
 processing, and reinforcement learning, making AI systems more autonomous and
-capable of generalizing from experience.
+capable of generalising from experience.
 
 However, deep learning is still a form of narrow AI--it excels at specific tasks
 but lacks true general intelligence (AGI). Current research explores combining
@@ -29,7 +29,7 @@ for tasks like image recognition and sequence processing.
 
 Training a deep learning model typically involves backpropagation, an algorithm that
 adjusts the weights of the network by computing gradients of a loss function with respect
-to the model’s parameters. This process is optimized using variants of gradient descent,
+to the model’s parameters. This process is optimised using variants of gradient descent,
 such as stochastic gradient descent (SGD) or adaptive methods like Adam.
 
 Deep learning has been successful in various applications, including image and speech
@@ -76,9 +76,9 @@ Although RNNs were widely used in NLP, they have now been largely replaced by *t
 
 ### 2. Transformers and NLP
 
-Transformers revolutionized deep learning for NLP and are now widely used in models
+Transformers revolutionised deep learning for NLP and are now widely used in models
 like BERT, GPT, and T5. Unlike RNNs, they do not process data sequentially, making
-them more parallelizable and efficient.
+them more parallelisable and efficient.
 - Self-attention mechanism: Allows the model to focus on important words in a sequence,
   regardless of their position.
 - Positional encodings: Compensate for the lack of recurrence by injecting order
@@ -109,20 +109,20 @@ to make decisions by interacting with an environment. Unlike supervised learning
 based on rewards and penalties.
 - Q-learning: A fundamental RL algorithm where an agent learns a Q-table mapping states to actions.
 - Deep Q-Networks (DQN): Uses deep learning to approximate Q-values for high-dimensional inputs like images.
-- Policy gradient methods: Directly optimize the policy (e.g., PPO, A2C).
+- Policy gradient methods: Directly optimise the policy (e.g., PPO, A2C).
 
 Deep RL has been used in robotics, game playing (e.g., AlphaGo, OpenAI Five), and autonomous driving.
 
 
 
-### 5. Optimization Techniques in Deep Learning
+### 5. Optimisation Techniques in Deep Learning
 
-Deep learning models require efficient optimization strategies:
+Deep learning models require efficient optimisation strategies:
 - Gradient Descent: The foundation of learning in neural networks.
 - SGD (Stochastic Gradient Descent): Updates weights using small batches.
-- Adam: A more adaptive optimization method, commonly used in practice.
+- Adam: A more adaptive optimisation method, commonly used in practice.
 
-Regularization techniques like dropout, batch normalization, and weight decay help prevent overfitting.
+Regularisation techniques like dropout, batch normalisation, and weight decay help prevent overfitting.
 
 
 
