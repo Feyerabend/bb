@@ -1,12 +1,20 @@
 
 ## Java Object Structures
 
-This section covers the fundamental object structures in Java, which serve as the foundation for
-designing object-oriented programs. Java combines object-oriented principles with practical
-considerations to create a balanced programming environment suitable for many applications.
+In these folders, we explore Java, which has grown into a substantial programming language. 
+Since we haven't assumed any prior knowledge of Java (only C and Python), a brief introduction 
+is provided. There are also two implementations of a simple interpreter. The first implementation
+(in folder [01](./01/)) demonstrates the *Interpreter pattern* and fundamental object-oriented principles,
+and is included to give readers  a straightforward approach to the code. The second implementation
+(in folder [02](./02/)) illustrates the modern approach  to object-oriented programming in Java and
+includes more advanced constructs.
 
 
 ### Imperative Programming within Object-Orientation
+
+This section covers the fundamental object structures in Java, which serve as the foundation for
+designing object-oriented programs. Java combines object-oriented principles with practical
+considerations to create a balanced programming environment suitable for many applications.
 
 Java is an object-oriented language built on concepts like objects, classes, methods, inheritance,
 and instances. However, it also accommodates imperative programming within its object-oriented
