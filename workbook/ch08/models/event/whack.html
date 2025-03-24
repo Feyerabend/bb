@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whack-a-Mole: Event-Driven Programming Demo</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border-radius: 5px;
+        }
+        
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .hole {
+            background-color: #654321;
+            height: 100px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .mole {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 60%;
+            background-color: #a0522d;
+            border-radius: 50% 50% 0 0;
+            transition: bottom 0.1s;
+            bottom: -60%;
+        }
+        
+        .mole.up {
+            bottom: 0;
+        }
+        
+        .mole.bonked {
+            background-color: #ff6347;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .event-log {
+            height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            text-align: left;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .pattern-highlight {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #e6f7ff;
+            border-left: 5px solid #1890ff;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Whack-a-Mole</h1>
+    <p>An Event-Driven Programming Example</p>
+    
+    <div class="game-info">
+        <div>Score: <span id="score">0</span></div>
+        <div>Time: <span id="time">30</span>s</div>
+        <div>Level: <span id="level">1</span></div>
+    </div>
+    
+    <button id="start-button">Start Game</button>
+    
+    <div class="game-container" id="game-container">
+        <div class="hole" data-index="0"><div class="mole"></div></div>
+        <div class="hole" data-index="1"><div class="mole"></div></div>
+        <div class="hole" data-index="2"><div class="mole"></div></div>
+        <div class="hole" data-index="3"><div class="mole"></div></div>
+        <div class="hole" data-index="4"><div class="mole"></div></div>
+        <div class="hole" data-index="5"><div class="mole"></div></div>
+        <div class="hole" data-index="6"><div class="mole"></div></div>
+        <div class="hole" data-index="7"><div class="mole"></div></div>
+        <div class="hole" data-index="8"><div class="mole"></div></div>
+    </div>
+    
+    <div class="pattern-highlight">
+        <h3>Event Patterns Used:</h3>
+        <ul>
+            <li><strong>Observer Pattern</strong>: The Game class notifies GameObservers about game events</li>
+            <li><strong>Pub/Sub Pattern</strong>: EventBus used for system-wide communication</li>
+            <li><strong>Event Delegation</strong>: Single click handler on game container for all moles</li>
+            <li><strong>State Machine</strong>: Game states (ready, playing, paused, ended)</li>
+            <li><strong>Promise-based Events</strong>: Level transitions use Promises</li>
+        </ul>
+    </div>
+    
+    <h3>Event Log:</h3>
+    <div class="event-log" id="event-log"></div>
+    
+    <script>
+        /**
+         * EVENT BUS (Pub/Sub Pattern)
+         * Central event management for the game
+         */
+        class EventBus {
+            constructor() {
+                this.subscribers = {};
+                this.logEvent('EventBus initialized'); // Log initialization
+            }
+            
+            subscribe(event, callback) {
+                if (!this.subscribers[event]) {
+                    this.subscribers[event] = [];
+                }
+                this.subscribers[event].push(callback);
+                this.logEvent(`Subscribed to event: ${event}`);
+                return () => this.unsubscribe(event, callback);
+            }
+            
+            unsubscribe(event, callback) {
+                if (this.subscribers[event]) {
+                    this.subscribers[event] = this.subscribers[event].filter(cb => cb !== callback);
+                }
+            }
+            
+            publish(event, data) {
+                this.logEvent(`Event published: ${event}`);
+                if (this.subscribers[event]) {
+                    this.subscribers[event].forEach(callback => callback(data));
+                }
+            }
+            
+            logEvent(message) {
+                const eventLog = document.getElementById('event-log');
+                const logEntry = document.createElement('div');
+                logEntry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+                eventLog.insertBefore(logEntry, eventLog.firstChild);
+            }
+        }
+        
+        /**
+         * GAME STATE MACHINE
+         * Manages game state transitions
+         */
+        class GameStateMachine {
+            constructor(eventBus) {
+                this.eventBus = eventBus;
+                this.state = 'ready'; // Initial state
+                this.transitions = {
+                    'ready': { 'start': 'playing' },
+                    'playing': { 'pause': 'paused', 'end': 'ended', 'levelUp': 'playing' },
+                    'paused': { 'resume': 'playing', 'end': 'ended' },
+                    'ended': { 'restart': 'ready' }
+                };
+                
+                this.eventBus.logEvent('Game State Machine initialized in "ready" state');
+            }
+            
+            trigger(action, data = {}) {
+                const currentState = this.state;
+                const nextState = this.transitions[currentState]?.[action];
+                
+                if (nextState) {
+                    this.eventBus.logEvent(`State transition: ${currentState} -> ${nextState} (${action})`);
+                    this.state = nextState;
+                    
+                    // Publish state change event
+                    this.eventBus.publish('stateChanged', {
+                        from: currentState,
+                        to: nextState,
+                        action,
+                        data
+                    });
+                    
+                    return true;
+                } else {
+                    this.eventBus.logEvent(`Invalid action "${action}" for state "${currentState}"`);
+                    return false;
+                }
+            }
+            
+            getState() {
+                return this.state;
+            }
+        }
+        
+        /**
+         * GAME CLASS (Observer Pattern)
+         * Core game logic and state
+         */
+        class WhackAMoleGame {
+            constructor() {
+                // Initialize event bus (Pub/Sub pattern)
+                this.eventBus = new EventBus();
+                
+                // Initialize game state machine
+                this.stateMachine = new GameStateMachine(this.eventBus);
+                
+                // Game settings
+                this.score = 0;
+                this.timer = 30;
+                this.level = 1;
+                this.moleSpeed = 1000;
+                this.moleInterval = null;
+                this.timerInterval = null;
+                
+                // DOM elements
+                this.startButton = document.getElementById('start-button');
+                this.scoreDisplay = document.getElementById('score');
+                this.timeDisplay = document.getElementById('time');
+                this.levelDisplay = document.getElementById('level');
+                this.gameContainer = document.getElementById('game-container');
+                
+                // Set up event listeners (Event Delegation pattern)
+                this.setupEventListeners();
+                
+                // Subscribe to state changes
+                this.eventBus.subscribe('stateChanged', (data) => this.handleStateChange(data));
+            }
+            
+            setupEventListeners() {
+                // Start button click
+                this.startButton.addEventListener('click', () => {
+                    if (this.stateMachine.getState() === 'ready') {
+                        this.stateMachine.trigger('start');
+                    } else if (this.stateMachine.getState() === 'ended') {
+                        this.resetGame();
+                        this.stateMachine.trigger('restart');
+                    }
+                });
+                
+                // Event delegation for mole whacking
+                this.gameContainer.addEventListener('click', (event) => {
+                    if (this.stateMachine.getState() !== 'playing') return;
+                    
+                    // Find the closest mole to the click
+                    const mole = event.target.closest('.mole');
+                    if (mole && mole.classList.contains('up')) {
+                        this.whackMole(mole);
+                    }
+                });
+            }
+            
+            startGame() {
+                this.startButton.textContent = 'Game In Progress...';
+                this.startButton.disabled = true;
+                
+                // Start the mole popping
+                this.moleInterval = setInterval(() => this.popUpRandomMole(), this.moleSpeed);
+                
+                // Start the timer
+                this.timerInterval = setInterval(() => {
+                    this.timer--;
+                    this.timeDisplay.textContent = this.timer;
+                    
+                    if (this.timer <= 0) {
+                        this.stateMachine.trigger('end');
+                    }
+                }, 1000);
+                
+                this.eventBus.publish('gameStarted', { level: this.level });
+            }
+            
+            endGame() {
+                clearInterval(this.moleInterval);
+                clearInterval(this.timerInterval);
+                
+                this.startButton.textContent = 'Play Again';
+                this.startButton.disabled = false;
+                
+                // Hide all moles
+                document.querySelectorAll('.mole').forEach(mole => {
+                    mole.classList.remove('up');
+                });
+                
+                this.eventBus.publish('gameEnded', { 
+                    finalScore: this.score,
+                    level: this.level 
+                });
+            }
+            
+            resetGame() {
+                this.score = 0;
+                this.timer = 30;
+                this.level = 1;
+                this.moleSpeed = 1000;
+                
+                // Update displays
+                this.scoreDisplay.textContent = this.score;
+                this.timeDisplay.textContent = this.timer;
+                this.levelDisplay.textContent = this.level;
+                
+                this.eventBus.publish('gameReset', {});
+            }
+            
+            popUpRandomMole() {
+                const moles = document.querySelectorAll('.mole');
+                const upMoles = document.querySelectorAll('.mole.up');
+                
+                // Hide a random mole that's up
+                if (upMoles.length > 0) {
+                    const randomUpIndex = Math.floor(Math.random() * upMoles.length);
+                    upMoles[randomUpIndex].classList.remove('up');
+                }
+                
+                // Show a random mole that's down
+                const downMoles = Array.from(moles).filter(mole => !mole.classList.contains('up'));
+                if (downMoles.length > 0) {
+                    const randomDownIndex = Math.floor(Math.random() * downMoles.length);
+                    downMoles[randomDownIndex].classList.add('up');
+                    
+                    // Auto-hide mole after a delay
+                    const hideDelay = Math.max(400, 1000 - (this.level * 100));
+                    setTimeout(() => {
+                        if (downMoles[randomDownIndex].classList.contains('up')) {
+                            downMoles[randomDownIndex].classList.remove('up');
+                        }
+                    }, hideDelay);
+                }
+            }
+            
+            whackMole(mole) {
+                // Add score
+                this.score += this.level;
+                this.scoreDisplay.textContent = this.score;
+                
+                // Visual feedback
+                mole.classList.remove('up');
+                mole.classList.add('bonked');
+                setTimeout(() => {
+                    mole.classList.remove('bonked');
+                }, 300);
+                
+                // Check for level up (every 10 points)
+                if (this.score % 10 === 0) {
+                    this.levelUp();
+                }
+                
+                this.eventBus.publish('moleWhacked', { score: this.score });
+            }
+            
+            // Promise-based level transition
+            levelUp() {
+                return new Promise((resolve) => {
+                    this.level++;
+                    this.levelDisplay.textContent = this.level;
+                    
+                    // Speed up the moles
+                    clearInterval(this.moleInterval);
+                    this.moleSpeed = Math.max(400, 1000 - (this.level * 100));
+                    
+                    // Flash level indicator
+                    this.levelDisplay.style.fontSize = '24px';
+                    this.levelDisplay.style.color = '#ff0000';
+                    
+                    setTimeout(() => {
+                        this.levelDisplay.style.fontSize = '';
+                        this.levelDisplay.style.color = '';
+                        
+                        // Restart mole interval at new speed
+                        this.moleInterval = setInterval(() => this.popUpRandomMole(), this.moleSpeed);
+                        
+                        this.stateMachine.trigger('levelUp', { level: this.level });
+                        resolve(this.level);
+                    }, 500);
+                });
+            }
+            
+            handleStateChange(data) {
+                switch (data.to) {
+                    case 'playing':
+                        if (data.from === 'ready') {
+                            this.startGame();
+                        }
+                        break;
+                    case 'ended':
+                        this.endGame();
+                        break;
+                }
+            }
+        }
+        
+        /**
+         * GAME OBSERVER (Observer Pattern)
+         * Listens for game events and responds
+         */
+        class GameObserver {
+            constructor(name, eventBus) {
+                this.name = name;
+                this.eventBus = eventBus;
+                
+                // Subscribe to events
+                this.eventBus.subscribe('gameStarted', (data) => this.onGameStarted(data));
+                this.eventBus.subscribe('gameEnded', (data) => this.onGameEnded(data));
+                this.eventBus.subscribe('moleWhacked', (data) => this.onMoleWhacked(data));
+                this.eventBus.subscribe('stateChanged', (data) => this.onStateChanged(data));
+                
+                this.eventBus.logEvent(`Observer "${name}" is listening for game events`);
+            }
+            
+            onGameStarted(data) {
+                this.eventBus.logEvent(`${this.name}: Game started at level ${data.level}`);
+            }
+            
+            onGameEnded(data) {
+                this.eventBus.logEvent(`${this.name}: Game ended with score ${data.finalScore} at level ${data.level}`);
+            }
+            
+            onMoleWhacked(data) {
+                // Only log every 5 points to avoid flooding
+                if (data.score % 5 === 0) {
+                    this.eventBus.logEvent(`${this.name}: Score milestone reached: ${data.score}`);
+                }
+            }
+            
+            onStateChanged(data) {
+                if (data.action === 'levelUp') {
+                    this.eventBus.logEvent(`${this.name}: Level up to ${data.data.level}!`);
+                }
+            }
+        }
+        
+        // Initialize the game when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const game = new WhackAMoleGame();
+            
+            // Create observers
+            const scoreTracker = new GameObserver('ScoreTracker', game.eventBus);
+            const achievementSystem = new GameObserver('AchievementSystem', game.eventBus);
+        });
+    </script>
+</body>
+</html>
