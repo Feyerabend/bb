@@ -84,14 +84,14 @@ True
 15
 ;; If expressions
 (if (> 5 3)
-    100
-    0)
+    "100"
+    "0")
 ;; 
 100
 ;; Quote
-;; (quote (1 2 3))
+(quote (1 2 3))
 ;; 
-;; (1 2 3)
+(1 2 3)
 ;; Begin
 (begin
   (define x 5)
