@@ -4,7 +4,8 @@
 This code implements a simple content-based recommendation system for the
 LIBRIS Xsearch interface. LIBRIS is a Swedish database for library items.
 Searches can be performed through the API, which is described at:
-https://libris.kb.se/help/xsearch_eng.jsp?redirected=true&language=en
+* https://libris.kb.se/help/xsearch_eng.jsp?redirected=true&language=en
+
 It's a very basic, but legitimate recommendation system.
 
 1. *Knowledge Base Collection*: The system stores the last 50 search results
