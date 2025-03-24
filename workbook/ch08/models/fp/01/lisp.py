@@ -452,3 +452,18 @@ def run_tests(lisp):
 if __name__ == '__main__':
     lisp = Lisp()
     run_tests(lisp)
+
+    print(lisp.run("(quote (1 2 3))"))  # Output: [1, 2, 3]
+    print(lisp.run("(quote (a b c))"))  # Output: ['a', 'b', 'c']
+    print(lisp.run("(quote (+ 1 2))"))  # Output: ['+', 1, 2]
+    print(lisp.run("(quote (quote a))"))  # Output: ['quote', 'a']
+    print(lisp.run("(quote (quote (quote a)))"))  # Output: ['quote', ['quote', 'a']]
+    print(lisp.run("(quote (quote (quote (quote a))))"))  # Output: ['quote', ['quote', ['quote', 'a']]]
+
+    print(lisp.run("(if True 1 2)"))  # Output: 1
+    print(lisp.run("(if False 1 2)"))  # Output: 2
+    print(lisp.run("(if True 1)"))  # Output: 1
+    print(lisp.run("(if False 1)"))  # Output: None
+    print(lisp.run("(if True \"hello\")"))  # Output: hello
+
+    print(lisp.run("(begin 1 2 3)"))  # Output: 3    
