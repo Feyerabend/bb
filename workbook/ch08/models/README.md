@@ -1,5 +1,5 @@
 
-## Programming Paradigms or Programming Language Models
+## Programming Language Models or Programming Paradigms
 
 Programming paradigms define the fundamental approaches to structuring and executing computation.
 As we have emphasised in the context of programming languages, they shape the way we think about
@@ -84,10 +84,10 @@ approaches within the same system.
 
 |Programming Model / Paradigm	|Important Features|
 |--|--|
-|*Functional Programming*	|First-class functions, immutability, higher-order functions, recursion, lazy evaluation, pure functions, generics|
-|*Object-Oriented Programming*	|Encapsulation, inheritance, polymorphism, abstraction, method overloading/overriding, interfaces/abstract classes, generics|
-|*Event-Driven Programming*	|Event loops, callbacks, asynchronous execution, event handlers, observer pattern, state machines|
-|*Concurrent Programming*	|Threads, locks, mutexes, semaphores, atomic operations, message passing, parallelism, condition variables|
+|*[Functional Programming](./fp/)*	|First-class functions, immutability, higher-order functions, recursion, lazy evaluation, pure functions, generics|
+|*[Object-Oriented Programming](./oo/)*	|Encapsulation, inheritance, polymorphism, abstraction, method overloading/overriding, interfaces/abstract classes, generics|
+|*[Event-Driven Programming](./event/)*	|Event loops, callbacks, asynchronous execution, event handlers, observer pattern, state machines|
+|*[Concurrent Programming](./concurrent/)*	|Threads, locks, mutexes, semaphores, atomic operations, message passing, parallelism, condition variables|
 |*Logic Programming*	|Facts, rules, queries, backtracking, unification|
 |*Declarative Programming*	|SQL, pattern matching, rules, constraints|
 |*Procedural Programming*	|Procedures, functions, control structures (loops, conditionals), modularity, call stack|
