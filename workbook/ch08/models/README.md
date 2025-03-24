@@ -82,6 +82,9 @@ approaches within the same system.
 
 ### Table over Distinguishing Features in Types of Languages
 
+We will not delve into every paradigm, we will leave some, but will examine others in slightly
+more detail.
+
 |Programming Model / Paradigm	|Important Features|
 |--|--|
 |*[Functional Programming](./fp/)*	|First-class functions, immutability, higher-order functions, recursion, lazy evaluation, pure functions, generics|
