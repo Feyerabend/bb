@@ -124,7 +124,6 @@ class Lisp:
     
 
     def tokenize(self, program):
-        # Match quoted strings, parentheses, or other tokens
         token_regex = r'("(?:\\"|.)*?")|([()])|([^\s()]+)'
         tokens = []
         for match in re.finditer(token_regex, program):
@@ -135,7 +134,7 @@ class Lisp:
                 tokens.append(paren_token)
             elif other_token:
                 tokens.append(other_token)
-        # Replace single quotes with 'quote'
+        # replace single quotes with 'quote'
         processed = []
         for token in tokens:
             if token == "'":
@@ -178,42 +177,6 @@ class Lisp:
                 elif token == 'False':
                     return False
                 return token  # do NOT strip quotes here!
-
-
-
-
-    def eval(self, expr, env=None):
-        if env is None:
-            env = self.global_env
-
-        # Handle string literals (e.g., "100")
-        if isinstance(expr, str):
-            # Check if it's a quoted string (e.g., starts/ends with ")
-            if len(expr) >= 2 and expr.startswith('"') and expr.endswith('"'):
-                return expr[1:-1]  # Strip quotes and return the inner string
-            else:
-                # Treat as a symbol and look it up
-                return env.get(expr)
-
-        # Handle constants (numbers, booleans, etc.)
-        if not isinstance(expr, list):
-            return expr
-
-        # Handle empty list
-        if not expr:
-            return []
-
-        # Handle special forms (e.g., quote, if)
-        first, *rest = expr
-        if first == 'quote':
-            return self._eval_quote(expr, env)
-        # ... rest of special forms ...
-
-        # Handle function application
-        func = self.eval(first, env)
-        args = [self.eval(arg, env) for arg in rest]
-        return self.apply(func, args)
-
 
     def eval(self, expr, env=None):
         if env is None:
@@ -489,7 +452,3 @@ def run_tests(lisp):
 if __name__ == '__main__':
     lisp = Lisp()
     run_tests(lisp)
-
-#    lisp = Lisp()
-#    print(lisp.run("(quote (1 2 3))"))  # Should print [1, 2, 3]
-#    print(lisp.run("(quote x)"))        # Should print 'x'
