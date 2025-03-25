@@ -449,6 +449,28 @@ def run_tests(lisp):
             print(f"Error in section {section_title}: {e}")
             print("-" * 40)
 
+class LispREPL:
+    def __init__(self):
+        self.lisp = Lisp()
+    
+    def start(self):
+        print("Lisp REPL (Type 'exit' to quit)")
+        while True:
+            try:
+                expr = input("> ").strip()
+                if expr.lower() in ("exit", "quit"):
+                    break
+                if not expr:
+                    continue
+                
+                result = self.lisp.run(expr)
+                print(result)
+            except LispError as e:
+                print(f"Error: {e}")
+            except Exception as e:
+                print(f"Unexpected error: {e}")
+
+
 if __name__ == '__main__':
     lisp = Lisp()
     run_tests(lisp)
@@ -467,3 +489,7 @@ if __name__ == '__main__':
     print(lisp.run("(if True \"hello\")"))  # Output: hello
 
     print(lisp.run("(begin 1 2 3)"))  # Output: 3    
+
+    # run REPL instead ..
+#    repl = LispREPL()
+#    repl.start()
