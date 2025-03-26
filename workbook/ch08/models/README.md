@@ -1,5 +1,5 @@
 
-## Programming Language Models or Programming Paradigms
+## Programming Language Models / Programming Paradigms
 
 Programming paradigms define the fundamental approaches to structuring and executing computation.
 As we have emphasised in the context of programming languages, they shape the way we think about
