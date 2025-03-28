@@ -97,6 +97,6 @@ more detail.
 |*Reactive Programming*	|Data streams, observers/subscribers, backpressure, push-based updates|
 
 __Also check out the code in [ch05](../../ch05/code/), as examples of
-[logic programming](../../ch05/code/wam/) and [procedural programming](../../ch05/code/pl0/).
+[Logic Programming](../../ch05/code/wam/) and [Procedural Programming](../../ch05/code/pl0/).
 A "softer" approach to learn deeper about one particular model is to start with the simplest
 of them all: [Imperative Programming](./imp/).__
