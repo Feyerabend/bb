@@ -30,8 +30,8 @@ class Interpreter:
         self.t = 3
         self.s[1] = 0  # SL
         self.s[2] = 0  # DL
-        self.s[3] = len(self.code)  # Critical fix: Set main's RA to exit point
-        
+        self.s[3] = len(self.code)  # set main's RA to exit point
+
         while self.p < len(self.code):
             i = self.code[self.p]
             if self.debug:
@@ -94,20 +94,21 @@ class Interpreter:
 
 def test():
     code = [
-        Instruction(Operation.INT, 0, 2),
-        Instruction(Operation.LIT, 0, 10),
-        Instruction(Operation.STO, 0, 3),
-        Instruction(Operation.LOD, 0, 3),
-        Instruction(Operation.CAL, 0, 9),
-        Instruction(Operation.LIT, 0, 1),
-        Instruction(Operation.OPR, 0, 2),
-        Instruction(Operation.STO, 0, 4),
-        Instruction(Operation.OPR, 0, 0),
-        # Square procedure
-        Instruction(Operation.LOD, 1, 3),
-        Instruction(Operation.LOD, 1, 3),
-        Instruction(Operation.OPR, 0, 4),
-        Instruction(Operation.OPR, 0, 0)
+        Instruction(Operation.INT, 0, 2),   # allocate space for 2 variables on the stack
+        Instruction(Operation.LIT, 0, 10),  # push literal 10 onto the stack
+        Instruction(Operation.STO, 0, 3),   # store the top of the stack (10) at address 3 (variable x)
+        Instruction(Operation.LOD, 0, 3),   # load the value from address 3 (x) onto the stack
+        Instruction(Operation.CAL, 0, 9),   # call the function at address 9 (square function)
+        Instruction(Operation.LIT, 0, 1),   # push literal 1 onto the stack
+        Instruction(Operation.OPR, 0, 2),   # add the top two values on the stack (result of square(x) + 1)
+        Instruction(Operation.STO, 0, 4),   # store the result in address 4 (variable y)
+        Instruction(Operation.OPR, 0, 0),   # return (end execution)
+
+        # Square procedure (at address 9)
+        Instruction(Operation.LOD, 1, 3),   # load the value of x (passed as parameter)
+        Instruction(Operation.LOD, 1, 3),   # load the value of x again
+        Instruction(Operation.OPR, 0, 4),   # multiply the top two values (x * x)
+        Instruction(Operation.OPR, 0, 0)    # return the result
     ]
    
     interpreter = Interpreter(code)

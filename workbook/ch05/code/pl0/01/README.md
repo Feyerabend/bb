@@ -1,5 +1,76 @@
 
-NOT CHECKED!
+## PL/0 Interpreter and Compiler
+
+This code consists of a compiler and an interpreter for a really small, simple
+programming language similar to PL/0 (or at the start of building PL/0). The
+compiler translates a high-level program (with variable declarations and
+arithmetic expressions) into a sequence of low-level instructions, while the
+interpreter executes those instructions step by step.
+
+
+### How the Compiler Works
+
+The compiler takes a simple program written in a custom language and converts it into
+a list of instructions that the interpreter can execute. The process happens in two
+main passes:
+
+1. First Pass: Collect Variables
+The compiler scans the program and finds all variable declarations (var x). It assigns
+each variable a memory location in a symbol table.
+
+2. Second Pass: Compile Assignments
+When the compiler encounters an assignment (x = 3 + 5), it:
+- Translates expressions like 3 + 5 into load (LIT) and operation (OPR) instructions.
+- Stores the result in the memory location assigned to the variable (STO).
+
+For example, x = 3 + 5 is compiled into these instructions:
+
+```assembly
+LIT 0 3   # Push 3 onto the stack  
+LIT 0 5   # Push 5 onto the stack  
+OPR 0 2   # Add the top two values  
+STO 0 3   # Store result in memory address 3  
+```
+
+### How the Interpreter Works
+
+The interpreter takes the compiled instructions and executes them using a stack-based machine.
+It keeps track of execution using:
+- A stack (`s[]`) to store values and variables.
+- A program counter (`p`) to track the current instruction.
+- A base pointer (`b`) for function calls (not used here).
+- A stack pointer (`t`) for memory allocation.
+
+The interpreter reads each instruction and performs the corresponding operation. For example:
+- `LIT 0 3` --> Push 3 onto the stack.
+- `LIT 0 5` --> Push 5 onto the stack.
+- `OPR 0 2` --> Pop two values, add them, push the result.
+- `STO 0 3` --> Store the top value into memory at address 3.
+
+
+### Running a Sample Program
+
+Consider this small program:
+```assembly
+var x  
+var y  
+
+x = 3 + 5  
+y = x + 2  
+```
+
+The compiler first assigns memory locations (x → 3, y → 4). It then translates the program into
+machine instructions. When executed, the interpreter follows the instructions and calculates:
+
+```assembly
+x = 8  
+y = 10  
+```
+
+Finally, the interpreter prints these values from memory.
+
+
+### Opcodes
 
 From: https://raw.githubusercontent.com/adamdunson/pl0-compiler/master/doc/PL0%20User's%20Manual.pdf
 

@@ -96,3 +96,5 @@ more detail.
 |*Procedural Programming*	|Procedures, functions, control structures (loops, conditionals), modularity, call stack|
 |*Reactive Programming*	|Data streams, observers/subscribers, backpressure, push-based updates|
 
+Also check out the [code](../../ch05/code/) in ch05, as examples of
+[logic programming](../../ch05/code/wam/) and [procedural programming](../../ch05/code/pl0/).

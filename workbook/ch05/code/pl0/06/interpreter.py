@@ -16,8 +16,8 @@ class PL0Interpreter:
         self.code = code
         self.s = [0] * stack_size
         self.p = 0
-        self.b = 1  # Base pointer
-        self.t = 0  # Stack pointer
+        self.b = 1  # base pointer
+        self.t = 0  # stack pointer
         self.debug = True
 
     def base(self, level: int) -> int:
@@ -28,11 +28,11 @@ class PL0Interpreter:
         return current_b
 
     def run(self):
-        # Initialize main frame
+        # init main frame
         self.t = 3
-        self.s[1] = 0  # Static link
-        self.s[2] = 0  # Dynamic link
-        self.s[3] = len(self.code)  # Return address
+        self.s[1] = 0  # static link
+        self.s[2] = 0  # dynamic link
+        self.s[3] = len(self.code)  # return address
         
         while self.p < len(self.code):
             i = self.code[self.p]
@@ -48,7 +48,7 @@ class PL0Interpreter:
                 self.s[self.t] = i.a
 
             elif i.op == Operation.OPR:
-                if i.a == 0:  # Return
+                if i.a == 0:  # return
                     return_value = self.s[self.t]
                     self.t = self.b - 1
                     self.p = self.s[self.b + 2]
@@ -60,11 +60,11 @@ class PL0Interpreter:
                     self.t -= 1
                     left = self.s[self.t]
                     
-                    if i.a == 3:  # Subtraction
+                    if i.a == 3:  # subtraction
                         self.s[self.t] = left - right
-                    elif i.a == 4:  # Multiplication
+                    elif i.a == 4:  # multiplication
                         self.s[self.t] = left * right
-                    elif i.a == 12:  # Greater than
+                    elif i.a == 12:  # greater than
                         self.s[self.t] = int(left > right)
 
             elif i.op == Operation.LOD:
@@ -100,37 +100,45 @@ class PL0Interpreter:
 def test_factorial():
     code = [
         # main: int n = 5, result
-        Instruction(Operation.INT, 0, 2),
-        Instruction(Operation.LIT, 0, 5),
-        Instruction(Operation.STO, 0, 3),  # n at address 4
-        Instruction(Operation.LOD, 0, 3),  # Load n
-        Instruction(Operation.CAL, 0, 7),  # Call factorial
-        Instruction(Operation.STO, 0, 4),  # Store result at address 5
-        Instruction(Operation.OPR, 0, 0),  # Halt
-        
+        Instruction(Operation.INT, 0, 2),    # allocate space for 2 variables (n and result)
+        Instruction(Operation.LIT, 0, 5),    # push literal 5 onto the stack
+        Instruction(Operation.STO, 0, 3),    # store 5 at address 3 (variable n)
+        Instruction(Operation.LOD, 0, 3),    # load n onto the stack
+        Instruction(Operation.CAL, 0, 7),    # call factorial function at address 7
+        Instruction(Operation.STO, 0, 4),    # store the result of factorial(n) at address 4 (result)
+        Instruction(Operation.OPR, 0, 0),    # halt execution
+
         # factorial(n) @7
-        Instruction(Operation.INT, 0, 3),
-        Instruction(Operation.LOD, 1, 3),  # Load parameter
-        Instruction(Operation.STO, 0, 3),  # Store local n
-        Instruction(Operation.LIT, 0, 1),  # Initialize result=1
-        Instruction(Operation.STO, 0, 4),
-        Instruction(Operation.LOD, 0, 3),  # Loop start
-        Instruction(Operation.LIT, 0, 1),
-        Instruction(Operation.OPR, 0, 12),  # n > 1?
-        Instruction(Operation.JPC, 0, 25),  # Exit if false
-        Instruction(Operation.LOD, 0, 4),  # result
-        Instruction(Operation.LOD, 0, 3),  # n
-        Instruction(Operation.OPR, 0, 4),  # Multiply
-        Instruction(Operation.STO, 0, 4),  # Update result
-        Instruction(Operation.LOD, 0, 3),  # n
-        Instruction(Operation.LIT, 0, 1),  # 1
-        Instruction(Operation.OPR, 0, 3),  # Subtract
-        Instruction(Operation.STO, 0, 3),  # Update n
-        Instruction(Operation.JMP, 0, 12),  # Loop back
-        Instruction(Operation.LOD, 0, 4),  # Return result
-        Instruction(Operation.OPR, 0, 0),  # Return
-    ]
-    
+        Instruction(Operation.INT, 0, 3),    # allocate space for local variables (n and result)
+        Instruction(Operation.LOD, 1, 3),    # load parameter n
+        Instruction(Operation.STO, 0, 3),    # store n in local variable space
+        Instruction(Operation.LIT, 0, 1),    # push literal 1 onto the stack (initial value for result)
+        Instruction(Operation.STO, 0, 4),    # store 1 at address 4 (result)
+
+        # loop start
+        Instruction(Operation.LOD, 0, 3),    # load n
+        Instruction(Operation.LIT, 0, 1),    # push literal 1 onto the stack
+        Instruction(Operation.OPR, 0, 12),   # check if n > 1 (comparison)
+        Instruction(Operation.JPC, 0, 25),   # if false, jump to return (exit loop)
+
+        # multiply result by n
+        Instruction(Operation.LOD, 0, 4),    # load result
+        Instruction(Operation.LOD, 0, 3),    # load n
+        Instruction(Operation.OPR, 0, 4),    # multiply result * n
+        Instruction(Operation.STO, 0, 4),    # store the updated result
+
+        # decrement n
+        Instruction(Operation.LOD, 0, 3),    # load n
+        Instruction(Operation.LIT, 0, 1),    # push literal 1 onto the stack
+        Instruction(Operation.OPR, 0, 3),    # subtract n - 1
+        Instruction(Operation.STO, 0, 3),    # store updated n
+
+        Instruction(Operation.JMP, 0, 12),   # jump back to loop start
+
+        # return result
+        Instruction(Operation.LOD, 0, 4),    # load final result
+        Instruction(Operation.OPR, 0, 0),    # return
+    ]    
     interpreter = PL0Interpreter(code)
     interpreter.run()
     print(f"\nFinal result: 5! = {interpreter.s[5]}")
