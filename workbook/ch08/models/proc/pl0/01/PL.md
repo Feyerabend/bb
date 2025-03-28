@@ -1,6 +1,8 @@
 
 NOT CHECKED!
 
+From: https://raw.githubusercontent.com/adamdunson/pl0-compiler/master/doc/PL0%20User's%20Manual.pdf
+
 | Op Code | Syntax   | Description |
 |---------|---------|-------------|
 | 1       | LIT 0, M  | Push constant value (literal) M onto the stack |
