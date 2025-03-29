@@ -10,9 +10,11 @@ mini compiler provides a hands-on foundation for understanding the core principl
 
 From this starting point, we can systematically build upon our knowledge and skills to tackle more advanced
 and complex examples. A natural progression is to explore a more substantial compiler for the educational
-programming language [PL/0](./syntax/PL0.md). PL/0 is a well-known minimalist language often used for teaching compiler
-construction. It introduces additional concepts like variable declarations, procedures, control flow
-(such as loops and conditionals), and a more comprehensive symbol table for managing scopes and identifiers.
+programming language [PL/0](./syntax/PL0.md). PL/0 is a well-known minimalist language often used for
+teaching compiler construction (at least until some years ago). It introduces additional concepts like
+variable declarations, procedures, control flow (such as loops and conditionals), and a more comprehensive
+symbol table for managing scopes and identifiers. You might also have a look at a small
+[PL/0 interpreter and compiler](./../../code/pl0/) to get a feeling how they work.
 
 By transitioning from the mini compiler to PL/0, we expand our understanding of compiler design, delving
 deeper into topics such as abstract syntax trees (ASTs), type checking (as we have only one it is minimal),
