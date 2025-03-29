@@ -80,6 +80,7 @@ correctness, while others prioritise performance and low-level control. Addition
 programming often blends paradigms, allowing developers to leverage the strengths of multiple
 approaches within the same system.
 
+
 ### Table over Distinguishing Features in Types of Languages
 
 We will not delve into every paradigm, we will leave some, but will examine others in slightly
