@@ -2,11 +2,12 @@
 ## Programming Language Models / Programming Paradigms
 
 Programming paradigms define the fundamental approaches to structuring and executing computation.
-As we have emphasised in the context of programming languages, they shape the way we think about
-coding. They influence not only how programmers write code but also how they approach problem-solving,
-data manipulation, and control flow. Paradigms emerge from different ways of modelling computation,
-each offering distinct advantages and trade-offs in terms of expressiveness, maintainability,
-efficiency, and correctness.
+As we have emphasised in the context of programming languages, *they shape the way we think about
+coding*. Therefore it is also beneficial to learn several different paradigms. They influence not
+only how programmers write code but also how they approach problem-solving, data manipulation,
+and control flow. Paradigms emerge from different ways of modelling computation, each offering
+distinct advantages and trade-offs in terms of expressiveness, maintainability, efficiency, and
+correctness.
 
 At their core, paradigms dictate how computations are expressed and executed. Some emphasise state
 changes and execution order, others focus on declarative logic, and some are based on abstracting
