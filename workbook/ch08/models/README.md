@@ -89,16 +89,13 @@ more detail.
 
 |Programming Model / Paradigm	|Important Features|
 |--|--|
+|*[Imperative Programming](./imp/)* |Mutable state, explicit control flow, sequences of statements, loops, conditionals, function calls, procedural abstraction, side effects|
 |*[Functional Programming](./fp/)*	|First-class functions, immutability, higher-order functions, recursion, lazy evaluation, pure functions, generics|
 |*[Object-Oriented Programming](./oo/)*	|Encapsulation, inheritance, polymorphism, abstraction, method overloading/overriding, interfaces/abstract classes, generics|
 |*[Event-Driven Programming](./event/)*	|Event loops, callbacks, asynchronous execution, event handlers, observer pattern, state machines|
 |*[Concurrent Programming](./concurrent/)*	|Threads, locks, mutexes, semaphores, atomic operations, message passing, parallelism, condition variables|
-|*[Concatenative Programming](./concat/)* |Stack-based execution, function composition, point-free style, implicit data flow, postfix notation, small reusable functions, lack of named variables|
-|*Logic Programming*	|Facts, rules, queries, backtracking, unification|
+|*[Concatenative Programming](./concat/)*   |Stack-based execution, function composition, point-free style, implicit data flow, postfix notation, small reusable functions, lack of named variables|
+|*[Logic Programming](../../ch05/code/wam/)* ([ch05](../../ch05/code/))	|Facts, rules, queries, backtracking, unification|
 |*Declarative Programming*	|SQL, pattern matching, rules, constraints|
-|*Procedural Programming*	|Procedures, functions, control structures (loops, conditionals), modularity, call stack|
+|*[Procedural Programming](../../ch05/code/pl0/)* ([ch05](../../ch05/code/))	|Procedures, functions, control structures (loops, conditionals), modularity, call stack|
 |*Reactive Programming*	|Data streams, observers/subscribers, backpressure, push-based updates|
-
-Also, take a look at the code in [ch05](../../ch05/code/) for examples of *[Logic Programming](../../ch05/code/wam/)*
-and *[Procedural Programming](../../ch05/code/pl0/)*. A more gradual way to explore a specific model in depth is to
-begin with the simplest one: *[Imperative Programming](./imp/)*.
