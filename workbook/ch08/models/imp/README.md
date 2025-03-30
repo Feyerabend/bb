@@ -98,4 +98,47 @@ For a deeper challenge, try one of these projects:
 - A Micro Database: Implement an in-memory key-value store with basic query operations.
 - A Tiny Assembler or Compiler: Write a small compiler that translates a subset of your interpreted language into another format, like TAC or LLVM IR.
 
+
 Each of these projects will push your understanding of imperative programming while giving you something fun and useful to build.
+
+
+#### Larger Project: Build a Simple Algol Interpreter and Extend it
+
+First build a simple Algol interpreter, then it (already capable of variables, loops, conditionals, and I/O) to support
+advanced language features, deepening understanding of programming language design and imperative paradigms.  
+
+
+__Extensions to Implement__
+
+1. *Local Variables & Scoping*  
+   - *Objective:* Introduce block-level scoping (e.g., variables inside `BEGIN`/`END` are local).  
+   - *Challenges:* Managing nested environments, variable shadowing, and scope resolution.  
+   - *Outcome:* The interpreter tracks variables per block, not just globally.  
+
+2. *Function Definitions*  
+   - *Objective:* Add support for user-defined functions (e.g., `PROCEDURE sum(a, b) BEGIN ... END`).  
+   - *Challenges:* Parsing parameters, handling return values, and managing call stacks.  
+   - *Outcome:* Users can define and call functions, enabling code reuse.  
+
+3. *Runtime Error Handling*  
+   - *Objective:* Detect and report errors (e.g., division by zero, undefined variables).  
+   - *Challenges:* Graceful error recovery, line-number tracking, and meaningful messages.  
+   - *Outcome:* The interpreter fails safely instead of crashing.  
+
+4. *Structured Data Types*  
+   - *Objective:* Add arrays or records (e.g., `ARRAY[1..10] OF INTEGER`).  
+   - *Challenges:* Memory representation, bounds checking, and assignment semantics.  
+   - *Outcome:* Support for compound data structures.  
+
+5. *Concurrency*  
+   - *Objective:* Introduce basic parallelism (e.g., `COBEGIN ... COEND` for thread-like execution).  
+   - *Challenges:* Synchronization, race conditions, and thread scheduling.  
+   - *Outcome:* Programs can execute multiple tasks "simultaneously."  
+
+You will:
+- Understand how scoping, functions, and data structures are implemented in interpreters.  
+- Explore trade-offs between simplicity and feature complexity.  
+- Practice debugging and testing incremental language features.  
+
+This project scales from foundational concepts (scoping) to advanced topics (concurrency), making it ideal for
+exploring imperative and structured programming in depth.
