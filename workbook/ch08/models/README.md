@@ -97,6 +97,7 @@ more detail.
 |*Procedural Programming*	|Procedures, functions, control structures (loops, conditionals), modularity, call stack|
 |*Reactive Programming*	|Data streams, observers/subscribers, backpressure, push-based updates|
 
+There are many variations of models or paradigms. One not included above is e.g. [Concatenative Programming](./concat/).
 
 Also, take a look at the code in [ch05](../../ch05/code/) for examples of *[Logic Programming](../../ch05/code/wam/)*
 and *[Procedural Programming](../../ch05/code/pl0/)*. A more gradual way to explore a specific model in depth is to
