@@ -1,0 +1,11 @@
+! fibonacci.fl
+   A := 0
+   B := 1
+   COUNT := 6
+10 PRINT *, A
+   TEMP := A + B
+   A := B
+   B := TEMP
+   COUNT := COUNT - 1
+   IF (COUNT .GT. 0) GOTO 10
+END

@@ -1,0 +1,7 @@
+! cond.fl
+   N := 8
+10 IF (N - (N / 2) * 2 .EQ. 0) GOTO 20
+   PRINT *, N, "IS ODD"
+   GOTO 30
+20 PRINT *, N, "IS EVEN"
+30 END
