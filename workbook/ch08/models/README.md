@@ -101,6 +101,9 @@ more detail.
 |*Reactive Programming*	|Data streams, observers/subscribers, backpressure, push-based updates|
 |*Aspect-Oriented Programming* (AOP)  |Aspects, join points, advice (before/after/around), weaving, cross-cutting concerns, separation of concerns|
 
+
+### Paradigms, Models, Techniques and Styles
+
 If one stretches the definition of a paradigm to include computational styles that significantly
 impact code structure and execution, then *[Array Programming](./../../ch07/array/)*
 ([ch07](./../../ch07/)) could be considered a specialised paradigm, much like *Dataflow Programming*,
@@ -117,3 +120,27 @@ or something else like a computational model, style, or technique. These classif
 on a spectrum rather than as rigid categories. The reason for this is that programming paradigms 
 evolve over time, often borrowing ideas from each other, and many techniques exist at multiple
 levels of abstraction.
+
+For example, *Functional Programming* is a well-defined paradigm with core principles like
+*immutability and first-class functions*, but elements of functional programming (e.g. higher-order
+functions, pure functions) are often used in object-oriented languages like Java or Python.
+Similarly, *Aspect-Oriented Programming (AOP)* is sometimes considered an *extension of
+object-oriented programming* rather than an independent paradigm.
+
+Furthermore, concepts like *Concurrent Programming* and *Reactive Programming* demonstrate
+how blurry these distinctions can be. *Concurrency* is often called a paradigm because it
+fundamentally influences program structure, yet it is also an execution model.
+*Reactive Programming* could be seen as a paradigm, but it is more accurately a computational
+style that can be applied in different paradigms.
+
+If we go back, even *Parallel Programming*, which is often seen as a hardware-related
+execution model, influences how software is structured and written, making it closer to a
+paradigm in some contexts. *Declarative Programming*, on the other hand, is sometimes
+described as a paradigm but is more of a broad *umbrella term* that encompasses multiple
+paradigms (functional, logic, database query languages like SQL).
+
+In short, classifications like "paradigm" or "style" are *human-made distinctions* that
+help us reason about programming but are not absolute. Many concepts exist at the intersection
+of multiple classifications, making it difficult to draw strict boundaries. Instead of
+thinking in rigid categories, it's often more useful to see programming concepts as
+*interconnected ideas* that influence each other in various ways.
