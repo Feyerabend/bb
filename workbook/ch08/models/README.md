@@ -96,6 +96,11 @@ more detail.
 |*[Concurrent Programming](./concurrent/)*	|Threads, locks, mutexes, semaphores, atomic operations, message passing, parallelism, condition variables|
 |*[Concatenative Programming](./concat/)*   |Stack-based execution, function composition, point-free style, implicit data flow, postfix notation, small reusable functions, lack of named variables|
 |*[Logic Programming](../../ch05/code/wam/)* ([ch05](../../ch05/code/))	|Facts, rules, queries, backtracking, unification|
-|*Declarative Programming*	|SQL, pattern matching, rules, constraints|
 |*[Procedural Programming](../../ch05/code/pl0/)* ([ch05](../../ch05/code/))	|Procedures, functions, control structures (loops, conditionals), modularity, call stack|
+|*Declarative Programming*	|SQL, pattern matching, rules, constraints|
 |*Reactive Programming*	|Data streams, observers/subscribers, backpressure, push-based updates|
+|*Aspect-Oriented Programming* (AOP)  |Aspects, join points, advice (before/after/around), weaving, cross-cutting concerns, separation of concerns|
+
+If one stretches the definition of a paradigm to include computational styles that significantly
+impact code structure and execution, then *[array programming](./../../ch07/array/)* could be
+considered a specialised paradigm, much like *dataflow programming* or *parallel programming*.
