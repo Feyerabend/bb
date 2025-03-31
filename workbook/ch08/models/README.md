@@ -102,5 +102,12 @@ more detail.
 |*Aspect-Oriented Programming* (AOP)  |Aspects, join points, advice (before/after/around), weaving, cross-cutting concerns, separation of concerns|
 
 If one stretches the definition of a paradigm to include computational styles that significantly
-impact code structure and execution, then *[array programming](./../../ch07/array/)* could be
-considered a specialised paradigm, much like *dataflow programming* or *parallel programming*.
+impact code structure and execution, then *[array programming](./../../ch07/array/)*
+([ch07](./../../ch07/))could be considered a specialised paradigm, much like *dataflow programming*
+or *parallel programming*.
+
+The latter you might find interesting. A key reason why *concurrent programming* is considered a paradigm
+while *parallel programming* is not is that concurrency changes how we think about program
+structure, state, and communication, whereas parallelism is primarily about how efficiently
+computations are performed. Parallelism often emerges as an implementation detail of concurrent
+programs when mapped onto hardware that can execute tasks simultaneously.
