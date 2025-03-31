@@ -83,3 +83,33 @@ undecidable problem.
 Question to explore:
 - Can you design a practical heuristic that works well in most cases?
 - How does understanding the limits of computation affect real-world programming?
+
+
+__9. Exploring Programming Paradigms Through a Unified Problem__
+
+Investigate how different programming paradigms (functional, object-oriented, procedural, logic,
+event-driven, aspect-oriented, etc.) affect the design and implementation of the same problem.
+Choose a moderately complex problem (e.g. a rule-based chatbot, a physics simulation, or a game
+like Conway’s Game of Life) and implement it in at least three distinct paradigms.
+
+Questions to explore:
+- How does the structure of the solution change across paradigms?
+- What are the strengths and weaknesses of each paradigm for this problem?
+- Can some paradigms be combined to leverage their advantages?
+- How does the computational model (e.g. declarative vs. imperative, synchronous vs. asynchronous)
+influence the implementation?
+
+
+__10. Computational Styles and Performance Trade-offs__
+
+Investigate how different computational styles (array computing, dataflow programming, reactive
+programming, concurrent vs. parallel programming) affect performance and readability. Implement
+a problem such as a matrix multiplication, a streaming data pipeline, or a live sensor-based
+dashboard using different computational styles.
+
+Questions to explore:
+- How do the implementations differ in terms of conciseness, maintainability, and correctness?
+- Which styles are more naturally suited for different types of hardware (e.g. CPU, GPU,
+  distributed systems)?
+- How does choosing a computational style impact scalability and performance optimizations?
+- What trade-offs exist between clarity and execution efficiency?
