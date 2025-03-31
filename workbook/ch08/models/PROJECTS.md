@@ -4,13 +4,20 @@
 
 __1. Implement the Same Program in Multiple Paradigms__
 
-Write a simple application (e.g. a calculator, maze solver, or expression evaluator) in at
+Write a simple application (e.g. a calculator, maze solver, a rule-based chatbot,
+a physics simulation, a game like Conway’s Game of Life, or expression evaluator) in at
 least three different programming paradigms (e.g. imperative, functional, and declarative).
 Compare the readability, maintainability, and efficiency of each version.
 
 Question to explore:
 - How does each paradigm change the way you reason about the problem?
 - Which paradigm feels the most intuitive for the task, and why?
+- How does the structure of the solution change across paradigms?
+- What are the strengths and weaknesses of each paradigm for this problem?
+- Can some paradigms be combined to leverage their advantages?
+- How does the computational model (e.g. declarative vs. imperative,
+  synchronous vs. asynchronous) influence the implementation?
+
 
 
 __2. Build a Small Language or DSL (Domain-Specific Language)__
@@ -85,22 +92,7 @@ Question to explore:
 - How does understanding the limits of computation affect real-world programming?
 
 
-__9. Exploring Programming Paradigms Through a Unified Problem__
-
-Investigate how different programming paradigms (functional, object-oriented, procedural, logic,
-event-driven, aspect-oriented, etc.) affect the design and implementation of the same problem.
-Choose a moderately complex problem (e.g. a rule-based chatbot, a physics simulation, or a game
-like Conway’s Game of Life) and implement it in at least three distinct paradigms.
-
-Questions to explore:
-- How does the structure of the solution change across paradigms?
-- What are the strengths and weaknesses of each paradigm for this problem?
-- Can some paradigms be combined to leverage their advantages?
-- How does the computational model (e.g. declarative vs. imperative, synchronous vs. asynchronous)
-influence the implementation?
-
-
-__10. Computational Styles and Performance Trade-offs__
+__9. Computational Styles and Performance Trade-offs__
 
 Investigate how different computational styles (array computing, dataflow programming, reactive
 programming, concurrent vs. parallel programming) affect performance and readability. Implement
