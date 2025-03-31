@@ -111,3 +111,9 @@ more of a paradigm while *Parallel Programming* is not is that concurrency chang
 about program structure, state, and communication, whereas parallelism is primarily about how
 efficiently computations are performed. Parallelism often emerges as an implementation detail
 of concurrent programs when mapped onto hardware that can execute tasks simultaneously.
+
+There are no hard boundaries that definitively classify a concept as a programming paradigm
+or something else like a computational model, style, or technique. These classifications exist
+on a spectrum rather than as rigid categories. The reason for this is that programming paradigms 
+evolve over time, often borrowing ideas from each other, and many techniques exist at multiple
+levels of abstraction.
