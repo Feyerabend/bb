@@ -103,11 +103,11 @@ more detail.
 
 If one stretches the definition of a paradigm to include computational styles that significantly
 impact code structure and execution, then *[Array Programming](./../../ch07/array/)*
-([ch07](./../../ch07/)) could be considered a specialised paradigm, much like *Dataflow Programming*
-or *Parallel Programming*.
+([ch07](./../../ch07/)) could be considered a specialised paradigm, much like *Dataflow Programming*,
+indeed *Reactive Programming*, or *Parallel Programming*.
 
-The latter you might find interesting. A key reason why *Concurrent Programming* is considered a paradigm
-while *Parallel Programming* is not is that concurrency changes how we think about program
-structure, state, and communication, whereas parallelism is primarily about how efficiently
-computations are performed. Parallelism often emerges as an implementation detail of concurrent
-programs when mapped onto hardware that can execute tasks simultaneously.
+The latter you might find interesting. A key reason why *Concurrent Programming* is considered
+more of a paradigm while *Parallel Programming* is not is that concurrency changes how we think
+about program structure, state, and communication, whereas parallelism is primarily about how
+efficiently computations are performed. Parallelism often emerges as an implementation detail
+of concurrent programs when mapped onto hardware that can execute tasks simultaneously.
