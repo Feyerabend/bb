@@ -374,8 +374,18 @@ we optimise for. Some alternative frameworks include:
 
 [^holling]: Holling, C. S. (1973). "Resilience and Stability of Ecological Systems." *Annual Review of Ecology and Systematics*, 4(1), 1–23.
 
+- A close alternative to resilience is Nassim Nicholas Taleb arguing that excessive optimisation makes
+  systems fragile by removing necessary redundancies and buffers, leaving them vulnerable to unpredictable
+  shocks. In *The Black Swan* and *Antifragile*, he criticizes the pursuit of efficiency in finance,
+  technology, and policymaking, warning that it often ignores randomness and leads to catastrophic failures.
+  Instead of optimising for a narrow definition of "best," he advocates for antifragility—building systems
+  that thrive on uncertainty and disorder, much like biological evolution or decentralised markets.
+  In his view, true resilience comes not from rigid optimisation but from adaptability and robustness
+  in the face of uncertainty.
+
 - Ethical AI & Value-Sensitive Design - Instead of purely optimising for performance, incorporate
   ethical constraints into optimisation goals.
+
 
 
 ### Conclusion
@@ -387,7 +397,9 @@ What are we optimising for, and at what cost?
 
 ### Projects
 
-Here are some project ideas that encourage students to explore the limits of optimisation—both its benefits and its unintended consequences. These projects are all related to computing, programming, and system design, and they challenge students to think critically about optimisation in different contexts.
+Here are some project ideas that encourage you to explore the limits of optimisation—both its benefits
+and its unintended consequences. These projects are all related to computing, programming, and system
+design, and they challenge students to think critically about optimisation in different contexts.
 
 
 __1. Social Media Algorithm and Engagement Optimisations__
