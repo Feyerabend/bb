@@ -28,10 +28,10 @@ an optimal state is reached when no further improvements can be made without mak
 else worse.
 
 Finally, there is a teleological perspective: the idea that all systems, whether biological,
-social, or artificial, evolve toward some form of optimisation. Evolution itself can be seen
-as an optimisation process, refining species over time through natural selection. In human
-systems, markets, technologies, and even moral frameworks evolve through a similar process,
-constantly seeking better solutions to emerging challenges.
+social, or artificial, evolve toward some form of optimisation. Evolution itself is often
+analogised as an optimisation process. refining species over time through natural selection.
+In human systems, markets, technologies, and even moral frameworks evolve through a similar
+process, constantly seeking better solutions to emerging challenges. 
 
 Ultimately, optimisation is not just a mathematical tool-it is a way of thinking about problems,
 balancing competing priorities, and navigating the complexities of life itself. It asks us to
@@ -99,7 +99,7 @@ preference over outcomes. A social welfare function aggregates individual utilit
 ```math
 W(U_1, U_2, …, U_n)
 ```
-where U_i is the utility of individual i, and different formulations (e.g., Pareto
+where $U_i$ is the utility of individual $i$, and different formulations (e.g., Pareto
 efficiency, Rawlsian max-min fairness) lead to different solutions.
 
 
@@ -118,7 +118,7 @@ Example: In reinforcement learning (RL), an agent interacts with an environment 
 actions to maximise future expected rewards.
 - Mathematical Perspective: The optimisation problem in RL is formulated using the Bellman equation:
 ```math
-V(s) = \max_a \sum_{s{\prime}} P(s{\prime} | s, a) \left[ R(s, a) + \gamma V(s{\prime}) \right]
+V(s) = \max_a \sum_{s{\prime}} P(s' \mid s, a) \left[ R(s, a) + \gamma V(s{\prime}) \right]
 ```
 where V(s) is the value function, P(s{\prime} | s, a) is the transition probability, R(s, a)
 is the reward, and \gamma is a discount factor.
@@ -169,13 +169,15 @@ methods provide powerful tools to tackle real-world optimisation challenges.
 
 ### Common Theme: Optimisation Across Domains
 
-The core idea across all these fields is optimisation, but different domains frame it as maximisation or minimisation:
+The core idea across all these fields is optimisation, but different domains frame it as
+maximisation or minimisation:
 
-Field	Objective	Function Type
-Control Systems	Minimise cost function	J(x, u)
-Economics	Maximise utility/profit/welfare	U(x), \pi(x)
-Research (AI)	Maximise expected rewards	V(s) (Bellman)
-Statistics/ML	Minimise expected loss	\mathbb{E}[L(y, f(x))]
+| Field               | Objective                          | Function Type       |
+|---------------------|------------------------------------|---------------------|
+| Control Systems     | Minimise cost function             | \( J(x, u) \)       |
+| Economics           | Maximise utility/profit/welfare    | \( U(x), \pi(x) \)  |
+| Research (AI)       | Maximise expected rewards          | V(s) (Bellman)      |
+| Statistics/ML	      | Minimise expected loss             | \mathbb{E}[L(y, f(x))] |
 
 - Duality: Many problems can be framed in both ways. For example, maximising rewards is equivalent
   to minimising negative rewards.
@@ -243,4 +245,222 @@ Statistics/ML	Minimise expected loss	\mathbb{E}[L(y, f(x))]
 
 15. Constraint Satisfaction Problems: Implement a constraint solver for a problem like Sudoku or
     scheduling, exploring how different heuristics improve performance.
+
+
+
+### Critique of Optimisation
+
+Optimisation is often framed as an unquestioned good--an essential tool for progress, efficiency,
+and success. However, the pursuit of optimisation, especially when taken to extremes, can lead to
+unintended negative consequences. In both theory and practice, optimisation is not always neutral;
+it embodies values, priorities, and trade-offs that shape outcomes in ways that may not always be
+desirable.
+
+
+### General Criticism of Optimisation as a Universal Goal
+
+__1.	Optimisation as Reductionism__
+
+Many optimisation problems involve simplifying complex, multi-dimensional realities into quantifiable metrics. This reductionist approach can lead to distortions, where important aspects of a system (such as ethical concerns, fairness, or long-term consequences) are either ignored or misrepresented. For example, economic models optimising for GDP growth often fail to account for environmental degradation, wealth inequality, or social well-being.
+
+
+__2.	The Problem of Overfitting to Metrics__
+
+In machine learning, overfitting refers to a model that performs well on training data but fails in the real world. In broader systems, when a single metric is over-optimised, it can lead to perverse incentives. Goodhart’s Law captures this idea: “When a measure becomes a target, it ceases to be a good measure.”[*good]
+- Example: Social media algorithms are optimised for engagement, which maximises time spent on platforms, but this often leads to the spread of sensationalist or divisive content.
+
+[*good]: In other words, once a specific metric is optimised for, especially in systems involving human behavior, it often gets manipulated in ways that undermine its original purpose. This phenomenon is common in economics, artificial intelligence, and organizational management. For example, if a school optimizes for higher standardized test scores, teachers may “teach to the test” rather than fostering deeper learning. In AI, optimizing for engagement in social media algorithms can lead to clickbait and misinformation. The core issue is that a chosen metric is always an imperfect proxy for a broader goal, and when it is treated as the objective itself, unintended distortions arise. This makes Goodhart’s Law a crucial cautionary principle in optimization—highlighting that blindly chasing a metric can degrade the very system it was meant to improve.
+
+__3.	Trade-Off Blindness__
+
+Optimisation always involves trade-offs, but when optimisation becomes an unquestioned goal, it often ignores broader social, ethical, or environmental consequences.
+- Example: Uber optimises for rider demand and driver efficiency, but in some cities, this has led to worsening traffic congestion and economic precarity for drivers.
+
+
+__4.	Short-Termism vs. Long-Term Stability__
+
+Optimisation often emphasises immediate gains over long-term resilience. The financial sector’s emphasis on optimising short-term profits contributed to the 2008 financial crisis, as financial products were designed for immediate returns rather than systemic stability.
+
+
+
+### Specific Criticism of Optimisation in Different Fields
+
+__1. Technology and AI: Optimisation for Engagement and Its Social Consequences__
+
+Social media platforms optimise for engagement—measured by clicks, likes, and time spent on the platform. While this is beneficial for business models based on advertising revenue, it has significant social costs:
+- The spread of misinformation and conspiracy theories, as false or emotionally charged content often outperforms factual reporting.
+- Increased political polarisation, as algorithms favour content that reinforces existing beliefs.
+- The mental health impact of social media addiction, particularly among young people.
+
+References:
+- Zuboff, Shoshana. The Age of Surveillance Capitalism (2019) - Critiques how big tech companies optimise user behaviour for profit.
+- Tufekci, Zeynep. Twitter and Tear Gas (2017) - Analyses how social media optimisation affects political movements and misinformation.
+- Noble, Safiya Umoja. Algorithms of Oppression (2018) - Explores how optimisation in search engines leads to racial and gender biases.
+
+
+__2. Economics: The Tyranny of Profit Optimisation__
+
+Capitalism heavily relies on optimising for profit, often without sufficient checks on externalities such as environmental damage, labor exploitation, or economic inequality.
+- The gig economy optimises labor costs for companies like Uber and DoorDash, but at the expense of job stability and worker protections.
+- Supply chain optimisation maximises efficiency but makes global systems fragile (e.g., semiconductor shortages during the COVID-19 pandemic).
+- Amazon’s warehouse logistics optimise for speed but create gruelling conditions for workers.
+
+References:
+- Piketty, Thomas. Capital in the Twenty-First Century (2013) - Analyses how economic optimisation for capital accumulation leads to inequality.
+- Klein, Naomi. This Changes Everything (2014) - Critiques how economic optimisation ignores climate consequences.
+
+
+
+__3. Environmental Consequences of Over-Optimisation__
+
+Many environmental issues arise from optimising for short-term economic or technological gains rather than long-term sustainability.
+- Industrial agriculture optimises for yield, leading to monoculture farming, soil depletion, and biodiversity loss.
+- Fossil fuel optimisation maximised energy efficiency for decades but accelerated climate change.
+- Overfishing optimises short-term profit but leads to ecosystem collapse.
+
+References:
+- Meadows, Donella et al. The Limits to Growth (1972) - A classic critique of optimisation-driven resource depletion.
+- Raworth, Kate. Doughnut Economics (2017) - Proposes balancing optimisation with sustainability.
+
+
+
+### What's the Alternative?
+
+Rather than blindly pursuing optimisation, we should consider meta-optimisation: optimising what
+we optimise for. Some alternative frameworks include:
+
+- *Satisficing* (Simon, 1956) - Instead of always optimising for the absolute best, consider solutions
+  that are "good enough" and balance multiple needs.
+
+- Resilience Thinking (Holling, 1973) - Instead of maximising efficiency, design systems that can adapt
+  to changing conditions.
+
+- Ethical AI & Value-Sensitive Design - Instead of purely optimising for performance, incorporate
+  ethical constraints into optimisation goals.
+
+
+### Conclusion
+
+Optimisation is a powerful tool, but it is not inherently good or neutral. It encodes priorities and
+trade-offs that can lead to systemic failures if taken too far or applied blindly. The key is to ask:
+What are we optimising for, and at what cost?
+
+
+### Projects
+
+Here are some project ideas that encourage students to explore the limits of optimisation—both its benefits and its unintended consequences. These projects are all related to computing, programming, and system design, and they challenge students to think critically about optimisation in different contexts.
+
+
+__1. Social Media Algorithm and Engagement Optimisations__
+
+Goal: Build a simplified social media feed algorithm that prioritises engagement. Then analyse the unintended consequences.
+
+Steps:
+- Create a dataset of posts with different engagement metrics (likes, comments, shares).
+- Implement an algorithm that optimises for engagement.
+- Simulate a user browsing the feed and measure how engagement increases.
+- Modify the algorithm to optimise for other metrics (e.g., factual accuracy) and compare trade-offs.
+
+Critical Discussion:
+- Does the algorithm push more extreme content?
+- How does prioritising engagement affect misinformation?
+- What happens if you optimise for diversity of viewpoints instead?
+
+
+
+__2. AI Ethics: Bias in Optimisation__
+
+Goal: Train a machine learning model on biased data and examine how optimisation reinforces discrimination.
+
+Steps:
+- Use a dataset (e.g., a hiring dataset) and train a classifier to predict success based on attributes like education, experience, and demographics.
+- Measure accuracy and optimise for it.
+- Then analyse whether certain groups (e.g., gender, race) are disproportionately filtered out.
+- Implement fairness constraints and compare the trade-offs.
+
+Critical Discussion:
+- How does optimising for accuracy lead to bias?
+- What does it mean to optimise for fairness?
+- What are the trade-offs between fairness and performance?
+
+NOTE: Use synthetic datasets to avoid privacy concerns.
+
+
+
+__3. Economic Optimisation vs. Worker Well-Being (Gig Economy Simulation)__
+
+Goal: Simulate a gig economy platform like Uber and examine how optimising for profit affects workers.
+
+Steps:
+- Create a simulation where drivers sign up, receive ride requests, and earn money.
+- Optimise for platform profit (e.g., lower driver pay, increase ride costs).
+- Track worker earnings, job satisfaction, and company revenue.
+- Modify the system to optimise for worker well-being instead and analyse trade-offs.
+
+Critical Discussion:
+- Does optimising for profit create precarious working conditions?
+- How can platforms balance fairness with economic efficiency?
+
+
+
+__4. Environmental Trade-Offs in Supply Chain Optimisations__
+
+Goal: Model a supply chain that minimises costs and maximises profit, then introduce sustainability constraints.
+
+Steps:
+- Simulate a company that sources raw materials, manufactures products, and distributes them.
+- Optimise for cost reduction (cheaper suppliers, faster delivery, minimal storage costs).
+- Introduce carbon footprint tracking and require emission reductions.
+- Compare the profit vs. sustainability trade-offs.
+
+Critical Discussion:
+- How does cost-cutting optimisation lead to environmental damage?
+- Can sustainability be optimised without sacrificing profit?
+
+
+
+__5. Resilience vs. Efficiency in System Design__
+
+Goal: Build a system (network, power grid, database, etc.) and compare an optimised version vs. a resilient one.
+
+Steps:
+- Create a network where messages must be delivered between nodes.
+- Optimise for speed and minimal redundancy.
+- Introduce failures (server crashes, network congestion).
+- Compare performance between the optimised and resilient versions.
+
+Critical Discussion:
+- How does optimisation make systems fragile?
+- What are real-world examples of systems collapsing due to over-optimisation?
+
+
+
+__6. Over-Optimisation in Machine Learning (Overfitting Experiment)__
+
+Goal: Train a model that is overly optimised for training accuracy and see how it fails in real-world cases.
+
+Steps:
+- Train a neural network on a small dataset and measure accuracy.
+- Keep optimising the model until it overfits (high training accuracy, low test accuracy).
+- Introduce noise or slightly modify test data and observe how performance drops.
+- Implement regularisation techniques and measure trade-offs.
+
+Critical Discussion:
+- Why does too much optimisation make models worse?
+- What are real-world examples of overfitting in AI applications?
+
+
+
+__7. Ethics of Autonomous Decision-Making (Trolley Problem for AI)__
+
+Goal: Create an AI system that must make ethical trade-offs in an optimisation problem.
+
+Steps:
+- Simulate a self-driving car that must optimise for safety, speed, and energy efficiency.
+- Introduce scenarios where the car must decide (e.g., hitting an obstacle vs. swerving into pedestrians).
+- Implement different optimisation strategies and analyse how decisions change.
+
+Critical Discussion:
+- Should AI optimise for human life at all costs?
+- How do ethical constraints change optimisation strategies?
 
