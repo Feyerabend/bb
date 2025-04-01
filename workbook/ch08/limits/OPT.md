@@ -69,9 +69,9 @@ control (MPC) to optimise real-time decision-making.
 
 - Mathematical Perspective: A common formulation is in optimal control theory, where
   we define a function $\`J(x, u)\`$ (cost function), and we seek to minimise:
-  ```math
+```math
   J = \int_0^T L(x(t), u(t)) dt + \Phi(x(T))
-  ```
+```
   where $\`x(t)\`$ is the system state, $\`u(t)\`$ is the control input, $\`L(x,u)\`$ 
   is the running cost, and $\`\Phi(x(T))\`$ is the terminal cost.
 
@@ -319,11 +319,11 @@ While this is beneficial for business models based on advertising revenue, it ha
 - The mental health impact of social media addiction, particularly among young people.
 
 References:
-- Zuboff, Shoshana. The Age of Surveillance Capitalism (2019) - Critiques how big tech companies optimise
+- Zuboff, Shoshana. *The Age of Surveillance Capitalism* (2019) - Critiques how big tech companies optimise
   user behaviour for profit.
-- Tufekci, Zeynep. Twitter and Tear Gas (2017) - Analyses how social media optimisation affects political
+- Tufekci, Zeynep. *Twitter and Tear Gas* (2017) - Analyses how social media optimisation affects political
   movements and misinformation.
-- Noble, Safiya Umoja. Algorithms of Oppression (2018) - Explores how optimisation in search engines
+- Noble, Safiya Umoja. *Algorithms of Oppression* (2018) - Explores how optimisation in search engines
   leads to racial and gender biases.
 
 
@@ -335,12 +335,12 @@ such as environmental damage, labor exploitation, or economic inequality.
   of job stability and worker protections.
 - Supply chain optimisation maximises efficiency but makes global systems fragile (e.g.,
   semiconductor shortages during the COVID-19 pandemic).
-- Amazon’s warehouse logistics optimise for speed but create gruelling conditions for workers.
+- Amazon's warehouse logistics optimise for speed but create gruelling conditions for workers.
 
 References:
-- Piketty, Thomas. Capital in the Twenty-First Century (2013) - Analyses how economic optimisation
+- Piketty, Thomas. *Capital in the Twenty-First Century* (2013) - Analyses how economic optimisation
   for capital accumulation leads to inequality.
-- Klein, Naomi. This Changes Everything (2014) - Critiques how economic optimisation ignores
+- Klein, Naomi. *This Changes Everything* (2014) - Critiques how economic optimisation ignores
   climate consequences.
 
 
@@ -354,8 +354,8 @@ rather than long-term sustainability.
 - Overfishing optimises short-term profit but leads to ecosystem collapse.
 
 References:
-- Meadows, Donella et al. The Limits to Growth (1972) - A classic critique of optimisation-driven resource depletion.
-- Raworth, Kate. Doughnut Economics (2017) - Proposes balancing optimisation with sustainability.
+- Meadows, Donella et al. *The Limits to Growth* (1972) - A classic critique of optimisation-driven resource depletion.
+- Raworth, Kate. *Doughnut Economics* (2017) - Proposes balancing optimisation with sustainability.
 
 
 
