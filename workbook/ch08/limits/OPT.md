@@ -68,13 +68,12 @@ These systems often rely on techniques like PID controllers, Kalman filters, and
 control (MPC) to optimise real-time decision-making.
 
 - Mathematical Perspective: A common formulation is in optimal control theory, where
-  we define a function J(x, u) (cost function), and we seek to minimise:
+  we define a function $\`J(x, u)\`$ (cost function), and we seek to minimise:
   ```math
   J = \int_0^T L(x(t), u(t)) dt + \Phi(x(T))
   ```
-  where x(t) is the system state, u(t) is the control input, L(x,u) is the running cost,
-  and \Phi(x(T)) is the terminal cost.
-
+  where $\`x(t)\`$ is the system state, $\`u(t)\`$ is the control input, $\`L(x,u)\`$ 
+  is the running cost, and $\`\Phi(x(T))\`$ is the terminal cost.
 
 
 __2. Economics: Decision-Making at Scale__
@@ -99,7 +98,7 @@ preference over outcomes. A social welfare function aggregates individual utilit
 ```math
 W(U_1, U_2, …, U_n)
 ```
-where $U_i$ is the utility of individual $i$, and different formulations (e.g., Pareto
+where $\`U_i\`$ is the utility of individual $\`i\`$, and different formulations (e.g., Pareto
 efficiency, Rawlsian max-min fairness) lead to different solutions.
 
 
@@ -116,12 +115,14 @@ Many AI techniques revolve around maximising rewards or minimising loss.
 
 Example: In reinforcement learning (RL), an agent interacts with an environment and selects
 actions to maximise future expected rewards.
-- Mathematical Perspective: The optimisation problem in RL is formulated using the Bellman equation:
+- Mathematical Perspective: The optimisation problem in RL is formulated using the Bellman
+equation:
 ```math
 V(s) = \max_a \sum_{s{\prime}} P(s' \mid s, a) \left[ R(s, a) + \gamma V(s{\prime}) \right]
 ```
-where V(s) is the value function, P(s{\prime} | s, a) is the transition probability, R(s, a)
-is the reward, and \gamma is a discount factor.
+where $\`V(s)\`$ is the value function, $\`P(s{\prime} | s, a)\`$ is the transition
+probability, $\`R(s, a)\`$
+is the reward, and $\`\gamma\`$ is a discount factor.
 
 
 
@@ -129,15 +130,16 @@ __4. Statistical Learning and Decision Theory__
 
 Statistical methods focus on minimising the expected error to improve predictions and decisions
 under uncertainty.
-- Machine Learning: Supervised models optimise loss functions (e.g., cross-entropy for classification,
-  MSE for regression).
+- Machine Learning: Supervised models optimise loss functions (e.g., cross-entropy for
+  classification, MSE for regression).
 - Bayesian Decision Theory: Optimises decision-making under probabilistic uncertainty, crucial in
   medical diagnosis, financial risk analysis, and automated trading.
 - Experimental Design: Ensures efficient data collection in fields like drug development and
   industrial process optimisation.
 
 - Example: In supervised learning, given input x and true output y, a model produces a prediction
-  f(x). A loss function L(y, f(x)) measures the error, and the goal is to minimise the expected loss:
+  $\`f(x)\`$. A loss function $\`L(y, f(x))\`$ measures the error, and the goal is to minimise
+  the expected loss:
 ```math
 \min_f \mathbb{E}_{(x,y) \sim P} [ L(y, f(x)) ]
 ```
@@ -150,6 +152,7 @@ L(y, f(x)) = (y - f(x))^2
 ```math
 L(y, f(x)) = - \sum y_i \log f(x_i)
 ```
+
 
 ### Complementary Areas and Broader Perspectives
 
@@ -172,12 +175,12 @@ methods provide powerful tools to tackle real-world optimisation challenges.
 The core idea across all these fields is optimisation, but different domains frame it as
 maximisation or minimisation:
 
-| Field               | Objective                          | Function Type       |
-|---------------------|------------------------------------|---------------------|
-| Control Systems     | Minimise cost function             | \( J(x, u) \)       |
-| Economics           | Maximise utility/profit/welfare    | \( U(x), \pi(x) \)  |
-| Research (AI)       | Maximise expected rewards          | V(s) (Bellman)      |
-| Statistics/ML	      | Minimise expected loss             | \mathbb{E}[L(y, f(x))] |
+| Field               | Objective                          | Function Type          |
+|---------------------|------------------------------------|------------------------|
+| Control Systems     | Minimise cost function             | $\`J(x, u)\`$          |
+| Economics           | Maximise utility/profit/welfare    | $\`U(x), \pi(x)\`$     |
+| Research (AI)       | Maximise expected rewards          | $\`V(s)\`$ (Bellman)   |
+| Statistics/ML	      | Minimise expected loss             | $\`\mathbb{E}[L(y, f(x))]\`$ |
 
 - Duality: Many problems can be framed in both ways. For example, maximising rewards is equivalent
   to minimising negative rewards.
@@ -261,25 +264,46 @@ desirable.
 
 __1.	Optimisation as Reductionism__
 
-Many optimisation problems involve simplifying complex, multi-dimensional realities into quantifiable metrics. This reductionist approach can lead to distortions, where important aspects of a system (such as ethical concerns, fairness, or long-term consequences) are either ignored or misrepresented. For example, economic models optimising for GDP growth often fail to account for environmental degradation, wealth inequality, or social well-being.
+Many optimisation problems involve simplifying complex, multi-dimensional realities into quantifiable
+metrics. This reductionist approach can lead to distortions, where important aspects of a system
+(such as ethical concerns, fairness, or long-term consequences) are either ignored or misrepresented.
+For example, economic models optimising for GDP growth often fail to account for environmental degradation,
+wealth inequality, or social well-being.
 
 
 __2.	The Problem of Overfitting to Metrics__
 
-In machine learning, overfitting refers to a model that performs well on training data but fails in the real world. In broader systems, when a single metric is over-optimised, it can lead to perverse incentives. Goodhart’s Law captures this idea: “When a measure becomes a target, it ceases to be a good measure.”[*good]
-- Example: Social media algorithms are optimised for engagement, which maximises time spent on platforms, but this often leads to the spread of sensationalist or divisive content.
+In machine learning, overfitting refers to a model that performs well on training data but fails in
+the real world. In broader systems, when a single metric is over-optimised, it can lead to perverse
+incentives. Goodhart’s Law captures this idea:
+"When a measure becomes a target, it ceases to be a good measure."[*good]
+- Example: Social media algorithms are optimised for engagement, which maximises time spent on platforms,
+  but this often leads to the spread of sensationalist or divisive content.
 
-[*good]: In other words, once a specific metric is optimised for, especially in systems involving human behavior, it often gets manipulated in ways that undermine its original purpose. This phenomenon is common in economics, artificial intelligence, and organizational management. For example, if a school optimizes for higher standardized test scores, teachers may “teach to the test” rather than fostering deeper learning. In AI, optimizing for engagement in social media algorithms can lead to clickbait and misinformation. The core issue is that a chosen metric is always an imperfect proxy for a broader goal, and when it is treated as the objective itself, unintended distortions arise. This makes Goodhart’s Law a crucial cautionary principle in optimization—highlighting that blindly chasing a metric can degrade the very system it was meant to improve.
+[*good]: In other words, once a specific metric is optimised for, especially in systems involving
+human behavior, it often gets manipulated in ways that undermine its original purpose. This phenomenon
+is common in economics, artificial intelligence, and organizational management. For example, if a
+school optimizes for higher standardized test scores, teachers may “teach to the test” rather than
+fostering deeper learning. In AI, optimizing for engagement in social media algorithms can lead to
+clickbait and misinformation. The core issue is that a chosen metric is always an imperfect proxy
+for a broader goal, and when it is treated as the objective itself, unintended distortions arise.
+This makes Goodhart's Law a crucial cautionary principle in optimization—highlighting that blindly
+chasing a metric can degrade the very system it was meant to improve.
+
 
 __3.	Trade-Off Blindness__
 
-Optimisation always involves trade-offs, but when optimisation becomes an unquestioned goal, it often ignores broader social, ethical, or environmental consequences.
-- Example: Uber optimises for rider demand and driver efficiency, but in some cities, this has led to worsening traffic congestion and economic precarity for drivers.
+Optimisation always involves trade-offs, but when optimisation becomes an unquestioned goal, it often
+ignores broader social, ethical, or environmental consequences.
+- Example: Über optimises for rider demand and driver efficiency, but in some cities, this has led to
+  worsening traffic congestion and economic precarity for drivers.
 
 
 __4.	Short-Termism vs. Long-Term Stability__
 
-Optimisation often emphasises immediate gains over long-term resilience. The financial sector’s emphasis on optimising short-term profits contributed to the 2008 financial crisis, as financial products were designed for immediate returns rather than systemic stability.
+Optimisation often emphasises immediate gains over long-term resilience. The financial sector’s emphasis
+on optimising short-term profits contributed to the 2008 financial crisis, as financial products were
+designed for immediate returns rather than systemic stability.
 
 
 
@@ -287,33 +311,44 @@ Optimisation often emphasises immediate gains over long-term resilience. The fin
 
 __1. Technology and AI: Optimisation for Engagement and Its Social Consequences__
 
-Social media platforms optimise for engagement—measured by clicks, likes, and time spent on the platform. While this is beneficial for business models based on advertising revenue, it has significant social costs:
-- The spread of misinformation and conspiracy theories, as false or emotionally charged content often outperforms factual reporting.
+Social media platforms optimise for engagement—measured by clicks, likes, and time spent on the platform.
+While this is beneficial for business models based on advertising revenue, it has significant social costs:
+- The spread of misinformation and conspiracy theories, as false or emotionally charged content often
+  outperforms factual reporting.
 - Increased political polarisation, as algorithms favour content that reinforces existing beliefs.
 - The mental health impact of social media addiction, particularly among young people.
 
 References:
-- Zuboff, Shoshana. The Age of Surveillance Capitalism (2019) - Critiques how big tech companies optimise user behaviour for profit.
-- Tufekci, Zeynep. Twitter and Tear Gas (2017) - Analyses how social media optimisation affects political movements and misinformation.
-- Noble, Safiya Umoja. Algorithms of Oppression (2018) - Explores how optimisation in search engines leads to racial and gender biases.
+- Zuboff, Shoshana. The Age of Surveillance Capitalism (2019) - Critiques how big tech companies optimise
+  user behaviour for profit.
+- Tufekci, Zeynep. Twitter and Tear Gas (2017) - Analyses how social media optimisation affects political
+  movements and misinformation.
+- Noble, Safiya Umoja. Algorithms of Oppression (2018) - Explores how optimisation in search engines
+  leads to racial and gender biases.
 
 
 __2. Economics: The Tyranny of Profit Optimisation__
 
-Capitalism heavily relies on optimising for profit, often without sufficient checks on externalities such as environmental damage, labor exploitation, or economic inequality.
-- The gig economy optimises labor costs for companies like Uber and DoorDash, but at the expense of job stability and worker protections.
-- Supply chain optimisation maximises efficiency but makes global systems fragile (e.g., semiconductor shortages during the COVID-19 pandemic).
+Capitalism heavily relies on optimising for profit, often without sufficient checks on externalities
+such as environmental damage, labor exploitation, or economic inequality.
+- The gig economy optimises labor costs for companies like Uber and DoorDash, but at the expense
+  of job stability and worker protections.
+- Supply chain optimisation maximises efficiency but makes global systems fragile (e.g.,
+  semiconductor shortages during the COVID-19 pandemic).
 - Amazon’s warehouse logistics optimise for speed but create gruelling conditions for workers.
 
 References:
-- Piketty, Thomas. Capital in the Twenty-First Century (2013) - Analyses how economic optimisation for capital accumulation leads to inequality.
-- Klein, Naomi. This Changes Everything (2014) - Critiques how economic optimisation ignores climate consequences.
+- Piketty, Thomas. Capital in the Twenty-First Century (2013) - Analyses how economic optimisation
+  for capital accumulation leads to inequality.
+- Klein, Naomi. This Changes Everything (2014) - Critiques how economic optimisation ignores
+  climate consequences.
 
 
 
 __3. Environmental Consequences of Over-Optimisation__
 
-Many environmental issues arise from optimising for short-term economic or technological gains rather than long-term sustainability.
+Many environmental issues arise from optimising for short-term economic or technological gains
+rather than long-term sustainability.
 - Industrial agriculture optimises for yield, leading to monoculture farming, soil depletion, and biodiversity loss.
 - Fossil fuel optimisation maximised energy efficiency for decades but accelerated climate change.
 - Overfishing optimises short-term profit but leads to ecosystem collapse.
@@ -330,10 +365,14 @@ Rather than blindly pursuing optimisation, we should consider meta-optimisation:
 we optimise for. Some alternative frameworks include:
 
 - *Satisficing* (Simon, 1956) - Instead of always optimising for the absolute best, consider solutions
-  that are "good enough" and balance multiple needs.
+  that are "good enough" and balance multiple needs.[^simon]
 
-- Resilience Thinking (Holling, 1973) - Instead of maximising efficiency, design systems that can adapt
-  to changing conditions.
+[^simon]: Herbert A. Simon introduced the concept of satisficing in his 1956 paper "Rational Choice and the Structure of the Environment", published in *Psychological Review* (Vol. 63, No. 2, pp. 129–138). Also, Simon, H.A. (1967[1957]). *Models of man: social and rational : mathematical essays on rational human behavior in a social setting.* (5 pr.) London:
+
+- *Resilience Thinking* (Holling, 1973) - Instead of maximising efficiency, design systems that can adapt
+  to changing conditions.[^holling]
+
+[^holling]: Holling, C. S. (1973). "Resilience and Stability of Ecological Systems." *Annual Review of Ecology and Systematics*, 4(1), 1–23.
 
 - Ethical AI & Value-Sensitive Design - Instead of purely optimising for performance, incorporate
   ethical constraints into optimisation goals.
