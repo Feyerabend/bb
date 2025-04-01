@@ -190,63 +190,63 @@ maximisation or minimisation:
 
 ### Projects
 
-1. The Trade-Off Simulator: Develop a simple interactive program that demonstrates the trade-offs
+1. *The Trade-Off Simulator*: Develop a simple interactive program that demonstrates the trade-offs
    in optimisation problems. For example, a web-based tool where users adjust parameters (e.g.,
    speed vs. energy consumption in a self-driving car) and see how optimising for one affects the others.
 
-2. Resource-Constrained AI Training: Implement a simple neural network that can only be trained
+2. *Resource-Constrained AI Training*: Implement a simple neural network that can only be trained
    with limited computational resources (e.g., a fixed number of floating-point operations).
    Investigate how different optimisation techniques (gradient clipping, learning rate scheduling,
    weight quantisation) affect the final model performance.
 
-3. Evolutionary Algorithm for Problem-Solving: Write a genetic algorithm that optimises a complex
+3. *Evolutionary Algorithm for Problem-Solving*: Write a genetic algorithm that optimises a complex
    function (e.g., traveling salesman problem, game AI, or image compression). Reflect on how
    evolutionary principles like mutation and selection contribute to optimisation.
 
-4. Ethical Optimisation in AI: Build a decision-making AI (e.g., a reinforcement learning agent)
+4. *Ethical Optimisation in AI*: Build a decision-making AI (e.g., a reinforcement learning agent)
    and implement different reward structures. Compare the outcomes when optimising for different
    values (e.g., individual gain vs. collective welfare). How does the chosen objective shape the
    behaviour of the AI?
 
-5. Real-Time Control System: Implement a PID controller in a small robotic simulation or an interactive
+5. *Real-Time Control System*: Implement a PID controller in a small robotic simulation or an interactive
    program. Optimise for stability and response time, and analyse how tuning the parameters affects
    the outcome.
 
-6. Game Theory and Competitive Optimisation: Simulate an economic system with multiple agents trying
+6. *Game Theory and Competitive Optimisation*: Simulate an economic system with multiple agents trying
    to maximise their own rewards while competing for shared resources. Explore the Nash equilibrium
    and Pareto efficiency in different scenarios.
 
-7. Energy-Efficient Computing: Optimise a computational task (e.g., matrix multiplication, sorting)
+7. *Energy-Efficient Computing*: Optimise a computational task (e.g., matrix multiplication, sorting)
    to reduce energy consumption. Compare different algorithms and hardware-level optimisations
    (e.g., parallel processing, lower precision computation).
 
-8. Multi-Objective Optimisation: Implement an optimisation algorithm that must balance multiple
+8. *Multi-Objective Optimisation*: Implement an optimisation algorithm that must balance multiple
    competing objectives (e.g., a web server that must optimise both speed and security, or a route
    planner that minimises both time and fuel consumption).
 
-9. AI Fairness and Bias in Optimisation: Train an AI model with different fairness constraints
+9. *AI Fairness and Bias in Optimisation*: Train an AI model with different fairness constraints
    (e.g., balancing accuracy across different groups). Explore how optimising for fairness can
    conflict with optimising for accuracy.
 
-10. Compression and Information Theory: Implement a simple data compression algorithm and analyse
+10. *Compression and Information Theory*: Implement a simple data compression algorithm and analyse
     the trade-off between compression ratio and loss of information. Compare entropy-based methods
     with lossy and lossless techniques.
 
-11. Dynamic Programming Challenge: Solve a classic dynamic programming problem (e.g., knapsack problem,
+11. *Dynamic Programming Challenge*: Solve a classic dynamic programming problem (e.g., knapsack problem,
     shortest path) and analyse the time-space trade-off of memoization.
 
-12.	Optimisation in Programming Languages: Write a simple compiler optimisation pass that transforms
+12.	*Optimisation in Programming Languages*: Write a simple compiler optimisation pass that transforms
     inefficient code into a more optimised form (e.g., constant folding, loop unrolling).
 
-13.	Interactive Visualisation of Optimisation Algorithms: Create a visualisation tool that shows how
+13.	*Interactive Visualisation of Optimisation Algorithms*: Create a visualisation tool that shows how
     different optimisation techniques (gradient descent, simulated annealing, genetic algorithms)
     solve the same problem in different ways.
 
-14. Reinforcement Learning in Games: Implement a basic AI that learns to play a simple game (e.g.,
+14. *Reinforcement Learning in Games*: Implement a basic AI that learns to play a simple game (e.g.,
     tic-tac-toe, a small grid-world environment) using Q-learning or deep reinforcement learning.
     Experiment with different reward structures.
 
-15. Constraint Satisfaction Problems: Implement a constraint solver for a problem like Sudoku or
+15. *Constraint Satisfaction Problems*: Implement a constraint solver for a problem like Sudoku or
     scheduling, exploring how different heuristics improve performance.
 
 
@@ -404,7 +404,7 @@ design, and they challenge students to think critically about optimisation in di
 
 __1. Social Media Algorithm and Engagement Optimisations__
 
-Goal: Build a simplified social media feed algorithm that prioritises engagement. Then analyse the unintended consequences.
+*Build a simplified social media feed algorithm that prioritises engagement. Then analyse the unintended consequences.*
 
 Steps:
 - Create a dataset of posts with different engagement metrics (likes, comments, shares).
@@ -421,10 +421,11 @@ Critical Discussion:
 
 __2. AI Ethics: Bias in Optimisation__
 
-Goal: Train a machine learning model on biased data and examine how optimisation reinforces discrimination.
+*Train a machine learning model on biased data and examine how optimisation reinforces discrimination.*
 
 Steps:
-- Use a dataset (e.g., a hiring dataset) and train a classifier to predict success based on attributes like education, experience, and demographics.
+- Use a dataset (e.g., a hiring dataset) and train a classifier to predict success based on attributes
+  like education, experience, and demographics.
 - Measure accuracy and optimise for it.
 - Then analyse whether certain groups (e.g., gender, race) are disproportionately filtered out.
 - Implement fairness constraints and compare the trade-offs.
@@ -434,13 +435,14 @@ Critical Discussion:
 - What does it mean to optimise for fairness?
 - What are the trade-offs between fairness and performance?
 
-NOTE: Use synthetic datasets to avoid privacy concerns.
+> [!NOTE]  
+> Use synthetic datasets to avoid privacy concerns.
 
 
 
 __3. Economic Optimisation vs. Worker Well-Being (Gig Economy Simulation)__
 
-Goal: Simulate a gig economy platform like Uber and examine how optimising for profit affects workers.
+*Simulate a gig economy platform like Über and examine how optimising for profit affects workers.*
 
 Steps:
 - Create a simulation where drivers sign up, receive ride requests, and earn money.
@@ -456,7 +458,7 @@ Critical Discussion:
 
 __4. Environmental Trade-Offs in Supply Chain Optimisations__
 
-Goal: Model a supply chain that minimises costs and maximises profit, then introduce sustainability constraints.
+*Model a supply chain that minimises costs and maximises profit, then introduce sustainability constraints.*
 
 Steps:
 - Simulate a company that sources raw materials, manufactures products, and distributes them.
@@ -472,7 +474,7 @@ Critical Discussion:
 
 __5. Resilience vs. Efficiency in System Design__
 
-Goal: Build a system (network, power grid, database, etc.) and compare an optimised version vs. a resilient one.
+*Build a system (network, power grid, database, etc.) and compare an optimised version vs. a resilient one.*
 
 Steps:
 - Create a network where messages must be delivered between nodes.
@@ -488,7 +490,7 @@ Critical Discussion:
 
 __6. Over-Optimisation in Machine Learning (Overfitting Experiment)__
 
-Goal: Train a model that is overly optimised for training accuracy and see how it fails in real-world cases.
+*Train a model that is overly optimised for training accuracy and see how it fails in real-world cases.*
 
 Steps:
 - Train a neural network on a small dataset and measure accuracy.
@@ -504,7 +506,7 @@ Critical Discussion:
 
 __7. Ethics of Autonomous Decision-Making (Trolley Problem for AI)__
 
-Goal: Create an AI system that must make ethical trade-offs in an optimisation problem.
+*Create an AI system that must make ethical trade-offs in an optimisation problem.*
 
 Steps:
 - Simulate a self-driving car that must optimise for safety, speed, and energy efficiency.
