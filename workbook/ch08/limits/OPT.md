@@ -276,11 +276,11 @@ __2.	The Problem of Overfitting to Metrics__
 In machine learning, overfitting refers to a model that performs well on training data but fails in
 the real world. In broader systems, when a single metric is over-optimised, it can lead to perverse
 incentives. Goodhart’s Law captures this idea:
-"When a measure becomes a target, it ceases to be a good measure."[*good]
+"When a measure becomes a target, it ceases to be a good measure."[^good]
 - Example: Social media algorithms are optimised for engagement, which maximises time spent on platforms,
   but this often leads to the spread of sensationalist or divisive content.
 
-[*good]: In other words, once a specific metric is optimised for, especially in systems involving
+[^good]: In other words, once a specific metric is optimised for, especially in systems involving
 human behavior, it often gets manipulated in ways that undermine its original purpose. This phenomenon
 is common in economics, artificial intelligence, and organizational management. For example, if a
 school optimizes for higher standardized test scores, teachers may “teach to the test” rather than
