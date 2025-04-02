@@ -235,10 +235,10 @@ maximisation or minimisation:
 11. *Dynamic Programming Challenge*: Solve a classic dynamic programming problem (e.g., knapsack problem,
     shortest path) and analyse the time-space trade-off of memoization.
 
-12.	*Optimisation in Programming Languages*: Write a simple compiler optimisation pass that transforms
+12. *Optimisation in Programming Languages*: Write a simple compiler optimisation pass that transforms
     inefficient code into a more optimised form (e.g., constant folding, loop unrolling).
 
-13.	*Interactive Visualisation of Optimisation Algorithms*: Create a visualisation tool that shows how
+13. *Interactive Visualisation of Optimisation Algorithms*: Create a visualisation tool that shows how
     different optimisation techniques (gradient descent, simulated annealing, genetic algorithms)
     solve the same problem in different ways.
 
@@ -281,13 +281,13 @@ incentives. Goodhart’s Law captures this idea:
   but this often leads to the spread of sensationalist or divisive content.
 
 [^good]: In other words, once a specific metric is optimised for, especially in systems involving
-human behavior, it often gets manipulated in ways that undermine its original purpose. This phenomenon
-is common in economics, artificial intelligence, and organizational management. For example, if a
-school optimizes for higher standardized test scores, teachers may “teach to the test” rather than
-fostering deeper learning. In AI, optimizing for engagement in social media algorithms can lead to
+human behaviour, it often gets manipulated in ways that undermine its original purpose. This phenomenon
+is common in economics, artificial intelligence, and organisational management. For example, if a
+school optimises for higher standardised test scores, teachers may “teach to the test” rather than
+fostering deeper learning. In AI, optimising for engagement in social media algorithms can lead to
 clickbait and misinformation. The core issue is that a chosen metric is always an imperfect proxy
 for a broader goal, and when it is treated as the objective itself, unintended distortions arise.
-This makes Goodhart's Law a crucial cautionary principle in optimization—highlighting that blindly
+This makes Goodhart's Law a crucial cautionary principle in optimisation—highlighting that blindly
 chasing a metric can degrade the very system it was meant to improve.
 
 
@@ -296,7 +296,7 @@ __3.	Trade-Off Blindness__
 Optimisation always involves trade-offs, but when optimisation becomes an unquestioned goal, it often
 ignores broader social, ethical, or environmental consequences.
 - Example: Über optimises for rider demand and driver efficiency, but in some cities, this has led to
-  worsening traffic congestion and economic precarity for drivers.
+  worsening traffic congestion.
 
 
 __4.	Short-Termism vs. Long-Term Stability__
@@ -367,7 +367,7 @@ we optimise for. Some alternative frameworks include:
 - *Satisficing* (Simon, 1956) - Instead of always optimising for the absolute best, consider solutions
   that are "good enough" and balance multiple needs.[^simon]
 
-[^simon]: Herbert A. Simon introduced the concept of satisficing in his 1956 paper "Rational Choice and the Structure of the Environment", published in *Psychological Review* (Vol. 63, No. 2, pp. 129–138). Also, Simon, H.A. (1967[1957]). *Models of man: social and rational : mathematical essays on rational human behavior in a social setting.* (5 pr.) London:
+[^simon]: Herbert A. Simon introduced the concept of satisficing in his 1956 paper "Rational Choice and the Structure of the Environment", published in *Psychological Review* (Vol. 63, No. 2, pp. 129–138). Also, Simon, H.A. (1967[1957]). *Models of man: social and rational : mathematical essays on rational human behaviour in a social setting.* (5 pr.) London:
 
 - *Resilience Thinking* (Holling, 1973) - Instead of maximising efficiency, design systems that can adapt
   to changing conditions.[^holling]
@@ -376,7 +376,7 @@ we optimise for. Some alternative frameworks include:
 
 - A close alternative to resilience is Nassim Nicholas Taleb arguing that excessive optimisation makes
   systems fragile by removing necessary redundancies and buffers, leaving them vulnerable to unpredictable
-  shocks. In *The Black Swan* and *Antifragile*, he criticizes the pursuit of efficiency in finance,
+  shocks. In *The Black Swan* and *Antifragile*, he criticises the pursuit of efficiency in finance,
   technology, and policymaking, warning that it often ignores randomness and leads to catastrophic failures.
   Instead of optimising for a narrow definition of "best," he advocates for antifragility—building systems
   that thrive on uncertainty and disorder, much like biological evolution or decentralised markets.
