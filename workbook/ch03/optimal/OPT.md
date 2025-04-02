@@ -201,8 +201,9 @@ maximisation or minimisation:
    weight quantisation) affect the final model performance.
 
 3. *Evolutionary Algorithm for Problem-Solving*: Write a genetic algorithm that optimises a complex
-   function (e.g., traveling salesman problem, game AI, or image compression). Reflect on how
-   evolutionary principles like mutation and selection contribute to optimisation.
+   function (e.g., [traveling salesman problem](./../../ch08/data/salesman/), game AI, or image
+   compression). Reflect on how evolutionary principles like mutation and selection contribute to
+   optimisation.
 
 4. *Ethical Optimisation in AI*: Build a decision-making AI (e.g., a reinforcement learning agent)
    and implement different reward structures. Compare the outcomes when optimising for different

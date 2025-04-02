@@ -2,10 +2,10 @@
 ## The Traveling Salesman Problem
 
 The Traveling Salesman Problem (TSP) is one of the most famous problems in computational
-mathematics and optimization, with roots tracing back to the 1800s. The problem was first
+mathematics and optimisation, with roots tracing back to the 1800s. The problem was first
 mathematically formulated by Irish mathematician W.R. Hamilton and British mathematician
-Thomas Kirkman. Later in the 1930s, Karl Menger of the Vienna Circle provided the formalization
-recognized today. During the 1950s and 60s, researchers at the RAND Corporation—including
+Thomas Kirkman. Later in the 1930s, Karl Menger of the Vienna Circle provided the formalisation
+recognised today. During the 1950s and 60s, researchers at the RAND Corporation—including
 George Dantzig, Ray Fulkerson, and Selmer Johnson—achieved a breakthrough by solving a
 49-city instance, a remarkable feat for the era. In 1972, Richard Karp demonstrated the
 NP-hard nature of TSP, explaining why large-scale exact solutions remain computationally
@@ -23,10 +23,10 @@ complexity. Integer linear programming approaches using cutting plane methods we
 pioneered by Dantzig, Fulkerson, and Johnson. Approximation algorithms offer near-optimal
 solutions, such as the Christofides Algorithm (1976), which guarantees solutions within
 1.5 times the optimal length, and minimum spanning tree (MST)-based methods. Heuristic
-approaches range from simple greedy methods like *Nearest Neighbor* to sophisticated
+approaches range from simple greedy methods like *Nearest Neighbour* to sophisticated
 local search techniques such as 2-opt, 3-opt, and the Lin-Kernighan Algorithm (1973).
 Metaheuristics draw inspiration from natural processes, including simulated annealing
-(metallurgy), ant colony optimization (ant foraging), and genetic algorithms (natural
+(metallurgy), ant colony optimisation (ant foraging), and genetic algorithms (natural
 selection), which gained prominence in the 1980s.
 
 
@@ -114,9 +114,9 @@ without overwhelming existing solutions.
 
 Several improvements could elevate the algorithm’s performance. *Elitism*—preserving top
 solutions across generations—prevents loss of high-quality routes. *Edge Recombination Crossover*,
-designed by Whitley et al. in 1989, prioritizes edge preservation between cities over
+designed by Whitley et al. in 1989, prioritises edge preservation between cities over
 positional inheritance. Integrating local search techniques like 2-opt or 3-opt post-crossover/mutation
-transforms the approach into a memetic algorithm, combining genetic and local optimization.
+transforms the approach into a memetic algorithm, combining genetic and local optimisation.
 Adaptive parameters that adjust mutation rates based on population diversity can dynamically
 balance exploration and exploitation. Finally, island models, where multiple sub-populations
 evolve independently with occasional migration, may enhance solution quality through parallel
@@ -124,4 +124,4 @@ exploration.
 
 This implementation captures core principles of genetic algorithms for TSP, continuing a rich
 tradition of computational problem-solving. By incorporating modern enhancements, it can
-further bridge historical methodologies with contemporary optimization challenges.
+further bridge historical methodologies with contemporary optimisation challenges.
