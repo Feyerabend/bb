@@ -7,7 +7,7 @@
 > Basic neural network concepts,
 > Reinforcement learning principles,
 > Dynamic programming concepts,
-> Optimisation theory
+> Optimisation theory.
 
 Without this foundation, many of the technical terms and algorithms discussed
 might be difficult to follow. You can also see another simpler example
