@@ -63,13 +63,11 @@ def fib(n):
 ```
 
 
-### Approaches to Fibonacci
-
 Here is a C implementation of the Fibonacci sequence using dynamic programming
 with both *memoization* (top-down approach) and *tabulation* (bottom-up approach).
 
 
-#### Memoization (Top-Down)
+4. __Memoization (Top-Down)__
 
 This approach uses recursion with an array to store previously computed values,
 avoiding redundant calculations.
@@ -102,7 +100,7 @@ int main() {
 ```
 
 
-#### Tabulation (Bottom-Up)
+4. __Tabulation (Bottom-Up)__
 
 This approach iteratively builds up the solution using an array.
 
@@ -130,7 +128,7 @@ int main() {
 }
 ```
 
-#### Optimized Tabulation (Space-Efficient)
+5. __Optimised Tabulation (Space-Efficient)__
 
 Since we only need the last two Fibonacci numbers at any time,
 we can optimise space usage.
