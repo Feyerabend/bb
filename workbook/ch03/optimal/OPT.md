@@ -99,8 +99,9 @@ preference over outcomes. A social welfare function aggregates individual utilit
 W(U_1, U_2, …, U_n)
 ```
 where $\`U_i\`$ is the utility of individual $\`i\`$, and different formulations (e.g., Pareto
-efficiency, Rawlsian max-min fairness) lead to different solutions.
+efficiency, Rawlsian max-min fairness[^rawls]) lead to different solutions.
 
+[^rawls]: John Rawls’ A Theory of Justice (1971).
 
 
 __3. Artificial Intelligence: Learning and Adaptation__
@@ -162,7 +163,7 @@ Optimisation interacts with various fields that extend its principles:
 - Information Theory: Optimises data compression and transmission, crucial in networking, cryptography,
   and communications.
 - Computational Complexity: Studies the efficiency of optimisation algorithms, influencing areas like
-  the P vs. NP problem and algorithmic game theory.
+  the P vs. NP problem (cf. [PvsNP](../../ch08/limits/PvsNP.md)) and algorithmic game theory.
 - Systems Biology: Uses optimisation to model biological networks, enzyme pathways, and genetic evolution.
 
 Across all these domains, convex optimisation, dynamic programming, evolutionary algorithms, and Monte Carlo
@@ -232,8 +233,9 @@ maximisation or minimisation:
     the trade-off between compression ratio and loss of information. Compare entropy-based methods
     with lossy and lossless techniques.
 
-11. *Dynamic Programming Challenge*: Solve a classic dynamic programming problem (e.g., knapsack problem,
-    shortest path) and analyse the time-space trade-off of memoization.
+11. *Dynamic Programming Challenge*: Solve a classic dynamic programming problem (e.g.,
+    [knapsack problem](./../../ch08/data/knapsack/), shortest path) and analyse the
+    time-space trade-off of memoization.
 
 12. *Optimisation in Programming Languages*: Write a simple compiler optimisation pass that transforms
     inefficient code into a more optimised form (e.g., constant folding, loop unrolling).
@@ -243,8 +245,8 @@ maximisation or minimisation:
     solve the same problem in different ways.
 
 14. *Reinforcement Learning in Games*: Implement a basic AI that learns to play a simple game (e.g.,
-    tic-tac-toe, a small grid-world environment) using Q-learning or deep reinforcement learning.
-    Experiment with different reward structures.
+    [tic-tac-toe](./../tictactoe/), a small grid-world environment) using Q-learning or deep reinforcement
+    learning. Experiment with different reward structures.
 
 15. *Constraint Satisfaction Problems*: Implement a constraint solver for a problem like Sudoku or
     scheduling, exploring how different heuristics improve performance.
@@ -283,11 +285,11 @@ incentives. Goodhart’s Law captures this idea:
 [^good]: In other words, once a specific metric is optimised for, especially in systems involving
 human behaviour, it often gets manipulated in ways that undermine its original purpose. This phenomenon
 is common in economics, artificial intelligence, and organisational management. For example, if a
-school optimises for higher standardised test scores, teachers may “teach to the test” rather than
+school optimises for higher standardised test scores, teachers may "teach to the test" rather than
 fostering deeper learning. In AI, optimising for engagement in social media algorithms can lead to
 clickbait and misinformation. The core issue is that a chosen metric is always an imperfect proxy
 for a broader goal, and when it is treated as the objective itself, unintended distortions arise.
-This makes Goodhart's Law a crucial cautionary principle in optimisation—highlighting that blindly
+This makes Goodhart's Law a crucial cautionary principle in optimisation--highlighting that blindly
 chasing a metric can degrade the very system it was meant to improve.
 
 
@@ -331,10 +333,10 @@ __2. Economics: The Tyranny of Profit Optimisation__
 
 Capitalism heavily relies on optimising for profit, often without sufficient checks on externalities
 such as environmental damage, labor exploitation, or economic inequality.
-- The gig economy optimises labor costs for companies like Uber and DoorDash, but at the expense
+- The gig economy optimises labor costs for companies like Über and DoorDash, but at the expense
   of job stability and worker protections.
 - Supply chain optimisation maximises efficiency but makes global systems fragile (e.g.,
-  semiconductor shortages during the COVID-19 pandemic).
+  semiconductor shortages during the covid-19 pandemic).
 - Amazon's warehouse logistics optimise for speed but create gruelling conditions for workers.
 
 References:
@@ -367,7 +369,7 @@ we optimise for. Some alternative frameworks include:
 - *Satisficing* (Simon, 1956) - Instead of always optimising for the absolute best, consider solutions
   that are "good enough" and balance multiple needs.[^simon]
 
-[^simon]: Herbert A. Simon introduced the concept of satisficing in his 1956 paper "Rational Choice and the Structure of the Environment", published in *Psychological Review* (Vol. 63, No. 2, pp. 129–138). Also, Simon, H.A. (1967[1957]). *Models of man: social and rational : mathematical essays on rational human behaviour in a social setting.* (5 pr.) London:
+[^simon]: Herbert A. Simon introduced the concept of satisficing in his 1956 paper "Rational Choice and the Structure of the Environment", published in *Psychological Review* (Vol. 63, No. 2, pp. 129–138). Also, Simon, H.A. (1967[1957]). *Models of man: social and rational : mathematical essays on rational human behavior in a social setting.* (5 pr.) London.
 
 - *Resilience Thinking* (Holling, 1973) - Instead of maximising efficiency, design systems that can adapt
   to changing conditions.[^holling]
@@ -483,6 +485,7 @@ Steps:
 - Compare performance between the optimised and resilient versions.
 
 Critical Discussion:
+- Can we express "resiliant systems" in different ways, in relation to programming?
 - How does optimisation make systems fragile?
 - What are real-world examples of systems collapsing due to over-optimisation?
 
