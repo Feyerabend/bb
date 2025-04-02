@@ -1,16 +1,17 @@
 
 > [!IMPORTANT]  
-> To understand these concepts, readers would need some background in:
-> Mathematics (particularly linear algebra and calculus)
-> Statistics and probability
-> Machine learning fundamentals
-> Basic neural network concepts
-> Reinforcement learning principles
-> Dynamic programming concepts
-> Optimization theory
+> To understand the concepts in this text, readers would need some background in:
+> Mathematics (particularly linear algebra and calculus),
+> Statistics and probability,
+> Machine learning fundamentals,
+> Basic neural network concepts,
+> Reinforcement learning principles,
+> Dynamic programming concepts,
+> Optimisation theory
 
 Without this foundation, many of the technical terms and algorithms discussed
-might be difficult to follow. You can also see another example on [coins](./COINS.md).
+might be difficult to follow. You can also see another simpler example
+[coins](./COINS.md).
 
 
 ## State DP
