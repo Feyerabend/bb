@@ -40,18 +40,18 @@ and computational cost is one of the key considerations when applying the method
 
 Sample run:
 
-| Node | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   |
-|------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-| 0    | INF | 4   | 5   | INF | INF | INF | INF | INF | 5   | 7   |
-| 1    | INF | INF | INF | 8   | INF | 7   | INF | 5   | INF | INF |
-| 2    | INF | INF | INF | INF | 5   | INF | INF | 3   | 8   | 1   |
-| 3    | INF | INF | INF | INF | 10  | INF | INF | 6   | INF | INF |
-| 4    | 10  | INF | 7   | INF | INF | 9   | 2   | INF | INF | INF |
-| 5    | INF | INF | 9   | INF | 2   | INF | 4   | INF | INF | INF |
-| 6    | INF | 6   | 6   | INF | INF | INF | INF | INF | INF | INF |
-| 7    | 2   | INF | INF | 7   | INF | INF | INF | INF | INF | INF |
-| 8    | INF | INF | INF | INF | INF | 5   | INF | INF | INF | 5   |
-| 9    | INF | INF | INF | INF | 6   | 7   | 8   | INF | 3   | INF |
+| Node        | 0   | 1   | 2     | 3   | 4   | 5   | 6   | 7   | 8   | 9     |
+|-------------|-----|-----|-------|-----|-----|-----|-----|-----|-----|-------|
+| 0           | INF | 4   | *5*   | INF | INF | INF | INF | INF | 5   | 7     |
+| 1           | INF | INF | INF   | 8   | INF | 7   | INF | 5   | INF | INF   |
+| 2           | INF | INF | INF   | INF | 5   | INF | INF | 3   | 8   | *1*   |
+| 3           | INF | INF | INF   | INF | 10  | INF | INF | 6   | INF | INF   |
+| 4           | 10  | INF | 7     | INF | INF | 9   | 2   | INF | INF | INF   |
+| 5           | INF | INF | 9     | INF | 2   | INF | 4   | INF | INF | INF   |
+| 6           | INF | 6   | 6     | INF | INF | INF | INF | INF | INF | INF   |
+| 7           | 2   | INF | INF   | 7   | INF | INF | INF | INF | INF | INF   |
+| 8           | INF | INF | INF   | INF | INF | 5   | INF | INF | INF | 5     |
+| 9           | INF | INF | INF   | INF | 6   | 7   | 8   | INF | 3   | INF   |
 
 The adjacency matrix represents the graph where each cell [i][j] shows
 the weight (or distance) from node i to node j. "INF" means there's no 
