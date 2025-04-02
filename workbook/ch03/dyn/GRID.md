@@ -230,3 +230,56 @@ The training process:
 The DQN algorithm has been hugely influential in reinforcement learning and was used in
 breakthrough applications like teaching computers to play Atari games and more complex
 games like Go and StarCraft at superhuman levels.
+
+
+
+1. *Bellman Equation*: The core update formula used in the learning process is directly
+derived from the Bellman optimality equation (see above):
+```python
+target_q_values[i, actions[i]] = rewards[i] + (1 - dones[i]) * self.gamma * max_next_q[i]
+```
+
+This is essentially implementing `Q(s,a) = R(s,a) + γ · max_a' Q(s',a')`, which is the
+classic dynamic programming update rule for optimal value functions.
+
+2. *Value Iteration*: The iterative process of updating Q-values is a form of value iteration,
+another classic dynamic programming algorithm. Instead of using a table to store values,
+DQN uses a neural network as a function approximator.
+
+3. *State-Value Relationship*: The algorithm maintains estimates of the value of each
+state-action pair and uses these estimates to make decisions, which is central to
+dynamic programming.
+
+4. *Bootstrapping*: The learning process uses current estimates of future values to
+update current value estimates - this "bootstrapping" approach is a hallmark of
+dynamic programming.
+
+
+### Summary
+
+While DQN has dynamic programming at its core, it differs in several important ways:
+
+- Function Approximation: Traditional dynamic programming uses tables to store values
+  for each state-action pair. DQN uses a neural network to approximate these values, 
+  allowing it to handle larger state spaces.
+
+- Sample-Based Updates: Pure dynamic programming updates all state-action values in
+  each iteration (full backups). DQN only updates based on sampled experiences
+  (partial backups).
+
+- Model-Free Approach: Traditional dynamic programming requires a complete model of
+  the environment (transition probabilities and rewards). DQN learns directly from
+  experience without needing a model.
+
+- Experience Replay: The use of stored experiences for learning isn't part of
+  traditional dynamic programming.
+
+In essence, DQN takes the mathematical foundation of dynamic programming (the Bellman equation)
+and adapts it to work with neural networks and sampling-based learning, allowing it to scale to
+problems where traditional dynamic programming would be impractical due to the curse of
+dimensionality.
+
+The simple environment in this code is small enough that traditional dynamic programming would
+actually work just fine--a simple 3×2 Q-table could solve this problem without needing a neural
+network. The DQN approach is really overkill for this problem but demonstrates principles that
+scale to much more complex environments.
