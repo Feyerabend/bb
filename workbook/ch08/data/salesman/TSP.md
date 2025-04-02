@@ -1,12 +1,12 @@
 
 ## The Traveling Salesman Problem
 
-The Traveling Salesman Problem (TSP) is one of the most famous problems in computational
+The Traveling Salesman Problem (TSP) is one of the most famous *problems* in computational
 mathematics and optimisation, with roots tracing back to the 1800s. The problem was first
 mathematically formulated by Irish mathematician W.R. Hamilton and British mathematician
 Thomas Kirkman. Later in the 1930s, Karl Menger of the Vienna Circle provided the formalisation
-recognised today. During the 1950s and 60s, researchers at the RAND Corporation—including
-George Dantzig, Ray Fulkerson, and Selmer Johnson—achieved a breakthrough by solving a
+recognised today. During the 1950s and 60s, researchers at the RAND Corporation--including
+George Dantzig, Ray Fulkerson, and Selmer Johnson--achieved a breakthrough by solving a
 49-city instance, a remarkable feat for the era. In 1972, Richard Karp demonstrated the
 NP-hard nature of TSP, explaining why large-scale exact solutions remain computationally
 challenging. Beyond theoretical significance, TSP has practical applications in logistics,
@@ -33,7 +33,7 @@ selection), which gained prominence in the 1980s.
 ### Genetic Algorithm Approach
 
 The genetic algorithm for TSP builds on principles developed by researchers like David
-Goldberg and John Holland in the 1980s–90s. A typical implementation:
+Goldberg and John Holland in the 1980s-90s. A typical implementation:
 
 
 #### City Generation and Distance Calculation
@@ -112,8 +112,8 @@ without overwhelming existing solutions.
 
 ### Enhancement Opportunities
 
-Several improvements could elevate the algorithm’s performance. *Elitism*—preserving top
-solutions across generations—prevents loss of high-quality routes. *Edge Recombination Crossover*,
+Several improvements could elevate the algorithm's performance. *Elitism*--preserving top
+solutions across generations--prevents loss of high-quality routes. *Edge Recombination Crossover*,
 designed by Whitley et al. in 1989, prioritises edge preservation between cities over
 positional inheritance. Integrating local search techniques like 2-opt or 3-opt post-crossover/mutation
 transforms the approach into a memetic algorithm, combining genetic and local optimisation.
