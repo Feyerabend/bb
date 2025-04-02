@@ -1,4 +1,18 @@
 
+> [!IMPORTANT]  
+> To understand these concepts, readers would need some background in:
+> Mathematics (particularly linear algebra and calculus)
+> Statistics and probability
+> Machine learning fundamentals
+> Basic neural network concepts
+> Reinforcement learning principles
+> Dynamic programming concepts
+> Optimization theory
+
+Without this foundation, many of the technical terms and algorithms discussed
+might be difficult to follow. You can also see another example on [coins](./COINS.md).
+
+
 ## State DP
 
 *State-based Dynamic Programming (State DP)* is a fundamental technique in AI decision-making,
