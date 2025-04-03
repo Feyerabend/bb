@@ -11,9 +11,11 @@
 > Dynamic programming concepts,
 > Optimisation theory.
 > Without this foundation, many of the technical terms and algorithms discussed
-> might be difficult to follow. You can also see another simpler example
-> [coins](./COINS.md) which isn't far from the Fibonacci example.
+> might be difficult to follow.
 
+> [!TIP]
+> However this book empasises learning in another way: [NOTE](./NOTE.md).
+> Projects related to the following information can be found at [PROJECT](./PROJECTS.md).
 
 *State-based Dynamic Programming (State DP)* is a fundamental technique in AI decision-making,
 particularly useful for *Markov Decision Processes (MDPs)*. It defines a "state" that captures
@@ -68,11 +70,11 @@ def min_cost_grid(grid, start, goal):
 
 
 grid = [
-    [0, 0, 0, 0, 0],
-    [0, -1, -1, 0, 0],  # -1 = obstacle
-    [0, 0, 0, -1, 0],
-    [0, -1, 0, 0, 0],
-    [0, 0, 0, 0, 0]
+    [0,  0,  0,  0, 0],
+    [0, -1, -1,  0, 0],  # -1 = obstacle
+    [0,  0,  0, -1, 0],
+    [0, -1,  0,  0, 0],
+    [0,  0,  0,  0, 0]
 ]
 start = (0, 0)
 goal = (4, 4)
@@ -185,7 +187,7 @@ Adjustments:
 This code (see '[dqn.py](dqn.py)') is about teaching a computer program to make
 smart decisions on its own. Imagine a simple game where the player starts at one
 end of a board and needs to reach a goal at the other end. The player can move
-left or right at each step. 
+*left* or *right* at each step. 
 
 At first, the program doesn't know which moves are good - it just tries random
 actions. But over time, it learns which actions lead to success by receiving rewards
