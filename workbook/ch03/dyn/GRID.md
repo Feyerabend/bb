@@ -275,19 +275,19 @@ dynamic programming.
 
 While DQN has dynamic programming at its core, it differs in several important ways:
 
-- Function Approximation: Traditional dynamic programming uses tables to store values
+- *Function Approximation*: Traditional dynamic programming uses tables to store values
   for each state-action pair. DQN uses a neural network to approximate these values, 
   allowing it to handle larger state spaces.
 
-- Sample-Based Updates: Pure dynamic programming updates all state-action values in
+- *Sample-Based Updates*: Pure dynamic programming updates all state-action values in
   each iteration (full backups). DQN only updates based on sampled experiences
   (partial backups).
 
-- Model-Free Approach: Traditional dynamic programming requires a complete model of
+- *Model-Free Approach*: Traditional dynamic programming requires a complete model of
   the environment (transition probabilities and rewards). DQN learns directly from
   experience without needing a model.
 
-- Experience Replay: The use of stored experiences for learning isn't part of
+- *Experience Replay*: The use of stored experiences for learning isn't part of
   traditional dynamic programming.
 
 In essence, DQN takes the mathematical foundation of dynamic programming (the Bellman equation)
