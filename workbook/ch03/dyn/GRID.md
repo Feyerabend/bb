@@ -1,6 +1,8 @@
 
+## State DP
+
 > [!IMPORTANT]  
-> To understand the concepts in this text, readers would need some background in:
+> To fully understand the concepts in this text, readers would preferably need some background in:
 > Mathematics (particularly linear algebra and calculus),
 > Statistics and probability,
 > Machine learning fundamentals,
@@ -8,13 +10,10 @@
 > Reinforcement learning principles,
 > Dynamic programming concepts,
 > Optimisation theory.
+> Without this foundation, many of the technical terms and algorithms discussed
+> might be difficult to follow. You can also see another simpler example
+> [coins](./COINS.md) which isn't far from the Fibonacci example.
 
-Without this foundation, many of the technical terms and algorithms discussed
-might be difficult to follow. You can also see another simpler example
-[coins](./COINS.md).
-
-
-## State DP
 
 *State-based Dynamic Programming (State DP)* is a fundamental technique in AI decision-making,
 particularly useful for *Markov Decision Processes (MDPs)*. It defines a "state" that captures
