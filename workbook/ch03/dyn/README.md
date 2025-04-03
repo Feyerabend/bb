@@ -162,6 +162,7 @@ The *memoization* approach is useful when solving problems with recursion and
 overlapping subproblems, while *tabulation* is generally more efficient in terms
 of execution speed. The optimised tabulation approach minimises *memory usage*.
 
+A very similar example can be found in [COINS](./COINS.md).
 
 
 ### Variations of Dynamic Programming
@@ -192,4 +193,12 @@ Dynamic Programming appears in different forms depending on the nature of the pr
    from `O(n)` to `O(1)`, as in Fibonacci where only two previous values need to be stored.
 5. Understanding Order of Computation: Some problems require computing subproblems
    in a specific order to ensure correct results.
+
+
+### Advanced Dynamic Programming
+
+A much more advanced example can be seen in [GRID](./GRID.md) on State DP and
+Q-Learing. There are some suggested [projects](./PROJECTS.md) for DP, where a
+sample solution is in [ELEV](./ELEV.md) of reinforcement learning for an elevator
+optimising movements.
 
