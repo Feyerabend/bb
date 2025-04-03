@@ -24,7 +24,9 @@ cost from any start to a goal. The state is the agent's position `(x, y)`. Movem
 have a default cost of 1, but obstacles increase the cost.
 
 
-#### Bellman Equation
+#### Bellman Equation[^bell]
+
+[^bell]: https://en.wikipedia.org/wiki/Bellman_equation.
 
 The optimal value function `V(x, y)` (minimum cost from `(x, y)`) is computed recursively:
 
