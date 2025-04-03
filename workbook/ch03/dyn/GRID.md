@@ -20,8 +20,8 @@ particularly useful for *Markov Decision Processes (MDPs)*. It defines a "state"
 all relevant system information and uses dynamic programming to compute optimal strategies.
 
 Consider an AI agent navigating a grid world with obstacles. The goal is to find the minimum path
-cost from any start to a goal. The state is the agent's position `(x, y)`. Movements (up/down/left/right)
-have a default cost of 1, but obstacles increase the cost.
+cost from any start to a goal. The state is the agent's position `(x, y)`. Movements
+(`Up`/`Down`/`Left`/`Right`) have a default cost of 1, but obstacles increase the cost.
 
 
 #### Bellman Equation[^bell]
@@ -177,7 +177,7 @@ for r in policy:
 Adjustments:
 1. *Obstacle Handling*: Correctly block movement into obstacles.
 2. *Step Limit*: Prevents infinite episodes.
-3. *Reward Structure*: Penalizes invalid moves.
+3. *Reward Structure*: Penalises invalid moves.
 
 
 ### Deep Q-Network (DQN)
@@ -233,7 +233,7 @@ Agent (DQNAgent Class):
 - Decides actions using an epsilon-greedy strategy (sometimes random, sometimes best known)
 - Stores experiences in the replay buffer
 - Learns by updating the Q-network's weights
-- Maintains two networks (main and target) to stabilize learning
+- Maintains two networks (main and target) to stabilise learning
 
 The training process:
 1. Agent observes the current state
@@ -293,7 +293,9 @@ While DQN has dynamic programming at its core, it differs in several important w
 In essence, DQN takes the mathematical foundation of dynamic programming (the Bellman equation)
 and adapts it to work with neural networks and sampling-based learning, allowing it to scale to
 problems where traditional dynamic programming would be impractical due to the curse of
-dimensionality.
+dimensionality.[^curse]
+
+[^curse]: https://en.wikipedia.org/wiki/Curse_of_dimensionality
 
 The simple environment in this code is small enough that traditional dynamic programming would
 actually work just fine--a simple 3×2 Q-table could solve this problem without needing a neural
