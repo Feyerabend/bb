@@ -35,9 +35,9 @@ education differently:
 __2. The Role of AI in Dynamic Learning__
 
 LLMs and AI assistants change the learning process in fundamental ways:
-- Personalized Explanations. Students can ask AI to clarify concepts at different levels of complexity.
-- Adaptive Learning Paths. AI can suggest different approaches depending on what a student understands or struggles with.
-- Project Guidance. AI can assist in debugging, generating ideas, or providing historical and theoretical context.
+- *Personalized Explanations*. Students can ask AI to clarify concepts at different levels of complexity.
+- *Adaptive Learning Paths*. AI can suggest different approaches depending on what a student understands or struggles with.
+- *Project Guidance*. AI can assist in debugging, generating ideas, or providing historical and theoretical context.
 
 Rather than merely providing answers, AI can serve as an interactive tutor that encourages learners to
 experiment and think critically.
@@ -61,14 +61,15 @@ If education embraces this reality:
 
 __4. Example: Learning Dynamic Programming Through AI-Guided Projects__
 
-Consider a student learning Dynamic Programming (DP). Instead of a step-by-step introduction to the topic:
+Consider a student learning [Dynamic Programming](./ch03/dyn/) (DP). Instead of a step-by-step introduction
+to the topic:
 1. Start with a working DP solution (e.g., Fibonacci sequence, Coin Change problem).
 2. Try to modify it to handle a variant of the problem.
 3. Use AI to explain why certain modifications work or fail.
 4. Compare different DP strategies, like memoization vs. tabulation, through experimentation.
 5. Move from toy problems to real-world applications, such as reinforcement learning.
 
-This approach mirrors how learning happens in practice: partial understanding leads to exploration,
+This approach mirrors how learning happens in practice: *partial understanding leads to exploration*,
 which deepens understanding over time.
 
 
