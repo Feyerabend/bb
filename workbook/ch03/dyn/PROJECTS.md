@@ -1,9 +1,6 @@
 
 ## Projects for Dynamic Programming
 
-Before reading and starting your project,
-please read the [NOTE](./NOTE.md).
-
 
 __1. Maze Modifier Challenge__
 

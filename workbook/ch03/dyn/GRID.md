@@ -14,7 +14,7 @@
 > might be difficult to follow.
 
 > [!TIP]
-> However this book empasises learning in another way: [NOTE](./NOTE.md).
+> However this book empasises learning in another way: [NOTE](./../../NOTE.md).
 > Projects related to the following information can be found at [PROJECT](./PROJECTS.md).
 
 *State-based Dynamic Programming (State DP)* is a fundamental technique in AI decision-making,
