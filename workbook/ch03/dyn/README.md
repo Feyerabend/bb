@@ -168,30 +168,31 @@ A very similar example can be found in [COINS](./COINS.md).
 ### Variations of Dynamic Programming
 
 Dynamic Programming appears in different forms depending on the nature of the problem:
-1. Linear DP: Problems where decisions are made in a linear sequence, such as Fibonacci,
+1. *Linear DP*: Problems where decisions are made in a linear sequence, such as Fibonacci,
    coin change, and knapsack problems.
-2. Grid-Based DP: Used in pathfinding and combinatorial problems, like computing the number
+2. *Grid-Based DP*: Used in pathfinding and combinatorial problems, like computing the number
    of ways to traverse a grid.
-3. Tree-Based DP: Applied to problems involving trees, such as computing the longest path
+3. *Tree-Based DP*: Applied to problems involving trees, such as computing the longest path
    in a tree.
-4. Bitmask DP: Used in combinatorial problems that involve subsets, often seen in the
+4. *Bitmask DP*: Used in combinatorial problems that involve subsets, often seen in the
    Traveling Salesman Problem (TSP).
-5. Interval DP: Used in segment-based problems, like matrix chain multiplication.
-6. State-Based DP: Applied in problems where multiple attributes define a state, such as
+5. *Interval DP*: Used in segment-based problems, like matrix chain multiplication.
+6. *State-Based DP*: Applied in problems where multiple attributes define a state, such as
    dynamic programming in artificial intelligence or Markov Decision Processes (MDPs).
 
 
 ### Considerations When Building Dynamic Programs
-1. Identifying Overlapping Subproblems: DP is only effective when the problem contains
+
+1. *Identifying Overlapping Subproblems*: DP is only effective when the problem contains
    subproblems that repeat.
-2. Defining the State: Clearly define what information needs to be stored to avoid
+2. *Defining the State*: Clearly define what information needs to be stored to avoid
    recomputation.
-3. Choosing Between Memoization and Tabulation: Recursive memoization is easier to
+3. *Choosing Between Memoization and Tabulation*: Recursive memoization is easier to
    implement but may cause stack overflow for large inputs. Tabulation avoids recursion
    but requires careful initialisation.
-4. Optimising Space Complexity: Many DP solutions can be improved by reducing storage
+4. *Optimising Space Complexity*: Many DP solutions can be improved by reducing storage
    from `O(n)` to `O(1)`, as in Fibonacci where only two previous values need to be stored.
-5. Understanding Order of Computation: Some problems require computing subproblems
+5. *Understanding Order of Computation*: Some problems require computing subproblems
    in a specific order to ensure correct results.
 
 
