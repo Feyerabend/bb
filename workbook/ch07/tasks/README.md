@@ -1,5 +1,5 @@
 
-## Elemntary Server Tasks
+## Elementary Server Tasks
 
 To illustrate servers, such as web servers, can be difficult without actually going
 through cloud services such as AWS or Azure, and even a small server can be complicated.
