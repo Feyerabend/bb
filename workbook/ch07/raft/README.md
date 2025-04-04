@@ -202,12 +202,12 @@ Raft is often compared with Paxos, another well-known consensus algorithm. While
 Paxos and Raft aim to solve the same problem of distributed consensus, Raft is generally
 considered easier to understand and implement.
 
-- Paxos: Paxos is mathematically rigorous and widely used but can be difficult to
+- Paxos is mathematically rigorous and widely used but can be difficult to
   implement and understand, especially when considering real-world scenarios like
   network partitions or failures. It also has less well-defined leader election
   mechanics, which can complicate the process.
 
-- Raft: Raft simplifies the consensus process by clearly defining the role of a
+- Raft simplifies the consensus process by clearly defining the role of a
   leader, the mechanism for log replication, and how to handle elections and log
   consistency. Raft's leader-centric approach makes it easier to implement than
   Paxos, while still achieving strong consistency and fault tolerance.
