@@ -180,8 +180,8 @@ expensive operations.
 
 Technical Details:
 - Types of Cache:
-- In-memory: Cached data is stored in RAM for fast retrieval.
-- Distributed: Cached data is stored across multiple nodes (e.g., Redis, Memcached).
+    - In-memory: Cached data is stored in RAM for fast retrieval.
+    - Distributed: Cached data is stored across multiple nodes (e.g., Redis, Memcached).
 - Cache Invalidation: Determines when cached data should be refreshed or discarded.
   This can be time-based or event-driven.
 
