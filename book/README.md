@@ -5,6 +5,7 @@ A sample from the upcomming book
 
 Teasers for the book in progress (PDF):
 - [Front](./front.pdf)
+- [Content](./content.pdf)
 - [Introduction](./introduction.pdf)
 - [Chapter 1](./ch01.pdf)
 - [Chapter 2](./ch02.pdf)
