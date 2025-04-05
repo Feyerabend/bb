@@ -1,4 +1,3 @@
-Here are some suitable Raft-related projects for you, ranging from easy to advanced:
 
 ## Projects
 
