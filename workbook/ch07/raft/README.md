@@ -221,11 +221,11 @@ key-value stores.
 
 ### Conclusion
 
-Raft is a critical component of distributed systems, especially for ensuring data consistency
-across multiple servers. In the context of the example provided, we've demonstrated how Raft
-can be applied to a simple database system to ensure consistency, fault tolerance, and leader
-election. By applying Raft, this database system can handle client requests, replicate logs
-across multiple servers, and recover gracefully from failures.
+Thus Raft can be a critical component of distributed systems, especially when ensuring data
+consistency across multiple servers. In the context of the example provided, we've demonstrated
+how Raft can be applied to a simple database system to ensure consistency, fault tolerance,
+and leader election. By applying Raft, this database system can handle client requests, replicate
+logs across multiple servers, and recover gracefully from failures.
 
 As shown, the Raft algorithm's simplicity makes it an excellent choice for building reliable
 distributed databases. Whether it's a small key-value store or a large-scale distributed database,
