@@ -111,6 +111,7 @@ led to reduced funding for AI research in the UK.
 [^8]: Robert Kowalski, Logic for problem solving, North-Holland, New York, 1979.
 [^9]: Rudolf, Carnap, Meaning and necessity: a study in semantics and modal logic, 2. enl. ed., University of Chicago Press, Chicago, 1956.
 [^10]: Föreläsningsanteckningar av Sten Lindström (Notes by Sten Lindström), Filosofi och artificiell intelligens, VI, Uppsala VT92, Uppsala 1992.
+[^11]: Searle, John. (1980). "Minds, Brains, and Programs." The Behavioral and Brain Sciences, 3(3), 417–457.
 [^12]: John R. Searle (1990), "Is the brain's mind a computer program?" Scientific American 262 (1):26-31.
 [^13]: Patricia Smith Churchland & Paul Churchland, (1990). "Could a Machine Think?", Scientific American. 262 (1, January).
 [^14]: Wikipedia, "Chinese room", https://en.wikipedia.org/w/index.php?title=Chinese_room&oldid=891604484 (retrieved 2019-04-11).
