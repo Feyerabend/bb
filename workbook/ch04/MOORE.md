@@ -30,7 +30,7 @@ scaling alone.
 Dennard Scaling, formulated by Robert Dennard and colleagues in 1974, complements Moore’s Law by addressing power
 consumption. The core idea was that as transistors shrink in size, their power requirements also decrease in such
 a way that power density (power per unit area) remains constant. Specifically, if transistor dimensions scale by
-a factor of \kappa, then voltage and current also scale by \kappa, leading to reduced power per transistor. As a
+a factor of $\kappa$, then voltage and current also scale by $\kappa$, leading to reduced power per transistor. As a
 result, it became possible to build faster chips with more transistors without increasing the total power
 consumption or heat dissipation, which was crucial for maintaining performance improvements.
 
