@@ -11,17 +11,17 @@ for decades, setting expectations for both the pace of progress and the nature o
 Moore’s Law was first formulated by Gordon E. Moore in 1965, when he observed that the number of transistors on
 an integrated circuit was doubling approximately every year. Ten years later, he revised the estimate to a
 doubling every two years, which became the widely cited version of the law. Moore’s observation was not a
-physical necessity but an empirical trend that held remarkably well for several decades. The law came to symbolize
+physical necessity but an empirical trend that held remarkably well for several decades. The law came to symbolise
 the rapid pace of innovation in semiconductor manufacturing, enabling exponential improvements in processing speed
 memory density, and cost efficiency. As more transistors could be packed into the same chip area, devices became
 both more powerful and less expensive. This facilitated the explosive growth of personal computing, mobile devices,
 and later cloud infrastructure and AI systems.
 
-However, by the mid-2010s, Moore’s Law began to slow. Physical limitations, such as quantum tunneling at nanometer
+However, by the mid-2010s, Moore’s Law began to slow. Physical limitations, such as quantum tunnelling at nanometer
 scales, increasing fabrication costs, and limits of photolithography, made continued doubling at historical rates
 increasingly difficult. While transistor counts are still increasing, they are doing so more slowly, and with
 diminishing returns in raw performance or cost per transistor. As a result, modern advancements rely more on
-architectural improvements, parallel processing, specialized accelerators, and 3D chip designs than on transistor
+architectural improvements, parallel processing, specialised accelerators, and 3D chip designs than on transistor
 scaling alone.
 
 
@@ -42,13 +42,13 @@ so-called “power wall.” Consequently, manufacturers stopped pushing clock sp
 and parallelism as a way forward.
 
 The breakdown of both Moore’s Law and Dennard Scaling has deeply influenced modern computing. The industry now
-emphasizes energy-efficient computing, domain-specific accelerators like GPUs and TPUs, and advanced packaging
+emphasises energy-efficient computing, domain-specific accelerators like GPUs and TPUs, and advanced packaging
 techniques like chiplets and 3D stacking. Parallelism and concurrency have become central to both hardware
 design and software development. The shift away from generic scaling has also given rise to the term
-“More than Moore,” denoting an era focused on heterogeneous integration and specialized architectures rather
+“More than Moore,” denoting an era focused on heterogeneous integration and specialised architectures rather
 than simply increasing transistor density.
 
-To summarize the relationship and historical trajectory of Moore’s Law and Dennard Scaling:
+To summarise the relationship and historical trajectory of Moore’s Law and Dennard Scaling:
 
 | Concept         | Moore's Law                          | Dennard Scaling                              |
 |----------------|---------------------------------------|----------------------------------------------|
