@@ -200,6 +200,6 @@ computers in Sweden) had Stig Kangers "Handbok i Logik, del I. Logisk konsekvens
 From what can be seen they didn't have really anything else close to philospphy.[^32]
 
 
-
+[^32]: https://sok.riksarkivet.se/nad?Sokord=matematikmaskinn%c3%a4mnden&EndastDigitaliserat=false&BegransaPaTitelEllerNamn=false&AvanceradSok=False&typAvLista=Standard&page=1&postid=Arkis+4a6ef5cd-9b89-11d5-a701-0002440207bb&tab=post&prependUrl=%2fnad&vol=n%2cn%2cn%2cn&s=Balder
 
 
