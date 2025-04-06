@@ -48,11 +48,19 @@ leading to *Cryptographically Secure Pseudorandom Number Generators (CSPRNGs)* l
 
 Understanding randomness in computing requires distinguishing between two fundamental concepts:
 
-*Pseudorandomness* is generated algorithmically. Given the same initial *seed*, a pseudorandom number generator (PRNG) will always produce the same sequence. This determinism is useful in simulations (e.g., video games, scientific modelling) but potentially disastrous in cryptography if the seed is guessable.
+*Pseudorandomness* is generated algorithmically. Given the same initial *seed*, a pseudorandom
+number generator (PRNG) will always produce the same sequence. This determinism is useful in
+simulations (e.g., video games, scientific modelling) but potentially disastrous in cryptography
+if the seed is guessable.
 
-*True randomness*, in contrast, comes from physical processes--thermal noise in circuits, radioactive decay, or even atmospheric static. The *LavaRand* project by Cloudflare famously uses lava lamps as a chaotic entropy source. Hardware Random Number Generators (HRNGs), like Intel's *RDRAND* instruction, exploit microscopic fluctuations in silicon to generate unpredictable values.
+*True randomness*, in contrast, comes from physical processes--thermal noise in circuits, radioactive
+decay, or even atmospheric static. The *LavaRand* project by Cloudflare famously uses lava lamps as
+a chaotic entropy source. Hardware Random Number Generators (HRNGs), like Intel's *RDRAND* instruction,
+exploit microscopic fluctuations in silicon to generate unpredictable values.
 
-However, true randomness generators are often *slow* and can suffer from bias (e.g., a physical coin toss might favour heads 51% of the time). Thus, in practice, most systems use *hybrid approaches*: a hardware entropy source seeds a CSPRNG, which then generates randomness efficiently.
+However, true randomness generators are often *slow* and can suffer from bias (e.g., a physical coin
+toss might favour heads 51% of the time). Thus, in practice, most systems use *hybrid approaches*:
+a hardware entropy source seeds a CSPRNG, which then generates randomness efficiently.
 
 The following table helps compare the conceptual differences between random number generation approaches:
 
@@ -65,13 +73,25 @@ The following table helps compare the conceptual differences between random numb
 
 ### Mathematical Underpinnings
 
-Randomness is rigorously tested using statistical methods such as Diehard and NIST STS test suites to detect patterns, alongside theoretical measures like Kolmogorov complexity, which defines a truly random sequence as one that cannot be compressed.
+Randomness is rigorously tested using statistical methods such as Diehard and NIST STS test suites
+to detect patterns, alongside theoretical measures like Kolmogorov complexity, which defines a truly
+random sequence as one that cannot be compressed.
 
-For pseudorandomness, security hinges on *computational hardness*--e.g., assuming factoring large primes is intractable (as in *Blum Blum Shub*).
+For pseudorandomness, security hinges on *computational hardness*--e.g., assuming factoring large
+primes is intractable (as in *Blum Blum Shub*).
 
-In complexity theory, a sequence is pseudorandom if no polynomial-time algorithm can tell it apart from a truly random sequence with significant advantage. The modern theory of pseudorandomness is deeply linked to computational hardness assumptions--such as the hardness of factoring large integers, discrete logarithms, or solving lattice problems. These hardness assumptions are also foundational to cryptography.
+In complexity theory, a sequence is pseudorandom if no polynomial-time algorithm can tell it apart
+from a truly random sequence with significant advantage. The modern theory of pseudorandomness is
+deeply linked to computational hardness assumptions--such as the hardness of factoring large integers,
+discrete logarithms, or solving lattice problems. These hardness assumptions are also foundational
+to cryptography.
 
-It's worth noting that randomness is also studied in pure mathematics under the umbrella of measure theory, ergodic theory, and Kolmogorov complexity. The latter deals with the idea that a string is random if it has no shorter description than itself--in other words, it's incompressible. This theoretical notion of randomness aligns with intuition: if there's no pattern, the data is random. However, Kolmogorov complexity is uncomputable in general, which places limits on our ability to even detect randomness with certainty.
+It's worth noting that randomness is also studied in pure mathematics under the umbrella of measure
+theory, ergodic theory, and Kolmogorov complexity. The latter deals with the idea that a string is
+random if it has no shorter description than itself--in other words, it's incompressible. This
+theoretical notion of randomness aligns with intuition: if there's no pattern, the data is random.
+However, Kolmogorov complexity is uncomputable in general, which places limits on our ability to
+even detect randomness with certainty.
 
 
 ### The Critical Role of Randomness in Cryptography
@@ -81,35 +101,67 @@ Cryptography relies fundamentally on randomness for:
 - Creating *nonces* (numbers used once to prevent replay attacks)
 - Salting passwords (to thwart rainbow tables)
 
-Secure encryption schemes, like those used in HTTPS, VPNs, and messaging apps, rely on keys that are either randomly generated or derived from secure pseudorandom processes. If randomness is predictable, an attacker might reconstruct the key and decrypt the message.
+Secure encryption schemes, like those used in HTTPS, VPNs, and messaging apps, rely on keys that
+are either randomly generated or derived from secure pseudorandom processes. If randomness is
+predictable, an attacker might reconstruct the key and decrypt the message.
 
-Failures in random number generation have led to catastrophic breaches. In 1995, Netscape's SSL implementation used the system time (predictable!) as a seed, allowing hackers to decrypt traffic. Similarly, the *Dual_EC_DRBG* scandal (2006) revealed a suspected NSA backdoor in a NIST-standardised PRNG, undermining trust in "approved" algorithms.
+Failures in random number generation have led to catastrophic breaches. In 1995, Netscape's SSL
+implementation used the system time (predictable!) as a seed, allowing hackers to decrypt traffic.
+Similarly, the *Dual_EC_DRBG* scandal (2006) revealed a suspected NSA backdoor in a NIST-standardised
+PRNG, undermining trust in "approved" algorithms.
 
-Modern systems avoid such pitfalls by using cryptographically secure PRNGs (e.g., `/dev/urandom` on Linux), ensuring sufficient entropy from hardware sources, and regularly reseeding generators to prevent state recovery.
+Modern systems avoid such pitfalls by using cryptographically secure PRNGs (e.g., `/dev/urandom` on Linux),
+ensuring sufficient entropy from hardware sources, and regularly reseeding generators to prevent state recovery.
 
 
 ### Hardware Randomness: Implementation and Challenges
 
-Hardware random number generators attempt to derive randomness from physical processes. Quantum mechanics gives us real unpredictability, so some TRNGs use radioactive decay, photon emission timing, or thermal noise. For example, Intel's processors have included hardware random number generators (Intel Secure Key, formerly known as RdRand) that sample thermal noise from transistor junctions. Similarly, VIA Technologies introduced the Padlock Security Engine with a hardware random number generator in their processors as early as 2003.
+Hardware random number generators attempt to derive randomness from physical processes. Quantum mechanics
+gives us real unpredictability, so some TRNGs use radioactive decay, photon emission timing, or thermal
+noise. For example, Intel's processors have included hardware random number generators (Intel Secure Key,
+formerly known as RdRand) that sample thermal noise from transistor junctions. Similarly, VIA Technologies
+introduced the Padlock Security Engine with a hardware random number generator in their processors as
+early as 2003.
 
-These provide entropy, which is then "stretched" into longer pseudorandom sequences using cryptographic functions like SHA-256. The result is hybrid: true randomness seeds the process, but fast generation uses PRNGs. This is common in operating systems: Linux's /dev/random and /dev/urandom work in such a way.
+These provide entropy, which is then "stretched" into longer pseudorandom sequences using cryptographic
+functions like SHA-256. The result is hybrid: true randomness seeds the process, but fast generation
+uses PRNGs. This is common in operating systems: Linux's `/dev/random` and `/dev/urandom` work in such a way.
 
-Yet, hardware randomness isn't perfect. Raw entropy sources often exhibit bias, where a thermal sensor may favour certain values. Additionally, there's manipulation risk, as a compromised HRNG could feed predictable data to downstream systems.
+Yet, hardware randomness isn't perfect. Raw entropy sources often exhibit bias, where a thermal sensor
+may favour certain values. Additionally, there's manipulation risk, as a compromised HRNG could feed
+predictable data to downstream systems.
 
-Thus, *post-processing* (e.g., whitening via hash functions) is critical to ensure the quality and security of the generated random numbers.
+Thus, *post-processing* (e.g., whitening via hash functions) is critical to ensure the quality and security
+of the generated random numbers.
 
 
 ### Modern Applications and Future Directions
 
-Today's applications of randomness in computing extend far beyond basic simulation and cryptography. Random algorithms play crucial roles in machine learning through random initialisation and stochastic gradient descent techniques. They're integral to load balancing in distributed systems, ensuring no single node becomes a bottleneck. In privacy research, randomness powers differential privacy techniques that protect individual data while allowing aggregate analysis. Meanwhile, quantum computing represents a paradigm where randomness isn't just a tool but intrinsic to the computation model itself.
+Today's applications of randomness in computing extend far beyond basic simulation and cryptography.
+Random algorithms play crucial roles in machine learning through random initialisation and stochastic
+gradient descent techniques. They're integral to load balancing in distributed systems, ensuring no
+single node becomes a bottleneck. In privacy research, randomness powers differential privacy techniques
+that protect individual data while allowing aggregate analysis. Meanwhile, quantum computing represents
+a paradigm where randomness isn't just a tool but intrinsic to the computation model itself.
 
-Another fascinating application is in randomised algorithms, which often provide elegant solutions to problems that deterministic approaches struggle with. For example, the Miller-Rabin primality test uses random sampling to determine if a number is probably prime with remarkable efficiency. Similarly, randomised quicksort achieves expected O(n log n) performance by randomly selecting pivot elements, avoiding worst-case scenarios of deterministic approaches.
+Another fascinating application is in randomised algorithms, which often provide elegant solutions to
+problems that deterministic approaches struggle with. For example, the Miller-Rabin primality test uses
+random sampling to determine if a number is probably prime with remarkable efficiency. Similarly,
+randomised quicksort achieves expected O(n log n) performance by randomly selecting pivot elements,
+avoiding worst-case scenarios of deterministic approaches.
 
-As computing continues to evolve, so do our approaches to randomness. Quantum random number generators promise "true" randomness based on quantum mechanical principles. Meanwhile, post-quantum cryptography is developing new algorithms that remain secure even against quantum computers, often requiring new approaches to randomness.
+As computing continues to evolve, so do our approaches to randomness. Quantum random number generators
+promise "true" randomness based on quantum mechanical principles. Meanwhile, post-quantum cryptography
+is developing new algoritms that remain secure even against quantum computers, often requiring new
+approaches to randomness.
 
-From von Neumann's flawed middle-square method to quantum RNGs, the pursuit of randomness mirrors computing's evolution. Today, cryptography leans on *hybrid systems*: hardware entropy feeding robust algorithms. Yet, the battle continues--against entropy starvation in virtual machines, algorithmic biases, and covert backdoors.
+From von Neumann's flawed middle-square method to quantum RNGs, the pursuit of randomness mirrors
+computing's evolution. Today, cryptography leans on *hybrid systems*: hardware entropy feeding robust
+algorithms. Yet, the battle continues--against entropy starvation in virtual machines, algorithmic
+biases, and covert backdoors.
 
-The challenge remains: use enough unpredictability to ensure security and correctness, but generate it efficiently and safely within fundamentally deterministic machines.
+The challenge remains: use enough unpredictability to ensure security and correctness, but generate
+it efficiently and safely within fundamentally deterministic machines.
 
 
 ### References
