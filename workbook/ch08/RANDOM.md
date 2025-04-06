@@ -43,7 +43,8 @@ An extremly simple implementation in C:
 #include <stdio.h>
 #include <time.h>
 x = time(0);
-// or a more fixed number (but will not change the pseudo-random principle): unsigned x = 42;
+// or a more fixed number  unsigned x = 42;
+// (but will not change the pseudo-random principle)
 unsigned rnd() {
     x = x * 1664525 + 1013904223;
     return x;
