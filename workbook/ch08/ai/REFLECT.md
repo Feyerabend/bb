@@ -7,6 +7,16 @@ to disillusionment and reduced funding. Some now caution that we might be on the
 of another such winter, where once again, the promises may outpace what can actually
 be delivered.
 
+| Period       | Event                                      | Description                                        |
+|--------------|--------------------------------------------|----------------------------------------------------|
+| 1950s-1960s  | Early AI & Symbolic AI                     | Initial exploration of AI, including Turing Test.  |
+| 1970s        | AI Winter (1st)                            | Reduced funding and interest in AI after overhyped expectations. |
+| 1980s        | AI Spring (Expert Systems)                 | Resurgence with expert systems and knowledge-based systems. |
+| Late 1980s   | AI Winter (2nd)                            | Decline after expert systems' limited success.     |
+| 1990s        | Revival (Machine Learning)                 | Rise of statistical methods and machine learning.  |
+| 2000s-2010s  | AI Spring (Deep Learning & Big Data)       | Deep learning gains momentum with large datasets and computing power. |
+| 2010s-Present| AI Boom                                    | Widespread adoption of AI in various industries, including self-driving cars and NLP. |
+
 
 ### The Second Winter
 
