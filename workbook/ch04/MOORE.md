@@ -50,8 +50,8 @@ than simply increasing transistor density.
 
 To summarise the relationship and historical trajectory of Moore’s Law and Dennard Scaling:
 
-| Concept         | Moore's Law                          | Dennard Scaling                              |
-|----------------|---------------------------------------|----------------------------------------------|
+| Concept         | Moore's Law                           | Dennard Scaling                              |
+|-----------------|---------------------------------------|----------------------------------------------|
 | Focus           | Transistor count                      | Power efficiency & scaling                   |
 | Proposed by     | Gordon Moore (1965)                   | Robert Dennard (1974)                        |
 | Key Observation | Transistors double every ~2 years     | Power stays constant as transistors shrink   |
