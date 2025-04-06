@@ -73,8 +73,8 @@ proving in his dissertation *Provability in Logic* in 1957.[^24] That same year,
 Dag Prawitz worked on a method for automatic proofs, which he programmed with help
 from his father, Håkan Prawitz, resulting in
 *"the first experiments with general theorem provers for first-order logic were performed in Stockholm in 1958."*[^26]
-The General Problem Solver came later in 1959, seldom, if ever, noticed in the
-history of AI.  
+Thus, and this is important, The General Problem Solver came later in 1959. This is
+seldom, if ever, noticed in the written history of AI.  
 
 A significant advancement for the field was J.A. Robinson's "unification algorithm"
 from 1965,[^28] which later became central to the development of the logic programming
