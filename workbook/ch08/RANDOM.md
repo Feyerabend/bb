@@ -29,7 +29,7 @@ By the 1950s, *Linear Congruential Generators (LCGs)* became popular due to thei
 These work by iterating the formula:
 
 ```math
-\[ X_{n+1} = (aX_n + c) \mod m \]
+ X_{n+1} = (aX_n + c) \mod m 
 ```
 
 where \(a\), \(c\), and \(m\) are carefully chosen constants. While fast and easy to implement,
