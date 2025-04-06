@@ -197,8 +197,12 @@ interest in the 50s, a logic system that had mechanical rules which could be pro
 in the archive notes from 1948-1963, we can see that the "Matematikmaskinnämnden" or The Committee
 for Mathematical Machines, as it could be translated (the group that controlled and built the first
 computers in Sweden) had Stig Kangers "Handbok i Logik, del I. Logisk konsekvens" published in 1959.
-From what can be seen they didn't have really anything else close to philospphy.[^32]
+From what can be seen they didn't have really anything else close to philosophy.[^32]
 
+So did Kanger see something that the AI researchers did not? He had actually been first with some
+particular ideas on computers and logic. But the divide, which becomes quite clear when you try to
+combine logic with computers further, as was the attempt with classic AI, did he already saw that
+at the height of Logic Programming? I never asked. So I never got an answer.
 
 [^32]: https://sok.riksarkivet.se/nad?Sokord=matematikmaskinn%c3%a4mnden&EndastDigitaliserat=false&BegransaPaTitelEllerNamn=false&AvanceradSok=False&typAvLista=Standard&page=1&postid=Arkis+4a6ef5cd-9b89-11d5-a701-0002440207bb&tab=post&prependUrl=%2fnad&vol=n%2cn%2cn%2cn&s=Balder
 
