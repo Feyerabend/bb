@@ -28,7 +28,7 @@ AI researcher Edward A. Feigenbaum and journalist Pamela McCorduck warned in the
 *The Fifth Generation* that the U.S. needed to respond to the Japanese challenge:
 *"In the end, we have no choice. We can decide when we shall participate, not if."*[^2]
 Despite high expectations, the Japanese project became a costly failure, partly due
-to the parallel development of cheaper hardware in line with Moore's law.[^3][^4][^5]
+to the parallel development of cheaper hardware in line with Moore's law.[^3] [^4] [^5]
 The U.S. equivalent, the "Strategic Computing Initiative" from DARPA, met a similar
 fate and saw substantial funding cuts by the late 1980s.[^6]  
 
@@ -36,7 +36,7 @@ During the 1980s, there were two main directions within AI: the *classical*, sym
 AI and the emerging *connectionism*. Classical AI focused on building computers that
 could represent and reason about their environment using formal logic rules, while
 connectionism attempted to mimic the brain's neural networks:
-*"Whereas classical AI sees intelligence primarily as symbolic thinking, the connectionists emphasize learning and adaptive behavior."*[^11]  
+*"Whereas classical AI sees intelligence primarily as symbolic thinking, the connectionists emphasize learning and adaptive behavior."* [^11]
 
 The period from 1987 to 1993 is referred to as "the second AI winter," when expectations
 for AI technology collided with reality, resulting in a decline in interest and funding.
