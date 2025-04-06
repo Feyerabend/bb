@@ -17,13 +17,13 @@ physical uncertainty, not computational methods.
 
 The quest for randomness in computing emerged with the dawn of electronic computation in the
 mid-20th century. John von Neumann, a pioneer of computer science, confronted the problem of
-generating random numbers for Monte Carlo simulations used in nuclear research during the 1940s.
-He recognised the inherent paradox in this task, famously quipping: "Anyone who attempts to
-generate random numbers by deterministic means is, of course, living in a state of sin."
-Nevertheless, he proposed the *middle-square method* (1946), one of the first algorithmic
-attempts: take a number, square it, and extract the middle digits as the next "random" number.
-Unfortunately, this method often degenerated into short, repeating cycles, making it unreliable
-for serious applications.
+generating random numbers for [Monte Carlo](./data/monte/) simulations used in nuclear
+research during the 1940s. He recognised the inherent paradox in this task, famously quipping:
+"Anyone who attempts to generate random numbers by deterministic means is, of course,
+living in a state of sin." Nevertheless, he proposed the *middle-square method* (1946),
+one of the first algorithmic attempts: take a number, square it, and extract the middle
+digits as the next "random" number. Unfortunately, this method often degenerated into short,
+repeating cycles, making it unreliable for serious applications.
 
 By the 1950s, *Linear Congruential Generators (LCGs)* became popular due to their simplicity.
 These work by iterating the formula:

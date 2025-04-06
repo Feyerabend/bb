@@ -69,6 +69,6 @@ G. E. Moore, "Cramming more components onto integrated circuits", *Electronics*,
 
 R. H. Dennard et al., "Design of ion-implanted MOSFETs with very small physical dimensions", *IEEE Journal of Solid-State Circuits*, vol. 9, no. 5, pp. 256–268, 1974.
 
-Mark Horowitz, "Computing’s energy problem (and what we can do about it)", *ISSCC Keynote*, 2014.
+Mark Horowitz, "Computing's energy problem (and what we can do about it)", *ISSCC Keynote*, 2014.
 
 David Patterson, "The trouble with multicore: Chipmakers are busy designing microprocessors that most programmers can’t handle", *IEEE Spectrum*, 2007.

@@ -75,11 +75,11 @@ and financial software where precision is critical. A classic example is how
 Real-world data introduces its own noise. In robotics, machine learning, or
 any system with sensors, input data contains environmental uncertainty and
 measurement errors. Algorithms must be designed to filter or smooth this data,
-often employing techniques like Kalman filters (Kalman, 1960) or low-pass filters
-to separate signal from noise. The ability to extract meaningful patterns from
-noisy data underpins many modern technologies, from autonomous vehicles navigating
-with imperfect sensors to voice assistants understanding commands in acoustically
-complex environments.
+often employing techniques like [Kalman](../ch04/kalman/) filters (Kalman, 1960)
+or low-pass filters to separate signal from noise. The ability to extract
+meaningful patterns from noisy data underpins many modern technologies, from
+autonomous vehicles navigating with imperfect sensors to voice assistants
+understanding commands in acoustically complex environments.
 
 [Random number](./RANDOM.md) generation represents an interesting case where noise
 is deliberately generated and harnessed. Pseudorandom noise (like Perlin noise)
