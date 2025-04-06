@@ -25,7 +25,7 @@ and the automotive industry had sparked concern in the U.S. that they might also
 the lead in computer development.  
 
 AI researcher Edward A. Feigenbaum and journalist Pamela McCorduck warned in their book
-*The Fifth Generation* that the U.S. needed to respond to the Japanese challenge:
+*The Fifth Generation*[^1] that the U.S. needed to respond to the Japanese challenge:
 *"In the end, we have no choice. We can decide when we shall participate, not if."*[^2]
 Despite high expectations, the Japanese project became a costly failure, partly due
 to the parallel development of cheaper hardware in line with Moore's law.[^3] [^4] [^5]
@@ -101,7 +101,7 @@ assumptions that computers could think,[^30] and the influential Lighthill Repor
 led to reduced funding for AI research in the UK.  
 
 
-[^1]: From the back cover text of the paperback edition of Edward A. Feigenbaum, & Pamela McCorduck, The fifth generation: artificial intelligence and Japan's computer challenge to the world, Rev. & upd. ed., Pan Books, London, 1984.
+[^1]: From the back cover text of the paperback edition of Edward A. Feigenbaum, & Pamela McCorduck, *The fifth generation: artificial intelligence and Japan's computer challenge to the world*, Rev. & upd. ed., Pan Books, London, 1984.
 [^2]: Ibid, s. 290.
 [^3]: Wikipedia, "Fifth generation computer,", https://en.wikipedia.org/w/index.php?title=Fifth_generation_computer&oldid=891491126 (retrieved 2019-04-09).
 [^4]: Wikipedia, "Moore's law", https://en.wikipedia.org/w/index.php?title=Moore%27s_law&oldid=891671193 (retrieved 2019-04-11)
