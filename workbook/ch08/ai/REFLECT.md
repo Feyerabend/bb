@@ -35,10 +35,10 @@ and the automotive industry had sparked concern in the U.S. that they might also
 the lead in computer development.  
 
 AI researcher Edward A. Feigenbaum and journalist Pamela McCorduck warned in their book
-*The Fifth Generation* that the U.S. needed to respond to the Japanese challenge:
+*The Fifth Generation*[^1] that the U.S. needed to respond to the Japanese challenge:
 *"In the end, we have no choice. We can decide when we shall participate, not if."*[^2]
 Despite high expectations, the Japanese project became a costly failure, partly due
-to the parallel development of cheaper hardware in line with Moore's law.[^3][^4][^5]
+to the parallel development of cheaper hardware in line with Moore's law.[^3] [^4] [^5]
 The U.S. equivalent, the "Strategic Computing Initiative" from DARPA, met a similar
 fate and saw substantial funding cuts by the late 1980s.[^6]  
 
@@ -46,7 +46,7 @@ During the 1980s, there were two main directions within AI: the *classical*, sym
 AI and the emerging *connectionism*. Classical AI focused on building computers that
 could represent and reason about their environment using formal logic rules, while
 connectionism attempted to mimic the brain's neural networks:
-*"Whereas classical AI sees intelligence primarily as symbolic thinking, the connectionists emphasize learning and adaptive behavior."*[^11]  
+"*Whereas classical AI sees intelligence primarily as symbolic thinking, the connectionists emphasize learning and adaptive behavior.*" [^11]
 
 The period from 1987 to 1993 is referred to as "the second AI winter," when expectations
 for AI technology collided with reality, resulting in a decline in interest and funding.
@@ -57,7 +57,7 @@ John Searle argued, through his famous "Chinese Room" thought experiment, that c
 could never achieve true understanding but only execute operations according to rules.[^12]
 The couple Patricia and Paul Churchland, neurophilosophers, maintained that while
 classical AI might not be able to produce conscious machines, systems that mimicked
-the brain could.[^13] However, Searle also criticized connectionism for failing to
+the brain could.[^13] However, Searle also criticised connectionism for failing to
 address his fundamental objection.[^14]  
 
 
@@ -66,7 +66,7 @@ address his fundamental objection.[^14]
 So let's go back in time to the first aspirations and failures. The first "AI winter"
 occurred approximately between 1974 and 1980, following another period of exaggerated
 expectations. AI had gained momentum when John McCarthy, Herbert A. Simon, Marvin Minsky,
-Claude Shannon, and Nathan Rochester organized a conference in the summer of 1956,
+Claude Shannon, and Nathan Rochester organised a conference in the summer of 1956,
 where the term "artificial intelligence" was coined.[^19] The conference covered several
 areas that would become central to AI, including neural networks:
 *"How can a set of (hypothetical) neurons be arranged so as to form concepts."*[^20]  
@@ -83,8 +83,8 @@ proving in his dissertation *Provability in Logic* in 1957.[^24] That same year,
 Dag Prawitz worked on a method for automatic proofs, which he programmed with help
 from his father, Håkan Prawitz, resulting in
 *"the first experiments with general theorem provers for first-order logic were performed in Stockholm in 1958."*[^26]
-The General Problem Solver came later in 1959, seldom, if ever, noticed in the
-history of AI.  
+Thus, and this is important, The General Problem Solver came later in 1959. This is
+seldom, if ever, noticed in the written history of AI.  
 
 A significant advancement for the field was J.A. Robinson's "unification algorithm"
 from 1965,[^28] which later became central to the development of the logic programming
@@ -111,7 +111,7 @@ assumptions that computers could think,[^30] and the influential Lighthill Repor
 led to reduced funding for AI research in the UK.  
 
 
-[^1]: From the back cover text of the paperback edition of Edward A. Feigenbaum, & Pamela McCorduck, The fifth generation: artificial intelligence and Japan's computer challenge to the world, Rev. & upd. ed., Pan Books, London, 1984.
+[^1]: From the back cover text of the paperback edition of Edward A. Feigenbaum, & Pamela McCorduck, *The fifth generation: artificial intelligence and Japan's computer challenge to the world*, Rev. & upd. ed., Pan Books, London, 1984.
 [^2]: Ibid, s. 290.
 [^3]: Wikipedia, "Fifth generation computer,", https://en.wikipedia.org/w/index.php?title=Fifth_generation_computer&oldid=891491126 (retrieved 2019-04-09).
 [^4]: Wikipedia, "Moore's law", https://en.wikipedia.org/w/index.php?title=Moore%27s_law&oldid=891671193 (retrieved 2019-04-11)
@@ -121,6 +121,7 @@ led to reduced funding for AI research in the UK.
 [^8]: Robert Kowalski, Logic for problem solving, North-Holland, New York, 1979.
 [^9]: Rudolf, Carnap, Meaning and necessity: a study in semantics and modal logic, 2. enl. ed., University of Chicago Press, Chicago, 1956.
 [^10]: Föreläsningsanteckningar av Sten Lindström (Notes by Sten Lindström), Filosofi och artificiell intelligens, VI, Uppsala VT92, Uppsala 1992.
+[^11]: Searle, John. (1980). "Minds, Brains, and Programs." The Behavioral and Brain Sciences, 3(3), 417–457.
 [^12]: John R. Searle (1990), "Is the brain's mind a computer program?" Scientific American 262 (1):26-31.
 [^13]: Patricia Smith Churchland & Paul Churchland, (1990). "Could a Machine Think?", Scientific American. 262 (1, January).
 [^14]: Wikipedia, "Chinese room", https://en.wikipedia.org/w/index.php?title=Chinese_room&oldid=891604484 (retrieved 2019-04-11).
@@ -149,7 +150,7 @@ Internet Encyclopedia of Philosophy, "Chinese Room Argument", https://www.iep.ut
 
 This might seem a bit strange, but even though I only witnessed this history from the outside and
 wasn't directly involved, I'd still like to allow myself one instance of speculation. Perhaps some
-of what I suggest will hold true—perhaps not.
+of what I suggest will hold true--perhaps not.
 
 It is Monday morning, July 2, 1984, and the second international conference on logic programming is
 about to begin in Uppsala. I walk up the stairs outside the building, step through the large door,
@@ -163,8 +164,8 @@ exactly what I had wished for and waited for since arriving at the university!
 
 When I began my studies at the university in the spring of 1982, I had an idea that philosophy could
 somehow be combined with computer science and programming. Ignorant as I was, I had no idea how they
-could be united. The conference, however, clearly declared in its title that logic—historically linked
-to philosophy—and programming, tied to computing, were part of a fusion: logic programming.
+could be united. The conference, however, clearly declared in its title that logic--historically linked
+to philosophy--and programming, tied to computing, were part of a fusion: logic programming.
 
 At the time, there was still a distinct sense of optimism. The second AI winter had not begun yet.
 Quite the opposite--funding was flowing, expectations were high, and symbolic AI still held promise
@@ -173,7 +174,7 @@ was championed as a key to intelligent systems. But the enthusiasm would soon fa
 it had become clear that the grand ambitions of expert systems, knowledge representation, and rule-based
 reasoning couldn’t scale. The brittleness of systems that couldn’t learn, their dependence on handcrafted
 rules, and the mismatch between logical elegance and messy real-world data all contributed to disappointment.
-The promises of AI had once again outpaced the reality of what the machines could deliver—and the funding
+The promises of AI had once again outpaced the reality of what the machines could deliver--and the funding
 dried up accordingly. Another AI winter had arrived, disillusionment following a period of inflated hope.
 
 Perhaps my professor in theoretical philosophy, Stig Kanger, had already foreseen the problems, or perhaps
@@ -206,9 +207,14 @@ As noticed above, Kanger was really into something that could be interpreted as 
 interest in the 50s, a logic system that had mechanical rules which could be programmed. Actually,
 in the archive notes from 1948-1963, we can see that the "Matematikmaskinnämnden" or The Committee
 for Mathematical Machines, as it could be translated (the group that controlled and built the first
-computers in Sweden) had Stig Kangers "Handbok i Logik, del I. Logisk konsekvens" published in 1959.
-From what can be seen they didn't have really anything else close to philospphy.[^32]
+computers in Sweden) had Stig Kangers "Handbok i Logik, del I. Logisk konsekvens"
+(Handbook in Logic, part I. Logic consequence) published in 1959.
+From what can be seen they didn't have really anything else close to philosophy.[^32]
 
+So did Kanger see something that the AI researchers did not? He had actually been first with some
+particular ideas on computers and logic. But the divide, which becomes quite clear when you try to
+combine logic with computers further, as was the attempt with classic AI, did he already saw that
+at the height of Logic Programming? I never asked. So I never got an answer.
 
 [^32]: https://sok.riksarkivet.se/nad?Sokord=matematikmaskinn%c3%a4mnden&EndastDigitaliserat=false&BegransaPaTitelEllerNamn=false&AvanceradSok=False&typAvLista=Standard&page=1&postid=Arkis+4a6ef5cd-9b89-11d5-a701-0002440207bb&tab=post&prependUrl=%2fnad&vol=n%2cn%2cn%2cn&s=Balder
 
