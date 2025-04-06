@@ -15,7 +15,9 @@ theory in the 17th century, when Blaise Pascal and Pierre de Fermat analysed gam
 in their famous correspondence of 1654. Their work was later expanded by mathematicians like
 Christiaan Huygens, Jacob Bernoulli, and Pierre-Simon Laplace. This led to a formal understanding
 of random events, distributions, and expectation, but the randomness here was always tied to
-physical uncertainty, not computational methods.
+physical uncertainty, not computational methods.[^points]
+
+[^points]: See e.g. https://en.wikipedia.org/wiki/Problem_of_points
 
 The quest for randomness in computing emerged with the dawn of electronic computation in the
 mid-20th century. John von Neumann, a pioneer of computer science, confronted the problem of
