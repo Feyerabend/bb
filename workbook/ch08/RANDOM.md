@@ -6,7 +6,9 @@ humans used physical processes to generate randomness--casting lots, throwing bo
 wheels--both for entertainment and divination. Ancient civilisations like the Babylonians,
 Egyptians, and Chinese employed various randomisation devices for games and decision-making.
 The Chinese I Ching dating back to approximately 1000 BCE utilised coin tosses to generate
-one of 64 hexagrams for divination purposes.
+one of 64 hexagrams for divination purposes.[^ching]
+
+[^ching]: https://en.wikipedia.org/wiki/I_Ching_divination
 
 Mathematical interest in randomness only began to formalise with the development of probability
 theory in the 17th century, when Blaise Pascal and Pierre de Fermat analysed gambling problems
