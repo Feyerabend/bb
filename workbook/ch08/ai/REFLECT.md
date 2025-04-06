@@ -47,7 +47,7 @@ John Searle argued, through his famous "Chinese Room" thought experiment, that c
 could never achieve true understanding but only execute operations according to rules.[^12]
 The couple Patricia and Paul Churchland, neurophilosophers, maintained that while
 classical AI might not be able to produce conscious machines, systems that mimicked
-the brain could.[^13] However, Searle also criticized connectionism for failing to
+the brain could.[^13] However, Searle also criticised connectionism for failing to
 address his fundamental objection.[^14]  
 
 
@@ -56,7 +56,7 @@ address his fundamental objection.[^14]
 So let's go back in time to the first aspirations and failures. The first "AI winter"
 occurred approximately between 1974 and 1980, following another period of exaggerated
 expectations. AI had gained momentum when John McCarthy, Herbert A. Simon, Marvin Minsky,
-Claude Shannon, and Nathan Rochester organized a conference in the summer of 1956,
+Claude Shannon, and Nathan Rochester organised a conference in the summer of 1956,
 where the term "artificial intelligence" was coined.[^19] The conference covered several
 areas that would become central to AI, including neural networks:
 *"How can a set of (hypothetical) neurons be arranged so as to form concepts."*[^20]  
@@ -139,7 +139,7 @@ Internet Encyclopedia of Philosophy, "Chinese Room Argument", https://www.iep.ut
 
 This might seem a bit strange, but even though I only witnessed this history from the outside and
 wasn't directly involved, I'd still like to allow myself one instance of speculation. Perhaps some
-of what I suggest will hold true—perhaps not.
+of what I suggest will hold true--perhaps not.
 
 It is Monday morning, July 2, 1984, and the second international conference on logic programming is
 about to begin in Uppsala. I walk up the stairs outside the building, step through the large door,
@@ -153,8 +153,8 @@ exactly what I had wished for and waited for since arriving at the university!
 
 When I began my studies at the university in the spring of 1982, I had an idea that philosophy could
 somehow be combined with computer science and programming. Ignorant as I was, I had no idea how they
-could be united. The conference, however, clearly declared in its title that logic—historically linked
-to philosophy—and programming, tied to computing, were part of a fusion: logic programming.
+could be united. The conference, however, clearly declared in its title that logic--historically linked
+to philosophy--and programming, tied to computing, were part of a fusion: logic programming.
 
 At the time, there was still a distinct sense of optimism. The second AI winter had not begun yet.
 Quite the opposite--funding was flowing, expectations were high, and symbolic AI still held promise
@@ -163,7 +163,7 @@ was championed as a key to intelligent systems. But the enthusiasm would soon fa
 it had become clear that the grand ambitions of expert systems, knowledge representation, and rule-based
 reasoning couldn’t scale. The brittleness of systems that couldn’t learn, their dependence on handcrafted
 rules, and the mismatch between logical elegance and messy real-world data all contributed to disappointment.
-The promises of AI had once again outpaced the reality of what the machines could deliver—and the funding
+The promises of AI had once again outpaced the reality of what the machines could deliver--and the funding
 dried up accordingly. Another AI winter had arrived, disillusionment following a period of inflated hope.
 
 Perhaps my professor in theoretical philosophy, Stig Kanger, had already foreseen the problems, or perhaps
@@ -196,7 +196,8 @@ As noticed above, Kanger was really into something that could be interpreted as 
 interest in the 50s, a logic system that had mechanical rules which could be programmed. Actually,
 in the archive notes from 1948-1963, we can see that the "Matematikmaskinnämnden" or The Committee
 for Mathematical Machines, as it could be translated (the group that controlled and built the first
-computers in Sweden) had Stig Kangers "Handbok i Logik, del I. Logisk konsekvens" published in 1959.
+computers in Sweden) had Stig Kangers "Handbok i Logik, del I. Logisk konsekvens"
+(Handbook in Logic, part I. Logic consequence) published in 1959.
 From what can be seen they didn't have really anything else close to philosophy.[^32]
 
 So did Kanger see something that the AI researchers did not? He had actually been first with some
