@@ -18,7 +18,7 @@ be delivered.
 | 2010s-Present| AI Boom                                    | Widespread adoption of AI in various industries, including self-driving cars and NLP. |
 
 
-### The Second Winter
+### The Second Spring and Winter
 
 The second international conference on logic programming was held in Uppsala in 1984.
 It took place at a time when logic programming was viewed as a promising fusion between
@@ -61,7 +61,7 @@ the brain could.[^13] However, Searle also criticised connectionism for failing 
 address his fundamental objection.[^14]  
 
 
-### First Winter
+### The First Spring and Winter
 
 So let's go back in time to the first aspirations and failures. The first "AI winter"
 occurred approximately between 1974 and 1980, following another period of exaggerated
