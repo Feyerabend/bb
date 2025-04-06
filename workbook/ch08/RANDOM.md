@@ -37,14 +37,13 @@ These work by iterating the formula:
 ```
 
 where \(a\), \(c\), and \(m\) are carefully chosen constants. While fast and easy to implement,
-LCGs were soon found to exhibit predictable patterns, especially when used in cryptography.[^lcg]
-A famous example is IBM's *RANDU* generator from the 1960s, which produced numbers that,
-when plotted in 3D space, revealed hyperplanes--a clear sign of non-randomness.
-
-[^lcg]: An extremly simple implementation in C:
+LCGs were soon found to exhibit predictable patterns, especially when used in cryptography.
+An extremly simple implementation in C:
 ```c
 #include <stdio.h>
-unsigned x = 42;
+#include <time.h>
+x = time(0);
+// or a more fixed number (but will not change the pseudo-random principle): unsigned x = 42;
 unsigned rnd() {
     x = x * 1664525 + 1013904223;
     return x;
@@ -54,6 +53,9 @@ int main() {
         printf("%u\n", rnd());
 }
 ```
+
+A famous example is IBM's *RANDU* generator from the 1960s, which produced numbers that,
+when plotted in 3D space, revealed hyperplanes--a clear sign of non-randomness.
 
 The need for better methods led to more sophisticated algorithms. The *Mersenne Twister*
 (1997) improved statistical properties, making it suitable for simulations (though still
