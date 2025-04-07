@@ -226,6 +226,12 @@ particular ideas on computers and logic. But the divide, which becomes quite cle
 combine logic with computers further, as was the attempt with classic AI, did he already saw that
 at the height of Logic Programming? I never asked. So I never got an answer. He died in 1988.
 
-[^32]: https://sok.riksarkivet.se/nad?Sokord=matematikmaskinn%c3%a4mnden&EndastDigitaliserat=false&BegransaPaTitelEllerNamn=false&AvanceradSok=False&typAvLista=Standard&page=1&postid=Arkis+4a6ef5cd-9b89-11d5-a701-0002440207bb&tab=post&prependUrl=%2fnad&vol=n%2cn%2cn%2cn&s=Balder (retrieved 2025-04-06)
+[^32]: https://sok.riksarkivet.se/nad?Sokord=matematikmaskinn%c3%a4mnden&EndastDigitaliserat=false&BegransaPaTitelEllerNamn=false&AvanceradSok=False&typAvLista=Standard&page=1&postid=Arkis+4a6ef5cd-9b89-11d5-a701-0002440207bb&tab=post&prependUrl=%2fnad&vol=n%2cn%2cn%2cn&s=Balder (retrieved 2025-04-06).
+In a review Lars Svenonius writes: "[...] The usual model-theoretic concepts are introduced,
+and some main results are stated and explained, among them the G6del and Henkin completeness
+theorems. With use of the Gentzen-type axiomatizations, a mechanical procedure ("the dummy method")
+is worked out for seeking a proof for an arbitrary given formula. This method is thought
+to be more efficient than previously known methods." Lars Svenonius review on "Handbok i Logik"
+*The Journal of Symbolic Logic*, Vol. 25, No. 3 (Sep., 1960), p. 276.
 
 [^33]: Wikipedia, "Swedish Board for Computing Machinery", https://en.wikipedia.org/wiki/Swedish_Board_for_Computing_Machinery (retrieved 2025-04-07)
