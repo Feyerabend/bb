@@ -103,9 +103,15 @@ first-order predicate logic and automated. A theory needs to be "decidable"
 which is not the case for, for instance, Peano arithmetic.  
 
 Despite these limitations, researchers continued trying to formulate everyday knowledge
-as logical propositions. The example with Socrates
-(*"human(Socrates)"* and *"∀x (human(x) ⊃ mortal(x))"*) illustrates how symbolic reasoning
-became dominant in AI for a long time.  
+as logical propositions. The example with Socrates illustrates how symbolic reasoning
+became dominant in AI for a long time:
+
+```
+1. human(Socrates)                      (Premise)
+2. ∀x (human(x) → mortal(x))            (Premise)
+3. human(Socrates) → mortal(Socrates)   (From 2, Universal Instantiation)
+4. mortal(Socrates)                     (From 1 and 3, Modus Ponens)
+```
 
 Criticism of AI came from many directions. Philosopher Hubert Dreyfus argued against Simon's
 assumptions that computers could think,[^30] and the influential Lighthill Report from 1973[^31]
