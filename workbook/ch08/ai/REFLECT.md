@@ -172,13 +172,13 @@ Quite the opposite--funding was flowing, expectations were high, and symbolic AI
 in the minds of researchers and institutions. Logic programming, especially in the form of Prolog,
 was championed as a key to intelligent systems. But the enthusiasm would soon falter. By the late 1980s,
 it had become clear that the grand ambitions of expert systems, knowledge representation, and rule-based
-reasoning couldn’t scale. The brittleness of systems that couldn’t learn, their dependence on handcrafted
+reasoning couldn't scale. The brittleness of systems that couldn't learn, their dependence on handcrafted
 rules, and the mismatch between logical elegance and messy real-world data all contributed to disappointment.
 The promises of AI had once again outpaced the reality of what the machines could deliver--and the funding
 dried up accordingly. Another AI winter had arrived, disillusionment following a period of inflated hope.
 
 Perhaps my professor in theoretical philosophy, Stig Kanger, had already foreseen the problems, or perhaps
-he simply wasn’t interested? Kanger didn’t want to call himself an analytic philosopher, but he was undoubtedly
+he simply wasn't interested? Kanger didn't want to call himself an analytic philosopher, but he was undoubtedly
 a very accomplished logician. He was warm, kind, but a bit austere. As a matter of principle, all of his
 work had been within the field of formal logic. He usually had a very clear sense of what he liked
 and didn't like.
@@ -192,9 +192,9 @@ inferences, matches between statements, or interpreting negation as failure of p
 practically programmable in the language Prolog.
 
 Kanger replied that he had never heard of the author and walked over to the bookshelf to quickly pull
-out a book that I should read instead. He suggested Rudolf Carnap’s *Meaning and Necessity*. Somewhat
+out a book that I should read instead. He suggested Rudolf Carnap's *Meaning and Necessity*. Somewhat
 disappointed, I nonetheless fully trusted Kanger's recommendations. In hindsight, I can add that he
-was right. I read Carnap, who was a phenomenal thinker, but I couldn’t say that I had anything to
+was right. I read Carnap, who was a phenomenal thinker, but I couldn't say that I had anything to
 contribute.
 
 Later, however, I ended up writing about the medieval philosopher William of Ockham and assertions
@@ -211,6 +211,16 @@ computers in Sweden) had Stig Kangers "Handbok i Logik, del I. Logisk konsekvens
 (Handbook in Logic, part I. Logic consequence) published in 1959.
 From what can be seen they didn't have really anything else close to philosophy.[^32]
 
+BARK (Binär Aritmetisk Relä-Kalkylator) was Sweden's first computer, completed in 28th of April
+1950 under the Committee, MMN. It was an electromechanical machine, inspired by early American
+designs like the Harvard Mark I. BARK was fully built with relays and was relatively slow but a
+major step for Swedish computing. After the war and due to blockade of Berlin, to buy a computer
+from U.S.A. wasn't possible. BESK (Binär Elektronisk Sekvens-Kalkylator) followed in 1955 and was
+briefly one of the fastest computers in the world at the time. It was electronic (using vacuum tubes)
+and heavily inspired by the IAS machine from the U.S. BESK marked Sweden's entrance into
+high-performance computing and was used for e.g. weather prediction, nuclear research, and 
+military applications such as decrypting telecommunications, at night.[^33]
+
 So did Kanger see something that the AI researchers did not? He had actually been first with some
 particular ideas on computers and logic. But the divide, which becomes quite clear when you try to
 combine logic with computers further, as was the attempt with classic AI, did he already saw that
@@ -218,4 +228,4 @@ at the height of Logic Programming? I never asked. So I never got an answer.
 
 [^32]: https://sok.riksarkivet.se/nad?Sokord=matematikmaskinn%c3%a4mnden&EndastDigitaliserat=false&BegransaPaTitelEllerNamn=false&AvanceradSok=False&typAvLista=Standard&page=1&postid=Arkis+4a6ef5cd-9b89-11d5-a701-0002440207bb&tab=post&prependUrl=%2fnad&vol=n%2cn%2cn%2cn&s=Balder
 
-
+[^33]: https://en.wikipedia.org/wiki/Swedish_Board_for_Computing_Machinery
