@@ -93,8 +93,8 @@ tools within symbolic AI.
 
 Between the late 1950s and the mid-1970s, AI made major strides in areas such as
 search, planning, pattern recognition, and learning.[^29] In parallel, an alternative
-path developed with the perceptron, an early form of neural network, which was, however,
-criticized by, among others, Marvin Minsky.  
+path developed with the [perceptron](./../../ch02/perceptron/), an early form of
+neural network, which was, however, criticised by, among others, Marvin Minsky.  
 
 The theoretical limitations of symbolic AI were well known among researchers. Many, but
 not all, mathematical theories can be expressed in first-order predicate logic and automated.
