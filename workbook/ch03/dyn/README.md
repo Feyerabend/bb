@@ -134,7 +134,7 @@ int main() {
 5. __Optimised Tabulation (Space-Efficient)__
 
 Since we only need the last two Fibonacci numbers at any time,
-we can optimise space usage. (cf. [vm2](./../../ch02/vm2/))
+we can optimise space usage. (Also cf. [vm2](./../../ch02/vm2/).)
 
 ```c
 #include <stdio.h>
