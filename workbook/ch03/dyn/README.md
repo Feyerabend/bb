@@ -178,7 +178,7 @@ Dynamic Programming appears in different forms depending on the nature of the pr
 3. *Tree-Based DP*: Applied to problems involving trees, such as computing the longest path
    in a tree.
 4. *Bitmask DP*: Used in combinatorial problems that involve subsets, often seen in the
-   Traveling Salesman Problem (TSP).
+   Traveling Salesman Problem ([TSP](../../ch08/data/salesman/)).
 5. *Interval DP*: Used in segment-based problems, like matrix chain multiplication.
 6. *State-Based DP*: Applied in problems where multiple attributes define a state, such as
    dynamic programming in artificial intelligence or Markov Decision Processes (MDPs).
