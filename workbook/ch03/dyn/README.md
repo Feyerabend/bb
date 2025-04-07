@@ -31,12 +31,14 @@ polynomial time by reusing previously computed values.
 
 ### How Does Dynamic Programming Work?
 
-Dynamic programming works by solving subproblems in a systematic way. There are two common
-approaches:
+Dynamic programming works by solving subproblems in a systematic
+way. There are two common approaches:
 
-1. __Top-Down (Memoization)__: This is a recursive approach where we solve a problem as usual
-but store results of already computed subproblems in a table (often a dictionary or array)
-to avoid redundant calculations.
+1. __Top-Down (Memoization)__
+
+This is a recursive approach where we solve a problem as usual
+but store results of already computed subproblems in a table
+(often a dictionary or array) to avoid redundant calculations.
 
 ```python
 def fib(n, memo={}):
@@ -48,7 +50,9 @@ def fib(n, memo={}):
     return memo[n]
 ```
 
-2. __Bottom-Up (Tabulation)__: This approach iteratively builds up the solution from base cases
+2. __Bottom-Up (Tabulation)__
+
+This approach iteratively builds up the solution from base cases
 without using recursion, often leading to better performance.
 
 ```python
@@ -63,13 +67,12 @@ def fib(n):
 ```
 
 
+4. __Memoization (Top-Down)__
+
 Here is a C implementation of the Fibonacci sequence using dynamic programming
 with both *memoization* (top-down approach) and *tabulation* (bottom-up approach).
 
-
-4. __Memoization (Top-Down)__
-
-This approach uses recursion with an array to store previously computed values,
+First this approach uses recursion with an array to store previously computed values,
 avoiding redundant calculations.
 
 ```c
@@ -102,7 +105,7 @@ int main() {
 
 4. __Tabulation (Bottom-Up)__
 
-This approach iteratively builds up the solution using an array.
+Next approach iteratively builds up the solution using an array.
 
 ```c
 #include <stdio.h>
