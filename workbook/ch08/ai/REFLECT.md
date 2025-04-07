@@ -231,7 +231,7 @@ In a review Lars Svenonius writes: "[...] The usual model-theoretic concepts are
 and some main results are stated and explained, among them the Gödel and Henkin completeness
 theorems. With use of the Gentzen-type axiomatizations, a mechanical procedure ("the dummy method")
 is worked out for seeking a proof for an arbitrary given formula. This method is thought
-to be more efficient than previously known methods." Lars Svenonius review on "Handbok i Logik"
+to be more efficient than previously known methods." Lars Svenonius review on "Handbok i Logik" in
 *The Journal of Symbolic Logic*, Vol. 25, No. 3 (Sep., 1960), p. 276.
 
 [^33]: Wikipedia, "Swedish Board for Computing Machinery", https://en.wikipedia.org/wiki/Swedish_Board_for_Computing_Machinery (retrieved 2025-04-07)
