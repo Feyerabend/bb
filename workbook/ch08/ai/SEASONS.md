@@ -98,7 +98,7 @@ neural network, which was, however, criticised by, among others, Marvin Minsky.
 
 The theoretical limitations of symbolic AI were well known among researchers. Many, but
 not all, mathematical theories can be expressed in first-order predicate logic and automated.
-A theory needs to be "decidable" (Entscheidung)[^27] for an algorithm to be able to prove
+A theory needs to be "decidable" (*Entscheidung*)[^27] for an algorithm to be able to prove
 all its theorems, which is not the case for, for instance, Peano arithmetic.  
 
 Despite these limitations, researchers continued trying to formulate everyday knowledge
