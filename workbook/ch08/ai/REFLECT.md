@@ -1,5 +1,5 @@
 
-## AI and Some (Personal) Historical Reflections
+## The Seasons of AI: Winters of Disillusionment and Springs of Innovation
 
 AI development has often been described in terms of "winters"--periods when the hype
 and expectations around artificial intelligence failed to align with reality, leading
