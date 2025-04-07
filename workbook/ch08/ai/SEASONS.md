@@ -96,10 +96,11 @@ search, planning, pattern recognition, and learning.[^29] In parallel, an altern
 path developed with the [perceptron](./../../ch02/perceptron/), an early form of
 neural network, which was, however, criticised by, among others, Marvin Minsky.  
 
-The theoretical limitations of symbolic AI were well known among researchers. Many, but
-not all, mathematical theories can be expressed in first-order predicate logic and automated.
-A theory needs to be "decidable" (*Entscheidung*)[^27] for an algorithm to be able to prove
-all its theorems, which is not the case for, for instance, Peano arithmetic.  
+The theoretical [limitations](./../limits/) of symbolic AI were well known among
+researchers. Many, but not all, mathematical theories can be expressed in
+first-order predicate logic and automated. A theory needs to be "decidable"
+(*Entscheidung*)[^27] for an algorithm to be able to prove all its theorems,
+which is not the case for, for instance, Peano arithmetic.  
 
 Despite these limitations, researchers continued trying to formulate everyday knowledge
 as logical propositions. The example with Socrates
@@ -108,8 +109,7 @@ became dominant in AI for a long time.
 
 Criticism of AI came from many directions. Philosopher Hubert Dreyfus argued against Simon's
 assumptions that computers could think,[^30] and the influential Lighthill Report from 1973[^31]
-led to reduced funding for AI research in the UK.  
-
+led to reduced funding for AI research in the UK. The AI winter began to set in ..
 
 [^1]: From the back cover text of the paperback edition of Edward A. Feigenbaum, & Pamela McCorduck, *The fifth generation: artificial intelligence and Japan's computer challenge to the world*, Rev. & upd. ed., Pan Books, London, 1984.
 [^2]: Ibid, s. 290.
