@@ -93,6 +93,6 @@ This shift in educational design--toward project-first, AI-assisted, and iterati
 students better for real-world problem-solving. It acknowledges that full understanding isn't always
 required at every stage and that learning is often messy, interactive, and dynamic.
 
-To quote John Dewey, *Experience and Education* (1938), ed. (1963), pp. 19-20
+To quote John Dewey, *Experience and Education* (1938), ed. (1963), pp. 19-20:
 
 > If one attempts to formulate the philosophy of education implicit in the practices of the new education, we may, I think,  discover certain common principles [...] To imposition from above is opposed expression and cultivation of individuality; to external discipline is opposed free activity; to learning from texts and teachers, learning through experience; to acquisition of isolated skills and techniques by drill is opposed acquisition of them as means of attaining ends which make direct vital appeal; to preparation for a more or less remote future is opposed making the most of the opportunities of present life; to static aims and materials is opposed acquaintance with a changing world [...].
