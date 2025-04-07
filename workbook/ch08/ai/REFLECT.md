@@ -7,15 +7,15 @@ to disillusionment and reduced funding. Some now caution that we might be on the
 of another such winter, where once again, the promises may outpace what can actually
 be delivered.
 
-| Period       | Event                                      | Description                                        |
-|--------------|--------------------------------------------|----------------------------------------------------|
-| 1950s-1960s  | Early AI & Symbolic AI                     | Initial exploration of AI, including Turing Test.  |
-| 1970s        | AI Winter (1st)                            | Reduced funding and interest in AI after overhyped expectations. |
-| 1980s        | AI Spring (Expert Systems)                 | Resurgence with expert systems and knowledge-based systems. |
-| Late 1980s   | AI Winter (2nd)                            | Decline after expert systems' limited success.     |
-| 1990s        | Revival (Machine Learning)                 | Rise of statistical methods and machine learning.  |
-| 2000s-2010s  | AI Spring (Deep Learning & Big Data)       | Deep learning gains momentum with large datasets and computing power. |
-| 2010s-Present| AI Boom                                    | Widespread adoption of AI in various industries, including self-driving cars and NLP. |
+| Period       | Event                                 | Description                                        |
+|--------------|---------------------------------------|----------------------------------------------------|
+| 1950s-1960s  | Early AI & Symbolic AI                | Initial exploration of AI, including Turing Test.  |
+| 1970s        | AI Winter (1st)                       | Reduced funding and interest in AI after overhyped expectations. |
+| 1980s        | AI Spring (Expert Systems)            | Resurgence with expert systems and knowledge-based systems. |
+| Late 1980s   | AI Winter (2nd)                       | Decline after expert systems' limited success.     |
+| 1990s        | Revival (Machine Learning)            | Rise of statistical methods and machine learning.  |
+| 2000s-2010s  | AI Spring (Deep Learning & Big Data)  | Deep learning gains momentum with large datasets and computing power. |
+| 2010s-Present| AI Boom                               | Widespread adoption of AI in various industries, including self-driving cars and NLP. |
 
 
 ### The Second Spring and Winter
@@ -78,8 +78,8 @@ Earlier that same year, 1956, Simon, along with Allen Newell, had developed the 
 ten years, a computer would become world chess champion.[^15] In reality, it took forty
 years before IBM's Deep Blue defeated Garry Kasparov in 1997.[^16]  
 
-Sweden contributed early to the AI field. Stig Kanger wrote about automated theorem
-proving in his dissertation *Provability in Logic* in 1957.[^24] That same year,
+Sweden contributed early to the AI field. Stig Kanger wrote about mechanistic approach
+in proof in his dissertation *Provability in Logic* in 1957.[^24] That same year,
 Dag Prawitz worked on a method for automatic proofs, which he programmed with help
 from his father, Håkan Prawitz, resulting in
 *"the first experiments with general theorem provers for first-order logic were performed in Stockholm in 1958."*[^26]
@@ -224,7 +224,7 @@ military applications such as decrypting telecommunications, at night.[^33]
 So did Kanger see something that the AI researchers did not? He had actually been first with some
 particular ideas on computers and logic. But the divide, which becomes quite clear when you try to
 combine logic with computers further, as was the attempt with classic AI, did he already saw that
-at the height of Logic Programming? I never asked. So I never got an answer.
+at the height of Logic Programming? I never asked. So I never got an answer. He died in 1988.
 
 [^32]: https://sok.riksarkivet.se/nad?Sokord=matematikmaskinn%c3%a4mnden&EndastDigitaliserat=false&BegransaPaTitelEllerNamn=false&AvanceradSok=False&typAvLista=Standard&page=1&postid=Arkis+4a6ef5cd-9b89-11d5-a701-0002440207bb&tab=post&prependUrl=%2fnad&vol=n%2cn%2cn%2cn&s=Balder
 
