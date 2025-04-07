@@ -3,16 +3,16 @@
 
 Here we have an approach to education, where AI-assisted learning encourages exploration over
 rote memorization. Traditional learning often emphasizes a complete understanding of theoretical
-foundations before engaging in problem-solving. However, in practice—whether in research,
-engineering, or real-world applications—learning is often fragmented, iterative, and exploratory.
+foundations before engaging in problem-solving. However, in practice--whether in research,
+engineering, or real-world applications--learning is often fragmented, iterative, and exploratory.
 
 
 ### Expanding on the Idea of Learning Through AI Assistance and Projects
 
 The premise of this book is that AI, particularly Large Language Models (LLMs), will play an
 increasing role in assisting learners. This changes the dynamics of learning by making knowledge
-more accessible, interactive, and adaptive. Instead of following a linear trajectory—from theory
-to application—learners can engage with problems first, using AI as a scaffolding tool to help
+more accessible, interactive, and adaptive. Instead of following a linear trajectory--from theory
+to application--learners can engage with problems first, using AI as a scaffolding tool to help
 them (you) fill in gaps as they (you) explore.
 
 
@@ -45,7 +45,7 @@ experiment and think critically.
 
 __3. The Value of Partial Understanding__
 
-In traditional learning, there's often an implicit assumption that understanding is all-or-nothing—either
+In traditional learning, there's often an implicit assumption that understanding is all-or-nothing--either
 you fully grasp a topic, or you don't. However, real-world learning is rarely that clean. A researcher or
 developer might work on a complex system where they deeply understand some parts but rely on tools, frameworks,
 or colleagues for others.
@@ -56,7 +56,7 @@ If education embraces this reality:
 - Students can explore different solution paths, seeing multiple ways to solve the same problem without
   needing a complete theoretical foundation upfront.
 - Failure becomes part of the learning process. Not every project needs to end with a correct
-  answer—sometimes, the struggle to debug or improve an approach is itself valuable.
+  answer--sometimes, the struggle to debug or improve an approach is itself valuable.
 
 
 __4. Example: Learning Dynamic Programming Through AI-Guided Projects__
@@ -89,6 +89,6 @@ For further reading:
 - Lev Vygotsky, *Thought and Language* (1962)
 - David Kolb, *Experiential Learning: Experience as the Source of Learning and Development* (1984)
 
-This shift in educational design—toward project-first, AI-assisted, and iterative learning—can prepare
+This shift in educational design--toward project-first, AI-assisted, and iterative learning--can prepare
 students better for real-world problem-solving. It acknowledges that full understanding isn't always
 required at every stage and that learning is often messy, interactive, and dynamic.

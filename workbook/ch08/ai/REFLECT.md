@@ -74,7 +74,7 @@ areas that would become central to AI, including neural networks:
 Earlier that same year, 1956, Simon, along with Allen Newell, had developed the program
 "Logic Theorist," which could prove theorems from Whitehead and Russell's
 *Principia Mathematica*.[^22] They later created the "General Problem Solver" in
-1959.[^23] These successes led to great expectations—Simon declared in 1957 that within
+1959.[^23] These successes led to great expectations--Simon declared in 1957 that within
 ten years, a computer would become world chess champion.[^15] In reality, it took forty
 years before IBM's Deep Blue defeated Garry Kasparov in 1997.[^16]  
 
@@ -226,6 +226,6 @@ particular ideas on computers and logic. But the divide, which becomes quite cle
 combine logic with computers further, as was the attempt with classic AI, did he already saw that
 at the height of Logic Programming? I never asked. So I never got an answer. He died in 1988.
 
-[^32]: https://sok.riksarkivet.se/nad?Sokord=matematikmaskinn%c3%a4mnden&EndastDigitaliserat=false&BegransaPaTitelEllerNamn=false&AvanceradSok=False&typAvLista=Standard&page=1&postid=Arkis+4a6ef5cd-9b89-11d5-a701-0002440207bb&tab=post&prependUrl=%2fnad&vol=n%2cn%2cn%2cn&s=Balder
+[^32]: https://sok.riksarkivet.se/nad?Sokord=matematikmaskinn%c3%a4mnden&EndastDigitaliserat=false&BegransaPaTitelEllerNamn=false&AvanceradSok=False&typAvLista=Standard&page=1&postid=Arkis+4a6ef5cd-9b89-11d5-a701-0002440207bb&tab=post&prependUrl=%2fnad&vol=n%2cn%2cn%2cn&s=Balder (retrieved 2025-04-06)
 
-[^33]: https://en.wikipedia.org/wiki/Swedish_Board_for_Computing_Machinery
+[^33]: Wikipedia, "Swedish Board for Computing Machinery", https://en.wikipedia.org/wiki/Swedish_Board_for_Computing_Machinery (retrieved 2025-04-07)
