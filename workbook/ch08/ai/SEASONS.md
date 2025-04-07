@@ -103,8 +103,8 @@ first-order predicate logic and automated. A theory needs to be "decidable"
 which is not the case for, for instance, Peano arithmetic.  
 
 Despite these limitations, researchers continued trying to formulate everyday knowledge
-as logical propositions. The example with Socrates illustrates how symbolic reasoning
-became dominant in AI for a long time:
+as logical propositions. The syllogism example with Socrates illustrates how symbolic
+reasoning became dominant in AI for a long time:
 
 ```
 1. human(Socrates)                      (Premise)
