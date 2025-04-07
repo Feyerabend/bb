@@ -165,7 +165,7 @@ exactly what I had wished for and waited for since arriving at the university!
 When I began my studies at the university in the spring of 1982, I had an idea that philosophy could
 somehow be combined with computer science and programming. Ignorant as I was, I had no idea how they
 could be united. The conference, however, clearly declared in its title that logic--historically linked
-to philosophy--and programming, tied to computing, were part of a fusion: logic programming.
+to philosophy--and programming, tied to computing, were part of a fusion: logic + programming.
 
 At the time, there was still a distinct sense of optimism. The second AI winter had not begun yet.
 Quite the opposite--funding was flowing, expectations were high, and symbolic AI still held promise
