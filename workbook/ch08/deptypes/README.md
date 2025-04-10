@@ -4,8 +4,8 @@
 *Here we collect in part comments and references from the book, for easy access:
 "Comments to the Book". Another part below is a practical introduction to dependent
 types with less assumptions of mathematical or formal logic background:
-"Practical Introduction." Implementations of some concepts can be found in
-the folder [simple](./simple/).*
+"Practical Introduction." Implementations in familiar Python of some concepts can
+be found in the folder [simple](./simple/).*
 
 
 ### Comments to the Book
