@@ -3,12 +3,14 @@ Papers by Per Martin-Löf: https://archive-pml.github.io/
 
 ## Dependent Types
 
-Dependent types are a fascinating and powerful concept in type theory that blur the traditional
+Dependent types[^dep] are a fascinating and powerful concept in type theory that blur the traditional
 boundary between *types* (which classify data) and *values* (the data itself). If you’re familiar
 with basic type systems in languages like Java or Haskell--where types like `int` or `List<String>`
 restrict what values a variable can hold--dependent types take this idea further: they allow types
 to depend on runtime *values*. This means you can express richer, more precise guarantees about
 your programs at compile time.
+
+[^dep]: Overview: https://en.wikipedia.org/wiki/Dependent_type.
 
 
 ### Types That "Depend" on Values
