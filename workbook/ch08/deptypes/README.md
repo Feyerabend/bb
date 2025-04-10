@@ -1,9 +1,10 @@
 
 ## Dependent Types
 
-*Here we collect in part comments and references from the book, for easy access. Another part
-is a practical introduction to dependent types with less assumptions of mathematical or formal
-logic background (in contrast to the book), which you can find below.*
+*Here we collect in part comments and references from the book, for easy access:
+"Comments to the Book". Another part below is a practical introduction to dependent
+types with less assumptions of mathematical or formal logic background:
+"Practical Introduction."*
 
 
 ### Comments to the Book
