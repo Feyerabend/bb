@@ -3,6 +3,7 @@ __1. Term and its type__
 
 $$
 (λ x : Nat. x)
+
 Type: (Π x : Nat). Nat
 $$
 
