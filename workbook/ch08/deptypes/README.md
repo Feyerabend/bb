@@ -1,7 +1,20 @@
 
-Papers by Per Martin-Löf: https://archive-pml.github.io/
-
 ## Dependent Types
+
+Here we collect in part comments and references from the book, for easy access. Another part
+is a practical introduction to dependent types with less assumptions of mathematical or formal
+logic background i contrast to the book, which you can find below.
+
+
+### Comments to the Book
+
+Papers by Per Martin-Löf: https://archive-pml.github.io/. Wikipedia on Per Martin-Löf:
+https://en.wikipedia.org/wiki/Per_Martin-L%C3%B6f.
+
+..
+
+
+### Practical Introduction
 
 Dependent types[^dep] are a fascinating and powerful concept in type theory that blur the traditional
 boundary between *types* (which classify data) and *values* (the data itself). If you’re familiar
