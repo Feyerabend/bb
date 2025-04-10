@@ -1,10 +1,10 @@
 
 __1. Term and its type__
 
-```math
+$$
 (λ x : Nat. x)
 Type: (Π x : Nat). Nat
-```
+$$
 
 This is the identity function on Nat, and its type is the dependent function type (though not really depending on x), i.e.:
 $\lambda x : \mathbb{N} \mapsto x \quad : \quad \Pi x : \mathbb{N}. \mathbb{N}$
