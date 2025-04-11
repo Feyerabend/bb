@@ -13,8 +13,8 @@ The code defines several fundamental types:
 
 - *Basic Types*: `Nat` (natural numbers), `Bool` (booleans), and `Unit` (singleton type)
 - *Dependent Types*: 
-  - `Pi` (dependent function types) - Generalizes function types where the return type can depend on the input value
-  - `Sigma` (dependent pair types) - Generalizes pair types where the second component can depend on the first
+  - `Pi` (dependent function types) - Generalises function types where the return type can depend on the input value
+  - `Sigma` (dependent pair types) - Generalises pair types where the second component can depend on the first
 - *Identity Types*: `Id` - Represents the proposition that two terms are equal
 - *Logical Types*:
   - `Proposition` - Base type for logical statements
@@ -105,14 +105,14 @@ This implementation demonstrates the Curry-Howard correspondence, which establis
 
 - Types and logical propositions
 - Programs and proofs
-- Normalization (computation) and proof simplification
+- Normalisation (computation) and proof simplification
 
 Aspects illustrated:
 
 - Function types (`→`) correspond to logical implication
 - Product types (`∧`) correspond to logical conjunction
 - The type checker acts as a proof checker
-- Beta reduction corresponds to proof normalization
+- Beta reduction corresponds to proof normalisation
 
 The system provides a computational foundation for constructive logic, where
 *proofs* are represented as *executable* programs.
