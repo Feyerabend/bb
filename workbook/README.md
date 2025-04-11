@@ -7,6 +7,13 @@ ongoing discovery of new material, I've chosen to publish the book's bibliograph
 rather than include it directly in the print version.
 
 
+## Audio Discussions
+
+With the assistance of Google’s NotebookLM, a series of WAVE files has been produced.
+Each episode can be downloaded individually, and you'll need a suitable audio player
+to listen to them.
+
+
 ## Code
 
 These folders contain the complete code for the book's examples, save for cases where the
