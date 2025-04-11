@@ -1,9 +1,8 @@
 
 ## Dependent Types
 
-*Per Martin-Löf*
+*[Per Martin-Löf](https://en.wikipedia.org/wiki/Per_Martin-L%C3%B6f)*
 - Papers: https://archive-pml.github.io/.
-- Wikipedia: https://en.wikipedia.org/wiki/Per_Martin-L%C3%B6f.
 - Martin-Löf, P., 1984. *Intuitionistic type theory*. Naples: Bibliopolis.
 
 - Nordström, B., Petersson, K. and Smith, J.M., 1990. *Programming in Martin-Löf's type theory: an introduction*. Oxford: Oxford University Press.
