@@ -11,7 +11,7 @@ lambda calculus with intuitionistic logic for formal verification.
 - *Expression Language*: Full term language supporting variables, lambdas, pairs, logical constants and proof terms
 - *Verification Engine*: Implements rigorous type checking according to typing rules
 - *Computational Model*: Beta reduction for execution semantics
-- *Proof Normalization*: Cut elimination for simplifying logical proofs
+- *Proof Normalisation*: Cut elimination for simplifying logical proofs
 
 ### Theoretical Foundations
 
@@ -23,7 +23,7 @@ lambda calculus with intuitionistic logic for formal verification.
 
 - *Type Safety*: Ensures program correctness via typing rules
 - *Proof Checking*: Verifies logical proofs within the system
-- *Normalization*: Simplifies proofs to canonical forms
+- *Normalisation*: Simplifies proofs to canonical forms
 
 ### Implementation Highlights
 
