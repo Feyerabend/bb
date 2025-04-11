@@ -59,7 +59,7 @@
   Proof[P ∧ ¬P]  # Immediately fails type checking
   ```  
 - Supports automated induction proofs over Peano naturals
-- Help: Start of a proof checker for [natural deduction](./03/)
+- Help: Start of a limited [proof checker](./03/) for natural deduction
 
 
 ### 5. Game Mechanics Verifier
