@@ -2,8 +2,9 @@
 ## Dependent Types
 
 *Here we give a practical introduction to dependent types with less assumptions
-of mathematical or formal logic background. [Implementations](./01) in familiar Python
-of some concepts.*
+of mathematical or formal logic background, than in the book. Implementation
+of the [type system](./01/), but also in practice of [matrix analysis](./02/)
+gives you ideas on how this can be useful in practice.*
 
 
 ### Practical Introduction
