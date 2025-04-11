@@ -1,8 +1,17 @@
+
+## Reference
+
+Some folders may occasionally contain a REFERENCE.md file, indicating a link between the
+physical book and this repository. Given the changing nature of online resources and the
+ongoing discovery of new material, I've chosen to publish the book's bibliography here
+rather than include it directly in the print version.
+
+
 ## Code
 
-These folders contain the complete code for the book’s examples, save for cases where the
+These folders contain the complete code for the book's examples, save for cases where the
 book itself exhausts the need. In such instances, the printed code suffices, and repetition serves
-no further end. The workbook, on occasion, takes the liberty of expanding upon the book’s
+no further end. The workbook, on occasion, takes the liberty of expanding upon the book's
 proposals, extending its reach beyond their immediate intent. Where the book offers a scaffold,
 the workbook sometimes builds, at times extrapolates, and at others, diverges.
 
