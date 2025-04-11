@@ -2,8 +2,8 @@
 ## Dependent Types
 
 *Here we give a practical introduction to dependent types with less assumptions
-of mathematical or formal logic background. Implementations in familiar Python
-of some concepts can be found in the folder [simple](./simple/).*
+of mathematical or formal logic background. [Implementations](./01) in familiar Python
+of some concepts.*
 
 
 ### Practical Introduction
