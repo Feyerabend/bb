@@ -5,6 +5,8 @@
 - Papers: https://archive-pml.github.io/.
 - Martin-Löf, P., 1984. *Intuitionistic type theory*. Naples: Bibliopolis.
 
+### General
+
 - Nordström, B., Petersson, K. and Smith, J.M., 1990. *Programming in Martin-Löf's type theory: an introduction*. Oxford: Oxford University Press.
 
 - Pierce, B.C., ed., 2004. *Advanced topics in types and programming languages*. Cambridge, MA: MIT Press.
