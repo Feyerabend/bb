@@ -161,3 +161,4 @@ Dependent types are powerful, but they come with trade-offs and aren’t univers
 
 
 Dependent types excel in *high-assurance, low-defect-tolerance domains* but are overkill for general-purpose programming.
+

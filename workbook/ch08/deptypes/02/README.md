@@ -127,3 +127,58 @@ The script is:
 
 This is how a dependently-typed matrix system should behave. The output proves the
 type checker is working correctly for all *these* cases.
+
+
+
+### Projects
+
+
+#### 1. Build a Financial Transaction Verifier
+
+Create a type-safe system where:
+- You design `Transaction` types with amount/currency pairs
+- You enforce balance invariants (e.g., "withdrawals ≤ account balance") in types
+- You prove transfer correctness (∀ transactions, ∑ debits = ∑ credits)
+
+Matrix Extension:  
+Implement currency conversion matrices with type-guaranteed:
+- Dimension matching (n_currencies × n_currencies)
+- Rate validity proofs (diagonal = 1.0, rates > 0)
+
+
+### 2. Develop a Network Protocol Builder
+
+Core Task:  
+- You encode packet layouts as dependent types (size fields → payload lengths)  
+- You prove well-formedness of TCP state machines (SYN→SYN-ACK→ACK)  
+- You catch malformed packets during "compilation"
+
+Matrix Application:  
+Model routing tables as adjacency matrices where:
+- You enforce dimension constraints (n_nodes × n_nodes)  
+- You verify path existence via matrix exponentiation in types
+
+### 3. Create a Robotics Motion Planner
+
+Core Task:  
+- You define joint angle constraints as indexed types (θ ∈ [0°,180°])  
+- You prove collision-free paths via type-level kinematics  
+- You enforce torque limits in motor command types
+
+Matrix Integration:  
+Implement transformation matrices where you:
+- Statically check 4×4 homogeneous coordinate constraints  
+- Verify chain multiplications (robot arm FK/IK) preserve validity  
+
+### 4. Build a SQL Query Certifier
+
+Core Task:  
+- You reflect database schemas into types (table/column constraints)  
+- You guarantee query correctness (projections match schema, joins preserve keys)  
+- You prevent SQL injection via typed query builders
+
+Matrix Version:  
+Model query execution plans as matrices where:
+- You verify operator dimensions (selection→projection→join)  
+- You prove cost estimates obey type-level bounds
+
