@@ -1,5 +1,5 @@
 
-## Projeects on Dependent Types
+## Projects on Dependent Types
 
 ### 1. Smart Contract Validator
 
