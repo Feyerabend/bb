@@ -5,7 +5,7 @@
 
 - Papers: https://archive-pml.github.io/.
 
-- Martin-Löf, P., 1984. *Intuitionistic type theory*. Naples: Bibliopolis.
+- Martin-Löf, P., 1984. *Intuitionistic type theory*. Naples: Bibliopolis.  
 Available at: https://archive-pml.github.io/martin-lof/pdfs/Bibliopolis-Book-1984.pdf Accessed 11 Apr. 2025].
 
 ### General
