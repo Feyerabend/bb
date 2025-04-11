@@ -1,19 +1,9 @@
 
 ## Dependent Types
 
-*Here we collect in part comments and references from the book, for easy access:
-"Comments to the Book". Another part below is a practical introduction to dependent
-types with less assumptions of mathematical or formal logic background:
-"Practical Introduction." Implementations in familiar Python of some concepts can
-be found in the folder [simple](./simple/).*
-
-
-### Comments to the Book
-
-Papers by Per Martin-Löf: https://archive-pml.github.io/. Wikipedia on Per Martin-Löf:
-https://en.wikipedia.org/wiki/Per_Martin-L%C3%B6f.
-
-..
+*Here we give a practical introduction to dependent types with less assumptions
+of mathematical or formal logic background. Implementations in familiar Python
+of some concepts can be found in the folder [simple](./simple/).*
 
 
 ### Practical Introduction
