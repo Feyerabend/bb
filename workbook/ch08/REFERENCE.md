@@ -9,3 +9,11 @@
     reason logically, which is crucial for understanding and solving problems in discrete
     mathematics. This is an excellent resource for students who are new to the subject and
     want to build a solid foundation in both logic and discrete math.
+
+- Lloyd, J.W. *Foundations of Logic Programming*. 2nd extended ed., Springer, 1987.  
+  - This foundational text offers a comprehensive exploration of logic programming, emphasizing
+    both declarative and procedural semantics. Lloyd delves into topics such as unification,
+    resolution, and the fixpoint theory of logic programs. The book provides a rigorous
+    mathematical framework for understanding logic programming languages like Prolog, making
+    it essential reading for those interested in the theoretical underpinnings of logic-based
+    computation.
