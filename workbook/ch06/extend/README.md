@@ -15,6 +15,11 @@ truth but in uncovering new angles, challenging assumptions, and opening doors t
 creativity and understanding. Whether you agree, disagree, or refine these thoughts
 into your own conclusions, the process of exploration itself is invaluable.
 
+In contrast to this experimental path, another approach to ensuring that programs are
+truly correct comes from the opposite direction--through mathematics and formal logic.
+This includes, for example, treating *programs as proofs*. One such avenue is the use of
+[dependent types](./../../ch08/deptypes/), which is explored in [ch08](./../../ch08/).
+
 
 ## Experimental Simulation
 
