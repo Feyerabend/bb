@@ -62,6 +62,7 @@ Potential extensions could include:
 
 ### Project Suggestions
 
+Starting from beginner to advanced:
 - Propositional Logic Library: Implement standard theorems of propositional logic
   (e.g., De Morgan's laws, distributivity)
 - Natural Number Arithmetic: Define addition, multiplication and their properties
