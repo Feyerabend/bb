@@ -1,6 +1,12 @@
 
 ## Reference
 
+- Cormen, Thomas H., Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein. *Introduction to Algorithms*. 3rd ed., MIT Press, 2009.  
+  - Often referred to as "CLRS," this is one of the most comprehensive and widely used textbooks
+    in computer science. It covers a broad range of algorithms in depth, with detailed explanations,
+    pseudocode, and complexity analysis. It’s aimed at upper-level undergraduates, graduate
+    students, and professionals.
+
 - Gries, D., & Schneider, F. B. (1993). *A logical approach to discrete math*. Springer.  
   - This book offers a logical and structured approach to discrete mathematics, with a strong
     emphasis on formal proofs and reasoning. Gries and Schneider cover a wide range of topics,
