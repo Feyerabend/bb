@@ -7,6 +7,13 @@
     pseudocode, and complexity analysis. It’s aimed at upper-level undergraduates, graduate
     students, and professionals.
 
+- Gamma, Erich, Richard Helm, Ralph Johnson, and John Vlissides. *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley, 1994.  
+  - Often referred to as the "Gang of Four" (GoF) book, this seminal work introduced the concept
+    of design patterns to the software development world. It describes 23 foundational patterns
+    for object-oriented design, grouped into creational, structural, and behavioral categories.
+    While the examples are in C++ and Smalltalk, the principles are broadly applicable and have
+    deeply influenced modern software architecture and best practices.
+
 - Gries, D., & Schneider, F. B. (1993). *A logical approach to discrete math*. Springer.  
   - This book offers a logical and structured approach to discrete mathematics, with a strong
     emphasis on formal proofs and reasoning. Gries and Schneider cover a wide range of topics,
