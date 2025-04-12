@@ -1,7 +1,7 @@
 
 ## References
 
-- Aho, A.V. (2007). *Compilers: principles, techniques, & tools*. (2nd ed.) Boston: Pearson Addison-Wesley.  
+- Aho, A.V. (2007). *Compilers: Principles, Techniques, & Tools*. (2nd ed.) Boston: Pearson Addison-Wesley.  
   - Often referred to as the "Dragon Book," this is one of the definitive texts on compiler design. It
     covers the theoretical underpinnings of compilers, from lexical analysis to code generation, and
     provides detailed algorithms and techniques used to build a compiler. This book is a comprehensive
@@ -29,4 +29,3 @@
     The authors also discuss the trade-offs between different algorithms and their implications for performance
     and memory usage, making it an essential resource for developers and researchers in systems programming and
     memory management.
-
