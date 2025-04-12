@@ -26,7 +26,7 @@
   The book focuses on the importance of clarity and simplicity, offering principles that guide developers in creating clean,
   easy-to-understand systems.
 
-- Tran, Minh Quang. *The Art of Functional Programming*. Wiley, 2019.
+- Tran, Minh Quang. *The Art of Functional Programming*. Wiley, 2019.  
   A deep dive into functional programming, this book explores the underlying principles and practices of FP, while addressing
   real-world challenges and solutions. It introduces functional programming in an accessible way, focusing on techniques for
   writing modular and reusable code.
