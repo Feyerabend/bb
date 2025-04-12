@@ -2,6 +2,9 @@
 ## Dependent Types
 
 ### Per Martin-Löf
+
+*Personal note: I had the pleasure of attending a lecture by Per Martin-Löf in Stockholm some years ago. It offered me a glimpse into how mathematicians reason and approach problems--and he was remarkably insightful in making that kind of thinking explicit.*
+
 - Martin-Löf, P., 1984. *Intuitionistic type theory*. Naples: Bibliopolis.
   - A foundational book by Per Martin-Löf, detailing intuitionistic type theory, which is one of the primary bases for dependent types.
   - Available at: [Bibliopolis Book PDF](https://archive-pml.github.io/martin-lof/pdfs/Bibliopolis-Book-1984.pdf) [Accessed 11 Apr. 2025].
