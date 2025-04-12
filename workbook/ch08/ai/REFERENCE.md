@@ -81,7 +81,7 @@
 ### AI in Computer Vision
 
 - *Krizhevsky, A., Sutskever, I. and Hinton, G.E., 2012. ImageNet classification with deep convolutional neural networks. In: _Advances in Neural Information Processing Systems (NeurIPS)_ (pp. 1097–1105).*
-  - Introduced AlexNet, a deep convolutional neural network (CNN) that revolutionized the field of computer vision and image recognition.
+  - Introduced AlexNet, a deep convolutional neural network (CNN) that revolutionised the field of computer vision and image recognition.
 
 - *Redmon, J., Divvala, S., Girshick, R. and Farhadi, A., 2016. You only look once: Unified, real-time object detection. In: _Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)_ (pp. 779–788).*
   - Introduces the YOLO (You Only Look Once) framework, which allows for real-time object detection with high accuracy.
