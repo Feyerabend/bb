@@ -1,0 +1,32 @@
+
+## Reference
+
+- Brooks, Frederick P. *The Mythical Man-Month: Essays on Software Engineering*. 20th Anniversary Edition, Addison-Wesley, 1995.  
+  A classic in software engineering, this book explores the challenges of managing large software projects and introduces the
+  famous concept of the "mythical man-month." Brooks discusses the pitfalls of trying to add manpower to a late project and
+  offers timeless insights on project management in software development.
+
+- Friedman, Daniel P., and William E. Byrd. *The Little Typer*. MIT Press, 2017.  
+  A playful yet educational introduction to programming in the context of dependent types. Using a minimalistic, functional
+  approach, this book teaches core programming concepts through a simple, yet powerful, type system. It's ideal for readers
+  interested in advanced functional programming and type theory.
+
+- Hunt, Andrew, and David Thomas. *The Pragmatic Programmer: Your Journey to Mastery*. 20th Anniversary Edition, Addison-Wesley Professional, 2019.  
+  A must-read for any developer, this book provides practical advice on writing clean, maintainable, and efficient code.
+  The authors emphasize the importance of flexibility and adaptability in software development, offering numerous tips
+  and techniques for solving everyday programming challenges.
+
+- McBreen, Pete. *Software Craftsmanship: The New Imperative*. Addison-Wesley Professional, 2001.  
+  This book advocates for a shift in mindset from being merely a software developer to becoming a software craftsman. McBreen
+  emphasizes professionalism, skill development, and taking pride in one's work, focusing on the importance of quality in
+  software creation.
+
+- Ousterhout, John. *A Philosophy of Software Design*. Yaknyam Press, 2018.  
+  John Ousterhout presents a philosophy centered around simplifying software design and avoiding unnecessary complexity.
+  The book focuses on the importance of clarity and simplicity, offering principles that guide developers in creating clean,
+  easy-to-understand systems.
+
+- Tran, Minh Quang. *The Art of Functional Programming*. Wiley, 2019.
+  A deep dive into functional programming, this book explores the underlying principles and practices of FP, while addressing
+  real-world challenges and solutions. It introduces functional programming in an accessible way, focusing on techniques for
+  writing modular and reusable code.
