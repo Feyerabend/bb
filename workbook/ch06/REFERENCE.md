@@ -6,11 +6,6 @@
   famous concept of the "mythical man-month." Brooks discusses the pitfalls of trying to add manpower to a late project and
   offers timeless insights on project management in software development.
 
-- Friedman, Daniel P., and William E. Byrd. *The Little Typer*. MIT Press, 2017.  
-  A playful yet educational introduction to programming in the context of dependent types. Using a minimalistic, functional
-  approach, this book teaches core programming concepts through a simple, yet powerful, type system. It's ideal for readers
-  interested in advanced functional programming and type theory.
-
 - Hunt, Andrew, and David Thomas. *The Pragmatic Programmer: Your Journey to Mastery*. 20th Anniversary Edition, Addison-Wesley Professional, 2019.  
   A must-read for any developer, this book provides practical advice on writing clean, maintainable, and efficient code.
   The authors emphasize the importance of flexibility and adaptability in software development, offering numerous tips

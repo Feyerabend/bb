@@ -14,11 +14,17 @@
 
 ### General
 
+- Friedman, Daniel P., and William E. Byrd. *The Little Typer*. MIT Press, 2017.  
+  - A playful yet educational introduction to programming in the context of dependent types. Using a minimalistic, functional
+    approach, this book teaches core programming concepts through a simple, yet powerful, type system. It's ideal for readers
+    interested in advanced functional programming and type theory.
+
 - Nordström, B., Petersson, K. and Smith, J.M., 1990. *Programming in Martin-Löf's type theory: an introduction*. Oxford: Oxford University Press.
   - An introduction to programming within the context of Martin-Löf's type theory, which is crucial for understanding how to practically use dependent types.
   
 - Pierce, B.C., ed., 2004. *Advanced topics in types and programming languages*. Cambridge, MA: MIT Press.
   - A comprehensive collection of advanced topics in type theory, including dependent types, compiled by Benjamin Pierce.
+
 
 ### Research Papers
 
