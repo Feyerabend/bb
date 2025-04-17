@@ -61,7 +61,7 @@ If education embraces this reality:
 
 __4. Example: Learning Dynamic Programming Through AI-Guided Projects__
 
-Consider a student learning [Dynamic Programming](./ch03/dyn/) (DP). Instead of a step-by-step introduction
+Consider a student learning [Dynamic Programming](./workbook/ch03/dyn/) (DP). Instead of a step-by-step introduction
 to the topic:
 1. Start with a working DP solution (e.g., Fibonacci sequence, Coin Change problem).
 2. Try to modify it to handle a variant of the problem.
