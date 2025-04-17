@@ -1,11 +1,12 @@
 
 ## Other Topics in Computer Science
 
-The *Traveling Salesman Problem* (TSP) and *Monte Carlo methods* do not fit neatly into a
-structured format used for data structures and their operations. They are fundamentally
-different in nature--TSP is a *problem*, while Monte Carlo is a *method* (or a class of
-algorithms), making it difficult to categorise them in a table that expects specific time
-complexities and direct applications.
+The *[Traveling Salesman Problem](./salesman/)* (TSP) and
+*[Monte Carlo methods](./monte/)* do not fit neatly into a structured format used for
+data structures and their operations. They are fundamentally different in nature--TSP
+is a *problem*, while Monte Carlo is a *method* (or a class of algorithms), making it
+difficult to categorise them in a table that expects specific time complexities and
+direct applications.
 
 
 ### Traveling Salesman Problem (TSP)
