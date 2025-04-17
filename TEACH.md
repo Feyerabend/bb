@@ -361,20 +361,20 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 | Component | Details |
 |-----------|---------|
 | *Starter Code* | Naive recursive implementations of Fibonacci and factorial |
-| *Challenges* | 1. Identify and fix stack overflow for large inputs<br>2. Implement memoization to improve performance<br>3. Convert to iterative implementation<br>4. Compare performance across implementations |
-| *Theory Hooks* | - Recursion vs iteration<br>- Time/space complexity analysis<br>- Memoization and dynamic programming<br>- Call stack mechanics |
-| *AI Prompts* | - "Why does this recursive function crash for large inputs?"<br>- "Compare the space complexity of recursive vs. iterative approaches"<br>- "How would you visualize the call stack for this function?" |
-| *Assessment Focus* | - Debugging techniques<br>- Performance analysis<br>- Understanding of recursion fundamentals |
+| *Challenges* | 1. Identify and fix stack overflow for large inputs<br />2. Implement memoization to improve performance<br />3. Convert to iterative implementation<br />4. Compare performance across implementations |
+| *Theory Hooks* | - Recursion vs iteration<br />- Time/space complexity analysis<br />- Memoization and dynamic programming<br />- Call stack mechanics |
+| *AI Prompts* | - "Why does this recursive function crash for large inputs?"<br />- "Compare the space complexity of recursive vs. iterative approaches"<br />- "How would you visualize the call stack for this function?" |
+| *Assessment Focus* | - Debugging techniques<br />- Performance analysis<br />- Understanding of recursion fundamentals |
 
 #### Week 3-4: Sorting and Searching
 
 | Component | Details |
 |-----------|---------|
 | *Starter Code* | Basic implementation of quicksort with first element as pivot |
-| *Challenges* | 1. Analyze and improve worst-case performance with better pivot selection<br>2. Implement hybrid sorting approach that switches to insertion sort for small partitions<br>3. Add instrumentation to count comparisons and swaps<br>4. Compare against library sort implementations |
-| *Theory Hooks* | - Divide and conquer paradigm<br>- Worst/average/best case analysis<br>- Algorithm stability<br>- In-place vs. auxiliary space algorithms |
-| *AI Prompts* | - "What's the impact of different pivot selection strategies?"<br>- "Why might insertion sort be faster for small arrays?"<br>- "How would you visualize the quicksort partitioning process?" |
-| *Assessment Focus* | - Algorithm analysis<br>- Performance optimization<br>- Instrumentation techniques |
+| *Challenges* | 1. Analyze and improve worst-case performance with better pivot selection<br />2. Implement hybrid sorting approach that switches to insertion sort for small partitions<br />3. Add instrumentation to count comparisons and swaps<br />4. Compare against library sort implementations |
+| *Theory Hooks* | - Divide and conquer paradigm<br />- Worst/average/best case analysis<br />- Algorithm stability<br />- In-place vs. auxiliary space algorithms |
+| *AI Prompts* | - "What's the impact of different pivot selection strategies?"<br />- "Why might insertion sort be faster for small arrays?"<br />- "How would you visualize the quicksort partitioning process?" |
+| *Assessment Focus* | - Algorithm analysis<br />- Performance optimization<br />- Instrumentation techniques |
 
 ### Module 2: Data Structures
 
@@ -383,20 +383,20 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 | Component | Details |
 |-----------|---------|
 | *Starter Code* | Simple hash table with linear probing and limited functionality |
-| *Challenges* | 1. Implement chaining as alternative collision strategy<br>2. Add dynamic resizing when load factor exceeds threshold<br>3. Improve hash function to reduce collisions<br>4. Add deletion support with tombstone marking |
-| *Theory Hooks* | - Hash function properties<br>- Load factor analysis<br>- Amortized complexity<br>- Open vs. closed addressing |
-| *AI Prompts* | - "Compare advantages of chaining vs. linear probing"<br>- "What makes a good hash function for string keys?"<br>- "How would you implement a thread-safe hash table?" |
-| *Assessment Focus* | - Data structure design<br>- Performance under different usage patterns<br>- Implementation trade-offs |
+| *Challenges* | 1. Implement chaining as alternative collision strategy<br />2. Add dynamic resizing when load factor exceeds threshold<br />3. Improve hash function to reduce collisions<br />4. Add deletion support with tombstone marking |
+| *Theory Hooks* | - Hash function properties<br />- Load factor analysis<br />- Amortized complexity<br />- Open vs. closed addressing |
+| *AI Prompts* | - "Compare advantages of chaining vs. linear probing"<br />- "What makes a good hash function for string keys?"<br />- "How would you implement a thread-safe hash table?" |
+| *Assessment Focus* | - Data structure design<br />- Performance under different usage patterns<br />- Implementation trade-offs |
 
 #### Week 7-8: Graph Representations and Traversals
 
 | Component | Details |
 |-----------|---------|
 | *Starter Code* | Graph implemented as adjacency matrix with basic BFS traversal |
-| *Challenges* | 1. Add DFS traversal and cycle detection<br>2. Convert to adjacency list representation<br>3. Implement Dijkstra's algorithm for shortest paths<br>4. Add support for weighted edges and directed graphs |
-| *Theory Hooks* | - Graph traversal properties<br>- Space complexity of different representations<br>- Path finding algorithms<br>- Applications of graph theory |
-| *AI Prompts* | - "When would you choose adjacency list over matrix?"<br>- "How would you modify BFS to find shortest path?"<br>- "What's the difference between Dijkstra's and A* algorithms?" |
-| *Assessment Focus* | - Algorithm implementation<br>- Data structure selection<br>- Problem modeling using graphs |
+| *Challenges* | 1. Add DFS traversal and cycle detection<br />2. Convert to adjacency list representation<br />3. Implement Dijkstra's algorithm for shortest paths<br />4. Add support for weighted edges and directed graphs |
+| *Theory Hooks* | - Graph traversal properties<br />- Space complexity of different representations<br />- Path finding algorithms<br />- Applications of graph theory |
+| *AI Prompts* | - "When would you choose adjacency list over matrix?"<br />- "How would you modify BFS to find shortest path?"<br />- "What's the difference between Dijkstra's and A* algorithms?" |
+| *Assessment Focus* | - Algorithm implementation<br />- Data structure selection<br />- Problem modeling using graphs |
 
 ### Module 3: Systems Programming
 
@@ -405,20 +405,20 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 | Component | Details |
 |-----------|---------|
 | *Starter Code* | Basic memory allocator with fixed-size blocks |
-| *Challenges* | 1. Implement variable-sized allocation<br>2. Add block splitting and coalescing<br>3. Implement different fit strategies (first-fit, best-fit)<br>4. Add debugging features like memory usage statistics |
-| *Theory Hooks* | - Memory layout and alignment<br>- Fragmentation (internal vs. external)<br>- Allocation algorithms<br>- Garbage collection concepts |
-| *AI Prompts* | - "What causes fragmentation in this allocator?"<br>- "How would you implement boundary tags for coalescing?"<br>- "Compare the trade-offs between different fit strategies" |
-| *Assessment Focus* | - Low-level programming<br>- Memory management concepts<br>- Debugging and monitoring |
+| *Challenges* | 1. Implement variable-sized allocation<br />2. Add block splitting and coalescing<br />3. Implement different fit strategies (first-fit, best-fit)<br />4. Add debugging features like memory usage statistics |
+| *Theory Hooks* | - Memory layout and alignment<br />- Fragmentation (internal vs. external)<br />- Allocation algorithms<br />- Garbage collection concepts |
+| *AI Prompts* | - "What causes fragmentation in this allocator?"<br />- "How would you implement boundary tags for coalescing?"<br />- "Compare the trade-offs between different fit strategies" |
+| *Assessment Focus* | - Low-level programming<br />- Memory management concepts<br />- Debugging and monitoring |
 
 #### Week 11-12: Concurrency and Synchronization
 
 | Component | Details |
 |-----------|---------|
 | *Starter Code* | Single-threaded producer-consumer with shared buffer |
-| *Challenges* | 1. Add multi-threading with locks<br>2. Identify and fix race conditions<br>3. Implement condition variables for efficiency<br>4. Add deadlock detection/prevention |
-| *Theory Hooks* | - Thread safety concepts<br>- Mutex vs. semaphore<br>- Deadlock conditions<br>- Concurrent data structures |
-| *AI Prompts* | - "Where are the potential race conditions in this code?"<br>- "How would you modify this to prevent deadlock?"<br>- "What's the difference between busy waiting and condition variables?" |
-| *Assessment Focus* | - Concurrency understanding<br>- Synchronization mechanisms<br>- Race condition identification |
+| *Challenges* | 1. Add multi-threading with locks<br />2. Identify and fix race conditions<br />3. Implement condition variables for efficiency<br />4. Add deadlock detection/prevention |
+| *Theory Hooks* | - Thread safety concepts<br />- Mutex vs. semaphore<br />- Deadlock conditions<br />- Concurrent data structures |
+| *AI Prompts* | - "Where are the potential race conditions in this code?"<br />- "How would you modify this to prevent deadlock?"<br />- "What's the difference between busy waiting and condition variables?" |
+| *Assessment Focus* | - Concurrency understanding<br />- Synchronization mechanisms<br />- Race condition identification |
 
 ### Module 4: Software Engineering
 
@@ -427,20 +427,20 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 | Component | Details |
 |-----------|---------|
 | *Starter Code* | Buggy text parser with minimal test coverage |
-| *Challenges* | 1. Write comprehensive test suite including edge cases<br>2. Set up CI pipeline with automated testing<br>3. Use debugging tools to locate and fix bugs<br>4. Implement error handling and recovery |
-| *Theory Hooks* | - Test-driven development<br>- Coverage metrics<br>- Debugging strategies<br>- Error handling patterns |
-| *AI Prompts* | - "What edge cases should I test for this parser?"<br>- "How would you debug this segmentation fault?"<br>- "What's the difference between unit and integration tests?" |
-| *Assessment Focus* | - Test design<br>- Methodical debugging<br>- Software quality practices |
+| *Challenges* | 1. Write comprehensive test suite including edge cases<br />2. Set up CI pipeline with automated testing<br />3. Use debugging tools to locate and fix bugs<br />4. Implement error handling and recovery |
+| *Theory Hooks* | - Test-driven development<br />- Coverage metrics<br />- Debugging strategies<br />- Error handling patterns |
+| *AI Prompts* | - "What edge cases should I test for this parser?"<br />- "How would you debug this segmentation fault?"<br />- "What's the difference between unit and integration tests?" |
+| *Assessment Focus* | - Test design<br />- Methodical debugging<br />- Software quality practices |
 
 #### Week 15: Code Quality and Refactoring
 
 | Component | Details |
 |-----------|---------|
 | *Starter Code* | Working but poorly structured text processing application |
-| *Challenges* | 1. Identify code smells and refactoring opportunities<br>2. Apply appropriate design patterns<br>3. Improve API design and documentation<br>4. Enhance maintainability without changing functionality |
-| *Theory Hooks* | - SOLID principles<br>- Common design patterns<br>- Technical debt<br>- Code metrics |
-| *AI Prompts* | - "What design patterns would improve this code structure?"<br>- "How would you refactor this function to improve testability?"<br>- "What metrics would you use to evaluate code quality?" |
-| *Assessment Focus* | - Code organization<br>- Design pattern application<br>- Documentation quality |
+| *Challenges* | 1. Identify code smells and refactoring opportunities<br />2. Apply appropriate design patterns<br />3. Improve API design and documentation<br />4. Enhance maintainability without changing functionality |
+| *Theory Hooks* | - SOLID principles<br />- Common design patterns<br />- Technical debt<br />- Code metrics |
+| *AI Prompts* | - "What design patterns would improve this code structure?"<br />- "How would you refactor this function to improve testability?"<br />- "What metrics would you use to evaluate code quality?" |
+| *Assessment Focus* | - Code organization<br />- Design pattern application<br />- Documentation quality |
 
 ## 7. Facilitating Collaborative Learning
 
@@ -491,6 +491,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 - "Which solution best handles [specific edge case] and why?"
 - "What would you do differently if you started over?"
 - "How does this connect to [theoretical concept] we've discussed?"
+
 
 ### Building a Learning Community
 
@@ -552,6 +553,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
   - Dedicate first session to environment configuration
   - Have backup exercises that work with minimal setup
 
+
 ### Frequently Asked Questions
 
 #### Implementation Questions
@@ -584,7 +586,9 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 - *Q: What if AI gives incorrect solutions?*
   - A: These are valuable teaching moments! Have students critically evaluate AI outputs and document where they found errors.
 
+
 ## 9. Resources and Tools
+
 
 ### Technical Resources
 
@@ -612,6 +616,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
   - Memory usage analyzers
   - Performance profilers
 
+
 ### Pedagogical Resources
 
 #### Assessment Templates
@@ -631,6 +636,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 - Effective AI prompt templates
 - Self-assessment guides
 - Peer teaching guides
+
 
 ### AI Tools and Guidelines
 
@@ -657,11 +663,13 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 - Documentation templates for AI interactions
 - Ethical AI usage guidelines
 
+
 ## 10. Further Reading
 
 ### Pedagogical Foundations
 - Papert, S. (1980). *Mindstorms: Children, Computers, and Powerful Ideas*. Basic Books.
 - Brown, P.C., Roediger, H.L., & McDaniel, M.A. (2014). *Make It Stick: The Science of Successful Learning*. Harvard University Press.
+- Dewey, J. (1938). *Experience and education*. Macmillan.
 - Kolb, D.A. (2014). *Experiential Learning: Experience as the Source of Learning and Development*. Pearson FT Press.
 - Vygotsky, L.S. (1978). *Mind in Society: Development of Higher Psychological Processes*. Harvard University Press.
 
@@ -682,6 +690,9 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 - Fowler, M. (2018). *Refactoring: Improving the Design of Existing Code*. Addison-Wesley.
 - Hunt, A., & Thomas, D. (2019). *The Pragmatic Programmer: Your Journey to Mastery*. Addison-Wesley.
 - Brooks, F.P. (1995). *The Mythical Man-Month: Essays on Software Engineering*. Addison-Wesley.
+
+(Also compare Chapter 6 on *Philosophy and Methodology*.)
+
 
 ## Appendix: Implementation Checklists
 
