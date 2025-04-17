@@ -296,7 +296,7 @@ Structure challenges to build on each other throughout a unit:
 
 ### Process-Oriented Rubrics
 
-A process-oriented rubric is a rubric that focuses not just on the final product (e.g. a completed program or essay), but on the quality of the process a student follows while working — things like:
+A process-oriented rubric is a rubric that focuses not just on the final product (e.g. a completed program or essay), but on the quality of the process a student follows while working--things like:
 - How they analyse the problem
 - How they design a solution
 - How they iterate and improve their work
