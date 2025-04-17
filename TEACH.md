@@ -55,6 +55,7 @@ Students who experience this approach will:
 - Acquire practical debugging, optimisation, and refactoring skills
 - Gain experience with real-world software engineering practices
 
+
 ## 2. Philosophical Foundations
 
 ### Core Principles
@@ -91,6 +92,7 @@ This approach synthesizes several established educational theories:
 - *Zone of Proximal Development* (Vygotsky): Scaffolding learning just beyond current ability
 - *Experiential Learning Cycle* (Kolb): Experience → Reflection → Conceptualisation → Experimentation
 - *Cognitive Apprenticeship*: Modelling expert thinking processes in authentic contexts
+
 
 ## 3. Implementation Framework
 
@@ -139,6 +141,7 @@ A typical semester-long course using this approach might follow this progression
 - Optional challenges for advanced students
 - Preparation for the next session
 
+
 ### Role of AI
 
 #### Appropriate AI Uses
@@ -147,6 +150,7 @@ A typical semester-long course using this approach might follow this progression
 - *Alternative approaches*: "What are three different ways to implement this sorting algorithm?"
 - *Code explanation*: "Walk through how this parser handles nested expressions."
 - *Challenge generation*: "What edge cases should I test in my implementation?"
+- *Personalized scaffolding*: "Suggest a simpler version of this challenge matching my current skill level"
 
 #### AI Usage Guidelines for Students
 1. *Always run the code* after making AI-suggested changes
@@ -154,12 +158,14 @@ A typical semester-long course using this approach might follow this progression
 3. *Compare multiple AI responses* to develop critical thinking
 4. *Challenge AI suggestions* with your own reasoning
 5. *Document your AI interactions* as part of your learning process
+6. Use AI to *request personalised examples* connecting concepts to your interests or background
 
 #### Sample Effective Prompts
 - "What might cause the segmentation fault in this memory allocator when freeing blocks?"
 - "Compare the time and space complexity of my solution versus a dynamic programming approach."
 - "Explain three potential solutions to this race condition and their trade-offs."
 - "What design patterns might apply to restructure this code for better testability?"
+
 
 ### Instructor Responsibilities
 
@@ -176,12 +182,22 @@ A typical semester-long course using this approach might follow this progression
 - Monitor AI usage, redirecting if students are over-reliant
 - Facilitate peer learning through strategic pairing and sharing
 - Provide targeted mini-lectures when common roadblocks emerge
+- Maintain a 'challenge bank' of alternative pathways for students
+  needing different difficulty levels
 
 #### Post-Class Follow-up
 - Provide individual or group feedback focused on process, not just outcomes
 - Share exemplary approaches (with permission) to build collective knowledge
-- Connect classroom experiences to formal CS theory through readings or videos
+- Connect classroom experiences to formal CS theory (or equivalent theory) through readings or videos
 - Reflect on lesson effectiveness and iterate on teaching approach
+- Provide individualised challenge extensions based on student progress analytics
+
+
+#### Personalised Learning Pathways
+- *Adaptive Challenge Sequencing*: AI-generated next-step recommendations based on individual progress patterns
+- *Interest-Based Specialisation*: After core competencies are demonstrated, students select domain-focused variations (such as game dev vs. systems programming)
+- *Dynamic Grouping*: Temporary pairing strategies based on complementary skill gaps identified through code analysis
+
 
 ## 4. Creating Effective Learning Materials
 
@@ -330,11 +346,13 @@ Instead of relying solely on individual assignments, you might consider a portfo
    - Debug logs with annotations
    - Design sketches and planning documents
    - AI prompt history with critical evaluation of responses
+   - Learning journey map showing personalised milestones and breakthrough moments
 
 3. *Peer review documentation*
    - Feedback provided to other students
    - Responses to received feedback
    - Evidence of collaboration and knowledge sharing
+
 
 ### Reflection Prompts
 
@@ -563,7 +581,6 @@ Integrate these prompts into assignment submissions to encourage metacognition:
   - Dedicate first session to environment configuration
   - Have backup exercises that work with minimal setup
 
-
 ### Frequently Asked Questions
 
 #### Implementation Questions
@@ -620,8 +637,8 @@ Integrate these prompts into assignment submissions to encourage metacognition:
   - Branches representing different stages of development
 
 #### Visualization Tools
-- Algorithm visualization libraries
-  - Data structure state visualization
+- Algorithm visualisation libraries
+  - Data structure state visualisation
   - Call stack tracers
   - Memory usage analyzers
   - Performance profilers
@@ -661,6 +678,9 @@ Integrate these prompts into assignment submissions to encourage metacognition:
   - Integrated explanation capabilities
   - Customizable suggestion sensitivity
 
+- Personalised learning dashboards that visualise
+  conceptual mastery and suggest targeted exercises
+
 #### AI Prompt Libraries
 - Debugging prompt templates
 - Code explanation prompts
@@ -672,6 +692,8 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 - AI verification best practices
 - Documentation templates for AI interactions
 - Ethical AI usage guidelines
+- Prompt templates for requesting customised
+  explanations based on learning style preferences
 
 
 ## 10. Further Reading
@@ -765,5 +787,6 @@ This project-first, AI-supported approach represents a fundamental shift in comp
 The approach adapts as technology evolves, with AI tools becoming increasingly sophisticated partners in the learning process. However, the core principles remain constant: learning through modification of existing systems, embracing productive struggle, connecting practice to theory, and fostering a collaborative learning community.
 
 As you implement this approach, remember that the goal is not perfect projects but perfect learning—students who develop the confidence, skills, and understanding to tackle complex computing challenges with creativity and rigor. The true measure of success is not what your students can build by the end of the course, but what they can learn to build in the years that follow.
+
 
 
