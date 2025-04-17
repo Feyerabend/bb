@@ -675,7 +675,6 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 ### AI in Education
 - Roll, I., & Wylie, R. (2016). *Evolution and Revolution in Artificial Intelligence in Education*. International Journal of Artificial Intelligence in Education.
 - Holstein, K., McLaren, B.M., & Aleven, V. (2019). *Co-Designing a Real-Time Classroom Orchestration Tool to Support Teacher-AI Complementarity*. Journal of Learning Analytics.
-- Ng, A., & Sycara, K. (2023). *AI-Augmented Learning: Principles and Practices*. MIT Press.
 - Chen, L., Chen, P., & Lin, Z. (2020). *Artificial Intelligence in Education: A Review*. IEEE Access.
 
 ### Software Engineering Practice
