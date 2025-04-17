@@ -1,5 +1,5 @@
 
-# Teacher's Manual: Project-First Computer Science with AI-Supported Exploration
+# Teacher's Manual: Project-First with AI-Supported Exploration
 *A Comprehensive Guide for Active, Iterative, and Theory-Embedded Learning*
 
 ## Table of Contents
