@@ -94,7 +94,7 @@ students better for real-world problem-solving. It acknowledges that full unders
 required at every stage and that learning is often messy, interactive, and dynamic.
 
 
-__6. John Dewey and Assesment__
+__6. John Dewey and Assessment
 
 To quote John Dewey, *Experience and Education* (1938), ed. (1963), pp. 19-20:
 
