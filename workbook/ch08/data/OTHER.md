@@ -29,5 +29,5 @@ efficiently.
 
 | Name  | Type   | Complexity    | Usage  |
 |--|--|--|--|
-| Traveling Salesman Problem (TSP) | Combinatorial Optimisation Problem | NP-hard | Route optimisation, logistics, circuit design |
+| Traveling Salesman Problem (TSP) | Combinatorial Optimisation Problem | NP-hard (cf. [P vs NP](./../limits/PvsNP.md)) | Route optimisation, logistics, circuit design |
 | Monte Carlo Method | Probabilistic Computational Method | Varies (depends on sampling iterations) | Simulation, numerical integration, optimisation |
