@@ -266,6 +266,7 @@ Structure challenges to build on each other throughout a unit:
 4. *Integration challenges*: Connecting with other systems or libraries
 5. *Open-ended problems*: Multiple viable solutions requiring design decisions
 
+
 ### Connecting to Theory
 
 #### Theory Integration Techniques
@@ -361,13 +362,15 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 
 ## 6. Example Modules
 
+*These examples follow a traditional approach to computer science, rather than the implicit structure suggested by the book. You may wish to adjust either the course plan to align with the book, or modify these examples depending on the type of course you intend to offer.*
+
 ### Module 1: Algorithmic Thinking
 
 #### Week 1-2: Recursive Problem Solving
 
 | Component | Details |
 |-----------|---------|
-| *Starter Code* | Naive recursive implementations of Fibonacci and factorial |
+| *Starter Code* | Naïve recursive implementations of Fibonacci and factorial |
 | *Challenges* | 1. Identify and fix stack overflow for large inputs<br />2. Implement memoization to improve performance<br />3. Convert to iterative implementation<br />4. Compare performance across implementations |
 | *Theory Hooks* | - Recursion vs iteration<br />- Time/space complexity analysis<br />- Memoization and dynamic programming<br />- Call stack mechanics |
 | *AI Prompts* | - "Why does this recursive function crash for large inputs?"<br />- "Compare the space complexity of recursive vs. iterative approaches"<br />- "How would you visualize the call stack for this function?" |
@@ -762,4 +765,5 @@ This project-first, AI-supported approach represents a fundamental shift in comp
 The approach adapts as technology evolves, with AI tools becoming increasingly sophisticated partners in the learning process. However, the core principles remain constant: learning through modification of existing systems, embracing productive struggle, connecting practice to theory, and fostering a collaborative learning community.
 
 As you implement this approach, remember that the goal is not perfect projects but perfect learning—students who develop the confidence, skills, and understanding to tackle complex computing challenges with creativity and rigor. The true measure of success is not what your students can build by the end of the course, but what they can learn to build in the years that follow.
+
 
