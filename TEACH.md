@@ -52,7 +52,7 @@ Students who experience this approach will:
 - Develop confidence in modifying and extending existing codebases
 - Learn to use AI as a collaborative tool rather than a crutch
 - Build a deeper, context-rich understanding of computer science theory
-- Acquire practical debugging, optimization, and refactoring skills
+- Acquire practical debugging, optimisation, and refactoring skills
 - Gain experience with real-world software engineering practices
 
 ## 2. Philosophical Foundations
@@ -82,15 +82,15 @@ Students who experience this approach will:
 #### 5. Iteration as Core Practice
 - *Rationale*: Quality software emerges through repeated refinement, not perfect first attempts.
 - *Implementation*: Build multiple revision cycles into projects and assessments.
-- *Benefit*: Normalizes experimentation and continuous improvement.
+- *Benefit*: Normalises experimentation and continuous improvement.
 
 ### Educational Theory Foundations
 
 This approach synthesizes several established educational theories:
-- *Constructionism* (Papert): Learning through creating and modifying meaningful artifacts
+- *Constructionism* (Papert): Learning through creating and modifying meaningful artefacts
 - *Zone of Proximal Development* (Vygotsky): Scaffolding learning just beyond current ability
-- *Experiential Learning Cycle* (Kolb): Experience → Reflection → Conceptualization → Experimentation
-- *Cognitive Apprenticeship*: Modeling expert thinking processes in authentic contexts
+- *Experiential Learning Cycle* (Kolb): Experience → Reflection → Conceptualisation → Experimentation
+- *Cognitive Apprenticeship*: Modelling expert thinking processes in authentic contexts
 
 ## 3. Implementation Framework
 
@@ -130,7 +130,7 @@ A typical semester-long course using this approach might follow this progression
 #### 3. Reflection (15-20 minutes)
 - Group discussion of approaches and challenges
 - Compare different solutions and their trade-offs
-- Introduce relevant theory to contextualize experiences
+- Introduce relevant theory to contextualise experiences
 - Connect to professional practice and real-world systems
 
 #### 4. Extension (In-class or homework)
@@ -246,10 +246,10 @@ void my_free(void* ptr) {
 1. *Extension*: Add new functionality to existing system
    - *Example*: "Add variable-sized block allocation to the memory manager"
 
-2. *Optimization*: Improve performance or resource usage
+2. *Optimisation*: Improve performance or resource usage
    - *Example*: "Reduce the time complexity of the free block search from O(n) to O(log n)"
 
-3. *Refactoring*: Improve code structure without changing behavior
+3. *Refactoring*: Improve code structure without changing behaviour
    - *Example*: "Refactor the allocator to use a more modular design with separate data structure for tracking"
 
 4. *Debugging*: Find and fix issues in working but flawed code
@@ -276,12 +276,12 @@ Structure challenges to build on each other throughout a unit:
    - Immediately applicable to the task at hand
 
 2. *Reflection-driven theory*
-   - After students have attempted solutions, introduce formal concepts that explain observed behaviors
+   - After students have attempted solutions, introduce formal concepts that explain observed behaviours
    - Compare student-developed approaches to canonical algorithms or patterns
    - Make explicit connections between practical experience and textbook knowledge
 
 3. *Theory capsules*
-   - Short (1-2 page) readings that formalize concepts encountered in practice
+   - Short (1-2 page) readings that formalise concepts encountered in practice
    - Assigned after hands-on experience but before refinement
    - Include comprehension questions connecting theory to project work
 
@@ -290,7 +290,7 @@ Structure challenges to build on each other throughout a unit:
 2. Instructor facilitates discussion of observed patterns
 3. Mini-lecture introduces load factor and collision resolution strategies
 4. Students apply theoretical knowledge to improve their implementation
-5. Follow-up reading formalizes concepts of hash functions and complexity analysis
+5. Follow-up reading formalises concepts of hash functions and complexity analysis
 
 ## 5. Assessment & Feedback
 
@@ -300,14 +300,14 @@ Structure challenges to build on each other throughout a unit:
 
 | Criteria | Exemplary (5) | Proficient (4) | Developing (3) | Beginning (2) | Needs Work (1) |
 |----------|---------------|----------------|----------------|---------------|----------------|
-| *Problem Analysis* | Thoroughly analyzes the problem, identifies key constraints and requirements, explores multiple approaches before implementation | Analyzes the problem well, identifies most constraints, considers alternative approaches | Basic analysis of problem requirements, some consideration of alternatives | Limited problem analysis, jumps quickly to implementation | No evident problem analysis, trial-and-error approach |
-| *Solution Design* | Clear architecture with appropriate abstractions, excellent modularity, anticipates future extensions | Good structure with reasonable abstractions, modular design | Basic structure with some modularity, meets immediate requirements | Poor structure with limited modularity, tightly coupled | No evident design, chaotic organization |
-| *Implementation Quality* | Elegant, efficient code with excellent use of language features, robust error handling | Clean, readable code with good use of language features, handles most errors | Functional code with basic use of language features, some error handling | Working but difficult to read code, minimal error handling | Incomplete or non-functioning code |
-| *Debugging Process* | Systematic hypothesis testing, effective use of tools, clear documentation of process | Good debugging approach, uses appropriate tools, some process documentation | Basic debugging techniques, some tool usage, minimal documentation | Ad-hoc debugging, limited tool use, no documentation | No systematic debugging approach |
-| *AI Collaboration* | Strategic AI use to explore alternatives and deepen understanding, critically evaluates suggestions | Effective AI use for specific problems, generally evaluates suggestions | Basic AI use mostly for troubleshooting, accepts most suggestions | Overreliant on AI without understanding, accepts solutions blindly | Either doesn't use AI or uses it to generate complete solutions |
-| *Theoretical Connection* | Explicit connection between implementation and CS theory, can explain theoretical implications of code choices | Good connection to theory, explains most theoretical aspects | Some connection to theory, basic theoretical understanding | Limited theoretical awareness, focus only on "what works" | No connection to underlying theory |
-| *Iteration & Improvement* | Multiple meaningful iterations with clear progression, thoughtful incorporation of feedback | Several iterations showing improvement, incorporates feedback | Some iteration, basic improvements over time | Minimal changes between versions, resistant to feedback | No iteration, single version only |
-| *Documentation & Communication* | Exceptional documentation, clear explanations of design decisions and trade-offs | Good documentation, explains major design decisions | Basic documentation, some explanation of approach | Minimal documentation, limited explanation | No meaningful documentation |
+| Problem Analysis | Thoroughly analyses the problem, identifies key constraints and requirements, explores multiple approaches before implementation | Analyses the problem well, identifies most constraints, considers alternative approaches | Basic analysis of problem requirements, some consideration of alternatives | Limited problem analysis, jumps quickly to implementation | No evident problem analysis, trial-and-error approach |
+| Solution Design | Clear architecture with appropriate abstractions, excellent modularity, anticipates future extensions | Good structure with reasonable abstractions, modular design | Basic structure with some modularity, meets immediate requirements | Poor structure with limited modularity, tightly coupled | No evident design, chaotic organisation |
+| Implementation Quality | Elegant, efficient code with excellent use of language features, robust error handling | Clean, readable code with good use of language features, handles most errors | Functional code with basic use of language features, some error handling | Working but difficult to read code, minimal error handling | Incomplete or non-functioning code |
+| Debugging Process | Systematic hypothesis testing, effective use of tools, clear documentation of process | Good debugging approach, uses appropriate tools, some process documentation | Basic debugging techniques, some tool usage, minimal documentation | Ad-hoc debugging, limited tool use, no documentation | No systematic debugging approach |
+| AI Collaboration | Strategic AI use to explore alternatives and deepen understanding, critically evaluates suggestions | Effective AI use for specific problems, generally evaluates suggestions | Basic AI use mostly for troubleshooting, accepts most suggestions | Over-reliant on AI without understanding, accepts solutions blindly | Either doesn’t use AI or uses it to generate complete solutions |
+| Theoretical Connection | Explicit connection between implementation and CS theory, can explain theoretical implications of code choices | Good connection to theory, explains most theoretical aspects | Some connection to theory, basic theoretical understanding | Limited theoretical awareness, focus only on "what works" | No connection to underlying theory |
+| Iteration & Improvement | Multiple meaningful iterations with clear progression, thoughtful incorporation of feedback | Several iterations showing improvement, incorporates feedback | Some iteration, basic improvements over time | Minimal changes between versions, resistant to feedback | No iteration, single version only |
+| Documentation & Communication | Exceptional documentation, clear explanations of design decisions and trade-offs | Good documentation, explains major design decisions | Basic documentation, some explanation of approach | Minimal documentation, limited explanation | No meaningful documentation |
 
 ### Portfolio Assessment
 
