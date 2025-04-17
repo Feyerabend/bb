@@ -755,3 +755,4 @@ This project-first, AI-supported approach represents a fundamental shift in comp
 The approach adapts as technology evolves, with AI tools becoming increasingly sophisticated partners in the learning process. However, the core principles remain constant: learning through modification of existing systems, embracing productive struggle, connecting practice to theory, and fostering a collaborative learning community.
 
 As you implement this approach, remember that the goal is not perfect projects but perfect learning—students who develop the confidence, skills, and understanding to tackle complex computing challenges with creativity and rigor. The true measure of success is not what your students can build by the end of the course, but what they can learn to build in the years that follow.
+

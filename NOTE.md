@@ -93,6 +93,25 @@ This shift in educational design--toward project-first, AI-assisted, and iterati
 students better for real-world problem-solving. It acknowledges that full understanding isn't always
 required at every stage and that learning is often messy, interactive, and dynamic.
 
+
+__6. John Dewey and Assesment__
+
 To quote John Dewey, *Experience and Education* (1938), ed. (1963), pp. 19-20:
 
 > If one attempts to formulate the philosophy of education implicit in the practices of the new education, we may, I think,  discover certain common principles [...] To imposition from above is opposed expression and cultivation of individuality; to external discipline is opposed free activity; to learning from texts and teachers, learning through experience; to acquisition of isolated skills and techniques by drill is opposed acquisition of them as means of attaining ends which make direct vital appeal; to preparation for a more or less remote future is opposed making the most of the opportunities of present life; to static aims and materials is opposed acquaintance with a changing world [...].
+
+In a learning environment grounded in John Dewey’s philosophy, assessment cannot be treated as an isolated act of measurement at the end of instruction. Rather, it must be viewed as a continuous, embedded part of the educational process--something that grows with the student, not something imposed after the fact. Dewey’s view of education as a "reconstruction of experience" positions assessment as an organic element of learning itself, not a separate judgment disconnected from the learner’s journey.
+
+Traditional education often relies on static assessments--tests, quizzes, and exercises--which aim to evaluate retention and correctness. These are external to the learning process and, as Dewey argues, risk severing the connection between knowledge and its use in life. In contrast, a project-based approach to learning naturally shifts the function and form of assessment. Here, assessment is not revealed in a grade or a test score, but is manifested in the work itself--in the ideas developed, the artefacts produced, and the problems solved. The project becomes both the learning process and the demonstration of understanding.
+
+This shift demands that assessments be conveyed not as final judgments, but as part of an ongoing dialogue between student and teacher. Providing individualised feedback throughout the semester--rather than only summative grades at the end--encourages students to reflect, revise, and internalise what they are learning. Dewey placed reflective thinking at the centre of intelligent action; regular, formative assessments are the scaffolding for such reflection. They allow students to think about their choices, identify what’s working, and redirect efforts accordingly.
+
+Moreover, this process-oriented feedback cultivates intrinsic motivation. When students are shown how they are progressing--rather than being told merely whether they succeeded or failed--they develop a stronger sense of purpose and ownership over their learning. Dewey emphasised that education should help students find meaning and direction in their experiences, and meaningful feedback is what supports that developmental process.
+
+Assessment, in this light, also plays a crucial role in building democratic relationships within the classroom. By regularly engaging students in conversations about their projects, progress, and process, teachers model respect, listening, and shared responsibility--the very democratic values Dewey hoped education would promote. Rather than relying on impersonal metrics, the teacher responds to the learner as an individual, adapting instruction based on who they are and what they bring.
+
+This is particularly important because, as Dewey criticised, traditional education often assumes a one-size-fits-all approach. Personalised assessments, grounded in the student’s actual work and thinking, allow education to be responsive rather than prescriptive. Projects further enhance this by offering a broader canvas for students to express understanding in diverse ways--through creation, experimentation, synthesis--all of which go far beyond what can be captured by standard tests.
+
+From a practical standpoint, this means that feedback is not a side-process--it is the curriculum. It guides how students engage, shapes how they think about their own learning, and helps them internalise both content and method. In this way, assessment is no longer a tool for sorting students, but a tool for helping them grow. It is formative, continuous, embedded--and deeply human.
+
+Ultimately, Dewey would likely argue that when students are engaged in authentic, sustained work--like projects--assessment should be lived and experienced, not simply recorded. It is not about asking, "Did you get the right answer?” but instead, “How are you thinking? How are you growing? What are you building--and why?"
