@@ -782,7 +782,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 
 ## Conclusion
 
-This project-first, AI-supported approach represents a fundamental shift in computer science education—moving from abstract theory to contextualized learning through authentic tasks. By embracing the realities of modern software development, including the role of AI as a thinking partner, we prepare students not just for academic success but for the actual practice of computer science in industry and research.
+This project-first, AI-supported approach represents a fundamental shift in computer science education--moving from abstract theory to contextualized learning through authentic tasks. By embracing the realities of modern software development, including the role of AI as a thinking partner, we prepare students not just for academic success but for the actual practice of computer science in industry and research.
 
 The approach adapts as technology evolves, with AI tools becoming increasingly sophisticated partners in the learning process. However, the core principles remain constant: learning through modification of existing systems, embracing productive struggle, connecting practice to theory, and fostering a collaborative learning community.
 
