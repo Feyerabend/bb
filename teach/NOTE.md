@@ -2,9 +2,27 @@
 ## Note on the Pedagogy of the Book/Workbook
 
 Here we have an approach to education, where AI-assisted learning encourages exploration over
-rote memorization. Traditional learning often emphasizes a complete understanding of theoretical
+rote memorisation. Traditional learning often emphasises a complete understanding of theoretical
 foundations before engaging in problem-solving. However, in practice--whether in research,
 engineering, or real-world applications--learning is often fragmented, iterative, and exploratory.
+
+Yes--here’s a suggestion for a short passage that could help clarify common misunderstandings
+about AI and learning, especially as they relate to outdated metaphors like mechanical instruments
+or simplistic reinforcement models.
+
+
+### Understanding AI and Learning: Beyond Outdated Metaphors
+
+Today’s AI, especially in the form of deep learning models, learns by processing vast amounts of data
+to find statistical patterns, not by being explicitly programmed with fixed rules or through a simplistic
+reward system. These systems build internal representations that are far removed from traditional symbolic
+logic or behaviorist models. Learning in AI is less like training a dog with treats and more like
+compressing and generalising from complex data--recognising structure without needing explicit instruction
+for every case.
+
+This book treats AI as a computational and representational phenomenon rooted in pattern recognition,
+approximation, and abstraction--not as a mechanical or behaviorist process. Misunderstanding this can
+lead to misleading analogies, flawed expectations, and poor pedagogy.
 
 
 ### Expanding on the Idea of Learning Through AI Assistance and Projects
@@ -28,14 +46,14 @@ education differently:
   from an existing solution and try to modify, critique, or extend it.
 - *Understand in fragments*. Learners may absorb key ideas without grasping every detail immediately,
   and that’s okay. This is closer to how knowledge is built in practice.
-- *Emphasize iteration*. Instead of one-shot problem-solving, projects encourage revisiting and refining
+- *Emphasise iteration*. Instead of one-shot problem-solving, projects encourage revisiting and refining
   ideas over time.
 
 
 __2. The Role of AI in Dynamic Learning__
 
 LLMs and AI assistants change the learning process in fundamental ways:
-- *Personalized Explanations*. Students can ask AI to clarify concepts at different levels of complexity.
+- *Personalised Explanations*. Students can ask AI to clarify concepts at different levels of complexity.
 - *Adaptive Learning Paths*. AI can suggest different approaches depending on what a student understands or struggles with.
 - *Project Guidance*. AI can assist in debugging, generating ideas, or providing historical and theoretical context.
 
