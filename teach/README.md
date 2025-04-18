@@ -5,7 +5,7 @@
 
 *At the time of writing, the book is still in progress, so some details may change before the final version.*
 
-SSelf-study using the book and workbook is encouraged, though guidance on how to approach it can be found in
+Self-study using the book and workbook is encouraged, though guidance on how to approach it can be found in
 [LEARN.md](./LEARN.md).
 
 A [Teacher's Manual](./TEACH.md) offers suggestions for using the book and workbook in a classroom setting or
