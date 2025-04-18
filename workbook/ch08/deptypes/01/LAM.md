@@ -163,7 +163,6 @@ for i in range(5):
         factorial(2) = 2 × factorial(1) = 2 × 1 = 2
         factorial(3) = 3 × factorial(2) = 3 × 2 = 6
      ```
-     - The recursion unwinds: factorial(1) = 1*1 = 1, factorial(2) = 2*1 = 2, factorial(3) = 3*2 = 6
 
 #### Why/How the Y Combinator Works
 
