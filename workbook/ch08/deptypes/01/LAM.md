@@ -157,10 +157,12 @@ for i in range(5):
      - This recursively evaluates factorial(2), factorial(1), factorial(0)
      - When reaching factorial(0), returns 1
      - The recursion unwinds as follows:
+     ```
         factorial(0) = 1
         factorial(1) = 1 × factorial(0) = 1 × 1 = 1
         factorial(2) = 2 × factorial(1) = 2 × 1 = 2
         factorial(3) = 3 × factorial(2) = 3 × 2 = 6
+     ```
      - The recursion unwinds: factorial(1) = 1*1 = 1, factorial(2) = 2*1 = 2, factorial(3) = 3*2 = 6
 
 #### Why/How the Y Combinator Works
