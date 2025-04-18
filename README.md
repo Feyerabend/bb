@@ -22,5 +22,5 @@ places where it may add to previous code and description.
 * Also ideas for additional __*projects*__, some discussions and exercises
 can be found.
 
-A [Teacher's Manual](./TEACH.md) gives some advice on how to use the
+A [Teacher's Manual](./teach/TEACH.md) gives some advice on how to use the
 book/workbook in a classroom setting, or equivalent.
