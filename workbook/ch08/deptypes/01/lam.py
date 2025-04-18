@@ -17,6 +17,9 @@ class App:
     func: 'Expr'
     arg: 'Expr'
 
+# var = variable
+# abs = abstraction (lambda)
+# app = application (function application)
 Expr = Union[Var, Abs, App]
 
 def substitute(expr: Expr, var: str, value: Expr) -> Expr:
