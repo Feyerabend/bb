@@ -87,7 +87,7 @@ Students who experience this approach will:
 
 ### Educational Theory Foundations
 
-This approach synthesizes several established educational theories:
+This approach synthesises several established educational theories:
 - *Constructionism* (Papert): Learning through creating and modifying meaningful artefacts
 - *Zone of Proximal Development* (Vygotsky): Scaffolding learning just beyond current ability
 - *Experiential Learning Cycle* (Kolb): Experience → Reflection → Conceptualisation → Experimentation
@@ -150,7 +150,7 @@ A typical semester-long course using this approach might follow this progression
 - *Alternative approaches*: "What are three different ways to implement this sorting algorithm?"
 - *Code explanation*: "Walk through how this parser handles nested expressions."
 - *Challenge generation*: "What edge cases should I test in my implementation?"
-- *Personalized scaffolding*: "Suggest a simpler version of this challenge matching my current skill level"
+- *Personalised scaffolding*: "Suggest a simpler version of this challenge matching my current skill level"
 
 #### AI Usage Guidelines for Students
 1. *Always run the code* after making AI-suggested changes
@@ -342,7 +342,7 @@ Instead of relying solely on individual assignments, you might consider a portfo
    - Include reflections on key decision points and lessons learned
    - Document AI interactions and how they influenced development
 
-2. *Process artifacts*
+2. *Process artefacts*
    - Debug logs with annotations
    - Design sketches and planning documents
    - AI prompt history with critical evaluation of responses
@@ -391,7 +391,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 | *Starter Code* | Naïve recursive implementations of Fibonacci and factorial |
 | *Challenges* | 1. Identify and fix stack overflow for large inputs<br />2. Implement memoization to improve performance<br />3. Convert to iterative implementation<br />4. Compare performance across implementations |
 | *Theory Hooks* | - Recursion vs iteration<br />- Time/space complexity analysis<br />- Memoization and dynamic programming<br />- Call stack mechanics |
-| *AI Prompts* | - "Why does this recursive function crash for large inputs?"<br />- "Compare the space complexity of recursive vs. iterative approaches"<br />- "How would you visualize the call stack for this function?" |
+| *AI Prompts* | - "Why does this recursive function crash for large inputs?"<br />- "Compare the space complexity of recursive vs. iterative approaches"<br />- "How would you visualise the call stack for this function?" |
 | *Assessment Focus* | - Debugging techniques<br />- Performance analysis<br />- Understanding of recursion fundamentals |
 
 #### Week 3-4: Sorting and Searching
@@ -399,10 +399,10 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 | Component | Details |
 |-----------|---------|
 | *Starter Code* | Basic implementation of quicksort with first element as pivot |
-| *Challenges* | 1. Analyze and improve worst-case performance with better pivot selection<br />2. Implement hybrid sorting approach that switches to insertion sort for small partitions<br />3. Add instrumentation to count comparisons and swaps<br />4. Compare against library sort implementations |
+| *Challenges* | 1. Analyse and improve worst-case performance with better pivot selection<br />2. Implement hybrid sorting approach that switches to insertion sort for small partitions<br />3. Add instrumentation to count comparisons and swaps<br />4. Compare against library sort implementations |
 | *Theory Hooks* | - Divide and conquer paradigm<br />- Worst/average/best case analysis<br />- Algorithm stability<br />- In-place vs. auxiliary space algorithms |
-| *AI Prompts* | - "What's the impact of different pivot selection strategies?"<br />- "Why might insertion sort be faster for small arrays?"<br />- "How would you visualize the quicksort partitioning process?" |
-| *Assessment Focus* | - Algorithm analysis<br />- Performance optimization<br />- Instrumentation techniques |
+| *AI Prompts* | - "What's the impact of different pivot selection strategies?"<br />- "Why might insertion sort be faster for small arrays?"<br />- "How would you visualise the quicksort partitioning process?" |
+| *Assessment Focus* | - Algorithm analysis<br />- Performance optimisation<br />- Instrumentation techniques |
 
 ### Module 2: Data Structures
 
@@ -412,7 +412,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 |-----------|---------|
 | *Starter Code* | Simple hash table with linear probing and limited functionality |
 | *Challenges* | 1. Implement chaining as alternative collision strategy<br />2. Add dynamic resizing when load factor exceeds threshold<br />3. Improve hash function to reduce collisions<br />4. Add deletion support with tombstone marking |
-| *Theory Hooks* | - Hash function properties<br />- Load factor analysis<br />- Amortized complexity<br />- Open vs. closed addressing |
+| *Theory Hooks* | - Hash function properties<br />- Load factor analysis<br />- Amortised complexity<br />- Open vs. closed addressing |
 | *AI Prompts* | - "Compare advantages of chaining vs. linear probing"<br />- "What makes a good hash function for string keys?"<br />- "How would you implement a thread-safe hash table?" |
 | *Assessment Focus* | - Data structure design<br />- Performance under different usage patterns<br />- Implementation trade-offs |
 
@@ -424,7 +424,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 | *Challenges* | 1. Add DFS traversal and cycle detection<br />2. Convert to adjacency list representation<br />3. Implement Dijkstra's algorithm for shortest paths<br />4. Add support for weighted edges and directed graphs |
 | *Theory Hooks* | - Graph traversal properties<br />- Space complexity of different representations<br />- Path finding algorithms<br />- Applications of graph theory |
 | *AI Prompts* | - "When would you choose adjacency list over matrix?"<br />- "How would you modify BFS to find shortest path?"<br />- "What's the difference between Dijkstra's and A* algorithms?" |
-| *Assessment Focus* | - Algorithm implementation<br />- Data structure selection<br />- Problem modeling using graphs |
+| *Assessment Focus* | - Algorithm implementation<br />- Data structure selection<br />- Problem modelling using graphs |
 
 ### Module 3: Systems Programming
 
@@ -438,7 +438,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 | *AI Prompts* | - "What causes fragmentation in this allocator?"<br />- "How would you implement boundary tags for coalescing?"<br />- "Compare the trade-offs between different fit strategies" |
 | *Assessment Focus* | - Low-level programming<br />- Memory management concepts<br />- Debugging and monitoring |
 
-#### Week 11-12: Concurrency and Synchronization
+#### Week 11-12: Concurrency and Synchronisation
 
 | Component | Details |
 |-----------|---------|
@@ -446,7 +446,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 | *Challenges* | 1. Add multi-threading with locks<br />2. Identify and fix race conditions<br />3. Implement condition variables for efficiency<br />4. Add deadlock detection/prevention |
 | *Theory Hooks* | - Thread safety concepts<br />- Mutex vs. semaphore<br />- Deadlock conditions<br />- Concurrent data structures |
 | *AI Prompts* | - "Where are the potential race conditions in this code?"<br />- "How would you modify this to prevent deadlock?"<br />- "What's the difference between busy waiting and condition variables?" |
-| *Assessment Focus* | - Concurrency understanding<br />- Synchronization mechanisms<br />- Race condition identification |
+| *Assessment Focus* | - Concurrency understanding<br />- Synchronisation mechanisms<br />- Race condition identification |
 
 ### Module 4: Software Engineering
 
@@ -468,7 +468,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 | *Challenges* | 1. Identify code smells and refactoring opportunities<br />2. Apply appropriate design patterns<br />3. Improve API design and documentation<br />4. Enhance maintainability without changing functionality |
 | *Theory Hooks* | - SOLID principles<br />- Common design patterns<br />- Technical debt<br />- Code metrics |
 | *AI Prompts* | - "What design patterns would improve this code structure?"<br />- "How would you refactor this function to improve testability?"<br />- "What metrics would you use to evaluate code quality?" |
-| *Assessment Focus* | - Code organization<br />- Design pattern application<br />- Documentation quality |
+| *Assessment Focus* | - Code organisation<br />- Design pattern application<br />- Documentation quality |
 
 ## 7. Facilitating Collaborative Learning
 
@@ -487,7 +487,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 
 3. *Strong-Style Pairing*
    - "For an idea to go from your head to the computer, it must go through someone else's hands"
-   - Forces verbalization of thoughts and intentions
+   - Forces verbalisation of thoughts and intentions
 
 #### Effective Pairing Guidelines
 - *Start with check-in*: Brief discussion of goals and prior knowledge
@@ -608,7 +608,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
   - A: LLMs with code capabilities (e.g., Claude, GPT-4, GitHub Copilot). Ensure all students have equal access to chosen tools.
 
 - *Q: How do I prevent AI from solving the entire challenge?*
-  - A: Design multi-stage challenges where later requirements aren't obvious from the start. Focus on integration, optimization, and understanding rather than implementation from scratch.
+  - A: Design multi-stage challenges where later requirements aren't obvious from the start. Focus on integration, optimisation, and understanding rather than implementation from scratch.
 
 - *Q: What if AI gives incorrect solutions?*
   - A: These are valuable teaching moments! Have students critically evaluate AI outputs and document where they found errors.
@@ -631,16 +631,16 @@ Integrate these prompts into assignment submissions to encourage metacognition:
   - JupyterHub for Python-focused courses
 
 #### Starter Code Repositories
-- GitHub Education organization structure
+- GitHub Education organisation structure
   - Template repositories for each module
   - Automated tests to verify student modifications
   - Branches representing different stages of development
 
-#### Visualization Tools
+#### Visualisation Tools
 - Algorithm visualisation libraries
   - Data structure state visualisation
   - Call stack tracers
-  - Memory usage analyzers
+  - Memory usage analysers
   - Performance profilers
 
 
@@ -654,7 +654,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 
 #### Classroom Management
 - Pair programming rotation trackers
-- Progress visualization boards
+- Progress visualisation boards
 - Digital kanban for project status
 - Feedback collection systems
 
@@ -676,7 +676,7 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 - *AI-augmented IDEs*
   - Code completion and suggestion features
   - Integrated explanation capabilities
-  - Customizable suggestion sensitivity
+  - Customisable suggestion sensitivity
 
 - Personalised learning dashboards that visualise
   conceptual mastery and suggest targeted exercises
@@ -782,11 +782,11 @@ Integrate these prompts into assignment submissions to encourage metacognition:
 
 ## Conclusion
 
-This project-first, AI-supported approach represents a fundamental shift in computer science education—moving from abstract theory to contextualized learning through authentic tasks. By embracing the realities of modern software development, including the role of AI as a thinking partner, we prepare students not just for academic success but for the actual practice of computer science in industry and research.
+This project-first, AI-supported approach represents a fundamental shift in computer science education—moving from abstract theory to contextualised learning through authentic tasks. By embracing the realities of modern software development, including the role of AI as a thinking partner, we prepare students not just for academic success but for the actual practice of computer science in industry and research.
 
 The approach adapts as technology evolves, with AI tools becoming increasingly sophisticated partners in the learning process. However, the core principles remain constant: learning through modification of existing systems, embracing productive struggle, connecting practice to theory, and fostering a collaborative learning community.
 
-As you implement this approach, remember that the goal is not perfect projects but perfect learning—students who develop the confidence, skills, and understanding to tackle complex computing challenges with creativity and rigor. The true measure of success is not what your students can build by the end of the course, but what they can learn to build in the years that follow.
+As you implement this approach, remember that the goal is not perfect projects but perfect learning—students who develop the confidence, skills, and understanding to tackle complex computing challenges with creativity and rigour. The true measure of success is not what your students can build by the end of the course, but what they can learn to build in the years that follow.
 
 
 

@@ -2,7 +2,7 @@
 ## Note on the Pedagogy of the Book/Workbook
 
 Here we have an approach to education, where AI-assisted learning encourages exploration over
-rote memorization. Traditional learning often emphasizes a complete understanding of theoretical
+rote memorisation. Traditional learning often emphasises a complete understanding of theoretical
 foundations before engaging in problem-solving. However, in practice--whether in research,
 engineering, or real-world applications--learning is often fragmented, iterative, and exploratory.
 
@@ -28,14 +28,14 @@ education differently:
   from an existing solution and try to modify, critique, or extend it.
 - *Understand in fragments*. Learners may absorb key ideas without grasping every detail immediately,
   and that’s okay. This is closer to how knowledge is built in practice.
-- *Emphasize iteration*. Instead of one-shot problem-solving, projects encourage revisiting and refining
+- *Emphasise iteration*. Instead of one-shot problem-solving, projects encourage revisiting and refining
   ideas over time.
 
 
 __2. The Role of AI in Dynamic Learning__
 
 LLMs and AI assistants change the learning process in fundamental ways:
-- *Personalized Explanations*. Students can ask AI to clarify concepts at different levels of complexity.
+- *Personalised Explanations*. Students can ask AI to clarify concepts at different levels of complexity.
 - *Adaptive Learning Paths*. AI can suggest different approaches depending on what a student understands or struggles with.
 - *Project Guidance*. AI can assist in debugging, generating ideas, or providing historical and theoretical context.
 
