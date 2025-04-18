@@ -6,7 +6,9 @@ rote memorisation. Traditional learning often emphasises a complete understandin
 foundations before engaging in problem-solving. However, in practice--whether in research,
 engineering, or real-world applications--learning is often fragmented, iterative, and exploratory.
 
-Yes—here’s a suggestion for a short passage that could help clarify common misunderstandings about AI and learning, especially as they relate to outdated metaphors like mechanical instruments or simplistic reinforcement models:
+Yes--here’s a suggestion for a short passage that could help clarify common misunderstandings
+about AI and learning, especially as they relate to outdated metaphors like mechanical instruments
+or simplistic reinforcement models.
 
 
 ### Understanding AI and Learning: Beyond Outdated Metaphors
@@ -15,7 +17,7 @@ Today’s AI, especially in the form of deep learning models, learns by processi
 to find statistical patterns, not by being explicitly programmed with fixed rules or through a simplistic
 reward system. These systems build internal representations that are far removed from traditional symbolic
 logic or behaviorist models. Learning in AI is less like training a dog with treats and more like
-compressing and generalising from complex data—recognizing structure without needing explicit instruction
+compressing and generalising from complex data--recognising structure without needing explicit instruction
 for every case.
 
 This book treats AI as a computational and representational phenomenon rooted in pattern recognition,
