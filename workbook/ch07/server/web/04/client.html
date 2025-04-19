@@ -1,0 +1,58 @@
+<!-- client.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Local WebSocket Chat</title>
+    <style>
+        #log {
+            width: 100%;
+            height: 300px;
+            font-family: monospace;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebSocket Chat</h1>
+    <input type="text" id="username" placeholder="Enter your name" />
+    <textarea id="log" readonly></textarea><br>
+    <input type="text" id="message" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        let ws;
+        const logBox = document.getElementById('log');
+
+        function log(msg) {
+            logBox.value += msg + '\n';
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        function setupWebSocket() {
+            ws = new WebSocket("ws://localhost:8765");
+
+            ws.onopen = () => log("[Connected to chat server]");
+            ws.onmessage = (event) => log(event.data);
+            ws.onerror = (e) => log("[WebSocket error]");
+            ws.onclose = () => log("[Disconnected]");
+        }
+
+        function sendMessage() {
+            const user = document.getElementById("username").value.trim();
+            const text = document.getElementById("message").value.trim();
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                log("[Error] WebSocket not connected.");
+                return;
+            }
+            if (user && text) {
+                const msg = `${user}: ${text}`;
+                ws.send(msg);
+                document.getElementById("message").value = "";
+            }
+        }
+
+        setupWebSocket();
+    </script>
+</body>
+</html>
