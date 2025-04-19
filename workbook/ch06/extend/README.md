@@ -24,27 +24,35 @@ To summarise some approaches to methods aimed at *correct-by-construction progra
 there are:
 
 1. Formal Specification and Refinement: e.g. Z notation, VDM, B-Method
+
    *Start with abstract models and refine them into executable code.*
 
 2. Dependently Typed Programming: e.g. Agda, Coq, Idris
+
    *Use expressive types to encode correctness properties directly into programs.*
 
 3. Design by Contract: e.g. Eiffel, SPARK Ada
+
    *Embed preconditions, postconditions, and invariants into code.*
 
 4. Model Checking: e.g. TLA+, NuSMV
+
    *Systematically explore all states of a system model to check logical properties.*
 
 5. Theorem Proving: e.g. HOL, Isabelle, Coq
+
    *Prove correctness of programs relative to formal logic specifications.*
 
 6. Program Synthesis: e.g. Sketch, Rosette, LEO-II
+
    *Automatically generate code that satisfies a given specification.*
 
 7. Certified Compilation: e.g. CompCert, CakeML
+
    *Use formally verified compilers to ensure correctness of translation.*
 
 8. Type-Driven Development: e.g. Haskell, F* (F star)
+
    *Use rich static type systems to enforce correctness constraints at compile time.*
 
 
