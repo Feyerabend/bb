@@ -16,9 +16,36 @@ creativity and understanding. Whether you agree, disagree, or refine these thoug
 into your own conclusions, the process of exploration itself is invaluable.
 
 In contrast to this experimental path, another approach to ensuring that programs are
-truly correct comes from the opposite direction--through mathematics and formal logic.
+truly correct comes from a slightly other direction--through mathematics and formal logic.
 This includes, for example, treating *programs as proofs*. One such avenue is the use of
 [dependent types](./../../ch08/deptypes/), which is explored in [ch08](./../../ch08/).
+
+To summarise some approaches to methods aimed at *correct-by-construction program development*,
+there are:
+
+1. Formal Specification and Refinement: e.g. Z notation, VDM, B-Method
+   *Start with abstract models and refine them into executable code.*
+
+2. Dependently Typed Programming: e.g. Agda, Coq, Idris
+   *Use expressive types to encode correctness properties directly into programs.*
+
+3. Design by Contract: e.g. Eiffel, SPARK Ada
+   *Embed preconditions, postconditions, and invariants into code.*
+
+4. Model Checking: e.g. TLA+, NuSMV
+   *Systematically explore all states of a system model to check logical properties.*
+
+5. Theorem Proving: e.g. HOL, Isabelle, Coq
+   *Prove correctness of programs relative to formal logic specifications.*
+
+6. Program Synthesis: e.g. Sketch, Rosette, LEO-II
+   *Automatically generate code that satisfies a given specification.*
+
+7. Certified Compilation: e.g. CompCert, CakeML
+   *Use formally verified compilers to ensure correctness of translation.*
+
+8. Type-Driven Development: e.g. Haskell, F* (F star)
+   *Use rich static type systems to enforce correctness constraints at compile time.*
 
 
 ## Experimental Simulation
