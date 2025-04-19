@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple "Doom"</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    canvas {
+      background-color: #000;
+      display: block;
+    }
+    .controls {
+      position: absolute;
+      bottom: 10px;
+      color: white;
+      font-family: monospace;
+      text-align: center;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+  <div class="controls">WASD to move, Mouse or Arrow keys to turn</div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // set canvas size
+    canvas.width = window.innerWidth * 0.8;
+    canvas.height = window.innerHeight * 0.8;
+    
+    // settings
+    const player = {
+      x: 100,
+      y: 100,
+      angle: 0,
+      speed: 3,
+      turnSpeed: 0.05,
+      fov: Math.PI / 3  // field of view in radians (60 degrees)
+    };
+    
+    // map definition (1 = wall, 0 = empty space)
+    const map = [
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 1, 1, 1, 0, 1],
+      [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+      [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+      [1, 0, 1, 1, 1, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 1, 0, 0, 1, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ];
+    
+    const cellSize = 64;
+    
+    // states
+    const keys = {
+      w: false,
+      a: false,
+      s: false,
+      d: false,
+      ArrowLeft: false,
+      ArrowRight: false
+    };
+    
+    // set up event listeners
+    document.addEventListener('keydown', (e) => {
+      if (keys.hasOwnProperty(e.key)) {
+        keys[e.key] = true;
+      }
+    });
+    
+    document.addEventListener('keyup', (e) => {
+      if (keys.hasOwnProperty(e.key)) {
+        keys[e.key] = false;
+      }
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+      // only use mouse for turning if pointer lock is active
+      if (document.pointerLockElement === canvas) {
+        player.angle += e.movementX * 0.003;
+      }
+    });
+    
+    canvas.addEventListener('click', () => {
+      canvas.requestPointerLock();
+    });
+    
+    // ray casting
+    function castRay(angle) {
+      // normalize angle
+      angle = angle % (2 * Math.PI);
+      if (angle < 0) angle += 2 * Math.PI;
+      
+      // direction vector
+      const rayDirX = Math.cos(angle);
+      const rayDirY = Math.sin(angle);
+      
+      // current map position
+      let mapX = Math.floor(player.x / cellSize);
+      let mapY = Math.floor(player.y / cellSize);
+      
+      // length of ray from current position to next x or y-side
+      let sideDistX, sideDistY;
+      
+      // length of ray from one x or y-side to next x or y-side
+      const deltaDistX = Math.abs(1 / rayDirX);
+      const deltaDistY = Math.abs(1 / rayDirY);
+      
+      // direction to step in x or y direction (either +1 or -1)
+      let stepX, stepY;
+      
+      // step and initial sideDist
+      if (rayDirX < 0) {
+        stepX = -1;
+        sideDistX = (player.x / cellSize - mapX) * deltaDistX;
+      } else {
+        stepX = 1;
+        sideDistX = (mapX + 1.0 - player.x / cellSize) * deltaDistX;
+      }
+      
+      if (rayDirY < 0) {
+        stepY = -1;
+        sideDistY = (player.y / cellSize - mapY) * deltaDistY;
+      } else {
+        stepY = 1;
+        sideDistY = (mapY + 1.0 - player.y / cellSize) * deltaDistY;
+      }
+      
+      // DDA (Digital Differential Analysis)
+      let hit = 0; // a wall hit?
+      let side; // a NS or a EW wall hit?
+      
+      while (hit === 0) {
+        // jump next map square, either in x-direction, or in y-direction
+        if (sideDistX < sideDistY) {
+          sideDistX += deltaDistX;
+          mapX += stepX;
+          side = 0;
+        } else {
+          sideDistY += deltaDistY;
+          mapY += stepY;
+          side = 1;
+        }
+        
+        // if ray has hit a wall
+        if (mapX < 0 || mapY < 0 || mapX >= map[0].length || mapY >= map.length) {
+          hit = 1; // out of bounds!
+          return Infinity;
+        }
+        else if (map[mapY][mapX] > 0) {
+          hit = 1;
+        }
+      }
+      
+      // distance projected on camera direction
+      let perpWallDist;
+      if (side === 0) {
+        perpWallDist = (mapX - player.x / cellSize + (1 - stepX) / 2) / rayDirX;
+      } else {
+        perpWallDist = (mapY - player.y / cellSize + (1 - stepY) / 2) / rayDirY;
+      }
+      
+      // fish-eye effect
+      const cosAngleDiff = Math.cos(player.angle - angle);
+      perpWallDist *= cosAngleDiff;
+      
+      return { distance: perpWallDist * cellSize, side: side };
+    }
+    
+    function draw3DView() {
+      // clear screen
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // "sky"
+      ctx.fillStyle = '#222';
+      ctx.fillRect(0, 0, canvas.width, canvas.height / 2);
+      
+      // floor
+      ctx.fillStyle = '#444';
+      ctx.fillRect(0, canvas.height / 2, canvas.width, canvas.height / 2);
+      
+      // number of rays to cast (resolution)
+      const numRays = canvas.width / 2;
+      
+      // for each column on the screen
+      for (let i = 0; i < numRays; i++) {
+        // calc ray angle
+        const rayAngle = player.angle - player.fov / 2 + (i / numRays) * player.fov;
+        
+        // cast ray
+        const ray = castRay(rayAngle);
+        
+        // skip if ray didn't hit anything
+        if (ray.distance === Infinity) continue;
+        
+        // calc wall height
+        const wallHeight = (cellSize * canvas.height) / ray.distance;
+        
+        // determine wall color based on side
+        ctx.fillStyle = ray.side === 0 ? '#aa0000' : '#880000';
+        
+        // draw wall
+        const columnWidth = canvas.width / numRays;
+        const drawX = i * columnWidth;
+        const drawHeight = Math.min(wallHeight, canvas.height);
+        const drawY = (canvas.height - drawHeight) / 2;
+        
+        ctx.fillRect(drawX, drawY, columnWidth + 1, drawHeight);
+      }
+    }
+    
+    function drawMiniMap() {
+      const mapSize = 100;
+      const cellSizeMini = mapSize / map.length;
+      
+      // map background
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      ctx.fillRect(10, 10, mapSize, mapSize);
+      
+      // map cells
+      for (let y = 0; y < map.length; y++) {
+        for (let x = 0; x < map[y].length; x++) {
+          if (map[y][x] === 1) {
+            ctx.fillStyle = '#FFF';
+            ctx.fillRect(
+              10 + x * cellSizeMini,
+              10 + y * cellSizeMini,
+              cellSizeMini,
+              cellSizeMini
+            );
+          }
+        }
+      }
+      
+      // player on mini map
+      const playerMiniX = 10 + (player.x / cellSize) * cellSizeMini;
+      const playerMiniY = 10 + (player.y / cellSize) * cellSizeMini;
+      
+      ctx.fillStyle = '#FF0';
+      ctx.beginPath();
+      ctx.arc(playerMiniX, playerMiniY, 2, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // direction line (small arrow)
+      ctx.strokeStyle = '#FF0';
+      ctx.beginPath();
+      ctx.moveTo(playerMiniX, playerMiniY);
+      ctx.lineTo(
+        playerMiniX + Math.cos(player.angle) * 5,
+        playerMiniY + Math.sin(player.angle) * 5
+      );
+      ctx.stroke();
+    }
+    
+    function checkCollision(x, y) {
+      const mapX = Math.floor(x / cellSize);
+      const mapY = Math.floor(y / cellSize);
+      
+      // map bounds
+      if (mapX < 0 || mapY < 0 || mapX >= map[0].length || mapY >= map.length) {
+        return true;
+      }
+      
+      // wall
+      return map[mapY][mapX] === 1;
+    }
+    
+    // update player position based on input
+    function updatePlayer() {
+      // turn left/right
+      if (keys.ArrowLeft) player.angle -= player.turnSpeed;
+      if (keys.ArrowRight) player.angle += player.turnSpeed;
+      
+      // calc move direction
+      let moveX = 0;
+      let moveY = 0;
+      
+      // forward/backward
+      if (keys.w) {
+        moveX += Math.cos(player.angle) * player.speed;
+        moveY += Math.sin(player.angle) * player.speed;
+      }
+      if (keys.s) {
+        moveX -= Math.cos(player.angle) * player.speed;
+        moveY -= Math.sin(player.angle) * player.speed;
+      }
+      
+      // strafe left/right
+      if (keys.a) {
+        moveX += Math.cos(player.angle - Math.PI / 2) * player.speed;
+        moveY += Math.sin(player.angle - Math.PI / 2) * player.speed;
+      }
+      if (keys.d) {
+        moveX += Math.cos(player.angle + Math.PI / 2) * player.speed;
+        moveY += Math.sin(player.angle + Math.PI / 2) * player.speed;
+      }
+      
+      // check collision and update position
+      const newX = player.x + moveX;
+      const newY = player.y + moveY;
+      
+      // add player radius for collision
+      const radius = 10;
+      
+      if (!checkCollision(newX + radius, player.y + radius) && 
+          !checkCollision(newX - radius, player.y - radius) &&
+          !checkCollision(newX + radius, player.y - radius) &&
+          !checkCollision(newX - radius, player.y + radius)) {
+        player.x = newX;
+      }
+      
+      if (!checkCollision(player.x + radius, newY + radius) && 
+          !checkCollision(player.x - radius, newY - radius) &&
+          !checkCollision(player.x + radius, newY - radius) &&
+          !checkCollision(player.x - radius, newY + radius)) {
+        player.y = newY;
+      }
+    }
+    
+    function gameLoop() {
+      updatePlayer();
+      draw3DView();
+      drawMiniMap();
+      requestAnimationFrame(gameLoop);
+    }
+    
+    gameLoop();
+    
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth * 0.8;
+      canvas.height = window.innerHeight * 0.8;
+    });
+  </script>
+</body>
+</html>
