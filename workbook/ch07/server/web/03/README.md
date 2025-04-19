@@ -18,7 +18,7 @@ Lifecycle:
 
 #### Example usage:
 
-```python
+```javascript
 const ws = new WebSocket("ws://localhost:8765");
 
 ws.onopen = () => ws.send("Hello, server");
