@@ -25,35 +25,35 @@ there are:
 
 __1. Formal Specification and Refinement: e.g. Z notation, VDM, B-Method__
 
-   *Start with abstract models and refine them into executable code.*
+   - *Start with abstract models and refine them into executable code.*
 
 __2. Dependently Typed Programming: e.g. Agda, Coq, Idris__
 
-   *Use expressive types to encode correctness properties directly into programs.*
+   - *Use expressive types to encode correctness properties directly into programs.*
 
 __3. Design by Contract: e.g. Eiffel, SPARK Ada__
 
-   *Embed preconditions, postconditions, and invariants into code.*
+   - *Embed preconditions, postconditions, and invariants into code.*
 
 __4. Model Checking: e.g. TLA+, NuSMV__
 
-   *Systematically explore all states of a system model to check logical properties.*
+   - *Systematically explore all states of a system model to check logical properties.*
 
 __5. Theorem Proving: e.g. HOL, Isabelle, Coq__
 
-   *Prove correctness of programs relative to formal logic specifications.*
+   - *Prove correctness of programs relative to formal logic specifications.*
 
 __6. Program Synthesis: e.g. Sketch, Rosette, LEO-II__
 
-   *Automatically generate code that satisfies a given specification.*
+   - *Automatically generate code that satisfies a given specification.*
 
 __7. Certified Compilation: e.g. CompCert, CakeML__
 
-   *Use formally verified compilers to ensure correctness of translation.*
+   - *Use formally verified compilers to ensure correctness of translation.*
 
 __8. Type-Driven Development: e.g. Haskell, F* (F star)__
 
-   *Use rich static type systems to enforce correctness constraints at compile time.*
+   - *Use rich static type systems to enforce correctness constraints at compile time.*
 
 
 ## Experimental Simulation
