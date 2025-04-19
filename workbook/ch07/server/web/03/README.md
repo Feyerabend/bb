@@ -44,7 +44,7 @@ Types:
 
 #### Example usage:
 
-```python
+```javascript
 // main.js
 const worker = new Worker("worker.js");
 worker.postMessage("Start work");
