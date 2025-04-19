@@ -62,6 +62,7 @@ onmessage = function(e) {
 #### WebSocket vs Web Worker
 
 |Feature	|WebSocket	|Web Worker|
+|--|--|--|
 |Purpose	|Communication with a server	|Background computation in browser|
 |Connection	|Over network (TCP)	|Local thread (in-browser)|
 |Communication	|Server ↔ Client	|Main thread ↔ Worker thread|
