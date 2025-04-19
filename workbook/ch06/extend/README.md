@@ -23,35 +23,35 @@ This includes, for example, treating *programs as proofs*. One such avenue is th
 To summarise some approaches to methods aimed at *correct-by-construction program development*,
 there are:
 
-1. Formal Specification and Refinement: e.g. Z notation, VDM, B-Method
+__1. Formal Specification and Refinement: e.g. Z notation, VDM, B-Method__
 
    *Start with abstract models and refine them into executable code.*
 
-2. Dependently Typed Programming: e.g. Agda, Coq, Idris
+__2. Dependently Typed Programming: e.g. Agda, Coq, Idris__
 
    *Use expressive types to encode correctness properties directly into programs.*
 
-3. Design by Contract: e.g. Eiffel, SPARK Ada
+__3. Design by Contract: e.g. Eiffel, SPARK Ada__
 
    *Embed preconditions, postconditions, and invariants into code.*
 
-4. Model Checking: e.g. TLA+, NuSMV
+__4. Model Checking: e.g. TLA+, NuSMV__
 
    *Systematically explore all states of a system model to check logical properties.*
 
-5. Theorem Proving: e.g. HOL, Isabelle, Coq
+__5. Theorem Proving: e.g. HOL, Isabelle, Coq__
 
    *Prove correctness of programs relative to formal logic specifications.*
 
-6. Program Synthesis: e.g. Sketch, Rosette, LEO-II
+__6. Program Synthesis: e.g. Sketch, Rosette, LEO-II__
 
    *Automatically generate code that satisfies a given specification.*
 
-7. Certified Compilation: e.g. CompCert, CakeML
+__7. Certified Compilation: e.g. CompCert, CakeML__
 
    *Use formally verified compilers to ensure correctness of translation.*
 
-8. Type-Driven Development: e.g. Haskell, F* (F star)
+__8. Type-Driven Development: e.g. Haskell, F* (F star)__
 
    *Use rich static type systems to enforce correctness constraints at compile time.*
 
