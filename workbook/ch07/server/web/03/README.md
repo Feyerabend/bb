@@ -50,7 +50,9 @@ const worker = new Worker("worker.js");
 worker.postMessage("Start work");
 
 worker.onmessage = (e) => console.log("Worker says:", e.data);
+```
 
+```javascript
 // worker.js
 onmessage = function(e) {
     const result = heavyComputation(e.data);
