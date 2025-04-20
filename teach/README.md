@@ -1,7 +1,5 @@
 
-# From Basics To Bytecode: A guide to computers and programming
-
-## Learning ..
+## Teach and Learn ..
 
 *At the time of writing, the book is still in progress, so some details may change before the final version.*
 
