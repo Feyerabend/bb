@@ -42,10 +42,10 @@ at the same computer.
 | Concurrency            | Yes (via Python threads)                | Handled by browser                    |
 | Use Case               | Educational, low-level WebSocket demo   | Local testing of chat functionality   |
 
-
 This chat demonstrates a *full-duplex communication model*, where both client and server can send and receive
-data independently. Unlike traditional HTTP servers, WebSocket servers keep connections *open and persistent*,
-enabling real-time interaction (ideal for chat, games, live data) and not as per default stateless.
+data independently. Unlike traditional HTTP servers, which are *stateless* and rely on short-lived request-response
+cycles, WebSocket servers maintain *open and persistent* connections. This enables real-time interaction,
+making WebSockets ideal for use cases like chat, collaborative tools, games, and live data feeds.
 
 The server side showcases *manual handling of WebSocket frames*, providing insight into the protocol's internals.
 The client shows how to easily use WebSockets from a browser.
