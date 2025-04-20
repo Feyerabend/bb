@@ -10,8 +10,8 @@
                  "Content-Length: 13\r\n\r\n" \
                  "Hello, World!"
 
-// Compile with: gcc -o web web.c
-// Run with: ./web
+// Compile with: gcc -o server server.c
+// Run with: ./server
 // Access with: curl http://localhost:8080
 // works on Linux and MacOS
 int main() {
