@@ -42,7 +42,7 @@ More recently, the trend has been toward *polyglot persistence*--using different
 Databases today sit at the center of virtually every computing system. The evolution from flat files to modern distributed, transactional, and query-optimised systems reflects a broader narrative of abstraction, formalisation, and the tension between generality and specialisation.
 
 
-# SQL in Brief
+### SQL in Brief
 
 *SQL (Structured Query Language)* originated in the 1970s as part of IBM’s System R project. It was initially called SEQUEL (Structured English Query Language) and still it is often pronounced as 'sequel,' but the name was later substituted due to trademark issues. SQL became the standard language for interacting with relational databases, formalised by ANSI and ISO in the 1980s.
 
@@ -66,7 +66,7 @@ ORDER BY age DESC;
 ```
 
 
-#### sql.py
+### sql.py
 
 This database is a simple in-memory SQL-like system built on a binary search tree. It is designed for learning and experimentation, and does not support many features found in full-scale database management systems.
 
@@ -87,7 +87,7 @@ Monitoring, alerting, APIs, and integration with external systems or tools are n
 Lifecycle management, data archiving, retention policies, data quality control, cleansing, profiling, discovery, lineage, mapping, cataloging, metadata management, modelling, design, interoperability, semantics, or ontology support are all out of scope.
 
 
-#### nosql.py
+### nosql.py
 
 Same as above with the exception for NoSQL, which it is.
 
