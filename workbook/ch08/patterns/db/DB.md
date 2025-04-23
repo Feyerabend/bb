@@ -7,7 +7,7 @@ We'll return to this later.
 
 ### Some Personal Experiences
 
-*I attended an Informix conference in either 2000 or 2001, in the capacity of a journalist. The company had gathered media representatives from around the world, flying everyone in on their dime. It was a full-scale PR effort to generate renewed interest in their products--but the underlying mood was unmistakable: this was a company in its final throes.*
+*I attended an Informix conference in either 2000 or 2001, in the capacity of a computer journalist. The company had gathered media representatives from around the world, flying everyone in on their dime. It was a full-scale PR effort to generate renewed interest in their products--but the underlying mood was unmistakable: this was a company in its final throes.*
 
 *The event was a mix of high-energy technical demos and quiet corporate desperation. Informix was eager to showcase its parallel database technology, which was genuinely impressive--technically advanced and ahead of many competitors in terms of performance and architecture. Yet, this enthusiasm couldn’t mask the broader signs of trouble.*
 
