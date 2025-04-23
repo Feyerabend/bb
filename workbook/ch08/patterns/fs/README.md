@@ -49,7 +49,7 @@
    - Subclass `Command` (e.g., `ZipCommand` for compression).  
 
 2. Support new path styles:  
-   - Implement `PathStrategy` (e.g., `WindowsPathStrategy`).  
+   - Implement `PathStrategy` (e.g., `WindowsPathStrategy` for "C:\Users\file.txt").  
 
 3. Add a visitor:  
    - Extend `FileSystemVisitor` (e.g., `EncryptVisitor` for file encryption).  
