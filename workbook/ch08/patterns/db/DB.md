@@ -19,6 +19,7 @@ We'll return to this later.
 
 *In the end, it was a curious mix of highs and lows: brilliant engineers and solid products overshadowed by corporate instability and a sense of impending collapse. The whole event had the atmosphere of a last stand--a polished, enthusiastic, but ultimately doomed attempt to reclaim relevance.*
 
+Informix was once a strong competitor in the database wars of the 1990s but lost ground due to financial mismanagement and fierce competition. While it still exists under IBM, its influence has faded, marking the end of an era for a once-prominent database system.
 
 
 ### Historical and Theoretical Background to Databases
