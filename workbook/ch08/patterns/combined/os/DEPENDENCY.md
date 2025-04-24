@@ -14,12 +14,6 @@ and promotes flexibility and testability.
 Dependency Injection is a common way to implement IoC.
 
 
-
-### Basic Idea
-
-Rather than a class creating its own dependencies, the dependencies are provided to it
-from the *outside*. This makes the code more modular, testable, and easier to manage.
-
 Without DI:
 
 ```python
