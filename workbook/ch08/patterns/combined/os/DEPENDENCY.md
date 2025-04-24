@@ -46,7 +46,7 @@ class Client:
     def execute(self):
         self.service.do_something()
 
-#iInjecting dependency
+# injecting dependency
 service = Service()
 client = Client(service)
 client.execute()
@@ -58,21 +58,34 @@ implementation, or even something loaded dynamically.
 
 #### Types of DI
 
-1. Constructor Injection
+1. *Constructor Injection.*
 Dependency is passed via the constructor (like above). Most common.
 
-2. Setter Injection
+2. *Setter Injection.*
 Dependency is set via a method or property.
-
 ```python
 class Client:
     def set_service(self, service):
         self.service = service
 ```
 
-3. Interface Injection
+3. *Interface Injection.*
 The dependency implements an interface that the client uses to inject the dependency.
-Less common in Python.
+Less common in Python, but e.g. in Java:
+```java
+interface Logger {
+    void log(String message);
+}
+
+class Service {
+    private Logger logger;
+
+    @Inject
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+}
+```
 
 
 #### Benefits

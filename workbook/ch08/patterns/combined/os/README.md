@@ -34,6 +34,6 @@ Both File and Directory extend from the same base class
 ### Dependency Injection
 
 
-The Kernel injects dependencies into its components
+The Kernel [injects dependencies](./DEPENDENCY.md) into its components
 
 Scheduler strategies and memory allocators are injectable
