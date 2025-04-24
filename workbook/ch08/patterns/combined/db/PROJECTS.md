@@ -30,7 +30,7 @@
   - Simulate concurrent transactions (deadlock detection).  
 
 ### B. SQL Query Optimizer
-- *Goal*: Improve query performance with cost-based optimization.  
+- *Goal*: Improve query performance with cost-based optimisation.  
 - *Tasks*:  
   - Track table statistics (e.g., `ANALYZE users`).  
   - Choose between *index scans* vs. *full table scans*.  
@@ -54,8 +54,48 @@ __Extra__
   - Visualize results with Matplotlib.  
 
 ### B. Distributed Key-Value Store (Mini-Redis)
-- *Goal*: Build a simple Redis-like system.  
-- *Tasks*:  
-  - Support `SET`, `GET`, `DEL` commands.  
-  - Add *TTL (Time-To-Live)* for keys.  
-  - Simulate sharding (partition data across nodes).  
+- *Goal*: Build a simple Redis-like system.
+- *Tasks*:
+  - Support `SET`, `GET`, `DEL` commands.
+  - Add *TTL (Time-To-Live)* for keys.
+  - Simulate sharding (partition data across nodes).
+
+__Traits of a Redis-Like System__
+  - In-Memory Focus: Prioritise speed over disk persistence.
+  - Command-Driven: Clients send text commands (e.g. SET, GET).
+  - Data Structures: Support lists, hashes, etc., not just raw strings.
+  - Network Interface: Listen for TCP/UDP requests (like a mini-server).
+
+```python
+class RedisLike:
+    def __init__(self):
+        self.data = {}  # key-value store
+        self.commands = {
+            "SET": self._set,
+            "GET": self._get,
+            "LPUSH": self._lpush,
+        }
+
+    def execute(self, command: str, *args) -> Any:
+        cmd = command.upper()
+        if cmd in self.commands:
+            return self.commands[cmd](*args)
+        raise ValueError("Unknown command")
+
+    def _set(self, key, value):
+        self.data[key] = value
+        return "OK"
+
+    def _get(self, key):
+        return self.data.get(key, "(nil)")
+
+    def _lpush(self, key, *values):
+        if key not in self.data:
+            self.data[key] = []
+        self.data[key].extend(values)
+        return len(self.data[key])
+
+db = RedisLike()
+db.execute("SET", "user:1", "Alice")
+print(db.execute("GET", "user:1"))  # Output: "Alice"
+```
