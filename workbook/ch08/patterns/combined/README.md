@@ -2,7 +2,7 @@
 ## Combined Design Patterns
 
 The sources present implementations of systems including a *[file system](./fs/)*,
-two different *[NoSQL databases](./db/)*, an *in-memory SQL-like database*, and
+two different *NoSQL databases*, an *in-memory SQL-like database* ([databases](./db/)), and
 components of a *[simple operating system](./os/)* (specifically process and memory
 management).
 
