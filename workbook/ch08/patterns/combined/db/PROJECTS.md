@@ -1,3 +1,4 @@
+
 ## DB Project Ideas
 
 ### A. NoSQL Database with Indexing & Advanced Queries
@@ -29,7 +30,7 @@
   - Support `BEGIN`, `COMMIT`, `ROLLBACK`.  
   - Simulate concurrent transactions (deadlock detection).  
 
-### B. SQL Query Optimizer
+### B. SQL Query Optimiser
 - *Goal*: Improve query performance with cost-based optimisation.  
 - *Tasks*:  
   - Track table statistics (e.g., `ANALYZE users`).  
@@ -51,7 +52,7 @@ __Extra__
 - *Tasks*:  
   - Measure *insert/update/query* speeds.  
   - Test under different workloads (read-heavy vs. write-heavy).  
-  - Visualize results with Matplotlib.  
+  - Visualise results with Matplotlib.  
 
 ### B. Distributed Key-Value Store (Mini-Redis)
 - *Goal*: Build a simple Redis-like system.
