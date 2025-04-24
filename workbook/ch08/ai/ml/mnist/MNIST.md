@@ -14,7 +14,7 @@ Search for the following files online:
 - `t10k-images.idx3-ubyte`
 - `t10k-labels.idx1-ubyte`
 
-
+At the time of writing: https://github.com/mbornet-hl/MNIST/tree/master/MNIST. Change the names of the files.
 
 ### Explanation
 
