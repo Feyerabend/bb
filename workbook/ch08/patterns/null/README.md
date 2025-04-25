@@ -82,7 +82,7 @@ That is, the pattern is *usually* used in object-orientation.
 
 ### Test Cases
 
-The implementation adds specific test cases demonstrating the null object's behavior:
+The implementation adds specific test cases demonstrating the null object's behaviour:
 - Attempting allocations beyond memory capacity
 - Performing operations on the null object
 - Reallocating from a null object
@@ -97,13 +97,13 @@ The implementation adds specific test cases demonstrating the null object's beha
    - Reduces the risk of segmentation faults
 
 2. *Simplified Code*
-   - Centralizes null handling logic
+   - Centralises null handling logic
    - Removes scattered conditional null checks
    - Makes client code cleaner and more focused on business logic
 
 3. *Better Error Handling*
    - Failed operations become no-ops instead of potential crashes
-   - Provides consistent behavior for error conditions
+   - Provides consistent behaviour for error conditions
    - Creates clear indication when allocation fails through console messages
 
 4. *Design Pattern in C*
@@ -134,7 +134,7 @@ The implementation adds specific test cases demonstrating the null object's beha
 
 The Null Object pattern implementation successfully transforms a traditional C memory
 allocator into a more robust system with better error handling. By replacing `NULL`
-returns with a special null object that implements neutral behaviors, the code becomes
+returns with a special null object that implements neutral behaviours, the code becomes
 more resilient against common memory-related errors while maintaining the original
 functionality.
 
