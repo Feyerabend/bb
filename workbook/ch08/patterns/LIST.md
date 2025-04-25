@@ -20,7 +20,7 @@ Gang-of-Four patterns .. + 3 others
 | Mediator           | Behavioural      | Centralise complex communication between objects                 | Chat servers, air traffic control systems        | GoF            |
 | [Dependency Injection](./combined/os/DEPENDENCY.md) | Structural    | Provide dependencies from the outside                            | Testable systems, service wiring                 | Post-GoF       |
 | [Null Object](./null/)        | Behavioural      | Use an object with default behaviour instead of `null`            | Safe iteration, fault-tolerant systems           | Post-GoF       |
-| Event Bus          | Behavioural      | Decouple senders from receivers using a publish/subscribe model | UI events, logging systems                       | Post-GoF       |
+| [Event Bus](./event/)          | Behavioural      | Decouple senders from receivers using a publish/subscribe model | UI events, logging systems                       | Post-GoF       |
 
 
 * Singleton is often discouraged in modern design due to global state issues; use with care.
