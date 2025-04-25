@@ -14,7 +14,7 @@ Gang-of-Four patterns .. + 3 others
 | Composite          | Structural      | Treat objects and groups uniformly                               | Scene graphs, file system trees                  | GoF            |
 | Factory Method     | Creational      | Define interface for creating objects, let subclass decide       | Plugin creation, document editors                | GoF            |
 | Abstract Factory   | Creational      | Create families of related objects without specifying classes    | GUI themes, cross-platform toolkits              | GoF            |
-| [Singleton*](./singleton/)         | Creational      | Ensure a class has only one instance                             | Config manager, global registries                | GoF (controversial) |
+| [Singleton](./singleton/)[^single]         | Creational      | Ensure a class has only one instance                             | Config manager, global registries                | GoF (controversial) |
 | Builder            | Creational      | Separate construction of a complex object from its representation | Object configurators, UI builders               | GoF            |
 | Prototype          | Creational      | Clone existing objects instead of creating new ones              | Object pools, data templates                     | GoF            |
 | Mediator           | Behavioural      | Centralise complex communication between objects                 | Chat servers, air traffic control systems        | GoF            |
@@ -23,5 +23,5 @@ Gang-of-Four patterns .. + 3 others
 | [Event Bus](./event/)          | Behavioural      | Decouple senders from receivers using a publish/subscribe model | UI events, logging systems                       | Post-GoF       |
 
 
-* Singleton is often discouraged in modern design due to global state issues; use with care.
+[^single]: Singleton is often discouraged in modern design due to global state issues; use with care.
 
