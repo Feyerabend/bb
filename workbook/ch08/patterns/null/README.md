@@ -167,7 +167,7 @@ checking throughout the codebase.
 
 ### Conclusion
 
-The Null Object pattern implementation successfully transforms a traditional C memory
+The `Null Object` pattern implementation successfully transforms a traditional C memory
 allocator into a more robust system with better error handling. By replacing `NULL`
 returns with a special null object that implements neutral behaviours, the code becomes
 more resilient against common memory-related errors while maintaining the original
