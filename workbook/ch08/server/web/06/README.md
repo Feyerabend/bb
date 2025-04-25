@@ -49,7 +49,7 @@ building on the lessons of the past while solving new challenges at web scale.
 
 ### CRUD vs. JSON-RPC
 
-We offer some simple solutions in a technology that might have peaked.
+In the folders we offer some simple solutions in a technology that might have peaked.
 
 | Feature        | *CRUD (REST-like)*                         | *JSON-RPC*                                |
 |----------------|--------------------------------------------|-------------------------------------------|
@@ -104,6 +104,8 @@ Example
   GET /api/products/123  # Read product 123
   DELETE /api/products/123  # Delete product 123
   ```
+
+__Some Observations__
 
 | Feature        | CRUD                    | REST                      |
 |----------------|-------------------------|---------------------------|
