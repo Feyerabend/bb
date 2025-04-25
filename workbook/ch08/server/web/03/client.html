@@ -1,82 +1,328 @@
-<!-- client.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WebSocket + WebWorker Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Demo</title>
     <style>
-        #log {
-            width: 100%;
-            height: 300px;
-            font-family: monospace;
-            resize: none;
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        .game-container {
+            position: relative;
+            width: 500px;
+            height: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 3px solid #333;
+            overflow: hidden;
+        }
+        #player {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ff5555;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: left 0.1s, top 0.1s;
+            z-index: 10;
+        }
+        .item {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #55ff55;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .collected {
+            opacity: 0.2;
+        }
+        .controls {
+            margin: 20px auto;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .score-panel {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px;
+        }
+        .status {
+            height: 20px;
+            color: #777;
+            margin-top: 10px;
+        }
+        #ajax-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin-left: 10px;
+        }
+        .active {
+            background-color: #ff5555 !important;
         }
     </style>
 </head>
 <body>
-    <h1>WebSocket + WebWorker Demo</h1>
-    <button onclick="startWorker()">Start Worker</button>
-    <button onclick="sendMessage()">Send Message to Server</button>
-    <br><br>
-    <textarea id="log" readonly></textarea>
+    <p>Use arrow keys or click/tap in the game area to move. Collect all green items!</p>
+    
+    <div class="game-container" id="gameArea">
+        <div id="player"></div>
+        <!-- Items will be added dynamically -->
+    </div>
+    
+    <div class="score-panel">
+        Score: <span id="score">0</span>
+    </div>
+    
+    <div class="controls">
+        <button id="resetBtn">Reset Game</button>
+    </div>
+    
+    <div class="status">
+        AJAX Status: <span id="status-text">Idle</span>
+        <div id="ajax-indicator"></div>
+    </div>
 
     <script>
-        let ws;
-        let worker;
-
-        function log(message) {
-            const logBox = document.getElementById('log');
-            logBox.value += message + '\n';
-            logBox.scrollTop = logBox.scrollHeight;
+        // config
+        const SERVER_URL = 'http://localhost:8080';
+        const AJAX_THROTTLE = 100; // milliseconds between AJAX calls
+        let lastAjaxTime = 0;
+        let pendingAjaxCall = false;
+        
+        const gameArea = document.getElementById('gameArea');
+        const player = document.getElementById('player');
+        const scoreElement = document.getElementById('score');
+        const resetBtn = document.getElementById('resetBtn');
+        const statusText = document.getElementById('status-text');
+        const ajaxIndicator = document.getElementById('ajax-indicator');
+        
+        let gameState = {
+            player: { x: 100, y: 100 },
+            items: [],
+            score: 0
+        };
+        
+        function initGame() {
+            updatePlayerPosition(gameState.player.x, gameState.player.y);
+            fetchGameState();
         }
-
-        function startWorker() {
-            if (worker || ws) {
-                log("[System] Already started.");
+        
+        function updatePlayerPosition(x, y) {
+            // player within bounds
+            x = Math.max(15, Math.min(485, x));
+            y = Math.max(15, Math.min(385, y));
+            
+            player.style.left = x + 'px';
+            player.style.top = y + 'px';
+            
+            // if position changed, send to server
+            if (x !== gameState.player.x || y !== gameState.player.y) {
+                gameState.player.x = x;
+                gameState.player.y = y;
+                sendPlayerPosition();
+            }
+        }
+        
+        // render items from game state
+        function renderItems() {
+            // remove existing items
+            document.querySelectorAll('.item').forEach(el => el.remove());
+            
+            // add new items
+            gameState.items.forEach(item => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'item';
+                if (item.collected) {
+                    itemEl.classList.add('collected');
+                }
+                itemEl.style.left = item.x + 'px';
+                itemEl.style.top = item.y + 'px';
+                itemEl.dataset.id = item.id;
+                gameArea.appendChild(itemEl);
+            });
+        }
+        
+        // update the game UI from state
+        function updateGameUI() {
+            updatePlayerPosition(gameState.player.x, gameState.player.y);
+            renderItems();
+            scoreElement.textContent = gameState.score;
+        }
+        
+        // AJAX: Fetch game state from server
+        function fetchGameState() {
+            setAjaxStatus('Fetching game state...', true);
+            
+            fetch(`${SERVER_URL}/api/game-state`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    gameState = data;
+                    updateGameUI();
+                    setAjaxStatus('Game state loaded', false);
+                })
+                .catch(error => {
+                    console.error('Error fetching game state:', error);
+                    setAjaxStatus('Failed to fetch game state', false);
+                });
+        }
+        
+        // AJAX: Send player position to server
+        function sendPlayerPosition() {
+            const now = Date.now();
+            
+            // throttle AJAX calls
+            if (now - lastAjaxTime < AJAX_THROTTLE) {
+                if (!pendingAjaxCall) {
+                    pendingAjaxCall = true;
+                    setTimeout(() => {
+                        pendingAjaxCall = false;
+                        sendPlayerPosition();
+                    }, AJAX_THROTTLE - (now - lastAjaxTime));
+                }
                 return;
             }
-
-            worker = new Worker(URL.createObjectURL(new Blob([`
-                self.onmessage = function(e) {
-                    self.postMessage('Worker received: ' + e.data);
-                };
-            `], { type: 'application/javascript' })));
-
-            worker.onmessage = function(e) {
-                log('[Worker] ' + e.data);
-            };
-
-            ws = new WebSocket('ws://localhost:8765');
-
-            ws.onopen = () => {
-                log("[WebSocket] Connected.");
-                ws.send("Hello from client!");
-            };
-
-            ws.onmessage = (event) => {
-                log("[WebSocket] Server says: " + event.data);
-                worker.postMessage(event.data);
-            };
-
-            ws.onerror = (err) => {
-                log("[WebSocket] Error: " + err);
-            };
-
-            ws.onclose = () => {
-                log("[WebSocket] Disconnected.");
-                ws = null;
-                worker = null;
-            };
+            
+            lastAjaxTime = now;
+            setAjaxStatus('Sending movement...', true);
+            
+            fetch(`${SERVER_URL}/api/move-player`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    x: gameState.player.x,
+                    y: gameState.player.y
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    gameState = data.state;
+                    updateGameUI();
+                    setAjaxStatus('Movement processed', false);
+                } else {
+                    setAjaxStatus('Server error', false);
+                }
+            })
+            .catch(error => {
+                console.error('Error sending player position:', error);
+                setAjaxStatus('Failed to send movement', false);
+            });
         }
-
-        function sendMessage() {
-            if (ws && ws.readyState === WebSocket.OPEN) {
-                ws.send("Ping from client");
-                log("[Client] Sent ping.");
+        
+        // AJAX: Reset the game
+        function resetGame() {
+            setAjaxStatus('Resetting game...', true);
+            
+            fetch(`${SERVER_URL}/api/reset-game`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    gameState = data.state;
+                    updateGameUI();
+                    setAjaxStatus('Game reset', false);
+                } else {
+                    setAjaxStatus('Server error', false);
+                }
+            })
+            .catch(error => {
+                console.error('Error resetting game:', error);
+                setAjaxStatus('Failed to reset game', false);
+            });
+        }
+        
+        function setAjaxStatus(message, active) {
+            statusText.textContent = message;
+            if (active) {
+                ajaxIndicator.classList.add('active');
             } else {
-                log("[Client] WebSocket not open.");
+                ajaxIndicator.classList.remove('active');
+                setTimeout(() => {
+                    if (statusText.textContent === message) {
+                        statusText.textContent = 'Idle';
+                    }
+                }, 1500);
             }
         }
+        
+        gameArea.addEventListener('click', function(e) {
+            const rect = gameArea.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            updatePlayerPosition(x, y);
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            const step = 20;
+            let x = gameState.player.x;
+            let y = gameState.player.y;
+            
+            switch (e.key) {
+                case 'ArrowLeft':
+                    x -= step;
+                    break;
+                case 'ArrowRight':
+                    x += step;
+                    break;
+                case 'ArrowUp':
+                    y -= step;
+                    break;
+                case 'ArrowDown':
+                    y += step;
+                    break;
+                default:
+                    return; // exit other keys
+            }
+            
+            e.preventDefault();
+            updatePlayerPosition(x, y);
+        });
+        
+        resetBtn.addEventListener('click', resetGame);
+        
+        initGame();
     </script>
 </body>
 </html>
