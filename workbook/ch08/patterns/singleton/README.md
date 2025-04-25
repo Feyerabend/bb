@@ -51,11 +51,11 @@ shared things." This leads to bloated classes with poor cohesion.
 ### Modern Alternatives
 
 Instead of the traditional `Singleton` pattern, modern design leans on:
-- Dependency Injection (DI): Pass shared instances explicitly where needed.
+- *Dependency Injection* (DI): Pass shared instances explicitly where needed.
   This makes dependencies visible and testable.
-- Service Locators (used sparingly): Centralised registries that can provide
+- *Service Locators* (used sparingly): Centralised registries that can provide
   services when truly needed, but with the tradeoff of implicit coupling.
-- Module-level singletons (in Python, JS, etc.): Relying on language/module
+- *Module-level singletons* (in Python, JS, etc.): Relying on language/module
   behaviour to ensure single instantiation without enforcing it via class structure.
 
 In short: can be problematic when overused or used without understanding the implications.
