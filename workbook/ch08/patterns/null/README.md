@@ -130,6 +130,41 @@ The implementation adds specific test cases demonstrating the null object's beha
    - Pattern must be explicitly maintained rather than enforced by language
 
 
+### In Practice
+
+This output demonstrates how the Null Object pattern works in practice:
+
+```shell
+-- Testing Null Object Pattern --
+Failed to allocate 2048 bytes, using null object
+Attempted to store value 100 at null object (no-op)
+Attempted to load from null object, returning 0
+Loaded value from null object: 0
+Reallocated from null object to 0x1006d4420, new size: 10 bytes
+Attempted to free null object (no-op)
+```
+
+- When trying to allocate more memory than available (2048 bytes when the
+  pool is only 1024 bytes), the code returns the null object instead of NULL
+  and reports the failure.
+
+- When attempting to store the value 100 to this null object, the operation
+  becomes a no-op (no operation) rather than causing a segmentation fault.
+
+- Similarly, when loading from the null object, it safely returns 0 rather than crashing.
+
+- When reallocating the null object with a size of 10 bytes, it successfully
+  converts this into a regular allocation (effectively treating it as a malloc
+  call), demonstrating how the null object can smoothly transition to a real object.
+
+- Finally, attempting to free the null object is also handled safely as a no-op.
+
+This output confirms that the `Null Object` pattern implementation is working correctly,
+providing graceful degradation instead of crashes when operations fail. It makes the
+code more robust while maintaining a clean interface that doesn't require constant NULL
+checking throughout the codebase.
+
+
 ### Conclusion
 
 The Null Object pattern implementation successfully transforms a traditional C memory
