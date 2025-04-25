@@ -1,12 +1,14 @@
 
 ## Web Client-Server Development
 
-The story of web communication began in the 1990s with primitive but revolutionary technologies. I started
-with the web around the winter 1994/1995. In those days, CGI (Common Gateway Interface) allowed servers to
-execute Perl or Python scripts for each request, though this came at the cost of performance since every hit
-spawned a new process. But also compiled C worked fine, as long as you had interface to the gateway. Alongside
-this, SSI (Server Side Includes) provided basic dynamic content through simple directives embedded in HTML,
-though its capabilities were extremely limited.
+The story of web communication began in the 1990s with technologies that were primitive by today's
+standards, but revolutionary at the time. I first started working with the web in the winter of 1994–1995.
+Back then, CGI (Common Gateway Interface) made it possible for servers to run scripts written in Perl
+or shell scripts for each request, though this came at a performance cost since every hit spawned a new
+process. Compiled C programs also worked well, provided they were connected to the CGI interface. In
+parallel, SSI (Server Side Includes) enabled basic dynamic content through simple directives embedded
+in HTML, although its capabilities were extremely limited. It also assumed web server configuration,
+which providers didn't easily offered.
 
 As we entered the 2000s, the landscape shifted dramatically with the rise of application servers. Technologies
 like PHP, ASP, and JSP gained popularity by allowing developers to mix server-side code directly with HTML,
