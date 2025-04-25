@@ -16,11 +16,13 @@ though this often led to tangled spaghetti code that was difficult to maintain. 
 structured approaches emerged with Java Servlets and .NET WebForms, which introduced object-oriented backend
 logic but brought new complexities like the stateful ViewState in ASP.NET that could become unwieldy.
 
-In the early 2000s, the web was obsessed with XML. XHTML emerged as a strict, XML-compliant version of HTML,
-promising cleaner code. Paired with XSLT—a powerful language to transform XML into HTML—it aimed to separate
-data (XML) from presentation (XSLT). Developers could serve pure data and let browsers render it via XSLT,
-or pre-process it on the server. For a client I used this solution, generating HTML and images via ANT
-(primarily build tool for Java).
+In the early 2000s, the web became enamored with XML. XHTML emerged as a strict, XML-compliant version
+of HTML, promising cleaner and more structured code. It was often paired with XSLT--a language
+for transforming XML into HTML--in an effort to separate data (XML) from presentation (XSLT).
+Developers could either serve raw XML and let the browser apply the XSLT to render it. Not many
+browsers had support, so an alternative as to perform the transformation server-side. I used this
+approach for a client project, generating both HTML and images using ANT, which was primarily known
+as a Java build tool.
 
 The mid-2000s marked the Web 2.0 revolution, where AJAX and XMLHTTPRequest changed everything by enabling
 JavaScript to fetch data in the background without full page reloads. This represented a fundamental shift
