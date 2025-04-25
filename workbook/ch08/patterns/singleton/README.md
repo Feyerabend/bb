@@ -22,7 +22,7 @@ their interface, but actually depend on hidden shared state. This makes the syst
 
 __2. Tight Coupling__
 
-Once components rely directly on a `Singleton`, they are tightly bound to its presence and behavior.
+Once components rely directly on a `Singleton`, they are tightly bound to its presence and behaviour.
 This makes code harder to change or refactor—swapping in a different implementation becomes non-trivial.
 
 
@@ -38,7 +38,7 @@ baked into the code and usually resists substitution. This leads to:
 __4. Concurrency Risks__
 
 Since the `Singleton` is a shared object, any mutable state it holds must be protected from race
-conditions. In a multithreaded environment, that means additional synchronization complexity—mutexes,
+conditions. In a multithreaded environment, that means additional synchronisation complexity—mutexes,
 locks, or atomic operations.
 
 
