@@ -23,12 +23,12 @@ their interface, but actually depend on hidden shared state. This makes the syst
 __2. Tight Coupling__
 
 Once components rely directly on a `Singleton`, they are tightly bound to its presence and behaviour.
-This makes code harder to change or refactor—swapping in a different implementation becomes non-trivial.
+This makes code harder to change or refactor--swapping in a different implementation becomes non-trivial.
 
 
 __3. Inhibits Testing__
 
-In unit tests, you typically want to mock or replace dependencies. With a Singleton, the instance is
+In unit tests, you typically want to mock or replace dependencies. With a `Singleton`, the instance is
 baked into the code and usually resists substitution. This leads to:
 - Test order dependencies
 - Accidental state sharing between tests
@@ -38,7 +38,7 @@ baked into the code and usually resists substitution. This leads to:
 __4. Concurrency Risks__
 
 Since the `Singleton` is a shared object, any mutable state it holds must be protected from race
-conditions. In a multithreaded environment, that means additional synchronisation complexity—mutexes,
+conditions. In a multithreaded environment, that means additional synchronisation complexity--mutexes,
 locks, or atomic operations.
 
 
@@ -56,7 +56,7 @@ Instead of the traditional `Singleton` pattern, modern design leans on:
 - Service Locators (used sparingly): Centralised registries that can provide
   services when truly needed, but with the tradeoff of implicit coupling.
 - Module-level singletons (in Python, JS, etc.): Relying on language/module
-  behavior to ensure single instantiation without enforcing it via class structure.
+  behaviour to ensure single instantiation without enforcing it via class structure.
 
 In short: can be problematic when overused or used without understanding the implications.
 It makes global state seem structured, but it’s still global state, and it drags all the
