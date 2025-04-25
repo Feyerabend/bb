@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple JSON-RPC Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        input, button {
+            margin: 5px;
+            padding: 8px;
+        }
+        button {
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .edit-mode input {
+            width: 80%;
+        }
+        .request-viewer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        pre {
+            white-space: pre-wrap;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple JSON-RPC Client</h1>
+    
+    <form id="item-form">
+        <h2>Add New Item</h2>
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="text" id="description" placeholder="Description">
+        <button type="submit">Add Item</button>
+    </form>
+    
+    <h2>Items</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="items-table">
+            <!-- items added here -->
+        </tbody>
+    </table>
+
+    <div class="request-viewer">
+        <h3>Last Request</h3>
+        <pre id="last-request">No requests made yet</pre>
+        <h3>Last Response</h3>
+        <pre id="last-response">No responses received yet</pre>
+    </div>
+
+    <script src="client.js"></script>
+</body>
+</html>
