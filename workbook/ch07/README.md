@@ -24,4 +24,7 @@ https://c2.com/doc/oopsla89/paper.html
 
 
 
-
+samples of thinking
+- 70s flow charts -> code
+- (80s)90s crc -> code
+- now -> prototype code in AI -> code
