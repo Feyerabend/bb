@@ -7,7 +7,6 @@
 - Generates text: Can produce new text continuations based on input prompts
 - Understands context: Uses recent word history (context window) to make predictions
 
-
 ### How it works
 
 __1. Preprocessing (`TextPreprocessor`)__
@@ -32,18 +31,19 @@ __4. Generation__
    - Uses temperature to control randomness
    - Maintains a sliding context window
 
-
 ### AI Components
 
 - Deep Learning: Neural network with hidden layers
 - Natural Language Processing: Word embeddings, language modeling
 - Machine Learning: Gradient-based optimization, regularization
 
-This is a simplified version of modern language models like GPT, but demonstrates core AI concepts
-of learning patterns from data and generating new content through neural network processing.
+This is a simplified version of modern language models like GPT, but demonstrates core AI
+concepts of learning patterns from data and generating new content through neural network
+processing.
 
 
 ### 1. Code-Level Mechanics
+
 
 #### Core Components
 - `MiniNeuralLM` Class: Implements a neural network with:
@@ -52,6 +52,7 @@ of learning patterns from data and generating new content through neural network
   - Output layer: Predicts probabilities for the next word
 - `TextPreprocessor`: Converts raw text into numerical inputs (indices) for the model
 - Training loop: Adjusts model parameters using gradient descent
+
 
 #### Code Flow
 
@@ -87,8 +88,8 @@ of learning patterns from data and generating new content through neural network
    ```
 
 
-
 ### 2. Mathematical Foundations
+
 
 #### Core Equations
 
@@ -127,12 +128,12 @@ of learning patterns from data and generating new content through neural network
    ```
 
 
-
 ### 3. ML-Specific Features
+
 
 #### a. Learning Mechanism
 
-- What’s learned: 
+- What's learned: 
   - Word embeddings (`embeddings` matrix)
   - Weight matrices (`W1`, `W1_5`, `W2`)
   - Biases (`b1`, `b1_5`, `b2`)
@@ -159,8 +160,8 @@ of learning patterns from data and generating new content through neural network
   ```
 
 
-
 ### 4. Language Modeling as ML
+
 
 #### ML Concepts
 - Supervised Learning: Trained on (input sequence → target word) pairs
@@ -172,13 +173,11 @@ of learning patterns from data and generating new content through neural network
 - Feedforward architecture (vs. recurrent/self-attention mechanisms)
 - Small scale (~1k vocabulary vs. billions of tokens)
 
-
-
 ### Summary
 
 1. It learns from data (text) without explicit rules
 2. Uses gradient-based optimization to improve predictions
 3. Implements core ML components: embeddings, hidden layers, loss functions, regularization
 
-The code implements the math of neural networks directly--matrix multiplications, activation functions,
+The code implements the math of neural networks directly--matrix multiplications, activation functions, 
 and gradient computations--making it an example of "ML from scratch".
