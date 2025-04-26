@@ -256,3 +256,4 @@ Prediction: Choose word with highest probability.
 - Linear layer 2 (W2, b2)
 - Softmax
 - Pick most probable word
+
