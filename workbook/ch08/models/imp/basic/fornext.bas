@@ -1,0 +1,6 @@
+10 FOR I = 1 TO 3
+20   FOR J = 1 TO 3
+30     PRINT I; "X"; J; "="; I*J
+40   NEXT J
+50 NEXT I
+60 STOP
