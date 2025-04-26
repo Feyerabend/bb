@@ -661,6 +661,7 @@ def main():
             calculates the gradients efficiently. The hidden layer captures intermediate
             representations. The output layer produces the final predictions.
             """
+
         else:
             if os.path.isdir(args.data):
                 sample_text = load_text_from_folder(args.data)

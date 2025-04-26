@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Logistic Regression</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #chart {
+            border: 1px solid #ccc;
+            margin: 20px auto;
+            cursor: crosshair;
+        }
+        .point {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            transform: translate(-7px, -7px);
+            cursor: move;
+            border: 2px solid white;
+        }
+        #equation {
+            font-size: 18px;
+            margin: 10px;
+        }
+        #instructions {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        #controls {
+            margin: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Logistic Regression</h1>
+    <div id="instructions">
+        Drag points to move them | Click to add points | Double-click to remove<br>
+        <div id="controls">
+            <button id="reset">Reset Points</button>
+            Class 0: <span id="class0-count">0</span> | 
+            Class 1: <span id="class1-count">0</span>
+        </div>
+    </div>
+    <div id="equation">
+        P(y=1) = 1 / (1 + e<sup>-(<span id="b0">0</span> + <span id="b1">0</span>x₁ + <span id="b2">0</span>x₂)</sup>)
+    </div>
+    <canvas id="chart" width="600" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById('chart');
+        const ctx = canvas.getContext('2d');
+        const b0Span = document.getElementById('b0');
+        const b1Span = document.getElementById('b1');
+        const b2Span = document.getElementById('b2');
+        const class0Count = document.getElementById('class0-count');
+        const class1Count = document.getElementById('class1-count');
+        
+        // Sample data points [x, y, class]
+        let points = [
+            [100, 200, 0], [120, 180, 0], [150, 220, 0], [180, 200, 0],
+            [400, 300, 1], [420, 280, 1], [450, 320, 1], [480, 300, 1]
+        ];
+        
+        // Model parameters [bias, x1, x2]
+        let coefficients = [0, 0, 0];
+        let draggedPoint = null;
+        let currentClass = 0; // Toggle with right click
+        
+        // Initialize
+        drawChart();
+        updateClassCounts();
+        
+        // Draw everything
+        function drawChart() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw decision boundary background
+            if (points.filter(p => p[2] === 0).length > 0 && 
+                points.filter(p => p[2] === 1).length > 0) {
+                drawDecisionBoundary();
+            }
+            
+            // Draw axes
+            ctx.beginPath();
+            ctx.moveTo(50, 350);
+            ctx.lineTo(550, 350);
+            ctx.moveTo(50, 350);
+            ctx.lineTo(50, 50);
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Draw grid
+            ctx.strokeStyle = '#eee';
+            ctx.lineWidth = 1;
+            for (let x = 50; x <= 550; x += 50) {
+                ctx.beginPath();
+                ctx.moveTo(x, 50);
+                ctx.lineTo(x, 350);
+                ctx.stroke();
+            }
+            for (let y = 50; y <= 350; y += 50) {
+                ctx.beginPath();
+                ctx.moveTo(50, y);
+                ctx.lineTo(550, y);
+                ctx.stroke();
+            }
+            
+            // Draw points
+            points.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point[0], point[1], 8, 0, Math.PI * 2);
+                ctx.fillStyle = point[2] === 1 ? '#4285F4' : '#EA4335';
+                ctx.fill();
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            });
+        }
+        
+        // Draw the logistic regression decision boundary
+        function drawDecisionBoundary() {
+            // Only draw if we have points in both classes
+            if (points.filter(p => p[2] === 0).length === 0 || 
+                points.filter(p => p[2] === 1).length === 0) {
+                return;
+            }
+            
+            // Train logistic regression model
+            trainModel();
+            
+            // Create a probability map
+            const imageData = ctx.createImageData(canvas.width, canvas.height);
+            const pixels = imageData.data;
+            
+            for (let y = 0; y < canvas.height; y++) {
+                for (let x = 0; x < canvas.width; x++) {
+                    const idx = (y * canvas.width + x) * 4;
+                    if (x < 50 || x > 550 || y < 50 || y > 350) {
+                        // Outside chart area - white
+                        pixels[idx] = 255;
+                        pixels[idx+1] = 255;
+                        pixels[idx+2] = 255;
+                        pixels[idx+3] = 255;
+                    } else {
+                        // Calculate probability
+                        const prob = sigmoid(
+                            coefficients[0] + 
+                            coefficients[1] * (x - 50) / 500 + 
+                            coefficients[2] * (350 - y) / 300
+                        );
+                        
+                        // Interpolate between red (class 0) and blue (class 1)
+                        pixels[idx] = Math.floor(66 + (234 - 66) * prob);    // R
+                        pixels[idx+1] = Math.floor(133 - (133 - 32) * prob);  // G
+                        pixels[idx+2] = Math.floor(244 - (244 - 244) * prob); // B
+                        pixels[idx+3] = 80; // Alpha (transparency)
+                    }
+                }
+            }
+            
+            // Draw the probability map
+            ctx.putImageData(imageData, 0, 0);
+            
+            // Redraw grid lines on top
+            ctx.strokeStyle = '#eee';
+            ctx.lineWidth = 1;
+            for (let x = 50; x <= 550; x += 50) {
+                ctx.beginPath();
+                ctx.moveTo(x, 50);
+                ctx.lineTo(x, 350);
+                ctx.stroke();
+            }
+            for (let y = 50; y <= 350; y += 50) {
+                ctx.beginPath();
+                ctx.moveTo(50, y);
+                ctx.lineTo(550, y);
+                ctx.stroke();
+            }
+            
+            // Update equation display
+            b0Span.textContent = coefficients[0].toFixed(3);
+            b1Span.textContent = coefficients[1].toFixed(3);
+            b2Span.textContent = coefficients[2].toFixed(3);
+        }
+        
+        // Sigmoid function
+        function sigmoid(z) {
+            return 1 / (1 + Math.exp(-z));
+        }
+        
+        // Simple gradient descent for logistic regression
+        function trainModel() {
+            const learningRate = 0.1;
+            const iterations = 100;
+            const n = points.length;
+            
+            // Initialize coefficients if needed
+            if (coefficients.every(c => c === 0)) {
+                coefficients = [Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1];
+            }
+            
+            // Normalize points to [0,1] range
+            const normalizedPoints = points.map(p => [
+                (p[0] - 50) / 500,   // x1 (0-1)
+                (350 - p[1]) / 300,    // x2 (0-1, inverted)
+                p[2]                   // class
+            ]);
+            
+            // Gradient descent
+            for (let i = 0; i < iterations; i++) {
+                const gradients = [0, 0, 0];
+                
+                // Calculate gradients
+                normalizedPoints.forEach(p => {
+                    const z = coefficients[0] + coefficients[1] * p[0] + coefficients[2] * p[1];
+                    const prediction = sigmoid(z);
+                    const error = prediction - p[2];
+                    
+                    gradients[0] += error;
+                    gradients[1] += error * p[0];
+                    gradients[2] += error * p[1];
+                });
+                
+                // Update coefficients
+                coefficients[0] -= learningRate * gradients[0] / n;
+                coefficients[1] -= learningRate * gradients[1] / n;
+                coefficients[2] -= learningRate * gradients[2] / n;
+            }
+        }
+        
+        // Update class counts display
+        function updateClassCounts() {
+            const class0 = points.filter(p => p[2] === 0).length;
+            const class1 = points.filter(p => p[2] === 1).length;
+            class0Count.textContent = class0;
+            class1Count.textContent = class1;
+        }
+        
+        // Event handlers
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Right click toggles class
+            if (e.button === 2) {
+                currentClass = currentClass === 0 ? 1 : 0;
+                e.preventDefault();
+                return;
+            }
+            
+            // Check if clicking on existing point
+            for (let i = points.length - 1; i >= 0; i--) {
+                const p = points[i];
+                const dist = Math.sqrt((x - p[0]) ** 2 + (y - p[1]) ** 2);
+                if (dist < 10) {
+                    if (e.detail === 2) { // Double click
+                        points.splice(i, 1);
+                        drawChart();
+                        updateClassCounts();
+                        return;
+                    }
+                    draggedPoint = { index: i, originalClass: p[2] };
+                    return;
+                }
+            }
+            
+            // Add new point
+            points.push([x, y, currentClass]);
+            drawChart();
+            updateClassCounts();
+        });
+        
+        canvas.addEventListener('mousemove', (e) => {
+            if (draggedPoint !== null) {
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                points[draggedPoint.index][0] = x;
+                points[draggedPoint.index][1] = y;
+                
+                // Change class if dragged across the boundary
+                if (points.length > 1) {
+                    const prob = sigmoid(
+                        coefficients[0] + 
+                        coefficients[1] * (x - 50) / 500 + 
+                        coefficients[2] * (350 - y) / 300
+                    );
+                    points[draggedPoint.index][2] = prob > 0.5 ? 1 : 0;
+                }
+                
+                drawChart();
+                updateClassCounts();
+            }
+        });
+        
+        canvas.addEventListener('mouseup', () => {
+            draggedPoint = null;
+        });
+        
+        canvas.addEventListener('contextmenu', (e) => {
+            e.preventDefault(); // Prevent context menu on right click
+        });
+        
+        document.getElementById('reset').addEventListener('click', () => {
+            points = [
+                [100, 200, 0], [120, 180, 0], [150, 220, 0], [180, 200, 0],
+                [400, 300, 1], [420, 280, 1], [450, 320, 1], [480, 300, 1]
+            ];
+            coefficients = [0, 0, 0];
+            currentClass = 0;
+            drawChart();
+            updateClassCounts();
+        });
+    </script>
+</body>
+</html>
