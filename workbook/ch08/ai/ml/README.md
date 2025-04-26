@@ -7,14 +7,14 @@
 | Logistic Regression        | Supervised       | Binary classification            | Probabilistic outputs, interpretable, linear decision boundary  |
 | Decision Trees             | Supervised       | Classification and regression    | Interpretable, handles non-linear data, prone to overfitting    |
 | Random Forest              | Supervised       | General-purpose                  | Ensemble of trees, reduces overfitting, less interpretable      |
-| Support Vector Machine     | Supervised       | High-dimensional classification  | Margin maximization, kernel trick for non-linearity             |
-| K-Nearest Neighbors (KNN)  | Supervised       | Classification, regression       | Instance-based, simple, no training phase                       |
+| Support Vector Machine     | Supervised       | High-dimensional classification  | Margin maximisation, kernel trick for non-linearity             |
+| K-Nearest Neighbours (KNN)  | Supervised       | Classification, regression       | Instance-based, simple, no training phase                       |
 | Naive Bayes                | Supervised       | Text classification, spam filtering | Probabilistic, strong independence assumptions               |
 | Gradient Boosting (XGBoost, LightGBM) | Supervised | Structured data             | High accuracy, can overfit, less interpretable                  |
-| K-Means                    | Unsupervised     | Clustering, segmentation         | Simple, assumes spherical clusters, sensitive to initialization |
+| K-Means                    | Unsupervised     | Clustering, segmentation         | Simple, assumes spherical clusters, sensitive to initialisation |
 | DBSCAN                     | Unsupervised     | Clustering with noise            | Handles arbitrary shapes, density-based                         |
 | PCA (Principal Component Analysis) | Unsupervised | Dimensionality reduction     | Linear transformation, unsupervised, captures variance          |
-| t-SNE / UMAP               | Unsupervised     | Visualization, clustering        | Non-linear, preserves local structure, non-parametric           |
+| t-SNE / UMAP               | Unsupervised     | Visualisation, clustering        | Non-linear, preserves local structure, non-parametric           |
 | Apriori / FP-Growth        | Unsupervised     | Market basket analysis           | Association rule mining                                         |
 | Neural Networks (MLP)      | Supervised       | General-purpose                  | Flexible, powerful, requires large data                         |
 | CNN (Convolutional NN)     | Supervised       | Image data                       | Exploits spatial structure, translation invariance              |

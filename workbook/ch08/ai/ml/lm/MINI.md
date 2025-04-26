@@ -20,7 +20,7 @@ Important points:
 
 This prepares the text.
 - Build vocabulary: Picks most common words. Maps them to indices.
-- Tokenization: Splits text into lowercase words, handles punctuation simply.
+- Tokenisation: Splits text into lowercase words, handles punctuation simply.
 - Training examples: Builds (context, target) pairs: [previous words] ➔ [next word].
 - Unknown words: Any word not in the vocabulary becomes <UNK>.
 - Padding: If not enough context, adds special <PAD> token.
@@ -81,14 +81,14 @@ Why it matters:
 | Part  | Purpose   | Outcome   |
 |---|---|---|
 | MiniNeuralLM (class)    | Defines the neural language model                           | Predicts the next word from a fixed-size context window                                   |
-| __init__                | Initializes model parameters                                | Randomized embeddings, weights, and biases for training                                  |
+| __init__                | Initialises model parameters                                | Randomised embeddings, weights, and biases for training                                  |
 | forward                 | Forward pass through the network                            | Outputs probabilities for next word prediction                                           |
 | backward                | Computes gradients                                           | Prepares parameter updates via backpropagation                                            |
 | update_params           | Updates model parameters                                    | Applies gradient descent updates                                                         |
 | train_step              | One training step (forward + backward + update)              | Trains the model a little more                                                            |
 | predict                 | Predicts the most likely next word                          | Returns the word index with highest probability                                           |
 | predict_topk            | Predicts top-k most likely next words                       | Returns k best word predictions with their probabilities                                 |
-| TextPreprocessor (class)| Preprocesses and tokenizes raw text                          | Prepares text: tokenizes, builds vocabulary, creates training examples                   |
+| TextPreprocessor (class)| Preprocesses and tokenises raw text                          | Prepares text: tokenises, builds vocabulary, creates training examples                   |
 | build_vocab             | Builds vocabulary from raw text                             | Maps words to integer indices and vice versa                                              |
 | create_training_examples| Creates (context, target) training pairs                    | Provides training samples to the model                                                   |
 | train_model (function)  | Orchestrates model training                                  | Trains the model over multiple epochs, prints loss                                        |

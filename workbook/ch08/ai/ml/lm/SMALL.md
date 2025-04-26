@@ -3,7 +3,7 @@
 
 ### What it does
 
-- Learns language patterns: Analyzes text to predict the next word given a sequence of previous words
+- Learns language patterns: Analyses text to predict the next word given a sequence of previous words
 - Generates text: Can produce new text continuations based on input prompts
 - Understands context: Uses recent word history (context window) to make predictions
 
@@ -18,12 +18,12 @@ __2. Neural Network Architecture (`MiniNeuralLM`)__
    - Embedding Layer: Converts word indices to dense vectors
    - Hidden Layers: Learns hierarchical text patterns using:
      - ReLU activation for non-linearity
-     - Optional dropout for regularization
+     - Optional dropout for regularisation
    - Output Layer: Produces probability distribution over vocabulary
 
 __3. Training__
    - Uses backpropagation to adjust weights
-   - Implements momentum for smoother optimization
+   - Implements momentum for smoother optimisation
    - Tracks loss to monitor learning progress
 
 __4. Generation__
@@ -34,7 +34,7 @@ __4. Generation__
 ### AI Components
 
 - Deep Learning: Neural network with hidden layers
-- Natural Language Processing: Word embeddings, language modeling
+- Natural Language Processing: Word embeddings, language modelling
 - Machine Learning: Gradient-based optimization, regularization
 
 This is a simplified version of modern language models like GPT, but demonstrates core AI
@@ -138,10 +138,10 @@ processing.
   - Weight matrices (`W1`, `W1_5`, `W2`)
   - Biases (`b1`, `b1_5`, `b2`)
 - How learning happens: 
-  - Adjusts parameters to minimize prediction error (loss)
+  - Adjusts parameters to minimise prediction error (loss)
   - Uses gradient descent with momentum to avoid oscillations
 
-#### b. Regularization
+#### b. Regularisation
 - Dropout (code snippet):
   ```python
   hidden *= dropout_mask  # Randomly zero out neurons during training
@@ -153,20 +153,20 @@ processing.
   ```python
   exp_scores = np.exp(scores - np.max(scores))  # Avoid overflow
   ```
-- He Initialization (code):
+- He Initialisation (code):
   ```python
-  # Initialize weights with sqrt(2/(fan_in + fan_out))
+  # Initialise weights with sqrt(2/(fan_in + fan_out))
   self.W1 = np.random.randn(...) * np.sqrt(2.0 / (input_dim + hidden_dim))
   ```
 
 
-### 4. Language Modeling as ML
+### 4. Language Modelling as ML
 
 
 #### ML Concepts
 - Supervised Learning: Trained on (input sequence → target word) pairs
-- Probabilistic Modeling: Outputs a distribution over possible next words
-- Generalization: Learns patterns from training text to predict unseen sequences
+- Probabilistic Modelling: Outputs a distribution over possible next words
+- Generalisation: Learns patterns from training text to predict unseen sequences
 
 #### Limitations (vs. Modern LLMs)
 - Fixed context window (vs. attention in Transformers)
