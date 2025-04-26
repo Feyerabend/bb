@@ -1,4 +1,6 @@
 
+## Mini Language Model
+
 #### 1. Class: MiniNeuralLM
 
 This is the core model.
