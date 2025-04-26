@@ -95,7 +95,7 @@ Why it matters:
 | create_training_examples| Creates (context, target) training pairs                    | Provides training samples to the model                                                   |
 | train_model (function)  | Orchestrates model training                                  | Trains the model over multiple epochs, prints loss                                        |
 | generate_text (function)| Samples words to generate new text                          | Produces generated text by repeatedly predicting and sampling next word                  |
-| Perplexity (indirect)   | Related to loss                                              | Lower loss → lower perplexity → better model (not directly calculated in code, but implied)|
+| Perplexity (in train_model)   | Related to loss                                              | Lower loss → lower perplexity → better model |
 
 
 
