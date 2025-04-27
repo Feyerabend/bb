@@ -22,6 +22,24 @@
 | GANs (Generative Adversarial Networks) | Unsupervised | Data generation          | Adversarial training, high-quality synthetic data                 |
 | Reinforcement Learning     | Reinforcement      | Game AI, robotics, control       | Trial-and-error learning, reward signal                         |
 
+
+
+--
+
+### Language Models and Conventional Machine Learning Models
+
+Machine learning (ML) encompasses a broad range of applications, from image recognition to natural language processing (NLP). While conventional models like those trained on the MNIST dataset focus on visual tasks (e.g., digit recognition), more advanced models, such as language models, specialize in understanding and generating human language.
+
+- MNIST: A simple yet powerful dataset for introducing classification tasks, MNIST consists of handwritten digits and serves as a benchmark for models that perform supervised learning. It’s often used to demonstrate the effectiveness of simple ML models like logistic regression, decision trees, or neural networks.
+
+- Language Models (LM): These models, though often more complex, focus on understanding and predicting sequences of text. A simple LM can be trained to predict the next word in a sentence or even generate coherent text. Unlike image-based models, LMs handle textual data and showcase concepts such as tokenization, embeddings, and sequential learning.
+
+--
+
+
+
+
+
 ### References
 - Mitchell, T. M. (1997). Machine Learning. McGraw-Hill.
 - Bishop, C. M. (2006). Pattern Recognition and Machine Learning. Springer.
