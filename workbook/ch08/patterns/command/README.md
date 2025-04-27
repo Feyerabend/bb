@@ -22,7 +22,7 @@ A typical command pattern structure includes:
 
 ### Line Editor Code
 
-In your provided Line Editor, the Command Pattern is used as follows:
+In the Line Editor, the Command Pattern is used as follows:
 
 | Concept            | Implementation in the Code                                                    |
 |--------------------|-------------------------------------------------------------------------------|
