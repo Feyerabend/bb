@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVC Pattern Illustration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .panel {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .canvas-container {
+            width: 400px;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            background-color: white;
+        }
+        .controls {
+            width: 300px;
+        }
+        .control-group {
+            margin-bottom: 15px;
+        }
+        button {
+            margin-right: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .mvc-diagram {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .mvc-component {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        .model {
+            background-color: #ffecb3;
+        }
+        .view {
+            background-color: #c8e6c9;
+        }
+        .controller {
+            background-color: #bbdefb;
+        }
+        .arrow {
+            font-size: 20px;
+            margin: 5px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>MVC Pattern Illustration</h1>
+    
+    <div class="container">
+        <!-- View Panel -->
+        <div class="panel canvas-container">
+            <h2>View</h2>
+            <canvas id="canvas" width="400" height="300"></canvas>
+            <p>This canvas represents the VIEW component of MVC. It renders what's in the model.</p>
+        </div>
+        
+        <!-- Controller Panel -->
+        <div class="panel controls">
+            <h2>Controller</h2>
+            <p>These controls represent the CONTROLLER component of MVC. They modify the Model.</p>
+            
+            <div class="control-group">
+                <label>Shape:</label>
+                <button id="circleBtn">Circle</button>
+                <button id="squareBtn">Square</button>
+                <button id="triangleBtn">Triangle</button>
+            </div>
+            
+            <div class="control-group">
+                <label>Color:</label>
+                <button id="redBtn">Red</button>
+                <button id="greenBtn">Green</button>
+                <button id="blueBtn">Blue</button>
+            </div>
+            
+            <div class="control-group">
+                <label for="sizeSlider">Size: <span id="sizeValue">50</span></label>
+                <input type="range" id="sizeSlider" min="10" max="100" value="50">
+            </div>
+            
+            <div class="control-group">
+                <label for="animateCheckbox">
+                    <input type="checkbox" id="animateCheckbox"> Animate
+                </label>
+            </div>
+            
+            <div class="control-group">
+                <button id="resetBtn">Reset to Default</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Model Display -->
+    <div class="panel">
+        <h2>Model (Current State)</h2>
+        <p>This represents the MODEL component of MVC. It stores the application state.</p>
+        <pre id="modelDisplay"></pre>
+    </div>
+    
+    <script>
+        // MODEL
+        class ShapeModel {
+            constructor() {
+                // Default state
+                this.shape = 'circle';
+                this.color = 'red';
+                this.size = 50;
+                this.x = 200;
+                this.y = 150;
+                this.animate = false;
+                
+                // Animation properties
+                this.dx = 2;
+                this.dy = 1;
+                
+                // Observer pattern - subscribers to model changes
+                this.observers = [];
+            }
+            
+            // Add observer (typically the view)
+            addObserver(observer) {
+                this.observers.push(observer);
+            }
+            
+            // Notify all observers of state change
+            notifyObservers() {
+                for (const observer of this.observers) {
+                    observer.update(this);
+                }
+            }
+            
+            // Model methods to change state
+            setShape(shape) {
+                this.shape = shape;
+                this.notifyObservers();
+            }
+            
+            setColor(color) {
+                this.color = color;
+                this.notifyObservers();
+            }
+            
+            setSize(size) {
+                this.size = size;
+                this.notifyObservers();
+            }
+            
+            setAnimate(animate) {
+                this.animate = animate;
+                this.notifyObservers();
+            }
+            
+            resetToDefault() {
+                this.shape = 'circle';
+                this.color = 'red';
+                this.size = 50;
+                this.x = 200;
+                this.y = 150;
+                this.animate = false;
+                this.notifyObservers();
+            }
+            
+            // Animation update method
+            updatePosition() {
+                if (this.animate) {
+                    // Bounce off walls
+                    if (this.x + this.size > 400 || this.x - this.size < 0) {
+                        this.dx = -this.dx;
+                    }
+                    if (this.y + this.size > 300 || this.y - this.size < 0) {
+                        this.dy = -this.dy;
+                    }
+                    
+                    this.x += this.dx;
+                    this.y += this.dy;
+                    this.notifyObservers();
+                }
+            }
+            
+            // Get a serialized version of the model state
+            getState() {
+                return {
+                    shape: this.shape,
+                    color: this.color,
+                    size: this.size,
+                    position: { x: this.x, y: this.y },
+                    animate: this.animate
+                };
+            }
+        }
+        
+        // VIEW
+        class ShapeView {
+            constructor(model, canvasId, modelDisplayId) {
+                this.model = model;
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.modelDisplay = document.getElementById(modelDisplayId);
+                
+                // Register as an observer of the model
+                model.addObserver(this);
+                
+                // Initial render
+                this.update(model);
+            }
+            
+            // Update the view when model changes
+            update(model) {
+                this.clear();
+                this.drawShape();
+                this.updateModelDisplay();
+            }
+            
+            // Clear the canvas
+            clear() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+            
+            // Draw the shape based on model state
+            drawShape() {
+                this.ctx.fillStyle = this.model.color;
+                
+                switch (this.model.shape) {
+                    case 'circle':
+                        this.ctx.beginPath();
+                        this.ctx.arc(this.model.x, this.model.y, this.model.size, 0, Math.PI * 2);
+                        this.ctx.fill();
+                        break;
+                        
+                    case 'square':
+                        this.ctx.fillRect(
+                            this.model.x - this.model.size, 
+                            this.model.y - this.model.size, 
+                            this.model.size * 2, 
+                            this.model.size * 2
+                        );
+                        break;
+                        
+                    case 'triangle':
+                        const h = this.model.size * 1.5;
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(this.model.x, this.model.y - h);
+                        this.ctx.lineTo(this.model.x + this.model.size, this.model.y + h/2);
+                        this.ctx.lineTo(this.model.x - this.model.size, this.model.y + h/2);
+                        this.ctx.closePath();
+                        this.ctx.fill();
+                        break;
+                }
+            }
+            
+            // Update the model state display
+            updateModelDisplay() {
+                this.modelDisplay.textContent = JSON.stringify(this.model.getState(), null, 2);
+            }
+        }
+        
+        // CONTROLLER
+        class ShapeController {
+            constructor(model) {
+                this.model = model;
+                
+                // Connect UI elements to controller actions
+                document.getElementById('circleBtn').addEventListener('click', () => this.setShape('circle'));
+                document.getElementById('squareBtn').addEventListener('click', () => this.setShape('square'));
+                document.getElementById('triangleBtn').addEventListener('click', () => this.setShape('triangle'));
+                
+                document.getElementById('redBtn').addEventListener('click', () => this.setColor('red'));
+                document.getElementById('greenBtn').addEventListener('click', () => this.setColor('green'));
+                document.getElementById('blueBtn').addEventListener('click', () => this.setColor('blue'));
+                
+                const sizeSlider = document.getElementById('sizeSlider');
+                const sizeValue = document.getElementById('sizeValue');
+                sizeSlider.addEventListener('input', () => {
+                    const size = parseInt(sizeSlider.value);
+                    sizeValue.textContent = size;
+                    this.setSize(size);
+                });
+                
+                document.getElementById('animateCheckbox').addEventListener('change', (e) => {
+                    this.setAnimate(e.target.checked);
+                });
+                
+                document.getElementById('resetBtn').addEventListener('click', () => this.resetModel());
+            }
+            
+            // Controller methods that update the model
+            setShape(shape) {
+                this.model.setShape(shape);
+            }
+            
+            setColor(color) {
+                this.model.setColor(color);
+            }
+            
+            setSize(size) {
+                this.model.setSize(size);
+            }
+            
+            setAnimate(animate) {
+                this.model.setAnimate(animate);
+            }
+            
+            resetModel() {
+                this.model.resetToDefault();
+                
+                // Update UI elements to match model state
+                document.getElementById('sizeSlider').value = this.model.size;
+                document.getElementById('sizeValue').textContent = this.model.size;
+                document.getElementById('animateCheckbox').checked = this.model.animate;
+            }
+        }
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            // Create the model
+            const model = new ShapeModel();
+            
+            // Create the view, passing the model
+            const view = new ShapeView(model, 'canvas', 'modelDisplay');
+            
+            // Create the controller, passing the model
+            const controller = new ShapeController(model);
+            
+            // Animation loop
+            function animate() {
+                model.updatePosition();
+                requestAnimationFrame(animate);
+            }
+            
+            // Start animation loop
+            animate();
+        });
+    </script>
+</body>
+</html>
