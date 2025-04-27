@@ -5,7 +5,7 @@ The sources present implementations of systems including a *[file system](./fs/)
 two different *NoSQL databases*, an *in-memory SQL-like database* ([databases](./db/)), and
 components of a *[simple operating system](./os/)* (specifically process and memory
 management). Then we have a little side project illustrating both code without patterns,
-and code with patterns in [banking](./bank/).
+and code with patterns in *[memory banking](./bank/)*.
 
 A central theme across these implementations is the strategic use of numerous
 *design patterns* to structure the code and manage complexity.
