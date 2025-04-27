@@ -1,8 +1,7 @@
+
 from typing import Dict, Any, List, Optional, Callable
 
-# ============================
 # Shared RAM Simulation
-# ============================
 class SharedRAM:
     """Simulates shared memory with call stack and parameters"""
     def __init__(self):
@@ -25,9 +24,7 @@ class SharedRAM:
         """Log messages into the output buffer"""
         self.output_buffer.append(message)
 
-# ============================
 # Bank Simulation (ROM Bank)
-# ============================
 class Bank:
     """Represents a ROM bank with functions"""
     def __init__(self, name: str):
@@ -41,9 +38,7 @@ class Bank:
             return func
         return decorator
 
-# ============================
 # Bank Manager & Bank Switching Logic
-# ============================
 class BankManager:
     """Handles bank switching and function execution across banks"""
     def __init__(self):
@@ -95,9 +90,8 @@ class BankManager:
             self.ram.push_params(value)
         self.ram.log(f"Returned to {self.current_bank}")
 
-# ============================
-# Example Banks (Fixed)
-# ============================
+
+# Example Banks
 def create_math_bank():
     bank = Bank("MATH")
     
@@ -159,9 +153,7 @@ def create_main_bank():
         
     return bank
 
-# ============================
-# Simulation Function (Fixed)
-# ============================
+# Simulation Function
 def run_simulation():
     manager = BankManager()
     
