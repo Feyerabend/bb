@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observer Pattern Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        canvas {
+            background-color: #333;
+            border-radius: 8px;
+            display: block;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .event-log {
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .event-log p {
+            margin: 3px 0;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .event-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .info-panel {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .ball-count {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .collision {
+            animation: flash 0.5s;
+        }
+        @keyframes flash {
+            0% { background-color: rgba(255, 255, 255, 0.1); }
+            50% { background-color: rgba(255, 255, 255, 0.3); }
+            100% { background-color: rgba(255, 255, 255, 0.1); }
+        }
+        .pattern-explanation {
+            background-color: #e9f7ef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Observer Pattern Visualization</h1>
+        
+        <div class="info-panel">
+            <p>This visualization demonstrates the <strong>Observer Pattern</strong> using colorful colliding balls. Each ball is a Subject that can be observed, and the collision tracker and wall tracker are Observers that watch specific balls.</p>
+            <p>Unlike the Event Bus pattern where events are published to a central hub, in the Observer pattern each Subject maintains its own list of Observers that are directly notified of state changes.</p>
+            <p>Try adding balls with different colors and observe how observers are directly notified!</p>
+        </div>
+
+        <div class="pattern-explanation">
+            <p><strong>Key Differences from Event Bus:</strong></p>
+            <p>1. <strong>Direct Relationships:</strong> Observers register directly with specific subjects</p>
+            <p>2. <strong>Targeted Notifications:</strong> Each subject notifies only its own observers</p>
+            <p>3. <strong>No Central Hub:</strong> There's no mediator - communication is direct between subjects and observers</p>
+        </div>
+        
+        <div class="controls">
+            <button id="add-ball">Add Random Ball</button>
+            <button id="add-red">Add Red Ball</button>
+            <button id="add-blue">Add Blue Ball</button>
+            <button id="add-green">Add Green Ball</button>
+            <button id="clear">Clear All</button>
+        </div>
+        
+        <canvas id="canvas" width="800" height="500"></canvas>
+        
+        <div class="ball-count">Balls: <span id="count">0</span></div>
+        
+        <div class="event-log-container">
+            <div class="event-title">Observer Log:</div>
+            <div class="event-log" id="event-log"></div>
+        </div>
+    </div>
+
+    <script>
+        // Observer Pattern Implementation
+        class Subject {
+            constructor() {
+                this.observers = [];
+            }
+            
+            addObserver(observer) {
+                this.observers.push(observer);
+            }
+            
+            removeObserver(observer) {
+                this.observers = this.observers.filter(obs => obs !== observer);
+            }
+            
+            notifyObservers(eventType, data) {
+                this.observers.forEach(observer => {
+                    observer.update(eventType, data);
+                });
+            }
+        }
+        
+        // Observer Interface
+        class Observer {
+            update(eventType, data) {
+                // To be implemented by concrete observers
+            }
+        }
+        
+        // Concrete Observers
+        class CollisionObserver extends Observer {
+            constructor(eventLog) {
+                super();
+                this.eventLog = eventLog;
+            }
+            
+            update(eventType, data) {
+                if (eventType === 'ballCollision') {
+                    const logEntry = document.createElement('p');
+                    logEntry.style.backgroundColor = `rgba(${getColorComponents(data.ball1.color)}, 0.2)`;
+                    logEntry.innerHTML = `<strong>BALL COLLISION:</strong> ${data.ball1.color} ball and ${data.ball2.color} ball collided!`;
+                    this.eventLog.prepend(logEntry);
+                    
+                    // Flash the canvas to indicate collision
+                    canvas.classList.add('collision');
+                    setTimeout(() => {
+                        canvas.classList.remove('collision');
+                    }, 100);
+                    
+                    // Trim event log if it gets too long
+                    if (this.eventLog.children.length > 50) {
+                        this.eventLog.removeChild(this.eventLog.lastChild);
+                    }
+                }
+            }
+        }
+        
+        class WallCollisionObserver extends Observer {
+            constructor(eventLog) {
+                super();
+                this.eventLog = eventLog;
+            }
+            
+            update(eventType, data) {
+                if (eventType === 'wallCollision') {
+                    const logEntry = document.createElement('p');
+                    logEntry.style.backgroundColor = `rgba(${getColorComponents(data.color)}, 0.2)`;
+                    logEntry.innerHTML = `<strong>WALL COLLISION:</strong> ${data.color} ball hit the ${data.wall} wall!`;
+                    this.eventLog.prepend(logEntry);
+                    
+                    // Trim event log if it gets too long
+                    if (this.eventLog.children.length > 50) {
+                        this.eventLog.removeChild(this.eventLog.lastChild);
+                    }
+                }
+            }
+        }
+        
+        class BallAddedObserver extends Observer {
+            constructor(eventLog) {
+                super();
+                this.eventLog = eventLog;
+            }
+            
+            update(eventType, data) {
+                if (eventType === 'ballAdded') {
+                    const logEntry = document.createElement('p');
+                    logEntry.style.backgroundColor = `rgba(${getColorComponents(data.color)}, 0.2)`;
+                    logEntry.innerHTML = `<strong>BALL ADDED:</strong> New ${data.color} ball added!`;
+                    this.eventLog.prepend(logEntry);
+                    
+                    // Trim event log if it gets too long
+                    if (this.eventLog.children.length > 50) {
+                        this.eventLog.removeChild(this.eventLog.lastChild);
+                    }
+                }
+            }
+        }
+        
+        // Initialize canvas and context
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const eventLog = document.getElementById('event-log');
+        const ballCountElement = document.getElementById('count');
+        
+        // Create observers
+        const collisionObserver = new CollisionObserver(eventLog);
+        const wallCollisionObserver = new WallCollisionObserver(eventLog);
+        const ballAddedObserver = new BallAddedObserver(eventLog);
+        
+        // Ball class that extends Subject
+        class Ball extends Subject {
+            constructor(x, y, radius, color) {
+                super();
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.color = color;
+                this.dx = (Math.random() - 0.5) * 5;
+                this.dy = (Math.random() - 0.5) * 5;
+                this.id = Math.random().toString(36).substr(2, 9);
+                this.lastCollision = 0; // To avoid multiple collision events
+                
+                // Add observers to this ball
+                this.addObserver(collisionObserver);
+                this.addObserver(wallCollisionObserver);
+                this.addObserver(ballAddedObserver);
+                
+                // Notify that a ball was added
+                this.notifyObservers('ballAdded', {
+                    id: this.id,
+                    color: this.color
+                });
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.closePath();
+            }
+            
+            update(balls) {
+                // Wall collision detection
+                if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+                    this.dx = -this.dx;
+                    // Notify wall collision observers
+                    this.notifyObservers('wallCollision', {
+                        ballId: this.id,
+                        color: this.color,
+                        position: { x: this.x, y: this.y },
+                        wall: this.x - this.radius < 0 ? 'left' : 'right'
+                    });
+                }
+                
+                if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+                    this.dy = -this.dy;
+                    // Notify wall collision observers
+                    this.notifyObservers('wallCollision', {
+                        ballId: this.id,
+                        color: this.color,
+                        position: { x: this.x, y: this.y },
+                        wall: this.y - this.radius < 0 ? 'top' : 'bottom'
+                    });
+                }
+                
+                // Ball collision detection
+                for (let i = 0; i < balls.length; i++) {
+                    const otherBall = balls[i];
+                    if (otherBall.id !== this.id) {
+                        const dx = this.x - otherBall.x;
+                        const dy = this.y - otherBall.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < this.radius + otherBall.radius) {
+                            // Simple collision response
+                            const now = Date.now();
+                            if (now - this.lastCollision > 200) { // Prevent event spam
+                                this.lastCollision = now;
+                                
+                                // Angle of collision
+                                const angle = Math.atan2(dy, dx);
+                                
+                                // Velocities after collision (simple implementation)
+                                const speed1 = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+                                const speed2 = Math.sqrt(otherBall.dx * otherBall.dx + otherBall.dy * otherBall.dy);
+                                
+                                const direction1 = Math.atan2(this.dy, this.dx);
+                                const direction2 = Math.atan2(otherBall.dy, otherBall.dx);
+                                
+                                // New velocities
+                                this.dx = speed2 * Math.cos(direction2 - angle) * Math.cos(angle) + speed1 * Math.sin(direction1 - angle) * Math.cos(angle + Math.PI/2);
+                                this.dy = speed2 * Math.cos(direction2 - angle) * Math.sin(angle) + speed1 * Math.sin(direction1 - angle) * Math.sin(angle + Math.PI/2);
+                                
+                                otherBall.dx = speed1 * Math.cos(direction1 - angle) * Math.cos(angle) + speed2 * Math.sin(direction2 - angle) * Math.cos(angle + Math.PI/2);
+                                otherBall.dy = speed1 * Math.cos(direction1 - angle) * Math.sin(angle) + speed2 * Math.sin(direction2 - angle) * Math.sin(angle + Math.PI/2);
+                                
+                                // Notify ball collision observers
+                                this.notifyObservers('ballCollision', {
+                                    ball1: {
+                                        id: this.id,
+                                        color: this.color,
+                                        position: { x: this.x, y: this.y }
+                                    },
+                                    ball2: {
+                                        id: otherBall.id,
+                                        color: otherBall.color,
+                                        position: { x: otherBall.x, y: otherBall.y }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+                
+                // Move ball
+                this.x += this.dx;
+                this.y += this.dy;
+            }
+        }
+        
+        // Animation variables
+        let balls = [];
+        let animationId;
+        
+        // Initialize animation
+        function init() {
+            // Start animation
+            animate();
+        }
+        
+        // Animation loop
+        function animate() {
+            animationId = requestAnimationFrame(animate);
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Update and draw balls
+            for (let i = 0; i < balls.length; i++) {
+                balls[i].update(balls);
+                balls[i].draw();
+            }
+            
+            // Update ball count
+            ballCountElement.textContent = balls.length;
+        }
+        
+        // Utility function to extract RGB components from a color string
+        function getColorComponents(color) {
+            // For named colors, use a simple lookup
+            const colorMap = {
+                'red': '255, 0, 0',
+                'blue': '0, 0, 255',
+                'green': '0, 128, 0',
+                'yellow': '255, 255, 0',
+                'orange': '255, 165, 0',
+                'purple': '128, 0, 128',
+                'pink': '255, 192, 203',
+                'cyan': '0, 255, 255',
+            };
+            
+            if (colorMap[color.toLowerCase()]) {
+                return colorMap[color.toLowerCase()];
+            }
+            
+            // For hex colors
+            if (color.startsWith('#')) {
+                const r = parseInt(color.slice(1, 3), 16);
+                const g = parseInt(color.slice(3, 5), 16);
+                const b = parseInt(color.slice(5, 7), 16);
+                return `${r}, ${g}, ${b}`;
+            }
+            
+            // Default
+            return '0, 0, 0';
+        }
+        
+        // Button event listeners
+        document.getElementById('add-ball').addEventListener('click', () => {
+            const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'cyan'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            addBall(randomColor);
+        });
+        
+        document.getElementById('add-red').addEventListener('click', () => addBall('red'));
+        document.getElementById('add-blue').addEventListener('click', () => addBall('blue'));
+        document.getElementById('add-green').addEventListener('click', () => addBall('green'));
+        
+        document.getElementById('clear').addEventListener('click', () => {
+            balls = [];
+            eventLog.innerHTML = '';
+        });
+        
+        // Add a ball to the canvas
+        function addBall(color) {
+            const radius = 15 + Math.random() * 15;
+            const x = radius + Math.random() * (canvas.width - 2 * radius);
+            const y = radius + Math.random() * (canvas.height - 2 * radius);
+            
+            const newBall = new Ball(x, y, radius, color);
+            balls.push(newBall);
+        }
+        
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
