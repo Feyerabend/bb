@@ -44,7 +44,7 @@ management for embedded and resource-constrained systems.
 
 *I use this example because it brings to mind a personal experience I had in the mid-1980s with
 a similar bank-switching setup. At that time, I was suppose to work with "Smartaid," a hardware
-solution by OWOCO designed to extend the capabilities of the personal computer ABC80, which was much
+solution by OWOCO AB designed to extend the capabilities of the personal computer ABC80, which was much
 like its contemporary Apple II, Commodore PET or TRS-80, but Swedish. The aim was particularly
 in terms of extending the ROM based BASIC commands and other utilities. Initially, I was tasked
 with maintaining the codebase and potentially expanding its features. However, the reality was
