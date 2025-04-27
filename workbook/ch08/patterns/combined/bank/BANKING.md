@@ -49,9 +49,9 @@ was much like its contemporary Apple II, Commodore PET or TRS-80, but Swedish. T
 in terms of extending the ROM based BASIC commands and other utilities. Initially, I was tasked
 with maintaining the codebase, and then potentially expanding its features. However, the reality was
 far from what I expected. The hardware itself was quite solid, but the code was a complete mess.
-Yes, assembly is hard even to start with, but several kilobytes where no documentation at all was to be
-found is even harder. I attempted to document the code, but made little progress. Ultimately, I
-decided to move on from the project ..*
+Yes, assembly is challenging to begin with, but trying to navigate several kilobytes of code with
+absolutely no documentation is even more difficult. I attempted to document the code, but made
+very little progress. Ultimately, I decided to move on from the project ..*
 
 
 #### Components
