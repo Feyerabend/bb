@@ -27,3 +27,4 @@
 - Bishop, C. M. (2006). Pattern Recognition and Machine Learning. Springer.
 - Géron, A. (2019). Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow. O’Reilly Media.
 - Murphy, K. P. (2012). Machine Learning: A Probabilistic Perspective. MIT Press.
+-- REPLACE REFs

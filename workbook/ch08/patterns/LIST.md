@@ -23,5 +23,5 @@ Gang-of-Four patterns .. + 3 others
 | [Event Bus](./event/)          | Behavioural      | Decouple senders from receivers using a publish/subscribe model | UI events, logging systems                       | Post-GoF       |
 
 
-[^single]: Singleton is often discouraged in modern design due to global state issues; use with care.
+[^single]: Singleton is often discouraged in modern design due to global state issues; use with care: https://en.wikipedia.org/wiki/Singleton_pattern.
 
