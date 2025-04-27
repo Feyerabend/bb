@@ -6,7 +6,7 @@ Gang-of-Four patterns .. + 3 others
 | Pattern            | Category        | Purpose                                                         | Example Use Case                                | Source        |
 |--------------------|----------------|------------------------------------------------------------------|--------------------------------------------------|----------------|
 | Strategy           | Behavioural      | Encapsulate interchangeable algorithms or behaviours              | Sorting algorithms, payment methods             | GoF            |
-| Command            | Behavioural      | Encapsulate a request as an object                               | Undo/Redo, action queues, macro recording       | GoF            |
+| [Command](./command/)            | Behavioural      | Encapsulate a request as an object                               | Undo/Redo, action queues, macro recording       | GoF            |
 | Observer           | Behavioural      | Notify dependent objects of state changes                        | GUIs, event systems, data binding                | GoF            |
 | State              | Behavioural      | Change object behaviour based on internal state                   | Game AI, UI modes                               | GoF            |
 | Decorator          | Structural      | Add behaviour to objects dynamically                              | I/O streams, middleware pipelines                | GoF            |
