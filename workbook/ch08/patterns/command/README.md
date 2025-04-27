@@ -47,10 +47,10 @@ Performs operations (insert, delete, modify text)
 
 Meanwhile:
 ConcreteCommand <--> CommandHistory (Invoker)
-       |                                         |
-       |                                         v
-   execute()                        Stores command
-   undo()                           Supports undo/redo
+       |                     |
+       |                     v
+   execute()            Stores command
+   undo()             Supports undo/redo
 ```
 
 
