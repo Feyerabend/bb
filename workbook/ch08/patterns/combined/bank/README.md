@@ -2,8 +2,8 @@
 ## Design Patterns in Banking Sample
 
 Compare the samples 'banking.py' with 'banking2.py'. The former code adheres to more
-low-level constructions suitable for embedded microcontroller today, while the latter
-is illustrating more higher-level constructions. 
+low-level constructions in principle suitable for embedded microcontroller today, while
+the latter is illustrating more higher-level constructions, but could also be used. 
 
 
 #### 1. Command Pattern
