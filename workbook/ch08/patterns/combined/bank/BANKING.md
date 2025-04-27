@@ -42,6 +42,16 @@ In summary, bank switching was a critical solution to memory limitations in earl
 although it’s less relevant in modern high-memory systems, it remains a key concept in memory
 management for embedded and resource-constrained systems.
 
+*I use this example because it brings to mind a personal experience I had in the mid-1980s with
+a similar bank-switching setup. At that time, I was suppose to work with "Smartaid," a hardware
+solution by OWOCO designed to extend the capabilities of the personal computer ABC80, which was much
+like its contemporary Apple II, Comodore PET or TRS-80, but Swedish. The aim was particularly
+in terms of extending the ROM based BASIC commands and other utilities. Initially, I was tasked
+with maintaining the codebase and potentially expanding its features. However, the reality was
+far from what I expected. The hardware itself was quite solid, but the code was a complete mess.
+I attempted to document the code, but made little progress. Ultimately, I decided to move on
+from the project ..*
+
 
 #### Components
 
