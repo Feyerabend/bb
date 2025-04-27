@@ -9,7 +9,7 @@ early microprocessors and embedded systems, where hardware limitations meant tha
 applications required manual memory management.
 
 Bank switching refers to the ability to selectively map different blocks of memory into a system’s
-address space at different times. This allows more memory to be effectively utilized than the system
+address space at different times. This allows more memory to be effectively utilised than the system
 can access in a single operation. In this context, "bank" means a segment of memory, and switching
 means choosing which memory block (bank) is currently active. The Program Counter (PC) management
 was critical because, when switching banks, the system had to remember where it was in the program,

@@ -43,7 +43,7 @@ is illustrating more higher-level constructions.
   register specific commands, and return the banks.
 
 - Advantage: These methods abstract the creation of banks with their associated commands, providing
-  a clear structure for organizing commands in different banks. New banks can be created without
+  a clear structure for organising commands in different banks. New banks can be created without
   modifying the core logic of the system.
 
 
@@ -54,7 +54,7 @@ is illustrating more higher-level constructions.
   ID (such as AddCommand, MultiplyCommand, etc.). The BankManager doesn’t need to know how each specific
   command is implemented; it delegates the execution to the appropriate command object.
 
-- Advantage: The behavior of the system can be modified dynamically by changing or adding new strategies
+- Advantage: The behaviour of the system can be modified dynamically by changing or adding new strategies
   (commands) without changing the structure of BankManager.
 
 #### 5. Observer Pattern (Implicit)
@@ -64,7 +64,7 @@ is illustrating more higher-level constructions.
   be expanded if more observers (such as external systems) needed to track these logs or react to certain
   actions (such as function calls or exceptions). Project!
 
-- Advantage: The system can support logging or tracking behaviors without tightly coupling other components
+- Advantage: The system can support logging or tracking behaviours without tightly coupling other components
   to the SharedRAM.
 
 
