@@ -8,7 +8,7 @@ Gang-of-Four patterns .. + 3 others
 | Strategy           | Behavioural      | Encapsulate interchangeable algorithms or behaviours              | Sorting algorithms, payment methods             | GoF            |
 | [Command](./command/)            | Behavioural      | Encapsulate a request as an object                               | Undo/Redo, action queues, macro recording       | GoF            |
 | Observer           | Behavioural      | Notify dependent objects of state changes                        | GUIs, event systems, data binding                | GoF            |
-| State              | Behavioural      | Change object behaviour based on internal state                   | Game AI, UI modes                               | GoF            |
+| [State](./state/)              | Behavioural      | Change object behaviour based on internal state                   | Game AI, UI modes                               | GoF            |
 | Decorator          | Structural      | Add behaviour to objects dynamically                              | I/O streams, middleware pipelines                | GoF            |
 | Adapter            | Structural      | Convert one interface to another                                 | Legacy code integration, wrapper libraries       | GoF            |
 | Composite          | Structural      | Treat objects and groups uniformly                               | Scene graphs, file system trees                  | GoF            |
