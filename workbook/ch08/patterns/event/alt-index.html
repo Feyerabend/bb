@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Observer Pattern Visualization</title>
+    <title>Observer Pattern Visualisation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -98,10 +98,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>Observer Pattern Visualization</h1>
+        <h1>Observer Pattern Visualisation</h1>
         
         <div class="info-panel">
-            <p>This visualization demonstrates the <strong>Observer Pattern</strong> using colorful colliding balls. Each ball is a Subject that can be observed, and the collision tracker and wall tracker are Observers that watch specific balls.</p>
+            <p>This visualisation demonstrates the <strong>Observer Pattern</strong> using colourful colliding balls. Each ball is a Subject that can be observed, and the collision tracker and wall tracker are Observers that watch specific balls.</p>
             <p>Unlike the Event Bus pattern where events are published to a central hub, in the Observer pattern each Subject maintains its own list of Observers that are directly notified of state changes.</p>
             <p>Try adding balls with different colors and observe how observers are directly notified!</p>
         </div>
@@ -230,7 +230,7 @@
             }
         }
         
-        // Initialize canvas and context
+        // Initialise canvas and context
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const eventLog = document.getElementById('event-log');
@@ -360,7 +360,7 @@
         let balls = [];
         let animationId;
         
-        // Initialize animation
+        // Initialise animation
         function init() {
             // Start animation
             animate();
@@ -439,7 +439,6 @@
             balls.push(newBall);
         }
         
-        // Initialize
         init();
     </script>
 </body>

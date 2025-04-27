@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Bus Visualization</title>
+    <title>Event Bus Visualisation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -91,10 +91,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>Event Bus Visualization</h1>
+        <h1>Event Bus Visualisation</h1>
         
         <div class="info-panel">
-            <p>This visualization demonstrates the <strong>Event Bus pattern</strong> using colorful colliding balls. Each ball can publish events when it collides with other balls or walls. Components can subscribe to these events and react accordingly.</p>
+            <p>This visualisation demonstrates the <strong>Event Bus pattern</strong> using colourful colliding balls. Each ball can publish events when it collides with other balls or walls. Components can subscribe to these events and react accordingly.</p>
             <p>The Event Bus acts as a central hub that decouples publishers (balls) from subscribers (event handlers).</p>
             <p>Try adding balls with different colors and observe the events in the log below!</p>
         </div>
@@ -148,7 +148,7 @@
             }
         }
         
-        // Initialize canvas and context
+        // Initialise canvas and context
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const eventLog = document.getElementById('event-log');
@@ -391,7 +391,6 @@
             eventLog.prepend(logEntry);
         }
         
-        // Initialize
         init();
     </script>
 </body>
