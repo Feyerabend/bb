@@ -31,3 +31,10 @@ int main() {
     }
     return 0;
 }
+
+// This code demonstrates a simple implementation of a virtual table (vtable) in C.
+// It defines a base structure `Animal` with a function pointer for the `speak` method.
+// Two derived structures `Dog` and `Cat` inherit from `Animal`.
+// The `animal_init` function initialises the base structure with the appropriate method.
+// The `main` function creates instances of `Dog` and `Cat`, initialises them, and calls
+// the `speak` method through the base structure pointer, demonstrating polymorphism.

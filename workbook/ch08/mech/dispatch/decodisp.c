@@ -40,3 +40,12 @@ int main() {
     if (op) printf("%d\n", op(2, 3)); // Output: 5
     return 0;
 }
+
+// This code implements a simple dispatch table for operations.
+// It allows you to register operations by name and find them later.
+// The `add` and `subtract` functions are registered, and you can call them
+// using their names. The `find_operation` function looks up the operation
+// by name and returns the corresponding function pointer.
+// The `main` function demonstrates how to use the dispatch table by
+// initialising it, finding an operation by name, and calling it with
+// arguments.

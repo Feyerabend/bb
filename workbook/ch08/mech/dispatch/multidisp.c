@@ -32,3 +32,10 @@ int main() {
     printf("%d\n", dispatch(FLOAT, FLOAT, &x, &y)); // Output: 6
     return 0;
 }
+
+// This code implements a simple multi-dispatch mechanism in C.
+// It defines a dispatch table that maps pairs of types to functions.
+// The dispatch function looks up the appropriate function based on the types
+// of the arguments and calls it. The example demonstrates how to use this
+// mechanism to multiply integers and floats, returning the result as an integer.
+// The dispatch function returns 0 if no matching function is found.
