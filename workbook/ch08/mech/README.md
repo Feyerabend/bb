@@ -16,7 +16,7 @@
 | [Dispatch](./dispatch/)        | Choose code to run based on input/state                                | Message dispatch, interpreters, drivers              | Command, Strategy                        |
 | [Jump Table](./jump/)      | Array of code addresses for fast branching                             | Opcode dispatch, switch-case replacement             | Direct dispatch idiom                   |
 | [Trampoline](./trampoline/)      | Loop-based control flow instead of recursion                           | Tail-call optimisation, interpreter loops            | Interpreter pattern                     |
-| State Machine   | Explicit modeling of transitions and states                            | Embedded control, protocols, parsing                 | State pattern                           |
+| [State Machine](./state/)   | Explicit modeling of transitions and states                            | Embedded control, protocols, parsing                 | State pattern                           |
 | [Continuation](./continue)    | Representation of "what to do next" in execution                       | Functional languages, backtracking                   | CPS (Continuation-passing style)        |
 
 ### Memory & State Management
