@@ -41,6 +41,34 @@ predicting sequences of text. A simple LM can be trained to predict the next wor
 generate coherent text. Unlike image-based models, LMs handle textual data and showcase concepts
 such as tokenisation, embeddings, and sequential learning.
 
+Machine Learning is a subset of Artificial Intelligence (AI) focused on building systems that learn from
+data rather than being explicitly programmed. Deep Learning (DL) is, in turn, a specialised area *within*
+Machine Learning that uses large neural networks to learn complex patterns, often from unstructured data
+like images, text, or audio.
+
+When we code ML models, we are implementing the "learning" part of AI. When we code DL models, we are
+implementing more powerful *learners* (deep neural networks). Coding AI means writing the logic for
+learning, decision-making, and sometimes even perception, planning, or reasoning, often by assembling
+ML and DL techniques.
+
+Thus: AI is the goal. ML is a method. DL is a specific technique within ML. The code we write builds
+the systems that realise them.
+
+Examples
+```
+Artificial Intelligence (AI)
+└── Machine Learning (ML)
+    ├── Traditional ML
+    │   ├── Decision Trees
+    │   ├── Logistic Regression
+    │   └── Support Vector Machines
+    └── Deep Learning (DL)
+        ├── Convolutional Neural Networks (CNNs) [such as MNIST]
+        ├── Recurrent Neural Networks (RNNs)
+        └── Transformers [for example Language Models]
+```
+
+
 
 ### References
 
