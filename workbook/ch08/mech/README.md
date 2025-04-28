@@ -72,6 +72,7 @@ State Machine patterns to manage concurrency and control flow in a structured, n
 |-----------------|------------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------|
 | Coroutine       | Generalized subroutine with suspend/resume semantics                   | Generators, cooperative multitasking, simulations    | Actor model, State Machine              |
 
+### Conclusion
 
 *I became interested in low-level programming patterns in 1981 after reading two articles that described
 some of these techniques.[^modern] I thought, “Why not apply them in higher-level contexts?” At the time,
@@ -82,7 +83,6 @@ of computer science. Although I have saved copies of the articles all this time.
 Solna: Nordpress. Specifically by: Hans Beckman and Johan Finnved, "Metodöversikt för mikrodatorprogrammerare",
 *Modern elektronik: med branschnyheter - teknik och ekonomi*. pp. ??
 
-### Conclusion
 
 Modern programs rely on a set of fundamental mechanisms to manage execution control, concurrency, state, and
 event handling. Control flow techniques such as dispatch, jump tables, trampolines, state machines, and continuations
