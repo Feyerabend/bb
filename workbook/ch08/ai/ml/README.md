@@ -8,7 +8,14 @@ these to make predictions or decisions.
 
 Traditional ML methods, such as decision trees, support vector machines, and logistic regression,
 typically operate on structured data and require significant human effort in "feature engineering."
-Feature engineering is deciding which parts of the data that are important.
+Feature engineering is deciding which parts of the data that are important.[^feature]
+
+[^feature]: Feature engineering is the process of selecting, transforming, or creating input
+variables (features) that make machine learning models more accurate and efficient. It often
+involves identifying important properties in the data, scaling or normalizing values, combining
+existing features, and encoding categorical information into numerical form.
+E.g., from a date like 2025-04-28, you can create new features, abstractions, like "day of week"
+or "month" to help a model find patterns more easily.
 
 [Deep Learning (DL)](./DEEP.md), a newer branch of ML, reduces the need for manual feature
 engineering by *automatically* discovering high-level representations within data. Deep learning
@@ -16,8 +23,8 @@ models, built with layered neural networks, have proven especially effective for
 like image recognition, speech processing, and natural language understanding.
 
 In simple projects, like MNIST digit recognition, traditional ML and deep learning can both be
-applied effectively. In more complex tasks, such as training language models to generate human-like text,
-deep learning is essential.
+applied effectively. In more complex tasks, such as training language models to generate human-like
+text, deep learning is essential.
 
 Thus, ML provides the practical means by which AI systems can be made adaptive and intelligent,
 and DL pushes the frontier further by enabling machines to learn directly from raw data.
