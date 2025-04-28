@@ -14,8 +14,8 @@ Dispatch is central to many programming paradigms:
 - *Event handling* dispatches actions based on events (e.g., user clicks).
 - *Command processing* dispatches operations based on input strings or tokens.
 
-The criteria for dispatch can vary widely—types, values, patterns, or even external
-states—making it a versatile concept. Dispatching techniques differ in how they map
+The criteria for dispatch can vary widely--types, values, patterns, or even external
+states--making it a versatile concept. Dispatching techniques differ in how they map
 inputs to handlers, their flexibility, and their performance characteristics.
 
 We have already made ourselves acquainted with a very simple dispatch in the
