@@ -2,7 +2,7 @@
 ## Dispatch
 
 Dispatch, at its core, is a mechanism for selecting and invoking a specific function
-or behavior based on some criteria, such as input values, types, patterns, or runtime
+or behaviour based on some criteria, such as input values, types, patterns, or runtime
 conditions. It’s about routing a request to the appropriate handler, enabling flexibility
 and modularity in code. Conceptually, dispatch is like a switchboard operator in an old
 telephone exchange: given an incoming call (input), the operator connects it to the
@@ -193,7 +193,7 @@ better readability, or better flexibility depending on the situation.
 
 - *Pros*: Highly flexible, supports complex logic, easy to extend with new rules.
 
-- *Cons*: Slower due to condition evaluation, harder to optimize, rule conflicts
+- *Cons*: Slower due to condition evaluation, harder to optimise, rule conflicts
   need resolution.
 
 - *Use Case*: Business rule engines, diagnostic systems, or configuration-driven
@@ -207,7 +207,7 @@ better readability, or better flexibility depending on the situation.
   The dispatcher selects and applies these aspects based on metadata or context.
 
 - *How It Differs*: Instead of dispatching to a single handler, it composes multiple
-  behaviors around a core function, focusing on separation of concerns. It’s less about
+  behaviours around a core function, focusing on separation of concerns. It’s less about
   choosing a function and more about augmenting execution.
 
 - *Python Example*:
@@ -249,7 +249,7 @@ better readability, or better flexibility depending on the situation.
 - *C Equivalent*: Use function pointers for aspects, manually calling them
   before/after the main function. Common in middleware or embedded systems with hooks.
 
-- *Pros*: Modularizes cross-cutting concerns, reusable aspects, clean core logic.
+- *Pros*: Modularises cross-cutting concerns, reusable aspects, clean core logic.
 
 - *Cons*: Overhead from multiple calls, complex debugging, requires careful design.
 
@@ -260,7 +260,7 @@ better readability, or better flexibility depending on the situation.
 
 - *Concept*: Dispatch is based on probabilities or random selection, where handlers
   are chosen according to weights or distributions. This is used in systems requiring
-  stochastic behavior, like simulations or load balancing.
+  stochastic behaviour, like simulations or load balancing.
 
 - *How It Differs*: Unlike deterministic dispatch, it introduces randomness, making
   outcomes non-predictable. It’s less about exact matches and more about statistical
@@ -288,11 +288,11 @@ better readability, or better flexibility depending on the situation.
 - *C Equivalent*: Use `rand()` with a weighted selection algorithm (e.g.,
   cumulative probability table). Common in game development or randomised algorithms.
 
-- *Pros*: Enables stochastic behavior, useful for testing or simulations.
+- *Pros*: Enables stochastic behaviour, useful for testing or simulations.
 
 - *Cons*: Non-deterministic, harder to debug, requires careful weight tuning.
 
-- *Use Case*: A/B testing, randomized algorithms, or load balancing.
+- *Use Case*: A/B testing, randomised algorithms, or load balancing.
 
 
 #### 5. Introspective Dispatch
@@ -334,10 +334,10 @@ better readability, or better flexibility depending on the situation.
 
 
 
-### Why These Flavors Are Distinct
+### Why These Flavours Are Distinct
 - *CPS Dispatch*: Focuses on control flow and deferred execution,
   unlike direct function invocation in traditional dispatch.
-- *Rule-Based Dispatch*: Emphasizes declarative logic and inference,
+- *Rule-Based Dispatch*: Emphasises declarative logic and inference,
   contrasting with procedural mappings like dictionaries.
 - *Aspect-Oriented Dispatch*: Augments functions with orthogonal
   behaviours, rather than selecting a single handler.
@@ -348,7 +348,7 @@ better readability, or better flexibility depending on the situation.
 
 ### Notes on C
 
-In C, these flavors are less common due to the language’s static
+In C, these flavours are less common due to the language’s static
 nature and lack of introspection or dynamic typing.
 However:
 - *CPS*: Implemented with function pointers and explicit state passing (e.g., in event-driven libraries).
