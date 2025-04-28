@@ -1,6 +1,8 @@
 
 ## Low-Level Control-Flow and Execution Mechanisms
 
+
+
 ### Concurrency & Threading
 | Mechanism       | Description                                                            | Use Cases                                            | Related Pattern(s)                     |
 |-----------------|------------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------|
@@ -35,3 +37,13 @@
 | Mechanism       | Description                                                            | Use Cases                                            | Related Pattern(s)                     |
 |-----------------|------------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------|
 | Coroutine       | Generalized subroutine with suspend/resume semantics                   | Generators, cooperative multitasking, simulations    | Actor model, State Machine              |
+
+
+*I became interested in low-level programming patterns in 1981 after reading two articles that described
+some of these techniques.[^modern] I thought, “Why not apply them in higher-level contexts?” At the time,
+I had just started learning BASIC and machine/assembly programming, but had no experience or knowledge
+of computer science. Although I have saved copies of the articles all this time.*
+
+[^modern]: The magasine was *Modern elektronik: med branschnyheter - teknik och ekonomi*. (1970-1992).
+Solna: Nordpress. Specifically by: Hans Beckman and Johan Finnved, "Metodöversikt för mikrodatorprogrammerare",
+*Modern elektronik: med branschnyheter - teknik och ekonomi*. pp. ??
