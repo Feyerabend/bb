@@ -18,8 +18,8 @@ interrupt handling, lock-free programming, and real-time systems where timing an
 ### Control Flow & Dispatch
 
 Control flow and dispatch mechanisms provide structured ways to manage "what happens next" during program execution,
-whether by selecting actions, organizing states, or deferring computation. Despite differing in form — dispatch tables,
-state models, trampolines, or continuations — all aim to decouple control decisions from rigid call structures, enabling
+whether by selecting actions, organizing states, or deferring computation. Despite differing in form--dispatch tables,
+state models, trampolines, or continuations--all aim to decouple control decisions from rigid call structures, enabling
 flexibility, efficiency, and modularity. These techniques are foundational for building interpreters, managing embedded
 protocols, optimizing recursion, and handling complex execution paths in functional and system-level programming.
 
@@ -93,4 +93,5 @@ State management strategies like checkpoints, stack frames, and backtracking pre
 history, supporting recovery, logic inference, and deep recursive calls. Event-driven models built from callbacks,
 signal handlers, and event loops allow programs to react to asynchronous stimuli, shifting control flow based on
 external inputs or hardware signals. Together, these interconnected techniques form the backbone of reliable,
-scalable software systems, from embedded controllers and interpreters to servers, GUI frameworks, and functional runtimes.
+scalable software systems, from embedded controllers and interpreters to servers, GUI frameworks, and functional
+runtimes.
