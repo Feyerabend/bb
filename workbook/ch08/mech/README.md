@@ -17,7 +17,7 @@
 | Jump Table      | Array of code addresses for fast branching                             | Opcode dispatch, switch-case replacement             | Direct dispatch idiom                   |
 | [Trampoline](./trampoline/)      | Loop-based control flow instead of recursion                           | Tail-call optimization, interpreter loops            | Interpreter pattern                     |
 | State Machine   | Explicit modeling of transitions and states                            | Embedded control, protocols, parsing                 | State pattern                           |
-| Continuation    | Representation of "what to do next" in execution                       | Functional languages, backtracking                   | CPS (Continuation-passing style)        |
+| [Continuation](./continue)    | Representation of "what to do next" in execution                       | Functional languages, backtracking                   | CPS (Continuation-passing style)        |
 
 ### Memory & State Management
 | Mechanism       | Description                                                            | Use Cases                                            | Related Pattern(s)                     |
