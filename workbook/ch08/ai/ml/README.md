@@ -31,12 +31,12 @@ language processing (NLP). While conventional models like those trained on the M
 on visual tasks (e.g., digit recognition), more advanced models, such as language models, specialise
 in understanding and generating human language.
 
-- [MNIST](./mnist/): A simple yet powerful dataset for introducing classification tasks, MNIST consists
+- *[MNIST](./mnist/)*: A simple yet powerful dataset for introducing classification tasks, MNIST consists
 of handwritten digits and serves as a benchmark for models that perform supervised learning. It's often
 used to demonstrate the effectiveness of simple ML models like logistic regression, decision trees,
 or neural networks.
 
-- Language Models ([LM](./lm/)): These models, though often more complex, focus on understanding and
+- *[Language Models, LMs](./lm/)*: These models, though often more complex, focus on understanding and
 predicting sequences of text. A simple LM can be trained to predict the next word in a sentence or even
 generate coherent text. Unlike image-based models, LMs handle textual data and showcase concepts
 such as tokenisation, embeddings, and sequential learning.
@@ -49,3 +49,5 @@ such as tokenisation, embeddings, and sequential learning.
 - Géron, A. (2019). Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow. O’Reilly Media.
 - Murphy, K. P. (2012). Machine Learning: A Probabilistic Perspective. MIT Press.
 -- REPLACE REFs
+100 ..
+Deep Learning ..
