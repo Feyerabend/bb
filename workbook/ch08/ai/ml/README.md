@@ -10,10 +10,10 @@ Traditional ML methods, such as decision trees, support vector machines, and log
 typically operate on structured data and require significant human effort in "feature engineering."
 Feature engineering is deciding which parts of the data that are important.
 
-Deep Learning (DL), a newer branch of ML, reduces the need for manual feature engineering by
-automatically discovering high-level representations within data. Deep learning models, built
-with layered neural networks, have proven especially effective for complex tasks like image
-recognition, speech processing, and natural language understanding.
+[Deep Learning (DL)](./DEEP.md), a newer branch of ML, reduces the need for manual feature
+engineering by *automatically* discovering high-level representations within data. Deep learning
+models, built with layered neural networks, have proven especially effective for complex tasks
+like image recognition, speech processing, and natural language understanding.
 
 In simple projects, like MNIST digit recognition, traditional ML and deep learning can both be
 applied effectively. In more complex tasks, such as training language models to generate human-like text,
