@@ -99,14 +99,3 @@ Artificial Intelligence (AI)
         └── Transformers [for example Language Models]
 ```
 
-
-
-### References
-
-- Mitchell, T. M. (1997). Machine Learning. McGraw-Hill.
-- Bishop, C. M. (2006). Pattern Recognition and Machine Learning. Springer.
-- Géron, A. (2019). Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow. O’Reilly Media.
-- Murphy, K. P. (2012). Machine Learning: A Probabilistic Perspective. MIT Press.
--- REPLACE REFs
-100 ..
-Deep Learning ..
