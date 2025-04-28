@@ -80,8 +80,8 @@ I had just started learning BASIC and machine/assembly programming, but had no e
 of computer science. Although I have saved copies of the articles all this time.*
 
 [^modern]: The magazine was *Modern elektronik: med branschnyheter - teknik och ekonomi*. (1970-1992).
-Solna: Nordpress. Specifically by: Hans Beckman and Johan Finnved, "Metodöversikt för mikrodatorprogrammerare",
-*Modern elektronik: med branschnyheter - teknik och ekonomi*. pp. ??
+Solna: Nordpress. Specifically by: Hans Beckman and Johan Finnved (1981) "Metodöversikt för mikrodatorprogrammerare",
+*Modern elektronik: med branschnyheter - teknik och ekonomi*, nr. 8:1-2, pp. ??
 
 
 Modern programs rely on a set of *fundamental mechanisms* to manage execution control, concurrency, state, and
