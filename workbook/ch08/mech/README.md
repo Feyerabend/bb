@@ -15,7 +15,7 @@
 |-----------------|------------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------|
 | Dispatch        | Choose code to run based on input/state                                | Message dispatch, interpreters, drivers              | Command, Strategy                        |
 | Jump Table      | Array of code addresses for fast branching                             | Opcode dispatch, switch-case replacement             | Direct dispatch idiom                   |
-| Trampoline      | Loop-based control flow instead of recursion                           | Tail-call optimization, interpreter loops            | Interpreter pattern                     |
+| [Trampoline](./trampoline/)      | Loop-based control flow instead of recursion                           | Tail-call optimization, interpreter loops            | Interpreter pattern                     |
 | State Machine   | Explicit modeling of transitions and states                            | Embedded control, protocols, parsing                 | State pattern                           |
 | Continuation    | Representation of "what to do next" in execution                       | Functional languages, backtracking                   | CPS (Continuation-passing style)        |
 
