@@ -1,6 +1,34 @@
 
 ## Machine Learning
 
+Machine Learning (ML) is an expanding field within AI, concerned with building systems that learn
+from data and improve their performance without being explicitly programmed for every task. Instead
+of hard-coding rules (like we did in the 80s), ML models extract patterns from examples and use
+these to make predictions or decisions.
+
+Traditional ML methods, such as decision trees, support vector machines, and logistic regression,
+typically operate on structured data and require significant human effort in "feature engineering."
+Feature engineering is deciding which parts of the data that are important.
+
+Deep Learning (DL), a newer branch of ML, reduces the need for manual feature engineering by
+automatically discovering high-level representations within data. Deep learning models, built
+with layered neural networks, have proven especially effective for complex tasks like image
+recognition, speech processing, and natural language understanding.
+
+In simple projects, like MNIST digit recognition, traditional ML and deep learning can both be
+applied effectively. In more complex tasks, such as training language models to generate human-like text,
+deep learning is essential.
+
+Thus, ML provides the practical means by which AI systems can be made adaptive and intelligent,
+and DL pushes the frontier further by enabling machines to learn directly from raw data.
+
+However, in the context of providing code first for your learning, deep learning exceeds the
+practical limits of this book. Deep models require large datasets, specialised architectures,
+and significant compute, making them less suited for compact, self-contained examples. Instead,
+we focus on classical machine learning--models you can fully understand, implement, and
+analyze--building a foundation that scales naturally toward more advanced techniques.
+
+
 | *Algorithm*                | *Type*             | *Typical Use Cases*              | *Key Properties*                                                |
 |----------------------------|--------------------|----------------------------------|-----------------------------------------------------------------|
 | [Linear Regression](./linear/)     | Supervised | Predicting continuous values     | Simple, interpretable, assumes linearity                        |
@@ -41,15 +69,11 @@ predicting sequences of text. A simple LM can be trained to predict the next wor
 generate coherent text. Unlike image-based models, LMs handle textual data and showcase concepts
 such as tokenisation, embeddings, and sequential learning.
 
-Machine Learning is a subset of Artificial Intelligence (AI) focused on building systems that learn from
-data rather than being explicitly programmed. Deep Learning (DL) is, in turn, a specialised area *within*
-Machine Learning that uses large neural networks to learn complex patterns, often from unstructured data
-like images, text, or audio.
-
-When we code ML models, we are implementing the "learning" part of AI. When we code DL models, we are
-implementing more powerful *learners* (deep neural networks). Coding AI means writing the logic for
-learning, decision-making, and sometimes even perception, planning, or reasoning, often by assembling
-ML and DL techniques.
+Machine Learning is a subset of *Artificial Intelligence* (AI) focused on building systems that learn from
+data rather than being explicitly programmed. When we code ML models, we are implementing the "learning"
+part of AI. When we code DL models, we are implementing more powerful *learners* (deep neural networks).
+Coding AI means writing the logic for learning, decision-making, and sometimes even perception, planning,
+or reasoning, often by assembling ML and DL techniques.
 
 Thus: AI is the goal. ML is a method. DL is a specific technique within ML. The code we write builds
 the systems that realise them.
