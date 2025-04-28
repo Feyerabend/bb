@@ -18,24 +18,24 @@ interrupt handling, lock-free programming, and real-time systems where timing an
 ### Control Flow & Dispatch
 
 Control flow and dispatch mechanisms provide structured ways to manage "what happens next" during program execution,
-whether by selecting actions, organizing states, or deferring computation. Despite differing in form--dispatch tables,
+whether by selecting actions, organising states, or deferring computation. Despite differing in form--dispatch tables,
 state models, trampolines, or continuations--all aim to decouple control decisions from rigid call structures, enabling
 flexibility, efficiency, and modularity. These techniques are foundational for building interpreters, managing embedded
-protocols, optimizing recursion, and handling complex execution paths in functional and system-level programming.
+protocols, optimising recursion, and handling complex execution paths in functional and system-level programming.
 
 | Mechanism       | Description                                                            | Use Cases                                            | Related Pattern(s)                     |
 |-----------------|------------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------|
 | [Dispatch](./dispatch/)        | Choose code to run based on input/state                                | Message dispatch, interpreters, drivers              | Command, Strategy                        |
 | [Jump Table](./jump/)      | Array of code addresses for fast branching                             | Opcode dispatch, switch-case replacement             | Direct dispatch idiom                   |
 | [Trampoline](./trampoline/)      | Loop-based control flow instead of recursion                           | Tail-call optimisation, interpreter loops            | Interpreter pattern                     |
-| [State Machine](./state/)   | Explicit modeling of transitions and states                            | Embedded control, protocols, parsing                 | State pattern                           |
+| [State Machine](./state/)   | Explicit modelling of transitions and states                            | Embedded control, protocols, parsing                 | State pattern                           |
 | [Continuation](./continue)    |  Representation of "what to do next" in execution                       | Functional languages, backtracking                   | CPS (Continuation-passing style)        |
 
 ### Memory & State Management
 
 State management mechanisms control how a program preserves, restores, and navigates its execution history,
 especially in complex or failure-prone scenarios. Checkpoints capture program state for resumption or recovery,
-stack frames organize local data during nested or recursive calls, and backtracking systematically reverts
+stack frames organise local data during nested or recursive calls, and backtracking systematically reverts
 to earlier states when encountering dead ends. These techniques are central to building interpreters, recovery
 systems, logic solvers, and any software requiring controlled exploration or structured undo capability.
 
@@ -47,7 +47,7 @@ systems, logic solvers, and any software requiring controlled exploration or str
 
 ### Event-Driven & Reactive
 
-Event-driven mechanisms organize program control around external stimuli, allowing systems to react
+Event-driven mechanisms organise program control around external stimuli, allowing systems to react
 dynamically rather than following a rigid sequence. Callbacks are scheduled by frameworks to execute
 later during normal program flow, typically in response to events like user input or asynchronous
 operations. Signal handlers, by contrast, respond spontaneously to low-level hardware or OS signals,
@@ -64,13 +64,13 @@ embedded systems, and asynchronous programming environments.
 
 ### Computation Models
 
-Coroutines are generalized subroutines that allow suspension and resumption of execution, enabling
+Coroutines are generalised subroutines that allow suspension and resumption of execution, enabling
 cooperative multitasking, generators, and simulations. They are often used in the Actor model and
 State Machine patterns to manage concurrency and control flow in a structured, non-preemptive way.
 
 | Mechanism       | Description                                                            | Use Cases                                            | Related Pattern(s)                     |
 |-----------------|------------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------|
-| Coroutine       | Generalized subroutine with suspend/resume semantics                   | Generators, cooperative multitasking, simulations    | Actor model, State Machine              |
+| Coroutine       | Generalised subroutine with suspend/resume semantics                   | Generators, cooperative multitasking, simulations    | Actor model, State Machine              |
 
 ### Conclusion
 
@@ -79,16 +79,16 @@ some of these techniques.[^modern] I thought, “Why not apply them in higher-le
 I had just started learning BASIC and machine/assembly programming, but had no experience or knowledge
 of computer science. Although I have saved copies of the articles all this time.*
 
-[^modern]: The magasine was *Modern elektronik: med branschnyheter - teknik och ekonomi*. (1970-1992).
+[^modern]: The magazine was *Modern elektronik: med branschnyheter - teknik och ekonomi*. (1970-1992).
 Solna: Nordpress. Specifically by: Hans Beckman and Johan Finnved, "Metodöversikt för mikrodatorprogrammerare",
 *Modern elektronik: med branschnyheter - teknik och ekonomi*. pp. ??
 
 
 Modern programs rely on a set of *fundamental mechanisms* to manage execution control, concurrency, state, and
 event handling. Control flow techniques such as dispatch, jump tables, trampolines, state machines, and continuations
-structure "what happens next," enabling flexible branching, recursion optimization, and dynamic behavior modeling.
+structure "what happens next," enabling flexible branching, recursion optimisation, and dynamic behaviour modelling.
 Concurrency mechanisms, including re-entrancy, context switching, and memory barriers, coordinate multiple threads
-or tasks safely, ensuring isolation, synchronization, and ordering in multithreaded and real-time environments.
+or tasks safely, ensuring isolation, synchronisation, and ordering in multithreaded and real-time environments.
 State management strategies like checkpoints, stack frames, and backtracking preserve and restore program execution
 history, supporting recovery, logic inference, and deep recursive calls. Event-driven models built from callbacks,
 signal handlers, and event loops allow programs to react to asynchronous stimuli, shifting control flow based on
