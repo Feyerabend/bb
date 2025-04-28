@@ -21,11 +21,8 @@ is not to engage at all. The computer, after playing several rounds of Tic-Tac-T
 is a futile exercise--just as a nuclear war would be. This realisation leads to the cessation of the simulated global conflict
 and ultimately prevents the launch of real-world nuclear weapons.
 
-Google NotebookLM generated [podcast](https://notebooklm.google.com/notebook/bd50ec2c-a921-40ed-908e-0a00bcfb7987/audio). 
-Requires Google Account. Alternative: Download [podcast](WARGAMES.wav) in WAVE-format.
-
-
 [^war]: See https://www.imdb.com/title/tt0086567/, https://en.wikipedia.org/wiki/WarGames.
+
 
 ### The Significance of Tic-Tac-Toe in *WarGames*
 
