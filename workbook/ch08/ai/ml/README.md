@@ -22,8 +22,8 @@ deep learning is essential.
 Thus, ML provides the practical means by which AI systems can be made adaptive and intelligent,
 and DL pushes the frontier further by enabling machines to learn directly from raw data.
 
-However, in the context of providing code first for your learning, deep learning exceeds the
-practical limits of this book. Deep models require large datasets, specialised architectures,
+However, in the context of providing code first for your learning, most of deep learning exceeds
+the practical limits of this book. Deep models require large datasets, specialised architectures,
 and significant compute, making them less suited for compact, self-contained examples. Instead,
 we focus on classical machine learning--models you can fully understand, implement, and
 analyze--building a foundation that scales naturally toward more advanced techniques.
