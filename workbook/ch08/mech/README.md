@@ -84,7 +84,7 @@ Solna: Nordpress. Specifically by: Hans Beckman and Johan Finnved, "Metodöversi
 *Modern elektronik: med branschnyheter - teknik och ekonomi*. pp. ??
 
 
-Modern programs rely on a set of fundamental mechanisms to manage execution control, concurrency, state, and
+Modern programs rely on a set of *fundamental mechanisms* to manage execution control, concurrency, state, and
 event handling. Control flow techniques such as dispatch, jump tables, trampolines, state machines, and continuations
 structure "what happens next," enabling flexible branching, recursion optimization, and dynamic behavior modeling.
 Concurrency mechanisms, including re-entrancy, context switching, and memory barriers, coordinate multiple threads
