@@ -82,6 +82,39 @@ How It Works in the Interpreter:
   that operations are executed one-by-one, allowing for easy extension of the interpreter by just adding
   more operations or steps, without deeply nesting calls.
 
+```c
+switch (inst->op) {
+    case ADD:
+        trampoline.next = add;
+        break;
+    case SUB:
+        trampoline.next = sub;
+        break;
+    case MUL:
+        trampoline.next = mul;
+        break;
+    case DIV:
+        trampoline.next = fixed_point_div;
+        break;
+    case HALT:
+        trampoline.next = halt;
+        break;
+    default:
+        printf("Unknown operation\n");
+        break;
+}
+
+// next operation ..
+if (trampoline.next != NULL) {
+    trampoline.next(interpreter);
+}
+```
+
+Each operation, like add, is associated with a function pointer (trampoline.next), and the interpreter
+uses this pointer to determine what to execute next. The key is that: *the interpreter doesn't execute
+operations directly or recursively; it just points to the next operation to be performed*.
+
+
 Benefits:
 
 1. Extensibility: New instructions can be added easily by simply defining new functions and associating
