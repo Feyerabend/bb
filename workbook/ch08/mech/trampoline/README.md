@@ -63,6 +63,9 @@ In this example:
 
 __2. Trampoline in the Context of an Interpreter__
 
+A more conventional implementation of the trampoline pattern can be seen in the example in the
+[continuation](./../continue/) folder.
+
 In the context of the interpreter, the trampoline pattern is being used to handle the execution of various
 instructions in a modular way. Each instruction, such as ADD, MUL, DIV, or HALT, is represented by a
 corresponding "action" or function pointer. The 'trampoline.next' serves as the control mechanism, directing
