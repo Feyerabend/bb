@@ -38,8 +38,9 @@ void factorial_cps(int n, void (*continuation)(int result)) {
 
 #### The Trampoline Pattern
 
-The trampoline pattern is a technique used to implement recursion in an iterative way, avoiding stack overflow
-for deeply recursive computations. It's particularly useful in languages without tail-call optimisation.
+The [trampoline pattern](./../trampoline/) is a technique used to implement recursion in an iterative way,
+avoiding stack overflow for deeply recursive computations. It's particularly useful in languages without
+tail-call optimisation.
 
 How Trampolining Works:
 1. Functions return a thunk (a delayed computation) instead of making recursive calls.
@@ -71,7 +72,7 @@ The Step Function as a Thunk Generator:
 
 ```c
 Step* step(Step* current) {
-    // [...]
+    // ..
     if (current->n == 0) {
         // Base case: create final step with result
         next_step->n = current->n;
