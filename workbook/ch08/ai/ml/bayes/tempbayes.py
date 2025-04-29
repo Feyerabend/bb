@@ -30,7 +30,7 @@ class NaiveBayes:
             for feature in x:
                 # naive assumption: features are independent
                 count = sum(1 for f in self.feature_counts[c] if f == feature)
-                likelihood *= (count + 1) / (len(self.feature_counts[c]) + 2)  # laplace smoothing
+                likelihood *= (count + 1) / (len(self.feature_counts[c]) + 2)  # Laplace smoothing
 
             probabilities[c] = prior * likelihood
 
@@ -47,7 +47,7 @@ class NaiveBayes:
 
             for feature in x:
                 count = sum(1 for f in self.feature_counts[c] if f == feature)
-                likelihood *= (count + 1) / (len(self.feature_counts[c]) + 2)  # laplace again
+                likelihood *= (count + 1) / (len(self.feature_counts[c]) + 2)  # Laplace again
 
             probabilities[c] = prior * likelihood
 
@@ -88,3 +88,11 @@ for reading in new_readings:
     predicted_class, probs = model.predict_with_probabilities(reading)
     print(f"Prediction for temperature {reading[0]}°C: {'Warning' if predicted_class == 1 else 'Normal'}, Probabilities: {probs}")
 
+# print the predictions
+for reading, prediction in zip(new_readings, predictions):
+    print(f"Prediction for temperature {reading[0]}°C: {'Warning' if prediction == 1 else 'Normal'}")
+
+# The model is a simple Naive Bayes classifier.
+# It assumes that the features are independent given the class label.
+# The model is trained on a small dataset and may not! generalise well to unseen data.
+# The model uses Laplace smoothing to handle zero probabilities.
