@@ -23,13 +23,8 @@ state models, trampolines, or continuations--all aim to decouple control decisio
 flexibility, efficiency, and modularity. These techniques are foundational for building interpreters, managing embedded
 protocols, optimising recursion, and handling complex execution paths in functional and system-level programming.
 
-| Mechanism       | Description                                                            | Use Cases                                            | Related Pattern(s)                     |
-|-----------------|------------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------|
-| [Dispatch](./dispatch/)        | Choose code to run based on input/state                                | Message dispatch, interpreters, drivers              | Command, Strategy                        |
-| [Jump Table](./jump/)      | Array of code addresses for fast branching                             | Opcode dispatch, switch-case replacement             | Direct dispatch idiom                   |
-| [Trampoline](./trampoline/)      | Loop-based control flow instead of recursion                           | Tail-call optimisation, interpreter loops            | Interpreter pattern                     |
-| [State Machine](./state/)   | Explicit modelling of transitions and states                            | Embedded control, protocols, parsing                 | State pattern                           |
-| [Continuation](./continue)    |  Representation of "what to do next" in execution                       | Functional languages, backtracking                   | CPS (Continuation-passing style)        |
+.. [CONTROL](./CONTROL.md)
+
 
 ### Memory & State Management
 
@@ -39,7 +34,7 @@ stack frames organise local data during nested or recursive calls, and backtrack
 to earlier states when encountering dead ends. These techniques are central to building interpreters, recovery
 systems, logic solvers, and any software requiring controlled exploration or structured undo capability.
 
-| Mechanism       | Description                                                            | Use Cases                                            | Related Pattern(s)                     |
+| Mechanism | Description | Use Cases | Related Pattern(s) |
 |-----------------|------------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------|
 | Checkpoint      | Save program state to resume from that point                           | Backtracking, recovery systems, interpreters         | Memento, Recovery                       |
 | Stack Frame     | Local storage for function calls                                        | Recursion, coroutines, nested procedures             | Call stack convention                   |
@@ -75,7 +70,7 @@ State Machine patterns to manage concurrency and control flow in a structured, n
 ### Conclusion
 
 *I became interested in low-level programming patterns in 1981 after reading two articles that described
-some of these techniques.[^modern] I thought, “Why not apply them in higher-level contexts?” At the time,
+some of these techniques.[^modern] I thought, "Why not apply them in higher-level contexts?" At the time,
 I had just started learning BASIC and machine/assembly programming, but had no experience or knowledge
 of computer science. Although I have saved copies of the articles all this time.*
 

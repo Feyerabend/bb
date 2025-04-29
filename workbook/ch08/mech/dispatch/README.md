@@ -83,13 +83,13 @@ Similarly, in C, we can replace switch-case with an array of function pointers:
 typedef void (*operation_func)();
 
 operation_func dispatch_table[] = {
-    [OP_ADD] = do_add,
-    [OP_SUB] = do_sub,
-    [OP_MUL] = do_mul,
+    do_add,    // Index 0 (OP_ADD)
+    do_sub,    // Index 1 (OP_SUB)
+    do_mul     // Index 2 (OP_MUL)
 };
 
-if (opcode >= 0 && opcode < sizeof(dispatch_table)/sizeof(dispatch_table[0])
-       && dispatch_table[opcode]) {
+// perform dispatch
+if (opcode >= 0 && opcode < sizeof(dispatch_table)/sizeof(dispatch_table[0])) {
     dispatch_table[opcode]();
 } else {
     unknown_opcode();
