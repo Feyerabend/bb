@@ -1,6 +1,6 @@
 /**
  * Command Pattern Implementation - Line Editor
- * 
+ * This example as editor is quite underwhelming, but that is not the point.
  * This example demonstrates the Command pattern with a simple line editor.
  * The Command pattern encapsulates actions as objects, allowing for:
  * - Parameterization of clients with different requests
