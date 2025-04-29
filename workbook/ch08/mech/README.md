@@ -34,11 +34,8 @@ stack frames organise local data during nested or recursive calls, and backtrack
 to earlier states when encountering dead ends. These techniques are central to building interpreters, recovery
 systems, logic solvers, and any software requiring controlled exploration or structured undo capability.
 
-| Mechanism | Description | Use Cases | Related Pattern(s) |
-|-----------------|------------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------|
-| Checkpoint      | Save program state to resume from that point                           | Backtracking, recovery systems, interpreters         | Memento, Recovery                       |
-| Stack Frame     | Local storage for function calls                                        | Recursion, coroutines, nested procedures             | Call stack convention                   |
-| Backtracking    | Reverting to previous states on failure                                | Logic programming, constraint solving                | Search tree, trail stack                |
+.. [MEMORY](./MEMORY.md)
+
 
 ### Event-Driven & Reactive
 
