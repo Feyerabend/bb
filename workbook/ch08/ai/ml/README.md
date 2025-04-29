@@ -44,7 +44,7 @@ analyze--building a foundation that scales naturally toward more advanced techni
 | Random Forest              | Supervised         | General-purpose                  | Ensemble of trees, reduces overfitting, less interpretable      |
 | Support Vector Machine     | Supervised         | High-dimensional classification  | Margin maximisation, kernel trick for non-linearity             |
 | K-Nearest Neighbours (KNN) | Supervised         | Classification, regression       | Instance-based, simple, no training phase                       |
-| Naive Bayes                | Supervised         | Text classification, spam filtering | Probabilistic, strong independence assumptions               |
+| [Naive Bayes](./bayes/)  | Supervised | Text classification, spam filtering | Probabilistic, strong independence assumptions |
 | Gradient Boosting (XGBoost, LightGBM) | Supervised | Structured data             | High accuracy, can overfit, less interpretable                    |
 | K-Means                    | Unsupervised       | Clustering, segmentation         | Simple, assumes spherical clusters, sensitive to initialisation |
 | DBSCAN                     | Unsupervised       | Clustering with noise            | Handles arbitrary shapes, density-based                         |
@@ -56,7 +56,6 @@ analyze--building a foundation that scales naturally toward more advanced techni
 | RNN / LSTM / GRU           | Supervised         | Sequence data (text, time-series)| Captures temporal dependencies, vanishing gradient challenges   |
 | GANs (Generative Adversarial Networks) | Unsupervised | Data generation          | Adversarial training, high-quality synthetic data                 |
 | [Reinforcement Learning](./../../../ch03/tictactoe/README.md) | Reinforcement | Game AI, robotics, control  | Trial-and-error learning, reward signal  |
-
 
 
 ### Language Models and Conventional Machine Learning Models
