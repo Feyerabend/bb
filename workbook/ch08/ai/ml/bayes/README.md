@@ -25,7 +25,7 @@ Where:
 The "naive" part comes from assuming that all features `xᵢ`
 are *conditionally independent* given the class `C`:
 
-```
+```math
 P(X | C) = ∏ P(xᵢ | C)
 ```
 
