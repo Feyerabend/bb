@@ -50,7 +50,7 @@ appropriate error handling code. Database systems employ transactions with check
 rollback mechanisms to ensure data integrity. Recursive algorithms rely heavily on stack
 frames to track nested function calls and maintain the correct state at each level of recursion.
 
-Game development utilizes checkpoints for save points and often employs backtracking algorithms
+Game development utilises checkpoints for save points and often employs backtracking algorithms
 for AI pathfinding. Debugging tools leverage stack frames to show call history and use checkpoints
 for state inspection, allowing developers to understand how a program reached a particular state.
 

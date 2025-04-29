@@ -32,8 +32,8 @@ of dispatch.
 Trampolines extend the dispatch concept by introducing a layer of indirection. Rather than
 jumping directly to the target function, execution "bounces" through an intermediate
 function--the trampoline. This extra step enables powerful capabilities like dynamically
-changing behavior at runtime, managing different calling conventions between language boundaries,
-or implementing tail-call optimization in environments that don't natively support it. Trampolines
+changing behaviour at runtime, managing different calling conventions between language boundaries,
+or implementing tail-call optimisation in environments that don't natively support it. Trampolines
 trade a small performance cost for significant flexibility in how control flows through a program.
 
 Continuations intersect with trampolines and represent a powerful control flow abstraction.
