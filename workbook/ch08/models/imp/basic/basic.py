@@ -420,6 +420,61 @@ class StopCommand(Command):
         print("STOP command executed. Exiting program.")
         sys.exit(0)
 
+class RenumberCommand(Command):
+    def execute(self, args: str) -> None:
+        if not self.state.code:
+            print("No program to renumber.")
+            return
+
+        old_lines = sorted(self.state.code.keys())
+        new_code = {}
+        line_mapping = {}
+        start_line = 10
+        increment = 10
+
+        for i, old_line in enumerate(old_lines):
+            new_line = start_line + i * increment
+            line_mapping[old_line] = new_line
+            new_code[new_line] = self.state.code[old_line]
+
+        for new_line in new_code:
+            new_code[new_line] = self.update_line_references(new_code[new_line], line_mapping)
+
+        self.state.code.clear()
+        self.state.code.update(new_code)
+        print("Program renumbered successfully.")
+
+    def update_line_references(self, line: str, line_mapping: dict) -> str:
+        parts = line.split(None, 1)
+        if not parts:
+            return line
+
+        cmd = parts[0].lower()
+        args = parts[1] if len(parts) > 1 else ""
+
+        if cmd in ["goto", "gosub"]:
+            try:
+                old_line = int(args.strip())
+                if old_line in line_mapping:
+                    return f"{cmd} {line_mapping[old_line]}"
+                else:
+                    print(f"Warning: Referenced line {old_line} in {cmd} does not exist.")
+                    return line
+            except ValueError:
+                return line
+
+        elif cmd == "if":
+            match = re.search(r'\bTHEN\b\s*(\d+)', args, re.IGNORECASE)
+            if match:
+                old_line = int(match.group(1))
+                if old_line in line_mapping:
+                    return line.replace(match.group(1), str(line_mapping[old_line]))
+                else:
+                    print(f"Warning: Referenced line {old_line} in IF...THEN does not exist.")
+            return line
+
+        return line
+
 class RunCommand(Command):
     def execute(self, args: str) -> None:
         if self.state.code:
@@ -439,6 +494,7 @@ class CommandFactory:
         "for": ForCommand,
         "next": NextCommand,
         "list": ListCommand,
+        "ren": RenumberCommand,
         "bye": ByeCommand,
         "stop": StopCommand,
         "end": StopCommand
