@@ -1,6 +1,9 @@
 
 ## Flavours of State Machines
 
+Besides the mechanical state machines presented below, you should also get
+aquainted with how the [State Pattern](./../../patterns/state/) can be used.
+
 
 ### 1. Deterministic Finite Automaton (DFA)
 
