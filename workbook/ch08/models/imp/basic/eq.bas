@@ -1,0 +1,5 @@
+10 IF "HELLO" = "HELLO" THEN GOTO 40
+20 PRINT "Not equal"
+30 END
+40 PRINT "Equal"
+50 END
