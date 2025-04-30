@@ -7,14 +7,14 @@ This is a Python-based BASIC interpreter implementing a subset of classic BASIC 
 - *Requirements*: Python 3.x.
 - *Interactive Mode*:
   ```bash
-  python3 basic_interpreter.py
+  python3 basic.py
   ```
   - Starts the interpreter with a `>` prompt.
   - Type commands or program lines (e.g., `10 PRINT "Hello"`).
   - Type `BYE` to exit.
 - *File Mode*:
   ```bash
-  python3 basic_interpreter.py program.bas
+  python3 basic.py program.bas
   ```
   - Loads and runs `program.bas`.
   - If interrupted (`Ctrl+C`), enters interactive mode.
