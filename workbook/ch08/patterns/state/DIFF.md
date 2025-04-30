@@ -16,25 +16,25 @@
 
 
 1. State Pattern is not driven by external input sequences
-Automata consume external symbols from an input string;
-State Pattern usually changes based on method calls or context changes, not a predefined symbol stream.
+- Automata consume external symbols from an input string;
+- State Pattern usually changes based on method calls or context changes, not a predefined symbol stream.
 
 2. Automata are declarative / formal; State Pattern is procedural / pragmatic
-Automata are “proof objects” — used to describe languages, prove decidability.
-State Pattern is about code organisation, not computation limits.
+- Automata are "proof objects", used to describe languages, prove decidability.
+- State Pattern is about code organisation, not computation limits.
 
 3. Extensibility
-Automata have a fixed state set (you don’t add new states at runtime).
-State Pattern can be extended by adding new State classes without modifying existing code (Open/Closed principle).
+- Automata have a fixed state set (you don’t add new states at runtime).
+- State Pattern can be extended by adding new State classes without modifying existing code (Open/Closed principle).
 
 4. Memory
-In automata, “memory” means formal auxiliary storage (none, stack, tape).
-In State Pattern, states can carry complex instance state and dependencies (not modeled in automata).
+- In automata, "memory" means formal auxiliary storage (none, stack, tape).
+- In State Pattern, states can carry complex instance state and dependencies (not modeled in automata).
 
 5. Reusability and polymorphism
-Automata states don’t share behaviour — they’re just abstract labels + transitions.
-In State Pattern, states can share code (inheritance, mixins, delegation).
+- Automata states don’t share behaviour, they’re just abstract labels + transitions.
+- In State Pattern, states can share code (inheritance, mixins, delegation).
 
 6. Semantic difference
-Automata are about recognition (deciding).
-State Pattern is about delegation (organising code paths).
+- Automata are about recognition (deciding).
+- State Pattern is about delegation (organising code paths).
