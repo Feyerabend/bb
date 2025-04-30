@@ -8,18 +8,18 @@ in a form close to their natural notation, freeing them from the tedious and err
 of programming in assembly language.  
 
 The first version, *FORTRAN I*, was released in 1957 for the IBM 704 computer. It was revolutionary
-because its compiler could produce code nearly as efficient as hand-written assembly—a feat many
+because its compiler could produce code nearly as efficient as hand-written assembly--a feat many
 believed impossible at the time. This efficiency, combined with its intuitive syntax for mathematical
 operations, made it an instant success in fields like physics, engineering, and applied mathematics.  
 
 Early FORTRAN introduced foundational programming concepts like loops (using *DO* statements),
-conditional branching (*IF*), and arrays. However, it had strict formatting rules—code had to be
+conditional branching (*IF*), and arrays. However, it had strict formatting rules--code had to be
 written in specific columns, with statement labels in columns 1-5 and actual code between columns
 7 and 72. Over time, the language evolved. *FORTRAN IV (1962)* improved reliability, and
 *FORTRAN 66* became the first standardised version, ensuring portability across different machines.  
 
 A major leap came with *FORTRAN 77*, which introduced structured programming features like
-*IF…THEN…ELSE*, reducing reliance on *GOTO* statements. But the language truly modernized with
+*IF…THEN…ELSE*, reducing reliance on *GOTO* statements. But the language truly modernised with
 *FORTRAN 90*, which allowed free-format code (no more column restrictions), added modules,
 recursion, dynamic memory allocation, and array operations. Later versions (*FORTRAN 95, 2003, 2008*)
 introduced object-oriented programming, interoperability with C, and parallel computing features
@@ -32,7 +32,7 @@ Many critical scientific libraries—like *LAPACK* and *BLAS*—are still writte
 legacy codes in aerospace, seismology, and structural engineering remain in active use.  
 
 Today, while newer languages like Python, C++, and Julia have gained popularity, FORTRAN persists
-due to its unmatched optimization in numerical computing and the prohibitive cost of rewriting
+due to its unmatched optimisation in numerical computing and the prohibitive cost of rewriting
 decades-old scientific code. Modern compilers (such as *Intel Fortran* and *GNU Fortran*)
 continue to optimise FORTRAN for cutting-edge hardware. Discussions around *Fortran 202X*
 suggest further enhancements in safety and modern programming features.  
@@ -80,7 +80,7 @@ end program array_ops
 Explanation:
 - Free-format (no column restrictions).  
 - `implicit none` enforces variable declaration (good practice).  
-- `arr = [1, 2, 3, 4, 5]` initializes an array.  
+- `arr = [1, 2, 3, 4, 5]` initialises an array.  
 - `arr = arr * 2` performs element-wise operations (a modern feature).  
 
 
