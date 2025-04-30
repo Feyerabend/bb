@@ -31,7 +31,7 @@ maintainability, scalability, and clarity.
 | Encapsulation | Hides object construction logic from the client |
 | Decoupling | Client code depends only on the abstract Product interface |
 | Flexibility | New concrete products can be introduced without modifying client code |
-| Maintainability | Centralized construction logic is easier to update |
+| Maintainability | Centralised construction logic is easier to update |
 
 
 
@@ -54,7 +54,7 @@ The construction of an 8-bit adder exemplifies a gradual development process, cu
 the final implementation presented ([04](./04/)). Throughout this progression, particular
 attention must be given to the *signatures* of the factory functions employed. Since the C
 programming language lacks inherent support for polymorphism, developers often emulate
-polymorphic behavior through explicit type casting and the application of uniform function
+polymorphic behaviour through explicit type casting and the application of uniform function
 interfaces.
 
 This technique, while effective, introduces potential risks related to type safety
@@ -146,7 +146,7 @@ Description
 
 The factory function now supports creation of two concrete products:
 HalfAdder and FullAdder.
-Both conform to the same Adder interface — compute function and opaque data pointer.
+Both conform to the same Adder interface--compute function and opaque data pointer.
 The client code uses both uniformly and does not need to know internal gate wiring.
 
 | Advantage | Description |
