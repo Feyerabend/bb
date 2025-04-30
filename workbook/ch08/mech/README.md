@@ -73,7 +73,7 @@ of computer science. Although I have saved copies of the articles all this time.
 
 [^modern]: The magazine was *Modern elektronik: med branschnyheter - teknik och ekonomi*. (1970-1992).
 Solna: Nordpress. Specifically by: Hans Beckman and Johan Finnved (1981) "Metodöversikt för mikrodatorprogrammerare",
-*Modern elektronik: med branschnyheter - teknik och ekonomi*, nr. 8:1-2, pp. ??
+*Modern elektronik: med branschnyheter - teknik och ekonomi*, nr. 8:1-2, pp. 35-38
 
 
 Modern programs rely on a set of *fundamental mechanisms* to manage execution control, concurrency, state, and
