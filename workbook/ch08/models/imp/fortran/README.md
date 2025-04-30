@@ -59,7 +59,7 @@ FORTRAN will endure.
 ```  
 
 Explanation:
-- Fixed-format (notice column restrictions—code starts at column 7).  
+- Fixed-format (notice column restrictions--code starts at column 7).  
 - `DO 10 I = 1, 5` defines a loop with a label (`10`) for the `CONTINUE` statement.  
 - `IF (I .EQ. 3)` checks if `I` equals 3.  
 - `PRINT *` outputs to the console.  
@@ -146,6 +146,6 @@ end program
 
 Explanation:
 - `this_image()` and `num_images()` are part of coarray features.  
-- Enables parallel execution (e.g., running on multiple CPU cores).  
+- Enables parallel execution (e.g. running on multiple CPU cores).  
 - Compile with `-fcoarray=` flag in GNU Fortran.  
 
