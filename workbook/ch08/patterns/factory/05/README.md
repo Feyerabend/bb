@@ -2,13 +2,9 @@
 ## Factory Method vs Abstract Factory  
 
 In software design, *creational patterns* abstract the process of object creation.
-Two foundational patterns in this category are *Factory Method* and *Abstract Factory*.  
+Two foundational patterns in this category are *Factory Method* and *Abstract Factory*.
 Though conceptually similar, both defer instantiation to subclasses or factories,
 their scope and intent differ in significant ways.
-
-This document provides a thorough, academic-style exposition of these patterns,
-illustrated with principles, characteristics, comparisons, and relevance to our
-*adder examples*.
 
 
 ### Factory Method Pattern
@@ -106,7 +102,10 @@ Abstract Factory focuses on producing *sets of related objects*.
 | Suitable when product families are not relevant | Suitable when *consistent sets* of products matter |
 
 - *Factory Method* excels at decoupling the creation of individual products.
-- *Abstract Factory* excels when *multiple products are interrelated* and must be used together coherently.
-- Our adder project *naturally evolved* from Factory Method (simple gate creation) to Abstract Factory (consistent families of gates used across complex components).
+- *Abstract Factory* excels when *multiple products are interrelated* and must
+  be used together coherently.
+- Our adder project *naturally evolved* from Factory Method (simple gate creation)
+  to Abstract Factory (consistent families of gates used across complex components).
 
-Both patterns improve *extensibility* and *decoupling*, but the choice depends on *the number of products* and *their relationships*.
+Both patterns improve *extensibility* and *decoupling*, but the choice depends on
+*the number of products* and *their relationships*.
