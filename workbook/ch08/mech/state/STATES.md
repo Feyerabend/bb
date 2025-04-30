@@ -1,6 +1,7 @@
 
 ## Flavours of State Machines
 
+
 ### 1. Deterministic Finite Automaton (DFA)
 
 A DFA has one clear transition per input in each state. The traffic light
@@ -230,3 +231,158 @@ if __name__ == "__main__":
 These examples use a traffic light system to illustrate the differences
 between DFA (predictable transitions), NFA (uncertain transitions),
 Mealy (input-dependent outputs), and Moore (state-dependent outputs).
+
+
+### 5. Pushdown Automaton (PDA)
+
+A PDA adds a stack to the finite automaton.
+This enables memory of arbitrary depth, useful when the traffic light logic depends on nested events
+(e.g., a sequence of emergencies that need to be cleared in order).
+
+The PDA tracks emergency override sequences.
+An emergency can stack multiple override requests, and they are cleared in LIFO (Last-In-First-Out) order.
+- States: Normal, Emergency
+- Inputs: Timer (T), Emergency (E), ClearEmergency (C)
+- Stack Symbols: E (emergency marker)
+- Transitions:
+    - Normal + Timer + ε → Normal (stack unchanged)
+	- Normal + Emergency + ε → Emergency, push E
+	- Emergency + Emergency + ε → Emergency, push E
+	- Emergency + ClearEmergency + E → Emergency (pop E)
+	- Emergency + ClearEmergency + empty stack → Normal
+	- Start State: Normal
+	- Stack Initially Empty
+
+```python
+class TrafficLightPDA:
+    def __init__(self):
+        self.state = "Normal"
+        self.stack = []
+    
+    def transition(self, input):
+        if self.state == "Normal":
+            if input == "Timer":
+                return "Normal cycle continues"
+            elif input == "Emergency":
+                self.stack.append('E')
+                self.state = "Emergency"
+                return "Emergency override engaged"
+        elif self.state == "Emergency":
+            if input == "Emergency":
+                self.stack.append('E')
+                return "Additional emergency stacked"
+            elif input == "ClearEmergency":
+                if self.stack:
+                    self.stack.pop()
+                    if not self.stack:
+                        self.state = "Normal"
+                        return "All emergencies cleared, return to normal"
+                    return "One emergency cleared, remaining in override"
+        return "Invalid Input"
+
+# Usage
+if __name__ == "__main__":
+    light = TrafficLightPDA()
+    print(light.transition("Timer"))         # Normal cycle continues
+    print(light.transition("Emergency"))     # Emergency override engaged
+    print(light.transition("Emergency"))     # Additional emergency stacked
+    print(light.transition("ClearEmergency"))# One emergency cleared
+    print(light.transition("ClearEmergency"))# All emergencies cleared
+```
+
+Key Idea: PDA can remember nested events — something DFAs cannot.
+
+
+### 6. Turing Machine (TM)
+
+A Turing machine generalises further with an infinite tape (memory)
+and a read/write head that can move left and right.
+It is capable of general computation, not just state-based control.
+
+A traffic light controller that records a history of light cycles
+on the tape and can rewind/replay for analysis or debugging.
+- States: Red, Green, Yellow, Reviewing
+- Tape Alphabet: {R, G, Y, _} (underscore is blank)
+- Inputs: Timer (T), Emergency (E), Review (V), EndReview (X)
+- Head Operations:
+	- Write R, G, Y for each state
+	- On Review (V), switch to Reviewing state and move head left
+	- On EndReview (X), return to normal and move head right to resume
+
+```python
+class TrafficLightTM:
+    def __init__(self):
+        self.state = "Red"
+        self.tape = ['R'] + ['_'] * 100  # finite tape for example
+        self.head = 1  # position after initial Red
+    
+    def write_state(self, symbol):
+        self.tape[self.head] = symbol
+        self.head += 1
+    
+    def transition(self, input):
+        if self.state in ["Red", "Green", "Yellow"]:
+            if input == "Timer":
+                if self.state == "Red":
+                    self.state = "Green"
+                    self.write_state('G')
+                    return "Switch to Green"
+                elif self.state == "Green":
+                    self.state = "Yellow"
+                    self.write_state('Y')
+                    return "Switch to Yellow"
+                elif self.state == "Yellow":
+                    self.state = "Red"
+                    self.write_state('R')
+                    return "Switch to Red"
+            elif input == "Emergency":
+                self.state = "Red"
+                self.write_state('R')
+                return "Emergency: Switch to Red"
+            elif input == "Review":
+                self.state = "Reviewing"
+                self.head -= 1
+                return "Entering review mode"
+        elif self.state == "Reviewing":
+            if input == "EndReview":
+                self.state = "Red"
+                self.head = len([c for c in self.tape if c in "RGY"])
+                return "Exit review mode, resume control"
+            else:
+                current = self.tape[self.head]
+                self.head = max(0, self.head - 1)
+                return f"Reviewing: {current}"
+        return "Invalid Input"
+
+# Usage
+if __name__ == "__main__":
+    light = TrafficLightTM()
+    print(light.transition("Timer"))      # Switch to Green
+    print(light.transition("Timer"))      # Switch to Yellow
+    print(light.transition("Timer"))      # Switch to Red
+    print(light.transition("Review"))     # Entering review mode
+    print(light.transition("Timer"))      # Reviewing: Y
+    print(light.transition("Timer"))      # Reviewing: G
+    print(light.transition("EndReview"))  # Exit review mode
+```
+
+Key Idea: The Turing Machine has unlimited memory and control,
+it can simulate logging, analysis, and arbitrary processing of traffic data.
+
+
+### Summary
+
+| Machine Type | Memory | Traffic Light Feature Example |
+|--------------|--------|-------------------------------|
+| DFA | None | Basic cycling |
+| NFA | None (non-determinism) | Faulty timer |
+| Mealy | None | Input-based driver signals |
+| Moore | None | State-based driver signals |
+| PDA | Stack | Remember pedestrian requests |
+| TM | Infinite tape | Log and correct event history |
+
+When to use which?
+- DFA/NFA: Simple controllers, no memory.
+- Mealy/Moore: Reactive systems giving outputs to users.
+- PDA: Context-sensitive control (nested conditions, undo stacks).
+- TM: Full programmable logic, history management, complex control.
