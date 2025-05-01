@@ -2,8 +2,12 @@
 # Workbook
 
 - graphics
-- modules
-- api
+    - (3d simple Clifford vs trad.)
+    - 2d (ps/svg)
+- artifacts
+    - modules
+    - apis
+    - minilang
 
 
 ideas?
