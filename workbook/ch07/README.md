@@ -1,11 +1,15 @@
 # From Basics To Bytecode: A guide to computers and programming
 # Workbook
 
+- graphics
+- modules
+- api
+
+
 ideas?
 - security
 - legacy
 - refactor
-
 
 
 HotDraw originally in SmallTalk 92
