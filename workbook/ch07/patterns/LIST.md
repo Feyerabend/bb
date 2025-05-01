@@ -18,7 +18,7 @@ Gang-of-Four patterns .. + 3 others
 | Builder            | Creational      | Separate construction of a complex object from its representation | Object configurators, UI builders               | GoF            |
 | Prototype          | Creational      | Clone existing objects instead of creating new ones              | Object pools, data templates                     | GoF            |
 | Mediator           | Behavioural      | Centralise complex communication between objects                 | Chat servers, air traffic control systems        | GoF            |
-| [Visitor](./visitor/] | Behavioural | Separate an algorithm from the objects it operates on | Compilers, AST traversal, document processing | GoF |
+| [Visitor](./visitor/) | Behavioural | Separate an algorithm from the objects it operates on | Compilers, AST traversal, document processing | GoF |
 | [Dependency Injection](./combined/os/DEPENDENCY.md) | Structural | Provide dependencies from the outside | Testable systems, service wiring | Post-GoF |
 | [Null Object](./null/) | Behavioural | Use an object with default behaviour instead of `null` | Safe iteration, fault-tolerant systems | Post-GoF |
 | [Event Bus](./event/) | Behavioural | Decouple senders from receivers using a publish/subscribe model | UI events, logging systems | Post-GoF |
