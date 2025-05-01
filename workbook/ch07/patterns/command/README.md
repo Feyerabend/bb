@@ -91,6 +91,8 @@ Advantages Achieved
   command class without changing other parts of the system.
 - The editor remains decoupled from the details of how text is modified.
 
+See another example of patterns used in a simple
+[BASIC interpreter](./../visitor/basic.py), together with the visitor pattern.
 
 ### Summary
 
