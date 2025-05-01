@@ -54,3 +54,6 @@ most applicable to the situation.
 - Maintains a reference to the head node
 - Delegates operations to appropriate visitors
 
+
+More on [design patterns](./../../patterns/), especially on
+the [visitor](./../../patterns/visitor/) pattern.
