@@ -133,7 +133,7 @@ automatically (doesn't restart from zero).
 
 #### Bottom line
 
-These scripts illustrate checkpointing with:
-– Data file generation (generate_numbers.py)
-– Checkpoint handling library (checkpoint_stream.py)
-– Stream processor with checkpoints (generator_checkpoint.py)
+These scripts illustrate checkpointing with
+- Data file generation (generate_numbers.py)
+- Checkpoint handling library (checkpoint_stream.py)
+- Stream processor with checkpoints (generator_checkpoint.py)
