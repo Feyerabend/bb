@@ -42,136 +42,142 @@ but why it works the way it does.
 | AspectJ      | Aspects, join points, advice, weaving, cross-cutting concerns             |
 
 
-### Constructions in Relation to Models
-
+### Constructions in Relation to Models (numbered)
 
 | Paradigm / Model          | Construction                                    |
 |---------------------------|-------------------------------------------------|
-| Imperative                | Mutable variables                               |
-|                           | Assignment statements                           |
-|                           | Sequence of statements                          |
-|                           | Loops                                           |
-|                           | Conditionals                                    |
-|                           | Function/procedure calls                        |
-|                           | Explicit control flow*                          |
-|                           | Side effects                                    |
-|                           | Procedure abstraction                           |
-| Functional                | First-class functions*                          |
-|                           | Higher-order functions*                         |
-|                           | Pure functions*                                 |
-|                           | Immutability*                                   |
-|                           | Recursion*                                      |
-|                           | Lazy evaluation                                 |
-|                           | Closures*                                       |
-|                           | Currying                                        |
-|                           | Partial application                             |
-|                           | Algebraic data types (ADTs)*                    |
-|                           | Pattern matching*                               |
-|                           | Type inference                                  |
-|                           | Parametric polymorphism (generics)*             |
-|                           | Monads                                          |
-|                           | Functors                                        |
-|                           | Applicatives                                    |
-|                           | Tail call optimisation                          |
-| Object-Oriented           | Classes and objects                             |
-|                           | Encapsulation*                                  |
-|                           | Inheritance                                     |
-|                           | Polymorphism (subtype)                          |
-|                           | Method overriding                               |
-|                           | Method overloading                              |
-|                           | Constructors/destructors                        |
-|                           | Interfaces / Abstract classes                   |
-|                           | Access modifiers                                |
-|                           | Composition                                     |
-|                           | Generics*                                       |
-|                           | Static methods / Static variables               |
-|                           | Mixins / Traits                                 |
-| Event-Driven              | Event loops                                     |
-|                           | Event handlers                                  |
-|                           | Callbacks*                                      |
-|                           | Asynchronous execution*                         |
-|                           | Observer pattern*                               |
-|                           | Signals and slots                               |
-|                           | Publish/subscribe pattern*                      |
-|                           | State machines*                                 |
-| Concurrent                | Threads                                         |
-|                           | Processes                                       |
-|                           | Locks                                           |
-|                           | Semaphores                                      |
-|                           | Monitors                                        |
-|                           | Atomic operations                               |
-|                           | Message passing*                                |
-|                           | Futures / Promises*                             |
-|                           | Parallelism                                     |
-|                           | Barriers                                        |
-|                           | Condition variables                             |
-|                           | Thread pools                                    |
-|                           | Software transactional memory                   |
-| Concatenative             | Stack-based execution                           |
-|                           | Postfix notation                                |
-|                           | Function composition*                           |
-|                           | Point-free style                                |
-|                           | Implicit argument passing                       |
-|                           | Small reusable combinators                      |
-|                           | Lack of named variables                         |
-| Logic                     | Facts                                           |
-|                           | Rules                                           |
-|                           | Queries                                         |
-|                           | Unification                                     |
-|                           | Backtracking                                    |
-|                           | Cut operator                                    |
-|                           | Definite clause grammars                        |
-|                           | Meta-programming                                |
-| Procedural                | Procedures                                      |
-|                           | Control structures (loops, conditionals)*       |
-|                           | Modularisation                                  |
-|                           | Call stack                                      |
-|                           | Pass-by-value / Pass-by-reference               |
-|                           | Static/global variables                         |
-|                           | Explicit sequencing*                            |
-| Declarative               | Pattern matching*                               |
-|                           | Constraints                                     |
-|                           | Rules*                                          |
-|                           | SQL-style queries                               |
-|                           | Functional relations*                           |
-|                           | Property declarations                           |
-|                           | Comprehensions                                  |
-| Reactive                  | Data streams                                    |
-|                           | Observers/subscribers*                          |
-|                           | Push-based updates                              |
-|                           | Backpressure                                    |
-|                           | Observable sequences                            |
-|                           | Operators (map, filter, merge, zip)*            |
-|                           | Hot vs cold observables                         |
-|                           | Reactive extensions (Rx)                        |
-|                           | Event emitters                                  |
-| Aspect-Oriented           | Aspects                                         |
-|                           | Join points                                     |
-|                           | Pointcuts                                       |
-|                           | Advice (before, after, around)                  |
-|                           | Weaving                                         |
-|                           | Cross-cutting concerns                          |
-|                           | Interceptors / Decorators*                      |
+| Imperative                | Mutable variables (1)                           |
+|                           | Assignment statements (2)                       |
+|                           | Sequence of statements (3)                      |
+|                           | Loops (4)                                       |
+|                           | Conditionals (5)                                |
+|                           | Function/procedure calls (6)                    |
+|                           | Explicit control flow* (3, 7)                   |
+|                           | Side effects (8)                                |
+|                           | Procedure abstraction (9)                       |
+| Functional                | First-class functions* (10)                     |
+|                           | Higher-order functions* (10)                    |
+|                           | Pure functions* (11)                            |
+|                           | Immutability* (12)                              |
+|                           | Recursion* (13)                                 |
+|                           | Lazy evaluation (14)                            |
+|                           | Closures* (10)                                  |
+|                           | Currying (15)                                   |
+|                           | Partial application (16)                        |
+|                           | Algebraic data types (ADTs)* (17)               |
+|                           | Pattern matching* (17)                          |
+|                           | Type inference (18)                             |
+|                           | Parametric polymorphism (generics)* (19)        |
+|                           | Monads (20)                                     |
+|                           | Functors (21)                                   |
+|                           | Applicatives (22)                               |
+|                           | Tail call optimisation (23)                     |
+| Object-Oriented           | Classes and objects (24)                        |
+|                           | Encapsulation* (25)                             |
+|                           | Inheritance (26)                                |
+|                           | Polymorphism (subtype) (27)                     |
+|                           | Method overriding (28)                          |
+|                           | Method overloading (29)                         |
+|                           | Constructors/destructors (30)                   |
+|                           | Interfaces / Abstract classes (31)              |
+|                           | Access modifiers (32)                           |
+|                           | Composition (33)                                |
+|                           | Generics* (19)                                  |
+|                           | Static methods / Static variables (34)          |
+|                           | Mixins / Traits (35)                            |
+| Event-Driven              | Event loops (36)                                |
+|                           | Event handlers (37)                             |
+|                           | Callbacks* (38)                                 |
+|                           | Asynchronous execution* (39)                    |
+|                           | Observer pattern* (40)                          |
+|                           | Signals and slots (41)                          |
+|                           | Publish/subscribe pattern* (40)                 |
+|                           | State machines* (42)                            |
+| Concurrent                | Threads (43)                                    |
+|                           | Processes (44)                                  |
+|                           | Locks (45)                                      |
+|                           | Semaphores (46)                                 |
+|                           | Monitors (47)                                   |
+|                           | Atomic operations (48)                          |
+|                           | Message passing* (49)                           |
+|                           | Futures / Promises* (50)                        |
+|                           | Parallelism (51)                                |
+|                           | Barriers (52)                                   |
+|                           | Condition variables (53)                        |
+|                           | Thread pools (54)                               |
+|                           | Software transactional memory (55)              |
+| Concatenative             | Stack-based execution (56)                      |
+|                           | Postfix notation (57)                           |
+|                           | Function composition* (10)                      |
+|                           | Point-free style (58)                           |
+|                           | Implicit argument passing (59)                  |
+|                           | Small reusable combinators (60)                 |
+|                           | Lack of named variables (61)                    |
+| Logic                     | Facts (62)                                      |
+|                           | Rules* (63)                                     |
+|                           | Queries (64)                                    |
+|                           | Unification (65)                                |
+|                           | Backtracking (66)                               |
+|                           | Cut operator (67)                               |
+|                           | Definite clause grammars (68)                   |
+|                           | Meta-programming (69)                           |
+| Procedural                | Procedures (9)                                  |
+|                           | Control structures (loops, conditionals)* (4,5) |
+|                           | Modularisation (70)                             |
+|                           | Call stack (71)                                 |
+|                           | Pass-by-value / Pass-by-reference (72)          |
+|                           | Static/global variables (73)                    |
+|                           | Explicit sequencing* (3,7)                      |
+| Declarative               | Pattern matching* (17)                          |
+|                           | Constraints (74)                                |
+|                           | Rules* (63)                                     |
+|                           | SQL-style queries (75)                          |
+|                           | Functional relations* (76)                      |
+|                           | Property declarations (77)                      |
+|                           | Comprehensions (78)                             |
+| Reactive                  | Data streams (79)                               |
+|                           | Observers/subscribers* (40)                     |
+|                           | Push-based updates (80)                         |
+|                           | Backpressure (81)                               |
+|                           | Observable sequences (82)                       |
+|                           | Operators (map, filter, merge, zip)* (83)       |
+|                           | Hot vs cold observables (84)                    |
+|                           | Reactive extensions (Rx) (85)                   |
+|                           | Event emitters (86)                             |
+| Aspect-Oriented           | Aspects (87)                                    |
+|                           | Join points (88)                                |
+|                           | Pointcuts (89)                                  |
+|                           | Advice (before, after, around) (90)             |
+|                           | Weaving (91)                                    |
+|                           | Cross-cutting concerns (92)                     |
+|                           | Interceptors / Decorators* (93)                 |
 
+#### Common constructions (numbered)
 
-#### Common constructions (*)
+Features appearing across multiple paradigms:
 
-Features that appear across multiple paradigms:
-- First-class functions, higher-order functions, closures, function composition:
-  Found in FP, Concatenative, Event-driven, Reactive → Encourages abstraction and reuse
-- Recursion, pattern matching, ADT (Algebraic data types):
-  Found in FP, Declarative, Logic → Strengthens declarative & structural expression
-- Callbacks, asynchronous execution, observers/subscribers:
+- *(10)* First-class functions, higher-order functions, closures, function composition:  
+  FP, Concatenative, Event-driven, Reactive → Encourages abstraction and reuse
+
+- *(13,17)* Recursion, pattern matching, ADT (Algebraic data types):  
+  FP, Declarative, Logic → Strengthens declarative & structural expression
+
+- *(38,39,40)* Callbacks, asynchronous execution, observers/subscribers:  
   Event-driven, Reactive, Concurrent → Drives concurrency and reactive data flow
-- Explicit control flow, procedures, control structures (loops/conditionals):
+
+- *(3,4,5,7)* Explicit control flow, procedures, control structures (loops/conditionals):  
   Imperative, Procedural → Enables low-level control
-- Generics / Parametric polymorphism:
+
+- *(19)* Generics / Parametric polymorphism:  
   FP, OO → Boosts type abstraction and reusable code
-- Observer pattern, publish/subscribe pattern:
+
+- *(40)* Observer pattern, publish/subscribe pattern:  
   Event-driven, Reactive → Enables decoupled event propagation
-- Message passing, futures/promises:
+
+- *(49,50)* Message passing, futures/promises:  
   Concurrent, Event-driven → Supports safe concurrency models
-- Interceptors / Decorators:
+
+- *(93)* Interceptors / Decorators:  
   AOP, OO, FP → Allows cross-cutting or extensible behavior injection
 
 Implications
