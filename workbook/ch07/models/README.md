@@ -144,3 +144,18 @@ help us reason about programming but are not absolute. Many concepts exist at th
 of multiple classifications, making it difficult to draw strict boundaries. Instead of
 thinking in rigid categories, it's often more useful to see programming concepts as
 *interconnected ideas* that influence each other in various ways.
+
+
+### Constructions
+
+In programming, [*constructions* (or *abstractions*)](./constructions/) refer to recurring
+patterns of computation and control that are present across different programming paradigms
+(or models). These constructions are the building blocks of software development, but they
+transcend specific syntax or language features. Rather than focusing solely on the *syntax*
+of a language, *constructions* highlight how computations are structured and organised,
+regardless of the language being used.
+
+For instance, a loop is a construction that can be found in imperative languages, functional
+languages, and even object-oriented programming (OOP). Although the syntax for writing loops
+differs between these languages, the underlying abstraction--the repetition of code under a
+condition--remains the same.

@@ -71,6 +71,21 @@ entry into writing runnable code. Ideally, an effective learning process balance
 between abstract understanding and concrete application to reinforce both perspectives simultaneously.
 
 
+See e.g.
+
+*	Sebesta, Robert W. (2016). *Concepts of Programming Languages*. This is a well-known textbook
+in which the author introduces high-level abstractions and paradigms before diving into the
+specifics of language syntax, emphasising the conceptual understanding of programming constructs
+like loops, functions, and data types. His approach may present syntax alongside concepts,
+potentially leading to a language-centric perspective.
+
+* Sethi, R. (1996). *Programming languages: Concepts and constructs* (2nd ed.). Addison-Wesley.
+The book emphasis on conceptual abstractions before syntax offers a pathway to understanding
+programming that is less tied to specific languages, aligning with the idea of learning
+constructions before syntax.
+
+
+
 ### Constructions in Relation to Models / Paradigms
 
 | Paradigm / Model          | Construction                                    |

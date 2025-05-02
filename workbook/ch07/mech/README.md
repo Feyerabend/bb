@@ -17,24 +17,22 @@ interrupt handling, lock-free programming, and real-time systems where timing an
 
 ### Control Flow & Dispatch
 
-Control flow and dispatch mechanisms provide structured ways to manage "what happens next" during program execution,
-whether by selecting actions, organising states, or deferring computation. Despite differing in form--dispatch tables,
-state models, trampolines, or continuations--all aim to decouple control decisions from rigid call structures, enabling
-flexibility, efficiency, and modularity. These techniques are foundational for building interpreters, managing embedded
-protocols, optimising recursion, and handling complex execution paths in functional and system-level programming.
-
-.. [CONTROL](./CONTROL.md)
+[Control flow and dispatch mechanisms](./CONTROL.md) provide structured ways to manage "what happens next"
+during program execution, whether by selecting actions, organising states, or deferring computation. Despite
+differing in form--dispatch tables, state models, trampolines, or continuations--all aim to decouple control
+decisions from rigid call structures, enabling flexibility, efficiency, and modularity. These techniques
+are foundational for building interpreters, managing embedded protocols, optimising recursion, and handling
+complex execution paths in functional and system-level programming.
 
 
 ### Memory & State Management
 
-State management mechanisms control how a program preserves, restores, and navigates its execution history,
-especially in complex or failure-prone scenarios. Checkpoints capture program state for resumption or recovery,
-stack frames organise local data during nested or recursive calls, and backtracking systematically reverts
-to earlier states when encountering dead ends. These techniques are central to building interpreters, recovery
-systems, logic solvers, and any software requiring controlled exploration or structured undo capability.
-
-.. [MEMORY](./MEMORY.md)
+[State management mechanisms](./MEMORY.md) control how a program preserves, restores, and navigates its
+execution history, especially in complex or failure-prone scenarios. Checkpoints capture program state
+for resumption or recovery, stack frames organise local data during nested or recursive calls, and backtracking
+systematically reverts to earlier states when encountering dead ends. These techniques are central to building
+interpreters, recovery systems, logic solvers, and any software requiring controlled exploration or structured
+undo capability.
 
 
 ### Event-Driven & Reactive
