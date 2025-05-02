@@ -227,6 +227,7 @@ __Example 1__
 *Concept*: Functions can be passed as arguments, returned from other
 functions, and assigned to variables--just like data.
 
+Python
 ```python
 def square(x):
     return x * x
@@ -238,6 +239,7 @@ result = apply_function(square, 5)
 print(result)
 ```
 
+C
 ```c
 #include <stdio.h>
 
