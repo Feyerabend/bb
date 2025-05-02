@@ -362,6 +362,8 @@ also deepen your understanding of how language design shapes program structure a
 Build a practical catalog that demonstrates fundamental language constructions
 across multiple paradigms and languages.
 
+Extend First-class functions and Threads from above in [Catalog](./catalog/).
+
 Structure
 - Each construction is documented with:
 - A conceptual explanation (what it is, why it matters)
@@ -385,8 +387,6 @@ Suggested initial constructions:
 | Threads              | Concurrent             | Explicit concurrency      |
 | Event handlers       | Event-driven           | Input/output responsiveness |
 | Pattern matching     | Functional / Declarative | Structural decomposition |
-
-(Cf. First-class functions and Threads above)
 
 
 __Output Format (GitHub-friendly)__
