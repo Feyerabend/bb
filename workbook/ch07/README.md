@@ -1,11 +1,19 @@
 # From Basics To Bytecode: A guide to computers and programming
 # Workbook
 
+- graphics
+    - (3d simple Clifford vs trad.)
+    - 2d (ps/svg)
+- artifacts
+    - modules
+    - apis
+    - minilang
+
+
 ideas?
 - security
 - legacy
 - refactor
-
 
 
 HotDraw originally in SmallTalk 92
