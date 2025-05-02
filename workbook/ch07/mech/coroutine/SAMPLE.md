@@ -94,5 +94,3 @@ for concurrent workloads where you mix I/O or multiple tasks.
 | generator_checkpoint.py | Plain generator             | Simple, minimal dependencies                                        |
 | async_checkpoint.py     | Coroutine / async generator | If integrating into larger async system (e.g. network I/O, other coroutines) |
 
-
-Would you like a **single reusable snippet** that can be copied to both scripts’ explanations identically? I can collapse it if you prefer less duplication.
