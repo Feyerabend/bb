@@ -21,6 +21,7 @@ Key characteristics:
 
 Comparison with Related Concepts
 |Feature	| Functions (Subroutines)	| Threads	| Coroutines|
+|--|--|--|--|
 |Execution	| Runs to completion	| Preemptive scheduling	| Cooperative yielding|
 |Concurrency	| No	|Parallel (if multi-core)	|Single-threaded concurrency|
 |State	| Lost after return	|OS-managed stack	|Preserved across yields|
