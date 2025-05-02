@@ -258,7 +258,7 @@ int main() {
 }
 ```
 
-*Construction* emphasis*: First-class functions enable abstraction over
+*Construction*: First-class functions enable abstraction over
 behaviour--we pass functions as arguments to generalise computation patterns.
 
 
