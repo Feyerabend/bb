@@ -2,8 +2,8 @@
 #include "adder.h"
 
 int main() {
-    uint8_t a = 0xD5; // 213
-    uint8_t b = 0x67; // 103
+    uint8_t a = 0xD5; // 213 = 0b11010101
+    uint8_t b = 0x67; // 103 = 0b01100111
     uint8_t sum = 0, cout = 0;
 
     Adder byte_adder = create_adder(BYTE_ADDER);
