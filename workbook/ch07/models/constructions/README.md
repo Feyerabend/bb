@@ -40,6 +40,9 @@ but why it works the way it does.
 | Elm          | Pure functions, pattern matching, ADTs, subscriptions, signals            |
 | AspectJ      | Aspects, join points, advice, weaving, cross-cutting concerns             |
 
+
+#### Learning a Language
+
 One effective approach to learning a *new-to-you* programming language is to first study the
 *programming constructions and abstractions* it supports, before delving into its concrete
 syntax and language-specific details. By understanding the kinds of operations, control structures,
@@ -48,7 +51,8 @@ language is intended to be used and *why* certain patterns or idioms are common.
 familiar with these underlying constructions, learning the actual syntax becomes a process
 of mapping familiar concepts to their syntactic representations, rather than trying to memorise
 isolated language rules without context. This strategy accelerates both comprehension and
-practical fluency.
+practical fluency. But this approach is most beneficial when you are already confident in one or
+several languages.
 
 Most books and learning courses do not adopt this construction-first approach. Instead, they
 typically begin with the *syntax* of the language, introducing variables, control structures,
@@ -61,7 +65,7 @@ tightly coupled (such as C or Python), early exposure to syntax can give an impl
 understanding of some language behaviors even before formal abstractions are introduced.
 
 Taken together, both approaches have complementary strengths. Starting with *constructions*
-builds a deeper conceptual foundation and prepares you to recognize patterns across different
+builds a deeper conceptual foundation and prepares you to recognise patterns across different
 languages, while starting with *syntax* offers faster practical engagement and a smoother
 entry into writing runnable code. Ideally, an effective learning process balances both--alternating
 between abstract understanding and concrete application to reinforce both perspectives simultaneously.
@@ -212,6 +216,92 @@ Implications
 - Procedural + Imperative is often the "baseline" for control flow, extended by most paradigms
 
 
+#### Examples
+
+1. First-class functions / Higher-order functions (10)
+2. Threads (Concurrent) — (43)
+
+
+__Example 1__
+
+*Concept*: Functions can be passed as arguments, returned from other
+functions, and assigned to variables--just like data.
+
+```python
+def square(x):
+    return x * x
+
+def apply_function(f, value):
+    return f(value)
+
+result = apply_function(square, 5)
+print(result)
+```
+
+```c
+#include <stdio.h>
+
+int square(int x) {
+    return x * x;
+}
+
+int apply_function(int (*func)(int), int value) {
+    return func(value);
+}
+
+int main() {
+    int result = apply_function(square, 5);
+    printf("%d\n", result);
+    return 0;
+}
+```
+
+*Construction* emphasis*: First-class functions enable abstraction over
+behaviour--we pass functions as arguments to generalise computation patterns.
+
+
+__Example 2__
+
+*Concept*: Concurrent execution of multiple flows of control.
+
+C (POSIX threads)
+
+```c
+#include <stdio.h>
+#include <pthread.h>
+
+void* say_hello(void* arg) {
+    printf("Hello from thread!\n");
+    return NULL;
+}
+
+int main() {
+    pthread_t t;
+    pthread_create(&t, NULL, say_hello, NULL);
+    pthread_join(t, NULL);
+    printf("Back in main thread.\n");
+    return 0;
+}
+```
+
+Python (threading)
+
+```python
+import threading
+
+def say_hello():
+    print("Hello from thread!")
+
+t = threading.Thread(target=say_hello)
+t.start()
+t.join()
+print("Back in main thread.")
+```
+
+*Construction*: Threads allow explicit concurrent execution: two (or more) flows of control in parallel.
+
+
+
 ### Projects
 
 If you want to engage directly with how theoretical commitments shape programming languages,
@@ -262,3 +352,71 @@ choices about which constructions you favour and why.
 These projects are manageable: if scoped carefully. They not only develop technical skill but
 also deepen your understanding of how language design shapes program structure and reasoning.
 
+
+### Extended Project
+
+*Cross-language Programming Constructions Catalog*
+
+Build a practical catalog that demonstrates fundamental language constructions
+across multiple paradigms and languages.
+
+Structure
+- Each construction is documented with:
+- A conceptual explanation (what it is, why it matters)
+- Minimal working code examples in 2–3 languages (starting with C and Python)
+- Comparative commentary (how it differs / is expressed differently in the languages)
+
+#### Scope (Phase 1)
+
+Pick 8–12 constructions that cover core paradigms
+(Small enough to finish, broad enough to be useful)
+
+Suggested initial constructions:
+
+| Construction         | Paradigm               | Notes                     |
+|----------------------|------------------------|---------------------------|
+| Mutable variables    | Imperative             | Foundational              |
+| Loops                | Imperative             | Common control structure  |
+| First-class functions| Functional             | Highlights abstraction    |
+| Recursion            | Functional             | Alternative to loops      |
+| Classes/objects      | Object-Oriented (OOP)  | Encapsulation / modeling  |
+| Threads              | Concurrent             | Explicit concurrency      |
+| Event handlers       | Event-driven           | Input/output responsiveness |
+| Pattern matching     | Functional / Declarative | Structural decomposition |
+
+(Cf. First-class functions and Threads above)
+
+
+__Output Format (GitHub-friendly)__
+
+One construction = one Markdown file
+Folder structure something like:
+
+```
+/catalog/
+    /01_mutable_variables/
+        CONCEPT.md
+        example.c
+        example.py
+    /02_loops/
+        ..
+```
+
+'CONCEPT.md' contains:
+- Definition
+- Why important
+- Examples in C/Python
+- Commentary (language contrasts)
+
+
+Benefits
+- Systematic, reusable reference for learners and teachers: Share
+- Forces deep understanding of core cross-language ideas
+- Clean project for GitHub portfolio (shows clarity, pedagogy, breadth)
+
+
+__Possible extensions (Phase 2)__
+
+- Add more languages (e.g. JavaScript, Haskell, Rust)
+- Add unit tests / demo apps for each example
+- Build interactive docs / web version later
