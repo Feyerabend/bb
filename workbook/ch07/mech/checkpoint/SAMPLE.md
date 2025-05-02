@@ -21,6 +21,56 @@ and continues where it left off.
 Both scripts demonstrate the same core idea, but with different Python mechanisms.
 
 
+#### Typical workflow
+
+1. Generate data file once
+
+```shell
+python3 generate_numbers.py
+```
+
+2. Run the processor script: *resume-able* processing
+
+```shell
+python3 generator_checkpoint.py
+```
+
+3. To start fresh, delete checkpoint.json.
+Processor will start from the beginning of the file.
+
+```shell
+rm checkpoint.json
+python3 generator_checkpoint.py
+```
+
+__Stopping the script mid-run__
+
+While `generator_checkpoint.py` is running, you can *stop it manually* to simulate an
+unexpected interruption (like a crash).  This will allow you to test whether the
+*checkpointing* works as expected.
+
+To stop the script cleanly:
+
+- On *Mac/Linux*: Press `Ctrl+C`
+- On *Windows* (in Command Prompt): Press `Ctrl+C`
+
+This sends a *KeyboardInterrupt* to the Python program, which will terminate it immediately.  
+When you restart the script with:
+
+```bash
+python3 generator_checkpoint.py
+```
+.. it should resume from where it left off by reading the checkpoint.json file.
+
+If you want to *start over completely* (ignoring old checkpoints), delete the checkpoint.json
+file in the working directory before restarting the script:
+
+```shell
+rm checkpoint.json
+python3 generator_checkpoint.py
+```
+
+
 #### `generate_numbers.py`
 
 *Purpose*: Creates a large file of numbers for processing (numbers.txt).
@@ -79,57 +129,6 @@ If it crashes or you stop it midway, rerunning it resumes from the last saved ch
 automatically (doesn't restart from zero).
 
 'checkpoint.json' stores the last position and current sum, so progress is preserved.
-
-
-__Stopping the script mid-run__
-
-While `generator_checkpoint.py` is running, you can *stop it manually* to simulate an
-unexpected interruption (like a crash).  This will allow you to test whether the
-*checkpointing* works as expected.
-
-To stop the script cleanly:
-
-- On *Mac/Linux*: Press `Ctrl+C`
-- On *Windows* (in Command Prompt): Press `Ctrl+C`
-
-This sends a *KeyboardInterrupt* to the Python program, which will terminate it immediately.  
-When you restart the script with:
-
-```bash
-python3 generator_checkpoint.py
-```
-.. it should resume from where it left off by reading the checkpoint.json file.
-
-If you want to *start over completely* (ignoring old checkpoints), delete the checkpoint.json
-file in the working directory before restarting the script:
-
-```shell
-rm checkpoint.json
-python3 generator_checkpoint.py
-```
-
-
-#### Typical workflow
-
-1. Generate data file once
-
-```shell
-python3 generate_numbers.py
-```
-
-2. Run the processor script: *resume-able* processing
-
-```shell
-python3 generator_checkpoint.py
-```
-
-3. To start fresh, delete checkpoint.json.
-Processor will start from the beginning of the file.
-
-```shell
-rm checkpoint.json
-python3 generator_checkpoint.py
-```
 
 
 #### Bottom line
