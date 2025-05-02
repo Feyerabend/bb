@@ -21,7 +21,6 @@ the patterns of reasoning they support and the constructions they make convenien
 these commitments helps programmers understand not just how to use a language,
 but why it works the way it does.
 
-
 | Language     | Constructions                                                            |
 |--------------|----------------------------------------------------------------------------|
 | C            | Mutable vars, loops, conditionals, explicit control flow, procedures      |
@@ -41,8 +40,34 @@ but why it works the way it does.
 | Elm          | Pure functions, pattern matching, ADTs, subscriptions, signals            |
 | AspectJ      | Aspects, join points, advice, weaving, cross-cutting concerns             |
 
+One effective approach to learning a *new-to-you* programming language is to first study the
+*programming constructions and abstractions* it supports, before delving into its concrete
+syntax and language-specific details. By understanding the kinds of operations, control structures,
+data abstractions, and paradigms that the language emphasises, you can better grasp *how* the
+language is intended to be used and *why* certain patterns or idioms are common. Once you are
+familiar with these underlying constructions, learning the actual syntax becomes a process
+of mapping familiar concepts to their syntactic representations, rather than trying to memorise
+isolated language rules without context. This strategy accelerates both comprehension and
+practical fluency.
 
-### Constructions in Relation to Models
+Most books and learning courses do not adopt this construction-first approach. Instead, they
+typically begin with the *syntax* of the language, introducing variables, control structures,
+and basic input/output in a bottom-up fashion. This method has clear benefits: it provides
+immediate, tangible feedback, allowing learners to quickly write simple programs and gain
+familiarity with how to express operations concretely. By starting with syntax, learners can
+build confidence through hands-on experimentation and see quick results, which helps maintain
+motivation in the early stages. Furthermore, for languages where syntax and semantics are
+tightly coupled (such as C or Python), early exposure to syntax can give an implicit
+understanding of some language behaviors even before formal abstractions are introduced.
+
+Taken together, both approaches have complementary strengths. Starting with *constructions*
+builds a deeper conceptual foundation and prepares you to recognize patterns across different
+languages, while starting with *syntax* offers faster practical engagement and a smoother
+entry into writing runnable code. Ideally, an effective learning process balances both--alternating
+between abstract understanding and concrete application to reinforce both perspectives simultaneously.
+
+
+### Constructions in Relation to Models / Paradigms
 
 | Paradigm / Model          | Construction                                    |
 |---------------------------|-------------------------------------------------|
