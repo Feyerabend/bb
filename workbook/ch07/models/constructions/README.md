@@ -42,7 +42,7 @@ but why it works the way it does.
 | AspectJ      | Aspects, join points, advice, weaving, cross-cutting concerns             |
 
 
-### Constructions in Relation to Models (numbered)
+### Constructions in Relation to Models
 
 | Paradigm / Model          | Construction                                    |
 |---------------------------|-------------------------------------------------|
@@ -152,20 +152,20 @@ but why it works the way it does.
 |                           | Cross-cutting concerns (92)                     |
 |                           | Interceptors / Decorators* (93)                 |
 
-#### Common constructions (numbered)
+#### Common constructions
 
 Features appearing across multiple paradigms:
 
 - *(10)* First-class functions, higher-order functions, closures, function composition:  
   FP, Concatenative, Event-driven, Reactive → Encourages abstraction and reuse
 
-- *(13,17)* Recursion, pattern matching, ADT (Algebraic data types):  
+- *(13, 17)* Recursion, pattern matching, ADT (Algebraic data types):  
   FP, Declarative, Logic → Strengthens declarative & structural expression
 
-- *(38,39,40)* Callbacks, asynchronous execution, observers/subscribers:  
+- *(38, 39, 40)* Callbacks, asynchronous execution, observers/subscribers:  
   Event-driven, Reactive, Concurrent → Drives concurrency and reactive data flow
 
-- *(3,4,5,7)* Explicit control flow, procedures, control structures (loops/conditionals):  
+- *(3, 4, 5, 7)* Explicit control flow, procedures, control structures (loops/conditionals):  
   Imperative, Procedural → Enables low-level control
 
 - *(19)* Generics / Parametric polymorphism:  
@@ -174,7 +174,7 @@ Features appearing across multiple paradigms:
 - *(40)* Observer pattern, publish/subscribe pattern:  
   Event-driven, Reactive → Enables decoupled event propagation
 
-- *(49,50)* Message passing, futures/promises:  
+- *(49, 50)* Message passing, futures/promises:  
   Concurrent, Event-driven → Supports safe concurrency models
 
 - *(93)* Interceptors / Decorators:  
