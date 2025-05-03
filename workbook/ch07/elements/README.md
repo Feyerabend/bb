@@ -4,9 +4,9 @@
 
 software engineering elements
 
-
-
 broader but not all included
+
+ambivalence in naming ..
 
 | Concept | Focus | Scope | Examples |
 |---------|-------|-------|----------|
@@ -21,6 +21,6 @@ broader but not all included
 | *SDK* | Development toolkit | Large | Android SDK |
 | *Middleware* | Interconnection | Medium | RabbitMQ, SQLAlchemy |
 | *IDL* | Interface description | Cross-lang | Protocol Buffers |
-| *Configuration* | Behavior customisation | Small-large | YAML config |
+| *Configuration* | Behaviour customisation | Small-large | YAML config |
 
 
