@@ -209,7 +209,7 @@ but large enough to justify its existence as an independent unit."*
 
 ```mermaid
 graph LR
-    A[Script] --B[Package]
+    A[Script] --> B[Package]
     B --C[Published Library]
     C --D[Microservice]
     D --E[Distributed System]
