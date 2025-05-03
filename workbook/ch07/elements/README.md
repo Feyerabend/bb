@@ -86,10 +86,14 @@ just designing systems: they're composing a symphony where every note carries th
 accumulated wisdom, every structural choice a vote for how future generations will inherit or curse their work.
 
 
+### Code Organisation: Some Foundational Structures
 
-software engineering elements
+This small overview in the folders explores fundamental code organisation patterns--such as modules, libraries,
+and APIs--through simple directory structures and examples. While far exhaustive, it highlights core concepts
+for modularity and reuse. Real-world projects often extend these ideas into advanced packaging, distribution,
+or deployment.
 
-broader but not all included
+Examples draw from multi-language patterns (e.g., .c/.h pairs in C, .py modules in Python).
 
-ambivalence in naming ..
+Your projects might evolve this further into real-world entities ..
 
