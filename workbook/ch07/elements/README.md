@@ -4,8 +4,8 @@
 Software architecture is the conceptual blueprint that defines the fundamental structures, behaviours,
 and evolution pathways of a software system. It emerges from deliberate choices about how components
 interact, how responsibilities are partitioned, and how quality attributes like performance, security,
-and maintainability are prioritised. At its core, architecture is the art of managing complexity through
-abstraction--creating boundaries that allow humans to comprehend and modify systems that would otherwise
+and maintainability are prioritised. At its core, *architecture is the art of managing complexity through
+abstraction*--creating boundaries that allow humans to comprehend and modify systems that would otherwise
 exceed cognitive limits.  
 
 The history of software architecture mirrors the evolution of computing itself. In the 1960s, as systems
@@ -14,10 +14,11 @@ combat "spaghetti code." The 1970s saw David Parnas formalise modular design pri
 modules should hide implementation details behind stable interfaces. The object-oriented revolution of
 the 1980s, exemplified by Smalltalk and C++, introduced encapsulation and inheritance as architectural
 tools. By the 1990s, patterns movement leaders like the Gang of Four codified reusable solutions to
-recurring design problems, while UML emerged as a visual language for architectural modeling. The 2000s
+recurring design problems, while UML emerged as a visual language for architectural modelling. The 2000s
 brought service-oriented architecture (SOA) and cloud computing, decoupling systems into network-accessible
 components. Today's landscape blends microservices, serverless computing, and AI-driven architecture
-synthesis, reflecting an ongoing tension between centralisation and distribution.  
+synthesis, reflecting an ongoing tension between centralisation and distribution. From what I've heard
+microservices might be the next one for the chopping block ..  
 
 When crafting architecture, practitioners must balance competing forces: immediate functionality against
 long-term adaptability, technical purity against business constraints, innovation against technical debt.
