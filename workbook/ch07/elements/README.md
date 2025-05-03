@@ -54,7 +54,7 @@ The architectural concepts in this table form the *lexicon of structural possibi
 and configure to manifest their vision—each entry represents a fundamental building block in the eternal dance
 between human cognition and system complexity. Consider *modules*, born from Parnas' 1972 revelation that information
 hiding could tame the spaghetti code monsters of early computing; they are the atoms in this periodic table of
-structure, the minimal units where architectural intent first crystallizes. *APIs* and *IDLs* carry the DNA of
+structure, the minimal units where architectural intent first crystallises. *APIs* and *IDLs* carry the DNA of
 1990s component-based design, formalising the lesson that durable systems require interface contracts more stable
 than their implementations--a wisdom echoing Roy Fielding's REST dissertation that later revolutionised web
 services.[^rest]
@@ -71,7 +71,7 @@ citadels--the former recalling 1990s CORBA's ambitious failure at cross-language
 Amazon's 2002 SOA mandate that birthed cloud-scale systems.
 
 *Middleware* like RabbitMQ operationalises the 1970s theoretical dream of loose coupling, becoming the synaptic
-gaps between architectural neurons. *Plugins* actualize Parnas' "secret" of change accommodation through extension
+gaps between architectural neurones. *Plugins* actualise Parnas' "secret" of change accommodation through extension
 points--a principle that made Unix's filter paradigm outlast its contemporaries. Even *configuration files*,
 seemingly mundane, encode architecture's hardest lesson from the Y2K crisis: separate what changes from what
 remains, lest hardcoded values become time bombs.  
