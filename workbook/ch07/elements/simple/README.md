@@ -195,7 +195,7 @@ Flow Analysis
 7. *System*: `vmlinuz` (final kernel image)
 
 
-### Summary: C Code Hierarchy
+### Summary
 
 | Level        | Artifact              | Tools              | Scope Example          |
 |--------------|-----------------------|--------------------|------------------------|
