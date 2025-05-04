@@ -1,7 +1,7 @@
 # BASIC Interpreter User's Guide
 
 ## Overview
-This is a Python-based BASIC interpreter implementing a subset of classic BASIC (inspired by Microsoft and Commodore BASIC). It supports interactive programming, file execution, and core BASIC features like loops, string comparisons, and file I/O.
+This is a Python-based BASIC interpreter implementing a subset of classic BASIC (inspired by Microsoft and Commodore BASIC). It supports interactive programming, file execution, and core BASIC features like loops, string comparisons, and file I/O. (Note: *Still some bugs in this*.)
 
 ## Running the Interpreter
 - *Requirements*: Python 3.x.
