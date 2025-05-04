@@ -117,6 +117,34 @@ Criticism of AI came from many directions. Philosopher Hubert Dreyfus argued aga
 assumptions that computers could think,[^30] and the influential Lighthill Report from 1973[^31]
 led to reduced funding for AI research in the UK. The AI winter began to set in ..
 
+```mermaid
+graph LR
+    classDef spring fill:#98fb98,stroke:#000
+    classDef winter fill:#87ceeb,stroke:#000
+    classDef split fill:#fff,stroke:#000
+
+    A[1950s-60s: First Spring<br>Symbolic AI Dawn<br>• Dartmouth Conference<br>• Logic Theorist<br>• Early Neural Networks]:::spring
+    --> B[1970s: First Winter<br>• Lighthill Report<br>• Hardware Limitations<br>• Dreyfus Critique]:::winter
+    
+    B --> C[1980s: Second Spring<br>Knowledge Systems<br>• Expert Systems<br>• Fifth Gen Project<br>• Prolog Adoption]:::spring
+    --> D[Late 80s-93: Second Winter<br>• Scaling Failures<br>• Funding Cuts<br>• Chinese Room Debate]:::winter
+    
+    D --> E[1990s: Third Spring<br>Machine Learning Rise<br>• Statistical Methods<br>• Support Vector Machines<br>• IBM Deep Blue]:::spring
+    
+    E --> F[2000s-10s: Fourth Spring<br>Deep Learning Era<br>• Big Data<br>• GPU Acceleration<br>• AlphaGo Breakthrough]:::spring
+    
+    C --> G[Philosophical Split]:::split
+    G --> H[Symbolic AI Path<br>• Logic-Based<br>• Rule-Driven<br>• Top-Down Approach]
+    G --> I[Connectionist Path<br>• Neural Networks<br>• Pattern Recognition<br>• Bottom-Up Approach]
+    
+    H --> D
+    I --> E
+    
+    F --> J[Current: AI Summer?<br>• LLM Explosion<br>• Ethical Debates<br>• AGI Speculation]
+    
+    style J fill:#ffd700
+```
+
 [^1]: From the back cover text of the paperback edition of Edward A. Feigenbaum, & Pamela McCorduck, *The fifth generation: artificial intelligence and Japan's computer challenge to the world*, Rev. & upd. ed., Pan Books, London, 1984.
 [^2]: Ibid, s. 290.
 [^3]: Wikipedia, "Fifth generation computer,", https://en.wikipedia.org/w/index.php?title=Fifth_generation_computer&oldid=891491126 (retrieved 2019-04-09).
