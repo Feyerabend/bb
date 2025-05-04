@@ -1,8 +1,8 @@
 
 ## Fossilised Lessons from Computing's Perpetual Reformation
 
-Software architecture is the conceptual blueprint that defines the fundamental structures, behaviours,
-and evolution pathways of a software system. It emerges from deliberate choices about how components
+*Software architecture is the conceptual blueprint that defines the fundamental structures, behaviours,
+and evolution pathways of a software system.* It emerges from deliberate choices about how components
 interact, how responsibilities are partitioned, and how quality attributes like performance, security,
 and maintainability are prioritised. At its core, *architecture is the art of managing complexity through
 abstraction*--creating boundaries that allow humans to comprehend and modify systems that would otherwise
