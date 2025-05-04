@@ -227,8 +227,8 @@ These organisational patterns are not arbitrary but the scars of battles fought 
 and obsolescence. The Python module inherits Parnas’ modular wisdom; the C library operationalises the 1970s
 reuse imperative; the REST API service channels Kleinrock’s packet-switching vision into modern cloud systems.
 Each structure is a vote for how systems should evolve, balancing immediate needs with the inevitability of
-change. As microservices face scrutiny for their operational overhead—perhaps the next architectural paradigm
-to be questioned—these foundational patterns remind us that architecture is less about inventing anew and more
+change. As microservices face scrutiny for their operational overhead--perhaps the next architectural paradigm
+to be questioned--these foundational patterns remind us that architecture is less about inventing anew and more
 about recombining proven elements in response to shifting constraints.
 
 Real-world projects build on these foundations, scaling them into distributed systems, cloud-native deployments,
