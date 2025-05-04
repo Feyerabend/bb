@@ -61,7 +61,10 @@ services.[^rest]
 
 [^rest]: Fielding, R. T. (2000). *Architectural styles and the design of network-based software architectures*
 (Doctoral dissertation). University of California, Irvine. 
-https://ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf
+https://ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf. 
+REST is often misunderstood. It is not an API or protocol but an *architectural style*: a set of constraints
+(such as statelessness, uniform interface) guiding how APIs should be structured, typically over HTTP but not
+limited to it.
 
 The progression from *library* to *framework* mirrors architecture's historical pendulum between freedom and
 constraint: where 1980s Smalltalk encouraged open experimentation, modern frameworks like React enforce unidirectional
