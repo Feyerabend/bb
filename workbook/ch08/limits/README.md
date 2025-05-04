@@ -67,3 +67,53 @@ Even if a problem is theoretically solvable in polynomial time, practical issues
 - Physical constraints like energy and quantum mechanics impose practical limitations.
 - Even solvable problems can be infeasible due to memory, energy, and real-world constraints.
 
+
+### Conventional and Compatibility Limits in Computing: The Weight of Legacy
+
+Computing is not just constrained by fundamental limits like P vs NP or physical laws as
+above--it is also shaped by historical decisions, entrenched standards, and the necessity
+of backward compatibility. These constraints are not inherent to computation itself but
+emerge from the practical realities of how technology evolves. Unlike the absolute barriers
+imposed by mathematics or physics, these limitations are often accidents of history, yet
+they exert a powerful influence on what computers can do today.  
+
+One of the most pervasive forces holding back computing progress is *legacy hardware and
+backward compatibility*. Modern processors, for instance, still bear the architectural
+imprint of designs from the 1970s and 1980s. The x86 instruction set, originally developed
+for Intel’s early chips, persists today not because it is optimal, but because the entire
+software ecosystem—from operating systems to applications—depends on it. Even though RISC 
+rchitectures (like ARM) are more efficient, the inertia of x86 means that CPUs must include
+complex translation layers to maintain compatibility, wasting energy and transistor space.
+Similarly, the transition from BIOS to UEFI firmware took decades, not because UEFI wasn't
+superior, but because changing low-level system firmware risked breaking decades of hardware
+and software dependencies.  
+
+Software and protocol inertia further compound the problem. Many of the foundational technologies
+of the internet, for example, were designed under assumptions that no longer hold true.
+IPv4, with its limited address space, should have been replaced by IPv6 long ago, yet the
+transition remains incomplete because of the sheer scale of re-engineering required. File
+systems like FAT32, originally designed for floppy disks, persist in embedded systems and
+removable media, limiting file sizes and security features. Even programming languages suffer
+from this: COBOL, a language from the 1950s, still runs critical financial systems, creating
+a shortage of expertise and making modernisation risky.  
+
+Another layer of constraint comes from *industry standards and interoperability requirements*.
+While open standards are generally beneficial, they can also freeze technology in suboptimal
+states. USB, for instance, has gone through multiple revisions, but each new version must
+remain compatible with the previous ones, leading to a tangled mess of cables, adapters,
+and power delivery quirks. Similarly, the QWERTY keyboard layout persists not because it is
+efficient, but because retraining billions of users and redesigning input systems would be
+impractical.  
+
+Perhaps the most frustrating aspect of these conventional limits is that they are *not
+insurmountable in theory*--only in practice. Unlike the speed of light or the laws of
+thermodynamics, which impose hard boundaries, these constraints exist because the cost of
+change (economic, logistical, or cultural) is deemed too high. The result is a computing
+landscape where progress is often incremental, where layers of legacy systems accumulate
+like geological strata, and where truly radical innovations must either find a way to
+coexist with the past or face an uphill battle for adoption.  
+
+In this sense, the limits of computing are not just about what is fundamentally
+possible--they are also about what we, as a technological society, are willing to endure
+to move forward.
+
