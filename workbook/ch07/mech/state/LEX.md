@@ -49,3 +49,63 @@ stateDiagram-v2
     STATE_START --> [*]: Delimiter (emit token)
     STATE_START --> [*]: Whitespace (ignore)
 ```
+
+
+### 1. Identifier & Number Recognition
+
+```mermaid
+stateDiagram-v2
+    [*] --> START
+    START --> IDENTIFIER: Letter/_
+    IDENTIFIER --> IDENTIFIER: Letter/Digit/_
+    IDENTIFIER --> [*]: Other (emit ID/KEYWORD)
+    
+    START --> INTEGER: Digit
+    INTEGER --> INTEGER: Digit
+    INTEGER --> FLOAT_DOT: .
+    FLOAT_DOT --> FLOAT: Digit
+    FLOAT --> FLOAT: Digit
+    FLOAT --> [*]: Non-digit (emit NUMBER)
+    FLOAT_DOT --> ERROR: Non-digit
+```
+
+
+
+### 2. String & Comment Handling
+
+```mermaid
+stateDiagram-v2
+    [*] --> START
+    START --> STRING: "
+    STRING --> STRING: Normal char
+    STRING --> [*]: " (emit STRING)
+    STRING --> ERROR: Newline/EOF
+    
+    START --> LINE_COMMENT: //
+    LINE_COMMENT --> LINE_COMMENT: Non-newline
+    LINE_COMMENT --> [*]: Newline/EOF (emit COMMENT)
+    
+    START --> BLOCK_COMMENT: /*
+    BLOCK_COMMENT --> BLOCK_COMMENT: Non-*
+    BLOCK_COMMENT --> [*]: */ (emit COMMENT)
+    BLOCK_COMMENT --> ERROR: EOF
+```
+
+
+
+### 3. Operators & Error States
+
+```mermaid
+stateDiagram-v2
+    [*] --> START
+    START --> OPERATOR: +-*/=<>!&|%
+    OPERATOR --> OPERATOR: Possible 2nd char (++, ==)
+    OPERATOR --> [*]: Complete (emit OPERATOR)
+    
+    START --> ERROR: Invalid char
+    ERROR --> [*]: (emit ERROR)
+    
+    START --> [*]: Delimiter (emit DELIMITER)
+    START --> [*]: Whitespace (ignore)
+```
+
