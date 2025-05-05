@@ -47,6 +47,11 @@ def GT_command(stack, env, control, dump):
     b, a = stack.pop(), stack.pop()
     stack.append(b > a)
 
+def LEQ_command(stack, env, control, dump):
+    check_stack(stack, 2, "LEQ", types=[(int, float), (int, float)])
+    b, a = stack.pop(), stack.pop()
+    stack.append(b <= a)
+
 def POP_command(stack, env, control, dump):
     check_stack(stack, 1, "POP")
     stack.pop()
@@ -114,8 +119,6 @@ def LD_command(stack, env, control, dump):
     if j >= len(env[i]):
         raise IndexError(f"Environment access error: index [{i},{j}] out of bounds")
     value = env[i][j]
-    if isinstance(value, list):
-        raise TypeError(f"LD loaded a list at [{i},{j}], expected a number")
     stack.append(value)
 
 def LDC_command(stack, env, control, dump):
@@ -154,6 +157,7 @@ def RAP_command(stack, env, control, dump):
     check_stack(stack, 2, "RAP")
     args = stack.pop()
     closure = stack.pop()
+    print(f"RAP: args={args}, closure={closure}")  # Debug
     if not isinstance(closure, list) or len(closure) != 2:
         raise TypeError(f"Expected closure [code, env], got: {closure}")
     func_code, closure_env = closure
@@ -164,7 +168,7 @@ def RAP_command(stack, env, control, dump):
     dump.append(env.copy())
     dump.append(stack.copy())
     dump.append(control.copy())
-    env[:] = [args] + closure_env[1:] if closure_env else [args]
+    env[:] = [args] + closure_env
     stack[:] = []
     control[:] = func_code.copy() if isinstance(func_code, list) else [func_code]
 
@@ -179,6 +183,7 @@ COMMANDS = {
     'EQ': EQ_command,
     'LT': LT_command,
     'GT': GT_command,
+    'LEQ': LEQ_command,
     'POP': POP_command,
     'DUP': DUP_command,
     'SWAP': SWAP_command,
@@ -307,3 +312,38 @@ if __name__ == "__main__":
         print("\nTest 8 (Insufficient stack for ADD):", secd_eval(code8))
     except ValueError as e:
         print("\nTest 8 (Insufficient stack for ADD):", str(e))  # Output: ADD requires 2 elements...
+
+    # Test 9: List length function
+    code9 = [
+        'DUM',              # env = [None]
+        'LDF', [            # Length function
+            'LD', 0, 0,     # Load list arg
+            'ATOM',         # Check if atom (empty)
+            'SEL',          # Branch
+            ['LDC', 0, 'RTN'],  # Return 0 if empty
+            [               # Else
+                'LD', 0, 0, # Load list
+                'CDR',      # Get tail
+                'LD', 0, 0, # Load length function from env[0][0]
+                'AP',       # Apply to tail
+                'LDC', 1,   # Push 1
+                'ADD',      # Add 1 to result
+                'RTN'       # Return
+            ],
+            'JOIN'
+        ],
+        'NIL',              # stack = [[]]
+        'CONS',             # env = [[closure], None]
+        'LDF', ['LD', 0, 0, 'RTN'],  # Identity function
+        'NIL',              # Push []
+        'LDC', 1,           # Push 1
+        'CONS',             # [1, []]
+        'LDC', 2,           # Push 2
+        'CONS',             # [2, [1, []]]
+        'LDC', 3,           # Push 3
+        'CONS',             # [3, [2, [1, []]]]
+        'SWAP',             # Swap to [[identity, [[closure], None]], [3, [2, [1, []]]]]
+        'AP',               # Apply identity to get [3, [2, [1, []]]]
+        'RAP'               # Apply length function
+    ]
+    print("\nTest 9 (List length):", secd_eval(code9))  # Output: 3
