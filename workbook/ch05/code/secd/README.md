@@ -2,7 +2,8 @@
 ## The SECD Machine
 
 The SECD machine is an abstract machine model designed to evaluate functional programming languages,
-particularly those based on the lambda calculus, such as Lisp. Introduced by Peter J. Landin in his
+particularly those based on the lambda calculus, such as Lisp
+(compare e.g. [LAM](./../../../ch08/deptypes/01/LAM.md)). Introduced by Peter J. Landin in his
 1964 paper, *"The Mechanical Evaluation of Expressions"*, the SECD machine provides a formal framework
 for executing functional programs by defining a systematic process for expression evaluation. The name
 "SECD" stands for the four main components of its state:
