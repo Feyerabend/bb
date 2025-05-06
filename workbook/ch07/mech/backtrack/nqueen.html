@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N-Queens Backtracking Visualization</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    
+    .controls {
+      background-color: #f3f4f6;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .control-row {
+      margin-bottom: 16px;
+    }
+    
+    .control-row label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    .button-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    
+    button {
+      flex: 1;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .btn-primary {
+      background-color: #3b82f6;
+      color: white;
+    }
+    
+    .btn-danger {
+      background-color: #ef4444;
+      color: white;
+    }
+    
+    .btn-secondary {
+      background-color: #6b7280;
+      color: white;
+    }
+    
+    .btn-small {
+      background-color: #e5e7eb;
+      color: #000;
+      padding: 4px 12px;
+    }
+    
+    .status {
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+    
+    .board {
+      display: grid;
+      grid-gap: 1px;
+      border: 1px solid #d1d5db;
+      width: fit-content;
+    }
+    
+    .cell {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    
+    .cell-light {
+      background-color: #e5e7eb;
+    }
+    
+    .cell-dark {
+      background-color: #9ca3af;
+    }
+    
+    .cell-highlight {
+      outline: 2px solid #3b82f6;
+      z-index: 1;
+    }
+    
+    .solution-board {
+      margin-top: 24px;
+    }
+    
+    .solution-cell {
+      width: 32px;
+      height: 32px;
+    }
+  </style>
+</head>
+<body>
+  <h1>N-Queens Backtracking Visualization</h1>
+  
+  <div>
+    <button id="toggle-controls" class="btn-small">Hide Controls</button>
+  </div>
+  
+  <div id="controls" class="controls">
+    <div class="control-row">
+      <label for="board-size">Board Size (N): <span id="board-size-value">4</span></label>
+      <input type="range" id="board-size" min="4" max="8" value="4" class="full-width">
+    </div>
+    
+    <div class="control-row">
+      <label for="speed">Animation Speed: <span id="speed-value">500</span>ms</label>
+      <input type="range" id="speed" min="50" max="1000" value="500" class="full-width">
+    </div>
+    
+    <div class="button-row">
+      <button id="start-btn" class="btn-primary">Start</button>
+      <button id="reset-btn" class="btn-danger">Reset</button>
+    </div>
+    
+    <div class="button-row">
+      <button id="prev-btn" class="btn-secondary">Previous</button>
+      <button id="next-btn" class="btn-secondary">Next</button>
+    </div>
+  </div>
+  
+  <div id="status" class="status">
+    <div>Step: 1 / 1</div>
+    <div>Action: init</div>
+    <div>Solutions found: 0</div>
+  </div>
+  
+  <div id="board-container">
+    <div id="board" class="board"></div>
+  </div>
+  
+  <div id="solution-container" class="solution-board" style="display: none;">
+    <h2>First Solution:</h2>
+    <div id="solution-board" class="board"></div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const toggleControlsBtn = document.getElementById('toggle-controls');
+    const controlsDiv = document.getElementById('controls');
+    const boardSizeSlider = document.getElementById('board-size');
+    const boardSizeValue = document.getElementById('board-size-value');
+    const speedSlider = document.getElementById('speed');
+    const speedValue = document.getElementById('speed-value');
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const statusDiv = document.getElementById('status');
+    const boardDiv = document.getElementById('board');
+    const solutionContainer = document.getElementById('solution-container');
+    const solutionBoard = document.getElementById('solution-board');
+    
+    // App State
+    let boardSize = 4;
+    let board = [];
+    let history = [];
+    let historyIndex = 0;
+    let speed = 500;
+    let isRunning = false;
+    let solutionCount = 0;
+    let animation = null;
+    let firstSolution = null;
+    
+    // Initialize
+    function init() {
+      // Event Listeners
+      toggleControlsBtn.addEventListener('click', toggleControls);
+      boardSizeSlider.addEventListener('input', handleBoardSizeChange);
+      speedSlider.addEventListener('input', handleSpeedChange);
+      startBtn.addEventListener('click', startSolving);
+      resetBtn.addEventListener('click', resetBoard);
+      prevBtn.addEventListener('click', () => stepHistory(-1));
+      nextBtn.addEventListener('click', () => stepHistory(1));
+      
+      resetBoard();
+      updateUI();
+    }
+    
+    function toggleControls() {
+      const isVisible = controlsDiv.style.display !== 'none';
+      controlsDiv.style.display = isVisible ? 'none' : 'block';
+      toggleControlsBtn.textContent = isVisible ? 'Show Controls' : 'Hide Controls';
+    }
+    
+    function handleBoardSizeChange() {
+      boardSize = parseInt(boardSizeSlider.value);
+      boardSizeValue.textContent = boardSize;
+      resetBoard();
+    }
+    
+    function handleSpeedChange() {
+      speed = parseInt(speedSlider.value);
+      speedValue.textContent = speed;
+    }
+    
+    function resetBoard() {
+      // Create empty board
+      board = Array(boardSize).fill().map(() => Array(boardSize).fill(0));
+      history = [{
+        board: JSON.parse(JSON.stringify(board)),
+        row: 0,
+        col: 0,
+        action: 'init'
+      }];
+      historyIndex = 0;
+      solutionCount = 0;
+      firstSolution = null;
+      solutionContainer.style.display = 'none';
+      
+      if (animation) {
+        clearInterval(animation);
+        animation = null;
+      }
+      
+      isRunning = false;
+      updateButtons();
+      updateBoard();
+      updateStatus();
+    }
+    
+    function isSafe(board, row, col) {
+      // Check this column on upper side
+      for (let i = 0; i < row; i++) {
+        if (board[i][col] === 1) return false;
+      }
+      
+      // Check upper diagonal on left side
+      for (let i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+        if (board[i][j] === 1) return false;
+      }
+      
+      // Check upper diagonal on right side
+      for (let i = row, j = col; i >= 0 && j < boardSize; i--, j++) {
+        if (board[i][j] === 1) return false;
+      }
+      
+      return true;
+    }
+    
+    function startSolving() {
+      if (isRunning) return;
+      
+      isRunning = true;
+      solutionCount = 0;
+      firstSolution = null;
+      solutionContainer.style.display = 'none';
+      
+      const newHistory = [{
+        board: JSON.parse(JSON.stringify(board)),
+        row: 0,
+        col: 0,
+        action: 'init'
+      }];
+      
+      // Create a copy of the board for backtracking
+      const boardCopy = JSON.parse(JSON.stringify(board));
+      
+      backtrack(boardCopy, 0, newHistory);
+      
+      history = newHistory;
+      historyIndex = 0;
+      
+      updateButtons();
+      displayBoard(history[0].board);
+      updateStatus();
+      
+      // Find first solution
+      const solutionIndex = history.findIndex(step => step.action === 'solution');
+      if (solutionIndex !== -1) {
+        firstSolution = history[solutionIndex].board;
+      }
+      
+      // Start animation
+      playAnimation();
+    }
+    
+    function backtrack(board, row, newHistory) {
+      if (row === boardSize) {
+        // Found a solution
+        solutionCount++;
+        newHistory.push({
+          board: JSON.parse(JSON.stringify(board)),
+          row: row - 1,
+          col: -1,
+          action: 'solution'
+        });
+        return true;
+      }
+      
+      for (let col = 0; col < boardSize; col++) {
+        if (isSafe(board, row, col)) {
+          // Place queen
+          board[row][col] = 1;
+          newHistory.push({
+            board: JSON.parse(JSON.stringify(board)),
+            row,
+            col,
+            action: 'place'
+          });
+          
+          // Recur to place rest of the queens
+          backtrack(board, row + 1, newHistory);
+          
+          // Backtrack
+          board[row][col] = 0;
+          newHistory.push({
+            board: JSON.parse(JSON.stringify(board)),
+            row,
+            col,
+            action: 'remove'
+          });
+        }
+      }
+      
+      return false;
+    }
+    
+    function playAnimation() {
+      updateButtons();
+      
+      let currentIndex = historyIndex;
+      
+      animation = setInterval(() => {
+        if (currentIndex < history.length - 1) {
+          currentIndex++;
+          historyIndex = currentIndex;
+          
+          displayBoard(history[currentIndex].board);
+          updateStatus();
+          
+          if (history[currentIndex].action === 'solution' && !firstSolution) {
+            firstSolution = JSON.parse(JSON.stringify(history[currentIndex].board));
+            displaySolution();
+          }
+        } else {
+          clearInterval(animation);
+          animation = null;
+          isRunning = false;
+          updateButtons();
+          
+          if (firstSolution) {
+            displaySolution();
+          }
+        }
+      }, speed);
+    }
+    
+    function stepHistory(direction) {
+      const newIndex = historyIndex + direction;
+      if (newIndex >= 0 && newIndex < history.length) {
+        historyIndex = newIndex;
+        displayBoard(history[historyIndex].board);
+        updateStatus();
+        
+        if (history[historyIndex].action === 'solution' && !firstSolution) {
+          firstSolution = JSON.parse(JSON.stringify(history[historyIndex].board));
+          displaySolution();
+        }
+      }
+    }
+    
+    function updateBoard() {
+      displayBoard(board);
+    }
+    
+    function displayBoard(boardToDisplay) {
+      boardDiv.innerHTML = '';
+      boardDiv.style.gridTemplateColumns = `repeat(${boardSize}, 40px)`;
+      
+      const currentStep = history[historyIndex] || { row: -1, col: -1 };
+      
+      for (let row = 0; row < boardSize; row++) {
+        for (let col = 0; col < boardSize; col++) {
+          const cell = document.createElement('div');
+          cell.className = `cell ${(row + col) % 2 === 0 ? 'cell-light' : 'cell-dark'}`;
+          
+          if (currentStep.row === row && currentStep.col === col) {
+            cell.classList.add('cell-highlight');
+          }
+          
+          if (boardToDisplay[row][col] === 1) {
+            cell.textContent = '♕';
+          }
+          
+          boardDiv.appendChild(cell);
+        }
+      }
+    }
+    
+    function displaySolution() {
+      if (!firstSolution) return;
+      
+      solutionContainer.style.display = 'block';
+      solutionBoard.innerHTML = '';
+      solutionBoard.style.gridTemplateColumns = `repeat(${boardSize}, 32px)`;
+      
+      for (let row = 0; row < boardSize; row++) {
+        for (let col = 0; col < boardSize; col++) {
+          const cell = document.createElement('div');
+          cell.className = `cell solution-cell ${(row + col) % 2 === 0 ? 'cell-light' : 'cell-dark'}`;
+          
+          if (firstSolution[row][col] === 1) {
+            cell.textContent = '♕';
+          }
+          
+          solutionBoard.appendChild(cell);
+        }
+      }
+    }
+    
+    function updateStatus() {
+      const currentStep = history[historyIndex] || { action: '', row: -1, col: -1 };
+      const actionText = `${currentStep.action} ${currentStep.row !== -1 ? `at row ${currentStep.row}, col ${currentStep.col}` : ''}`;
+      
+      statusDiv.innerHTML = `
+        <div>Step: ${historyIndex + 1} / ${history.length}</div>
+        <div>Action: ${actionText}</div>
+        <div>Solutions found: ${solutionCount}</div>
+      `;
+    }
+    
+    function updateButtons() {
+      startBtn.disabled = isRunning;
+      resetBtn.disabled = isRunning;
+      prevBtn.disabled = isRunning || historyIndex <= 0;
+      nextBtn.disabled = isRunning || historyIndex >= history.length - 1;
+      boardSizeSlider.disabled = isRunning;
+    }
+    
+    function updateUI() {
+      updateBoard();
+      updateStatus();
+      updateButtons();
+    }
+    
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
