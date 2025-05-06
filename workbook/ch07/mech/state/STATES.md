@@ -73,6 +73,21 @@ if __name__ == "__main__":
 
 ### 2. Non-Deterministic Finite Automaton (NFA)
 
+```mermaid
+stateDiagram-v2
+    [*] --> Red
+    Red --> Green: Timer
+    Red --> Fault: Timer
+    Red --> Red: Emergency
+    Green --> Yellow: Timer
+    Green --> Fault: Timer
+    Green --> Red: Emergency
+    Yellow --> Red: Timer
+    Yellow --> Red: Emergency
+    Fault --> Red: Timer
+    Fault --> Red: Emergency
+```
+
 An NFA allows multiple possible transitions for an input, simulating uncertainty
 like a faulty timer that might skip Yellow.
 
