@@ -185,8 +185,9 @@ stateDiagram-v2
     }
 ```
 
-What I have found to be good in explanantion of this in relation to Prolog:
-* 
+Reference:
+* Clocksin, W.F. & Mellish, C.S. (1981). *Programming in Prolog*. New York: Springer-Vlg.
+
 
 ### How Backtracking Works in a WAM
 
@@ -283,9 +284,6 @@ integrity during backtracking cycles, while the Heap/Stack dichotomy enables eff
  snapshots. This architecture directly enables Prolog's characteristic _generate-and-test_ paradigm,
  where alternative execution paths are systematically explored through failure-driven backtracking
  until all solutions are exhausted or execution successfully completes.
-
-
-
 
 
 
