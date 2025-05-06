@@ -441,4 +441,92 @@
       }
     }
     
-    
+    function renderBoard() {
+      boardDiv.innerHTML = '';
+      
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          
+          // Add box shading for better visual separation
+          if ((Math.floor(row / 3) + Math.floor(col / 3)) % 2 === 1) {
+            cell.classList.add('box-shade');
+          }
+          
+          // Add borders for 3x3 boxes
+          if (col === 2 || col === 5) {
+            cell.classList.add('border-right');
+          }
+          if (row === 2 || row === 5) {
+            cell.classList.add('border-bottom');
+          }
+          
+          // Set cell content
+          if (board[row][col] !== 0) {
+            cell.textContent = board[row][col];
+            
+            // Style for original numbers vs. placed numbers
+            if (initialBoard[row][col] !== 0) {
+              cell.classList.add('original');
+            } else {
+              cell.classList.add('placed');
+            }
+          }
+          
+          // Highlight the current step in the animation
+          const currentStep = history[historyIndex];
+          if (currentStep && row === currentStep.row && col === currentStep.col) {
+            if (currentStep.action === 'place') {
+              cell.classList.add('highlight-place');
+            } else if (currentStep.action === 'remove') {
+              cell.classList.add('highlight-remove');
+            }
+          }
+          
+          boardDiv.appendChild(cell);
+        }
+      }
+    }
+
+    function updateStatus() {
+      const currentStep = history[historyIndex];
+      let actionText = '';
+      
+      if (currentStep) {
+        switch (currentStep.action) {
+          case 'init':
+            actionText = 'Starting with initial board';
+            break;
+          case 'place':
+            actionText = `Trying ${currentStep.num} at position (${currentStep.row + 1}, ${currentStep.col + 1})`;
+            break;
+          case 'remove':
+            actionText = `Removing ${currentStep.num} from position (${currentStep.row + 1}, ${currentStep.col + 1}) - not valid`;
+            break;
+          case 'solved':
+            actionText = 'Puzzle solved!';
+            break;
+        }
+      }
+      
+      statusDiv.innerHTML = `
+        <div>Step: ${historyIndex + 1} / ${history.length}</div>
+        <div>Action: ${actionText}</div>
+      `;
+    }
+
+    function updateButtons() {
+      solveBtn.disabled = isRunning;
+      resetBtn.disabled = isRunning;
+      prevBtn.disabled = isRunning || historyIndex === 0;
+      nextBtn.disabled = isRunning || historyIndex === history.length - 1;
+      difficultySelect.disabled = isRunning;
+      speedSlider.disabled = isRunning;
+    }
+
+    // Initialize the application
+    init();
+  </script>
+</body>
+</html>
