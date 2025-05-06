@@ -2,10 +2,10 @@
 ## Backtracking
 
 The first time I encountered the concept of backtracking, it was not in the context most programmers today
-would recognise--such as recursive algorithms solving puzzles or search problems--but rather in relation to
-structured programming methods designed to improve software development in languages like BASIC or Pascal.
-Specifically, it arose in the context of Jackson Structured Programming (JSP), a method that was influential
-during the early 1980s. Especially in Sweden.
+would recognise--such as recursive algorithms solving puzzles or search problems, see samples in the
+folder--but rather in relation to structured programming methods designed to improve software development
+in languages like BASIC or Pascal. Specifically, it arose in the context of *Jackson Structured Programming*
+(JSP), a method that was influential during the early 1980s. Especially in Sweden.
 
 Michael A. Jackson introduced Jackson Structured Programming in his seminal book *Principles of Program Design*
 (1975). The key idea behind JSP was to align the structure of a program closely with the structure of the data
