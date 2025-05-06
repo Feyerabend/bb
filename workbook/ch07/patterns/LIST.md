@@ -3,8 +3,8 @@
 
 Gang-of-Four patterns .. + 3 others
 
-| Pattern            | Category        | Purpose                                                         | Example Use Case                                | Source        |
-|--------------------|----------------|------------------------------------------------------------------|--------------------------------------------------|----------------|
+| Pattern | Category | Purpose | Example Use Case | Source |
+|----|----|----|----|----|
 | Strategy           | Behavioural      | Encapsulate interchangeable algorithms or behaviours              | Sorting algorithms, payment methods             | GoF            |
 | [Command](./command/) | Behavioural | Encapsulate a request as an object | Undo/Redo, action queues, macro recording | GoF |
 | Observer           | Behavioural      | Notify dependent objects of state changes                        | GUIs, event systems, data binding                | GoF            |
@@ -214,9 +214,9 @@ classDiagram
 
 ```mermaid
 flowchart TD
-    Creational -->|"Create objects\n(Abstract Factory, Builder)"| Objects
-    Structural -->|"Compose structures\n(Decorator, Composite)"| Objects
-    Behavioral -->|"Manage communication\n(Observer, Command)"| Objects
+    Creational -->|"Create objects \n (Abstract Factory, Builder)"| Objects
+    Structural -->|"Compose structures \n (Decorator, Composite)"| Objects
+    Behavioral -->|"Manage communication \n (Observer, Command)"| Objects
 
     Objects -->|"Loose coupling"| Principles
     Principles --> SOLID
