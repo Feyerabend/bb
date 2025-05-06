@@ -1,205 +1,227 @@
-
 ## WAM
 
-The Warren Abstract Machine (WAM) is a highly influential virtual machine designed specifically for
-implementing the logic programming language Prolog. David H. D. Warren developed it in the early 1980s
-as a way to efficiently execute Prolog programs by transforming the high-level logic of Prolog into
-lower-level operations tailored to a virtual machine architecture.
-
+The Warren Abstract Machine (WAM) is a highly influential virtual machine designed
+specifically for implementing the logic programming language Prolog. Developed by
+David H. D. Warren in the early 1980s, it provides an efficient execution model by
+transforming Prolog's high-level logic into lower-level operations tailored to a virtual
+machine architecture.
 
 
 ### High-Level Purpose
 
-The WAM provides an efficient execution model for Horn clause logic. Prolog programs are compiled
-into a sequence of low-level WAM instructions, which the WAM interprets or executes. This design
-takes into account Prolog's unique features, such as unification, backtracking, and logical variables.
+The WAM efficiently executes Horn clause logic by compiling Prolog programs into a
+sequence of low-level instructions. These instructions are interpreted or executed
+by the WAM, leveraging Prolog’s core features like unification, backtracking, and
+logical variables.
 
 *Core Features of WAM*
 
-1. Unification
-Unification is central to Prolog and involves matching terms with variables, constants, or structures.
-The WAM includes efficient instructions for performing unification, supporting variable bindings and
-logical constraints.
-
-2. Backtracking
-Prolog relies on backtracking to explore alternative solutions when a computation path fails. The WAM
-achieves this using a stack-based control structure that stores choice points, enabling efficient
-return to earlier states.
-
-3. Efficient Term Representation
-The WAM represents Prolog terms (variables, constants, lists, and structures) compactly in memory,
-using tagged cells to distinguish between term types.
+1. *Unification*: Central to Prolog, unification matches terms (variables, constants,
+   or structures). The WAM includes optimized instructions for unification, handling
+   variable bindings and logical constraints.
+2. *Backtracking*: Prolog uses backtracking to explore alternative solutions when a
+   computation fails. The WAM implements this via a stack-based structure with choice
+   points for efficient state restoration.
+3. *Efficient Term Representation*: Terms (variables, constants, lists, structures)
+   are compactly stored in memory using tagged cells to differentiate types.
 
 
 ### Components of the WAM
 
+#### 1. Registers
 
-__1. Registers__
+The WAM employs registers to manage execution state:
+- *Instruction Pointer (IP)*: Points to the next instruction.
+- *Heap Pointer (HP)*: Tracks dynamic term allocation.
+- *Current Predicate (CP)*: Manages the current predicate context.
 
-The WAM uses registers to manage the execution state:
-- The Instruction Pointer (IP) controls the flow of execution, pointing to the next instruction in the program.
-- The Heap Pointer (HP) tracks the dynamic allocation of terms.
-- Other auxiliary registers may track choice points or environment frames.
-
-In the code:
+In the Python implementation:
 
 ```python
 self.registers = {
     'IP': 0,    # instruction pointer
-    'CP': 0,    # current predicate (not always used directly)
+    'CP': 0,    # current predicate
     'HP': 0,    # heap pointer
 }
 ```
 
-These registers perform the same roles, ensuring that the execution progresses correctly and
-that terms are allocated properly during unification.
+#### 2. Memory Areas
 
-
-__2. Memory Areas__
-
-The WAM divides memory into structured areas for storing terms, execution state, and control flow.
-- Heap: Stores terms such as variables, constants, and compound structures.
-
+The WAM organizes memory into distinct areas:
+- *Heap*: Stores terms like variables and constants.
+  
 ```python
-self.heap = []
+self.heap = []  # term storage
 ```
 
-In the provided implementation, the heap is dynamically allocated to store data like references
-to variables or constants.
-
-- Stack: Temporarily stores intermediate values, such as variable bindings or unification states.
+- *Stack*: Holds intermediate values, such as variable bindings.
 
 ```python
-self.stack = []
+self.stack = []  # execution stack
 ```
 
-- Call Stack: Tracks procedure return addresses to enable nested predicate calls.
+- *Call Stack*: Tracks return addresses for nested predicate calls.
 
 ```python
-self.call_stack = []
+self.call_stack = []  # procedure return addresses
 ```
 
-- Choice Points: Maintains snapshots of the execution state to enable backtracking.
+- *Choice Points*: Stores execution state snapshots for backtracking.
 
 ```python
-self.choice_points = []
+self.choice_points = []  # backtrack points
 ```
 
-
-These memory areas work together to enable unification, recursive calls, and nondeterministic Prolog execution.
-
-__3. Instructions__
-
-The WAM operates on a specialized set of instructions tailored to Prolog. These instructions handle term manipulation,
-predicate calls, unification, and control flow.
-
-In the Python implementation, the instructions list holds the compiled program:
+- *Trail*: Records variable bindings for undoing during backtracking.
 
 ```python
-self.instructions = []
+self.trail = []  # trail for variable bindings
 ```
 
-Each instruction is represented as a tuple:
+These areas enable unification, recursion, and nondeterministic execution.
+
+#### 3. Instructions
+
+The WAM uses a specialized instruction set for Prolog operations, stored as:
 
 ```python
-('CALL', ('child', 1), 0)  # Example of a CALL instruction
+self.instructions = []  # loaded program
 ```
 
-The fetch_execute method simulates the execution cycle of the WAM:
-1. Fetch the current instruction using IP.
-2. Decode the operation and its arguments.
-3. Execute the operation, updating memory or control flow as needed.
+Instructions are tuples, e.g.:
 
-Examples of supported instructions include:
-- CALL: Invokes a predicate.
-- GET_VARIABLE: Allocates a reference for a variable.
-- PUT_CONSTANT: Places a constant into the heap.
-- PROCEED: Completes the current predicate and returns to the caller.
-- CUT: Discards choice points, pruning alternative execution paths.
+```python
+('CALL', ('child', 1), 0)  # Invokes child/1 predicate
+```
 
-__4. Compilation__
+Key instructions include:
+- *CALL*: Invokes a predicate.
+- *GET_VARIABLE*: Allocates a variable reference.
+- *PUT_CONSTANT*: Places a constant on the heap.
+- *PROCEED*: Completes a predicate and returns.
+- *CUT*: Discards choice points to prune alternatives.
+- *TRY_ME_ELSE*, *RETRY_ME_ELSE*, *TRUST_ME*: Manage multiple clauses for backtracking.
+- *UNIFY_VARIABLE*: Unifies a variable with a stack term.
+- *BUILTIN*: Executes built-in predicates like `\=` (inequality).
+- *HALT*: Terminates execution.
 
-Prolog programs are compiled into a sequence of WAM instructions. The Compiler class in the provided code
-transforms high-level Prolog facts, rules, and queries into these low-level instructions.
+The `fetch_execute` method drives execution by fetching, decoding, and executing
+instructions, updating registers and memory.
 
-For instance, a Prolog fact like:
+
+#### 4. Compilation
+
+Prolog programs are compiled into WAM instructions via the `Compiler` class. It
+transforms facts, rules, and queries into low-level instructions, managing:
+- *Variables*: Mapped to indices (`self.vars`).
+- *Constants*: Indexed for efficient access (`self.constants`).
+- *Predicates*: Mapped to instruction addresses (`self.predicates`).
+
+For example, a fact:
 
 ```prolog
 parent(zeb, john).
 ```
 
-is compiled into:
+Compiles to:
 
 ```python
 [
     ('PUT_CONSTANT', 0, 0),  # 'zeb' -> argument 0
     ('PUT_CONSTANT', 1, 1),  # 'john' -> argument 1
-    ('PROCEED', 0, 0)        # Return to caller
+    ('PROCEED', 0, 0)        # Return
 ]
 ```
 
-A query like:
+A query:
 
-```python
+```prolog
 ?- child(X).
 ```
 
-is compiled into:
+Compiles to:
 
 ```python
 [
-    ('GET_VARIABLE', 0, 0),  # Allocate variable 'X'
-    ('CALL', ('child', 1), 0)  # Call the 'child/1' predicate
+    ('GET_VARIABLE', 0, 0),  # allocate variable 'X'
+    ('CALL', ('child', 1), 0)  # call child/1
 ]
 ```
 
-The compiler registers variables and constants, assigns indices, and maps predicates to their
-instruction addresses. The final instructions are stored in self.instructions for execution.
+Multi-clause predicates use `TRY_ME_ELSE`, `RETRY_ME_ELSE`, and `TRUST_ME` to
+handle backtracking across clauses.
 
-__5. Execution__
+#### 5. Execution
 
-The execution phase starts by loading the compiled program into the WAM:
+Execution begins by loading compiled instructions:
 
 ```python
 vm.load(compiler)
 ```
 
-The machine begins execution at the starting point of the query:
+The WAM starts at the query’s entry point, e.g.:
 
 ```python
 vm.registers['IP'] = vm.predicates[('child', 1)]
 ```
 
-The fetch_execute method cycles through instructions:
-- Unification: Matches variables and constants using instructions like GET_VARIABLE and PUT_CONSTANT.
-- Predicate Calls: Executes predicates using CALL and PROCEED.
-- Backtracking: Restores choice points when a branch fails, enabling exploration of alternative solutions.
+The `fetch_execute` method cycles through:
+- *Unification*: Matches terms using `unify` and `deref`.
+- *Predicate Calls*: Invokes predicates via `CALL` and `PROCEED`.
+- *Backtracking*: Restores state using `backtrack` and choice points.
+- *Solution Storage*: Saves variable bindings in `self.solutions`.
 
-For example:
-- A query '?- child(X)' succeeds if the child/1 predicate matches a fact or rule. Backtracking (choice_points)
-allows exploration of all possible bindings for X.
+For example, the query `?- child(X)` finds all `X` where `child(X)` holds, using
+backtracking to explore multiple solutions.
 
-WAM Workflow
-1. Compilation: The Compiler translates Prolog code into WAM instructions.
-2. Loading: The WAM instance loads the compiled instructions, constants, and variables.
-3. Execution:
-	- The machine begins execution at the query’s entry point.
-	- Unification matches terms, predicates are invoked, and results are produced.
-	- Backtracking explores alternative solutions where necessary.
 
+#### 6. Built-in Predicates
+
+The WAM supports built-in predicates like `\=` (inequality), compiled and executed via:
+
+```python
+self.builtins = {r'\=': self.compile_inequality}
+```
+
+
+#### 7. Example Program
+
+The provided program includes facts, rules, and queries:
+
+```python
+program = [
+    ['parent', 'zeb', 'john'],
+    ['parent', 'zeb', 'jane'],
+    ['parent', 'john', 'jim'],
+    ['parent', 'jane', 'alice'],
+    [':-', ['child', 'X'], ['parent', 'X', '_'], '!'],
+    [':-', ['grandparent', 'X', 'Z'], ['parent', 'X', 'Y'], ['parent', 'Y', 'Z']],
+    [':-', ['sibling', 'X', 'Y'], ['parent', 'Z', 'X'], ['parent', 'Z', 'Y'], [r'\=', 'X', 'Y']],
+    ['?-', ['child', 'X']],
+    ['?-', ['grandparent', 'zeb', 'Who']],
+    ['?-', ['sibling', 'john', 'Sibling']]
+]
+```
+
+This program defines family relationships and queries children, grandparents, and siblings, demonstrating
+unification, backtracking, and cuts.
 
 ### Conclusion
 
-This Python implementation provides a very simplified, Pythonic abstraction of the WAM. It replicates
-the WAM's core components—registers, memory areas, and instructions—while focusing on unification,
-predicate execution, and backtracking. By integrating the Compiler and WAM classes, the system compiles
-Prolog programs into executable instructions, simulating the WAM's execution model and enabling
-Prolog-like functionality in a structured manner.
+The Python implementation in `wam.py` is a simplified yet functional abstraction of the WAM. It replicates
+core components—registers, memory areas, instructions, and backtracking—while supporting Prolog’s unification
+and predicate execution. The `Compiler` and `WAM` classes work together to compile and execute Prolog programs,
+simulating the WAM’s model.
 
-The WAM is considered one of the most significant advancements in logic programming implementation.
-Its design influenced Prolog compilers, interpreters, and other virtual machines for logic programming
-languages. Many modern Prolog implementations, such as SWI-Prolog and SICStus Prolog, still use or
-build upon the WAM.
+The WAM remains a cornerstone of logic programming, influencing modern Prolog systems like SWI-Prolog and
+SICStus Prolog[^sics]. Its design has also impacted constraint logic programming and theorem proving systems,
+underscoring its lasting significance.
 
-The WAM also served as a foundational idea for other abstract machines in related domains, including
-constraint logic programming and theorem proving systems.
+[^sics]: In the effort to keep pace with developments in computing during the mid-1980s—particularly the
+"Fifth Generation" initiative (cf. [SEASONS](./../../../ch08/ai/SEASONS.md))--the Swedish state established
+the Swedish Institute of Computer Science (SICS): https://en.wikipedia.org/wiki/Swedish_Institute_of_Computer_Science.
+Among the many projects produced there was, naturally, a Prolog engine: https://sicstus.sics.se/.
+Professor Sten Åke Tärnlund at Uppsala was a leading figure in advancing the logic programming approach to AI,
+along with several of his students. For a time, I attended Upmail, a seminar held near the institution where
+Tärnlund was affiliated. The seminar brought together many topics that interested me, such as programming and
+its connections to formal logic. (Bibliography of Tärnlund: https://dblp.org/pid/t/StenAkeTarnlund.html.)
