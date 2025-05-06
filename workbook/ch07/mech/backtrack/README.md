@@ -287,14 +287,13 @@ integrity during backtracking cycles, while the Heap/Stack dichotomy enables eff
 
 
 
-### *Key Differences: General vs. WAM*
+### Differences: General vs. WAM
 | Feature        | General Backtracking        | WAM Backtracking                     |
 |----------------|-----------------------------|--------------------------------------|
 | *State Saving* | Full copy of search state   | Selective (heap, trail, IP only)     |
 | *Variables*    | No special handling         | Trail tracks bindings for undo       |
 | *Control*      | Manual stack management     | Automatic via `choice_points` stack  |
 | *Optimization* | None (naive)                | `CUT` operator prunes choice points  |
-
 
 
 ### Why This Matters in WAM
