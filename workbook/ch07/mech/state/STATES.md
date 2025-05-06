@@ -152,6 +152,17 @@ if __name__ == "__main__":
 
 ### 3. Mealy Machine
 
+```mermaid
+stateDiagram-v2
+    [*] --> Red
+    Red --> Green: Timer/"Go"
+    Red --> Red: Emergency/"Stop"
+    Green --> Yellow: Timer/"Prepare to Stop"
+    Green --> Red: Emergency/"Stop for Emergency"
+    Yellow --> Red: Timer/"Stop"
+    Yellow --> Red: Emergency/"Stop for Emergency"
+```
+
 A Mealy machine produces outputs based on the current state and input.
 Outputs are instructions for drivers.
 
@@ -203,6 +214,17 @@ if __name__ == "__main__":
 ```
 
 ### 4. Moore Machine
+
+```mermaid
+stateDiagram-v2
+    [*] --> Red: "Stop"
+    Red --> Green: Timer
+    Red --> Red: Emergency
+    Green --> Yellow: Timer: "Go"
+    Green --> Red: Emergency
+    Yellow --> Red: Timer: "Prepare to Stop"
+    Yellow --> Red: Emergency
+```
 
 A Moore machine produces outputs based only on the current state.
 Each state has a fixed output for drivers.
@@ -266,6 +288,16 @@ Mealy (input-dependent outputs), and Moore (state-dependent outputs).
 
 ### 5. Pushdown Automaton (PDA)
 
+```mermaid
+stateDiagram-v2
+    [*] --> Normal
+    Normal --> Emergency: Emergency/ε,push E
+    Emergency --> Emergency: Emergency/ε,push E
+    Emergency --> Emergency: ClearEmergency/E,pop
+    Emergency --> Normal: ClearEmergency/ε,pop
+    note right of Emergency: Stack tracks nested emergencies
+```
+
 A PDA adds a stack to the finite automaton.
 This enables memory of arbitrary depth, useful when the traffic light logic depends on nested events
 (e.g., a sequence of emergencies that need to be cleared in order).
@@ -325,6 +357,17 @@ Key Idea: PDA can remember nested events — something DFAs cannot.
 
 
 ### 6. Turing Machine (TM)
+
+```mermaid
+stateDiagram-v2
+    [*] --> Red
+    Red --> Green: Timer/Write G, R
+    Green --> Yellow: Timer/Write Y, R
+    Yellow --> Red: Timer/Write R, R
+    Red --> Reviewing: Review/Move L
+    Reviewing --> Red: EndReview/Move R
+    note left of Reviewing: Tape stores history: R,G,Y,...
+```
 
 A Turing machine generalises further with an infinite tape (memory)
 and a read/write head that can move left and right.
