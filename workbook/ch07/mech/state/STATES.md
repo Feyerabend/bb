@@ -2,7 +2,7 @@
 ## Flavours of State Machines
 
 Besides the mechanical state machines presented below, you should also get
-aquainted with how the [State Pattern](./../../patterns/state/) can be used.
+acquainted with how the [State Pattern](./../../patterns/state/) can be used.
 
 
 ### 1. Deterministic Finite Automaton (DFA)
@@ -57,6 +57,18 @@ if __name__ == "__main__":
     print(light.transition("Emergency"))  # Emergency: Switch to Red
     print(light.transition("Timer"))      # Switch to Green
 ```
+
+```mermaid
+stateDiagram-v2
+    [*] --> Red
+    Red --> Green: Timer
+    Red --> Red: Emergency
+    Green --> Yellow: Timer
+    Green --> Red: Emergency
+    Yellow --> Red: Timer
+    Yellow --> Red: Emergency
+```
+
 
 ### 2. Non-Deterministic Finite Automaton (NFA)
 
