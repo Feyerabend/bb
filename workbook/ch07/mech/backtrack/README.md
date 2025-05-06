@@ -113,6 +113,8 @@ flowchart LR
    - Try next alternative  
    - Repeat until all paths exhausted
 
+There are some examples to follow along to understand the rather simple mechanics of backtracking.
+See e.g. N-Queens problem using backtracking, or Sudoku, both in HTML/JS and Python.
 
 
 ### Backtracking in a Model of Logic Programming
