@@ -5,7 +5,7 @@
 |----|----|----|----|
 | [Checkpoint](./checkpoint/) | Save program state to resume from that point | Backtracking, recovery systems, interpreters | Memento, Recovery |
 | [Stack Frame](./frame/) | Local storage for function calls | Recursion, coroutines, nested procedures | Call stack convention |
-| Backtracking    | Reverting to previous states on failure                                | Logic programming, constraint solving                | Search tree, trail stack                |
+| [Backtracking](./backtrack/) | Reverting to previous states on failure | Logic programming, constraint solving | Search tree, trail stack |
 
 Memory mechanisms like backtracking, checkpoints, and stack frames are fundamental
 concepts that help manage program execution flow and state.
