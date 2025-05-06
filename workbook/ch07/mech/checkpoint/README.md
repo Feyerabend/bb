@@ -68,4 +68,5 @@ abstractions like transactions, journaling, or synchronisation protocols. The ce
 idea--recording state at strategic points to enable recovery--remains consistent across
 these varied implementations.
 
-Bubenko, J. & Ohlin, T. (1970-1971). *Introduktion till operativsystem.* Lund: Studentlitt.
+Reference:
+* Bubenko, J. & Ohlin, T. (1970-1971). *Introduktion till operativsystem.* Lund: Studentlitt.
