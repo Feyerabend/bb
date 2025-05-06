@@ -114,21 +114,6 @@ flowchart LR
    - Repeat until all paths exhausted
 
 
-*Example (Factorial)*:
-```mermaid
-flowchart TD
-    A["fact(5)"] --> B["5 * fact(4)"]
-    B --> C["4 * fact(3)"]
-    C --> D["3 * fact(2)"]
-    D --> E["2 * fact(1)"]
-    E --> F["Base case: fact(1) = 1"]
-    F -->|Return 1| E
-    E -->|Return 2*1=2| D
-    D -->|Return 3*2=6| C
-    C -->|Return 4*6=24| B
-    B -->|Return 5*24=120| A
-```
-
 
 ### Backtracking in a Model of Logic Programming
 
