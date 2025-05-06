@@ -4,7 +4,7 @@
 | Mechanism | Description | Use Cases | Related Pattern(s) |
 |----|----|----|----|
 | [Checkpoint](./checkpoint/) | Save program state to resume from that point | Backtracking, recovery systems, interpreters | Memento, Recovery |
-| Stack Frame     | Local storage for function calls                                        | Recursion, coroutines, nested procedures             | Call stack convention                   |
+| [Stack Frame](./frame/) | Local storage for function calls | Recursion, coroutines, nested procedures | Call stack convention |
 | Backtracking    | Reverting to previous states on failure                                | Logic programming, constraint solving                | Search tree, trail stack                |
 
 Memory mechanisms like backtracking, checkpoints, and stack frames are fundamental

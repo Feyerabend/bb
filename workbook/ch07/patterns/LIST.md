@@ -3,8 +3,8 @@
 
 Gang-of-Four patterns .. + 3 others
 
-| Pattern            | Category        | Purpose                                                         | Example Use Case                                | Source        |
-|--------------------|----------------|------------------------------------------------------------------|--------------------------------------------------|----------------|
+| Pattern | Category | Purpose | Example Use Case | Source |
+|----|----|----|----|----|
 | Strategy           | Behavioural      | Encapsulate interchangeable algorithms or behaviours              | Sorting algorithms, payment methods             | GoF            |
 | [Command](./command/) | Behavioural | Encapsulate a request as an object | Undo/Redo, action queues, macro recording | GoF |
 | Observer           | Behavioural      | Notify dependent objects of state changes                        | GUIs, event systems, data binding                | GoF            |
@@ -25,4 +25,220 @@ Gang-of-Four patterns .. + 3 others
 
 
 [^single]: Singleton is often discouraged in modern design due to global state issues; use with care: https://en.wikipedia.org/wiki/Singleton_pattern.
+
+
+### 1. Behavioural Patterns
+
+```mermaid
+classDiagram
+    %% Strategy Pattern
+    class Strategy {
+        <<interface>>
+        +execute()
+    }
+    class ConcreteStrategyA
+    class ConcreteStrategyB
+    class Context {
+        -strategy: Strategy
+        +setStrategy()
+        +executeStrategy()
+    }
+    Context --> Strategy
+    Strategy <|-- ConcreteStrategyA
+    Strategy <|-- ConcreteStrategyB
+
+    %% Observer Pattern
+    class Subject {
+        +attach(Observer)
+        +detach(Observer)
+        +notify()
+    }
+    class Observer {
+        <<interface>>
+        +update()
+    }
+    Subject --> Observer
+
+    %% State Pattern
+    class StateContext {
+        -state: State
+        +request()
+    }
+    class State {
+        <<interface>>
+        +handle()
+    }
+    StateContext --> State
+    State <|-- ConcreteStateA
+    State <|-- ConcreteStateB
+
+    %% Command Pattern
+    class Invoker {
+        -command: Command
+        +executeCommand()
+    }
+    class Command {
+        <<interface>>
+        +execute()
+    }
+    Invoker --> Command
+    Command <|-- ConcreteCommand
+```
+
+### 2. Structural Patterns
+
+```mermaid
+classDiagram
+    %% Decorator Pattern
+    class Component {
+        <<interface>>
+        +operation()
+    }
+    class ConcreteComponent
+    class Decorator {
+        -component: Component
+        +operation()
+    }
+    Component <|-- ConcreteComponent
+    Component <|-- Decorator
+    Decorator *-- Component
+
+    %% Adapter Pattern
+    class Target {
+        <<interface>>
+        +request()
+    }
+    class Adaptee {
+        +specificRequest()
+    }
+    class Adapter {
+        -adaptee: Adaptee
+        +request()
+    }
+    Target <|-- Adapter
+    Adapter *-- Adaptee
+
+    %% Composite Pattern
+    class Component {
+        <<interface>>
+        +operation()
+        +add(Component)
+        +remove(Component)
+    }
+    class Leaf
+    class Composite {
+        -children: Component[]
+    }
+    Component <|-- Leaf
+    Component <|-- Composite
+    Composite *-- Component
+```
+
+### 3. Creational Patterns
+
+```mermaid
+classDiagram
+    %% Abstract Factory
+    class AbstractFactory {
+        <<interface>>
+        +createProductA()
+        +createProductB()
+    }
+    class ConcreteFactory1
+    class ConcreteFactory2
+    AbstractFactory <|-- ConcreteFactory1
+    AbstractFactory <|-- ConcreteFactory2
+
+    %% Builder
+    class Director {
+        -builder: Builder
+        +construct()
+    }
+    class Builder {
+        <<interface>>
+        +buildPartA()
+        +buildPartB()
+        +getResult()
+    }
+    Director --> Builder
+    Builder <|-- ConcreteBuilder
+
+    %% Prototype
+    class Prototype {
+        <<interface>>
+        +clone()
+    }
+    class ConcretePrototype
+    Prototype <|-- ConcretePrototype
+```
+
+### 4. Post-GoF Patterns
+
+```mermaid
+classDiagram
+    %% Dependency Injection
+    class Client {
+        -service: ServiceInterface
+    }
+    class ServiceInterface {
+        <<interface>>
+    }
+    class Injector {
+        +getService()
+    }
+    Client --> ServiceInterface
+    Injector ..> ServiceInterface
+
+    %% Event Bus
+    class EventBus {
+        +subscribe()
+        +publish()
+    }
+    class Subscriber {
+        +handleEvent()
+    }
+    EventBus --> Subscriber
+
+    %% Null Object
+    class AbstractObject {
+        <<interface>>
+        +operation()
+    }
+    class RealObject
+    class NullObject
+    AbstractObject <|-- RealObject
+    AbstractObject <|-- NullObject
+```
+
+### 5. Pattern Relationships (Meta-Diagram)
+
+```mermaid
+flowchart TD
+    Creational -->|"Create objects \n (Abstract Factory, Builder)"| Objects
+    Structural -->|"Compose structures \n (Decorator, Composite)"| Objects
+    Behavioral -->|"Manage communication \n (Observer, Command)"| Objects
+
+    Objects -->|"Loose coupling"| Principles
+    Principles --> SOLID
+    Principles --> DRY
+```
+
+Abstractions shown:
+
+1. *Interfaces* (<<interface>>) as pattern contracts
+
+2. *Arrow types*:
+   - `-->` for dependency
+   - `<|--` for inheritance
+   - `*--` for composition
+
+3. *Pattern-specific relationships*:
+   - Observer's subject-observer binding
+   - Decorator's recursive wrapping
+   - Composite's tree structure
+
+4. *Post-GoF patterns* with modern tooling (DI containers, event systems)
+
+Each diagram isolates the pattern's essence while maintaining consistent notation.
+The meta-diagram shows how categories relate to design principles.
 
