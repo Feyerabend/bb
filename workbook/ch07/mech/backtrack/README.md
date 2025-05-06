@@ -43,42 +43,67 @@ Reference:
 * Ingevaldsson, L. (1977). *JSP - en praktisk metod för programkonstruktion*. Lund: Studentlitt.
 
 
+We’ll use a simple hierarchical data structure as an example — say, a file of orders, where each order has multiple items.
+
+```
+Data Structure
+
+File = { Order* }
+Order = { Header, Item*, Trailer }
+Item = { ItemLine }
+```
+
+JSP Program Structure (in pseudocode, with posit/admit)
+
+```
+process_file():
+    posit file
+        while more_orders():
+            process_order()
+        admit file
+
+process_order():
+    posit order
+        process_header()
+        while more_items():
+            process_item()
+        process_trailer()
+        admit order
+
+process_header():
+    posit header
+        read_header()
+        admit header
+
+process_item():
+    posit item
+        read_item_line()
+        admit item
+
+process_trailer():
+    posit trailer
+        read_trailer()
+        admit trailer
+```
+
+
 ```mermaid
-flowchart TD
-    A[["File Processing<br>(Jackson Structured Programming)"]] --> B[Sequential File]
-    B --> C[Customer Record]
-    C --> D[Customer Header]
-    C --> E[Order Sequence]
-    E --> F[Order Record]
-    F --> G[Order Header]
-    F --> H[Item Sequence]
-    H --> I[Item Record]
-    
-    %% Processing Flow (Forward)
-    style A fill:#f9f,stroke:#333
-    style B fill:#e6f3ff,stroke:#333
-    style C fill:#e6f3ff,stroke:#333
-    style D fill:#ccffcc,stroke:#333
-    style E fill:#e6f3ff,stroke:#333
-    style F fill:#e6f3ff,stroke:#333
-    style G fill:#ccffcc,stroke:#333
-    style H fill:#e6f3ff,stroke:#333
-    style I fill:#ccffcc,stroke:#333
-    
-    %% Backtracking Path
-    I -->|"Backtrack (after last item)"| H
-    H -->|"Backtrack (after last item group)"| F
-    F -->|"Backtrack (after order complete)"| E
-    E -->|"Backtrack (after last order)"| C
-    C -->|"Backtrack (customer processed)"| B
-    
-    %% Legend
-    subgraph Legend
-        direction TB
-        L1[["Forward Processing"]] --> L2[["Backtracking"]]
-        style L1 fill:#e6f3ff,stroke:#333
-        style L2 fill:#ffcccc,stroke:#333
-    end
+sequenceDiagram
+    participant Main
+    participant File
+    participant Order
+    participant Item
+
+    Main->>File: posit file
+    File->>Order: posit order 1
+    Order->>Item: posit item 1
+    Item-->>Order: admit item
+    Order->>Item: posit item 2
+    Item-->>Order: admit item
+    Order-->>File: admit order
+    File->>Order: posit order 2
+    Order-->>File: admit order
+    File-->>Main: admit file
 ```
 
 
