@@ -1,4 +1,87 @@
 
+## Backtracking
+
+The first time I encountered the concept of backtracking, it was not in the context most programmers today
+would recognise--such as recursive algorithms solving puzzles or search problems--but rather in relation to
+structured programming methods designed to improve software development in languages like BASIC or Pascal.
+Specifically, it arose in the context of Jackson Structured Programming (JSP), a method that was influential
+during the early 1980s. Especially in Sweden.
+
+Michael A. Jackson introduced Jackson Structured Programming in his seminal book *Principles of Program Design*
+(1975). The key idea behind JSP was to align the structure of a program closely with the structure of the data
+it processed, particularly sequential file formats common in administrative and business applications. The
+method emphasised program structures derived directly from data structures, usually represented as hierarchical
+trees or sequences, iterations, and selections.
+
+Where backtracking enters the picture is in the treatment of file structures that do not map cleanly into simple
+linear control flows. In many business applications of that era, files were not merely flat sequences of uniform
+records. Instead, they often had nested and repeating groups, akin to hierarchical or variably structured data
+(imagine a customer file where a customer record contains a varying number of orders, and each order contains
+a varying number of items). Processing such structures cleanly often required the program to descend into a
+hierarchy (to process subrecords) and then ascend (to return to the higher-level structure)--in effect, navigating
+forwards and backwards through the file structure.
+
+In Jackson's approach, backtracking was not algorithmic backtracking in the modern sense (as in search trees or
+constraint solving), but rather a structural traversal mechanism. The program needed to "backtrack" in the sense
+of revisiting higher levels in the data hierarchy after processing lower levels. For example, after finishing
+all items in an order, the program had to return to the "order" level to check if there were more orders for
+that customer. This kind of logical navigation was a deterministic and systematic traversal, not speculative
+as in search algorithms, but the term “backtracking” was used informally to describe this movement back up the
+data structure.
+
+Jackson's structured methods brought clarity to such problems by advocating explicit program design diagrams
+that mirrored the data structures. These diagrams guided developers in systematically implementing the necessary
+navigation, often leading to well-structured, iterative-recursive code patterns in procedural languages like
+Pascal or COBOL. The method was especially relevant before the widespread availability of relational databases,
+when sequential file processing dominated business computing.
+
+In short, backtracking in Jackson Structured Programming referred to systematic reversal or return in hierarchical
+data processing flows, driven by the necessity to process nested file structures accurately in procedural programs.
+
+Reference:
+* Jackson, Michael A. (1975) *Principles of Program Design*. Academic Press.
+
+
+```mermaid
+flowchart TD
+    A[["File Processing<br>(Jackson Structured Programming)"]] --> B[Sequential File]
+    B --> C[Customer Record]
+    C --> D[Customer Header]
+    C --> E[Order Sequence]
+    E --> F[Order Record]
+    F --> G[Order Header]
+    F --> H[Item Sequence]
+    H --> I[Item Record]
+    
+    %% Processing Flow (Forward)
+    style A fill:#f9f,stroke:#333
+    style B fill:#e6f3ff,stroke:#333
+    style C fill:#e6f3ff,stroke:#333
+    style D fill:#ccffcc,stroke:#333
+    style E fill:#e6f3ff,stroke:#333
+    style F fill:#e6f3ff,stroke:#333
+    style G fill:#ccffcc,stroke:#333
+    style H fill:#e6f3ff,stroke:#333
+    style I fill:#ccffcc,stroke:#333
+    
+    %% Backtracking Path
+    I -->|"Backtrack (after last item)"| H
+    H -->|"Backtrack (after last item group)"| F
+    F -->|"Backtrack (after order complete)"| E
+    E -->|"Backtrack (after last order)"| C
+    C -->|"Backtrack (customer processed)"| B
+    
+    %% Legend
+    subgraph Legend
+        direction TB
+        L1[["Forward Processing"]] --> L2[["Backtracking"]]
+        style L1 fill:#e6f3ff,stroke:#333
+        style L2 fill:#ffcccc,stroke:#333
+    end
+```
+
+
+### Backtracking in a Prolog Case
 
 ```mermaid
 stateDiagram-v2
@@ -34,6 +117,38 @@ stateDiagram-v2
         IncrementAlternative --> [*]
     }
 ```
+
+__Logic Programming Execution Flow__
+
+This diagram illustrates the control flow of a logic programming system
+(e.g., Prolog) when handling predicates with multiple clauses:
+
+1. *Initial Execution*  
+   The system begins processing a query/predicate from the initial state ([*]).
+
+2. *Choice Point Creation*  
+   When encountering a multi-clause predicate:
+   - System state is preserved (call stack, variables)
+   - Alternative clauses are registered for potential backtracking
+
+3. *Clause Execution Phase*  
+   The first clause alternative is attempted through:
+   - *Unification*: Attempt pattern matching between arguments
+        - *Success*: Variables are bound, body execution proceeds
+        - *Failure*: Triggers backtracking mechanism
+   - *Body Execution*: Processes consequent goals if unification succeeds
+
+4. *Backtracking Mechanism*  
+   Activated when either unification fails or explicit backtracking is requested:
+   - Restores previous execution state
+   - Selects next available alternative clause
+   - If no alternatives remain: Returns "no more solutions"
+
+5. *Continuation*  
+   Successful execution flows back to main processing (Execution state) to handle subsequent goals.
+
+This matches the behavior of logic programming systems where multiple solutions are found through
+systematic exploration of alternative execution paths.
 
 
 
