@@ -217,12 +217,16 @@ if __name__ == "__main__":
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Red: "Stop"
+    [*] --> Red: Stop
     Red --> Green: Timer
     Red --> Red: Emergency
-    Green --> Yellow: Timer: "Go"
+    
+    note right of Green: "Go" state
+    Green --> Yellow: Timer
     Green --> Red: Emergency
-    Yellow --> Red: Timer: "Prepare to Stop"
+    
+    note left of Yellow: Prepares to stop
+    Yellow --> Red: Timer
     Yellow --> Red: Emergency
 ```
 
