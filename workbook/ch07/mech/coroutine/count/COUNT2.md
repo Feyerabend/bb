@@ -3,8 +3,6 @@
 
 - The state machine lifecycle of a coroutine
 - The main operations (create, resume, yield)
-- Preservation of execution context between suspensions
-- Interaction between main program and coroutines
 
 ```mermaid
 stateDiagram-v2
@@ -32,6 +30,8 @@ stateDiagram-v2
     end note
 ```
 
+- Preservation of execution context between suspensions
+- Interaction between main program and coroutines
 
 
 ```mermaid
