@@ -20,7 +20,7 @@ be delivered.
 
 ### The Second Spring and Winter
 
-The second international conference on logic programming was held in Uppsala in 1984.
+The second international conference on logic programming was held in Uppsala in 1984.[^0]
 It took place at a time when logic programming was viewed as a promising fusion between
 the logic of philosophy and the programming of computer science. The conference received
 widespread attention, including even from national media such as "Sveriges Television"
@@ -145,6 +145,7 @@ graph LR
     style J fill:#ffd700
 ```
 
+[^0]: Proceedings content: https://dblp.org/db/conf/iclp/iclp84.html.
 [^1]: From the back cover text of the paperback edition of Edward A. Feigenbaum, & Pamela McCorduck, *The fifth generation: artificial intelligence and Japan's computer challenge to the world*, Rev. & upd. ed., Pan Books, London, 1984.
 [^2]: Ibid, s. 290.
 [^3]: Wikipedia, "Fifth generation computer,", https://en.wikipedia.org/w/index.php?title=Fifth_generation_computer&oldid=891491126 (retrieved 2019-04-09).
