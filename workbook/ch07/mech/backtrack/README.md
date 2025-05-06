@@ -82,6 +82,54 @@ flowchart TD
 ```
 
 
+### General Backtracking Mechanism
+
+*Definition*:  
+A systematic way to explore all possible solutions by:
+1. Making a choice (creating a *choice point*)
+2. Proceeding until failure
+3. Undoing the last choice (*backtracking*) and trying alternatives
+
+```mermaid
+flowchart LR
+    A[Search Tree] --> B[Choice Points]
+    B --> C[Depth-First Traversal]
+    C --> D[State Preservation]
+    D --> E[Backtracking]
+```
+
+1. *Choice Point Creation*  
+   - When multiple paths exist (e.g., clauses in Prolog), save:
+     - Current execution state (variables, stack, program counter)
+     - Untried alternatives
+
+2. *Execution*  
+   - Proceed down one path until:
+     - Success: Return solution
+     - Failure: Trigger backtrack
+
+3. *Backtracking*  
+   - Restore saved state  
+   - Try next alternative  
+   - Repeat until all paths exhausted
+
+
+*Example (Factorial)*:
+```mermaid
+flowchart TD
+    A["fact(5)"] --> B["5 * fact(4)"]
+    B --> C["4 * fact(3)"]
+    C --> D["3 * fact(2)"]
+    D --> E["2 * fact(1)"]
+    E --> F["Base case: fact(1) = 1"]
+    F -->|Return 1| E
+    E -->|Return 2*1=2| D
+    D -->|Return 3*2=6| C
+    C -->|Return 4*6=24| B
+    B -->|Return 5*24=120| A
+```
+
+
 ### Backtracking in a Model of Logic Programming
 
 This following diagram illustrates the control flow of a logic programming system
@@ -230,81 +278,24 @@ sequenceDiagram
     end
 ```
 
+The Warren Abstract Machine (WAM) executes logic programs through coordinated state management
+between its core components. When encountering a multi-clause predicate, the virtual machine
+initiates _choice point creation_ by invoking `create_choice_point()`, which simultaneously
+preserves the heap's memory state through the ChoiceStack and records variable bindings in the
+Trail. As execution proceeds to the first clause address (addr1), variable bindings are committed
+to the Heap while being tracked in the Trail to enable future undoing. Should _unification fail_
+during clause execution, the system triggers `backtrack()`--this restoration process rolls back
+the Heap to its saved state, uses the Trail to reset temporary variable bindings, and directs
+execution to the next alternative clause address (addr2) from the ChoiceStack. Successful execution
+instead invokes `proceed()`, maintaining forward progress without state restoration. This mechanism
+supports _multi-level backtracking_ through nested choice point stacking, essential for complex
+queries with interdependent solutions. The Trail's meticulous binding records ensure variable
+integrity during backtracking cycles, while the Heap/Stack dichotomy enables efficient stat
+ snapshots. This architecture directly enables Prolog's characteristic _generate-and-test_ paradigm,
+ where alternative execution paths are systematically explored through failure-driven backtracking
+ until all solutions are exhausted or execution successfully completes.
 
 
-
-
-
-
-
-- Choice Point Creation: Saves the machine state (heap, stack, trail) when encountering multiple clauses
-- Backtracking Flow: Shows how failure triggers state restoration and alternative clause execution
-- Data Preservation: Illustrates how variable bindings are tracked via the trail
-- Multi-level Backtracking: Demonstrates nested choice points for complex queries
-
-
-
-- create_choice_point() captures the execution state
-- backtrack() restores from the most recent choice point
-- The trail mechanism ensures variable bindings are properly undone
-- Multiple solutions are found by systematically trying all alternatives
-
-
-- Predicates with multiple clauses
-- Nested queries with dependent solutions
-- The "generate-and-test" paradigm of Prolog execution
-- Efficient state restoration during backtracking
-
-
-
-
-
-### General Backtracking Mechanism
-
-*Definition*:  
-A systematic way to explore all possible solutions by:
-1. Making a choice (creating a *choice point*)
-2. Proceeding until failure
-3. Undoing the last choice (*backtracking*) and trying alternatives
-
-```mermaid
-flowchart LR
-    A[Search Tree] --> B[Choice Points]
-    B --> C[Depth-First Traversal]
-    C --> D[State Preservation]
-    D --> E[Backtracking]
-```
-
-1. *Choice Point Creation*  
-   - When multiple paths exist (e.g., clauses in Prolog), save:
-     - Current execution state (variables, stack, program counter)
-     - Untried alternatives
-
-2. *Execution*  
-   - Proceed down one path until:
-     - Success: Return solution
-     - Failure: Trigger backtrack
-
-3. *Backtracking*  
-   - Restore saved state  
-   - Try next alternative  
-   - Repeat until all paths exhausted
-
-
-*Example (Factorial)*:
-```mermaid
-flowchart TD
-    A["fact(5)"] --> B["5 * fact(4)"]
-    B --> C["4 * fact(3)"]
-    C --> D["3 * fact(2)"]
-    D --> E["2 * fact(1)"]
-    E --> F["Base case: fact(1) = 1"]
-    F -->|Return 1| E
-    E -->|Return 2*1=2| D
-    D -->|Return 3*2=6| C
-    C -->|Return 4*6=24| B
-    B -->|Return 5*24=120| A
-```
 
 
 
