@@ -3,7 +3,7 @@
 
 | Mechanism | Description | Use Cases | Related Pattern(s) |
 |---|---|---|---|
-| Coroutine | Generalised subroutine with suspend/resume semantics | Generators, cooperative multitasking, simulations | Actor model, State Machine |
+| [Coroutine](./coroutine/) | Generalised subroutine with suspend/resume semantics | Generators, cooperative multitasking, simulations | Actor model, State Machine |
 
 Coroutines are cooperative multitasking constructs where control is explicitly yielded
 between different execution contexts, unlike threads (which are preemptively scheduled
