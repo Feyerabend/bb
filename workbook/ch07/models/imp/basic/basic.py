@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
+"""
+BASIC Interpreter - A simple BASIC language interpreter.
+Refactored for improved design, maintainability, and robustness.
+"""
 import sys
 import re
 import math
 import random
-from typing import Any, List, Tuple, Optional, Dict
+from typing import Any, List, Tuple, Optional, Dict, Union, Set
 from abc import ABC, abstractmethod
+from contextlib import contextmanager
+from enum import Enum, auto
 
 class InterpreterError(Exception):
     """Base exception for interpreter errors."""
@@ -18,68 +24,148 @@ class ExecutionError(InterpreterError):
     """Exception for execution errors."""
     pass
 
+# Constants
+class Constants:
+    """Global constants for the interpreter."""
+    DEFAULT_START_LINE = 10
+    DEFAULT_INCREMENT = 10
+    COMPARISON_OPERATORS = {"=", "<>", "<", ">", "<=", ">="}
+    ARITHMETIC_OPERATORS = {"+", "-", "*", "/"}
+    LINE_NUMBER_VARIABLE = "#"
+
 # State Management
 class InterpreterState:
+    """
+    Manages the interpreter's state including code, variables, 
+    loop tracking, and execution control.
+    """
     def __init__(self):
         self.reset()
 
     def reset(self):
+        """Reset the interpreter state to initial values."""
         self.code: Dict[int, str] = {}
-        self.variables: Dict[str, Any] = {"#": 10}  # Line number
+        # Line number variable is initialized to 10
+        self.variables: Dict[str, Any] = {Constants.LINE_NUMBER_VARIABLE: Constants.DEFAULT_START_LINE}
         self.stack: List[int] = []
         self.loops: Dict[str, Tuple[int, float, float]] = {}
         self.whiles: Dict[str, Tuple[int, str]] = {}
         self.paused: bool = False
+    
+    @property
+    def current_line(self) -> int:
+        """Get the current line number."""
+        return self.variables.get(Constants.LINE_NUMBER_VARIABLE, 0)
+    
+    @current_line.setter
+    def current_line(self, value: int):
+        """Set the current line number."""
+        self.variables[Constants.LINE_NUMBER_VARIABLE] = value
+    
+    def advance_line(self) -> None:
+        """Advance to the next line in the code."""
+        current = self.current_line
+        self.current_line = next(
+            (n for n in sorted(self.code.keys()) if n > current), 0)
 
 # Expression Handling
+class ExpressionType(Enum):
+    """Enumeration of expression types."""
+    NUMBER = auto()
+    STRING = auto()
+    VARIABLE = auto()
+    BINARY = auto()
+    FUNCTION = auto()
+
 class Expression(ABC):
+    """Base class for all expressions in the BASIC language."""
+    
+    @property
+    @abstractmethod
+    def type(self) -> ExpressionType:
+        """Get the type of the expression."""
+        pass
+    
     @abstractmethod
     def accept(self, visitor: 'ExpressionVisitor') -> Any:
+        """Accept a visitor for evaluation."""
         pass
 
 class NumberExpression(Expression):
+    """Represents a numeric literal."""
+    
     def __init__(self, value: float):
         self.value = value
+    
+    @property
+    def type(self) -> ExpressionType:
+        return ExpressionType.NUMBER
 
     def accept(self, visitor: 'ExpressionVisitor') -> float:
         return visitor.visit_number(self)
 
 class StringExpression(Expression):
+    """Represents a string literal."""
+    
     def __init__(self, value: str):
         self.value = value
+    
+    @property
+    def type(self) -> ExpressionType:
+        return ExpressionType.STRING
 
     def accept(self, visitor: 'ExpressionVisitor') -> str:
         return visitor.visit_string(self)
 
 class VariableExpression(Expression):
+    """Represents a variable reference."""
+    
     def __init__(self, name: str):
-        if CommandFactory.is_reserved(name):
+        if CommandRegistry.is_reserved(name):
             raise ParserError(f"Cannot use reserved name '{name}' as variable")
         self.name = name
+    
+    @property
+    def type(self) -> ExpressionType:
+        return ExpressionType.VARIABLE
 
     def accept(self, visitor: 'ExpressionVisitor') -> Any:
         return visitor.visit_variable(self)
 
 class BinaryExpression(Expression):
+    """Represents a binary operation between two expressions."""
+    
     def __init__(self, left: Expression, operator: str, right: Expression):
         self.left = left
         self.operator = operator
         self.right = right
+    
+    @property
+    def type(self) -> ExpressionType:
+        return ExpressionType.BINARY
 
     def accept(self, visitor: 'ExpressionVisitor') -> Any:
         return visitor.visit_binary(self)
 
 class FunctionExpression(Expression):
+    """Represents a function call."""
+    
     def __init__(self, name: str, args: List[Expression]):
-        if not CommandFactory.is_reserved_function(name):
+        if not CommandRegistry.is_reserved_function(name):
             raise ParserError(f"Unknown function: {name}")
         self.name = name
         self.args = args
+    
+    @property
+    def type(self) -> ExpressionType:
+        return ExpressionType.FUNCTION
 
     def accept(self, visitor: 'ExpressionVisitor') -> Any:
         return visitor.visit_function(self)
 
 class ExpressionVisitor(ABC):
+    """Base visitor interface for expressions."""
+    
     @abstractmethod
     def visit_number(self, expr: NumberExpression) -> float:
         pass
@@ -101,6 +187,8 @@ class ExpressionVisitor(ABC):
         pass
 
 class EvaluationVisitor(ExpressionVisitor):
+    """Evaluates expressions in the context of the interpreter state."""
+    
     def __init__(self, state: InterpreterState):
         self.state = state
 
@@ -117,9 +205,11 @@ class EvaluationVisitor(ExpressionVisitor):
         left = expr.left.accept(self)
         right = expr.right.accept(self)
 
-        if expr.operator in ["+", "-", "*", "/"]:
+        # Handle arithmetic operations
+        if expr.operator in Constants.ARITHMETIC_OPERATORS:
             if not (isinstance(left, (int, float)) and isinstance(right, (int, float))):
                 raise ExecutionError(f"Operator '{expr.operator}' requires numeric operands")
+            
             if expr.operator == "+":
                 return left + right
             elif expr.operator == "-":
@@ -131,7 +221,9 @@ class EvaluationVisitor(ExpressionVisitor):
                     raise ExecutionError("Division by zero")
                 return left / right
 
-        if expr.operator in ["=", "<>", "<", ">", "<=", ">="]:
+        # Handle comparison operations
+        if expr.operator in Constants.COMPARISON_OPERATORS:
+            # Check operand types are comparable
             if isinstance(left, str) and isinstance(right, str) or \
                isinstance(left, (int, float)) and isinstance(right, (int, float)):
                 if expr.operator == "=":
@@ -146,98 +238,46 @@ class EvaluationVisitor(ExpressionVisitor):
                     return 1 if left <= right else 0
                 elif expr.operator == ">=":
                     return 1 if left >= right else 0
-            raise ExecutionError(f"Cannot compare {type(left).__name__} with {type(right).__name__}")
+            else:
+                raise ExecutionError(f"Cannot compare {type(left).__name__} with {type(right).__name__}")
 
         raise ExecutionError(f"Unknown operator: {expr.operator}")
 
     def visit_function(self, expr: FunctionExpression) -> Any:
-        args = [arg.accept(self) for arg in expr.args]
+        """Evaluate a function call."""
         name = expr.name.lower()
-
-        try:
-            if name == "sin":
-                return math.sin(args[0]) if len(args) == 1 else math.sin(0)
-            elif name == "cos":
-                return math.cos(args[0]) if len(args) == 1 else math.cos(0)
-            elif name == "tan":
-                return math.tan(args[0]) if len(args) == 1 else math.tan(0)
-            elif name == "atn":
-                return math.atan(args[0]) if len(args) == 1 else math.atan(0)
-            elif name == "abs":
-                return abs(args[0]) if len(args) == 1 else 0
-            elif name == "sqr":
-                if len(args) == 1 and args[0] >= 0:
-                    return math.sqrt(args[0])
-                raise ExecutionError("Invalid argument for SQR")
-            elif name == "log":
-                if len(args) == 1 and args[0] > 0:
-                    return math.log(args[0])
-                raise ExecutionError("Invalid argument for LOG")
-            elif name == "exp":
-                return math.exp(args[0]) if len(args) == 1 else 0
-            elif name == "int":
-                return int(args[0]) if len(args) == 1 else 0
-            elif name == "rnd":
-                if len(args) == 0:
-                    return random.random()
-                if len(args) == 1 and isinstance(args[0], (int, float)):
-                    random.seed(int(args[0]))
-                    return random.random()
-                raise ExecutionError("Invalid arguments for RND")
-            elif name == "left":
-                if len(args) == 2 and isinstance(args[0], str) and isinstance(args[1], (int, float)):
-                    return args[0][:int(args[1])]
-                raise ExecutionError("Invalid arguments for LEFT")
-            elif name == "right":
-                if len(args) == 2 and isinstance(args[0], str) and isinstance(args[1], (int, float)):
-                    return args[0][-int(args[1]):]
-                raise ExecutionError("Invalid arguments for RIGHT")
-            elif name == "mid":
-                if len(args) >= 2 and isinstance(args[0], str) and isinstance(args[1], (int, float)):
-                    start = int(args[1]) - 1
-                    length = int(args[2]) if len(args) == 3 else len(args[0])
-                    return args[0][start:start + length]
-                raise ExecutionError("Invalid arguments for MID")
-            elif name == "len":
-                return len(args[0]) if len(args) == 1 and isinstance(args[0], str) else 0
-            elif name == "str":
-                return str(args[0]) if len(args) == 1 else ""
-            elif name == "val":
-                try:
-                    return float(args[0]) if len(args) == 1 and isinstance(args[0], str) else 0
-                except ValueError:
-                    return 0
-            elif name == "chr":
-                return chr(int(args[0])) if len(args) == 1 and isinstance(args[0], (int, float)) else ""
-            elif name == "asc":
-                if len(args) == 1 and isinstance(args[0], str) and args[0]:
-                    return ord(args[0][0])
-                raise ExecutionError("Invalid arguments for ASC")
-            raise ExecutionError(f"Unknown function: {name}")
-        except Exception as e:
-            raise ExecutionError(f"Error executing function {name}: {e}")
+        args = [arg.accept(self) for arg in expr.args]
+        
+        # Use FunctionRegistry to get and call the function
+        return FunctionRegistry.call_function(name, args)
 
 class ExpressionParser:
+    """Parses strings into Expression trees."""
+    
     def __init__(self, text: str):
         self.text = text.strip()
         self.pos = 0
         self.length = len(self.text)
 
     def parse(self) -> Expression:
+        """Parse the input text into an expression tree."""
         expr = self.parse_expression()
         self.skip_whitespace()
         if self.pos < self.length:
             raise ParserError(f"Unexpected characters after expression: '{self.text[self.pos:]}'")
         return expr
 
-    def skip_whitespace(self):
+    def skip_whitespace(self) -> None:
+        """Skip whitespace characters."""
         while self.pos < self.length and self.text[self.pos].isspace():
             self.pos += 1
 
     def parse_expression(self) -> Expression:
+        """Parse a full expression."""
         return self.parse_comparison()
 
     def parse_comparison(self) -> Expression:
+        """Parse a comparison expression."""
         left = self.parse_term()
         self.skip_whitespace()
 
@@ -255,6 +295,7 @@ class ExpressionParser:
         return left
 
     def parse_term(self) -> Expression:
+        """Parse a term (addition/subtraction)."""
         left = self.parse_factor()
         self.skip_whitespace()
 
@@ -268,6 +309,7 @@ class ExpressionParser:
         return left
 
     def parse_factor(self) -> Expression:
+        """Parse a factor (multiplication/division)."""
         left = self.parse_primary()
         self.skip_whitespace()
 
@@ -281,11 +323,14 @@ class ExpressionParser:
         return left
 
     def parse_primary(self) -> Expression:
+        """Parse a primary expression (number, string, variable, etc.)."""
         self.skip_whitespace()
         if self.pos >= self.length:
             raise ParserError("Unexpected end of expression")
 
         char = self.text[self.pos]
+        
+        # Parse identifiers (variables and functions)
         if char.isalpha() or char == "_":
             start = self.pos
             while self.pos < self.length and (self.text[self.pos].isalnum() or self.text[self.pos] in "_$"):
@@ -294,6 +339,7 @@ class ExpressionParser:
 
             self.skip_whitespace()
             if self.pos < self.length and self.text[self.pos] == '(':
+                # Function call
                 self.pos += 1
                 args = []
                 self.skip_whitespace()
@@ -316,6 +362,7 @@ class ExpressionParser:
                 return FunctionExpression(name, args)
             return VariableExpression(name)
 
+        # Parse numbers
         elif char.isdigit() or char == '.':
             start = self.pos
             while self.pos < self.length and (self.text[self.pos].isdigit() or self.text[self.pos] == '.'):
@@ -326,6 +373,7 @@ class ExpressionParser:
             except ValueError:
                 raise ParserError(f"Invalid number format: {number_str}")
 
+        # Parse strings
         elif char == '"':
             self.pos += 1
             start = self.pos
@@ -337,6 +385,7 @@ class ExpressionParser:
             self.pos += 1
             return StringExpression(value)
 
+        # Parse parenthesized expressions
         elif char == '(':
             self.pos += 1
             expr = self.parse_expression()
@@ -348,691 +397,1275 @@ class ExpressionParser:
 
         raise ParserError(f"Unexpected character: {char}")
 
-# Command Handling
-class Command(ABC):
-    def __init__(self, state: InterpreterState):
-        self.state = state
-
-    @abstractmethod
-    def execute(self, args: str) -> None:
-        pass
-
-    def parse_expression(self, expr: str) -> Any:
-        parser = ExpressionParser(expr)
-        expression = parser.parse()
-        evaluator = EvaluationVisitor(self.state)
-        return expression.accept(evaluator)
-
-class PrintCommand(Command):
-    def execute(self, args: str) -> None:
-        if not args.strip():
-            print()
-            return
-
-        trailing_semicolon = args.strip().endswith(";")
-        args = args.rstrip(";").rstrip()
-        parts = args.split(";")
-        output = []
-
-        for part in parts:
-            part = part.strip()
-            if not part:
-                continue
-
-            if part.startswith('"') and part.endswith('"'):
-                output.append(part[1:-1])
-                continue
-
-            try:
-                result = self.parse_expression(part)
-                if isinstance(result, float) and result.is_integer():
-                    output.append(str(int(result)))
-                else:
-                    output.append(str(result))
-            except Exception as e:
-                raise ExecutionError(f"Error evaluating '{part}': {e}")
-
-        print("".join(output), end="" if trailing_semicolon else "\n")
-
-class InputCommand(Command):
-    def execute(self, args: str) -> None:
-        parts = args.split(";", 1)
-        prompt = "> "
-        var_name = args.strip()
-
-        if len(parts) > 1:
-            prompt_text = parts[0].strip()
-            var_name = parts[1].strip()
-            try:
-                prompt = str(self.parse_expression(prompt_text)) + " "
-            except Exception as e:
-                raise ExecutionError(f"Error in INPUT prompt: {e}")
-
-        input_value = input(prompt).strip()
-        try:
-            if var_name.endswith("$"):
-                self.state.variables[var_name] = input_value
-            else:
-                try:
-                    self.state.variables[var_name] = float(input_value) if '.' in input_value else int(input_value)
-                except ValueError:
-                    self.state.variables[var_name] = input_value
-        except Exception as e:
-            raise ExecutionError(f"Error processing INPUT: {e}")
-
-class LetCommand(Command):
-    def execute(self, args: str) -> None:
-        try:
-            var, expr = args.split("=", 1)
-            var = var.strip()
-            expr = expr.strip()
-            if CommandFactory.is_reserved(var):
-                raise ParserError(f"Cannot assign to reserved word '{var}'")
-            value = self.parse_expression(expr)
-            if isinstance(value, float) and value.is_integer():
-                value = int(value)
-            self.state.variables[var] = value
-        except Exception as e:
-            raise ExecutionError(f"Error in LET statement: {e}")
-
-class IfCommand(Command):
-    def execute(self, args: str) -> None:
-        try:
-            parts = re.split(r"then", args, maxsplit=1, flags=re.IGNORECASE)
-            if len(parts) != 2:
-                raise ParserError("Invalid IF syntax: Missing 'THEN'")
-
-            condition = parts[0].strip()
-            rest = parts[1].strip()
-            then_part = rest
-            else_part = ""
-
-            if "ELSE" in rest.upper():
-                then_else = re.split(r"else", rest, maxsplit=1, flags=re.IGNORECASE)
-                then_part = then_else[0].strip()
-                else_part = then_else[1].strip()
-
-            condition_value = self.parse_expression(condition)
-            engine = InterpreterEngine(self.state)
-
-            if condition_value != 0:
-                if then_part.isdigit():
-                    self.state.variables["#"] = int(then_part)
-                else:
-                    engine.execute_line(then_part)
-            elif else_part:
-                if else_part.isdigit():
-                    self.state.variables["#"] = int(else_part)
-                else:
-                    engine.execute_line(else_part)
-        except Exception as e:
-            raise ExecutionError(f"Error in IF statement: {e}")
-
-class GotoCommand(Command):
-    def execute(self, args: str) -> None:
-        try:
-            line_num = int(self.parse_expression(args))
-            if line_num in self.state.code:
-                self.state.variables["#"] = line_num
-            else:
-                raise ExecutionError(f"Line {line_num} does not exist")
-        except Exception as e:
-            raise ExecutionError(f"Error in GOTO statement: {e}")
-
-class GosubCommand(Command):
-    def execute(self, args: str) -> None:
-        try:
-            line_num = int(self.parse_expression(args))
-            if line_num in self.state.code:
-                self.state.stack.append(self.state.variables["#"] + 1)
-                self.state.variables["#"] = line_num
-            else:
-                raise ExecutionError(f"Line {line_num} does not exist")
-        except Exception as e:
-            raise ExecutionError(f"Error in GOSUB statement: {e}")
-
-class ReturnCommand(Command):
-    def execute(self, args: str) -> None:
-        if self.state.stack:
-            self.state.variables["#"] = self.state.stack.pop()
-        else:
-            raise ExecutionError("RETURN without GOSUB")
-
-class ForCommand(Command):
-    def execute(self, args: str) -> None:
-        try:
-            parts = args.split("=", 1)
-            if len(parts) != 2:
-                raise ParserError("Invalid FOR syntax: Missing '='")
-
-            var = parts[0].strip()
-            if not var.isalnum():
-                raise ParserError(f"Invalid loop variable: {var}")
-
-            rest = parts[1].strip()
-            to_parts = rest.split("TO", 1)
-            if len(to_parts) != 2:
-                raise ParserError("Invalid FOR syntax: Missing 'TO'")
-
-            start_expr = to_parts[0].strip()
-            rest = to_parts[1].strip()
-            step = 1
-            limit_expr = rest
-
-            if "STEP" in rest.upper():
-                step_parts = rest.split("STEP", 1)
-                limit_expr = step_parts[0].strip()
-                step = self.parse_expression(step_parts[1].strip())
-                if not isinstance(step, (int, float)):
-                    raise ParserError("STEP must be numeric")
-
-            start = self.parse_expression(start_expr)
-            if not isinstance(start, (int, float)):
-                raise ParserError("START must be numeric")
-
-            limit = self.parse_expression(limit_expr)
-            if not isinstance(limit, (int, float)):
-                raise ParserError("LIMIT must be numeric")
-
-            self.state.variables[var] = start
-            current_line = self.state.variables["#"]
-            next_line = next((n for n in sorted(self.state.code.keys()) if n > current_line), current_line)
-            self.state.loops[var] = (next_line, limit, step)
-        except Exception as e:
-            raise ExecutionError(f"Error in FOR statement: {e}")
-
-class NextCommand(Command):
-    def execute(self, args: str) -> None:
-        var = args.strip()
-        if not var:
-            raise ExecutionError("NEXT requires a variable name")
-
-        if var not in self.state.loops:
-            raise ExecutionError(f"No matching FOR loop for variable '{var}'")
-
-        start_line, limit, step = self.state.loops[var]
-        current_value = self.state.variables.get(var, 0)
-        current_value += step
-        self.state.variables[var] = current_value
-
-        if step > 0:
-            continue_loop = current_value <= limit
-        else:
-            continue_loop = current_value >= limit
-
-        if continue_loop:
-            self.state.variables["#"] = start_line
-        else:
-            self.state.variables["#"] = next(
-                (n for n in sorted(self.state.code.keys()) if n > self.state.variables["#"]), 0)
-            del self.state.loops[var]
-
-class WhileCommand(Command):
-    def execute(self, args: str) -> None:
-        try:
-            if not args.strip():
-                raise ParserError("WHILE requires a condition")
-
-            condition = args.strip()
-            loop_id = f"while_{self.state.variables['#']}"
-            self.state.whiles[loop_id] = (self.state.variables["#"], condition)
-
-            if not self.parse_expression(condition):
-                self.skip_to_wend()
-        except Exception as e:
-            raise ExecutionError(f"Error in WHILE statement: {e}")
-
-    def skip_to_wend(self):
-        current_line = self.state.variables["#"]
-        wend_count = 1
-
-        for line_num in sorted(self.state.code.keys()):
-            if line_num <= current_line:
-                continue
-            line = self.state.code[line_num].strip().upper()
-            if line.startswith("WHILE"):
-                wend_count += 1
-            elif line.startswith("WEND"):
-                wend_count -= 1
-                if wend_count == 0:
-                    self.state.variables["#"] = line_num + 1
-                    return
-        raise ExecutionError("No matching WEND for WHILE")
-
-class WendCommand(Command):
-    def execute(self, args: str) -> None:
-        loop_id = next((id for id in sorted(self.state.whiles.keys(), reverse=True) if id.startswith("while_")), None)
-        if not loop_id or loop_id not in self.state.whiles:
-            raise ExecutionError("WEND without matching WHILE")
-
-        start_line, condition = self.state.whiles[loop_id]
-        if self.parse_expression(condition):
-            self.state.variables["#"] = start_line
-        else:
-            del self.state.whiles[loop_id]
-            self.state.variables["#"] = next(
-                (n for n in sorted(self.state.code.keys()) if n > self.state.variables["#"]), 0)
-
-class ListCommand(Command):
-    def execute(self, args: str) -> None:
-        if not self.state.code:
-            print("No program loaded.")
-            return
-
-        start_line, end_line = self.parse_range(args)
-        for line_num, line_code in sorted(self.state.code.items()):
-            if start_line <= line_num <= end_line:
-                print(f"{line_num:3} {line_code}")
-
-    def parse_range(self, args: str) -> Tuple[int, int]:
-        default_start = min(self.state.code.keys(), default=1)
-        default_end = max(self.state.code.keys(), default=1)
-
-        if not args.strip():
-            return default_start, default_end
-
-        try:
-            parts = [part.strip() for part in args.split("-") if part.strip()]
-            if len(parts) == 1:
-                start = int(self.parse_expression(parts[0]))
-                return start, default_end
-            elif len(parts) == 2:
-                start = int(self.parse_expression(parts[0])) if parts[0] else default_start
-                end = int(self.parse_expression(parts[1]))
-                if start > end:
-                    start, end = end, start
-                return start, end
-            raise ParserError("Invalid range format")
-        except Exception as e:
-            print(f"Error parsing range: {e}. Listing all lines.")
-            return default_start, default_end
-
-class RemCommand(Command):
-    def execute(self, args: str) -> None:
-        pass
-
-class EndCommand(Command):
-    def execute(self, args: str) -> None:
-        self.state.variables["#"] = 0
-
-class ByeCommand(Command):
-    def execute(self, args: str) -> None:
-        sys.exit(0)
-
-class StopCommand(Command):
-    def execute(self, args: str) -> None:
-        print("Program paused.")
-        self.state.paused = True
-        self.state.variables["#"] = next(
-            (n for n in sorted(self.state.code.keys()) if n > self.state.variables["#"]), 0)
-
-class SaveCommand(Command):
-    def execute(self, args: str) -> None:
-        try:
-            filename = self.parse_filename(args)
-            if not filename:
-                raise ParserError("Filename must be a non-empty quoted string")
-            if not filename.endswith(".bas"):
-                filename += ".bas"
-            with open(filename, "w") as file:
-                for line_number in sorted(self.state.code.keys()):
-                    file.write(f"{line_number} {self.state.code[line_number]}\n")
-            print(f"Program saved to '{filename}'")
-        except Exception as e:
-            raise ExecutionError(f"Error saving program: {e}")
-
-    def parse_filename(self, args: str) -> str:
-        args = args.strip()
-        if (args.startswith('"') and args.endswith('"')) or (args.startswith("'") and args.endswith("'")):
-            return args[1:-1].strip()
-        return ""
-
-class LoadCommand(Command):
-    def execute(self, args: str) -> None:
-        try:
-            filename = self.parse_filename(args)
-            if not filename:
-                raise ParserError("Filename must be a non-empty quoted string")
-            if not filename.endswith(".bas"):
-                filename += ".bas"
-            self.state.code.clear()
-            engine = InterpreterEngine(self.state)
-            with open(filename, "r") as file:
-                for line in file:
-                    line = line.strip()
-                    if line:
-                        line_number, line_code = engine.parse_line(line)
-                        if line_number <= 0:
-                            raise ParserError(f"Invalid line number: {line_number}")
-                        self.state.code[line_number] = line_code
-            print(f"Program loaded from '{filename}'")
-        except FileNotFoundError:
-            raise ExecutionError(f"File '{filename}' not found")
-        except Exception as e:
-            raise ExecutionError(f"Error loading program: {e}")
-
-    def parse_filename(self, args: str) -> str:
-        args = args.strip()
-        if (args.startswith('"') and args.endswith('"')) or (args.startswith("'") and args.endswith("'")):
-            return args[1:-1].strip()
-        return ""
-
-class ContinueCommand(Command):
-    def execute(self, args: str) -> None:
-        if not self.state.paused:
-            print("Program is not paused.")
-            return
-        if self.state.variables["#"] not in self.state.code:
-            print("No more lines to continue.")
-            self.state.paused = False
-            return
-        print("Resuming program...")
-        self.state.paused = False
-        InterpreterEngine(self.state).run()
-
-class RenumberCommand(Command):
-    def execute(self, args: str) -> None:
-        if not self.state.code:
-            print("No program to renumber.")
-            return
-
-        start_line, increment = self.parse_args(args)
-        old_lines = sorted(self.state.code.keys())
-        new_code = {}
-        line_mapping = {}
-
-        for i, old_line in enumerate(old_lines):
-            new_line = start_line + i * increment
-            line_mapping[old_line] = new_line
-            new_code[new_line] = self.state.code[old_line]
-
-        for new_line in new_code:
-            new_code[new_line] = self.update_line_references(new_code[new_line], line_mapping)
-
-        self.state.code.clear()
-        self.state.code.update(new_code)
-        print("Program renumbered successfully.")
-
-    def parse_args(self, args: str) -> Tuple[int, int]:
-        default_start = 10
-        default_increment = 10
-
-        if not args.strip():
-            return default_start, default_increment
-
-        try:
-            parts = [part.strip() for part in args.split(",")]
-            if len(parts) == 1:
-                start = int(parts[0])
-                increment = default_increment
-            elif len(parts) == 2:
-                start = int(parts[0])
-                increment = int(parts[1])
-            else:
-                raise ParserError("Invalid number of arguments")
-            if start <= 0 or increment <= 0:
-                raise ParserError("Start line and increment must be positive")
-            return start, increment
-        except Exception as e:
-            print(f"Error parsing RENUMBER arguments: {e}. Using defaults ({default_start}, {default_increment})")
-            return default_start, default_increment
-
-    def update_line_references(self, line: str, line_mapping: dict) -> str:
-        parts = line.split(None, 1)
-        if not parts:
-            return line
-
-        cmd = parts[0].lower()
-        args = parts[1] if len(parts) > 1 else ""
-
-        if cmd in ["goto", "gosub"]:
-            try:
-                old_line = int(args.strip())
-                if old_line in line_mapping:
-                    return f"{cmd} {line_mapping[old_line]}"
-                return line
-            except ValueError:
-                return line
-
-        elif cmd == "if":
-            match = re.search(r'\bTHEN\b\s*(\d+)', args, re.IGNORECASE)
-            if match:
-                old_line = int(match.group(1))
-                if old_line in line_mapping:
-                    return line.replace(match.group(1), str(line_mapping[old_line]))
-            return line
-
-        return line
-
-class DeleteCommand(Command):
-    def execute(self, args: str) -> None:
-        if not self.state.code:
-            print("No program loaded.")
-            return
-
-        start_line, end_line = self.parse_range(args)
-        lines_to_delete = [line_num for line_num in self.state.code if start_line <= line_num <= end_line]
-
-        for line_num in lines_to_delete:
-            del self.state.code[line_num]
-
-        if lines_to_delete:
-            print(f"Deleted {len(lines_to_delete)} line(s).")
-        else:
-            print("No lines found in the specified range.")
-
-    def parse_range(self, args: str) -> Tuple[int, int]:
-        default_start = min(self.state.code.keys(), default=1)
-        default_end = max(self.state.code.keys(), default=1)
-
-        if not args.strip():
-            return default_start, default_end
-
-        try:
-            parts = [part.strip() for part in args.split("-") if part.strip()]
-            if len(parts) == 1:
-                start = int(self.parse_expression(parts[0]))
-                return start, default_end
-            elif len(parts) == 2:
-                start = int(self.parse_expression(parts[0])) if parts[0] else default_start
-                end = int(self.parse_expression(parts[1]))
-                if start > end:
-                    start, end = end, start
-                return start, end
-            raise ParserError("Invalid range format")
-        except Exception as e:
-            print(f"Error parsing range: {e}. No lines deleted.")
-            return default_start, default_start
-
-class RunCommand(Command):
-    def execute(self, args: str) -> None:
-        if not self.state.code:
-            raise ExecutionError("No program loaded")
-
-        start_line = min(self.state.code.keys())
-        if args.strip():
-            start_line = int(self.parse_expression(args))
-
-        if start_line not in self.state.code:
-            raise ExecutionError(f"Line {start_line} does not exist")
-
-        self.state.variables["#"] = start_line
-        InterpreterEngine(self.state).run()
-
-class NewCommand(Command):
-    def execute(self, args: str) -> None:
-        self.state.reset()
-        print("Program cleared.")
-
-class CommandFactory:
-    _reserved_functions = {
-        "sin", "cos", "tan", "atn", "abs", "sqr", "log", "exp", "int", "rnd",
-        "left", "right", "mid", "len", "str", "val", "chr", "asc"
+# Function Registry
+class FunctionRegistry:
+    """Registry of built-in functions for the BASIC interpreter."""
+    
+    _functions = {
+        "abs": lambda args: abs(args[0]) if len(args) == 1 else 0,
+        "sin": lambda args: math.sin(args[0]) if len(args) == 1 else 0,
+        "cos": lambda args: math.cos(args[0]) if len(args) == 1 else 0,
+        "tan": lambda args: math.tan(args[0]) if len(args) == 1 else 0,
+        "atn": lambda args: math.atan(args[0]) if len(args) == 1 else 0,
+        "exp": lambda args: math.exp(args[0]) if len(args) == 1 else 0,
+        "log": lambda args: math.log(args[0]) if len(args) == 1 and args[0] > 0 else 0,
+        "sqr": lambda args: math.sqrt(args[0]) if len(args) == 1 and args[0] >= 0 else 0,
+        "int": lambda args: int(args[0]) if len(args) == 1 else 0,
+        "rnd": lambda args: random.random() if not args else random.random() * args[0],
+        "len": lambda args: len(args[0]) if len(args) == 1 and isinstance(args[0], str) else 0,
+        "val": lambda args: float(args[0]) if len(args) == 1 and isinstance(args[0], str) else 0,
+        "str": lambda args: str(args[0]) if len(args) == 1 else "",
+        "mid": lambda args: args[0][int(args[1]-1):int(args[1]-1+args[2])] if len(args) == 3 and isinstance(args[0], str) else "",
+        "left": lambda args: args[0][:int(args[1])] if len(args) == 2 and isinstance(args[0], str) else "",
+        "right": lambda args: args[0][-int(args[1]):] if len(args) == 2 and isinstance(args[0], str) else "",
+        "chr": lambda args: chr(int(args[0])) if len(args) == 1 else "",
+        "asc": lambda args: ord(args[0][0]) if len(args) == 1 and isinstance(args[0], str) and len(args[0]) > 0 else 0,
     }
-    _reserved_keywords = {
-        "print", "input", "let", "if", "goto", "gosub", "return", "for", "next",
-        "while", "wend", "list", "ren", "del", "run", "end", "stop", "bye",
-        "continue", "save", "load", "new", "rem", "to", "step", "then", "else"
-    }
-    _commands = {
-        "print": PrintCommand,
-        "input": InputCommand,
-        "let": LetCommand,
-        "if": IfCommand,
-        "goto": GotoCommand,
-        "gosub": GosubCommand,
-        "return": ReturnCommand,
-        "for": ForCommand,
-        "next": NextCommand,
-        "while": WhileCommand,
-        "wend": WendCommand,
-        "list": ListCommand,
-        "ren": RenumberCommand,
-        "del": DeleteCommand,
-        "run": RunCommand,
-        "end": EndCommand,
-        "stop": StopCommand,
-        "bye": ByeCommand,
-        "continue": ContinueCommand,
-        "save": SaveCommand,
-        "load": LoadCommand,
-        "new": NewCommand,
-        "rem": RemCommand
-    }
-
+    
     @classmethod
-    def create_command(cls, name: str, state: InterpreterState) -> Optional[Command]:
+    def call_function(cls, name: str, args: List[Any]) -> Any:
+        """Call a function by name with arguments."""
         name = name.lower()
-        command_class = cls._commands.get(name)
-        if command_class:
-            return command_class(state)
-        return None
-
+        if name not in cls._functions:
+            raise ExecutionError(f"Unknown function: {name}")
+        
+        try:
+            return cls._functions[name](args)
+        except Exception as e:
+            raise ExecutionError(f"Error in function {name}: {str(e)}")
+    
     @classmethod
-    def is_reserved_function(cls, name: str) -> bool:
-        return name.lower() in cls._reserved_functions
+    def is_function(cls, name: str) -> bool:
+        """Check if a name refers to a built-in function."""
+        return name.lower() in cls._functions
 
+# Command Registry
+class CommandRegistry:
+    """Registry of built-in commands for the BASIC interpreter."""
+    
+    _commands = set()
+    _reserved_names = set()
+    _functions = set()
+    
     @classmethod
-    def is_reserved_keyword(cls, name: str) -> bool:
-        return name.lower() in cls._reserved_keywords
-
+    def register_command(cls, name: str, handler: Any) -> None:
+        """Register a command handler."""
+        cls._commands.add(name.lower())
+        cls._reserved_names.add(name.lower())
+    
+    @classmethod
+    def register_function(cls, name: str) -> None:
+        """Register a function name as reserved."""
+        cls._functions.add(name.lower())
+        cls._reserved_names.add(name.lower())
+    
+    @classmethod
+    def is_command(cls, name: str) -> bool:
+        """Check if a name refers to a built-in command."""
+        return name.lower() in cls._commands
+    
     @classmethod
     def is_reserved(cls, name: str) -> bool:
-        return cls.is_reserved_function(name) or cls.is_reserved_keyword(name)
+        """Check if a name is reserved (command or function)."""
+        return name.lower() in cls._reserved_names
+    
+    @classmethod
+    def is_reserved_function(cls, name: str) -> bool:
+        """Check if a name refers to a built-in function."""
+        return name.lower() in cls._functions or FunctionRegistry.is_function(name.lower())
 
-# Interpreter Engine
-class InterpreterEngine:
+# Initialize command and function registries
+def init_registries():
+    """Initialize the command and function registries."""
+    # Register commands
+    for cmd in ["print", "let", "input", "goto", "gosub", "return", "if", 
+                "for", "next", "end", "stop", "rem", "cls", "list", "run", 
+                "new", "save", "load", "while", "wend"]:
+        CommandRegistry.register_command(cmd, None)
+    
+    # Register functions
+    for func in FunctionRegistry._functions.keys():
+        CommandRegistry.register_function(func)
+
+# Command Handling
+class CommandBase(ABC):
+    """Base class for all commands in the BASIC language."""
+    
     def __init__(self, state: InterpreterState):
         self.state = state
+    
+    @abstractmethod
+    def execute(self, args: str) -> None:
+        """Execute the command with the given arguments."""
+        pass
 
-    def parse_line(self, line: str) -> Tuple[int, str]:
-        parts = line.split(maxsplit=1)
-        if not parts or not parts[0].isdigit():
-            raise ParserError(f"Invalid line format: {line}")
-        line_number = int(parts[0])
-        code = parts[1] if len(parts) > 1 else ""
-        return line_number, code
+class PrintCommand(CommandBase):
+    """Implements the PRINT command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the PRINT command."""
+        if not args:
+            print()
+            return
+        
+        parts = []
+        pos = 0
+        length = len(args)
+        
+        while pos < length:
+            if args[pos] == '"':  # String literal
+                end_quote = args.find('"', pos + 1)
+                if end_quote == -1:
+                    raise ParserError("Unterminated string in PRINT command")
+                parts.append(args[pos+1:end_quote])
+                pos = end_quote + 1
+            elif args[pos:pos+1] == ";":  # No space separator
+                parts.append("")
+                pos += 1
+            elif args[pos:pos+1] == ",":  # Tab separator
+                parts.append("\t")
+                pos += 1
+            else:  # Expression
+                expr_end = next((i for i, c in enumerate(args[pos:], pos) if c in ";,"), length)
+                expr_text = args[pos:expr_end].strip()
+                if expr_text:
+                    parser = ExpressionParser(expr_text)
+                    expr = parser.parse()
+                    visitor = EvaluationVisitor(self.state)
+                    result = expr.accept(visitor)
+                    # Format numbers without trailing decimal
+                    if isinstance(result, float) and result.is_integer():
+                        result = int(result)
+                    parts.append(str(result))
+                pos = expr_end
 
-    def execute_line(self, line: str) -> None:
-        statements = self.split_statements(line)
-        for statement in statements:
-            parts = statement.split(None, 1)
-            cmd = parts[0].lower() if parts else ""
-            args = parts[1] if len(parts) > 1 else ""
+        # Print with appropriate spacing
+        result = ""
+        for i, part in enumerate(parts):
+            if i > 0 and part and parts[i-1] and parts[i-1] != "\t":
+                result += " "
+            result += part
+        
+        print(result, end="")
+        if not parts or parts[-1] != "":
+            print()
 
-            command = CommandFactory.create_command(cmd, self.state)
-            if command:
-                command.execute(args)
-            elif "=" in statement and not cmd.upper() == "IF":
-                let_command = LetCommand(self.state)
-                let_command.execute(statement)
+class LetCommand(CommandBase):
+    """Implements the LET command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the LET command."""
+        if not args:
+            raise ParserError("Missing assignment in LET command")
+        
+        # Find the assignment operator
+        eq_pos = args.find("=")
+        if eq_pos == -1:
+            raise ParserError("Missing = in LET command")
+        
+        var_name = args[:eq_pos].strip()
+        expr_text = args[eq_pos+1:].strip()
+        
+        if not var_name:
+            raise ParserError("Missing variable name in LET command")
+        
+        if CommandRegistry.is_reserved(var_name):
+            raise ParserError(f"Cannot assign to reserved name: {var_name}")
+        
+        parser = ExpressionParser(expr_text)
+        expr = parser.parse()
+        visitor = EvaluationVisitor(self.state)
+        value = expr.accept(visitor)
+        
+        self.state.variables[var_name] = value
+
+class InputCommand(CommandBase):
+    """Implements the INPUT command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the INPUT command."""
+        if not args:
+            raise ParserError("Missing variable name in INPUT command")
+        
+        # Parse the prompt if provided
+        prompt = ""
+        var_name = args
+        
+        if '"' in args:
+            prompt_end = args.find('"', 1)
+            if prompt_end == -1:
+                raise ParserError("Unterminated string in INPUT command")
+            prompt = args[1:prompt_end]
+            
+            if prompt_end + 1 < len(args) and args[prompt_end+1] == ";":
+                var_name = args[prompt_end+2:].strip()
             else:
-                raise ExecutionError(f"Unknown command: {statement}")
-
-    def split_statements(self, line: str) -> List[str]:
-        statements = []
-        current = []
-        in_string = False
-        quote_char = None
-        i = 0
-
-        while i < len(line):
-            char = line[i]
-            if char in ('"', "'") and not in_string:
-                in_string = True
-                quote_char = char
-            elif char == quote_char and in_string:
-                in_string = False
-                quote_char = None
-            elif char == ':' and not in_string:
-                statement = ''.join(current).strip()
-                if statement:
-                    statements.append(statement)
-                current = []
-                i += 1
-                continue
-            current.append(char)
-            i += 1
-
-        statement = ''.join(current).strip()
-        if statement:
-            statements.append(statement)
-        return statements
-
-    def run(self) -> None:
+                raise ParserError("Expected ; after prompt in INPUT command")
+        
+        if not var_name or CommandRegistry.is_reserved(var_name):
+            raise ParserError(f"Invalid variable name in INPUT command: {var_name}")
+        
+        # Get user input
         try:
-            while self.state.variables["#"] > 0 and not self.state.paused:
-                current_line = self.state.variables["#"]
-                if current_line not in self.state.code:
-                    self.state.variables["#"] = next(
-                        (n for n in sorted(self.state.code.keys()) if n > current_line), 0)
-                    continue
-                line = self.state.code[current_line]
-                self.execute_line(line)
-                if self.state.variables["#"] == current_line:
-                    self.state.variables["#"] = next(
-                        (n for n in sorted(self.state.code.keys()) if n > current_line), 0)
+            if prompt:
+                user_input = input(prompt + "? ")
+            else:
+                user_input = input("? ")
+            
+            # Try to convert to number if possible
+            try:
+                value = float(user_input)
+                if value == int(value):
+                    value = int(value)
+            except ValueError:
+                value = user_input
+            
+            self.state.variables[var_name] = value
+            
         except KeyboardInterrupt:
-            print("Program interrupted")
-            self.state.paused = True
-            self.state.variables["#"] = next(
-                (n for n in sorted(self.state.code.keys()) if n > self.state.variables["#"]), 0)
+            print("\nInput interrupted")
+            raise ExecutionError("Input interrupted")
 
-def main():
-    state = InterpreterState()
-    engine = InterpreterEngine(state)
+class GotoCommand(CommandBase):
+    """Implements the GOTO command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the GOTO command."""
+        if not args:
+            raise ParserError("Missing line number in GOTO command")
+        
+        parser = ExpressionParser(args)
+        expr = parser.parse()
+        visitor = EvaluationVisitor(self.state)
+        line_num = expr.accept(visitor)
+        
+        if not isinstance(line_num, (int, float)) or line_num != int(line_num):
+            raise ExecutionError(f"Invalid line number in GOTO: {line_num}")
+        
+        line_num = int(line_num)
+        if line_num not in self.state.code:
+            raise ExecutionError(f"Line {line_num} does not exist")
+        
+        self.state.current_line = line_num
 
-    if len(sys.argv) > 1:
+class GosubCommand(CommandBase):
+    """Implements the GOSUB command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the GOSUB command."""
+        if not args:
+            raise ParserError("Missing line number in GOSUB command")
+        
+        parser = ExpressionParser(args)
+        expr = parser.parse()
+        visitor = EvaluationVisitor(self.state)
+        line_num = expr.accept(visitor)
+        
+        if not isinstance(line_num, (int, float)) or line_num != int(line_num):
+            raise ExecutionError(f"Invalid line number in GOSUB: {line_num}")
+        
+        line_num = int(line_num)
+        if line_num not in self.state.code:
+            raise ExecutionError(f"Line {line_num} does not exist")
+        
+        self.state.stack.append(self.state.current_line)
+        self.state.current_line = line_num
+
+class ReturnCommand(CommandBase):
+    """Implements the RETURN command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the RETURN command."""
+        if not self.state.stack:
+            raise ExecutionError("RETURN without GOSUB")
+        
+        self.state.current_line = self.state.stack.pop()
+
+class NextCommand(CommandBase):
+    """Implements the NEXT command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the NEXT command."""
+        var_name = args.strip()
+        
+        if not var_name:
+            raise ParserError("Missing variable name in NEXT command")
+        
+        if var_name not in self.state.loops:
+            raise ExecutionError(f"NEXT without FOR: {var_name}")
+        
+        line_num, end_value, step_value = self.state.loops[var_name]
+        current_value = self.state.variables[var_name] + step_value
+        self.state.variables[var_name] = current_value
+        
+        # Check if the loop should continue
+        should_continue = (step_value >= 0 and current_value <= end_value) or \
+                         (step_value < 0 and current_value >= end_value)
+        
+        if should_continue:
+            self.state.current_line = line_num
+        else:
+            del self.state.loops[var_name]
+
+class WhileCommand(CommandBase):
+    """Implements the WHILE command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the WHILE command."""
+        if not args:
+            raise ParserError("Missing condition in WHILE command")
+        
+        # Evaluate the condition
+        parser = ExpressionParser(args)
+        condition = parser.parse()
+        visitor = EvaluationVisitor(self.state)
+        result = condition.accept(visitor)
+        
+        if not result:
+            # Skip to the matching WEND
+            current_line = self.state.current_line
+            while_count = 1
+            
+            line_numbers = sorted(self.state.code.keys())
+            current_index = line_numbers.index(current_line)
+            
+            for i in range(current_index + 1, len(line_numbers)):
+                line_num = line_numbers[i]
+                line = self.state.code[line_num].strip().upper()
+                
+                if line.startswith("WHILE "):
+                    while_count += 1
+                elif line == "WEND":
+                    while_count -= 1
+                    if while_count == 0:
+                        self.state.current_line = line_num
+                        break
+            
+            if while_count > 0:
+                raise ExecutionError("WHILE without matching WEND")
+        else:
+            # Remember this WHILE for future reference
+            self.state.whiles[str(self.state.current_line)] = (self.state.current_line, args)
+
+class WendCommand(CommandBase):
+    """Implements the WEND command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the WEND command."""
+        # Find the matching WHILE line
+        while_line = -1
+        condition = ""
+        
+        line_numbers = sorted(self.state.code.keys())
+        current_index = line_numbers.index(self.state.current_line)
+        
+        while_count = 1
+        for i in range(current_index - 1, -1, -1):
+            line_num = line_numbers[i]
+            line = self.state.code[line_num].strip().upper()
+            
+            if line == "WEND":
+                while_count += 1
+            elif line.startswith("WHILE "):
+                while_count -= 1
+                if while_count == 0:
+                    while_line = line_num
+                    condition = self.state.code[line_num][6:].strip()  # Extract condition
+                    break
+        
+        if while_line == -1:
+            raise ExecutionError("WEND without matching WHILE")
+        
+        # Re-evaluate the condition
+        parser = ExpressionParser(condition)
+        expr = parser.parse()
+        visitor = EvaluationVisitor(self.state)
+        result = expr.accept(visitor)
+        
+        if result:
+            # Continue the loop
+            self.state.current_line = while_line
+        # else continue to the next line
+
+class EndCommand(CommandBase):
+    """Implements the END command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the END command."""
+        self.state.current_line = 0  # End execution
+
+class StopCommand(CommandBase):
+    """Implements the STOP command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the STOP command."""
+        self.state.paused = True
+        print("Program paused. Type CONT to continue.")
+
+class RemCommand(CommandBase):
+    """Implements the REM command (remarks/comments)."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the REM command."""
+        # Comments are ignored during execution
+        pass
+
+class ClsCommand(CommandBase):
+    """Implements the CLS (clear screen) command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the CLS command."""
+        print("\033[2J\033[H", end="")  # ANSI clear screen sequence
+
+class ListCommand(CommandBase):
+    """Implements the LIST command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the LIST command."""
+        # Parse arguments for optional line range
+        start_line = 0
+        end_line = float('inf')
+        
+        if args:
+            parts = args.split("-")
+            if len(parts) == 1:
+                try:
+                    start_line = int(parts[0].strip())
+                    end_line = start_line
+                except ValueError:
+                    raise ParserError("Invalid line number in LIST command")
+            elif len(parts) == 2:
+                try:
+                    if parts[0].strip():
+                        start_line = int(parts[0].strip())
+                    if parts[1].strip():
+                        end_line = int(parts[1].strip())
+                except ValueError:
+                    raise ParserError("Invalid line number in LIST command")
+        
+        # Display code in line number order
+        for line_num in sorted(self.state.code.keys()):
+            if line_num >= start_line and line_num <= end_line:
+                print(f"{line_num} {self.state.code[line_num]}")
+
+class RunCommand(CommandBase):
+    """Implements the RUN command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the RUN command."""
+        # Reset variables but keep the code
+        self.state.variables = {Constants.LINE_NUMBER_VARIABLE: Constants.DEFAULT_START_LINE}
+        self.state.stack = []
+        self.state.loops = {}
+        self.state.whiles = {}
+        self.state.paused = False
+        
+        # Start execution from the first line
+        if self.state.code:
+            self.state.current_line = min(self.state.code.keys())
+        else:
+            print("No code to run")
+
+class NewCommand(CommandBase):
+    """Implements the NEW command to clear all code."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the NEW command."""
+        self.state.reset()
+        print("Program cleared")
+
+class SaveCommand(CommandBase):
+    """Implements the SAVE command to save program to file."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the SAVE command."""
+        filename = args.strip()
+        if not filename:
+            raise ParserError("Missing filename in SAVE command")
+        
         try:
-            with open(sys.argv[1], 'r') as file:
-                for line in file:
+            with open(filename, 'w') as f:
+                for line_num in sorted(self.state.code.keys()):
+                    f.write(f"{line_num} {self.state.code[line_num]}\n")
+            print(f"Program saved to {filename}")
+        except Exception as e:
+            raise ExecutionError(f"Error saving program: {str(e)}")
+
+class LoadCommand(CommandBase):
+    """Implements the LOAD command to load program from file."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the LOAD command."""
+        filename = args.strip()
+        if not filename:
+            raise ParserError("Missing filename in LOAD command")
+        
+        try:
+            self.state.reset()
+            with open(filename, 'r') as f:
+                for line in f:
                     line = line.strip()
                     if line:
-                        line_number, line_code = engine.parse_line(line)
-                        state.code[line_number] = line_code
-            engine.run()
+                        # Parse line number and code
+                        match = re.match(r'^\s*(\d+)\s+(.*)
+class IfCommand(CommandBase):
+    """Implements the IF command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the IF command."""
+        if not args:
+            raise ParserError("Missing condition in IF command")
+        
+        # Split at THEN
+        then_pos = args.upper().find("THEN")
+        if then_pos == -1:
+            raise ParserError("Missing THEN in IF command")
+        
+        condition_text = args[:then_pos].strip()
+        then_clause = args[then_pos+4:].strip()
+        
+        if not condition_text or not then_clause:
+            raise ParserError("Invalid IF-THEN statement")
+        
+        # Evaluate the condition
+        parser = ExpressionParser(condition_text)
+        condition = parser.parse()
+        visitor = EvaluationVisitor(self.state)
+        result = condition.accept(visitor)
+        
+        # Execute the THEN clause if the condition is true
+        if result:
+            # Check if it's a line number
+            try:
+                line_num = int(then_clause)
+                if line_num in self.state.code:
+                    self.state.current_line = line_num
+                    return
+                raise ExecutionError(f"Line {line_num} does not exist")
+            except ValueError:
+                # It's a command
+                self._execute_command(then_clause)
+    
+    def _execute_command(self, command_text: str) -> None:
+        """Execute a command in the THEN clause."""
+        # Find the command name
+        cmd_end = command_text.find(" ")
+        if cmd_end == -1:
+            cmd_name = command_text
+            args = ""
+        else:
+            cmd_name = command_text[:cmd_end]
+            args = command_text[cmd_end+1:]
+        
+        cmd_name = cmd_name.upper()
+        
+        # Create and execute the command
+        if cmd_name == "PRINT":
+            PrintCommand(self.state).execute(args)
+        elif cmd_name == "LET":
+            LetCommand(self.state).execute(args)
+        elif cmd_name == "GOTO":
+            GotoCommand(self.state).execute(args)
+        elif cmd_name == "GOSUB":
+            GosubCommand(self.state).execute(args)
+        elif cmd_name == "RETURN":
+            ReturnCommand(self.state).execute(args)
+        elif cmd_name == "IF":
+            IfCommand(self.state).execute(args)
+        else:
+            # Handle variable assignment without LET
+            if "=" in command_text and not CommandRegistry.is_command(cmd_name):
+                LetCommand(self.state).execute(command_text)
+            else:
+                raise ExecutionError(f"Unknown command in THEN clause: {cmd_name}")
+
+class ForCommand(CommandBase):
+    """Implements the FOR command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the FOR command."""
+        if not args:
+            raise ParserError("Invalid FOR statement")
+        
+        # Extract parts: FOR var = start TO end [STEP step]
+        to_pos = args.upper().find(" TO ")
+        if to_pos == -1:
+            raise ParserError("Missing TO in FOR statement")
+        
+        init_part = args[:to_pos].strip()
+        end_part = args[to_pos+4:].strip()
+        
+        # Parse the init_part (var = start)
+        eq_pos = init_part.find("=")
+        if eq_pos == -1:
+            raise ParserError("Missing = in FOR statement")
+        
+        var_name = init_part[:eq_pos].strip()
+        start_expr = init_part[eq_pos+1:].strip()
+        
+        if not var_name or CommandRegistry.is_reserved(var_name):
+            raise ParserError(f"Invalid variable name in FOR: {var_name}")
+        
+        # Parse the end_part (end [STEP step])
+        step_pos = end_part.upper().find(" STEP ")
+        if step_pos == -1:
+            end_expr = end_part
+            step_expr = "1"  # Default step
+        else:
+            end_expr = end_part[:step_pos].strip()
+            step_expr = end_part[step_pos+6:].strip()
+        
+        # Evaluate expressions
+        visitor = EvaluationVisitor(self.state)
+        
+        parser = ExpressionParser(start_expr)
+        start_value = parser.parse().accept(visitor)
+        
+        parser = ExpressionParser(end_expr)
+        end_value = parser.parse().accept(visitor)
+        
+        parser = ExpressionParser(step_expr)
+        step_value = parser.parse().accept(visitor)
+        
+        if not isinstance(start_value, (int, float)) or \
+           not isinstance(end_value, (int, float)) or \
+           not isinstance(step_value, (int, float)):
+            raise ExecutionError("FOR requires numeric values")
+        
+        # Store the loop information
+        self.state.variables[var_name] = start_value
+        self.state.loops[var_name] = (self.state.current_line, end_value, step_value), line)
+                        if match:
+                            line_num = int(match.group(1))
+                            code = match.group(2)
+                            self.state.code[line_num] = code
+                        else:
+                            print(f"Warning: Invalid line format: {line}")
+            print(f"Program loaded from {filename}")
         except Exception as e:
-            print(f"Error: {e}")
-            state.paused = True
-    else:
-        print("BASIC Interpreter. Type BYE to exit.")
+            raise ExecutionError(f"Error loading program: {str(e)}")
+
+# Main Interpreter
+class BasicInterpreter:
+    """Main BASIC interpreter class."""
+    
+    def __init__(self):
+        self.state = InterpreterState()
+        init_registries()  # Initialize command and function registries
+        self.command_handlers = self._init_command_handlers()
+    
+    def _init_command_handlers(self) -> Dict[str, CommandBase]:
+        """Initialize command handlers."""
+        return {
+            "print": PrintCommand(self.state),
+            "let": LetCommand(self.state),
+            "input": InputCommand(self.state),
+            "goto": GotoCommand(self.state),
+            "gosub": GosubCommand(self.state),
+            "return": ReturnCommand(self.state),
+            "if": IfCommand(self.state),
+            "for": ForCommand(self.state),
+            "next": NextCommand(self.state),
+            "while": WhileCommand(self.state),
+            "wend": WendCommand(self.state),
+            "end": EndCommand(self.state),
+            "stop": StopCommand(self.state),
+            "rem": RemCommand(self.state),
+            "cls": ClsCommand(self.state),
+            "list": ListCommand(self.state),
+            "run": RunCommand(self.state),
+            "new": NewCommand(self.state),
+            "save": SaveCommand(self.state),
+            "load": LoadCommand(self.state)
+        }
+    
+    def add_line(self, line_text: str) -> None:
+        """Add or replace a line in the program."""
+        line_text = line_text.strip()
+        if not line_text:
+            return
+        
+        # Parse line number and code
+        match = re.match(r'^\s*(\d+)\s*(.*)
+class IfCommand(CommandBase):
+    """Implements the IF command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the IF command."""
+        if not args:
+            raise ParserError("Missing condition in IF command")
+        
+        # Split at THEN
+        then_pos = args.upper().find("THEN")
+        if then_pos == -1:
+            raise ParserError("Missing THEN in IF command")
+        
+        condition_text = args[:then_pos].strip()
+        then_clause = args[then_pos+4:].strip()
+        
+        if not condition_text or not then_clause:
+            raise ParserError("Invalid IF-THEN statement")
+        
+        # Evaluate the condition
+        parser = ExpressionParser(condition_text)
+        condition = parser.parse()
+        visitor = EvaluationVisitor(self.state)
+        result = condition.accept(visitor)
+        
+        # Execute the THEN clause if the condition is true
+        if result:
+            # Check if it's a line number
+            try:
+                line_num = int(then_clause)
+                if line_num in self.state.code:
+                    self.state.current_line = line_num
+                    return
+                raise ExecutionError(f"Line {line_num} does not exist")
+            except ValueError:
+                # It's a command
+                self._execute_command(then_clause)
+    
+    def _execute_command(self, command_text: str) -> None:
+        """Execute a command in the THEN clause."""
+        # Find the command name
+        cmd_end = command_text.find(" ")
+        if cmd_end == -1:
+            cmd_name = command_text
+            args = ""
+        else:
+            cmd_name = command_text[:cmd_end]
+            args = command_text[cmd_end+1:]
+        
+        cmd_name = cmd_name.upper()
+        
+        # Create and execute the command
+        if cmd_name == "PRINT":
+            PrintCommand(self.state).execute(args)
+        elif cmd_name == "LET":
+            LetCommand(self.state).execute(args)
+        elif cmd_name == "GOTO":
+            GotoCommand(self.state).execute(args)
+        elif cmd_name == "GOSUB":
+            GosubCommand(self.state).execute(args)
+        elif cmd_name == "RETURN":
+            ReturnCommand(self.state).execute(args)
+        elif cmd_name == "IF":
+            IfCommand(self.state).execute(args)
+        else:
+            # Handle variable assignment without LET
+            if "=" in command_text and not CommandRegistry.is_command(cmd_name):
+                LetCommand(self.state).execute(command_text)
+            else:
+                raise ExecutionError(f"Unknown command in THEN clause: {cmd_name}")
+
+class ForCommand(CommandBase):
+    """Implements the FOR command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the FOR command."""
+        if not args:
+            raise ParserError("Invalid FOR statement")
+        
+        # Extract parts: FOR var = start TO end [STEP step]
+        to_pos = args.upper().find(" TO ")
+        if to_pos == -1:
+            raise ParserError("Missing TO in FOR statement")
+        
+        init_part = args[:to_pos].strip()
+        end_part = args[to_pos+4:].strip()
+        
+        # Parse the init_part (var = start)
+        eq_pos = init_part.find("=")
+        if eq_pos == -1:
+            raise ParserError("Missing = in FOR statement")
+        
+        var_name = init_part[:eq_pos].strip()
+        start_expr = init_part[eq_pos+1:].strip()
+        
+        if not var_name or CommandRegistry.is_reserved(var_name):
+            raise ParserError(f"Invalid variable name in FOR: {var_name}")
+        
+        # Parse the end_part (end [STEP step])
+        step_pos = end_part.upper().find(" STEP ")
+        if step_pos == -1:
+            end_expr = end_part
+            step_expr = "1"  # Default step
+        else:
+            end_expr = end_part[:step_pos].strip()
+            step_expr = end_part[step_pos+6:].strip()
+        
+        # Evaluate expressions
+        visitor = EvaluationVisitor(self.state)
+        
+        parser = ExpressionParser(start_expr)
+        start_value = parser.parse().accept(visitor)
+        
+        parser = ExpressionParser(end_expr)
+        end_value = parser.parse().accept(visitor)
+        
+        parser = ExpressionParser(step_expr)
+        step_value = parser.parse().accept(visitor)
+        
+        if not isinstance(start_value, (int, float)) or \
+           not isinstance(end_value, (int, float)) or \
+           not isinstance(step_value, (int, float)):
+            raise ExecutionError("FOR requires numeric values")
+        
+        # Store the loop information
+        self.state.variables[var_name] = start_value
+        self.state.loops[var_name] = (self.state.current_line, end_value, step_value), line_text)
+        if not match:
+            # If no line number, use auto-incrementing line numbers
+            line_num = self.state.variables.get(Constants.LINE_NUMBER_VARIABLE, Constants.DEFAULT_START_LINE)
+            code = line_text
+            # Update for next auto-line
+            self.state.variables[Constants.LINE_NUMBER_VARIABLE] = line_num + Constants.DEFAULT_INCREMENT
+        else:
+            line_num = int(match.group(1))
+            code = match.group(2).strip()
+        
+        # If code is empty, delete the line
+        if not code:
+            if line_num in self.state.code:
+                del self.state.code[line_num]
+                print(f"Line {line_num} deleted")
+            return
+        
+        # Otherwise add or replace the line
+        self.state.code[line_num] = code
+    
+    def parse_execute_line(self, line_text: str) -> None:
+        """Parse and execute a single line."""
+        line_text = line_text.strip()
+        if not line_text:
+            return
+        
+        # Check if it's a line with a line number
+        match = re.match(r'^\s*(\d+)\s+(.*)
+class IfCommand(CommandBase):
+    """Implements the IF command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the IF command."""
+        if not args:
+            raise ParserError("Missing condition in IF command")
+        
+        # Split at THEN
+        then_pos = args.upper().find("THEN")
+        if then_pos == -1:
+            raise ParserError("Missing THEN in IF command")
+        
+        condition_text = args[:then_pos].strip()
+        then_clause = args[then_pos+4:].strip()
+        
+        if not condition_text or not then_clause:
+            raise ParserError("Invalid IF-THEN statement")
+        
+        # Evaluate the condition
+        parser = ExpressionParser(condition_text)
+        condition = parser.parse()
+        visitor = EvaluationVisitor(self.state)
+        result = condition.accept(visitor)
+        
+        # Execute the THEN clause if the condition is true
+        if result:
+            # Check if it's a line number
+            try:
+                line_num = int(then_clause)
+                if line_num in self.state.code:
+                    self.state.current_line = line_num
+                    return
+                raise ExecutionError(f"Line {line_num} does not exist")
+            except ValueError:
+                # It's a command
+                self._execute_command(then_clause)
+    
+    def _execute_command(self, command_text: str) -> None:
+        """Execute a command in the THEN clause."""
+        # Find the command name
+        cmd_end = command_text.find(" ")
+        if cmd_end == -1:
+            cmd_name = command_text
+            args = ""
+        else:
+            cmd_name = command_text[:cmd_end]
+            args = command_text[cmd_end+1:]
+        
+        cmd_name = cmd_name.upper()
+        
+        # Create and execute the command
+        if cmd_name == "PRINT":
+            PrintCommand(self.state).execute(args)
+        elif cmd_name == "LET":
+            LetCommand(self.state).execute(args)
+        elif cmd_name == "GOTO":
+            GotoCommand(self.state).execute(args)
+        elif cmd_name == "GOSUB":
+            GosubCommand(self.state).execute(args)
+        elif cmd_name == "RETURN":
+            ReturnCommand(self.state).execute(args)
+        elif cmd_name == "IF":
+            IfCommand(self.state).execute(args)
+        else:
+            # Handle variable assignment without LET
+            if "=" in command_text and not CommandRegistry.is_command(cmd_name):
+                LetCommand(self.state).execute(command_text)
+            else:
+                raise ExecutionError(f"Unknown command in THEN clause: {cmd_name}")
+
+class ForCommand(CommandBase):
+    """Implements the FOR command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the FOR command."""
+        if not args:
+            raise ParserError("Invalid FOR statement")
+        
+        # Extract parts: FOR var = start TO end [STEP step]
+        to_pos = args.upper().find(" TO ")
+        if to_pos == -1:
+            raise ParserError("Missing TO in FOR statement")
+        
+        init_part = args[:to_pos].strip()
+        end_part = args[to_pos+4:].strip()
+        
+        # Parse the init_part (var = start)
+        eq_pos = init_part.find("=")
+        if eq_pos == -1:
+            raise ParserError("Missing = in FOR statement")
+        
+        var_name = init_part[:eq_pos].strip()
+        start_expr = init_part[eq_pos+1:].strip()
+        
+        if not var_name or CommandRegistry.is_reserved(var_name):
+            raise ParserError(f"Invalid variable name in FOR: {var_name}")
+        
+        # Parse the end_part (end [STEP step])
+        step_pos = end_part.upper().find(" STEP ")
+        if step_pos == -1:
+            end_expr = end_part
+            step_expr = "1"  # Default step
+        else:
+            end_expr = end_part[:step_pos].strip()
+            step_expr = end_part[step_pos+6:].strip()
+        
+        # Evaluate expressions
+        visitor = EvaluationVisitor(self.state)
+        
+        parser = ExpressionParser(start_expr)
+        start_value = parser.parse().accept(visitor)
+        
+        parser = ExpressionParser(end_expr)
+        end_value = parser.parse().accept(visitor)
+        
+        parser = ExpressionParser(step_expr)
+        step_value = parser.parse().accept(visitor)
+        
+        if not isinstance(start_value, (int, float)) or \
+           not isinstance(end_value, (int, float)) or \
+           not isinstance(step_value, (int, float)):
+            raise ExecutionError("FOR requires numeric values")
+        
+        # Store the loop information
+        self.state.variables[var_name] = start_value
+        self.state.loops[var_name] = (self.state.current_line, end_value, step_value), line_text)
+        if match:
+            self.add_line(line_text)
+            return
+        
+        # Otherwise, execute as immediate mode command
+        self.execute_command(line_text)
+    
+    def execute_command(self, command_text: str) -> None:
+        """Execute a command in immediate mode."""
+        command_text = command_text.strip()
+        if not command_text:
+            return
+        
+        # Find the command name and arguments
+        space_pos = command_text.find(" ")
+        if space_pos == -1:
+            cmd_name = command_text.lower()
+            args = ""
+        else:
+            cmd_name = command_text[:space_pos].lower()
+            args = command_text[space_pos+1:]
+        
+        # Handle variable assignment without LET
+        if "=" in command_text and not CommandRegistry.is_command(cmd_name):
+            cmd_name = "let"
+            args = command_text
+        
+        # Execute the command
+        if cmd_name in self.command_handlers:
+            try:
+                self.command_handlers[cmd_name].execute(args)
+            except (ParserError, ExecutionError) as e:
+                print(f"Error: {str(e)}")
+        else:
+            print(f"Unknown command: {cmd_name}")
+    
+    def run_program(self) -> None:
+        """Run the stored program."""
+        if not self.state.code:
+            print("No program to run")
+            return
+        
+        # Start from the first line
+        line_numbers = sorted(self.state.code.keys())
+        if not line_numbers:
+            return
+        
+        self.state.current_line = line_numbers[0]
+        self.state.paused = False
+        
+        # Execute until end or error
+        try:
+            while self.state.current_line > 0 and not self.state.paused:
+                line_text = self.state.code.get(self.state.current_line, "")
+                if not line_text:
+                    # Line might have been deleted during execution
+                    self.state.advance_line()
+                    continue
+                
+                # Extract the command name and arguments
+                space_pos = line_text.find(" ")
+                if space_pos == -1:
+                    cmd_name = line_text.lower()
+                    args = ""
+                else:
+                    cmd_name = line_text[:space_pos].lower()
+                    args = line_text[space_pos+1:]
+                
+                # Execute the command
+                current_line = self.state.current_line  # Save for later comparison
+                
+                if cmd_name in self.command_handlers:
+                    self.command_handlers[cmd_name].execute(args)
+                else:
+                    # Handle variable assignment without LET
+                    if "=" in line_text and not CommandRegistry.is_command(cmd_name):
+                        self.command_handlers["let"].execute(line_text)
+                    else:
+                        print(f"Unknown command on line {self.state.current_line}: {cmd_name}")
+                        self.state.advance_line()
+                
+                # If the command didn't change the line number, move to next line
+                if self.state.current_line == current_line:
+                    self.state.advance_line()
+        
+        except (ParserError, ExecutionError) as e:
+            print(f"Error on line {self.state.current_line}: {str(e)}")
+            self.state.paused = True
+    
+    def repl(self) -> None:
+        """Start a Read-Eval-Print Loop for interactive use."""
+        print("BASIC Interpreter")
+        print("Type a line number followed by code to add to program")
+        print("Type a command to execute immediately")
+        print("Type HELP for available commands")
+        
         while True:
             try:
                 line = input("> ").strip()
                 if not line:
                     continue
-                if line.lower() == "bye":
+                
+                if line.lower() == "exit" or line.lower() == "quit":
                     break
-                if line[0].isdigit():
-                    line_number, code = engine.parse_line(line)
-                    state.code[line_number] = code
+                elif line.lower() == "run":
+                    self.run_program()
+                elif line.lower() == "help":
+                    self._print_help()
+                elif line.lower() == "cont":
+                    if self.state.paused:
+                        self.state.paused = False
+                        self.run_program()
+                    else:
+                        print("Program not paused")
                 else:
-                    engine.execute_line(line)
-            except (KeyboardInterrupt, EOFError):
-                print("\nExiting")
+                    self.parse_execute_line(line)
+            
+            except KeyboardInterrupt:
+                print("\nProgram interrupted")
+                self.state.paused = True
+            except EOFError:
                 break
             except Exception as e:
-                print(f"Error: {e}")
+                print(f"Error: {str(e)}")
+    
+    def _print_help(self) -> None:
+        """Print help information."""
+        print("Available commands:")
+        print("  PRINT <expr>        - Display values")
+        print("  LET var = <expr>    - Assign value to variable")
+        print("  INPUT [\"prompt\";] var - Get user input")
+        print("  GOTO <line>         - Jump to a line")
+        print("  GOSUB <line>        - Call a subroutine")
+        print("  RETURN              - Return from subroutine")
+        print("  IF <cond> THEN <cmd> - Conditional execution")
+        print("  FOR var = <start> TO <end> [STEP <step>] - Start a loop")
+        print("  NEXT var            - End a loop")
+        print("  WHILE <cond>        - Start a while loop")
+        print("  WEND                - End a while loop")
+        print("  END                 - End the program")
+        print("  STOP                - Pause the program")
+        print("  REM <comment>       - Add a comment")
+        print("  CLS                 - Clear the screen")
+        print("  LIST [start-end]    - List program lines")
+        print("  RUN                 - Run the program")
+        print("  NEW                 - Clear the program")
+        print("  SAVE <filename>     - Save the program")
+        print("  LOAD <filename>     - Load a program")
+        print("  CONT                - Continue after STOP")
+        print("  EXIT/QUIT           - Exit the interpreter")
+        print("  HELP                - Show this help")
+
+def main():
+    """Main entry point."""
+    interpreter = BasicInterpreter()
+    
+    # Check if a file was provided as argument
+    if len(sys.argv) > 1:
+        filename = sys.argv[1]
+        try:
+            with open(filename, 'r') as f:
+                for line in f:
+                    interpreter.add_line(line)
+            print(f"Program loaded from {filename}")
+            interpreter.run_program()
+        except Exception as e:
+            print(f"Error loading program: {str(e)}")
+    
+    # Start interactive mode
+    interpreter.repl()
 
 if __name__ == "__main__":
     main()
+class IfCommand(CommandBase):
+    """Implements the IF command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the IF command."""
+        if not args:
+            raise ParserError("Missing condition in IF command")
+        
+        # Split at THEN
+        then_pos = args.upper().find("THEN")
+        if then_pos == -1:
+            raise ParserError("Missing THEN in IF command")
+        
+        condition_text = args[:then_pos].strip()
+        then_clause = args[then_pos+4:].strip()
+        
+        if not condition_text or not then_clause:
+            raise ParserError("Invalid IF-THEN statement")
+        
+        # Evaluate the condition
+        parser = ExpressionParser(condition_text)
+        condition = parser.parse()
+        visitor = EvaluationVisitor(self.state)
+        result = condition.accept(visitor)
+        
+        # Execute the THEN clause if the condition is true
+        if result:
+            # Check if it's a line number
+            try:
+                line_num = int(then_clause)
+                if line_num in self.state.code:
+                    self.state.current_line = line_num
+                    return
+                raise ExecutionError(f"Line {line_num} does not exist")
+            except ValueError:
+                # It's a command
+                self._execute_command(then_clause)
+    
+    def _execute_command(self, command_text: str) -> None:
+        """Execute a command in the THEN clause."""
+        # Find the command name
+        cmd_end = command_text.find(" ")
+        if cmd_end == -1:
+            cmd_name = command_text
+            args = ""
+        else:
+            cmd_name = command_text[:cmd_end]
+            args = command_text[cmd_end+1:]
+        
+        cmd_name = cmd_name.upper()
+        
+        # Create and execute the command
+        if cmd_name == "PRINT":
+            PrintCommand(self.state).execute(args)
+        elif cmd_name == "LET":
+            LetCommand(self.state).execute(args)
+        elif cmd_name == "GOTO":
+            GotoCommand(self.state).execute(args)
+        elif cmd_name == "GOSUB":
+            GosubCommand(self.state).execute(args)
+        elif cmd_name == "RETURN":
+            ReturnCommand(self.state).execute(args)
+        elif cmd_name == "IF":
+            IfCommand(self.state).execute(args)
+        else:
+            # Handle variable assignment without LET
+            if "=" in command_text and not CommandRegistry.is_command(cmd_name):
+                LetCommand(self.state).execute(command_text)
+            else:
+                raise ExecutionError(f"Unknown command in THEN clause: {cmd_name}")
+
+class ForCommand(CommandBase):
+    """Implements the FOR command."""
+    
+    def execute(self, args: str) -> None:
+        """Execute the FOR command."""
+        if not args:
+            raise ParserError("Invalid FOR statement")
+        
+        # Extract parts: FOR var = start TO end [STEP step]
+        to_pos = args.upper().find(" TO ")
+        if to_pos == -1:
+            raise ParserError("Missing TO in FOR statement")
+        
+        init_part = args[:to_pos].strip()
+        end_part = args[to_pos+4:].strip()
+        
+        # Parse the init_part (var = start)
+        eq_pos = init_part.find("=")
+        if eq_pos == -1:
+            raise ParserError("Missing = in FOR statement")
+        
+        var_name = init_part[:eq_pos].strip()
+        start_expr = init_part[eq_pos+1:].strip()
+        
+        if not var_name or CommandRegistry.is_reserved(var_name):
+            raise ParserError(f"Invalid variable name in FOR: {var_name}")
+        
+        # Parse the end_part (end [STEP step])
+        step_pos = end_part.upper().find(" STEP ")
+        if step_pos == -1:
+            end_expr = end_part
+            step_expr = "1"  # Default step
+        else:
+            end_expr = end_part[:step_pos].strip()
+            step_expr = end_part[step_pos+6:].strip()
+        
+        # Evaluate expressions
+        visitor = EvaluationVisitor(self.state)
+        
+        parser = ExpressionParser(start_expr)
+        start_value = parser.parse().accept(visitor)
+        
+        parser = ExpressionParser(end_expr)
+        end_value = parser.parse().accept(visitor)
+        
+        parser = ExpressionParser(step_expr)
+        step_value = parser.parse().accept(visitor)
+        
+        if not isinstance(start_value, (int, float)) or \
+           not isinstance(end_value, (int, float)) or \
+           not isinstance(step_value, (int, float)):
+            raise ExecutionError("FOR requires numeric values")
+        
+        # Store the loop information
+        self.state.variables[var_name] = start_value
+        self.state.loops[var_name] = (self.state.current_line, end_value, step_value)
