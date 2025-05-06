@@ -17,7 +17,7 @@ Characteristics of Continuations
 Continuation-passing style is a programming paradigm where functions don't return values directly.[^cc] Instead,
 they accept an additional argument--a continuation function--that represents what should happen with the result.
 
-[^]: You might have experience or read about `call/cc`. This is a runtime primitive that captures the current continuation as a first-class value for later invocation, while CPS is a programming style where functions receive an explicit continuation argument instead of returning normally.
+[^cc]: You might have experience or read about `call/cc`. This is a runtime primitive that captures the current continuation as a first-class value for later invocation, while CPS is a programming style where functions receive an explicit continuation argument instead of returning normally.
 
 ```c
 // Direct style
