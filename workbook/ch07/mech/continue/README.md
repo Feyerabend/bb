@@ -118,7 +118,7 @@ Benefits:
    inputs without stack overflow compared to a naive recursive implementation.
 
 2. Explicit Control Flow: The computation steps are made explicit as data structures, making
-   it easier to reason about the algorithm's behavior.
+   it easier to reason about the algorithm's behaviour.
 
 3. Memory Management Control: You have explicit control over memory allocation and deallocation
    for each step.
