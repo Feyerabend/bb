@@ -192,7 +192,8 @@ Reference:
 ### How Backtracking Works in a WAM
 
 This diagram below visualises the state management and backtracking process in
-*Warren's Abstract Machine* for logic programming:
+*Warren's Abstract Machine* for logic programming. You can find a simple implementation
+in ch05 of [WAM](../../../ch05/code/wam/):
 
 1. *WAM State Components*  
    - *Current Frame*: Active execution context containing variable bindings and program counter  
