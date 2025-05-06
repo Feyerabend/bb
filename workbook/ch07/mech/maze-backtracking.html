@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mouse in a Maze with Backtracking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        canvas {
+            border: 2px solid #333;
+            margin: 20px 0;
+        }
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .info {
+            width: 600px;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mouse in a Maze with Backtracking</h1>
+    
+    <div class="controls">
+        <button id="newMazeBtn">Generate New Maze</button>
+        <button id="startBtn">Start Search</button>
+        <button id="resetBtn">Reset</button>
+    </div>
+    
+    <canvas id="mazeCanvas" width="600" height="600"></canvas>
+    
+    <div class="info">
+        <h3>How it works:</h3>
+        <p><strong>Green:</strong> The mouse's current position</p>
+        <p><strong>Light Blue:</strong> Paths the mouse has explored</p>
+        <p><strong>Dark Blue:</strong> Backtracking path</p>
+        <p><strong>Yellow:</strong> The cheese (goal)</p>
+        <p>The mouse moves randomly but remembers its path. When it reaches a dead end, it backtracks to find a new unexplored path.</p>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('mazeCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Maze parameters
+        const size = 15; // Size of the maze (cells)
+        const cellSize = canvas.width / size;
+        
+        // Cell states
+        const WALL = 0;
+        const PATH = 1;
+        
+        // Directions
+        const dirs = [
+            {x: 0, y: -1}, // Up
+            {x: 1, y: 0},  // Right
+            {x: 0, y: 1},  // Down
+            {x: -1, y: 0}  // Left
+        ];
+        
+        // Initialize maze and visited cells arrays
+        let maze = [];
+        let visited = [];
+        let mouseX, mouseY;
+        let cheeseX, cheeseY;
+        let mousePath = [];
+        let backtrackPath = [];
+        let searchInterval;
+        let isSearching = false;
+        
+        // Initialize the maze
+        function initMaze() {
+            maze = [];
+            for (let i = 0; i < size; i++) {
+                let row = [];
+                for (let j = 0; j < size; j++) {
+                    row.push(WALL);
+                }
+                maze.push(row);
+            }
+        }
+        
+        // Generate maze using DFS
+        function generateMaze() {
+            initMaze();
+            
+            // Start from a random cell
+            const startX = Math.floor(Math.random() * Math.floor(size / 2)) * 2 + 1;
+            const startY = Math.floor(Math.random() * Math.floor(size / 2)) * 2 + 1;
+            
+            maze[startY][startX] = PATH;
+            
+            // DFS to carve paths
+            const stack = [{x: startX, y: startY}];
+            
+            while (stack.length > 0) {
+                const current = stack[stack.length - 1];
+                
+                // Get unvisited neighbors
+                const neighbors = [];
+                for (const dir of dirs) {
+                    const nx = current.x + dir.x * 2;
+                    const ny = current.y + dir.y * 2;
+                    
+                    if (nx >= 0 && nx < size && ny >= 0 && ny < size && maze[ny][nx] === WALL) {
+                        neighbors.push({x: nx, y: ny, dx: dir.x, dy: dir.y});
+                    }
+                }
+                
+                if (neighbors.length > 0) {
+                    // Randomly select a neighbor
+                    const next = neighbors[Math.floor(Math.random() * neighbors.length)];
+                    
+                    // Carve path to the neighbor
+                    maze[current.y + next.dy][current.x + next.dx] = PATH;
+                    maze[next.y][next.x] = PATH;
+                    
+                    // Push the neighbor to the stack
+                    stack.push({x: next.x, y: next.y});
+                } else {
+                    // No unvisited neighbors, backtrack
+                    stack.pop();
+                }
+            }
+            
+            // Place mouse and cheese
+            let validPositions = [];
+            for (let y = 0; y < size; y++) {
+                for (let x = 0; x < size; x++) {
+                    if (maze[y][x] === PATH) {
+                        validPositions.push({x, y});
+                    }
+                }
+            }
+            
+            if (validPositions.length > 1) {
+                // Place mouse
+                const mousePos = validPositions[Math.floor(Math.random() * validPositions.length)];
+                mouseX = mousePos.x;
+                mouseY = mousePos.y;
+                
+                // Place cheese (distant from mouse)
+                let maxDistance = 0;
+                let cheesePos;
+                
+                for (const pos of validPositions) {
+                    const distance = Math.abs(pos.x - mouseX) + Math.abs(pos.y - mouseY);
+                    if (distance > maxDistance) {
+                        maxDistance = distance;
+                        cheesePos = pos;
+                    }
+                }
+                
+                cheeseX = cheesePos.x;
+                cheeseY = cheesePos.y;
+            }
+            
+            resetSearch();
+            drawMaze();
+        }
+        
+        // Reset search variables
+        function resetSearch() {
+            visited = Array(size).fill().map(() => Array(size).fill(false));
+            mousePath = [{x: mouseX, y: mouseY}];
+            backtrackPath = [];
+            visited[mouseY][mouseX] = true;
+            isSearching = false;
+            
+            if (searchInterval) {
+                clearInterval(searchInterval);
+                searchInterval = null;
+            }
+        }
+        
+        // Start search
+        function startSearch() {
+            if (isSearching) return;
+            
+            isSearching = true;
+            searchInterval = setInterval(() => {
+                searchStep();
+                drawMaze();
+                
+                // If mouse found cheese
+                if (mouseX === cheeseX && mouseY === cheeseY) {
+                    clearInterval(searchInterval);
+                    alert("The mouse found the cheese!");
+                    isSearching = false;
+                }
+            }, 100); // Update every 100ms
+        }
+        
+        // Single search step
+        function searchStep() {
+            // Check if mouse found the cheese
+            if (mouseX === cheeseX && mouseY === cheeseY) {
+                return;
+            }
+            
+            // Get available moves
+            const moves = [];
+            for (const dir of dirs) {
+                const nx = mouseX + dir.x;
+                const ny = mouseY + dir.y;
+                
+                if (nx >= 0 && nx < size && ny >= 0 && ny < size && 
+                    maze[ny][nx] === PATH && !visited[ny][nx]) {
+                    moves.push({x: nx, y: ny});
+                }
+            }
+            
+            if (moves.length > 0) {
+                // Random move to an unvisited path
+                const move = moves[Math.floor(Math.random() * moves.length)];
+                
+                // Clear backtrack path if we're moving forward
+                backtrackPath = [];
+                
+                // Move mouse
+                mouseX = move.x;
+                mouseY = move.y;
+                
+                // Update path and mark as visited
+                mousePath.push({x: mouseX, y: mouseY});
+                visited[mouseY][mouseX] = true;
+            } else {
+                // No moves available, backtrack
+                if (mousePath.length > 1) {
+                    // Add current position to backtrack path
+                    backtrackPath.push({x: mouseX, y: mouseY});
+                    
+                    // Remove current position from mouse path
+                    mousePath.pop();
+                    
+                    // Get previous position
+                    const prev = mousePath[mousePath.length - 1];
+                    mouseX = prev.x;
+                    mouseY = prev.y;
+                }
+            }
+        }
+        
+        // Draw the maze
+        function drawMaze() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw maze
+            for (let y = 0; y < size; y++) {
+                for (let x = 0; x < size; x++) {
+                    if (maze[y][x] === WALL) {
+                        ctx.fillStyle = "#333";
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                    }
+                }
+            }
+            
+            // Draw visited paths
+            for (let y = 0; y < size; y++) {
+                for (let x = 0; x < size; x++) {
+                    if (visited[y][x] && !(x === mouseX && y === mouseY) && 
+                        !(x === cheeseX && y === cheeseY)) {
+                        ctx.fillStyle = "#ADD8E6"; // Light blue
+                        ctx.fillRect(x * cellSize + 1, y * cellSize + 1, cellSize - 2, cellSize - 2);
+                    }
+                }
+            }
+            
+            // Draw backtrack path
+            for (const pos of backtrackPath) {
+                ctx.fillStyle = "#0066CC"; // Dark blue
+                ctx.fillRect(pos.x * cellSize + 1, pos.y * cellSize + 1, cellSize - 2, cellSize - 2);
+            }
+            
+            // Draw cheese
+            if (cheeseX !== undefined && cheeseY !== undefined) {
+                ctx.fillStyle = "#FFFF00"; // Yellow
+                ctx.beginPath();
+                ctx.arc(
+                    cheeseX * cellSize + cellSize/2, 
+                    cheeseY * cellSize + cellSize/2, 
+                    cellSize/2 - 2, 
+                    0, 
+                    Math.PI * 2
+                );
+                ctx.fill();
+            }
+            
+            // Draw mouse
+            if (mouseX !== undefined && mouseY !== undefined) {
+                ctx.fillStyle = "#4CAF50"; // Green
+                ctx.beginPath();
+                ctx.arc(
+                    mouseX * cellSize + cellSize/2, 
+                    mouseY * cellSize + cellSize/2, 
+                    cellSize/2 - 2, 
+                    0, 
+                    Math.PI * 2
+                );
+                ctx.fill();
+                
+                // Draw mouse ears
+                ctx.beginPath();
+                ctx.arc(
+                    mouseX * cellSize + cellSize/3, 
+                    mouseY * cellSize + cellSize/3, 
+                    cellSize/6, 
+                    0, 
+                    Math.PI * 2
+                );
+                ctx.arc(
+                    mouseX * cellSize + cellSize - cellSize/3, 
+                    mouseY * cellSize + cellSize/3, 
+                    cellSize/6, 
+                    0, 
+                    Math.PI * 2
+                );
+                ctx.fill();
+            }
+        }
+        
+        // Event listeners
+        document.getElementById('newMazeBtn').addEventListener('click', generateMaze);
+        document.getElementById('startBtn').addEventListener('click', startSearch);
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            if (searchInterval) {
+                clearInterval(searchInterval);
+            }
+            resetSearch();
+            drawMaze();
+        });
+        
+        // Initialize
+        generateMaze();
+    </script>
+</body>
+</html>
