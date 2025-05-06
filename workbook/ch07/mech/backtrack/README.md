@@ -82,7 +82,38 @@ flowchart TD
 ```
 
 
-### Backtracking in a Prolog Case
+### Backtracking in a Model of Logic Programming
+
+This following diagram illustrates the control flow of a logic programming system
+(e.g., Prolog) when handling predicates with multiple clauses:
+
+1. *Initial Execution*  
+   The system begins processing a query/predicate from the initial state ([*]).
+
+2. *Choice Point Creation*  
+   When encountering a multi-clause predicate:
+   - System state is preserved (call stack, variables)
+   - Alternative clauses are registered for potential backtracking
+
+3. *Clause Execution Phase*  
+   The first clause alternative is attempted through:
+   - *Unification*: Attempt pattern matching between arguments
+        - *Success*: Variables are bound, body execution proceeds
+        - *Failure*: Triggers backtracking mechanism
+   - *Body Execution*: Processes consequent goals if unification succeeds
+
+4. *Backtracking Mechanism*  
+   Activated when either unification fails or explicit backtracking is requested:
+   - Restores previous execution state
+   - Selects next available alternative clause
+   - If no alternatives remain: Returns "no more solutions"
+
+5. *Continuation*  
+   Successful execution flows back to main processing (Execution state) to handle subsequent goals.
+
+This matches the behavior of logic programming systems where multiple solutions are found through
+systematic exploration of alternative execution paths.
+
 
 ```mermaid
 stateDiagram-v2
@@ -119,38 +150,8 @@ stateDiagram-v2
     }
 ```
 
-__Logic Programming Execution Flow__
 
-This diagram illustrates the control flow of a logic programming system
-(e.g., Prolog) when handling predicates with multiple clauses:
-
-1. *Initial Execution*  
-   The system begins processing a query/predicate from the initial state ([*]).
-
-2. *Choice Point Creation*  
-   When encountering a multi-clause predicate:
-   - System state is preserved (call stack, variables)
-   - Alternative clauses are registered for potential backtracking
-
-3. *Clause Execution Phase*  
-   The first clause alternative is attempted through:
-   - *Unification*: Attempt pattern matching between arguments
-        - *Success*: Variables are bound, body execution proceeds
-        - *Failure*: Triggers backtracking mechanism
-   - *Body Execution*: Processes consequent goals if unification succeeds
-
-4. *Backtracking Mechanism*  
-   Activated when either unification fails or explicit backtracking is requested:
-   - Restores previous execution state
-   - Selects next available alternative clause
-   - If no alternatives remain: Returns "no more solutions"
-
-5. *Continuation*  
-   Successful execution flows back to main processing (Execution state) to handle subsequent goals.
-
-This matches the behavior of logic programming systems where multiple solutions are found through
-systematic exploration of alternative execution paths.
-
+.. SPECIFIC
 
 
 ```mermaid
