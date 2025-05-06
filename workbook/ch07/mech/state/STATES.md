@@ -7,6 +7,17 @@ acquainted with how the [State Pattern](./../../patterns/state/) can be used.
 
 ### 1. Deterministic Finite Automaton (DFA)
 
+```mermaid
+stateDiagram-v2
+    [*] --> Red
+    Red --> Green: Timer
+    Red --> Red: Emergency
+    Green --> Yellow: Timer
+    Green --> Red: Emergency
+    Yellow --> Red: Timer
+    Yellow --> Red: Emergency
+```
+
 A DFA has one clear transition per input in each state. The traffic light
 cycles normally or switches to Red for emergencies.
 
@@ -58,16 +69,6 @@ if __name__ == "__main__":
     print(light.transition("Timer"))      # Switch to Green
 ```
 
-```mermaid
-stateDiagram-v2
-    [*] --> Red
-    Red --> Green: Timer
-    Red --> Red: Emergency
-    Green --> Yellow: Timer
-    Green --> Red: Emergency
-    Yellow --> Red: Timer
-    Yellow --> Red: Emergency
-```
 
 
 ### 2. Non-Deterministic Finite Automaton (NFA)
