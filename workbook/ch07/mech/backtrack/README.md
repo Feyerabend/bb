@@ -151,8 +151,45 @@ stateDiagram-v2
 ```
 
 
-.. SPECIFIC
+### How Backtracking Works in a WAM
 
+This diagram below visualises the state management and backtracking process in
+*Warren's Abstract Machine* for logic programming:
+
+1. *WAM State Components*  
+   - *Current Frame*: Active execution context containing variable bindings and program counter  
+   - *Choice Point*: Snapshot of machine state (heap/stack) at decision points  
+   - *Heap/Stack*: Memory structures managing terms (heap) and control flow (stack)  
+   - *Previous Frame*: Linked chain of prior execution states  
+
+2. *Unification Failure Handling*  
+   When unification fails:  
+   - System checks for existing choice points  
+   - Decision branches based on available backtracking options  
+
+3. *Backtracking Process*  
+   - *State Restoration*:  
+     Heap/stack reset to saved state from choice point  
+   - *Alternative Selection*:  
+     Next unexplored code path is activated  
+   - *Execution Continuation*:  
+     Processing resumes with new alternative  
+
+4. *Exhaustive Failure*  
+   If no choice points remain:  
+   - Computation terminates with global failure  
+   - Indicates no valid solutions exist  
+
+
+Concepts illustrated:  
+- WAM's memory architecture for non-deterministic execution  
+- Choice points as bookmarks for backtracking  
+- State preservation/restoration mechanics  
+- Heap-stack dichotomy in logic programming  
+- Failure-driven backtracking workflow  
+
+This reflects the WAM's approach to efficient Prolog implementation, where choice points enable
+systematic backtracking while maintaining execution context through careful memory management.
 
 ```mermaid
 flowchart LR
