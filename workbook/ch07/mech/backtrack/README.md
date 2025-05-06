@@ -39,7 +39,8 @@ In short, backtracking in Jackson Structured Programming referred to systematic 
 data processing flows, driven by the necessity to process nested file structures accurately in procedural programs.
 
 Reference:
-* Jackson, Michael A. (1975) *Principles of Program Design*. Academic Press.
+* Jackson, M. A. (1975). *Principles of Program Design*. Academic Press.
+* Ingevaldsson, L. (1977). *JSP - en praktisk metod för programkonstruktion*. Lund: Studentlitt.
 
 
 ```mermaid
