@@ -285,21 +285,19 @@ integrity during backtracking cycles, while the Heap/Stack dichotomy enables eff
  where alternative execution paths are systematically explored through failure-driven backtracking
  until all solutions are exhausted or execution successfully completes.
 
-
-
-### *Key Differences: General vs. WAM*
+### Differences: General vs. WAM
 | Feature        | General Backtracking        | WAM Backtracking                     |
 |----------------|-----------------------------|--------------------------------------|
 | *State Saving* | Full copy of search state   | Selective (heap, trail, IP only)     |
 | *Variables*    | No special handling         | Trail tracks bindings for undo       |
 | *Control*      | Manual stack management     | Automatic via `choice_points` stack  |
-| *Optimization* | None (naive)                | `CUT` operator prunes choice points  |
+| *Optimisation* | None (naive)                | `CUT` operator prunes choice points  |
 
 
 
 ### Why This Matters in WAM
 The implementation mirrors real Prolog engines by:
-1. Minimizing state copying (only modified data via trail)  
+1. Minimising state copying (only modified data via trail)  
 2. Supporting nested choice points (e.g., `grandparent/2` calling `parent/2`)  
 3. Enabling "green" backtracking (without full recursion unwinding)  
 
