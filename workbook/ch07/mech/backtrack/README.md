@@ -185,6 +185,8 @@ stateDiagram-v2
     }
 ```
 
+What I have found to be good in explanantion of this in relation to Prolog:
+* 
 
 ### How Backtracking Works in a WAM
 
