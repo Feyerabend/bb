@@ -365,12 +365,16 @@ Key Idea: PDA can remember nested events — something DFAs cannot.
 ```mermaid
 stateDiagram-v2
     [*] --> Red
-    Red --> Green: Timer/Write G, R
-    Green --> Yellow: Timer/Write Y, R
-    Yellow --> Red: Timer/Write R, R
-    Red --> Reviewing: Review/Move L
-    Reviewing --> Red: EndReview/Move R
-    note left of Reviewing: Tape stores history: R,G,Y,...
+    Red --> Green : Timer (Write G)
+    Green --> Yellow : Timer (Write Y)
+    Yellow --> Red : Timer (Write R)
+    Red --> Reviewing : Review
+    Reviewing --> Red : End Review
+    
+    note left of Reviewing
+        Tape stores history:
+        R,G,Y,...
+    end note
 ```
 
 A Turing machine generalises further with an infinite tape (memory)
