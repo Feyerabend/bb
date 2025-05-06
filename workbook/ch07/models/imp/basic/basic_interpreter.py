@@ -6,7 +6,7 @@ import random
 from typing import Any, List, Optional, Tuple
 from abc import ABC, abstractmethod
 
-DEBUG = True  # Keep debug enabled to verify string fixes
+DEBUG = True  # Keep debug enabled to verify fixes
 
 def debug_print(*args, **kwargs):
     if DEBUG:
@@ -431,15 +431,18 @@ class PrintCommand(ParsedCommand):
                 
             try:
                 result = self.parse_expression(part)
+                debug_print(f"PRINT output: {result} (type: {type(result)})")
                 if isinstance(result, float):
-                    if abs(result) < 1e-6:  # Adjusted threshold for small values
+                    if abs(result) < 1e-5:  # Relaxed threshold for small values
                         result = 0.0
+                        output.append("0")
                     elif result.is_integer():
                         output.append(str(int(result)))
                     else:
-                        output.append(f"{result:.6f}".rstrip("0").rstrip("."))
+                        formatted = f"{result:.6f}".rstrip("0").rstrip(".")
+                        output.append(formatted if formatted else "0")
                 else:
-                    output.append(str(result))
+                    output.append(str(result) if result else "")
             except Exception as e:
                 print(f"Error evaluating expression '{part}': {e}")
                 return
@@ -475,13 +478,16 @@ class InputCommand(ParsedCommand):
 
 class LetCommand(ParsedCommand):
     def process(self, args: str) -> None:
-        var, expr = args.split("=", 1)
-        var = var.strip()
-        if CommandFactory.is_reserved(var.rstrip('$')):
-            raise ParserError(f"Cannot assign to reserved word '{var}'")
-        value = self.parse_expression(expr.strip())
-        debug_print(f"Assigning {var} = {value}")
-        self.state.variables[var] = value  # Preserve $ suffix in variable name
+        try:
+            var, expr = args.split("=", 1)
+            var = var.strip()
+            if CommandFactory.is_reserved(var.rstrip('$')):
+                raise ParserError(f"Cannot assign to reserved word '{var}'")
+            value = self.parse_expression(expr.strip())
+            debug_print(f"Assigning {var} = {value}")
+            self.state.variables[var] = value
+        except ValueError:
+            raise ParserError(f"Invalid LET syntax: {args}")
 
 class IfCommand(ParsedCommand):
     def process(self, args: str) -> None:
@@ -937,6 +943,7 @@ class InterpreterEngine:
         return int(line_number), code_parts[0] if code_parts else ""
     
     def execute_line(self, line: str) -> None:
+        debug_print(f"Executing line: {line}")
         for statement in split_statements(line.strip()):
             if not statement:
                 continue
@@ -947,8 +954,10 @@ class InterpreterEngine:
             
             command = CommandFactory.create_command(cmd, self.state)
             if command:
+                debug_print(f"Executing command: {cmd}, args: {args}")
                 command.execute(args)
             elif "=" in statement and not statement.upper().startswith("IF"):
+                debug_print(f"Implicit LET: {statement}")
                 LetCommand(self.state).execute(statement)
             else:
                 print(f"Syntax error: Unknown command '{statement}'")
