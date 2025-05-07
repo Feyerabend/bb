@@ -194,6 +194,19 @@ int main() {
 }
 ```
 
+```mermaid
+sequenceDiagram
+    participant Caller
+    participant strtok
+    Caller->>strtok: strtok(str, ",")
+    strtok-->>Caller: First token
+    loop Until NULL
+        Caller->>strtok: NULL
+        strtok-->>Caller: Next token
+    end
+```
+
+
 ### Differences
 
 1. *State Management*:
