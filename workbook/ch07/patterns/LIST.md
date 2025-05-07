@@ -11,7 +11,7 @@ Gang-of-Four patterns .. + 3 others
 | [State](./state/) | Behavioural | Change object behaviour based on internal state | Game AI, UI modes | GoF |
 | Decorator          | Structural      | Add behaviour to objects dynamically                              | I/O streams, middleware pipelines                | GoF            |
 | Adapter            | Structural      | Convert one interface to another                                 | Legacy code integration, wrapper libraries       | GoF            |
-| Composite          | Structural      | Treat objects and groups uniformly                               | Scene graphs, file system trees                  | GoF            |
+| [Composite](./composite/) | Structural | Treat objects and groups uniformly | Scene graphs, file system trees | GoF |
 | [Factory Method](./factory/) | Creational | Define interface for creating objects, let subclass decide | Plugin creation, document editors | GoF |
 | [Abstract Factory](./factory/05/) | Creational | Create families of related objects without specifying classes | GUI themes, cross-platform toolkits | GoF |
 | [Singleton](./singleton/)[^single] | Creational | Ensure a class has only one instance | Config manager, global registries | GoF (controversial) |
