@@ -145,6 +145,52 @@ int main() {
 }
 ```
 
+```mermaid
+sequenceDiagram
+    participant Main
+    participant SignalHandler
+    participant rand_safe
+
+    Note over Main: Initialization
+    Main->>Main: next_main = 1
+    Main->>Signal: signal(SIGUSR1, handle_signal)
+
+    Note over Main: Normal execution
+    Main->>rand_safe: rand_safe(&next_main)
+    activate rand_safe
+    rand_safe->>rand_safe: *next = 1*1103515245+12345
+    rand_safe-->>Main: return 16838 (example)
+    deactivate rand_safe
+    Main->>Main: printf("Main thread...")
+
+    Main->>rand_safe: rand_safe(&next_main)
+    activate rand_safe
+    rand_safe->>rand_safe: *next = new_value...
+    Note right of rand_safe: Interrupt occurs here!
+    deactivate rand_safe
+
+    Main->>Signal: raise(SIGUSR1)
+    activate Signal
+    Signal->>SignalHandler: handle_signal(SIGUSR1)
+    activate SignalHandler
+    SignalHandler->>SignalHandler: local_next = 1
+    SignalHandler->>rand_safe: rand_safe(&local_next)
+    activate rand_safe
+    rand_safe->>rand_safe: *next = 1*1103515245+12345
+    rand_safe-->>SignalHandler: return 16838
+    deactivate rand_safe
+    SignalHandler->>SignalHandler: printf("Signal handler...")
+    deactivate SignalHandler
+    deactivate Signal
+
+    Main->>rand_safe: rand_safe(&next_main)
+    activate rand_safe
+    rand_safe->>rand_safe: Continue with saved state
+    rand_safe-->>Main: return next value
+    deactivate rand_safe
+    Main->>Main: printf("Main thread...")
+```
+
 ### Extended Example: String Tokenizer
 
 Unsafe:
