@@ -9,9 +9,9 @@ calls; context switching enables multitasking by preserving and restoring task s
 and ordering of shared memory operations. Together, these techniques build the foundation for reliable thread scheduling,
 interrupt handling, lock-free programming, and real-time systems where timing and correctness are critical.
 
-| Mechanism       | Description                                                            | Use Cases                                            | Related Pattern(s)                     |
-|-----------------|------------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------|
-| Re-entrant      | Function safe to be re-entered concurrently                            | Multithreading, interrupt-safe routines              | Thread-safe design, Stateless design    |
+| Mechanism | Description | Use Cases | Related Pattern(s) |
+|--|--|--|--|
+| [Re-entrant](./reentrant/) | Function safe to be re-entered concurrently | Multithreading, interrupt-safe routines | Thread-safe design, Stateless design |
 | Context Switch  | Save/restore execution context between tasks                           | Thread scheduling, green threads, RTOS               | Scheduler design                        |
 | Memory Barrier  | Prevent CPU from reordering memory operations                          | Lock-free concurrency, shared memory                 | Happens-before relations                |
 
