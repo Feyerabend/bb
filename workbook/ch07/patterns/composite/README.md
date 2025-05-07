@@ -23,7 +23,7 @@ forming a recursive tree structure.
    and a group of objects.
 2. *Simplifies Client Code*: The same operations can be applied over the whole structure.
 3. *Flexible Hierarchies*: New component types can be added without breaking existing code.
-4. *Recursive Behavior*: Operations can be applied recursively over the entire tree.
+4. *Recursive Behaviour*: Operations can be applied recursively over the entire tree.
 
 
 ### When to Use the Composite Pattern?
@@ -64,7 +64,7 @@ forming a recursive tree structure.
    - *Composite*: `Panel` (contains multiple widgets).  
    - `render()` on `Panel` renders all child widgets.
 
-3. *Organization Structure*  
+3. *Organisation Structure*  
    - *Component*: `Employee`.  
    - *Leaf*: `Developer`, `Manager`.  
    - *Composite*: `Team` (contains multiple employees).  
@@ -114,7 +114,7 @@ A `Group` can contain `Circle` objects or other `Group` objects, forming a tree.
 
 ### Composite in General
 
-The Composite pattern is powerful for modeling hierarchical structures where individual
+The Composite pattern is powerful for modelling hierarchical structures where individual
 and grouped objects need the same interface. It promotes *recursive composition* and
 *transparent handling* of objects, making it ideal for systems like file explorers,
 UI frameworks, and organisational structures.
@@ -127,7 +127,7 @@ The base structure that defines common operations for both leaf nodes and compos
 
 Leaf Classes (Circle, Rectangle, Triangle):
 - Concrete shapes that can be rendered
-- Each implements its own rendering behavior
+- Each implements its own rendering behaviour
 
 Composite Class (CompositeGroup):
 - Contains and manages a collection of child components
@@ -145,4 +145,4 @@ Some pattern features demonstrated:
 The program creates a simple scene with:
 - Individual shapes (circle, rectangle, triangle)
 - A composite "house" made of multiple shapes
-- A composite "scene" that contains both individual shapes and the house composite
+- A composite "scene" that contains both individual shapes and the house composite
