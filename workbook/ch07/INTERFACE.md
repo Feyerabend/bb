@@ -20,6 +20,7 @@ What does an interface do?
 What characterizes an interface?
 
 |Characteristic	|Meaning|
+|--|--|
 |Explicitness	|The interface is clearly specified, not implicit or ad hoc|
 |Stability	|Interfaces tend to change less frequently than implementations|
 |Abstraction	|It abstracts away implementation details, exposing only what is needed|
