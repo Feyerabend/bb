@@ -147,7 +147,7 @@ Reference:
 
 This diagram below visualises the state management and backtracking process in
 *Warren's Abstract Machine* for logic programming. You can find a simple implementation
-in ch05 of [WAM](../../../ch05/code/wam/):
+in ch05 of [WAM](../../../ch05/code/wam/). A copy of WAM has been included in this folder:
 
 1. *WAM State Components*  
    - *Current Frame*: Active execution context containing variable bindings and program counter  

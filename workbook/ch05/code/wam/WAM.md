@@ -1,3 +1,4 @@
+
 ## WAM
 
 The Warren Abstract Machine (WAM) is a highly influential virtual machine designed
@@ -17,11 +18,12 @@ logical variables.
 *Core Features of WAM*
 
 1. *Unification*: Central to Prolog, unification matches terms (variables, constants,
-   or structures). The WAM includes optimized instructions for unification, handling
+   or structures). The WAM includes optimised instructions for unification, handling
    variable bindings and logical constraints.
 2. *Backtracking*: Prolog uses backtracking to explore alternative solutions when a
    computation fails. The WAM implements this via a stack-based structure with choice
-   points for efficient state restoration.
+   points for efficient state restoration. (More on backtracking in ch07
+   [WAM](./../../../ch07/mech/backtrack/).)
 3. *Efficient Term Representation*: Terms (variables, constants, lists, structures)
    are compactly stored in memory using tagged cells to differentiate types.
 
@@ -47,7 +49,7 @@ self.registers = {
 
 #### 2. Memory Areas
 
-The WAM organizes memory into distinct areas:
+The WAM organises memory into distinct areas:
 - *Heap*: Stores terms like variables and constants.
   
 ```python
