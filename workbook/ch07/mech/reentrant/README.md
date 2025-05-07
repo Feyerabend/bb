@@ -55,6 +55,7 @@ Many standard library functions have re-entrant versions, typically with an `_r`
 While related, they're *not* identical:
 - *Re-entrant*: Safe when called from interrupt/signal handlers
 - *Thread-safe*: Safe when called from multiple threads
+
 Thus, *all re-entrant functions are thread-safe, but not all thread-safe functions are re-entrant*.
 
 
