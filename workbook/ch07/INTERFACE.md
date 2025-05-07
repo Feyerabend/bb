@@ -75,3 +75,9 @@ These interfaces form layers, where components above depend on or use interfaces
 Cross-layer interaction examples:
 - A REST API (application) communicates over HTTP (protocol), which rides on TCP/IP (network), implemented by the kernel, and touches hardware network cards.
 - A shared library (libc.so) exposes function signatures (language-level) that rely on ABI (binary-level), running in a process (OS-level), on a CPU (hardware).
+
+
+..
+Samples:
+
+- C.A.R. Hoare . Communicating Sequential Processes (CSP)
