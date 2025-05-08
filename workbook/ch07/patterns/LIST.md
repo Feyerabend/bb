@@ -1,7 +1,76 @@
 
+## Design Patterns
+
+In 1994, Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides published
+*Design Patterns: Elements of Reusable Object-Oriented Software*.
+These four authors are collectively known as the Gang of Four (GoF).
+
+Their book cataloged 23 classic software design patterns--recurring solutions to
+common problems in object-oriented software development. The patterns are divided
+into three main categories:
 
 
-Gang-of-Four patterns .. + 3 others
+|Category	|Description	|Examples|
+|--|--|--|
+|Creational	|Object creation mechanisms	|Factory Method, Singleton, Builder|
+|Structural	|Composing classes and objects into larger structures	|Adapter, Composite, Facade|
+|Behavioral	|Managing algorithms, responsibilities, communication	|Strategy, Observer, Command|
+
+The GoF patterns are not code libraries--they are general reusable solutions that
+can be adapted to various programming languages and contexts. They aim to make designs
+more flexible, reusable, and maintainable, by anticipating future changes and encouraging
+good separation of concerns.
+
+The GoF book emphasizes object-oriented principles like encapsulation, composition over
+inheritance, and delegation--themes still relevant today, even beyond OOP-heavy languages.
+
+
+### DRY Principle (Don’t Repeat Yourself)
+
+Definition:
+> Every piece of knowledge must have a single, unambiguous, authoritative representation within a system.
+
+Introduced in the book *The Pragmatic Programmer* (1999) by Andrew Hunt and David Thomas,
+DRY is a principle of software development aimed at reducing repetition of code or logic.
+
+Why it matters:
+- Repetition increases the risk of inconsistency and bugs (when one copy changes but others don’t).
+- Changes become harder to maintain when logic is duplicated.
+- Code becomes harder to understand when behavior is scattered in multiple places.
+
+Typical applications:
+- Extracting shared code into functions or methods.
+- Using data normalization in databases.
+- Applying inheritance or composition to reuse logic.
+
+A DRY codebase is easier to maintain, less error-prone, and clearer to read.
+
+
+### SOLID Principles
+
+The SOLID acronym represents five fundamental design principles for object-oriented programming,
+popularized by Robert C. Martin ("Uncle Bob") in the early 2000s. They guide developers to build
+systems that are modular, extensible, and maintainable.
+
+|Principle	|Name	|Summary|
+|--|--|--|
+|S	|Single Responsibility Principle (SRP)	|A class should have one and only one reason to change.|
+|O	|Open/Closed Principle (OCP)	|Software entities should be open for extension, but closed for modification.|
+|L	|Liskov Substitution Principle (LSP)	|Subtypes should be substitutable for their base types.|
+|I	|Interface Segregation Principle (ISP)	|No client should be forced to depend on methods it does not use.|
+|D	|Dependency Inversion Principle (DIP)	|High-level modules should not depend on low-level modules; both should depend on abstractions.|
+
+Quick breakdown:
+- SRP: Keep responsibilities focused; split large classes with multiple roles.
+- OCP: Favor extending behavior with new code rather than modifying existing code.
+- LSP: Ensure derived classes can fully replace their parents without breaking functionality.
+- ISP: Design small, focused interfaces, not large "fat" ones.
+- DIP: Depend on interfaces or abstractions, not concrete implementations.
+
+These principles complement the use of design patterns. 
+Patterns provide reusable solutions--DRY and SOLID help you structure and integrate those solutions cleanly.
+
+### Patterns
 
 | Pattern | Category | Purpose | Example Use Case | Source |
 |----|----|----|----|----|
