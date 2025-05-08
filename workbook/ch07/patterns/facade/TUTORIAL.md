@@ -22,20 +22,20 @@ This document provides a comprehensive guide to the scripting capabilities of th
 The Graphics VM interprets a simple scripting language designed to define graphical scenes. Scripts are text files containing commands that specify the canvas size, shapes (circles, rectangles, triangles), colors, and grouping structures. The VM parses these scripts into an Abstract Syntax Tree (AST), executes the commands to build a scene graph, and renders the result into a PPM image file.
 
 Key features:
-- **Shapes**: Circle, Rectangle, Triangle
-- **Colors**: Named colors or RGB values
-- **Grouping**: Hierarchical composition of shapes
-- **Output**: PPM image format
-- **Memory Management**: Tracked allocations with leak detection
+- *Shapes*: Circle, Rectangle, Triangle
+- *Colors*: Named colors or RGB values
+- *Grouping*: Hierarchical composition of shapes
+- *Output*: PPM image format
+- *Memory Management*: Tracked allocations with leak detection
 
 ## Script Structure
 
 A script is a text file with one command per line. Each command consists of a keyword followed by parameters, separated by spaces or tabs. Lines are processed sequentially, and the script must end with a `render` command to generate the output image.
 
-- **Comments**: Lines starting with `#` or `//` are ignored.
-- **Empty Lines**: Skipped during parsing.
-- **Maximum Line Length**: 256 characters.
-- **Maximum Script Size**: 10KB.
+- *Comments*: Lines starting with `#` or `//` are ignored.
+- *Empty Lines*: Skipped during parsing.
+- *Maximum Line Length*: 256 characters.
+- *Maximum Script Size*: 10KB.
 
 ## Commands and Syntax
 
@@ -45,21 +45,21 @@ Below is a detailed description of each command, its syntax, and parameters.
 
 Defines the dimensions of the output image.
 
-**Syntax**:
+*Syntax*:
 ```
 canvas width height
 ```
 
-**Parameters**:
+*Parameters*:
 - `width`: Integer, the width of the canvas in pixels (positive).
 - `height`: Integer, the height of the canvas in pixels (positive).
 
-**Notes**:
+*Notes*:
 - Must appear at the start of the script if used.
 - If omitted, defaults to 400x400 pixels (defined by `DEFAULT_WIDTH` and `DEFAULT_HEIGHT`).
 - Currently, resizing after initialization is not supported; the VM uses initial dimensions.
 
-**Example**:
+*Example*:
 ```
 canvas 800 600
 ```
@@ -68,19 +68,19 @@ canvas 800 600
 
 Creates a circle shape.
 
-**Syntax**:
+*Syntax*:
 ```
 circle name centerX centerY radius color
 ```
 
-**Parameters**:
+*Parameters*:
 - `name`: String, unique identifier for the circle.
 - `centerX`: Integer, x-coordinate of the circle's center.
 - `centerY`: Integer, y-coordinate of the circle's center.
 - `radius`: Integer, radius of the circle (positive).
 - `color`: Color specification (see [Color Specification](#color-specification)).
 
-**Example**:
+*Example*:
 ```
 circle myCircle 200 200 50 red
 ```
@@ -89,7 +89,7 @@ circle myCircle 200 200 50 red
 
 Creates a rectangle shape.
 
-**Syntax**:
+*Syntax*:
 ```
 rectangle name x y width height color
 ```
@@ -98,7 +98,7 @@ or
 rect name x y width height color
 ```
 
-**Parameters**:
+*Parameters*:
 - `name`: String, unique identifier for the rectangle.
 - `x`: Integer, x-coordinate of the top-left corner.
 - `y`: Integer, y-coordinate of the top-left corner.
@@ -106,7 +106,7 @@ rect name x y width height color
 - `height`: Integer, height of the rectangle (positive).
 - `color`: Color specification.
 
-**Example**:
+*Example*:
 ```
 rect myRect 100 100 200 150 blue
 ```
@@ -115,19 +115,19 @@ rect myRect 100 100 200 150 blue
 
 Creates a triangle shape.
 
-**Syntax**:
+*Syntax*:
 ```
 triangle name x1 y1 x2 y2 x3 y3 color
 ```
 
-**Parameters**:
+*Parameters*:
 - `name`: String, unique identifier for the triangle.
 - `x1, y1`: Integers, coordinates of the first vertex.
 - `x2, y2`: Integers, coordinates of the second vertex.
 - `x3, y3`: Integers, coordinates of the third vertex.
 - `color`: Color specification.
 
-**Example**:
+*Example*:
 ```
 triangle myTriangle 150 300 250 300 200 200 yellow
 ```
@@ -136,24 +136,24 @@ triangle myTriangle 150 300 250 300 200 200 yellow
 
 Groups multiple shapes together for hierarchical rendering.
 
-**Syntax**:
+*Syntax*:
 ```
 group name
 [shape commands]
 end
 ```
 
-**Parameters**:
+*Parameters*:
 - `name`: String, unique identifier for the group.
 - `end`: Marks the end of the group.
 
-**Notes**:
+*Notes*:
 - Shapes defined within a group are children of that group.
 - Groups can be nested.
 - A group is rendered by rendering all its children in order.
 - Unmatched `end` commands trigger a warning but do not halt execution.
 
-**Example**:
+*Example*:
 ```
 group myGroup
 circle circle1 200 200 30 green
@@ -165,19 +165,19 @@ end
 
 Triggers the rendering of all top-level components and their children.
 
-**Syntax**:
+*Syntax*:
 ```
 render
 ```
 
-**Parameters**: None.
+*Parameters*: None.
 
-**Notes**:
+*Notes*:
 - Typically the last command in the script.
 - Only root components (not part of any group) are rendered directly; groups handle their children.
 - Outputs the image to the specified file.
 
-**Example**:
+*Example*:
 ```
 render
 ```
@@ -186,7 +186,7 @@ render
 
 Colors can be specified in two ways:
 
-1. **Named Colors**:
+1. *Named Colors*:
    - `red`: (255, 0, 0)
    - `green`: (0, 255, 0)
    - `blue`: (0, 0, 255)
@@ -196,12 +196,12 @@ Colors can be specified in two ways:
    - `white`: (255, 255, 255)
    - `black`: (0, 0, 0)
 
-2. **RGB Values**:
+2. *RGB Values*:
    - Format: `r,g,b`
    - Each value is an integer between 0 and 255.
    - Values are clamped to this range if outside.
 
-**Examples**:
+*Examples*:
 ```
 circle myCircle 200 200 50 red
 rect myRect 100 100 200 150 0,128,255
@@ -258,13 +258,13 @@ To run a script, compile the provided C code and execute the resulting program w
 ./program <script_file> [width] [height] [output_file]
 ```
 
-**Arguments**:
+*Arguments*:
 - `script_file`: Path to the script file (required).
 - `width`: Canvas width (optional, default: 400).
 - `height`: Canvas height (optional, default: 400).
 - `output_file`: Output PPM file (optional, default: `output.ppm`).
 
-**Example**:
+*Example*:
 ```
 ./graphics_vm myscript.txt 800 600 image.ppm
 ```
@@ -279,13 +279,13 @@ The program:
 
 ## Limitations and Notes
 
-- **Canvas Resizing**: The VM does not support resizing the canvas after initialization. The `canvas` command's dimensions are noted but not applied if different from the initial size.
-- **Error Handling**: Errors (e.g., invalid parameters, memory allocation failures) cause the program to fail with an error message.
-- **Shape Overlap**: Later shapes overwrite earlier ones in the image buffer (last rendered wins).
-- **Coordinate System**: Origin (0,0) is the top-left corner, with x increasing to the right and y increasing downward.
-- **Performance**: The rendering algorithm is pixel-based and not optimized for large images or complex scenes.
-- **Memory Management**: The VM tracks allocations and reports leaks via `printMemoryStats()`. Ensure all components are freed correctly.
-- **File Size Limit**: Scripts are capped at 10KB to prevent excessive memory use.
-- **PPM Output**: The output is in ASCII PPM (P3) format, which is simple but results in large files for high-resolution images.
+- *Canvas Resizing*: The VM does not support resizing the canvas after initialization. The `canvas` command's dimensions are noted but not applied if different from the initial size.
+- *Error Handling*: Errors (e.g., invalid parameters, memory allocation failures) cause the program to fail with an error message.
+- *Shape Overlap*: Later shapes overwrite earlier ones in the image buffer (last rendered wins).
+- *Coordinate System*: Origin (0,0) is the top-left corner, with x increasing to the right and y increasing downward.
+- *Performance*: The rendering algorithm is pixel-based and not optimized for large images or complex scenes.
+- *Memory Management*: The VM tracks allocations and reports leaks via `printMemoryStats()`. Ensure all components are freed correctly.
+- *File Size Limit*: Scripts are capped at 10KB to prevent excessive memory use.
+- *PPM Output*: The output is in ASCII PPM (P3) format, which is simple but results in large files for high-resolution images.
 
 This tutorial covers the core scripting capabilities of the Graphics VM. For advanced usage, consider extending the language with additional shapes, transformations, or rendering optimizations.
