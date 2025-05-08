@@ -16,6 +16,19 @@ into three main categories:
 |Structural	|Composing classes and objects into larger structures	|Adapter, Composite, Facade|
 |Behavioral	|Managing algorithms, responsibilities, communication	|Strategy, Observer, Command|
 
+
+```mermaid
+flowchart TD
+    Creational -->|"Create objects \n (Abstract Factory, Builder)"| Objects
+    Structural -->|"Compose structures \n (Decorator, Composite)"| Objects
+    Behavioral -->|"Manage communication \n (Observer, Command)"| Objects
+
+    Objects -->|"Loose coupling"| Principles
+    Principles --> SOLID
+    Principles --> DRY
+```
+
+
 The GoF patterns are not code libraries--they are general reusable solutions that
 can be adapted to various programming languages and contexts. They aim to make designs
 more flexible, reusable, and maintainable, by anticipating future changes and encouraging
@@ -288,18 +301,7 @@ classDiagram
     AbstractObject <|-- NullObject
 ```
 
-### 5. Pattern Relationships (Meta-Diagram)
 
-```mermaid
-flowchart TD
-    Creational -->|"Create objects \n (Abstract Factory, Builder)"| Objects
-    Structural -->|"Compose structures \n (Decorator, Composite)"| Objects
-    Behavioral -->|"Manage communication \n (Observer, Command)"| Objects
-
-    Objects -->|"Loose coupling"| Principles
-    Principles --> SOLID
-    Principles --> DRY
-```
 
 Abstractions shown:
 
