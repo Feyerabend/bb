@@ -27,6 +27,7 @@ Gang-of-Four patterns .. + 3 others
 
 Maybe:
 | Pattern | Category | Purpose | Example Use Case | Source |
+|----|----|----|----|----|
 | Bridge | Structural | Decouple abstraction from implementation so they can vary independently | GUI toolkits, device drivers | GoF |
 | Template Method | Behavioural | Define the skeleton of an algorithm, let subclasses redefine steps | Frameworks, code generators | GoF |
 | Proxy | Structural | Provide a placeholder or surrogate for another object | Remote proxies, lazy loading, access control | GoF |
