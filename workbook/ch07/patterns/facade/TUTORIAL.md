@@ -126,7 +126,7 @@ triangle name x1 y1 x2 y2 x3 y3 color
 - `x1, y1`: Integers, coordinates of the first vertex.
 - `x2, y2`: Integers, coordinates of the second vertex.
 - `x3, y3`: Integers, coordinates of the third vertex.
-- `color`: Color specification.
+- `color`: Colour specification.
 
 *Example*:
 ```
@@ -183,7 +183,7 @@ render
 render
 ```
 
-## Color Specification
+## Colour Specification
 
 Colors can be specified in two ways:
 
