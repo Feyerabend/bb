@@ -19,9 +19,9 @@ into three main categories:
 
 ```mermaid
 flowchart TD
-    Creational -->|"Create objects \n (Abstract Factory, Builder)"| Objects
-    Structural -->|"Compose structures \n (Decorator, Composite)"| Objects
-    Behavioral -->|"Manage communication \n (Observer, Command)"| Objects
+    Creational -->|"Create objects </br> (Abstract Factory, Builder)"| Objects
+    Structural -->|"Compose structures </br> (Decorator, Composite)"| Objects
+    Behavioral -->|"Manage communication </br> (Observer, Command)"| Objects
 
     Objects -->|"Loose coupling"| Principles
     Principles --> SOLID
