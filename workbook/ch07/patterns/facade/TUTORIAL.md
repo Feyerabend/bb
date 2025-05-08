@@ -1,3 +1,4 @@
+
 # Graphics VM Scripting Tutorial
 
 This document provides a comprehensive guide to the scripting capabilities of the Graphics VM, a custom language interpreter for creating graphics. The VM processes scripts to generate images in the PPM format, supporting basic shapes, colors, and hierarchical grouping.
@@ -266,7 +267,7 @@ To run a script, compile the provided C code and execute the resulting program w
 
 *Example*:
 ```
-./graphics_vm myscript.txt 800 600 image.ppm
+./vm myscript.txt 800 600 image.ppm
 ```
 
 The program:
