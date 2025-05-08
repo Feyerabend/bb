@@ -1,5 +1,5 @@
 // Simple Graphics VM Script - House Scene
-// File: house_scene.vm
+// File: sample.g
 
 // Create a 400x400 canvas
 canvas 400 400
