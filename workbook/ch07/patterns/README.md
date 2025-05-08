@@ -14,14 +14,14 @@ into three main categories:
 |--|--|--|
 |Creational	|Object creation mechanisms	|Factory Method, Singleton, Builder|
 |Structural	|Composing classes and objects into larger structures	|Adapter, Composite, Facade|
-|Behavioral	|Managing algorithms, responsibilities, communication	|Strategy, Observer, Command|
+|Behavioural	|Managing algorithms, responsibilities, communication	|Strategy, Observer, Command|
 
 
 ```mermaid
 flowchart TD
     Creational -->|"Create objects </br> (Abstract Factory, Builder)"| Objects
     Structural -->|"Compose structures </br> (Decorator, Composite)"| Objects
-    Behavioral -->|"Manage communication </br> (Observer, Command)"| Objects
+    Behavioural -->|"Manage communication </br> (Observer, Command)"| Objects
 
     Objects -->|"Loose coupling"| Principles
     Principles --> SOLID
@@ -34,7 +34,7 @@ can be adapted to various programming languages and contexts. They aim to make d
 more flexible, reusable, and maintainable, by anticipating future changes and encouraging
 good separation of concerns.
 
-The GoF book emphasizes object-oriented principles like encapsulation, composition over
+The GoF book emphasises object-oriented principles like encapsulation, composition over
 inheritance, and delegation--themes still relevant today, even beyond OOP-heavy languages.
 
 
@@ -49,11 +49,11 @@ DRY is a principle of software development aimed at reducing repetition of code 
 Why it matters:
 - Repetition increases the risk of inconsistency and bugs (when one copy changes but others don’t).
 - Changes become harder to maintain when logic is duplicated.
-- Code becomes harder to understand when behavior is scattered in multiple places.
+- Code becomes harder to understand when behaviour is scattered in multiple places.
 
 Typical applications:
 - Extracting shared code into functions or methods.
-- Using data normalization in databases.
+- Using data normalisation in databases.
 - Applying inheritance or composition to reuse logic.
 
 A DRY codebase is easier to maintain, less error-prone, and clearer to read.
@@ -62,7 +62,7 @@ A DRY codebase is easier to maintain, less error-prone, and clearer to read.
 ### SOLID Principles
 
 The SOLID acronym represents five fundamental design principles for object-oriented programming,
-popularized by Robert C. Martin ("Uncle Bob") in the early 2000s. They guide developers to build
+popularised by Robert C. Martin ("Uncle Bob") in the early 2000s. They guide developers to build
 systems that are modular, extensible, and maintainable.
 
 |Principle	|Name	|Summary|
@@ -75,7 +75,7 @@ systems that are modular, extensible, and maintainable.
 
 Quick breakdown:
 - SRP: Keep responsibilities focused; split large classes with multiple roles.
-- OCP: Favor extending behavior with new code rather than modifying existing code.
+- OCP: Favour extending behaviour with new code rather than modifying existing code.
 - LSP: Ensure derived classes can fully replace their parents without breaking functionality.
 - ISP: Design small, focused interfaces, not large "fat" ones.
 - DIP: Depend on interfaces or abstractions, not concrete implementations.
