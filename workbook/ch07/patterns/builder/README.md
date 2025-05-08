@@ -1,7 +1,7 @@
 
 ## Builder Pattern
 
-### 1. What is the Builder Pattern?
+### What is the Builder Pattern?
 
 The *Builder Pattern* is a *creational design pattern* that:
 - Separates the construction of a complex object from its representation.
@@ -9,7 +9,7 @@ The *Builder Pattern* is a *creational design pattern* that:
 - Enables the creation of different object configurations with the same construction process.
 
 
-### 2. How It Works
+### How It Works
 
 | Component         | Description                                                           |
 |-------------------|-----------------------------------------------------------------------|
@@ -24,14 +24,14 @@ Flow:
 3. The final *Product* is retrieved from the builder.
 
 
-### 3. Use Cases
+### Use Cases
 
 - When an object requires *many optional parameters* (avoiding telescoping constructors).
 - When constructing *complex objects with multiple parts* (e.g. ASTs, UI elements, reports).
 - When different **representations* of an object are needed (e.g. HTML vs. PDF reports).
 
 
-### 4. Relation to Other Patterns
+### Relation to Other Patterns
 
 | Pattern            | Relationship                                                                 |
 |--------------------|-----------------------------------------------------------------------------|
@@ -40,7 +40,7 @@ Flow:
 | *Prototype*        | Clones existing objects, while Builder constructs new ones step by step.   |
 
 
-#### 5. Simple Example
+#### Simple Example
 
 Pizza Builder:
 ```python
@@ -79,7 +79,7 @@ margherita = PizzaBuilder() \
 ```
 
 
-### 7. Builder Pattern in the PL/0 Interpreter
+### Builder Pattern in the PL/0 Interpreter
 
 Role:
 - The `ASTBuilder` class acts as the *Concrete Builder*.
