@@ -83,7 +83,7 @@ Quick breakdown:
 These principles complement the use of design patterns. 
 Patterns provide reusable solutions--DRY and SOLID help you structure and integrate those solutions cleanly.
 
-### Patterns
+### Selection of Patterns
 
 | Pattern | Category | Purpose | Example Use Case | Source |
 |----|----|----|----|----|
