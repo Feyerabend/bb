@@ -1,7 +1,7 @@
 
 # Graphics VM Scripting Tutorial
 
-This document provides a comprehensive guide to the scripting capabilities of the Graphics VM, a custom language interpreter for creating graphics. The VM processes scripts to generate images in the PPM format, supporting basic shapes, colors, and hierarchical grouping.
+This document provides a comprehensive guide to the scripting capabilities of the Graphics VM, a custom language interpreter for creating graphics. The VM processes scripts to generate images in the PPM format, supporting basic shapes, colours, and hierarchical grouping.
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -13,18 +13,18 @@ This document provides a comprehensive guide to the scripting capabilities of th
    - [Triangle](#triangle)
    - [Group](#group)
    - [Render](#render)
-4. [Color Specification](#color-specification)
+4. [Colour Specification](#colour-specification)
 5. [Example Scripts](#example-scripts)
 6. [Running Scripts](#running-scripts)
 7. [Limitations and Notes](#limitations-and-notes)
 
 ## Overview
 
-The Graphics VM interprets a simple scripting language designed to define graphical scenes. Scripts are text files containing commands that specify the canvas size, shapes (circles, rectangles, triangles), colors, and grouping structures. The VM parses these scripts into an Abstract Syntax Tree (AST), executes the commands to build a scene graph, and renders the result into a PPM image file.
+The Graphics VM interprets a simple scripting language designed to define graphical scenes. Scripts are text files containing commands that specify the canvas size, shapes (circles, rectangles, triangles), colours, and grouping structures. The VM parses these scripts into an Abstract Syntax Tree (AST), executes the commands to build a scene graph, and renders the result into a PPM image file.
 
 Key features:
 - *Shapes*: Circle, Rectangle, Triangle
-- *Colors*: Named colors or RGB values
+- *Colours*: Named colours or RGB values
 - *Grouping*: Hierarchical composition of shapes
 - *Output*: PPM image format
 - *Memory Management*: Tracked allocations with leak detection
@@ -58,7 +58,7 @@ canvas width height
 *Notes*:
 - Must appear at the start of the script if used.
 - If omitted, defaults to 400x400 pixels (defined by `DEFAULT_WIDTH` and `DEFAULT_HEIGHT`).
-- Currently, resizing after initialization is not supported; the VM uses initial dimensions.
+- Currently, resizing after initialisation is not supported; the VM uses initial dimensions.
 
 *Example*:
 ```
@@ -76,10 +76,10 @@ circle name centerX centerY radius color
 
 *Parameters*:
 - `name`: String, unique identifier for the circle.
-- `centerX`: Integer, x-coordinate of the circle's center.
-- `centerY`: Integer, y-coordinate of the circle's center.
+- `centerX`: Integer, x-coordinate of the circle's centre.
+- `centerY`: Integer, y-coordinate of the circle's centre.
 - `radius`: Integer, radius of the circle (positive).
-- `color`: Color specification (see [Color Specification](#color-specification)).
+- `color`: Colour specification (see [Colour Specification](#colour-specification)).
 
 *Example*:
 ```
@@ -92,11 +92,11 @@ Creates a rectangle shape.
 
 *Syntax*:
 ```
-rectangle name x y width height color
+rectangle name x y width height colour
 ```
 or
 ```
-rect name x y width height color
+rect name x y width height colour
 ```
 
 *Parameters*:
@@ -187,7 +187,7 @@ render
 
 Colors can be specified in two ways:
 
-1. *Named Colors*:
+1. *Named Colours*:
    - `red`: (255, 0, 0)
    - `green`: (0, 255, 0)
    - `blue`: (0, 0, 255)
@@ -236,7 +236,7 @@ render
 ```
 
 ### Complex Scene
-Combines multiple shapes and colors.
+Combines multiple shapes and colours.
 
 ```
 canvas 800 600
@@ -272,7 +272,7 @@ To run a script, compile the provided C code and execute the resulting program w
 
 The program:
 1. Reads the script file.
-2. Initializes the VM with the specified or default dimensions.
+2. Initialises the VM with the specified or default dimensions.
 3. Parses the script into an AST.
 4. Executes the AST to build and render the scene.
 5. Outputs the image as a PPM file.
@@ -280,13 +280,13 @@ The program:
 
 ## Limitations and Notes
 
-- *Canvas Resizing*: The VM does not support resizing the canvas after initialization. The `canvas` command's dimensions are noted but not applied if different from the initial size.
+- *Canvas Resizing*: The VM does not support resizing the canvas after initialisation. The `canvas` command's dimensions are noted but not applied if different from the initial size.
 - *Error Handling*: Errors (e.g., invalid parameters, memory allocation failures) cause the program to fail with an error message.
 - *Shape Overlap*: Later shapes overwrite earlier ones in the image buffer (last rendered wins).
 - *Coordinate System*: Origin (0,0) is the top-left corner, with x increasing to the right and y increasing downward.
-- *Performance*: The rendering algorithm is pixel-based and not optimized for large images or complex scenes.
+- *Performance*: The rendering algorithm is pixel-based and not optimised for large images or complex scenes.
 - *Memory Management*: The VM tracks allocations and reports leaks via `printMemoryStats()`. Ensure all components are freed correctly.
 - *File Size Limit*: Scripts are capped at 10KB to prevent excessive memory use.
 - *PPM Output*: The output is in ASCII PPM (P3) format, which is simple but results in large files for high-resolution images.
 
-This tutorial covers the core scripting capabilities of the Graphics VM. For advanced usage, consider extending the language with additional shapes, transformations, or rendering optimizations.
+This tutorial covers the core scripting capabilities of the Graphics VM. For advanced usage, consider extending the language with additional shapes, transformations, or rendering optimisations.
