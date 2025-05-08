@@ -2,8 +2,8 @@ import sys
 
 def main():
     if len(sys.argv) != 8:
-        print("Usage:   python3 mandelbrot.py <xmin> <xmax> <ymin> <ymax> <maxiter> <xres> <out.ppm>")
-        print("Example: python3 mandelbrot.py 0.27085 0.27100 0.004640 0.004810 1000 1024 pic.ppm")
+        print("Usage:   python3 mandelbrot_nostrat.py <xmin> <xmax> <ymin> <ymax> <maxiter> <xres> <out.ppm>")
+        print("Example: python3 mandelbrot_nostrat.py 0.27085 0.27100 0.004640 0.004810 1000 1024 pic.ppm")
         sys.exit(1)
 
     # command-line arguments

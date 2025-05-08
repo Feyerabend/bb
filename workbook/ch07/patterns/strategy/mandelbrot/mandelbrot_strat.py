@@ -62,7 +62,8 @@ class MandelbrotGenerator:
 
 def main():
     if len(sys.argv) != 8:
-        print("Usage: python3 mandelbrot.py <xmin> <xmax> <ymin> <ymax> <maxiter> <xres> <out.ppm>")
+        print("Usage:   python3 mandelbrot_strat.py <xmin> <xmax> <ymin> <ymax> <maxiter> <xres> <out.ppm>")
+        print("Example: python3 mandelbrot_strat.py -2.0 1.0 -1.5 1.5 1000 1024 pic.ppm")
         sys.exit(1)
 
     generator = MandelbrotGenerator(
