@@ -22,7 +22,14 @@ Adopting the Mediator pattern brings several significant advantages to a softwar
 
 #### Disadvantages
 
-Despite its many benefits, the Mediator pattern is not without potential drawbacks that developers should consider. The mediator itself can evolve into a monolithic class if not designed carefully, potentially becoming a god object that knows too much and does too much. The centralised nature of the pattern might also introduce a single point of failure, where issues in the mediator can affect the entire system. Additionally, as the number of components and interactions grows, the mediator can become excessively complex, potentially making it difficult to understand and maintain. These risks underscore the importance of thoughtful design when applying the pattern.
+Despite its many benefits, the Mediator pattern is not without potential drawbacks that
+developers should consider. The mediator itself can evolve into a *monolithic class* if
+not designed carefully, potentially becoming a god object that knows too much and does
+too much. The centralised nature of the pattern might also introduce a single point of
+failure, where issues in the mediator can affect the entire system. Additionally, as the
+number of components and interactions grows, the mediator can become excessively complex,
+potentially making it difficult to understand and maintain. These risks underscore the
+importance of thoughtful design when applying the pattern.
 
 #### Real-World Analogies
 
