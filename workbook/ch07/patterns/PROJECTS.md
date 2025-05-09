@@ -1,5 +1,87 @@
 
-## Projects: Discussion Topics and Arguments
+## Reflective Exploration Task: The Future of Programming in an AI-Enhanced World
+
+This task invites you--individually or collaboratively in a group--to engage in a deep
+and structured reflection about the future of programming and the evolving relationship
+between humans, programming languages, and artificial intelligence.
+
+Your exploration should carefully consider the following interconnected themes and questions:
+
+
+__1. Envisioning Future Programming Paradigms__
+
+Reflect on how programming practice might evolve over the next 5, 10, or 20 years. Consider
+at least two contrasting trajectories:
+
+- Augmented Programming: A future where AI and Large Language Models (LLMs) act as assistants,
+  amplifying the capabilities of human programmers but still working within the framework of
+  existing or recognizable programming languages, concepts, and tools.
+
+- Direct Specification: A more radical vision where natural language or other high-level human
+  expressions replace traditional programming languages, allowing programmers to describe desired
+  behavior directly, with machines synthesising the implementation in machine code or other
+  low-level forms--largely bypassing conventional coding.
+
+For each trajectory, reflect on what might be gained and what could be lost.
+
+
+__2. Weighing Benefits and Trade-offs__
+
+Critically examine the arguments in favor of each approach:
+
+- For augmented programming: What advantages come from retaining human oversight, explicit
+  design control, and conceptual frameworks (like design patterns)? How does keeping familiar
+  abstractions aid collaboration, maintainability, and long-term reliability?
+
+- For direct specification: What efficiencies or creative opportunities emerge when much of
+  the "manual coding" is abstracted away? Could this democratize software development, enabling
+  broader participation?
+
+Also consider potential risks and limitations of each path:
+- How might over-reliance on AI-generated code reduce deep understanding or make debugging harder?
+- Could direct specification lead to loss of precision, performance control, or transparency in
+  critical systems?
+
+
+
+__3. The Role of Conceptual Tools (such as Design Patterns)__
+
+Assuming that human understanding and communication remain important, even in highly automated
+environments--what role might established conceptual tools like design patterns, architectural
+models, and modular abstractions play?
+
+Reflect on how such tools can:
+- Clarify intentions in human–machine collaboration
+- Make AI-generated code more explainable, verifiable, and maintainable
+- Support reasoning, documentation, and onboarding in complex systems
+
+Would these tools evolve? Become more central? Or diminish in relevance as automation increases?
+
+
+
+__4. Your Vision of the Future__
+
+Conclude your reflection by articulating your personal or collective vision of the future of programming.
+Consider:
+- Which trajectory (or blend of trajectories) do you believe is most plausible or desirable?
+- How do you anticipate the balance between human creativity and machine automation will shift?
+- What skills, mindsets, and tools should future programmers cultivate to thrive in that environment?
+
+
+Deliverable
+
+Produce a coherent written narrative (or a well-structured group discussion summary) that:
+- Clearly articulates your reasoning across all four sections
+- Presents both analytical arguments and personal reflections
+- Situates your thoughts within plausible timeframes (5, 10, 20 years)
+
+Aim for clarity, depth, and balance--grounding your speculations in both current trends and long-term
+possibilities.
+
+
+### Some Background
+
+Below is the introductory text that consider some aspects on the task at hand.
 
 As we consider the future of programming as far as we can see and speculate, it is clear that multiple trajectories
 are emerging--each with distinct implications for how humans express computational intent. Broadly, two contrasting
@@ -52,7 +134,7 @@ intent computationally", with varying degrees of formal mediation. Both views wi
 accommodates both rigorous proofs and heuristic reasoning--and the tools we build should acknowledge this pluralism.
 
 
-### The Historical Bent
+#### The Setup
 
 This tension between accessibility and precision is not new. Historically, various waves of "democratising" programming
 have surfaced, each attempting to widen the pool of people able to express computational ideas--often by abstracting away
@@ -138,3 +220,29 @@ they are syntactically expressed.
 Thus, design patterns are not bypassed by LLMs--they become the cognitive infrastructure that lets humans and machines collaborate
 on complex design tasks with shared understanding, traceability, and confidence.
 
+
+
+### Assessment Rubric: The Future of Programming in an AI-Enhanced World
+
+This rubric provides criteria for evaluating individual or group reflections on the future of programming,
+human–AI collaboration, and conceptual tools like design patterns.  
+
+Each criterion is scored on a 4-level scale.
+
+| Criterion | Exemplary (4) | Proficient (3) | Developing (2) | Beginning (1) |
+|----|----|----|----|----|
+| *1. Clarity of Future Trajectories* | Clearly and insightfully describes contrasting future paradigms (e.g., augmented programming vs. direct specification). Demonstrates nuanced understanding of both. | Describes both paradigms clearly, with some detail and distinction. | Touches on both paradigms but with limited depth or clarity. | Mentions one or both paradigms vaguely or incompletely. |
+| *2. Depth of Argumentation (Benefits and Trade-offs)* | Provides well-reasoned, balanced analysis of advantages and disadvantages of each approach. Supports claims with concrete examples or logical reasoning. | Analyzes benefits and trade-offs with reasonable clarity and balance. Some examples or reasoning included. | Addresses benefits and trade-offs but superficially or with limited balance. Few or unclear examples. | Arguments are vague, one-sided, or missing. Little evidence of critical thinking. |
+| *3. Reflection on Conceptual Tools (e.g., Design Patterns)* | Thoughtfully explores how conceptual tools can clarify, support, or evolve in future programming practices. Connects clearly to both human and AI roles. | Discusses role of conceptual tools in a plausible way, with some connection to human–AI interaction. | Mentions conceptual tools but with unclear relevance or weak connection to future scenarios. | Conceptual tools are ignored or minimally acknowledged without insight. |
+| *4. Coherence and Structure of Narrative* | The reflection is well-organized, logically sequenced, and easy to follow. Transitions clearly guide the reader through the reasoning. | Organization is generally clear with minor lapses. Most ideas connect logically. | Organization is uneven; ideas jump or are loosely connected. | Reflection lacks clear structure; ideas are scattered or disjointed. |
+| *5. Personal or Collective Vision* | Articulates a clear, well-supported personal or group vision for the future. Reflects originality, realism, and awareness of trends and implications. | Presents a plausible future vision, with some supporting reasoning. | Future vision is vague, oversimplified, or weakly justified. | Vision is absent, unclear, or unsupported. |
+| *6. Communication Quality (Language and Precision)* | Writing (or presentation) is clear, precise, and professional. Terminology is accurate; style engages the reader. | Generally clear and precise, with few errors. Terminology mostly accurate. | Some clarity issues, imprecise language, or misused terms. | Language is unclear, vague, or error-prone; impedes understanding. |
+
+### Scoring Guidelines
+
+- *Total possible score*: 24 points  
+- Suggested interpretations:
+  - *22–24 (Outstanding)*: Deep, clear, and insightful exploration with strong articulation
+  - *18–21 (Strong)*: Solid, well-reasoned reflection with minor weaknesses
+  - *14–17 (Adequate)*: Basic understanding with noticeable gaps
+  - *<14 (Needs Improvement)*: Limited engagement or underdeveloped response
