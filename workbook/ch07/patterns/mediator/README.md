@@ -26,12 +26,18 @@ Despite its many benefits, the Mediator pattern is not without potential drawbac
 
 #### Real-World Analogies
 
-To better understand the Mediator pattern, consider some analogies from the physical world. Air Traffic Control serves as an excellent example, where pilots communicate with the control tower (the mediator) rather than directly with each other, creating a safer and more orderly system. Similarly, an Event Organizer coordinates activities and communications between participants without requiring them to interact directly with one another. These real-world examples highlight how centralized coordination can simplify complex interactions between multiple parties.
+To better understand the Mediator pattern, consider some analogies from the physical world.
+Air Traffic Control serves as an excellent example, where pilots communicate with the control
+tower (the mediator) rather than directly with each other, creating a safer and more orderly
+system. Similarly, an Event Organizer coordinates activities and communications between participants
+without requiring them to interact directly with one another. These real-world examples highlight
+how centralised coordination can simplify complex interactions between multiple parties.
 
 
 ### Text Rendering System
 
-The text rendering system implements the Mediator pattern to coordinate the activities of rendering text using different line drawing algorithms.
+The text rendering system implements the Mediator pattern to coordinate the activities
+of rendering text using different line drawing algorithms.
 
 #### Components
 
@@ -72,7 +78,8 @@ The text rendering system implements the Mediator pattern to coordinate the acti
    - LineDrawer to draw the lines using both algorithms
 4. Mediator handles saving the resulting images
 
-#### Benefits in This Implementation
+
+#### Benefits
 
 1. *Separation of Concerns*
    - Character data is separated from rendering logic
@@ -92,8 +99,6 @@ The text rendering system implements the Mediator pattern to coordinate the acti
 4. *Clear Visualization Comparison*
    - The separation of rendering algorithms into distinct images allows for direct comparison
 
-![Font](font.jpg "How the font is layed out by vectors")
-
 
 #### Potential Extensions
 
@@ -112,11 +117,20 @@ The text rendering system implements the Mediator pattern to coordinate the acti
 5. *Dynamic Font Scaling*
    - Implement adaptive font sizing through the mediator
 
+6. *Extend with lower case*
+   - Implement lower case but hand plotting each character in vector format.
 
-
+![Font](font.jpg "How the font is layed out by vectors")
 
 
 ### Conclusion
 
-The Mediator pattern provides a robust structural foundation for the text rendering system, enabling a clear separation of concerns while facilitating complex interactions between components. The addition of the Facade pattern further enhances the system by simplifying client usage. Together, these patterns demonstrate how design patterns can be effectively combined to create systems that are not only functional but also robust and maintainable over time. Through careful application of these principles, the text rendering system achieves both flexibility and clarity, serving as an excellent example of the benefits that thoughtful design can bring to software development.
+The Mediator pattern provides a robust structural foundation for the text rendering system,
+enabling a clear separation of concerns while facilitating complex interactions between components.
+The addition of the Facade pattern further enhances the system by simplifying client usage.
+Together, these patterns demonstrate how design patterns can be effectively combined to create
+systems that are not only functional but also robust and maintainable over time. Through careful
+application of these principles, the text rendering system achieves both flexibility and clarity,
+serving as an excellent example of the benefits that thoughtful design can bring to software
+development.
 
