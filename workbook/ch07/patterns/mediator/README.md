@@ -118,7 +118,7 @@ of rendering text using different line drawing algorithms.
    - Implement adaptive font sizing through the mediator
 
 6. *Extend with lower case*
-   - Implement lower case but hand plotting each character in vector format.
+   - Implement lower case by hand plotting each character in vector format.
 
 ![Font](font.jpg "How the font is layered out by vectors")
 
