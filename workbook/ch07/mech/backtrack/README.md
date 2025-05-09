@@ -1,40 +1,6 @@
 
 ## Backtracking
 
-The first time I encountered the concept of backtracking, it was not in the context most programmers today
-would recognise--such as recursive algorithms solving puzzles or search problems, see samples in the
-folder--but rather in relation to structured programming methods designed to improve software development
-in languages like BASIC or Pascal. Specifically, it arose in the context of *Jackson Structured Programming*
-(JSP), a method that was influential during the early 1980s. Especially in Sweden.
-
-Michael A. Jackson introduced Jackson Structured Programming (JSP) in his 1975 book *Principles of Program Design*.
-JSP aligns a program's structure with the data it processes, particularly sequential and hierarchical file formats
-prevalent in business applications. The method derives program control flows—sequences, iterations, and
-selections--from data structures, represented as hierarchical diagrams, ensuring clarity and maintainability.
-
-Backtracking in JSP addresses the complexities of processing nested data structures, such as customer records
-containing variable orders, each with multiple items. Unlike algorithmic backtracking (e.g., in search or
-constraint solving), JSP’s backtracking is a deterministic traversal mechanism. It involves descending into
-a data hierarchy to process subrecords and ascending to higher levels, as when returning from items to orders,
-then to customers. This navigation, often implemented via nested loops or recursion in languages like COBOL or
-Pascal, is guided by JSP's structure diagrams.
-
-JSP employs backtracking to resolve "recognition difficulties" and structure clashes, where input and output
-data structures misalign. For instance, a program may use POSIT to assume a data structure and proceed, and
-QUIT to backtrack to a prior state if the assumption fails, enabling a "backtracking parser" for ambiguous data
-formats. This systematic approach ensures accurate processing of complex files, common before relational databases
-when sequential file processing dominated.
-
-Jackson’s diagrams map these traversals, producing clean, iterative-recursive code patterns. While JSP's relevance
-has waned with modern databases, its principles, including backtracking for hierarchical navigation and parsing,
-remain applicable in data processing and are supported by tools like Jackson Workbench. Thus, backtracking in JSP
-is a structured, data-driven reversal mechanism, distinct from speculative algorithms, tailored to the era’s file
-processing needs.
-
-Reference:
-* Jackson, M. A. (1975). *Principles of Program Design*. Academic Press.
-* Ingevaldsson, L. (1977). *JSP - en praktisk metod för programkonstruktion*. Lund: Studentlitt.
-
 
 ### General Backtracking Mechanism
 
@@ -259,8 +225,39 @@ The implementation mirrors real Prolog engines by:
 The trail mechanism is particularly clever—it only records *changes* to variables, making undo operations O(1) per binding.
 
 
+### Another Backtrack
 
+The first time I encountered the concept of backtracking, it was not in the context most programmers today
+would recognise--such as recursive algorithms solving puzzles or search problems, see samples in the
+folder--but rather in relation to structured programming methods designed to improve software development
+in languages like BASIC or Pascal. Specifically, it arose in the context of *Jackson Structured Programming*
+(JSP), a method that was influential during the early 1980s. Especially in Sweden.
 
+Michael A. Jackson introduced Jackson Structured Programming (JSP) in his 1975 book *Principles of Program Design*.
+JSP aligns a program's structure with the data it processes, particularly sequential and hierarchical file formats
+prevalent in business applications. The method derives program control flows—sequences, iterations, and
+selections--from data structures, represented as hierarchical diagrams, ensuring clarity and maintainability.
 
+Backtracking in JSP addresses the complexities of processing nested data structures, such as customer records
+containing variable orders, each with multiple items. Unlike algorithmic backtracking (e.g., in search or
+constraint solving), JSP’s backtracking is a deterministic traversal mechanism. It involves descending into
+a data hierarchy to process subrecords and ascending to higher levels, as when returning from items to orders,
+then to customers. This navigation, often implemented via nested loops or recursion in languages like COBOL or
+Pascal, is guided by JSP's structure diagrams.
 
+JSP employs backtracking to resolve "recognition difficulties" and structure clashes, where input and output
+data structures misalign. For instance, a program may use POSIT to assume a data structure and proceed, and
+QUIT to backtrack to a prior state if the assumption fails, enabling a "backtracking parser" for ambiguous data
+formats. This systematic approach ensures accurate processing of complex files, common before relational databases
+when sequential file processing dominated.
+
+Jackson’s diagrams map these traversals, producing clean, iterative-recursive code patterns. While JSP's relevance
+has waned with modern databases, its principles, including backtracking for hierarchical navigation and parsing,
+remain applicable in data processing and are supported by tools like Jackson Workbench. Thus, backtracking in JSP
+is a structured, data-driven reversal mechanism, distinct from speculative algorithms, tailored to the era’s file
+processing needs.
+
+Reference:
+* Jackson, M. A. (1975). *Principles of Program Design*. Academic Press.
+* Ingevaldsson, L. (1977). *JSP - en praktisk metod för programkonstruktion*. Lund: Studentlitt.
 
