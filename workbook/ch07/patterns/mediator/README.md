@@ -1,12 +1,12 @@
 
 ## The Mediator Pattern
 
-The Mediator pattern represents a sophisticated approach to software design within the family of behavioral design patterns. At its core, this pattern addresses a common challenge in object-oriented systems: how to manage communication between multiple objects without creating tightly coupled dependencies. The pattern accomplishes this by introducing a central mediator object through which all components communicate, rather than allowing direct interactions between them. This fundamental shift in communication structure promotes loose coupling throughout the system, as components no longer need to reference each other explicitly. As a result, the interaction logic can be modified independently without disrupting the component implementations.
+The Mediator pattern represents a sophisticated approach to software design within the family of behavioural design patterns. At its core, this pattern addresses a common challenge in object-oriented systems: how to manage communication between multiple objects without creating tightly coupled dependencies. The pattern accomplishes this by introducing a central mediator object through which all components communicate, rather than allowing direct interactions between them. This fundamental shift in communication structure promotes loose coupling throughout the system, as components no longer need to reference each other explicitly. As a result, the interaction logic can be modified independently without disrupting the component implementations.
 
 
 #### Core Principles
 
-The Mediator pattern is built upon several foundational principles that guide its implementation and use. The first principle is reduced coupling, where components communicate exclusively through the mediator, eliminating the need for direct references to one another. This leads naturally to the second principle of centralized communication, as all interactions between components are channeled through and managed by a dedicated mediator class. The third principle focuses on enhanced maintainability, as changes to interaction logic remain confined to the mediator rather than being distributed across multiple components. Finally, the pattern emphasizes simplified component logic, allowing individual components to focus on their specific responsibilities without being burdened by complex inter-component communication concerns.
+The Mediator pattern is built upon several foundational principles that guide its implementation and use. The first principle is reduced coupling, where components communicate exclusively through the mediator, eliminating the need for direct references to one another. This leads naturally to the second principle of centralised communication, as all interactions between components are channeled through and managed by a dedicated mediator class. The third principle focuses on enhanced maintainability, as changes to interaction logic remain confined to the mediator rather than being distributed across multiple components. Finally, the pattern emphasises simplified component logic, allowing individual components to focus on their specific responsibilities without being burdened by complex inter-component communication concerns.
 
 #### Structure
 
@@ -14,15 +14,15 @@ The implementation of the Mediator pattern typically involves several key elemen
 
 #### When to Use the Mediator Pattern
 
-The Mediator pattern shines in several specific contexts within software development. It is particularly valuable when a set of objects communicate in complex but well-defined ways, providing structure to these interactions. The pattern also proves useful when reusing components becomes difficult due to their numerous and intricate dependencies, as it can help disentangle these relationships. Developers might also turn to the Mediator pattern when they want to customize interaction behavior without resorting to subclassing, providing a more flexible approach to behavior modification. Finally, the pattern offers a compelling solution when dependencies between objects grow so complex that they become difficult to understand and maintain.
+The Mediator pattern shines in several specific contexts within software development. It is particularly valuable when a set of objects communicate in complex but well-defined ways, providing structure to these interactions. The pattern also proves useful when reusing components becomes difficult due to their numerous and intricate dependencies, as it can help disentangle these relationships. Developers might also turn to the Mediator pattern when they want to customise interaction behaviour without resorting to subclassing, providing a more flexible approach to behaviour modification. Finally, the pattern offers a compelling solution when dependencies between objects grow so complex that they become difficult to understand and maintain.
 
 #### Advantages
 
-Adopting the Mediator pattern brings several significant advantages to a software system. First and foremost, it dramatically reduces coupling between components, as they no longer need direct knowledge of one another. The pattern also centralizes control logic in a single location, making it easier to understand and modify the system's behavior. By simplifying component interactions, the Mediator pattern allows developers to reason about the system more effectively and make changes with greater confidence. All these factors contribute to code that is more maintainable and reusable, as components can be extracted and used in different contexts without bringing along unwanted dependencies.
+Adopting the Mediator pattern brings several significant advantages to a software system. First and foremost, it dramatically reduces coupling between components, as they no longer need direct knowledge of one another. The pattern also centralises control logic in a single location, making it easier to understand and modify the system's behaviour. By simplifying component interactions, the Mediator pattern allows developers to reason about the system more effectively and make changes with greater confidence. All these factors contribute to code that is more maintainable and reusable, as components can be extracted and used in different contexts without bringing along unwanted dependencies.
 
 #### Disadvantages
 
-Despite its many benefits, the Mediator pattern is not without potential drawbacks that developers should consider. The mediator itself can evolve into a monolithic class if not designed carefully, potentially becoming a god object that knows too much and does too much. The centralized nature of the pattern might also introduce a single point of failure, where issues in the mediator can affect the entire system. Additionally, as the number of components and interactions grows, the mediator can become excessively complex, potentially making it difficult to understand and maintain. These risks underscore the importance of thoughtful design when applying the pattern.
+Despite its many benefits, the Mediator pattern is not without potential drawbacks that developers should consider. The mediator itself can evolve into a monolithic class if not designed carefully, potentially becoming a god object that knows too much and does too much. The centralised nature of the pattern might also introduce a single point of failure, where issues in the mediator can affect the entire system. Additionally, as the number of components and interactions grows, the mediator can become excessively complex, potentially making it difficult to understand and maintain. These risks underscore the importance of thoughtful design when applying the pattern.
 
 #### Real-World Analogies
 
@@ -84,7 +84,7 @@ of rendering text using different line drawing algorithms.
 1. *Separation of Concerns*
    - Character data is separated from rendering logic
    - Line drawing algorithms are encapsulated in their own class
-   - Image management is centralized in the mediator
+   - Image management is centralised in the mediator
 
 2. *Flexibility for Extensions*
    - New rendering algorithms can be added by extending the LineDrawer
@@ -96,7 +96,7 @@ of rendering text using different line drawing algorithms.
    - Components don't need to know about each other
    - The rendering process is coordinated in one place
 
-4. *Clear Visualization Comparison*
+4. *Clear Visualisation Comparison*
    - The separation of rendering algorithms into distinct images allows for direct comparison
 
 
@@ -120,7 +120,7 @@ of rendering text using different line drawing algorithms.
 6. *Extend with lower case*
    - Implement lower case but hand plotting each character in vector format.
 
-![Font](font.jpg "How the font is layed out by vectors")
+![Font](font.jpg "How the font is layered out by vectors")
 
 
 ### Conclusion
