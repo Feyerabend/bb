@@ -137,7 +137,7 @@ Patterns provide reusable solutions--DRY and SOLID help you structure and integr
 | [Singleton](./singleton/)[^single] | Creational | Ensure a class has only one instance | Config manager, global registries | GoF (controversial) |
 | [Builder](./builder/) | Creational | Separate construction of a complex object from its representation | Object configurators, UI builders | GoF |
 | [Prototype](./prototype/) | Creational | Clone existing objects instead of creating new ones | Object pools, data templates | GoF |
-| Mediator           | Behavioural      | Centralise complex communication between objects                 | Chat servers, air traffic control systems        | GoF            |
+| [Mediator](./mediator/) | Behavioural | Centralise complex communication between objects | Chat servers, air traffic control systems | GoF |
 | [Visitor](./visitor/) | Behavioural | Separate an algorithm from the objects it operates on | Compilers, AST traversal, document processing | GoF |
 | [Dependency Injection](./combined/os/DEPENDENCY.md) | Structural | Provide dependencies from the outside | Testable systems, service wiring | Post-GoF |
 | [Null Object](./null/) | Behavioural | Use an object with default behaviour instead of `null` | Safe iteration, fault-tolerant systems | Post-GoF |
