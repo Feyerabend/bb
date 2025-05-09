@@ -62,7 +62,7 @@ Singleton and Abstract Factory, came under scrutiny for encouraging rigid and in
 or for masking poor architectural decisions under a veneer of pattern compliance.
 
 Despite this, the underlying principles that animated the patterns--modularity, separation of
-concerns, decoupling, and composability — retained their relevance. Even as explicit pattern
+concerns, decoupling, and composability--retained their relevance. Even as explicit pattern
 nomenclature faded from everyday vocabulary, its intellectual legacy persisted. Modern practices
 like dependency injection, event-driven architectures, middleware pipelines, and component-based
 systems can often be traced back, conceptually, to these earlier ideas, though reframed in
@@ -154,7 +154,7 @@ Patterns provide reusable solutions--DRY and SOLID help you structure and integr
 If we accept that one plausible future of programming lies not in replacing the programmer
 (one possible outcome with LLMs and AI) but in strengthening and amplifying the human role,
 then design patterns--and similar intellectual tools--have an important and renewed relevance.
-As long as we stay in the context of "programming lanuages".
+As long as we stay in the context of "programming languages".
 
 At their core, design patterns are communication devices. They capture common structures of
 reasoning about software--recurring solutions to recurring problems--and give them shared names
@@ -167,14 +167,14 @@ for conceptual clarity does not diminish--it intensifies. As systems grow more a
 layers of automation intervene between human intent and machine execution, having stable
 architectural idioms (like Observer, Strategy, or Command) gives the human programmer anchoring
 points. Patterns act as mental models, allowing programmers to:
-- predict behavior,
+- predict behaviour,
 - reason about interactions,
 - communicate ideas to other humans (and perhaps to AI assistants as well),
 - and verify correctness in evolving systems.
 
 Moreover, patterns are agnostic to technology shifts. Whether we code in Java, Rust, or prompt
-an LLM, the underlying structural ideas of patterns can guide how we organize logic, data, and
-behavior. Even in paradigms that look less explicitly OO--like functional or reactive systems--analogous
+an LLM, the underlying structural ideas of patterns can guide how we organise logic, data, and
+behaviour. Even in paradigms that look less explicitly OO--like functional or reactive systems--analogous
 patterns (compositional, higher-order abstractions) surface and play similar roles.
 
 Seen in this light, design patterns are part of a larger class of "conceptual instruments" that
