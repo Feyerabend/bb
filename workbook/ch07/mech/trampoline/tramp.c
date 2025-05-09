@@ -77,7 +77,6 @@ void execute(Interpreter* interpreter) {
     while (1) {
         Instruction* inst = &interpreter->instructions[interpreter->ip];
 
-        // Check and print current instruction for debugging
         printf("Executing instruction %d: ", interpreter->ip);
         switch (inst->op) {
             case ADD:

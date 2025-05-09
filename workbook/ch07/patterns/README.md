@@ -126,7 +126,7 @@ Patterns provide reusable solutions--DRY and SOLID help you structure and integr
 |----|----|----|----|----|
 | [Strategy](./strategy/) | Behavioural | Encapsulate interchangeable algorithms or behaviours | Sorting algorithms, payment methods | GoF |
 | [Command](./command/) | Behavioural | Encapsulate a request as an object | Undo/Redo, action queues, macro recording | GoF |
-| Observer           | Behavioural      | Notify dependent objects of state changes                        | GUIs, event systems, data binding                | GoF            |
+| [Observer](./observer/) | Behavioural | Notify dependent objects of state changes | GUIs, event systems, data binding | GoF |
 | [State](./state/) | Behavioural | Change object behaviour based on internal state | Game AI, UI modes | GoF |
 | [Decorator](./decorator/) | Structural | Add behaviour to objects dynamically | I/O streams, middleware pipelines | GoF |
 | [Adapter](./adapter/) | Structural | Convert one interface to another | Legacy code integration, wrapper libraries | GoF |
