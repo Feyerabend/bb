@@ -94,12 +94,12 @@ clarity, and abstraction with traceability. Rather than eliminating formal langu
 informed by lessons from prior attempts.
 
 Consider a near-future environment where programmers routinely collaborate with LLM-based assistants--tools that can generate code,
-suggest designs, and even synthesize entire modules from brief descriptions. The question is not whether such tools can produce
+suggest designs, and even synthesise entire modules from brief descriptions. The question is not whether such tools can produce
 code--they already can--but how humans will maintain control, understanding, and confidence in what is built.
 
 In such settings, design patterns and other conceptual instruments can serve three concrete roles:
 
-1. Pattern-aware code generation
+1. *Pattern-aware code generation*:
    A programmer asks the LLM to "implement an event notification system between UI components and backend services."
    Rather than relying on vague heuristics, the LLM recognizes that the Observer pattern is a known, canonical solution. 
    It can:
@@ -110,7 +110,7 @@ In such settings, design patterns and other conceptual instruments can serve thr
 This shared conceptual frame makes it far easier for the programmer to validate, modify, and extend the generated code. They do
 not inspect opaque code blobs--they reason about well-known structural relationships.
 
-2. Pattern-based refactoring suggestions
+2. *Pattern-based refactoring suggestions*:
    In existing codebases, the LLM can analyze convoluted or ad hoc logic and suggest:
    “Your current implementation replicates logic consistent with the Strategy pattern but lacks encapsulation.
    Shall I refactor this to extract strategies into separate classes, improving modularity and testability?”
@@ -118,7 +118,7 @@ not inspect opaque code blobs--they reason about well-known structural relations
 Here, patterns provide explanatory power. Rather than offering mechanical transformations, the tool can rationalize its
 suggestions--bridging machine recommendation and human judgment.
 
-3. Pattern as validation and documentation
+3. *Pattern as validation and documentation*:
    When a module is complete, the system can generate a design summary:
    "This subsystem implements a combination of Decorator and Composite patterns. Decorators extend base rendering behavior;
    composites structure scene graphs."
