@@ -1,8 +1,8 @@
 
 
 ```mermaid
-    %% Visitor Pattern
-
+classDiagram
+    %% ====== Visitor Pattern ======
     class Visitor {
         <<interface>>
         +visitElementA(ElementA el)
