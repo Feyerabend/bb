@@ -33,24 +33,90 @@ In the Line Editor, the Command Pattern is used as follows:
 | Client             | LineEditor, which creates and submits commands based on user input            |
 
 
-```
-Client (LineEditor)
-        |
-        v
-ConcreteCommand (InsertLineCommand, DeleteLineCommand, etc.)
-        |
-        v
-Receiver (EditorBuffer)
-        |
-        v
-Performs operations (insert, delete, modify text)
+```mermaid
+classDiagram
+    class Command {
+        <<interface>>
+        +execute()*
+        +undo()*
+    }
 
-Meanwhile:
-ConcreteCommand <--> CommandHistory (Invoker)
-       |                     |
-       |                     v
-   execute()            Stores command
-   undo()             Supports undo/redo
+    class EditorBuffer {
+        -lines: List[str]
+        -filename: Optional[str]
+        +get_line(line_num: int) str
+        +set_line(line_num: int, text: str)
+        +insert_line(line_num: int, text: str)
+        +delete_line(line_num: int) str
+        +load_file(filename: str) bool
+        +save_file(filename: Optional[str]) bool
+    }
+
+    class InsertLineCommand {
+        -buffer: EditorBuffer
+        -line_num: int
+        -text: str
+        +execute()
+        +undo()
+    }
+
+    class DeleteLineCommand {
+        -buffer: EditorBuffer
+        -line_num: int
+        -deleted_text: Optional[str]
+        +execute()
+        +undo()
+    }
+
+    class ModifyLineCommand {
+        -buffer: EditorBuffer
+        -line_num: int
+        -new_text: str
+        -old_text: Optional[str]
+        +execute()
+        +undo()
+    }
+
+    class SearchReplaceCommand {
+        -buffer: EditorBuffer
+        -search_str: str
+        -replace_str: str
+        -modifications: List[Tuple[int, str]]
+        +execute()
+        +undo()
+    }
+
+    class CommandHistory {
+        -history: List[Command]
+        -position: int
+        +execute_command(command: Command)
+        +undo() bool
+        +redo() bool
+    }
+
+    class LineEditor {
+        -buffer: EditorBuffer
+        -command_history: CommandHistory
+        -running: bool
+        -clipboard: str
+        -current_line: int
+        +run()
+        +process_command(command_str: str)
+    }
+
+    Command <|.. InsertLineCommand
+    Command <|.. DeleteLineCommand
+    Command <|.. ModifyLineCommand
+    Command <|.. SearchReplaceCommand
+
+    EditorBuffer <-- InsertLineCommand
+    EditorBuffer <-- DeleteLineCommand
+    EditorBuffer <-- ModifyLineCommand
+    EditorBuffer <-- SearchReplaceCommand
+
+    CommandHistory o-- Command : Aggregates
+    LineEditor *-- EditorBuffer : Composition
+    LineEditor *-- CommandHistory : Composition
 ```
 
 
