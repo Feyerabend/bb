@@ -152,9 +152,6 @@ class SVGParser:
         })
     
     def _parse_path_data(self, path: Path, d: str) -> None:
-        """
-        Parse SVG path data string and update the Path object.
-        """
         # Replace commas with spaces, normalize whitespace
         d = re.sub(r',', ' ', d.strip())
         # Tokenize: match commands (letters) or numbers (including .5, scientific notation)
@@ -325,9 +322,6 @@ class SVGParser:
                 continue
     
     def _arc_to_bezier(self, x1: float, y1: float, rx: float, ry: float, phi: float, large_arc: int, sweep: int, x2: float, y2: float) -> List[float]:
-        """
-        Convert an SVG elliptical arc to a set of cubic Bezier curve control points.
-        """
         if x1 == x2 and y1 == y2 or rx == 0 or ry == 0:
             return []
         rx, ry = abs(rx), abs(ry)
@@ -374,7 +368,6 @@ class SVGParser:
         return result
     
     def _process_rect(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
-        """Process an SVG rect element, applying styles and transformations."""
         x = float(element.get('x', '0'))
         y = float(element.get('y', '0'))
         width = float(element.get('width', '0'))
@@ -414,7 +407,6 @@ class SVGParser:
         })
     
     def _process_circle(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
-        """Process an SVG circle element, applying styles and transformations."""
         cx = float(element.get('cx', '0'))
         cy = float(element.get('cy', '0'))
         r = float(element.get('r', '0'))
@@ -435,7 +427,6 @@ class SVGParser:
         })
     
     def _process_ellipse(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
-        """Process an SVG ellipse element, applying styles and transformations."""
         cx = float(element.get('cx', '0'))
         cy = float(element.get('cy', '0'))
         rx = float(element.get('rx', '0'))
@@ -457,7 +448,6 @@ class SVGParser:
         })
     
     def _process_line(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
-        """Process an SVG line element, applying styles and transformations."""
         x1 = float(element.get('x1', '0'))
         y1 = float(element.get('y1', '0'))
         x2 = float(element.get('x2', '0'))
@@ -474,7 +464,6 @@ class SVGParser:
         })
     
     def _process_polyline(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
-        """Process an SVG polyline element, applying styles and transformations."""
         points_str = element.get('points', '')
         if not points_str:
             return
@@ -496,7 +485,6 @@ class SVGParser:
         })
     
     def _process_polygon(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
-        """Process an SVG polygon element, applying styles and transformations."""
         points_str = element.get('points', '')
         if not points_str:
             return
@@ -519,7 +507,6 @@ class SVGParser:
         })
     
     def _get_style_properties(self, element: ET.Element, parent_style: Dict[str, str]) -> Tuple[Optional[StrokeProperties], Optional[FillProperties]]:
-        """Extract style properties, merging with parent styles, including line caps and joins."""
         style_dict = parent_style.copy()
         style_str = element.get('style', '')
         if style_str:
@@ -573,9 +560,6 @@ class SVGParser:
         return stroke_props, fill_props
     
     def _parse_color(self, color_str: str) -> Tuple[int, int, int, int]:
-        """
-        Parse SVG color string to RGBA tuple.
-        """
         color = (0, 0, 0, 255)
         if not color_str:
             return color
@@ -635,7 +619,6 @@ class SVGParser:
         return color
     
     def _hsl_to_rgb(self, h: float, s: float, l: float) -> Tuple[int, int, int]:
-        """Convert HSL color to RGB."""
         if s == 0:
             r = g = b = int(l * 255)
         else:
@@ -654,9 +637,6 @@ class SVGParser:
         return (r, g, b)
     
     def render_to_image(self, output_path: str, width: int = None, height: int = None) -> None:
-        """
-        Render the parsed SVG to a PNG image, preserving aspect ratio.
-        """
         if width is None:
             width = int(self.width)
         if height is None:
@@ -777,15 +757,8 @@ class SVGParser:
 
 
 class SVGRenderer:
-    """
-    High-level class for rendering SVG files to images.
-    """
-    
     @staticmethod
     def render(svg_path: str, output_path: str, width: int = None, height: int = None) -> None:
-        """
-        Render an SVG file to a PNG image.
-        """
         parser = SVGParser()
         parser.parse_file(svg_path)
         parser.render_to_image(output_path, width, height)
