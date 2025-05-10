@@ -571,7 +571,6 @@ class PathFactory:
 
 
 def save_to_png(canvas: np.ndarray, filename: str, width: int = None, height: int = None) -> None:
-    """Save the canvas to a PNG file"""
     from PIL import Image
     img = Image.fromarray(canvas)
     if width and height:

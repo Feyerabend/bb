@@ -89,7 +89,6 @@ class SVGParser:
         ]
     
     def _process_element(self, element: ET.Element, parent_style: Dict[str, str], parent_transform: Optional[List[float]]) -> None:
-        """Process an SVG element and its children, passing down styles and transformations."""
         tag_name = element.tag
         if '}' in tag_name:
             tag_name = tag_name.split('}', 1)[1]
@@ -133,7 +132,6 @@ class SVGParser:
                 self._process_element(child, current_style, current_transform)
     
     def _process_path(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
-        """Process an SVG path element, involving styles and transformations."""
         d = element.get('d', '')
         if not d:
             return
