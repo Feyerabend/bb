@@ -527,7 +527,8 @@ class AntiAliasedRasterizer(SimpleRasterizer):
         return self.canvas
 
 
-# skip?
+# skip? or move defaults
+# of rect, circle, etc. to the factory?
 class PathFactory:
     @staticmethod
     def create_star(cx: float, cy: float, outer_radius: float, 
