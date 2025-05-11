@@ -9,7 +9,7 @@ Ok, so I have some issues with TDD .. How do I resolve this?
 Code serves dual purposes:  
 - *Code as Thought*: A medium for exploration, experimentation, and understanding (e.g., prototyping
   an algorithm to test feasibility).  
-- *Code as Product*: A polished artifact optimized for correctness, maintainability, and scalability.  
+- *Code as Product*: A polished artefact optimised for correctness, maintainability, and scalability.  
 
 Argument: *TDD conflates these purposes* by requiring tests upfront, which assumes the problem is
 already well-understood. This risks locking in assumptions prematurely, stifling innovation in
@@ -75,7 +75,7 @@ A *crafting approach* prioritises code as a tool for thinking, enabled by LLMs:
 3. *Commit*: Test-drive the stable core, leave room for experimentation.  
 
 *LLMs as Mediators*:  
-- Translate between mindsets (e.g., *"Your code implies microservices—here's how to test-drive the first service"*).  
+- Translate between mindsets (e.g., *"Your code implies microservices--here's how to test-drive the first service"*).  
 - Auto-generate tests for critical paths.  
 
 
