@@ -1,7 +1,7 @@
 
 ## Crafting vs. TDD: Code as Exploration vs. Specification
 
-Ok, so I have some issues with TDD .. How do I resolve this?
+*Ok, so I have some issues with TDD .. How do I resolve this?*
 
 
 ### Two Faces of Code  
