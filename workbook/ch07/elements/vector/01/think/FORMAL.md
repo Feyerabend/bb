@@ -91,7 +91,7 @@ Process: Communicate → Familiar Prototype → Data Landscape → Incremental B
 
 
 #### Key Principles
-- Clarity before Complexity: Only build complex things when simpler ones are working and understood.
-- Data before Logic: Understand data deeply before writing heavy logic.
-- Continuous Client Contact: Small, frequent demos beat big-bang deliveries.
-- LLM as Augmented Colleague: Use it constantly, but always validate output critically.
+- *Clarity before Complexity*: Only build complex things when simpler ones are working and understood.
+- *Data before Logic*: Understand data deeply before writing heavy logic.
+- *Continuous Client Contact*: Small, frequent demos beat big-bang deliveries.
+- *LLM as Augmented Colleague*: Use it constantly, but always validate output critically.
