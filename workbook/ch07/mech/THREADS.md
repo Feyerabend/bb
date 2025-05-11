@@ -126,6 +126,30 @@ void fiber_func() {
 - *Actors Model*: Popularised by Erlang and Elixir, actors are lightweight processes with isolated heaps
   and message-passing, ideal for fault-tolerant systems.
 
+Actors Model (Erlang BEAM):
+
+```mermaid
+graph LR
+    A[Actor 1] -->|Message| B[Actor 2]
+    B -->|Message| C[Actor 3]
+    C -->|Message| A
+    
+    subgraph BEAM VM
+        Scheduler[[Preemptive Scheduler]]
+        A
+        B
+        C
+    end
+    
+    Scheduler -->|Microsecond| A
+    Scheduler -->|Preemption| B
+    Scheduler -->|Switching| C
+    
+    style Scheduler fill:#e6f3ff,stroke:#3399ff
+    style A,B,C fill:#e6ffe6,stroke:#33cc33
+```
+
+
 - *Async I/O*: Event-loop-driven models (e.g., Node.js, Rust's Tokio) excel in non-blocking operations.
   Example:
 
