@@ -13,15 +13,15 @@ Green threads, managed in user-space by a runtime (e.g., a virtual machine or la
 and flexible. Kernel threads, orchestrated by the operating system, offer robust parallelism but at a
 higher cost. The table below highlights their key distinctions:
 
-| Aspect                | Green Threads                                      | Kernel Threads                         |
-|-----------------------|----------------------------------------------------|----------------------------------------|
-| Management            | User-space runtime (e.g., VM, language)            | OS kernel                              |
-| Scheduling            | Cooperative or custom preemptive                   | OS-controlled preemptive               |
-| Context Switch Cost   | Low (no kernel involvement)                        | High (kernel mode transition)          |
-| Parallelism           | Limited to one core unless mapped to kernel threads| True multi-core parallelism            |
-| Memory Usage          | Small stack (~KB)                                  | Larger stack (~MB)                     |
-| Blocking Operations   | Can stall process unless using async I/O           | Independent thread blocking            |
-| Examples              | Go goroutines (hybrid), Erlang BEAM, early Java    | POSIX pthreads, Windows threads        |
+| Aspect                | Green Threads                                      | Kernel Threads                   |
+|-----------------------|----------------------------------------------------|----------------------------------|
+| Management            | User-space runtime (e.g., VM, language)            | OS kernel                        |
+| Scheduling            | Cooperative or custom preemptive                   | OS-controlled preemptive         |
+| Context Switch Cost   | Low (no kernel involvement)                        | High (kernel mode transition)    |
+| Parallelism           | Limited to one core unless mapped to kernel threads| True multi-core parallelism      |
+| Memory Usage          | Small stack (~KB)                                  | Larger stack (~MB)               |
+| Blocking Operations   | Can stall process unless using async I/O           | Independent thread blocking      |
+| Examples              | Go goroutines (hybrid), Erlang BEAM, early Java    | POSIX pthreads, Windows threads  |
 
 *Note: Go's goroutines use an M:N hybrid model, mapping green threads to kernel threads for multi-core efficiency.*
 
@@ -106,7 +106,7 @@ graph TD
 Concurrency extends beyond threads, with several constructs complementing green and kernel threads:
 
 - *Coroutines*: Stackless and cooperative, coroutines (e.g., Python's `async`/`await`) enable efficient task
-  switching without the overhead of threads. Example:
+  switching without the overhead of threads. (Also see the folder on [coroutines](./coroutine/).) Example:
 
 ```python
 async def fetch_data():
@@ -271,3 +271,4 @@ clients. This architectural model--which emphasises scalability, fault--toleranc
 concurrency--has proven foundational not only in telecom systems but also in modern web servers, distributed systems,
 and cloud-native applications.
 
+However, I also learned to always verify sources--this was the only significant misstep I encountered during those years.
