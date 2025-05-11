@@ -50,8 +50,14 @@ class LineTo(PathElement):
         self.end = end
         
     def sample_points(self, resolution: float) -> List[Point]:
+        if resolution <= 0:
+            raise ValueError("Resolution must be positive")
+            
         distance = self.start.distance_to(self.end)
-        num_points = max(2, int(distance / resolution))
+        if distance < 1e-6:  # degenerate case
+            return [deepcopy(self.start)]
+            
+        num_points = max(2, int(distance / resolution) + 1)
         
         points = []
         for i in range(num_points):
@@ -90,11 +96,17 @@ class CubicBezierTo(PathElement):
         return Point(x, y)
     
     def sample_points(self, resolution: float) -> List[Point]:
-        approx_length = (self.start.distance_to(self.control1) +
-                         self.control1.distance_to(self.control2) + 
-                         self.control2.distance_to(self.end))
+        if resolution <= 0:
+            raise ValueError("Resolution must be positive")
+            
+        if (self.start.distance_to(self.end) < 1e-6 and
+            self.start.distance_to(self.control1) < 1e-6 and
+            self.start.distance_to(self.control2) < 1e-6):
+            return [deepcopy(self.start)]
         
-        num_points = max(2, int(approx_length / resolution))
+        approx_length = self._estimate_length(20)
+        
+        num_points = max(2, int(approx_length / resolution) + 1)
         
         points = []
         for i in range(num_points):
@@ -102,7 +114,19 @@ class CubicBezierTo(PathElement):
             points.append(self._cubic_bezier_point(t))
             
         return points
-    
+
+    def _estimate_length(self, steps=10) -> float:
+        length = 0.0
+        last_point = self.start
+        
+        for i in range(1, steps + 1):
+            t = i / steps
+            current_point = self._cubic_bezier_point(t)
+            length += last_point.distance_to(current_point)
+            last_point = current_point
+            
+        return length
+
     def transform(self, sx: float, k: float, l: float, sy: float, tx: float, ty: float) -> 'CubicBezierTo':
         return CubicBezierTo(
             self.start.transform(sx, k, l, sy, tx, ty),
