@@ -1,4 +1,4 @@
-.PHONY: all clean run_and_clean
+.PHONY: all clean run
 
 all: b8 tiger thumb
 
