@@ -17,7 +17,9 @@ Characteristics of Continuations
 Continuation-passing style is a programming paradigm where functions don't return values directly.[^cc] Instead,
 they accept an additional argument--a continuation function--that represents what should happen with the result.
 
-[^cc]: You might have experience or read about `call/cc`. This is a runtime primitive that captures the current continuation as a first-class value for later invocation, while CPS is a programming style where functions receive an explicit continuation argument instead of returning normally.
+[^cc]: You might have experience or read about `call/cc`. This is a runtime primitive that captures the current
+continuation as a first-class value for later invocation, while CPS is a programming style where functions receive
+an explicit continuation argument instead of returning normally.
 
 ```c
 // Direct style
@@ -114,9 +116,9 @@ This loop is the "trampoline" that:
 ```mermaid
 graph TD
     A[Start factorial_trampoline] --> B[Initialize First Step]
-    B --> C{Loop: current exists?}
+    B --> C[Loop: current exists?]
     C -->|Yes| D[Execute Step]
-    D --> E{Current.n == 0?}
+    D --> E[Current.n == 0?]
     E -->|Yes| F[Create Terminal Step<br>next=NULL]
     E -->|No| G[Create Next Step<br>n-1, acc*n, next=step]
     F --> H[Free Current Step]
