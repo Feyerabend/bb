@@ -131,9 +131,6 @@ graph TD
     style E stroke:#f66,stroke-width:2px
     style G stroke:#3c3,stroke-width:2px
     style I stroke:#39c,stroke-width:2px
-    
-    click C "#loop" "Trampoline Loop Continuation"
-    click G "#continue" "Continuation Point"
 ```
 
 
