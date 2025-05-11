@@ -1,6 +1,6 @@
 .PHONY: all clean run_and_clean
 
-all: b8 tiger
+all: b8 tiger thumb
 
 b8:
 	python3 svg.py b8.svg b8.png 400 400
@@ -8,9 +8,8 @@ b8:
 tiger:
 	python3 svg.py tiger.svg tiger.png 600 600
 
-# warning: this may take a long time!
 thumb:
-	python3 svg.py thumb.svg thumb.png 500 500
+	python3 svg.py thumb.svg thumb.png 800 800
 
 clean:
 	rm -rf __pycache__
