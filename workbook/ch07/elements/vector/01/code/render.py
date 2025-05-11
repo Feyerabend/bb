@@ -287,10 +287,6 @@ class SimpleRasterizer(Rasterizer):
         return self.canvas
 
     def fill_path(self, path: Path, fill: FillProperties) -> None:
-        """
-        Optimized implementation of fill_path that combines the best of both existing implementations.
-        Uses NumPy vectorized operations for better performance.
-        """
         if not path.elements:
             return
 
@@ -351,69 +347,224 @@ class SimpleRasterizer(Rasterizer):
                         # Update the canvas
                         self.canvas[y, span] = blended
     
+
     def stroke_path(self, path: Path, stroke: StrokeProperties) -> None:
-        print(f"Executing stroke_path with {len(path.elements)} elements")
-        resolution = 0.5
+        """
+        Improved implementation of stroke_path that correctly handles line joins and caps.
+        """
+        resolution = min(0.3, stroke.width / 4)  # Adaptive resolution based on stroke width
         points = path.sample_points(resolution)
         if len(points) < 2:
             return
+        
         height, width = self.canvas.shape[:2]
-
+        half_width = stroke.width / 2
+        
+        # Helper functions for drawing caps and joins
         def draw_cap(point: Point, direction: Point, cap_style: LineCap):
-            x, y = int(point.x), int(point.y)
-            if not (0 <= x < width and 0 <= y < height):
-                return
-            radius = stroke.width / 2
             if cap_style == LineCap.BUTT:
                 return
-            elif cap_style == LineCap.ROUND:
-                self._draw_circle(x, y, radius, stroke.color)
+            
+            # Normalize direction
+            norm = math.sqrt(direction.x**2 + direction.y**2)
+            if norm < 1e-6:
+                return
+            direction_normalized = Point(direction.x / norm, direction.y / norm)
+            
+            if cap_style == LineCap.ROUND:
+                # Draw a half-circle cap
+                center = point
+                steps = max(8, int(half_width * 2))
+                start_angle = math.atan2(-direction_normalized.y, -direction_normalized.x)
+                end_angle = start_angle + math.pi
+                
+                prev_point = None
+                for i in range(steps + 1):
+                    angle = start_angle + (end_angle - start_angle) * (i / steps)
+                    cap_point = Point(
+                        center.x + half_width * math.cos(angle),
+                        center.y + half_width * math.sin(angle)
+                    )
+                    
+                    if prev_point:
+                        # Create a small triangle fan from center
+                        self._fill_polygon([center, prev_point, cap_point], stroke.color)
+                    prev_point = cap_point
+            
             elif cap_style == LineCap.SQUARE:
-                dx = direction.x * radius
-                dy = direction.y * radius
-                self._draw_line_segment(Point(x, y), Point(x + dx, y + dy), stroke)
-
+                # Draw a square cap (extend by half_width in direction)
+                extended = Point(
+                    point.x + direction_normalized.x * half_width,
+                    point.y + direction_normalized.y * half_width
+                )
+                
+                # Get perpendicular vector
+                perp = Point(-direction_normalized.y, direction_normalized.x)
+                
+                # Create square cap corners
+                corners = [
+                    Point(extended.x + perp.x * half_width, extended.y + perp.y * half_width),
+                    Point(extended.x - perp.x * half_width, extended.y - perp.y * half_width),
+                    Point(point.x - perp.x * half_width, point.y - perp.y * half_width),
+                    Point(point.x + perp.x * half_width, point.y + perp.y * half_width)
+                ]
+                
+                self._fill_polygon(corners, stroke.color)
+        
         def draw_join(p1: Point, p2: Point, p3: Point, join_style: LineJoin):
-            if join_style == LineJoin.ROUND:
-                self._draw_circle(int(p2.x), int(p2.y), stroke.width / 2, stroke.color)
+            # Calculate normalized direction vectors
+            v1 = Point(p2.x - p1.x, p2.y - p1.y)
+            v2 = Point(p3.x - p2.x, p3.y - p2.y)
+            
+            len1 = math.sqrt(v1.x**2 + v1.y**2)
+            len2 = math.sqrt(v2.x**2 + v2.y**2)
+            
+            if len1 < 1e-6 or len2 < 1e-6:
+                return
+            
+            v1 = Point(v1.x / len1, v1.y / len1)
+            v2 = Point(v2.x / len2, v2.y / len2)
+            
+            # Get perpendicular vectors
+            perp1 = Point(-v1.y, v1.x)
+            perp2 = Point(-v2.y, v2.x)
+            
+            # Calculate outer points of the segments
+            outer1 = Point(p2.x + perp1.x * half_width, p2.y + perp1.y * half_width)
+            inner1 = Point(p2.x - perp1.x * half_width, p2.y - perp1.y * half_width)
+            outer2 = Point(p2.x + perp2.x * half_width, p2.y + perp2.y * half_width)
+            inner2 = Point(p2.x - perp2.x * half_width, p2.y - perp2.y * half_width)
+            
+            # Determine if this is an inside or outside corner
+            dot_product = v1.x * v2.x + v1.y * v2.y
+            cross_product = v1.x * v2.y - v1.y * v2.x
+            is_outside_corner = cross_product < 0
+            
+            if join_style == LineJoin.ROUND and is_outside_corner:
+                # Draw a rounded join using a pie wedge
+                steps = max(8, int(half_width))
+                start_angle = math.atan2(perp1.y, perp1.x)
+                end_angle = math.atan2(perp2.y, perp2.x)
+                
+                # Ensure we go the short way around for the rounded join
+                if end_angle < start_angle:
+                    end_angle += 2 * math.pi
+                if end_angle - start_angle > math.pi:
+                    start_angle += 2 * math.pi
+                
+                # Create pie wedge points
+                pie_points = [p2]  # Center
+                for i in range(steps + 1):
+                    t = i / steps
+                    angle = start_angle * (1 - t) + end_angle * t
+                    pie_point = Point(
+                        p2.x + half_width * math.cos(angle),
+                        p2.y + half_width * math.sin(angle)
+                    )
+                    pie_points.append(pie_point)
+                
+                self._fill_polygon(pie_points, stroke.color)
+                
             elif join_style == LineJoin.BEVEL:
-                v1 = self._perpendicular_vector(p1, p2, stroke.width / 2)
-                v2 = self._perpendicular_vector(p2, p3, stroke.width / 2)
-                outer1 = Point(p2.x + v1.x, p2.y + v1.y)
-                outer2 = Point(p2.x + v2.x, p2.y + v2.y)
-                self._draw_line_segment(outer1, outer2, stroke)
-            elif join_style == LineJoin.MITER:
-                v1 = self._perpendicular_vector(p1, p2, stroke.width / 2)
-                v2 = self._perpendicular_vector(p2, p3, stroke.width / 2)
-                angle = self._angle_between_vectors(Point(p2.x - p1.x, p2.y - p1.y),
-                                                  Point(p3.x - p2.x, p3.y - p2.y))
-                miter_length = (stroke.width / 2) / math.sin(angle / 2) if angle != 0 else stroke.width / 2
-                if miter_length <= stroke.miter_limit * stroke.width:
-                    outer1 = Point(p2.x + v1.x, p2.y + v1.y)
-                    outer2 = Point(p2.x + v2.x, p2.y + v2.y)
-                    self._draw_line_segment(outer1, outer2, stroke)
+                # For bevel join, simply connect the outer points
+                if is_outside_corner:
+                    self._fill_polygon([p2, outer1, outer2], stroke.color)
                 else:
-                    draw_join(p1, p2, p3, LineJoin.BEVEL)
-
+                    self._fill_polygon([p2, inner1, inner2], stroke.color)
+                    
+            elif join_style == LineJoin.MITER:
+                if not is_outside_corner:
+                    # Inside corners can be handled like bevel
+                    self._fill_polygon([p2, inner1, inner2], stroke.color)
+                    return
+                
+                # Calculate miter point
+                # First, get the angle between the segments
+                angle = math.acos(max(-1.0, min(1.0, dot_product)))
+                
+                # Calculate miter length
+                miter_length = half_width / math.sin(angle / 2) if angle != 0 else half_width
+                
+                # Check miter limit
+                if miter_length > stroke.miter_limit * half_width:
+                    # Fallback to bevel join if miter is too long
+                    self._fill_polygon([p2, outer1, outer2], stroke.color)
+                    return
+                
+                # Calculate miter direction (bisector of the exterior angle)
+                bisector_x = (perp1.x + perp2.x) / 2
+                bisector_y = (perp1.y + perp2.y) / 2
+                bisector_len = math.sqrt(bisector_x**2 + bisector_y**2)
+                
+                if bisector_len < 1e-6:
+                    return
+                
+                # Normalize bisector
+                bisector_x /= bisector_len
+                bisector_y /= bisector_len
+                
+                # Calculate miter point
+                miter_point = Point(
+                    p2.x + bisector_x * miter_length,
+                    p2.y + bisector_y * miter_length
+                )
+                
+                # Create miter join
+                self._fill_polygon([p2, outer1, miter_point, outer2], stroke.color)
+        
+        # Draw line segments
         for i in range(len(points) - 1):
             p1 = points[i]
             p2 = points[i + 1]
-            self._draw_line_segment(p1, p2, stroke)
+            
+            # Skip degenerate segments
+            if p1.distance_to(p2) < 1e-6:
+                continue
+            
+            direction = Point(p2.x - p1.x, p2.y - p1.y)
+            length = math.sqrt(direction.x**2 + direction.y**2)
+            direction = Point(direction.x / length, direction.y / length)
+            
+            # Get perpendicular vector
+            perp = Point(-direction.y, direction.x)
+            
+            # Calculate the four corners of the segment rectangle
+            corners = [
+                Point(p1.x + perp.x * half_width, p1.y + perp.y * half_width),
+                Point(p1.x - perp.x * half_width, p1.y - perp.y * half_width),
+                Point(p2.x - perp.x * half_width, p2.y - perp.y * half_width),
+                Point(p2.x + perp.x * half_width, p2.y + perp.y * half_width)
+            ]
+            
+            # Fill the segment rectangle
+            self._fill_polygon(corners, stroke.color)
+            
+            # Draw join with next segment if there is one
             if i < len(points) - 2:
                 draw_join(p1, p2, points[i + 2], stroke.line_join)
+        
+        # Draw caps for open paths
+        if not path.closed and len(points) >= 2:
+            # Start cap
+            start_direction = Point(points[1].x - points[0].x, points[1].y - points[0].y)
+            start_length = math.sqrt(start_direction.x**2 + start_direction.y**2)
+            if start_length > 1e-6:
+                start_direction = Point(
+                    -start_direction.x / start_length, 
+                    -start_direction.y / start_length
+                )
+                draw_cap(points[0], start_direction, stroke.line_cap)
+            
+            # End cap
+            end_direction = Point(points[-1].x - points[-2].x, points[-1].y - points[-2].y)
+            end_length = math.sqrt(end_direction.x**2 + end_direction.y**2)
+            if end_length > 1e-6:
+                end_direction = Point(
+                    end_direction.x / end_length, 
+                    end_direction.y / end_length
+                )
+                draw_cap(points[-1], end_direction, stroke.line_cap)
 
-        if not path.closed:
-            direction = Point(points[1].x - points[0].x, points[1].y - points[0].y)
-            if direction.distance_to(Point(0, 0)) > 0:
-                direction = Point(direction.x / direction.distance_to(Point(0, 0)),
-                                direction.y / direction.distance_to(Point(0, 0)))
-                draw_cap(points[0], Point(-direction.x, -direction.y), stroke.line_cap)
-
-            direction = Point(points[-1].x - points[-2].x, points[-1].y - points[-2].y)
-            if direction.distance_to(Point(0, 0)) > 0:
-                direction = Point(direction.x / direction.distance_to(Point(0, 0)),
-                                direction.y / direction.distance_to(Point(0, 0)))
-                draw_cap(points[-1], direction, stroke.line_cap)
     
     def _draw_line_segment(self, p1: Point, p2: Point, stroke: StrokeProperties):
         v = self._perpendicular_vector(p1, p2, stroke.width / 2)
