@@ -111,6 +111,29 @@ This loop is the "trampoline" that:
 3. Moves to that next step
 4. Repeats until a base case is reached (when `next` is NULL)
 
+```mermaid
+graph TD
+    A[Start factorial_trampoline] --> B[Initialize First Step]
+    B --> C{Loop: current exists?}
+    C -->|Yes| D[Execute Step]
+    D --> E{Current.n == 0?}
+    E -->|Yes| F[Create Terminal Step<br>next=NULL]
+    E -->|No| G[Create Next Step<br>n-1, acc*n, next=step]
+    F --> H[Free Current Step]
+    G --> H
+    H --> I[Move to Next Step]
+    I --> C
+    C -->|No| J[Return Accumulator]
+    
+    style D stroke:#f66,stroke-width:2px
+    style E stroke:#f66,stroke-width:2px
+    style G stroke:#3c3,stroke-width:2px
+    style I stroke:#39c,stroke-width:2px
+    
+    click C "#loop" "Trampoline Loop Continuation"
+    click G "#continue" "Continuation Point"
+```
+
 
 Benefits:
 
