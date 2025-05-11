@@ -203,3 +203,23 @@ From the monolithic processes of the 1960s to today's nimble async patterns, con
 a relentless drive for efficiency. Green threads, once a workaround for kernel limitations, now bridge the gap
 between resource-constrained systems and the demands of a multicore, cloud-driven world.
 
+
+#### Personal Reflection
+
+I first encountered green threads while working with early versions of Java. At that time, event-driven
+programming with Java Applets--a form of Java application designed primarily for the web, but now dead--was
+initially quite perplexing. Understanding how the event loop and callbacks interacted in a single-threaded
+environment took some effort.
+
+Later, during my decade as a data journalist, I wrote about Erlang--a language developed in Sweden for managing
+telephone switches. In one article, I mistakenly predicted Erlang's demise, based on rumors circulating in a
+technical forum. A technical lead at Ericsson, however, corrected me and pointed out that Erlang was very much
+alive and evolving. Interestingly, he also appreciated another aspect of my argument: I had praised Erlang's
+concurrency model, suggesting that its lightweight process model could become increasingly relevant in the future.
+
+Looking back, I now recognise that what I was observing is exactly the pattern described in the discussion above:
+thousands of lightweight threads (or processes) working concurrently, each handling small, independent tasks for
+clients. This architectural model--which emphasizes scalability, fault--tolerance, and message-passing
+concurrency--has proven foundational not only in telecom systems but also in modern web servers, distributed systems,
+and cloud-native applications.
+
