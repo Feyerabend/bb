@@ -85,7 +85,7 @@ Activities:
 |Data Landscape	|Map available data	|Profile, summarise, simulate datasets|
 |Incremental Build	|Add new features gradually	|Code generation, test generation|
 |Validate	|Align with evolving understanding	|Summarise progress, auto-generate reports|
-|Harden	|Optimize & deploy	|Review code, generate docs & scripts|
+|Harden	|Optimise & deploy	|Review code, generate docs & scripts|
 
 Process: Communicate → Familiar Prototype → Data Landscape → Incremental Build → Validate → Harden.
 
