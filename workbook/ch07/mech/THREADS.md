@@ -60,6 +60,47 @@ robustness in critical systems.
 if poorly managed. Kernel threads benefit from OS-enforced fairness, ensuring equitable CPU allocation across tasks.
 
 
+Kernel Threads:
+
+```mermaid
+graph TD
+    subgraph OS Kernel
+        Scheduler[[Kernel Scheduler]]
+    end
+    
+    subgraph Process
+        T1[Kernel Thread 1] -->|Preempted| Scheduler
+        T2[Kernel Thread 2] -->|Preempted| Scheduler
+        T3[Kernel Thread 3] -->|Preempted| Scheduler
+    end
+    
+    Scheduler -->|Schedule| CPU1[CPU Core 1]
+    Scheduler -->|Schedule| CPU2[CPU Core 2]
+    Scheduler -->|Schedule| CPU3[CPU Core 3]
+    
+    style Scheduler fill:#ffebcc,stroke:#ff9900
+    style T1,T2,T3 fill:#ffe6e6,stroke:#cc0000
+```
+
+Green Threads:
+
+```mermaid
+graph TD
+    subgraph User Space
+        Runtime[[Language Runtime]]
+        G1[Green Thread 1] -->|Yield| Runtime
+        G2[Green Thread 2] -->|Yield| Runtime
+        G3[Green Thread 3] -->|Yield| Runtime
+    end
+    
+    Runtime -->|Event Loop| CPU[Single CPU Core]
+    
+    style Runtime fill:#e6f3ff,stroke:#3399ff
+    style G1,G2,G3 fill:#e6ffe6,stroke:#33cc33
+```
+
+
+
 ### Related Concurrency Constructs
 
 Concurrency extends beyond threads, with several constructs complementing green and kernel threads:
