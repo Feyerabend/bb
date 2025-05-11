@@ -139,6 +139,30 @@ async fn handle_connection() {
   are heavyweight but robust for parallel tasks.
 
 
+Async I/O:
+
+```mermaid
+graph TD
+    subgraph Event Loop
+        EL[[Event Loop]]
+        Q[Task Queue]
+    end
+    
+    EL -->|Poll| Q
+    Q --> T1[Async Task 1]
+    Q --> T2[Async Task 2]
+    Q --> T3[Async Task 3]
+    
+    T1 -->|Non-blocking| IO1[Network I/O]
+    T2 -->|Non-blocking| IO2[File I/O]
+    T3 -->|Non-blocking| IO3[DB Query]
+    
+    style EL fill:#e6f3ff,stroke:#3399ff
+    style Q fill:#f0f0f0,stroke:#666
+    style T1,T2,T3 fill:#e6ffe6,stroke:#33cc33
+```
+
+
 ### Modern Implementations
 
 Today's concurrency models blend the best of green and kernel threads, leveraging hybrid approaches and async runtimes:
