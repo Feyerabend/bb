@@ -145,6 +145,49 @@ Considerations:
   something more flexible like trampoline recursion.
 
 
+__3. C Example__
+
+The trampoline mechanism from sample 'tramp.c':
+
+```mermaid
+graph TD
+    A[Start execute] --> B[Trampoline Loop]
+    B --> C{Next Instruction}
+    C -->|OpCode| D[Set trampoline.next]
+    D --> E[Execute via trampoline.next]
+    E --> F{Update State}
+    F -->|ip++, result| G{Reached HALT?}
+    G -->|No| C
+    G -->|Yes| H[End Trampoline]
+
+    subgraph Trampoline Core
+        B
+        C
+        G
+    end
+
+    subgraph Operation Dispatch
+        D
+        E
+        F
+    end
+
+    style B fill:#e6f3ff,stroke:#3399ff
+    style C fill:#e6f3ff,stroke:#3399ff
+    style D fill:#e6ffe6,stroke:#33cc33
+    style E fill:#e6ffe6,stroke:#33cc33
+    style G fill:#e6f3ff,stroke:#3399ff
+    
+    linkStyle 0,1,2,3,4 stroke:#3399ff
+    linkStyle 5 stroke:#ff6666
+
+    classDef trampoline fill:#e6f3ff,stroke:#3399ff
+    classDef operation fill:#e6ffe6,stroke:#33cc33
+    class B,C,G trampoline
+    class D,E,F operation
+```
+
+
 ### Conclusion
 
 The trampoline pattern works well for controlling the flow of execution in a modular way. It separates
