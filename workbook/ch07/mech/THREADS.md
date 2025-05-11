@@ -60,7 +60,7 @@ robustness in critical systems.
 if poorly managed. Kernel threads benefit from OS-enforced fairness, ensuring equitable CPU allocation across tasks.
 
 
-Kernel Threads:
+Kernel Threads and Cores:
 
 ```mermaid
 graph TD
