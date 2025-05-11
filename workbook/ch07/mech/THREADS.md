@@ -219,7 +219,7 @@ concurrency model, suggesting that its lightweight process model could become in
 
 Looking back, I now recognise that what I was observing is exactly the pattern described in the discussion above:
 thousands of lightweight threads (or processes) working concurrently, each handling small, independent tasks for
-clients. This architectural model--which emphasizes scalability, fault--tolerance, and message-passing
+clients. This architectural model--which emphasises scalability, fault--tolerance, and message-passing
 concurrency--has proven foundational not only in telecom systems but also in modern web servers, distributed systems,
 and cloud-native applications.
 
