@@ -816,3 +816,4 @@ if __name__ == "__main__":
             sys.exit(1)
 
     SVGRenderer.render(svg_path, output_path, width, height)
+
