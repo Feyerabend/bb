@@ -6,9 +6,9 @@ Version 0.1: Draft Model.
 
 #### Phase 1: Communicate: Understand the Problem
 
-*Goal*: Establish a shared understanding of the problem space and client goals.
-*Inputs*: Conversations, existing workflows, business needs.
-*Outputs*: Domain vocabulary, core user stories, initial usage scenarios.
+* *Goal*: Establish a shared understanding of the problem space and client goals.
+* *Inputs*: Conversations, existing workflows, business needs.
+* *Outputs*: Domain vocabulary, core user stories, initial usage scenarios.
 
 Activities:
 - Conduct free-form discussions (LLM assists in summarising and reframing).
@@ -18,9 +18,9 @@ Activities:
 
 #### Phase 2: Familiar Prototype: Ground in the Known
 
-*Goal*: Quickly build a tangible prototype of features the client already understands.
-*Inputs*: User stories, existing workflows, legacy systems.
-*Outputs*: Clickable mockups, data views, simple workflows.
+* *Goal*: Quickly build a tangible prototype of features the client already understands.
+* *Inputs*: User stories, existing workflows, legacy systems.
+* *Outputs*: Clickable mockups, data views, simple workflows.
 
 Activities:
 - Use LLM to scaffold UI sketches, database mocks, example outputs.
@@ -30,9 +30,9 @@ Activities:
 
 #### Phase 3: Data Landscape: Map and Explore the Data
 
-*Goal*: Inventory, understand, and evaluate the available data.
-*Inputs*: Databases, APIs, files, user-generated content.
-*Outputs*: Data catalog, schemas, data quality profiles.
+* *Goal*: Inventory, understand, and evaluate the available data.
+* *Inputs*: Databases, APIs, files, user-generated content.
+* *Outputs*: Data catalog, schemas, data quality profiles.
 
 Activities:
 - Use LLM to extract schemas, profile datasets, generate sample data.
@@ -42,9 +42,9 @@ Activities:
 
 #### Phase 4: Incremental Build: Layer New Functionality
 
-*Goal*: Gradually add more complex or novel features atop familiar foundations.
-*Inputs*: Validated prototypes, data profiles, client feedback.
-*Outputs*: Working system with growing feature set.
+* *Goal*: Gradually add more complex or novel features atop familiar foundations.
+* *Inputs*: Validated prototypes, data profiles, client feedback.
+* *Outputs*: Working system with growing feature set.
 
 Activities:
 - Use LLM to generate boilerplate code, integrations, and tests.
@@ -54,9 +54,9 @@ Activities:
 
 #### Phase 5: Validate: Close the Feedback Loop
 
-*Goal*: Continuously ensure the solution matches evolving client understanding.
-*Inputs*: System demos, user feedback, test cases.
-*Outputs*: Adjusted requirements, bug reports, enhancement requests.
+* *Goal*: Continuously ensure the solution matches evolving client understanding.
+* *Inputs*: System demos, user feedback, test cases.
+* *Outputs*: Adjusted requirements, bug reports, enhancement requests.
 
 Activities:
 - Use LLM to summarise sprint progress, auto-generate release notes, visualise workflows.
@@ -66,9 +66,9 @@ Activities:
 
 #### Phase 6: Harden: Prepare for Real-World Use
 
-*Goal*: Optimise, secure, and finalise the product for production.
-*Inputs*: Fully functional system, validated features.
-*Outputs*: Production-grade software, documentation, deployment pipelines.
+* *Goal*: Optimise, secure, and finalise the product for production.
+* *Inputs*: Fully functional system, validated features.
+* *Outputs*: Production-grade software, documentation, deployment pipelines.
 
 Activities:
 - Use LLM to review code for security, generate docs, write deployment scripts.
