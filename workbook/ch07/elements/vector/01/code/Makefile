@@ -8,7 +8,11 @@ b8:
 tiger:
 	python3 svg.py tiger.svg tiger.png 600 600
 
+# warning: this may take a long time!
+thumb:
+	python3 svg.py thumb.svg thumb.png 500 500
+
 clean:
 	rm -rf __pycache__
 
-run_and_clean: all clean
+run: all clean

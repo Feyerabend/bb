@@ -2,24 +2,24 @@ import xml.etree.ElementTree as ET
 import re
 from pathlib import Path as FilePath
 import math
-from typing import Tuple, List, Dict, Any, Optional, Union
+from typing import Tuple, List, Dict, Any, Optional # Union
 
-from render import Path, PathFactory, SimpleRasterizer, AntiAliasedRasterizer
+from render import Path, AntiAliasedRasterizer # PathFactory, SimpleRasterizer
 from render import StrokeProperties, FillProperties
 from render import EvenOddFillRule, NonZeroWindingFillRule
 from render import save_to_png, LineCap, LineJoin
 
 class SVGParser:
-    
+
     SVG_NS = "{http://www.w3.org/2000/svg}"
-    
+
     def __init__(self):
         self.paths = []
         self.width = 0
         self.height = 0
         self.view_box = None
         self.preserve_aspect_ratio = 'xMidYMid meet'
-        
+
     def parse_file(self, svg_path: str) -> None:
         tree = ET.parse(svg_path)
         root = tree.getroot()
@@ -34,7 +34,7 @@ class SVGParser:
         self.preserve_aspect_ratio = root.get('preserveAspectRatio', 'xMidYMid meet')
         
         self._process_element(root, parent_style={}, parent_transform=None)
-    
+
     def _parse_dimension(self, value: str) -> float:
         if not value:
             return 0
@@ -47,7 +47,7 @@ class SVGParser:
         num, unit = match.groups()
         # TODO: Add support for pt, cm, mm, in, %, em, ex
         return float(num)
-    
+
     def _parse_transform(self, transform_str: str) -> Optional[List[float]]:
         if not transform_str:
             return None
@@ -78,7 +78,7 @@ class SVGParser:
             elif name == 'skewY' and len(args) == 1:
                 matrix = self._multiply_matrices(matrix, [1, math.tan(math.radians(args[0])), 0, 1, 0, 0])
         return matrix
-    
+
     def _multiply_matrices(self, m1: List[float], m2: List[float]) -> List[float]:
         a1, b1, c1, d1, e1, f1 = m1
         a2, b2, c2, d2, e2, f2 = m2
@@ -87,12 +87,12 @@ class SVGParser:
             a1 * c2 + c1 * d2, b1 * c2 + d1 * d2,
             a1 * e2 + c1 * f2 + e1, b1 * e2 + d1 * f2 + f1
         ]
-    
+
     def _process_element(self, element: ET.Element, parent_style: Dict[str, str], parent_transform: Optional[List[float]]) -> None:
         tag_name = element.tag
         if '}' in tag_name:
             tag_name = tag_name.split('}', 1)[1]
-        
+
         current_style = parent_style.copy()
         style_str = element.get('style', '')
         if style_str:
@@ -103,13 +103,13 @@ class SVGParser:
         for key in ['stroke', 'stroke-width', 'stroke-opacity', 'stroke-linecap', 'stroke-linejoin', 'fill', 'fill-opacity', 'fill-rule', 'miter-limit']:
             if key in element.attrib:
                 current_style[key] = element.get(key)
-        
+
         # Parse transform attribute
         transform_str = element.get('transform', '')
         current_transform = self._parse_transform(transform_str) if transform_str else parent_transform
         if current_transform and parent_transform:
             current_transform = self._multiply_matrices(parent_transform, current_transform)
-        
+
         if tag_name == 'svg':
             for child in element:
                 self._process_element(child, current_style, current_transform)
@@ -130,7 +130,7 @@ class SVGParser:
         elif tag_name == 'g':
             for child in element:
                 self._process_element(child, current_style, current_transform)
-    
+
     def _process_path(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
         d = element.get('d', '')
         if not d:
@@ -148,7 +148,7 @@ class SVGParser:
             'fill': fill_props,
             'transform': transform
         })
-    
+
     def _parse_path_data(self, path: Path, d: str) -> None:
         # Replace commas with spaces, normalize whitespace
         d = re.sub(r',', ' ', d.strip())
@@ -156,13 +156,13 @@ class SVGParser:
         tokens = re.findall(r'[a-zA-Z]|[+-]?(?:\d*\.\d+(?:[eE][+-]?\d+)?|\d+|\.\d+)', d)
         if not tokens:
             raise ValueError("Empty or invalid path data")
-        
+
         i = 0
         current_x, current_y = 0, 0
         last_control_x, last_control_y = None, None
         subpath_initial_x, subpath_initial_y = 0, 0
         command = None
-        
+
         while i < len(tokens):
             # Check if token is a command
             if i < len(tokens) and tokens[i].isalpha():
@@ -190,6 +190,7 @@ class SVGParser:
                     path.move_to(current_x, current_y)
                     i += 2
                     command = 'L' if command == 'M' else 'l'
+
                 elif command in ('L', 'l') and i + 1 < len(tokens):
                     x = float(tokens[i])
                     y = float(tokens[i + 1])
@@ -200,6 +201,7 @@ class SVGParser:
                         current_y += y
                     path.line_to(current_x, current_y)
                     i += 2
+
                 elif command in ('H', 'h') and i < len(tokens):
                     x = float(tokens[i])
                     if command == 'H':
@@ -208,6 +210,7 @@ class SVGParser:
                         current_x += x
                     path.line_to(current_x, current_y)
                     i += 1
+
                 elif command in ('V', 'v') and i < len(tokens):
                     y = float(tokens[i])
                     if command == 'V':
@@ -216,6 +219,7 @@ class SVGParser:
                         current_y += y
                     path.line_to(current_x, current_y)
                     i += 1
+
                 elif command in ('C', 'c') and i + 5 < len(tokens):
                     cp1x = float(tokens[i])
                     cp1y = float(tokens[i + 1])
@@ -234,6 +238,7 @@ class SVGParser:
                     last_control_x, last_control_y = cp2x, cp2y
                     current_x, current_y = end_x, end_y
                     i += 6
+
                 elif command in ('S', 's') and i + 3 < len(tokens):
                     cp1x = current_x + (current_x - last_control_x) if last_control_x is not None else current_x
                     cp1y = current_y + (current_y - last_control_y) if last_control_y is not None else current_y
@@ -250,6 +255,7 @@ class SVGParser:
                     last_control_x, last_control_y = cp2x, cp2y
                     current_x, current_y = end_x, end_y
                     i += 4
+
                 elif command in ('Q', 'q') and i + 3 < len(tokens):
                     cp1x = float(tokens[i])
                     cp1y = float(tokens[i + 1])
@@ -268,6 +274,7 @@ class SVGParser:
                     last_control_x, last_control_y = cp1x, cp1y
                     current_x, current_y = end_x, end_y
                     i += 4
+
                 elif command in ('T', 't') and i + 1 < len(tokens):
                     cp1x = current_x + (current_x - last_control_x) if last_control_x is not None else current_x
                     cp1y = current_y + (current_y - last_control_y) if last_control_y is not None else current_y
@@ -284,6 +291,7 @@ class SVGParser:
                     last_control_x, last_control_y = cp1x, cp1y
                     current_x, current_y = end_x, end_y
                     i += 2
+
                 elif command in ('A', 'a') and i + 6 < len(tokens):
                     rx = float(tokens[i])
                     ry = float(tokens[i + 1])
@@ -307,18 +315,21 @@ class SVGParser:
                         )
                     current_x, current_y = end_x, end_y
                     i += 7
+
                 elif command in ('Z', 'z'):
                     path.close()
                     current_x, current_y = subpath_initial_x, subpath_initial_y
                     i += 1
+
                 else:
                     print(f"Warning: Invalid or incomplete command at token {i}: {tokens[i-1:i+1]}")
                     i += 1  # Skip invalid token
+
             except (ValueError, IndexError) as e:
                 print(f"Warning: Error processing command {command} at token {i}: {str(e)}, skipping")
                 i += len(tokens) - i  # Skip to end to avoid further errors
                 continue
-    
+
     def _arc_to_bezier(self, x1: float, y1: float, rx: float, ry: float, phi: float, large_arc: int, sweep: int, x2: float, y2: float) -> List[float]:
         if x1 == x2 and y1 == y2 or rx == 0 or ry == 0:
             return []
@@ -364,7 +375,7 @@ class SVGParser:
             result.extend([p1x, p1y, p2x, p2y, p3x, p3y])
             theta += delta_theta
         return result
-    
+
     def _process_rect(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
         x = float(element.get('x', '0'))
         y = float(element.get('y', '0'))
@@ -403,7 +414,7 @@ class SVGParser:
             'fill': fill_props,
             'transform': transform
         })
-    
+
     def _process_circle(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
         cx = float(element.get('cx', '0'))
         cy = float(element.get('cy', '0'))
@@ -423,7 +434,7 @@ class SVGParser:
             'fill': fill_props,
             'transform': transform
         })
-    
+
     def _process_ellipse(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
         cx = float(element.get('cx', '0'))
         cy = float(element.get('cy', '0'))
@@ -444,7 +455,7 @@ class SVGParser:
             'fill': fill_props,
             'transform': transform
         })
-    
+
     def _process_line(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
         x1 = float(element.get('x1', '0'))
         y1 = float(element.get('y1', '0'))
@@ -460,7 +471,7 @@ class SVGParser:
             'fill': None,
             'transform': transform
         })
-    
+
     def _process_polyline(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
         points_str = element.get('points', '')
         if not points_str:
@@ -481,7 +492,7 @@ class SVGParser:
             'fill': None,
             'transform': transform
         })
-    
+
     def _process_polygon(self, element: ET.Element, parent_style: Dict[str, str], transform: Optional[List[float]]) -> None:
         points_str = element.get('points', '')
         if not points_str:
@@ -503,7 +514,7 @@ class SVGParser:
             'fill': fill_props,
             'transform': transform
         })
-    
+
     def _get_style_properties(self, element: ET.Element, parent_style: Dict[str, str]) -> Tuple[Optional[StrokeProperties], Optional[FillProperties]]:
         style_dict = parent_style.copy()
         style_str = element.get('style', '')
@@ -515,7 +526,7 @@ class SVGParser:
         for key in ['stroke', 'stroke-width', 'stroke-opacity', 'stroke-linecap', 'stroke-linejoin', 'fill', 'fill-opacity', 'fill-rule', 'miter-limit']:
             if key in element.attrib:
                 style_dict[key] = element.get(key)
-        
+
         stroke_props = None
         if 'stroke' in style_dict and style_dict['stroke'] != 'none':
             color = self._parse_color(style_dict['stroke'])
@@ -545,7 +556,7 @@ class SVGParser:
                 line_join=linejoin,
                 miter_limit=miter_limit
             )
-        
+
         fill_props = None
         if 'fill' in style_dict and style_dict['fill'] != 'none':
             color = self._parse_color(style_dict['fill'])
@@ -554,68 +565,82 @@ class SVGParser:
             fill_rule_str = style_dict.get('fill-rule', 'nonzero')
             fill_rule = EvenOddFillRule() if fill_rule_str == 'evenodd' else NonZeroWindingFillRule()
             fill_props = FillProperties(color=color, rule=fill_rule)
-        
+
         return stroke_props, fill_props
-    
+
     def _parse_color(self, color_str: str) -> Tuple[int, int, int, int]:
-        color = (0, 0, 0, 255)
+        color = (0, 0, 0, 255)  # default black
         if not color_str:
             return color
+
         color_str = color_str.strip().lower()
+
         if color_str == 'currentcolor':
             return color  # TODO: Implement currentColor inheritance
+
         if color_str.startswith('#'):
-            if len(color_str) == 4:
+            if len(color_str) == 4:  # #RGB
                 r = int(color_str[1], 16) * 17
                 g = int(color_str[2], 16) * 17
                 b = int(color_str[3], 16) * 17
                 return (r, g, b, 255)
-            elif len(color_str) == 7:
+            elif len(color_str) == 7:  # #RRGGBB
                 r = int(color_str[1:3], 16)
                 g = int(color_str[3:5], 16)
                 b = int(color_str[5:7], 16)
                 return (r, g, b, 255)
-            elif len(color_str) == 9:
+            elif len(color_str) == 9:  # #RRGGBBAA
                 r = int(color_str[1:3], 16)
                 g = int(color_str[3:5], 16)
                 b = int(color_str[5:7], 16)
                 a = int(color_str[7:9], 16)
                 return (r, g, b, a)
+
+        # rgb() colors
         rgb_match = re.match(r'rgb\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*\)', color_str)
         if rgb_match:
             r = int(rgb_match.group(1)) if '%' not in rgb_match.group(1) else int(float(rgb_match.group(1)[:-1]) * 255 / 100)
             g = int(rgb_match.group(2)) if '%' not in rgb_match.group(2) else int(float(rgb_match.group(2)[:-1]) * 255 / 100)
             b = int(rgb_match.group(3)) if '%' not in rgb_match.group(3) else int(float(rgb_match.group(3)[:-1]) * 255 / 100)
             return (r, g, b, 255)
+
+        # rgba() colors
         rgba_match = re.match(r'rgba\(\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*(\d+%?)\s*,\s*([0-9.]+)\s*\)', color_str)
         if rgba_match:
             r = int(rgba_match.group(1)) if '%' not in rgba_match.group(1) else int(float(rgba_match.group(1)[:-1]) * 255 / 100)
-            g = int(rgba_match.group(2)) if '%' not in rgb_match.group(2) else int(float(rgba_match.group(2)[:-1]) * 255 / 100)
-            b = int(rgba_match.group(3)) if '%' not in rgb_match.group(3) else int(float(rgba_match.group(3)[:-1]) * 255 / 100)
+            g = int(rgba_match.group(2)) if '%' not in rgba_match.group(2) else int(float(rgba_match.group(2)[:-1]) * 255 / 100)
+            b = int(rgba_match.group(3)) if '%' not in rgba_match.group(3) else int(float(rgba_match.group(3)[:-1]) * 255 / 100)
             a = int(float(rgba_match.group(4)) * 255)
             return (r, g, b, a)
+
+        # hsl() colors
         hsl_match = re.match(r'hsl\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)', color_str)
         if hsl_match:
             h, s, l = int(hsl_match.group(1)) / 360, int(hsl_match.group(2)) / 100, int(hsl_match.group(3)) / 100
             r, g, b = self._hsl_to_rgb(h, s, l)
             return (r, g, b, 255)
+
+        # hsla() colors
         hsla_match = re.match(r'hsla\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*,\s*([0-9.]+)\s*\)', color_str)
         if hsla_match:
             h, s, l = int(hsla_match.group(1)) / 360, int(hsla_match.group(2)) / 100, int(hsla_match.group(3)) / 100
             r, g, b = self._hsl_to_rgb(h, s, l)
             a = int(float(hsla_match.group(4)) * 255)
             return (r, g, b, a)
+
         named_colors = {
             'black': (0, 0, 0, 255), 'white': (255, 255, 255, 255), 'red': (255, 0, 0, 255),
             'green': (0, 128, 0, 255), 'blue': (0, 0, 255, 255), 'yellow': (255, 255, 0, 255),
             'cyan': (0, 255, 255, 255), 'magenta': (255, 0, 255, 255), 'silver': (192, 192, 192, 255),
             'gray': (128, 128, 128, 255), 'maroon': (128, 0, 0, 255), 'olive': (128, 128, 0, 255),
             'purple': (128, 0, 128, 255), 'teal': (0, 128, 128, 255), 'navy': (0, 0, 128, 255)
+            # more named colors as needed ..
         }
         if color_str in named_colors:
             return named_colors[color_str]
+
         return color
-    
+
     def _hsl_to_rgb(self, h: float, s: float, l: float) -> Tuple[int, int, int]:
         if s == 0:
             r = g = b = int(l * 255)
@@ -633,7 +658,7 @@ class SVGParser:
             g = int(hue_to_rgb(p, q, h) * 255)
             b = int(hue_to_rgb(p, q, h - 1/3) * 255)
         return (r, g, b)
-    
+
     def render_to_image(self, output_path: str, width: int = None, height: int = None) -> None:
         if width is None:
             width = int(self.width)
@@ -646,25 +671,25 @@ class SVGParser:
         print(f"SVG dimensions: {self.width}x{self.height}, ViewBox: {self.view_box}")
         print(f"PreserveAspectRatio: {self.preserve_aspect_ratio}")
         print(f"Number of paths parsed: {len(self.paths)}")
-        
+
         rasterizer = AntiAliasedRasterizer(width, height)
         scale_x, scale_y = 1.0, 1.0
         translate_x, translate_y = 0.0, 0.0
-        
+
         src_width = self.width
         src_height = self.height
         if self.view_box:
             src_width = self.view_box[2]
             src_height = self.view_box[3]
-        
+
         if src_width <= 0 or src_height <= 0:
             print("Warning: Invalid source dimensions, using output dimensions")
             src_width = width
             src_height = height
-        
+
         src_aspect = src_width / src_height
         dst_aspect = width / height
-        
+
         # Parse preserveAspectRatio
         align, meet_or_slice = self.preserve_aspect_ratio.split()
         align_x, align_y = 'mid', 'mid'
@@ -710,13 +735,14 @@ class SVGParser:
         
         print(f"Transformation: scale=({scale_x}, {scale_y}), translate=({translate_x + vb_offset_x}, {translate_y + vb_offset_y})")
         
+        leng = len(self.paths)-1
         for i, path_data in enumerate(self.paths):
             path = path_data['path']
             stroke_props = path_data['stroke']
             fill_props = path_data['fill']
             element_transform = path_data.get('transform')
             
-            print(f"Path {i}:")
+            print(f"Path {i}/{leng}:")
             print(f"  Elements: {len(path.elements)}")
             print(f"  Closed: {path.closed}")
             print(f"  Stroke: {stroke_props}")
@@ -724,10 +750,10 @@ class SVGParser:
             print(f"  Transform: {element_transform}")
             
             transformed_path = path.copy()
-            # Apply element-level transform
+
             if element_transform:
                 transformed_path = transformed_path.transform(*element_transform)
-            # Apply viewport transform
+
             transformed_path = transformed_path.transform(
                 scale_x, 0, 0, scale_y,
                 (translate_x + vb_offset_x) * scale_x,
@@ -739,7 +765,7 @@ class SVGParser:
                 rasterizer.fill_path(transformed_path, fill_props)
             if stroke_props:
                 scaled_stroke = StrokeProperties(
-                    width=stroke_props.width * (scale_x + scale_y) / 2,  # Average scale for stroke
+                    width=stroke_props.width * (scale_x + scale_y) / 2,  # average scale for stroke
                     color=stroke_props.color,
                     line_cap=stroke_props.line_cap,
                     line_join=stroke_props.line_join,
@@ -765,17 +791,17 @@ class SVGRenderer:
 
 if __name__ == "__main__":
     import sys
-    
+
     if len(sys.argv) < 3 or len(sys.argv) > 5:
         print(f"Usage: {sys.argv[0]} input.svg output.png [width] [height]")
         sys.exit(1)
-        
+
     svg_path = sys.argv[1]
     output_path = sys.argv[2]
-    
+
     width = None
     height = None
-    
+
     if len(sys.argv) >= 4:
         try:
             width = int(sys.argv[3])
@@ -788,5 +814,5 @@ if __name__ == "__main__":
         except ValueError:
             print("Error: height must be an integer")
             sys.exit(1)
-        
+
     SVGRenderer.render(svg_path, output_path, width, height)
