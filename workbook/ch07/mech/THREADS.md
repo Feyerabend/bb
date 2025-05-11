@@ -159,10 +159,6 @@ async fn handle_connection() {
 }
 ```
 
-- *Processes*: Offering strong isolation via separate memory spaces, processes (e.g., Python's `multiprocessing`)
-  are heavyweight but robust for parallel tasks.
-
-
 Async I/O:
 
 ```mermaid
@@ -185,6 +181,10 @@ graph TD
     style Q fill:#f0f0f0,stroke:#666
     style T1,T2,T3 fill:#e6ffe6,stroke:#33cc33
 ```
+
+- *Processes*: Offering strong isolation via separate memory spaces, processes (e.g., Python's `multiprocessing`)
+  are heavyweight but robust for parallel tasks.
+
 
 
 ### Modern Implementations
