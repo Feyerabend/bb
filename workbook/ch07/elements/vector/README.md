@@ -7,12 +7,12 @@ this philosophy to *architecture*, reframing it not as a static blueprint, but a
 tool that shapes how we reason about systems.
 
 In this model, code and architecture work in tandem:
-* Code materialises ideas (turning discussions into tangible artifacts).
-* Architecture frames understanding (guiding how we organise, critique, and evolve those ideas).
+* *Code* materialises ideas (turning discussions into tangible artifacts).
+* *Architecture* frames understanding (guiding how we organise, critique, and evolve those ideas).
 
 Together, they form a "thinking module"--a feedback loop where building software becomes inseparable
 from understanding it. We also have the glue:
-* LLMs are the glue, turning ambiguity into actionable dialogue.
+* *LLMs* are the glue, turning ambiguity into actionable dialogue.
 
 By treating architecture as a living process--not a one-time artifact--we create systems that adapt
 as fluidly as our understanding of the problem itself.
@@ -22,7 +22,7 @@ as fluidly as our understanding of the problem itself.
 
 Software development, at its best, is a dance between the concrete and the conceptual. To craft systems
 that resonate with both human intent and technical rigor, we must treat architecture not as a rigid
-scaffold but as a shared language—a way to *think through* problems as much as to solve them. This is
+scaffold but as a shared language--a way to *think through* problems as much as to solve them. This is
 where code becomes more than instructions; it becomes a medium for collective reasoning, and where large
 language models (LLMs) emerge as partners in the dialogue, bridging intuition and structure.  
 
@@ -71,7 +71,8 @@ This approach treats architecture as a byproduct of iterative discovery, not a p
 - LLM Role: Use LLMs to *mirror and challenge* the team's assumptions. For example:  
   - After prototyping, ask the LLM: *"What architectural patterns are implied by this code structure?"*  
   - Generate *counterfactuals*: *"How would this feature change if we needed to support 10x more users?"*  
-  - Turn code commits into architectural insights: *"Your recent changes suggest a move toward event sourcing. Here's a primer."*
+  - Turn code commits into architectural insights: *"Your recent changes suggest a move toward event
+    sourcing. Here's a primer."*
 
 [^verb]: Robinson, S. (2021[2021]). *Architecture is a verb*. New York: Routledge, Taylor & Francis Group.
 
@@ -80,9 +81,12 @@ This approach treats architecture as a byproduct of iterative discovery, not a p
 Instead of "big design up front," define lightweight architectural guardrails (such as "APIs must be stateless,"
 "Data layers are decoupled").  
 - LLM Integration:  
-  - Automate guardrail enforcement: *"This new database query violates the ‘no direct UI-DB coupling' rule. Refactor using a service layer."*  
-  - Generate *evolutionary pathways*: *"To scale this module, here are three incremental steps: caching → read replicas → sharding."*  
-  - Suggest antifragile patterns[^anti]: *"This component is a single point of failure. Here's how to add redundancy."*
+  - Automate guardrail enforcement: *"This new database query violates the ‘no direct UI-DB coupling' rule.
+    Refactor using a service layer."*  
+  - Generate *evolutionary pathways*: *"To scale this module, here are three incremental steps:
+    caching → read replicas → sharding."*  
+  - Suggest antifragile patterns[^anti]: *"This component is a single point of failure. Here's how to
+    add redundancy."*
 
 [^anti]: Taleb, N.N. (2012). *Antifragile: things that gain from disorder*. (International ed.) New York: Random House.
 
@@ -91,10 +95,11 @@ Instead of "big design up front," define lightweight architectural guardrails (s
 The "constructive analysis" mirrors the Lean principle of *"building to learn"* rather than building to spec.  
 - Process Integration:  
   - *Phase 0: Hypothesis Sketch*  
-    Before coding, use LLMs to simulate *"What if?"* scenarios (e.g., *"Simulate how this feature behaves under 3 different architectural styles"*).  
+    Before coding, use LLMs to simulate *"What if?"* scenarios (e.g., *"Simulate how this feature behaves
+    under 3 different architectural styles"*).  
   - *Phase 2 (Prototype): Architectural Debt Testing*  
-    Intentionally build a "quick and dirty" prototype, then task the LLM with auditing it for hidden debt: *"This API has no rate limiting—here's
-    how that could fail."*  
+    Intentionally build a "quick and dirty" prototype, then task the LLM with auditing it for hidden debt:
+    *"This API has no rate limiting—here's how that could fail."*  
 
 ### 4. LLMs as Collaborative Sense-Makers
 
@@ -109,8 +114,10 @@ Position LLMs not just as code generators, but as context-aware partners in arch
 ### 5. The Feedback Flywheel
 
 The process emphasises continuous validation. Extend this to architecture:  
-1. Build → 2. Analyze (LLM: *"What patterns did we just codify?"*) → 3. Refine (LLM: *"How might this limit future flexibility?"*) → Repeat.  
-- Example: After adding a caching layer, the LLM flags: *"This manual cache-invalidation logic is error-prone. Consider a publish-subscribe model."*
+1. Build → 2. Analyze (LLM: *"What patterns did we just codify?"*) → 3. Refine (LLM: *"How might this limit
+   future flexibility?"*) → Repeat.  
+- Example: After adding a caching layer, the LLM flags: *"This manual cache-invalidation logic is error-prone.
+  Consider a publish-subscribe model."*
 
 ### 6. When Crafting Fits Best and When It Doesn't
 
@@ -124,9 +131,11 @@ It may struggle in:
 ### 7. The Ethics of Crafting with LLMs
 
 Acknowledge risks:  
-- Overconfidence in LLM Suggestions: Mitigate with *"Why?"* prompts (e.g., *"Explain why you recommended microservices here"*).  
+- Overconfidence in LLM Suggestions: Mitigate with *"Why?"* prompts (e.g., *"Explain why you recommended
+  microservices here"*).  
 - Loss of Human Agency: Keep architects in the loop. Use LLMs as *"thought expanders,"* not decision-makers.  
-- Bias in Training Data: Audit LLM output for "default" assumptions (e.g., *"Why are you assuming cloud-native? Could this work on-prem?"*).
+- Bias in Training Data: Audit LLM output for "default" assumptions (e.g., *"Why are you assuming cloud-native?
+  Could this work on-prem?"*).
 
 ### 8. A New Metaphor: Architecture as Gardening
 
@@ -149,5 +158,5 @@ Replace "building architecture" with "gardening architecture":
 This approach, augmented by LLMs, reimagines software development as guided evolution. Architecture becomes a living
 artifact, shaped by continuous feedback, constructive tinkering, and collaborative sense-making. The LLM acts as a mirror,
 reflecting assumptions, and a lens, magnifying hidden opportunities. Success hinges on balancing human intuition with
-machine-scale pattern recognition—a true craft for the AI age.
+machine-scale pattern recognition--a true craft for the AI age.
 
