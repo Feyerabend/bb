@@ -1,7 +1,7 @@
 
 ## IDEAS: Intelligent Development with Enhanced Assistance and Support
 
-Version 0.1: Draft Model.
+*Version 0.1: Draft Model.*
 
 
 #### Phase 1: Communicate: Understand the Problem
@@ -87,7 +87,7 @@ Activities:
 |Validate	|Align with evolving understanding	|Summarise progress, auto-generate reports|
 |Harden	|Optimise & deploy	|Review code, generate docs & scripts|
 
-Process: Communicate → Familiar Prototype → Data Landscape → Incremental Build → Validate → Harden.
+Process: *Communicate → Familiar Prototype → Data Landscape → Incremental Build → Validate → Harden.*
 
 
 #### Key Principles

@@ -83,7 +83,8 @@ A *crafting approach* prioritises code as a tool for thinking, enabled by LLMs:
 
 TDD prioritises certainty over curiosity, which stifles innovation in ambiguous domains. The solution is to *stage rigour*:  
 1. Use crafting and LLMs to navigate uncertainty.  
-2. Apply TDD and architecture to codify stable paths. The harden code phase.  
+2. Apply TDD and architecture to codify stable paths.
+   Use as soon as possible, don't wait for the harden code phase.  
 3. Let LLMs bridge the gap between exploration and discipline.  
 
 The future lies in tools that embrace both--code as a dialogue between the unknown and the engineered.
