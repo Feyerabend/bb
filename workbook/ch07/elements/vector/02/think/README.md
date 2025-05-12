@@ -166,13 +166,13 @@ graph LR
     DS[Delivery Steward]
 
     %% Layers / Artifacts
-    DM[Domain Models<br>(Communicate)]
-    UI[UI Mockups<br>(Prototype)]
-    DA[Data Schemas<br>(Map Data)]
-    LM[Logic Modules<br>(Build Logic)]
-    TS[Test Suites<br>(Validate)]
-    DP[Deploy Scripts<br>(Harden & Deliver)]
-    FB[Insights<br>(Feedback)]
+    DM[Domain Models <br/> (Communicate)]
+    UI[UI Mockups <br/> (Prototype)]
+    DA[Data Schemas <br/> (Map Data)]
+    LM[Logic Modules <br/> (Build Logic)]
+    TS[Test Suites <br/> (Validate)]
+    DP[Deploy Scripts <br/> (Harden & Deliver)]
+    FB[Insights <br/> (Feedback)]
 
     %% Interactions
     IC --> DM
