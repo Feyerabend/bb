@@ -1,3 +1,46 @@
+
+
+```mermaid
+graph TD
+    A[basic_interpreter.py] --> B[basic_tokenizer.py]
+    A --> C[basic_evaluator.py]
+    A --> D[basic_commands.py]
+    A --> E[basic_utils.py]
+    D --> B
+    D --> C
+    D --> E
+    D --> F[basic_shared.py]
+    D --> G[basic_expressions.py]
+    C --> G
+    C --> F
+    B --> F
+    E --> B
+    E --> H[basic_parser.py]
+    H --> G
+    H --> F
+    G --> F
+```
+
+```mermaid
+graph TD
+    A[Start: User Input] --> B{Is Line Number Present?}
+    B -->|Yes| C[Store Code with Line Number]
+    B -->|No| D[Tokenize Input]
+    C --> E[Program Loaded]
+    D --> F[Parse Tokens]
+    F --> G[Evaluate Expression]
+    G --> H{Is Command?}
+    H -->|Yes| I[Execute Command]
+    H -->|No| J[Assign Variable/Array]
+    I --> K[Update State]
+    J --> K
+    K --> L{Program Running?}
+    L -->|Yes| M[Fetch Next Line]
+    M --> B
+    L -->|No| N[End]
+```
+
+```mermaid
 classDiagram
     class Expression {
         <<abstract>>
@@ -72,3 +115,6 @@ classDiagram
     ParsedCommand <|-- InputCommand
     ParsedCommand <|-- LetCommand
     Command --> InterpreterState : contains
+```
+
+
