@@ -67,42 +67,7 @@ regenerable artifacts that:
 - Embed *intent* alongside *implementation* (in the form of preliminary code)
 
 
-### Revised Phases — Architectural Activities
-
-__1. Communicate (Domain)__
-
-* Artifacts = Conversational Domain Models
-* LLM Role = Extract domain language, goals, contradictions
-
-__2. Prototype (Interface)__
-
-* Artifacts = Interactive Mock Dialogs, UI Scenarios
-* LLM Role = Generate UI flows, simulate interactions
-
-__3. Map Data (Data)__
-
-* Artifacts = Generative Schemas, Data Profiles
-* LLM Role = Extract schemas, profile datasets, generate synthetic data
-
-__4. Build Logic (Logic)__
-
-* Artifacts = Intent-backed Code Modules
-* LLM Role = Scaffold modules, refactor logic, inject tests
-
-__5. Validate (Validation)__
-
-* Artifacts = Test suites tied to user intent
-* LLM Role = Generate tests from scenarios, monitor coverage
-
-__6. Harden & Deliver (Delivery)__
-
-* Artifacts = Self-updating pipelines, secured configs
-* LLM Role = Write deployment scripts, check security patterns
-
-__7. Feedback Loop (Feedback)__
-
-* Artifacts = Continuous Insight Streams (feedback + telemetry)
-* LLM Role = Summarise feedback, suggest refinements
+### Revised Phases: Architectural Activities
 
 
 | Phase | Artifacts | LLM Role |
