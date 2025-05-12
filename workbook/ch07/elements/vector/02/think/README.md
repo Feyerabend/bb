@@ -59,9 +59,9 @@ graph TD
 
 #### Core Concept: Regenerable Artifacts
 
-Instead of static artifacts--requirements, code, tests, docs, all disconnected--we build LLM-coupled,
+Instead of static artifacts--*requirements*, *code*, *tests*, *docs*, all disconnected--we build LLM-coupled,
 regenerable artifacts that:
-- Can be re-synthesised or auto-refreshed from evolving goals
+- Can be re-synthesised or auto-refreshed from *evolving goals*
 - Stay synchronised (if code changes, tests and docs update semi-automatically, or manually)
 - Embed *intent* alongside *implementation* (in the form of preliminary code)
 
@@ -103,11 +103,11 @@ flowchart TD
 | *Delivery Steward* | Deploy, secure | Script gen, infra-as-code supervision |
 
 
-Summary
-- The code is not central anymore--intent is.
-- Artifacts (code, tests, docs) become views over evolving intent models.
-- LLM is a co-orchestrator, regenerating artifacts as intent evolves.
-- Architecture is fluid, enabling faster shifts and continuous synchronisation.
+#### Summary
+- The code is *not* central anymore--intent is.
+- Artifacts (code, tests, docs) become views over *evolving intent models*.
+- LLM is a *co-orchestrator*, regenerating artifacts as intent evolves.
+- Architecture is *fluid*, enabling faster shifts and continuous synchronisation.
 
 
 #### Role Interaction Diagram
