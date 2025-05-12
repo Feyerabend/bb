@@ -157,24 +157,26 @@ flowchart TD
 
 ### Role Interaction Diagram (Fixed)
 
+### Role Interaction Diagram (Corrected for GitHub)
+
 ```mermaid
 graph LR
     %% Roles
-    IC[Intent Curator]
-    PS[Prototype Sculptor]
-    DC[Data Cartographer]
-    MO[Module Orchestrator]
-    VA[Validator]
-    DS[Delivery Steward]
+    IC["Intent Curator"]
+    PS["Prototype Sculptor"]
+    DC["Data Cartographer"]
+    MO["Module Orchestrator"]
+    VA["Validator"]
+    DS["Delivery Steward"]
 
     %% Layers / Artifacts
-    DM[Domain Models\\n(Communicate)]
-    UI[UI Mockups\\n(Prototype)]
-    DA[Data Schemas\\n(Map Data)]
-    LM[Logic Modules\\n(Build Logic)]
-    TS[Test Suites\\n(Validate)]
-    DP[Deploy Scripts\\n(Harden & Deliver)]
-    FB[Insights\\n(Feedback)]
+    DM["Domain Models (Communicate)"]
+    UI["UI Mockups (Prototype)"]
+    DA["Data Schemas (Map Data)"]
+    LM["Logic Modules (Build Logic)"]
+    TS["Test Suites (Validate)"]
+    DP["Deploy Scripts (Harden & Deliver)"]
+    FB["Insights (Feedback)"]
 
     %% Interactions
     IC --> DM
@@ -200,5 +202,4 @@ graph LR
     VA --> FB
     DS --> FB
 ```
-
 
