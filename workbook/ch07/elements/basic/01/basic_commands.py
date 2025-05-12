@@ -171,6 +171,7 @@ class DimCommand(ParsedCommand):
         
         return declarations
 
+
 class PrintCommand(ParsedCommand):
     def __init__(self, state: InterpreterState, parser_factory: Callable[[List[Token]], Any] = create_parser):
         super().__init__(state, parser_factory)
@@ -182,35 +183,38 @@ class PrintCommand(ParsedCommand):
             print()
             return
 
-        trailing_semicolon = args.strip().endswith(";")
-        args = args.rstrip(";").rstrip() if trailing_semicolon else args
-
         self.current_pos = 0
         self.output_parts = []
 
+        # Split on semicolons and commas, preserving trailing semicolon
         expressions = self.split_expressions(args)
+        trailing_semicolon = args.rstrip().endswith(";") and not args.rstrip().endswith(" ")
+
         for expr in expressions:
             expr = expr.strip()
             if not expr:
                 continue
-            self._process_expression(expr)
+            try:
+                self._process_expression(expr)
+            except Exception as e:
+                print(f"Error processing expression '{expr}': {e}")
+                self.output_parts.append("0")  # Default output on error
+                self.current_pos += 1
 
         self._finalize_output(trailing_semicolon)
 
     def _process_expression(self, expr: str) -> None:
-        try:
-            if expr == ",":
-                self._handle_comma_spacing()
-            elif expr.upper().startswith("TAB("):
-                self._handle_tab(expr)
-            elif expr.upper().startswith("USING"):
-                self._handle_using(expr)
-            else:
-                self._handle_regular_expression(expr)
-        except Exception as e:
-            print(f"Error processing expression '{expr}': {e}")
+        if expr == ",":  # Handle comma for spacing
+            self._handle_comma_spacing()
+        elif expr.upper().startswith("TAB("):
+            self._handle_tab(expr)
+        elif expr.upper().startswith("USING"):
+            self._handle_using(expr)
+        else:
+            self._handle_regular_expression(expr)
 
-    def _handle_comma_spacing(self) -> None: # 8 spaces
+    def _handle_comma_spacing(self) -> None:
+        # Add 8 spaces or align to next 8-space boundary
         spaces_needed = 8 - (self.current_pos % 8) if self.current_pos % 8 != 0 else 8
         self.output_parts.append(" " * spaces_needed)
         self.current_pos += spaces_needed
@@ -251,12 +255,19 @@ class PrintCommand(ParsedCommand):
     def _handle_regular_expression(self, expr: str) -> None:
         try:
             result = self.parse_expression(expr)
-            formatted = (f"{result:.6f}".rstrip("0").rstrip(".") if isinstance(result, float)
-                        else str(result))
+            if isinstance(result, str):
+                formatted = result
+            elif isinstance(result, float):
+                formatted = f"{result:.6f}".rstrip("0").rstrip(".") if result != int(result) else str(int(result))
+            else:
+                formatted = str(result)
+            print(f"DEBUG: Evaluated '{expr}' to {formatted}")
             self.output_parts.append(formatted)
             self.current_pos += len(formatted)
         except Exception as e:
             print(f"Error evaluating expression '{expr}': {e}")
+            self.output_parts.append("0")
+            self.current_pos += 1
 
     def _finalize_output(self, trailing_semicolon: bool) -> None:
         print("".join(self.output_parts), end="" if trailing_semicolon else "\n", flush=True)
@@ -289,11 +300,12 @@ class PrintCommand(ParsedCommand):
                 paren_count -= 1
                 current.append(char)
             
-            elif char == ',' and paren_count == 0 and not in_string:
+            elif char in (',', ';') and paren_count == 0 and not in_string:
                 expression = ''.join(current).strip()
                 if expression:
                     expressions.append(expression)
-                expressions.append(",")  # comma to separate expression
+                if char == ',':
+                    expressions.append(",")  # Comma for spacing
                 current = []
             
             else:
@@ -306,12 +318,6 @@ class PrintCommand(ParsedCommand):
             expressions.append(expression)
         
         return expressions
-
-    def process_string(self, content: str, quote_char: str) -> str:
-        print(f"DEBUG: process_string start: content='{content}', quote_char='{quote_char}'")
-        processed = content
-        print(f"DEBUG: process_string result: '{processed}'")
-        return processed
 
     def format_using(self, value: float, format_str: str) -> str:
         if format_str == "#.##":
@@ -437,8 +443,9 @@ class LetCommand(ParsedCommand):
             value = self.parse_expression(expr)
             if isinstance(value, float) and value.is_integer():
                 value = int(value)
-            adjusted_indices = [idx - 1 for idx in indices]  # 0-based for internal storage
+            adjusted_indices = [idx - 1 for idx in indices]
             index_tuple = tuple(adjusted_indices)
+            print(f"DEBUG: Assigning {value} to array {name} at indices {indices} -> adjusted {adjusted_indices}")
             self.state.arrays[name][index_tuple] = value
         except Exception as e:
             raise ParserError(f"Failed to assign value to array '{name}': {e}")
@@ -1118,6 +1125,57 @@ class NewCommand(Command):
         self.state.reset()
         print("Program cleared.")
 
+class HelpCommand(Command):
+    def __init__(self, state: InterpreterState):
+        super().__init__(state)
+        self.command_help = {
+            "dim": "DIM var(size) - Declares an array with specified size (1D or 2D).",
+            "print": "PRINT expr[;] - Prints expressions, strings, or numbers; semicolon suppresses newline.",
+            "input": "INPUT [prompt;] var - Prompts for input and stores in variable or array.",
+            "goto": "GOTO line - Jumps to the specified line number.",
+            "if": "IF condition THEN stmt [ELSE stmt] - Executes statement if condition is true.",
+            "run": "RUN [line] - Runs the program from the start or specified line.",
+            "trace": "TRACE [line] - Runs the program with line-by-line tracing.",
+            "let": "LET var = expr - Assigns a value to a variable or array element.",
+            "gosub": "GOSUB line - Calls a subroutine at the specified line.",
+            "return": "RETURN - Returns from a subroutine.",
+            "for": "FOR var = start TO end [STEP step] - Starts a loop with a variable.",
+            "next": "NEXT [var] - Ends a FOR loop and increments the loop variable.",
+            "list": "LIST [start-end] - Lists program lines, optionally within a range.",
+            "ren": "RENUMBER [start, increment] - Renumbers program lines.",
+            "del": "DELETE [start-end] - Deletes program lines in the specified range.",
+            "while": "WHILE condition - Starts a loop while condition is true.",
+            "wend": "WEND - Ends a WHILE loop.",
+            "bye": "BYE - Exits the interpreter.",
+            "stop": "STOP - Pauses the program execution.",
+            "end": "END - Ends the program and resets state.",
+            "continue": "CONTINUE - Resumes a paused program.",
+            "reset": "RESET - Resets interpreter state, preserving code.",
+            "save": "SAVE \"filename\" - Saves the program to a file.",
+            "load": "LOAD \"filename\" - Loads a program from a file.",
+            "new": "NEW - Clears the program and resets state.",
+            "rem": "REM comment - Adds a comment (ignored by interpreter).",
+            "cls": "CLS - Clears the screen.",
+            "help": "HELP [command] - Displays list of commands or help for a specific command."
+        }
+
+    def execute(self, args: str) -> None:
+        args = args.strip().lower()
+        if args:
+            # Display help for a specific command
+            if args in self.command_help:
+                print(self.command_help[args])
+            else:
+                print(f"No help available for '{args}'. Type HELP for a list of commands.")
+        else:
+            # Display all commands
+            print("Available BASIC Commands:")
+            print("-" * 40)
+            for cmd, description in sorted(self.command_help.items()):
+                print(f"{cmd.upper():<10} {description}")
+            print("-" * 40)
+            print("Type HELP command for details on a specific command.")
+
 class CommandFactory:
     _reserved_functions = {
         "sin", "cos", "tan", "atn", "abs", "sqr", "log", "exp", "int", "rnd",
@@ -1156,7 +1214,8 @@ class CommandFactory:
         "load": LoadCommand,
         "new": NewCommand,
         "rem": RemCommand,
-        "cls": ClsCommand
+        "cls": ClsCommand,
+        "help": HelpCommand,
     }
     
     _parser_factory = None
@@ -1234,6 +1293,7 @@ def split_statements(line: str) -> List[str]:
     
     return statements
 
+
 class InterpreterEngine:
     def __init__(self):
         self.state = InterpreterState()
@@ -1264,25 +1324,26 @@ class InterpreterEngine:
     
     def execute_line(self, line: str) -> None:
         line = line.strip()
-        if not line:
-            return
+        if not line or line.startswith("DEBUG:") or line.startswith("Parsed expression:"):
+            return  # Skip debug output
         
         statements = split_statements(line)
         for statement in statements:
-            statement = statement.strip()  # Ensure statement is stripped
+            statement = statement.strip()
             if not statement:
                 continue
             
             parts = statement.split(None, 1)
-            if not parts:  # Check if parts is empty
+            if not parts:
                 continue
                 
             cmd = parts[0].lower()
-            if not cmd:  # Check if cmd is empty
-                continue
-                
             args = parts[1] if len(parts) > 1 else ""
             
+            # Skip if cmd is a loop variable or expression
+            if cmd in self.state.variables or cmd in self.state.loops:
+                continue
+                
             command = CommandFactory.create_command(cmd, self.state)
             if command:
                 command.execute(args)

@@ -34,7 +34,13 @@ class ParseBasic:
         return NumberExpression(0)
 
     def parse_expression(self) -> Expression:
-        return self.parse_comparison()
+        try:
+            expr = self.parse_comparison()
+            print(f"DEBUG: Parsed expression: {expr}")
+            return expr
+        except Exception as e:
+            print(f"DEBUG: Error parsing expression: {e}")
+            return NumberExpression(0)  # Return default on error
 
     def parse_comparison(self) -> Expression:
         left = self.parse_term()
@@ -119,13 +125,16 @@ class ParseBasic:
         return FunctionExpression(name, args)
 
     def _parse_array(self, name: str, position: int) -> ArrayExpression:
-        """Parse an array access with indices."""
-        self.pos += 1  #  LPAREN
-        indices = self._parse_arguments(position)
-        if self.pos >= self.length or self.tokens[self.pos].type != "RPAREN":
-            raise ParserError(f"Expected RPAREN at position {position}")
-        self.pos += 1  #  RPAREN
-        return ArrayExpression(name, indices)
+        try:
+            self.pos += 1  # LPAREN
+            indices = self._parse_arguments(position)
+            if self.pos >= self.length or self.tokens[self.pos].type != "RPAREN":
+                raise ParserError(f"Expected RPAREN at position {position}")
+            self.pos += 1  # RPAREN
+            return ArrayExpression(name, indices)
+        except Exception as e:
+            print(f"DEBUG: Error parsing array '{name}': {e}")
+            return ArrayExpression(name, [NumberExpression(0)])
 
     def _parse_arguments(self, position: int) -> List[Expression]:
         args = []

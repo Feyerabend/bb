@@ -35,6 +35,7 @@ class Evaluator:
             for i, idx in enumerate(indices):
                 if not (1 <= idx <= dims[i] - 1):
                     raise ValueError(f"Index {idx} out of bounds for array '{expr.name}' dimension {i}")
+            print(f"DEBUG: Accessing array {expr.name} at indices {indices} -> adjusted {adjusted_indices}") # ----<
             return self.state.arrays[expr.name].get(index_tuple, 0)
         raise ValueError(f"Unknown expression type: {type(expr)}")
 
@@ -126,8 +127,12 @@ class Evaluator:
             return 0
         
         if name in math_functions:
-            return math_functions[name](args)
+            result = math_functions[name](args)
+            print(f"DEBUG: Evaluated function {name} with args {args} to {result}")
+            return result
         if name in string_functions:
-            return string_functions[name](args)
+            result = string_functions[name](args)
+            print(f"DEBUG: Evaluated function {name} with args {args} to {result}")
+            return result
         
         raise ValueError(f"Unknown function: {name}")
