@@ -46,17 +46,17 @@ map of flows, ownerships, and vulnerabilities, drawn in real time.
 
 The *incremental build* is where craft and architecture entwine. Each new feature layers atop the last,
 guided by LLMs that propose patterns, refactor toward coherence, and flag drift: *“This cache bypasses
-security—here's how to reconcile speed and safety.”* Complexity is not avoided but *cultivated*, like
+security--here's how to reconcile speed and safety.”* Complexity is not avoided but *cultivated*, like
 a gardener pruning a tree toward light.  
 
 *Validation* becomes a ritual of reflection. Demos are no longer showcases but checkpoints where LLMs
-generate “architecture diffs”—highlighting how coupling crept in, or how a database choice now clashes
+generate “architecture diffs”--highlighting how coupling crept in, or how a database choice now clashes
 with latency goals. The system evolves not by decree, but through a thousand small corrections, each a
 lesson in balance.  
 
 Finally, *hardening* is not an endpoint, but a handoff. LLMs codify tribal knowledge into decision records
 and deployment scripts, ensuring the architecture's *why* survives its creators. What remains is not just
-software, but a living narrative—a system that understands itself, shaped by the hands that built it and
+software, but a living narrative--a system that understands itself, shaped by the hands that built it and
 the minds that questioned it.  
 
 This is the craft reimagined: code as a conversation, architecture as a compass, and LLMs as the scribes
@@ -99,7 +99,7 @@ The "constructive analysis" mirrors the Lean principle of *"building to learn"* 
     under 3 different architectural styles"*).  
   - *Phase 2 (Prototype): Architectural Debt Testing*  
     Intentionally build a "quick and dirty" prototype, then task the LLM with auditing it for hidden debt:
-    *"This API has no rate limiting—here's how that could fail."*  
+    *"This API has no rate limiting--here's how that could fail."*  
 
 ### 4. LLMs as Collaborative Sense-Makers
 
@@ -107,9 +107,9 @@ Position LLMs not just as code generators, but as context-aware partners in arch
 - Traceability: Link code changes to architectural impact.  
   *"Your recent UI refactor inadvertently increased backend coupling. Here's why."*  
 - Pattern Translation: Convert team discussions into diagrams.  
-  *"You described a ‘gateway for third-party integrations'—here's a REST vs. GraphQL comparison."*  
-- Legacy Decoder: Analyse legacy systems and propose modernization paths.  
-  *"This COBOL module handles payroll. To containerise it, consider these steps..."*
+  *"You described a ‘gateway for third-party integrations'--here's a REST vs. GraphQL comparison."*  
+- Legacy Decoder: Analyse legacy systems and propose modernisation paths.  
+  *"This COBOL module handles payroll. To containerise it, consider these steps.."*
 
 ### 5. The Feedback Flywheel
 
@@ -140,17 +140,17 @@ Acknowledge risks:
 ### 8. A New Metaphor: Architecture as Gardening
 
 Replace "building architecture" with "gardening architecture":  
-- Prune (LLM: *"This unused feature increases complexity—remove it?"*)  
-- Cultivate (LLM: *"The analytics module is growing organically—document its interfaces"*)  
+- Prune (LLM: *"This unused feature increases complexity--remove it?"*)  
+- Cultivate (LLM: *"The analytics module is growing organically--document its interfaces"*)  
 - Compost (LLM: *"This deprecated library can be replaced with modern equivalents"*)  
 
 ### 9. Example Workflow: Crafting a Recommendation Engine
 
 1. Communicate: LLM generates *"What-If"* scenarios (e.g., *"What if users want explanations for recommendations?"*).  
-2. Prototype: Build a simple collaborative filter. LLM suggests *"This won't scale—here's a Redis caching snippet."*  
-3. Data Landscape: LLM analyzes clickstream data, flags *"Bias risk: your data lacks diversity. Mitigation strategies: ..."*  
+2. Prototype: Build a simple collaborative filter. LLM suggests *"This won't scale--here's a Redis caching snippet."*  
+3. Data Landscape: LLM analyzes clickstream data, flags *"Bias risk: your data lacks diversity. Mitigation strategies: .."*  
 4. Incremental Build: Add real-time updates. LLM proposes *"Use WebSockets, but here's the latency tradeoff."*  
-5. Validate: LLM simulates 10k concurrent users, surfaces *"Database locks under load—switch to async processing."*  
+5. Validate: LLM simulates 10k concurrent users, surfaces *"Database locks under load--switch to async processing."*  
 6. Harden: LLM generates Terraform scripts and *"Architecture Decision Records"* for future teams.
 
 ### 10. Takeaways  
