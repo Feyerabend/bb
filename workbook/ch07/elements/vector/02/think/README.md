@@ -5,7 +5,6 @@
 
 LLMs dissolve static artifacts into dynamic, co-evolving artifacts:
 *code*, *docs*, *tests*, and *design* merge into fluid, regenerable models.
-
 The system architecture of LLM-augmented software development:
 
 | Layer | Artifact Today (Static) | LLM-Era Artifact (Dynamic / Regenerable) | Key Role of LLM |
@@ -92,10 +91,6 @@ flowchart TD
 ```
 
 
-### Architecture Layering Diagram
-
-
-
 ### Developer Role
 
 | Role | Focus | LLM-augmented Task |
@@ -115,10 +110,7 @@ Summary
 - Architecture is fluid, enabling faster shifts and continuous synchronisation.
 
 
-
-
-
-### Role Interaction Diagram
+#### Role Interaction Diagram
 
 ```mermaid
 graph LR
