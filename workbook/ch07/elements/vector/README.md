@@ -1,10 +1,10 @@
 
 ## Crafting Programs
 
-We've explored [crafting](./../../../ch06/crafting/) as a hands-on in ch06, iterative approach to
-programming--one that prioritises dialogue and experimentation over rigid plans. Now, let's extend
-this philosophy to *architecture*, reframing it not as a static blueprint, but as a dynamic thinking
-tool that shapes how we reason about systems.
+We've explored [crafting](./../../../ch06/crafting/) as a hands-on in [ch06](./../../../ch06/),
+iterative approach to programming--one that prioritises dialogue and experimentation over rigid
+plans. Now, let's extend this philosophy to *architecture*, reframing it not as a static blueprint,
+but as a dynamic thinking tool that shapes how we reason about systems.
 
 In this model, code and architecture work in tandem:
 * *Code* materialises ideas (turning discussions into tangible artifacts).

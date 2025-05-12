@@ -849,30 +849,30 @@ def main():
     canvas = rasterizer.rasterize(path, canvas_width, canvas_height, black_stroke, light_blue_fill)
     canvas = rasterizer.rasterize(star_path, canvas_width, canvas_height, red_stroke, yellow_fill, canvas)
     canvas = enhanced_rasterizer.rasterize(spiral_path, canvas_width, canvas_height, blue_stroke, existing_canvas=canvas)
-    
+
     save_to_png(canvas, "vector_paths.png", canvas_width, canvas_height)
     print("Image saved to vector_paths.png")
-    
+
     even_odd_path = Path()
     even_odd_path.move_to(250, 200)
     even_odd_path.line_to(350, 200)
     even_odd_path.line_to(350, 300)
     even_odd_path.line_to(250, 300)
     even_odd_path.close()
-    
+
     even_odd_path.move_to(300, 250)
     even_odd_path.line_to(380, 250)
     even_odd_path.line_to(380, 350)
     even_odd_path.line_to(300, 350)
     even_odd_path.close()
-    
+
     even_odd_canvas = rasterizer.rasterize(
         even_odd_path, canvas_width, canvas_height,
         black_stroke, FillProperties(color=(0, 200, 100, 255), rule=EvenOddFillRule())
     )
     save_to_png(even_odd_canvas, "even_odd_fill.png", canvas_width, canvas_height)
     print("Image saved to even_odd_fill.png")
-    
+
     winding_canvas = rasterizer.rasterize(
         even_odd_path, canvas_width, canvas_height,
         black_stroke, FillProperties(color=(0, 200, 100, 255), rule=NonZeroWindingFillRule())
@@ -883,3 +883,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
