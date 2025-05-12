@@ -6,10 +6,7 @@
 LLMs dissolve static artifacts into dynamic, co-evolving artifacts:
 *code*, *docs*, *tests*, and *design* merge into fluid, regenerable models.
 
-
-### System Architecture of LLM-Augmented Software Development
-
-Layered View
+The system architecture of LLM-augmented software development:
 
 | Layer | Artifact Today (Static) | LLM-Era Artifact (Dynamic / Regenerable) | Key Role of LLM |
 |-------|-------------------------|------------------------------------------|-----------------|
@@ -80,6 +77,47 @@ __7. Feedback Loop (Feedback)__
 | *Feedback Loop (Feedback)* | Continuous Insight Streams (feedback + telemetry) | Summarise feedback, suggest refinements |
 
 
+### Architecture Layering Diagram
+
+```mermaid
+graph TD
+    subgraph Feedback Layer
+        L1[Continuous Insights<br>User Reports + Telemetry]
+    end
+
+    subgraph Delivery Layer
+        L2[CI/CD Pipelines<br>Deployment Scripts]
+    end
+
+    subgraph Validation Layer
+        L3[Test Suites<br>Assertions]
+    end
+
+    subgraph Logic Layer
+        L4[Code Modules<br>Intent-backed Logic]
+    end
+
+    subgraph Data Layer
+        L5[Schemas<br>APIs + Data Contracts]
+    end
+
+    subgraph Interface Layer
+        L6[UI Mockups<br>Interactive Flows]
+    end
+
+    subgraph Domain Layer
+        L7[Domain Models<br>Scenarios]
+    end
+
+    L7 --> L6
+    L6 --> L5
+    L5 --> L4
+    L4 --> L3
+    L3 --> L2
+    L2 --> L1
+```
+
+
 ### Developer Role
 
 | Role | Focus | LLM-augmented Task |
@@ -97,4 +135,68 @@ Summary
 - Artifacts (code, tests, docs) become views over evolving intent models.
 - LLM is a co-orchestrator, regenerating artifacts as intent evolves.
 - Architecture is fluid, enabling faster shifts and continuous synchronisation.
+
+
+
+
+
+
+```mermaid
+flowchart TD
+    A[Communicate<br>Understand Domain] --> B[Prototype<br>UI/UX Mockups]
+    B --> C[Map Data<br>Explore Schemas]
+    C --> D[Build Logic<br>Modules]
+    D --> E[Validate<br>Tests + Assertions]
+    E --> F[Harden & Deliver<br>Deploy + Secure]
+    F --> G[Feedback Loop<br>Telemetry + Insights]
+    G --> A
+```
+
+
+### Role Interaction Diagram
+
+```mermaid
+graph LR
+    %% Roles
+    IC[Intent Curator]
+    PS[Prototype Sculptor]
+    DC[Data Cartographer]
+    MO[Module Orchestrator]
+    VA[Validator]
+    DS[Delivery Steward]
+
+    %% Layers / Artifacts
+    DM[Domain Models<br>(Communicate)]
+    UI[UI Mockups<br>(Prototype)]
+    DA[Data Schemas<br>(Map Data)]
+    LM[Logic Modules<br>(Build Logic)]
+    TS[Test Suites<br>(Validate)]
+    DP[Deploy Scripts<br>(Harden & Deliver)]
+    FB[Insights<br>(Feedback)]
+
+    %% Interactions
+    IC --> DM
+    IC --> UI
+
+    PS --> UI
+
+    DC --> DA
+
+    MO --> LM
+    MO --> DA
+
+    VA --> TS
+    VA --> LM
+
+    DS --> DP
+    DS --> TS
+
+    IC --> FB
+    PS --> FB
+    DC --> FB
+    MO --> FB
+    VA --> FB
+    DS --> FB
+```
+
 
