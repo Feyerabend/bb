@@ -155,6 +155,8 @@ flowchart TD
 
 ### Role Interaction Diagram
 
+### Role Interaction Diagram (Fixed)
+
 ```mermaid
 graph LR
     %% Roles
@@ -166,13 +168,13 @@ graph LR
     DS[Delivery Steward]
 
     %% Layers / Artifacts
-    DM[Domain Models <br/> (Communicate)]
-    UI[UI Mockups <br/> (Prototype)]
-    DA[Data Schemas <br/> (Map Data)]
-    LM[Logic Modules <br/> (Build Logic)]
-    TS[Test Suites <br/> (Validate)]
-    DP[Deploy Scripts <br/> (Harden & Deliver)]
-    FB[Insights <br/> (Feedback)]
+    DM[Domain Models\\n(Communicate)]
+    UI[UI Mockups\\n(Prototype)]
+    DA[Data Schemas\\n(Map Data)]
+    LM[Logic Modules\\n(Build Logic)]
+    TS[Test Suites\\n(Validate)]
+    DP[Deploy Scripts\\n(Harden & Deliver)]
+    FB[Insights\\n(Feedback)]
 
     %% Interactions
     IC --> DM
