@@ -1,15 +1,18 @@
 
 ## IDEAS++: Architectural Layer
 
-> The Code is Dead, Long Live the Code
+> *The Code is Dead, Long Live the Code*
 
-We abstract from the previous more individual organic, dialogue-driven craft of "Crafting Programs"
-with a structured, regenerable artifacts in IDEAS++ suggesting that now teams can build systems which
-are both deeply human and technically robust, redefining software development for the AI age.
-This take is mostly for illustrating how evolving development could shape also theoretical standpoints.
-It is not a closed process that we must obey, rather a experimental course to explore.
+The shift from the organic, dialogue-driven "Crafting Programs" to the structured, LLM-augmented "IDEAS++"
+redefines software development by replacing static artifacts like code and docs with dynamic, regenerable
+models synchronised with evolving intent. In IDEAS++, teams navigate a layered architecture--spanning domain
+models, interactive UI prototypes, generative data schemas, and intent-backed code--where LLMs act as
+co-orchestrators, synthesising goals, generating tests, and ensuring artifacts stay aligned. This approach,
+illustrated by workflows like building a hypothetical recommendation engine, balances human intent with technical
+robustness, offering an experimental yet guided path for AI-era development. Teams must curate intent and
+mitigate risks like LLM overconfidence to maintain agency, ensuring a collaborative, ethical process.
 
-LLMs dissolve static artifacts into dynamic, co-evolving artifacts:
+In the IDEAS++ LLMs dissolve static artifacts into dynamic, co-evolving artifacts:
 *code*, *docs*, *tests*, and *design* merge into fluid, regenerable models.
 The system architecture of LLM-augmented software development can be sketched as layers:
 

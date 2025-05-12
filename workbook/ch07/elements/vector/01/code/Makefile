@@ -1,4 +1,4 @@
-.PHONY: all clean run
+.PHONY: all clean run iclean
 
 all: b8 tiger thumb
 
@@ -14,4 +14,9 @@ thumb:
 clean:
 	rm -rf __pycache__
 
-run: all clean
+iclean:
+	rm b8.png
+	rm tiger.png
+	rm thumb.png
+
+run: iclean all clean
