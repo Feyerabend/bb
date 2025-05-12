@@ -57,7 +57,7 @@ graph TD
 ```
 
 
-### Core Concept: Regenerable Artifacts
+#### Core Concept: Regenerable Artifacts
 
 Instead of static artifacts--requirements, code, tests, docs, all disconnected--we build LLM-coupled,
 regenerable artifacts that:
