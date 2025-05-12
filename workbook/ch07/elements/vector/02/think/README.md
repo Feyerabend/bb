@@ -19,6 +19,45 @@ The system architecture of LLM-augmented software development:
 | *6. Feedback* | User Reports, Changelogs | Continuous Insight Streams (Summarised feedback + telemetry) | Insight synthesis, trend summarisation |
 
 
+```mermaid
+graph TD
+    subgraph Feedback Layer
+        L1[Continuous Insights<br>User Reports + Telemetry]
+    end
+
+    subgraph Delivery Layer
+        L2[CI/CD Pipelines<br>Deployment Scripts]
+    end
+
+    subgraph Validation Layer
+        L3[Test Suites<br>Assertions]
+    end
+
+    subgraph Logic Layer
+        L4[Code Modules<br>Intent-backed Logic]
+    end
+
+    subgraph Data Layer
+        L5[Schemas<br>APIs + Data Contracts]
+    end
+
+    subgraph Interface Layer
+        L6[UI Mockups<br>Interactive Flows]
+    end
+
+    subgraph Domain Layer
+        L7[Domain Models<br>Scenarios]
+    end
+
+    L7 --> L6
+    L6 --> L5
+    L5 --> L4
+    L4 --> L3
+    L3 --> L2
+    L2 --> L1
+```
+
+
 ### Core Concept: Regenerable Artifacts
 
 Instead of static artifacts--requirements, code, tests, docs, all disconnected--we build LLM-coupled,
@@ -76,46 +115,20 @@ __7. Feedback Loop (Feedback)__
 | *Harden & Deliver (Delivery)* | Self-updating pipelines, secured configs | Write deployment scripts, check security patterns |
 | *Feedback Loop (Feedback)* | Continuous Insight Streams (feedback + telemetry) | Summarise feedback, suggest refinements |
 
+```mermaid
+flowchart TD
+    A[Communicate<br>Understand Domain] --> B[Prototype<br>UI/UX Mockups]
+    B --> C[Map Data<br>Explore Schemas]
+    C --> D[Build Logic<br>Modules]
+    D --> E[Validate<br>Tests + Assertions]
+    E --> F[Harden & Deliver<br>Deploy + Secure]
+    F --> G[Feedback Loop<br>Telemetry + Insights]
+    G --> A
+```
+
 
 ### Architecture Layering Diagram
 
-```mermaid
-graph TD
-    subgraph Feedback Layer
-        L1[Continuous Insights<br>User Reports + Telemetry]
-    end
-
-    subgraph Delivery Layer
-        L2[CI/CD Pipelines<br>Deployment Scripts]
-    end
-
-    subgraph Validation Layer
-        L3[Test Suites<br>Assertions]
-    end
-
-    subgraph Logic Layer
-        L4[Code Modules<br>Intent-backed Logic]
-    end
-
-    subgraph Data Layer
-        L5[Schemas<br>APIs + Data Contracts]
-    end
-
-    subgraph Interface Layer
-        L6[UI Mockups<br>Interactive Flows]
-    end
-
-    subgraph Domain Layer
-        L7[Domain Models<br>Scenarios]
-    end
-
-    L7 --> L6
-    L6 --> L5
-    L5 --> L4
-    L4 --> L3
-    L3 --> L2
-    L2 --> L1
-```
 
 
 ### Developer Role
@@ -138,19 +151,6 @@ Summary
 
 
 
-
-
-
-```mermaid
-flowchart TD
-    A[Communicate<br>Understand Domain] --> B[Prototype<br>UI/UX Mockups]
-    B --> C[Map Data<br>Explore Schemas]
-    C --> D[Build Logic<br>Modules]
-    D --> E[Validate<br>Tests + Assertions]
-    E --> F[Harden & Deliver<br>Deploy + Secure]
-    F --> G[Feedback Loop<br>Telemetry + Insights]
-    G --> A
-```
 
 
 ### Role Interaction Diagram
