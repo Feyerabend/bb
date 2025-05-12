@@ -155,10 +155,6 @@ flowchart TD
 
 ### Role Interaction Diagram
 
-### Role Interaction Diagram (Fixed)
-
-### Role Interaction Diagram (Corrected for GitHub)
-
 ```mermaid
 graph LR
     %% Roles
