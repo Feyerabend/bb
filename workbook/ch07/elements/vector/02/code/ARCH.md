@@ -1,5 +1,5 @@
 
-```
+```mermaid
 %% #{init: {'theme': 'base', 'themeVariables': { 'fontSize': '12px'}}}%%
 flowchart TD
     %% Main Components
