@@ -28,7 +28,7 @@ BASIC's design was rooted in education, and its pedagogical impact was profound:
   For example, writing a program to print patterns or calculate grades gave students a sense of
   ownership over technology.
 
-- *Democratizing Computing*: By teaching BASIC in schools and colleges, educators empowered non-STEM
+- *Democratising Computing*: By teaching BASIC in schools and colleges, educators empowered non-STEM
   students to engage with computers, broadening participation in an era when computing was elitist.
 
 - *Foundation for Computational Thinking*: BASIC introduced core programming concepts (variables,
@@ -56,7 +56,7 @@ computers. Naturally it could be expanded with more features. Developments inclu
   - *Applesoft BASIC* (1978), written by Microsoft for the Apple II, added graphics and floating-point math.
   - *Sinclair BASIC* (1980) was optimized for the ZX80 and ZX Spectrum's limited memory.
 
-- *Cultural Impact*: BASIC's accessibility democratized programming. Students, hobbyists, and children
+- *Cultural Impact*: BASIC's accessibility democratised programming. Students, hobbyists, and children
 wrote games, utilities, and educational tools, fostering a DIY programming culture. Publications like
 *Compute!* shared BASIC listings, amplifying its reach.
 
@@ -71,78 +71,97 @@ computer literacy curricula.
 BASIC's open design led to numerous dialects, each adapted to specific platforms or purposes. Examples include:
 
 1. *Dartmouth BASIC* (1964)
-   - Features: Basic commands (`PRINT`, `INPUT`, `GOTO`), line numbers, educational focus.
-   - Example:
-     ```basic
-     10 PRINT "Hello, World!"
-     20 END
-     ```
+- Features: Basic commands (`PRINT`, `INPUT`, `GOTO`), line numbers, educational focus.
+- Example:
+```basic
+10 PRINT "Hello, World!"
+20 END
+```
 
 2. *Altair BASIC* (1975)
-   - Features: Compact, supporting arithmetic and strings.
-   - Example:
-     ```basic
-     10 LET A = 5
-     20 PRINT A * 2
-     30 END
-     ```
+- Features: Compact, supporting arithmetic and strings.
+- Example:
+```basic
+10 LET A = 5
+20 PRINT A * 2
+30 END
+```
 
-3. *Applesoft BASIC* (1978)
-   - Features: Floating-point math, graphics (`HPLOT`).
-   - Example:
-     ```basic
-     10 HGR
-     20 HCOLOR=3
-     30 HPLOT 100,100
-     40 END
-     ```
+3. *Tiny BASIC* (1976)
+- Features: Extremely minimal interpreter designed for
+  microcomputers with as little as 2 KB of RAM.
+- Example:
+```basic
+10 LET A = 3
+20 LET B = A + A
+30 PRINT B
+40 END
+```
 
-4. *Commodore BASIC* (1977–1982)
-   - Features: `PEEK` and `POKE` for memory manipulation.
-   - Example:
-     ```basic
-     10 POKE 53280,0
-     20 PRINT "Black Border"
-     30 END
-     ```
+4. *ABC80 BASIC* (1978)
+- Features:  `OUT` and `IN` for I/O signaling, very fast close to *BBC BASIC* (1981).
+- Example:
+```basic
+10 A% = 5
+20 FOR I% = 1% TO 5% : ; A% + I% : NEXT I%
+```
 
-5. *Sinclair BASIC* (1980)
-   - Features: Single-key entry, optimised for low memory.
-   - Example:
-     ```basic
-     10 PRINT AT 10,10;"Hello"
-     20 PAUSE 50
-     30 CLS
-     40 END
-     ```
+5. *Applesoft BASIC* (1978)
+- Features: Floating-point math, graphics (`HPLOT`).
+- Example:
+```basic
+10 HGR
+20 HCOLOR=3
+30 HPLOT 100,100
+40 END
+```
 
-6. *Microsoft BASIC* (1976–1980s)
-   - Features: Portable across platforms (e.g., TRS-80, IBM PC).
-   - Example:
-     ```basic
-     10 INPUT "Enter a number: ", N
-     20 PRINT N * N
-     30 END
-     ```
+6. *Commodore BASIC* (1977–1982)
+- Features: `PEEK` and `POKE` for memory manipulation.
+- Example:
+```basic
+10 POKE 53280,0
+20 PRINT "Black Border"
+30 END
+```
 
-7. *QuickBASIC/QBASIC* (1985/1991)
-   - Features: Structured programming, IDE.
-   - Example:
-     ```basic
-     CLS
-     INPUT "Enter your name: ", name$
-     PRINT "Hello, "; name$
-     END
-     ```
+7. *Sinclair BASIC* (1980)
+- Features: Single-key entry, optimised for low memory.
+- Example:
+```basic
+10 PRINT AT 10,10;"Hello"
+20 PAUSE 50
+30 CLS
+40 END
+```
 
-8. *Visual Basic* (1991)
-   - Features: GUI design, event-driven programming.
-   - Example:
-     ```basic
-     Private Sub Command1_Click()
-         MsgBox "Hello, World!"
-     End Sub
-     ```
+8. *Microsoft BASIC* (1976–1980s)
+- Features: Portable across platforms (e.g., TRS-80, IBM PC).
+- Example:
+```basic
+10 INPUT "Enter a number: ", N
+20 PRINT N * N
+30 END
+```
+
+9. *QuickBASIC/QBASIC* (1985/1991)
+- Features: Structured programming, IDE.
+- Example:
+ ```basic
+ CLS
+ INPUT "Enter your name: ", name$
+ PRINT "Hello, "; name$
+ END
+ ```
+
+10. *Visual Basic* (1991)
+- Features: GUI design, event-driven programming.
+- Example:
+```basic
+Private Sub Command1_Click()
+     MsgBox "Hello, World!"
+End Sub
+```
 
 ### Decline of BASIC
 
@@ -229,7 +248,7 @@ BASIC's history offers valuable insights, particularly in pedagogy and language 
 ### Conclusion
 
 BASIC was a cornerstone of the microcomputer era, transforming computing from an elite discipline to a tool
-for all. Its pedagogical value—rooted in simplicity, interactivity, and accessibility—made it a gateway for
+for all. Its pedagogical value--rooted in simplicity, interactivity, and accessibility--made it a gateway for
 millions to learn programming, shaping the tech industry and educational practices. However, criticisms of
 its unstructured design and perceived limitations highlight the challenges of balancing beginner-friendliness
 with rigour. BASIC's rise and fall illustrate the power of accessible tools and the need for evolution in
