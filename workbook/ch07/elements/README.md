@@ -6,7 +6,17 @@ and evolution pathways of a software system.* It emerges from deliberate choices
 interact, how responsibilities are partitioned, and how quality attributes like performance, security,
 and maintainability are prioritised. At its core, *architecture is the art of managing complexity through
 abstraction*--creating boundaries that allow humans to comprehend and modify systems that would otherwise
-exceed cognitive limits.  
+exceed cognitive limits.
+
+If we shortly reflect on what methodology is in constrast ([ch06](./../../ch06/method/)):
+
+| Aspect | *Architecture* | *Methodology* |
+|---|---|---|
+|  *Definition* | A structural or design framework of a system—*the blueprint*. | A process or set of practices—*the ritual or routine* of making. |
+|  *Temporal Nature* | More static and foundational; about system *structure*. | More dynamic and iterative; about *practice and behavior*. |
+|  *Challenge (Innovator's Dilemma)* | Becomes outdated as new systems require new design paradigms. | Becomes ritualised and loses adaptability; risks becoming cargo cult. |
+|  *Relation to Tools* | Tools are built *on top of* architecture. | Tools *manifest* methodology—ritualised in things like SCRUM boards or CI/CD YAMLs. |
+|  *Nature of Evolution* | Architecture must be refactored or rethought when requirements shift. | Methodology often cycles and reincarnates older ideas in new forms. |
 
 The history of software architecture mirrors the evolution of computing itself. In the 1960s, as systems
 grew beyond trivial programs, pioneers like Edsger Dijkstra advocated for structured programming to
@@ -18,7 +28,7 @@ recurring design problems, while UML emerged as a visual language for architectu
 brought service-oriented architecture (SOA) and cloud computing, decoupling systems into network-accessible
 components. Today's landscape blends microservices, serverless computing, and AI-driven architecture
 synthesis, reflecting an ongoing tension between centralisation and distribution. From what I've heard
-microservices might be the next one for the chopping block ..  
+microservices might be the next one for the chopping block .. 
 
 When crafting architecture, practitioners must balance competing forces: immediate functionality against
 long-term adaptability, technical purity against business constraints, innovation against technical debt.
@@ -77,7 +87,7 @@ Amazon's 2002 SOA mandate that birthed cloud-scale systems.
 gaps between architectural neurones. *Plugins* actualise Parnas' "secret" of change accommodation through extension
 points--a principle that made Unix's filter paradigm outlast its contemporaries. Even *configuration files*,
 seemingly mundane, encode architecture's hardest lesson from the Y2K crisis: separate what changes from what
-remains, lest hardcoded values become time bombs.  
+remains, lest hardcoded values become time bombs. 
 
 The *SDK* represents architecture's shift from artisanal craft to industrialised practice--the Android SDK
 being less a toolkit than an *ecosystem constitution*, enforcing Google's architectural will on millions of
@@ -106,14 +116,14 @@ might look like this:
 
 ```
 /my_project
-    /core
-        __init__.py
-        data_processor.py
-        storage.py
-    /interfaces
-        __init__.py
-        api.py
-    main.py
+  /core
+    __init__.py
+    data_processor.py
+    storage.py
+  /interfaces
+    __init__.py
+    api.py
+  main.py
 ```
 
 Here, `data_processor.py` encapsulates logic for transforming data, exposing only high-level functions like
@@ -133,9 +143,9 @@ projects. Consider a simple math library:
 
 ```
 /mathlib
-    mathlib.h
-    mathlib.c
-    main.c
+  mathlib.h
+  mathlib.c
+  main.c
 ```
 
 The `mathlib.h` header declares function prototypes like `double compute_average(double* values, int size);`,
@@ -154,13 +164,13 @@ Consider a REST API service in a Node.js project:
 
 ```
 /api_service
-    /routes
-        users.js
-        orders.js
-    /models
-        user.js
-        order.js
-    server.js
+  /routes
+    users.js
+    orders.js
+  /models
+    user.js
+    order.js
+  server.js
 ```
 
 Here, `users.js` defines endpoints like `GET /users/:id`, orchestrating calls to `user.js` for data access.
@@ -179,13 +189,13 @@ A Django project might look like:
 
 ```
 /django_app
-    /my_app
-        migrations/
-        models.py
-        views.py
-        urls.py
-    manage.py
-    settings.py
+  /my_app
+    migrations/
+    models.py
+    views.py
+    urls.py
+  manage.py
+  settings.py
 ```
 
 Django’s structure enforces the Model-View-Controller (MVC) pattern, with `models.py` defining data schemas,
@@ -195,8 +205,8 @@ over unrestricted freedom. Plugins, conversely, offer extension points. In a VSC
 
 ```
 /vscode_plugin
-    extension.js
-    package.json
+  extension.js
+  package.json
 ```
 
 The `extension.js` hooks into VSCode’s API to add custom functionality, like a new command. This extensibility,
@@ -211,8 +221,8 @@ externalised. A simple project might include:
 
 ```
 /project
-    config.yaml
-    app.py
+  config.yaml
+  app.py
 ```
 
 Where `config.yaml` specifies parameters like `database_url: postgres://localhost:5432`, and `app.py` reads it
