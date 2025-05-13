@@ -38,7 +38,7 @@ errors.
 ### Mini-Languages as a Serious Alternative to Traditional Software Approaches
 
 Mini-languages offer a compelling alternative to traditional APIs, libraries, frameworks, and modules
-in certain situations. Let me explore the distinctive value proposition they provide:
+in certain situations.
 
 
 *Advantages Over Traditional Approaches*
@@ -64,36 +64,31 @@ in certain situations. Let me explore the distinctive value proposition they pro
    * Complex behaviors emerge from combining simple language elements
 
 
-*Real-World Success Stories*
-
-Several successful tools have taken the mini-language approach instead of traditional libraries:
+*Real-World Success Stories*. Several successful tools have taken the mini-language approach
+instead of traditional libraries:
 * *Make/Gradle/etc.*: Build tools use declarative languages rather than procedural APIs  
 * *CSS*: A declarative language for styling rather than imperative styling APIs  
 * *Terraform/CloudFormation*: Infrastructure as code languages instead of cloud service APIs  
 * *Jupyter notebooks*: Mixed code and markdown as a language for data science workflows  
-* *D3 and visualization libraries*: Declarative approaches to data visualization
+* *D3 and visualisation libraries*: Declarative approaches to data visualization
 
 
-*Implementation Approaches*
-
-When building a mini-language as an alternative:
+*Implementation Approaches*. When building a mini-language as an alternative:
 1. *Embedded DSLs*: Language built within an existing language (jQuery as a DSL for DOM manipulation)  
 2. *External DSLs*: Standalone languages with their own parser (SQL, regex)  
 3. *Language workbenches*: Tools specifically designed for creating mini-languages
 
 
-*Practical Considerations*
-
-Mini-languages work best when:
+*Practical Considerations*. Mini-languages work best when:
 * The domain is well-understood and relatively stable  
 * Operations within the domain follow consistent patterns  
 * Users of the system have domain expertise but may not have deep programming expertise  
 * The problem requires declarative rather than imperative thinking
 
 
-*When to Choose or Avoid*
+#### When to Choose or Avoid
 
-May Be Beneficial:
+*May Be Beneficial*
 
 *1 Domain Stability*
 * *Green flag*: The problem domain is well-understood and relatively stable  
@@ -154,9 +149,7 @@ May Be Beneficial:
 * *Real-world consequence*: What started elegantly becomes bloated and unwieldy
 
 
-*Middle Ground Approaches*
-
-When a full mini-language might be too much:
+*Middle Ground Approaches*. When a full mini-language might be too much:
 1. *Fluent APIs*: Object method chaining that reads like a domain-specific language  
 2. *Configuration DSLs*: Config formats with light domain-specific syntax extensions  
 3. *Annotation systems*: Metadata that guides behavior without creating a full language  
@@ -166,17 +159,14 @@ This balanced approach often delivers many of the benefits of a mini-language wh
 the main pitfalls of building a completely new language.
 
 
-*Mini-Languages in an LLM-Powered Future: Direct Domain Expression*
+### Mini-Languages in an LLM-Powered Future: Direct Domain Expression
 
-You've raised a fascinating point about the evolution of programming paradigms.
 In a future where LLMs become more readily available, mini-languages could indeed
 become the preferred interface between domain experts and computing systems, potentially
 eliminating the traditional programmer "middle man."
 
 
 *Historical Precedents for Direct Domain Expression*
-
-The examples you mentioned highlight previous attempts to bridge this gap:
 
 1. *COBOL (1959)*: Specifically designed to be readable by business people
    with statements like `ADD SALARY TO BASE-SALARY GIVING TOTAL-SALARY`
@@ -200,7 +190,7 @@ Other notable examples include:
 
 
 
-### Mini-Languages in an LLM-Powered Ecosystem
+__Mini-Languages in an LLM-Powered Ecosystem__
 
 In an LLM-powered future, mini-languages could thrive for several reasons:
 
@@ -235,9 +225,7 @@ LLMs could provide scaffolding around mini-languages:
 * Suggest improvements to existing mini-language code
 
 
-*Real-World Emerging Examples*
-
-We're already seeing early versions of this paradigm:
+*Real-World Emerging Examples*. We're already seeing early versions of this paradigm:
 
 1. *GitHub Copilot X*: Allows developers to describe what they want in natural language, generating code
 
@@ -248,9 +236,8 @@ We're already seeing early versions of this paradigm:
 4. *Zapier Natural Language*: Creates automation workflows from natural language descriptions
 
 
-*The New Role of Traditional Programming*
-
-In this future, traditional programming wouldn't disappear but would shift focus:
+*The New Role of Traditional Programming*. In this future, traditional programming
+wouldn't disappear but would shift focus:
 
 1. *Language Engineering*: Designing robust mini-languages for specific domains
 
@@ -273,14 +260,14 @@ The history of JavaScript and spread offer important lessons about mini-language
 differ significantly from the more deliberate design paths of COBOL, BASIC, and Python.
 
 
-*JavaScript: The Accidental Mini-Language Success Story: The Unexpected Journey*
+#### JavaScript: The Accidental Mini-Language Success Story: The Unexpected Journey
 
 JavaScript's history is remarkable in how it contradicts conventional wisdom about language design:
 * *Created in just 10 days* (May 1995) by Brendan Eich at Netscape  
 * Originally intended as a *simple scripting language* for web pages  
 * Designed to be *accessible to non-programmers* (web designers)  
 * Named "JavaScript" primarily as a *marketing decision* to ride Java's popularity
-  (before named "LivewScript")
+  (before named "LiveScript")
 * Initially *derided by "serious" programmers* as a toy language
 
 *Why JavaScript Succeeded Despite Its Flaws*
@@ -347,7 +334,7 @@ YHTML occupies a fascinating middle ground that shares important characteristics
 while serving as perhaps the most successful intermediary between humans and computers ever created.
 
 
-*HTML: The Universal Declarative Interface*
+#### HTML: The Universal Declarative Interface
 
 *HTML as a Proto-Mini-Language*
 
@@ -360,7 +347,7 @@ it embodies many of the same principles:
 4. *Progressive complexity*: Can start with basic tags and gradually adopt more advanced features  
 5. *Separation of concerns*: Content structure separate from presentation and behavior
 
-## *HTML's Unique Position in Computing History*
+*HTML's Unique Position in Computing History*
 
 HTML represents perhaps the most successful example of a structured language that:
 1. *Crossed the expertise barrier*: Used by everyone from complete novices to experts  
