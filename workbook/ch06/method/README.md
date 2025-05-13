@@ -36,7 +36,7 @@ strata.
 | *Shape Up* | Cycle Management | Product | Pitch Documents | Basecamp |
 | *GitFlow* | Version Control | Codebase | Branch Diagrams | Git |
 
-This taxonomy represents the *ritual instruments* of software creation—each row a battle-tested
+This taxonomy represents the *ritual instruments* of software creation--each row a battle-tested
 protocol forged in the fires of project failures. *Waterfall*, born from 1950s aerospace megaprojects,
 codifies the hubris (ὕβρις) that complex systems can be fully specified upfront--a cautionary tale
 now taught in universities. *Agile* carries the DNA of 2001's Snowbird retreat, where 17 rebels
@@ -116,7 +116,7 @@ prod_deploy:
     - kubectl rollout restart deployment/myapp
 ```
 
-This YAML file codifies the "paved path" methodology—automating what Google's Site
+This YAML file codifies the "paved path" methodology--automating what Google's Site
 Reliability Engineers call "toil." The three-stage flow mirrors 1950s Deming cycles
 (Plan-Do-Check-Act), compressed from months to minutes. The `rules` clauses enact
 Jez Humble's "continuous delivery" principle of keeping mainline deployable--a
@@ -144,7 +144,7 @@ graph TD
 ```
 
 This virtual whiteboard applies Herb Simon's 1969 "sciences of the artificial" to
-software—methodology as externalised cognition. The prioritisation mirrors MoSCoW
+software--methodology as externalised cognition. The prioritisation mirrors MoSCoW
 (Must/Should/Could/Won't) from 1994 DSDM. The "tech spike" terminology carries over
 from 2000s Extreme Programming, a reminder that methodology hybridises across eras.
 
@@ -178,5 +178,5 @@ The wise methodologist understands that today's SCRUM board echoes 1940s Kanban
 shop-floor signals. That GitFlow branches mirror 1970s SCCS version trees. That
 Agile retrospectives reincarnate 1950s quality circles. In this endless recurrence
 lies methodology's true nature: not the tools du jour, but the human need to
-ritualise progress amidst chaos—to impose narrative on the entropy of innovation.
+ritualise progress amidst chaos--to impose narrative on the entropy of innovation.
 
