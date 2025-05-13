@@ -91,12 +91,12 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
    - Features: Extremely minimal interpreter designed for
      microcomputers with as little as 2 KB of RAM.
    - Example:
-     ```basic
+    ```basic
     10 LET A = 3
     20 LET B = A + A
     30 PRINT B
     40 END
-     ```
+    ```
 
 4. *Applesoft BASIC* (1978)
    - Features: Floating-point math, graphics (`HPLOT`).
