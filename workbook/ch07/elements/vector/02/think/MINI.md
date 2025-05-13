@@ -381,12 +381,13 @@ how LLMs can help bridge the gap to computation.
 
 *2 Progressive Disclosure of Complexity*
 
-Users can create a valid HTML page with just:
+Users can create a valid HTML page[^w3] with just:
+
+[^w3]: https://html.spec.whatwg.org/multipage/
 
 ```html
-<html>
+<!DOCTYPE html>
 <title>Hello world!</title>
-</html>
 ```
 
 Yet the same language scales to complex applications with semantic structure, accessibility features,
