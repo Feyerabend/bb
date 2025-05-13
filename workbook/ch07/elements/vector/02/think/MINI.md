@@ -267,7 +267,7 @@ JavaScript's history is remarkable in how it contradicts conventional wisdom abo
 * Originally intended as a *simple scripting language* for web pages  
 * Designed to be *accessible to non-programmers* (web designers)  
 * Named "JavaScript" primarily as a *marketing decision* to ride Java's popularity
-  (before named "LivewScript")
+  (before named "LiveScript")
 * Initially *derided by "serious" programmers* as a toy language
 
 *Why JavaScript Succeeded Despite Its Flaws*
