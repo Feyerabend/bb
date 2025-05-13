@@ -38,7 +38,7 @@ errors.
 ### Mini-Languages as a Serious Alternative to Traditional Software Approaches
 
 Mini-languages offer a compelling alternative to traditional APIs, libraries, frameworks, and modules
-in certain situations. Let me explore the distinctive value proposition they provide:
+in certain situations.
 
 
 *Advantages Over Traditional Approaches*
@@ -64,27 +64,22 @@ in certain situations. Let me explore the distinctive value proposition they pro
    * Complex behaviors emerge from combining simple language elements
 
 
-*Real-World Success Stories*
-
-Several successful tools have taken the mini-language approach instead of traditional libraries:
+*Real-World Success Stories*. Several successful tools have taken the mini-language approach
+instead of traditional libraries:
 * *Make/Gradle/etc.*: Build tools use declarative languages rather than procedural APIs  
 * *CSS*: A declarative language for styling rather than imperative styling APIs  
 * *Terraform/CloudFormation*: Infrastructure as code languages instead of cloud service APIs  
 * *Jupyter notebooks*: Mixed code and markdown as a language for data science workflows  
-* *D3 and visualization libraries*: Declarative approaches to data visualization
+* *D3 and visualisation libraries*: Declarative approaches to data visualization
 
 
-*Implementation Approaches*
-
-When building a mini-language as an alternative:
+*Implementation Approaches*. When building a mini-language as an alternative:
 1. *Embedded DSLs*: Language built within an existing language (jQuery as a DSL for DOM manipulation)  
 2. *External DSLs*: Standalone languages with their own parser (SQL, regex)  
 3. *Language workbenches*: Tools specifically designed for creating mini-languages
 
 
-*Practical Considerations*
-
-Mini-languages work best when:
+*Practical Considerations*. Mini-languages work best when:
 * The domain is well-understood and relatively stable  
 * Operations within the domain follow consistent patterns  
 * Users of the system have domain expertise but may not have deep programming expertise  
