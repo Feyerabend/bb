@@ -86,9 +86,9 @@ instead of traditional libraries:
 * The problem requires declarative rather than imperative thinking
 
 
-__When to Choose or Avoid__
+#### When to Choose or Avoid
 
-*May Be Beneficial*:
+__May Be Beneficial__
 
 *1 Domain Stability*
 * *Green flag*: The problem domain is well-understood and relatively stable  
@@ -116,7 +116,7 @@ __When to Choose or Avoid__
 * *Example*: Smart contract languages, security policies, or financial transaction systems
 
 
-*When to Avoid*
+__When to Avoid__
 
 *1 Premature Abstraction*
 * *Red flag*: The domain is still evolving rapidly  
@@ -159,9 +159,8 @@ This balanced approach often delivers many of the benefits of a mini-language wh
 the main pitfalls of building a completely new language.
 
 
-__Mini-Languages in an LLM-Powered Future: Direct Domain Expression__
+### Mini-Languages in an LLM-Powered Future: Direct Domain Expression
 
-You've raised a fascinating point about the evolution of programming paradigms.
 In a future where LLMs become more readily available, mini-languages could indeed
 become the preferred interface between domain experts and computing systems, potentially
 eliminating the traditional programmer "middle man."
