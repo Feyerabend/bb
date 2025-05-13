@@ -16,6 +16,11 @@ The Waterfall model, often attributed to Winston Royce's 1970 paper,[^royce] int
 approach to software development. While influential, its rigidity in handling changing requirements
 led to the exploration of iterative methods.
 
+[^royce]: Royce, W. W. (1987). *Managing the development of large software systems: Concepts and techniques.*
+In Proceedings of the 9th International Conference on Software Engineering (ICSE ’87) (pp. 328–338).
+IEEE Computer Society Press.
+https://dl.acm.org/doi/10.5555/41765.41801
+
 The 1980s saw the rise of iterative models like Barry Boehm's Spiral model, which emphasised risk-driven
 cycles. Rapid Application Development (RAD) also emerged, focusing on rapid prototyping and user feedback
 to accelerate development.
