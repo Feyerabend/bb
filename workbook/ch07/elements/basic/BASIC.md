@@ -87,7 +87,18 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
      30 END
      ```
 
-3. *Applesoft BASIC* (1978)
+3. *Tiny BASIC* (1976)
+   - Features: Extremely minimal interpreter designed for
+     microcomputers with as little as 2 KB of RAM.
+   - Example:
+     ```basic
+    10 LET A = 3
+    20 LET B = A + A
+    30 PRINT B
+    40 END
+     ```
+
+4. *Applesoft BASIC* (1978)
    - Features: Floating-point math, graphics (`HPLOT`).
    - Example:
      ```basic
@@ -97,7 +108,7 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
      40 END
      ```
 
-4. *Commodore BASIC* (1977–1982)
+5. *Commodore BASIC* (1977–1982)
    - Features: `PEEK` and `POKE` for memory manipulation.
    - Example:
      ```basic
@@ -106,7 +117,7 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
      30 END
      ```
 
-5. *Sinclair BASIC* (1980)
+6. *Sinclair BASIC* (1980)
    - Features: Single-key entry, optimised for low memory.
    - Example:
      ```basic
@@ -116,7 +127,7 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
      40 END
      ```
 
-6. *Microsoft BASIC* (1976–1980s)
+7. *Microsoft BASIC* (1976–1980s)
    - Features: Portable across platforms (e.g., TRS-80, IBM PC).
    - Example:
      ```basic
@@ -125,7 +136,7 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
      30 END
      ```
 
-7. *QuickBASIC/QBASIC* (1985/1991)
+8. *QuickBASIC/QBASIC* (1985/1991)
    - Features: Structured programming, IDE.
    - Example:
      ```basic
@@ -135,7 +146,7 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
      END
      ```
 
-8. *Visual Basic* (1991)
+9. *Visual Basic* (1991)
    - Features: GUI design, event-driven programming.
    - Example:
      ```basic
