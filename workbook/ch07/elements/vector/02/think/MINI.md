@@ -366,7 +366,7 @@ HTML lets users declare their intent ("this is a heading") without specifying im
 details. This aligns perfectly with how non-technical users think about content and is precisely
 how LLMs can help bridge the gap to computation.
 
-*2 )Progressive Disclosure of Complexity*
+*2) Progressive Disclosure of Complexity*
 
 Users can create a valid HTML page[^w3] with just:
 
@@ -387,7 +387,7 @@ mini-languages.
 HTML provides sensible defaults (how a paragraph renders) while allowing progressive customisation
 (via attributes, then CSS). This pattern of "works immediately, customizable later" encourages adoption.
 
-*4 Ecosystem Growth Around Core Simplicity*
+*4) Ecosystem Growth Around Core Simplicity*
 
 The simplicity of HTML created space for complementary technologies (CSS, JavaScript) rather than
 complicating HTML itself. This pattern of "do one thing well" allows for ecosystem growth.
