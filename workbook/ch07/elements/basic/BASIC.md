@@ -99,7 +99,7 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
 ```
 
 4. *ABC80 BASIC* (1978)
-- Features:  `OUT` and `IN` for I/O signaling, very fast close to BBC BASIC.
+- Features:  `OUT` and `IN` for I/O signaling, very fast close to *BBC BASIC* (1981).
 - Example:
 ```basic
 10 A% = 5
