@@ -30,7 +30,7 @@ intent--written not just to be executed but to be read, understood, extended, an
 
 __The machine doesn't care what a program is until you reach machine code__
 
-At runtime, all high-level code—Python, C++, JavaScript, etc.—is meaningless to the CPU. Only once
+At runtime, all high-level code--Python, C++, JavaScript, etc.--is meaningless to the CPU. Only once
 it is compiled, interpreted, or JIT-compiled into machine code (binary instructions specific to an
 architecture) does the computer recognise it.
 
@@ -48,7 +48,7 @@ architecture) does the computer recognise it.
 __Code is communication between humans as much as machines and humans__
 
 In practice, software development is not an isolated act between programmer and computer. It's a social
-process—teams of people, distributed over time and geography, collaborate through code.
+process--teams of people, distributed over time and geography, collaborate through code.
 
 - Code is the common language of software teams. It must be structured so others can:
     - Understand what's been done
@@ -61,7 +61,7 @@ process—teams of people, distributed over time and geography, collaborate thro
 	    - A pull request is an argument for change, using code to explain what and why.
 	    - Comments and commit messages are narrative layers around the formalism of logic.[^comment]
 
-This dual role—communication with machines and other humans, explains why programming is both technical
+This dual role--communication with machines and other humans, explains why programming is both technical
 and linguistic. Writing good code is not just about getting it to work, it's about getting it to work well
 in a shared human system.
 
