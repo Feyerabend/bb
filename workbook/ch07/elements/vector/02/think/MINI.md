@@ -86,9 +86,9 @@ instead of traditional libraries:
 * The problem requires declarative rather than imperative thinking
 
 
-*When to Choose or Avoid*
+__When to Choose or Avoid__
 
-May Be Beneficial:
+*May Be Beneficial*:
 
 *1 Domain Stability*
 * *Green flag*: The problem domain is well-understood and relatively stable  
@@ -149,9 +149,7 @@ May Be Beneficial:
 * *Real-world consequence*: What started elegantly becomes bloated and unwieldy
 
 
-*Middle Ground Approaches*
-
-When a full mini-language might be too much:
+*Middle Ground Approaches*. When a full mini-language might be too much:
 1. *Fluent APIs*: Object method chaining that reads like a domain-specific language  
 2. *Configuration DSLs*: Config formats with light domain-specific syntax extensions  
 3. *Annotation systems*: Metadata that guides behavior without creating a full language  
@@ -161,7 +159,7 @@ This balanced approach often delivers many of the benefits of a mini-language wh
 the main pitfalls of building a completely new language.
 
 
-*Mini-Languages in an LLM-Powered Future: Direct Domain Expression*
+__Mini-Languages in an LLM-Powered Future: Direct Domain Expression__
 
 You've raised a fascinating point about the evolution of programming paradigms.
 In a future where LLMs become more readily available, mini-languages could indeed
@@ -170,8 +168,6 @@ eliminating the traditional programmer "middle man."
 
 
 *Historical Precedents for Direct Domain Expression*
-
-The examples you mentioned highlight previous attempts to bridge this gap:
 
 1. *COBOL (1959)*: Specifically designed to be readable by business people
    with statements like `ADD SALARY TO BASE-SALARY GIVING TOTAL-SALARY`
@@ -195,7 +191,7 @@ Other notable examples include:
 
 
 
-### Mini-Languages in an LLM-Powered Ecosystem
+__Mini-Languages in an LLM-Powered Ecosystem__
 
 In an LLM-powered future, mini-languages could thrive for several reasons:
 
@@ -230,9 +226,7 @@ LLMs could provide scaffolding around mini-languages:
 * Suggest improvements to existing mini-language code
 
 
-*Real-World Emerging Examples*
-
-We're already seeing early versions of this paradigm:
+*Real-World Emerging Examples*. We're already seeing early versions of this paradigm:
 
 1. *GitHub Copilot X*: Allows developers to describe what they want in natural language, generating code
 
@@ -243,9 +237,8 @@ We're already seeing early versions of this paradigm:
 4. *Zapier Natural Language*: Creates automation workflows from natural language descriptions
 
 
-*The New Role of Traditional Programming*
-
-In this future, traditional programming wouldn't disappear but would shift focus:
+*The New Role of Traditional Programming*. In this future, traditional programming
+wouldn't disappear but would shift focus:
 
 1. *Language Engineering*: Designing robust mini-languages for specific domains
 
@@ -268,7 +261,7 @@ The history of JavaScript and spread offer important lessons about mini-language
 differ significantly from the more deliberate design paths of COBOL, BASIC, and Python.
 
 
-*JavaScript: The Accidental Mini-Language Success Story: The Unexpected Journey*
+__JavaScript: The Accidental Mini-Language Success Story: The Unexpected Journey__
 
 JavaScript's history is remarkable in how it contradicts conventional wisdom about language design:
 * *Created in just 10 days* (May 1995) by Brendan Eich at Netscape  
@@ -342,7 +335,7 @@ YHTML occupies a fascinating middle ground that shares important characteristics
 while serving as perhaps the most successful intermediary between humans and computers ever created.
 
 
-*HTML: The Universal Declarative Interface*
+__HTML: The Universal Declarative Interface__
 
 *HTML as a Proto-Mini-Language*
 
