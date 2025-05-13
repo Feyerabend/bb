@@ -18,6 +18,9 @@ If we shortly reflect on what *methodology* is in contrast ([ch06](./../../ch06/
 |  *Relation to Tools* | Tools are built *on top of* architecture. | Tools *manifest* methodology—ritualised in things like SCRUM boards or CI/CD YAMLs. |
 |  *Nature of Evolution* | Architecture must be refactored or rethought when requirements shift. | Methodology often cycles and reincarnates older ideas in new forms. |
 
+
+### History
+
 The history of software architecture mirrors the evolution of computing itself. In the 1960s, as systems
 grew beyond trivial programs, pioneers like Edsger Dijkstra advocated for structured programming to
 combat "spaghetti code." The 1970s saw David Parnas formalise modular design principles, arguing that
