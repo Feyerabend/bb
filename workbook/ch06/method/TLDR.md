@@ -32,8 +32,8 @@ more flexible and people-centric development.
 
 ### Core Concepts and Applications
 
-- *Waterfall:* Emphasizes upfront planning and sequential execution, suitable for projects with stable requirements.[5]
-- *Agile:* Focuses on iterative development, collaboration, and flexibility to adapt to changing needs.[6, 53, 59, 60, 61]
+- *Waterfall:* Emphasizes upfront planning and sequential execution, suitable for projects with stable requirements.
+- *Agile:* Focuses on iterative development, collaboration, and flexibility to adapt to changing needs.
 
 
 #### Methodologies and Their Focus
@@ -58,9 +58,11 @@ more flexible and people-centric development.
 - *Agile Sprints (Jira):* Demonstrates iterative planning and task management within a sprint,
   emphasising working software and team communication.
 
-- *DevOps Pipeline (GitLab CI/CD):* Automates build, test, and deployment, enabling continuous delivery and faster feedback loops.
+- *DevOps Pipeline (GitLab CI/CD):* Automates build, test, and deployment, enabling continuous
+  delivery and faster feedback loops.
 
-- *Design Thinking (Miro):* Facilitates user-centric design through collaborative visualization of user journeys and needs.
+- *Design Thinking (Miro):* Facilitates user-centric design through collaborative visualisation
+  of user journeys and needs.
 
 
 ### Emerging Trends and Influences
