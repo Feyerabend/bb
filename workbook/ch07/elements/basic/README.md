@@ -1,12 +1,12 @@
 
 ## The Structure of BASIC
 
-*BASIC comes in many dialects.* Read some [history](./BASIC.md) on the language.
+*BASIC comes in many dialects.*
 
 BASIC (Beginner’s All-purpose Symbolic Instruction Code) is not a single, standardised language[^stand] but
 rather a family of related de facto programming languages. Since its creation in the 1960s at Dartmouth College,
 BASIC has evolved into numerous dialects, each tailored to different platforms, educational goals, hardware
-constraints, or vendor-specific features.
+constraints, or vendor-specific features. Read more [history](./BASIC.md) of the language.
 
 Some dialects like Microsoft BASIC, QBASIC, GW-BASIC, Commodore BASIC, or BBC BASIC include graphical or sound
 commands specific to the machines they ran on. Others, like FreeBASIC or VB.NET, introduced more modern language

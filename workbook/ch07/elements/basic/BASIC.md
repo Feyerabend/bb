@@ -28,7 +28,7 @@ BASIC's design was rooted in education, and its pedagogical impact was profound:
   For example, writing a program to print patterns or calculate grades gave students a sense of
   ownership over technology.
 
-- *Democratizing Computing*: By teaching BASIC in schools and colleges, educators empowered non-STEM
+- *Democratising Computing*: By teaching BASIC in schools and colleges, educators empowered non-STEM
   students to engage with computers, broadening participation in an era when computing was elitist.
 
 - *Foundation for Computational Thinking*: BASIC introduced core programming concepts (variables,
@@ -56,7 +56,7 @@ computers. Naturally it could be expanded with more features. Developments inclu
   - *Applesoft BASIC* (1978), written by Microsoft for the Apple II, added graphics and floating-point math.
   - *Sinclair BASIC* (1980) was optimized for the ZX80 and ZX Spectrum's limited memory.
 
-- *Cultural Impact*: BASIC's accessibility democratized programming. Students, hobbyists, and children
+- *Cultural Impact*: BASIC's accessibility democratised programming. Students, hobbyists, and children
 wrote games, utilities, and educational tools, fostering a DIY programming culture. Publications like
 *Compute!* shared BASIC listings, amplifying its reach.
 
