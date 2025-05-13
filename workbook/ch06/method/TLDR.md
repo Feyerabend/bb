@@ -42,7 +42,7 @@ more flexible and people-centric development.
 |--|--|--|--|--|
 | Waterfall | Predictive Planning | Large Projects | Gantt Charts, SDD | MS Project |
 | Agile | Adaptive Delivery | Team-Level | Sprint Backlogs, User Stories | Jira |
-| DevOps | Deployment Continuity | Organization | CI/CD Pipelines | Jenkins, GitLab CI |
+| DevOps | Deployment Continuity | Organisation | CI/CD Pipelines | Jenkins, GitLab CI |
 | TDD | Code Correctness | Module | Unit Tests | JUnit |
 | Pair Programming | Knowledge Sharing | Individual | Shared Codebases | VS Live Share |
 | Design Thinking | User Empathy | Product | Personas, Miro Boards | Miro |
