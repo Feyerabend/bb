@@ -1,7 +1,7 @@
 
 ## The Structure of BASIC
 
-*BASIC comes in many dialects.*
+*BASIC comes in many dialects.* Read some [history](./BASIC.md) on the language.
 
 BASIC (Beginner’s All-purpose Symbolic Instruction Code) is not a single, standardised language[^stand] but
 rather a family of related de facto programming languages. Since its creation in the 1960s at Dartmouth College,
