@@ -127,19 +127,20 @@ __Design Thinking__
 
 A user story mapping session in Miro:
 
-```
-[User Journey: First-Time Loan Applicant]
-|
-|-- Discover Options
-|   |-- As a user, I want to compare rates (Priority: High)
-|       |-- Design Task: Rate calculator widget
-|
-|-- Apply
-|   |-- As a user, I want to save partial application (Priority: Medium)
-|       |-- Tech Spike: Browser storage vs. backend draft
-|
-|-- Post-Submission
-    |-- As a user, I want SMS status updates (Priority: Low)
+```mermaid
+graph TD
+    A[User Journey: First-Time Loan Applicant]
+
+    A --> B[Discover Options]
+    B --> B1[As a user, I want to compare rates (Priority: High)]
+    B1 --> B1a[Design Task: Rate calculator widget]
+
+    A --> C[Apply]
+    C --> C1[As a user, I want to save partial application (Priority: Medium)]
+    C1 --> C1a[Tech Spike: Browser storage vs. backend draft]
+
+    A --> D[Post-Submission]
+    D --> D1[As a user, I want SMS status updates (Priority: Low)]
 ```
 
 This virtual whiteboard applies Herb Simon's 1969 "sciences of the artificial" to
