@@ -71,16 +71,16 @@ computer literacy curricula.
 BASIC's open design led to numerous dialects, each adapted to specific platforms or purposes. Examples include:
 
 1. *Dartmouth BASIC* (1964)
-   - Features: Basic commands (`PRINT`, `INPUT`, `GOTO`), line numbers, educational focus.
-   - Example:
+- Features: Basic commands (`PRINT`, `INPUT`, `GOTO`), line numbers, educational focus.
+- Example:
 ```basic
 10 PRINT "Hello, World!"
 20 END
 ```
 
 2. *Altair BASIC* (1975)
-   - Features: Compact, supporting arithmetic and strings.
-   - Example:
+- Features: Compact, supporting arithmetic and strings.
+- Example:
 ```basic
 10 LET A = 5
 20 PRINT A * 2
@@ -88,9 +88,9 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
 ```
 
 3. *Tiny BASIC* (1976)
-   - Features: Extremely minimal interpreter designed for
-     microcomputers with as little as 2 KB of RAM.
-   - Example:
+- Features: Extremely minimal interpreter designed for
+  microcomputers with as little as 2 KB of RAM.
+- Example:
 ```basic
 10 LET A = 3
 20 LET B = A + A
@@ -99,16 +99,16 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
 ```
 
 4. *ABC80 BASIC* (1978)
-   - Features:  `OUT` and `IN` for I/O signaling, very fast close to BBC BASIC.
-   - Example:
+- Features:  `OUT` and `IN` for I/O signaling, very fast close to BBC BASIC.
+- Example:
 ```basic
 10 A% = 5
 20 FOR I% = 1% TO 5% : ; A% + I% : NEXT I%
 ```
 
 5. *Applesoft BASIC* (1978)
-   - Features: Floating-point math, graphics (`HPLOT`).
-   - Example:
+- Features: Floating-point math, graphics (`HPLOT`).
+- Example:
 ```basic
 10 HGR
 20 HCOLOR=3
@@ -117,8 +117,8 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
 ```
 
 6. *Commodore BASIC* (1977–1982)
-   - Features: `PEEK` and `POKE` for memory manipulation.
-   - Example:
+- Features: `PEEK` and `POKE` for memory manipulation.
+- Example:
 ```basic
 10 POKE 53280,0
 20 PRINT "Black Border"
@@ -126,8 +126,8 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
 ```
 
 7. *Sinclair BASIC* (1980)
-   - Features: Single-key entry, optimised for low memory.
-   - Example:
+- Features: Single-key entry, optimised for low memory.
+- Example:
 ```basic
 10 PRINT AT 10,10;"Hello"
 20 PAUSE 50
@@ -136,8 +136,8 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
 ```
 
 8. *Microsoft BASIC* (1976–1980s)
-   - Features: Portable across platforms (e.g., TRS-80, IBM PC).
-   - Example:
+- Features: Portable across platforms (e.g., TRS-80, IBM PC).
+- Example:
 ```basic
 10 INPUT "Enter a number: ", N
 20 PRINT N * N
@@ -145,8 +145,8 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
 ```
 
 9. *QuickBASIC/QBASIC* (1985/1991)
-   - Features: Structured programming, IDE.
-   - Example:
+- Features: Structured programming, IDE.
+- Example:
  ```basic
  CLS
  INPUT "Enter your name: ", name$
@@ -155,8 +155,8 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
  ```
 
 10. *Visual Basic* (1991)
-   - Features: GUI design, event-driven programming.
-   - Example:
+- Features: GUI design, event-driven programming.
+- Example:
 ```basic
 Private Sub Command1_Click()
      MsgBox "Hello, World!"
@@ -248,7 +248,7 @@ BASIC's history offers valuable insights, particularly in pedagogy and language 
 ### Conclusion
 
 BASIC was a cornerstone of the microcomputer era, transforming computing from an elite discipline to a tool
-for all. Its pedagogical value—rooted in simplicity, interactivity, and accessibility—made it a gateway for
+for all. Its pedagogical value--rooted in simplicity, interactivity, and accessibility--made it a gateway for
 millions to learn programming, shaping the tech industry and educational practices. However, criticisms of
 its unstructured design and perceived limitations highlight the challenges of balancing beginner-friendliness
 with rigour. BASIC's rise and fall illustrate the power of accessible tools and the need for evolution in
