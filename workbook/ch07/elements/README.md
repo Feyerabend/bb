@@ -8,7 +8,7 @@ and maintainability are prioritised. At its core, *architecture is the art of ma
 abstraction*--creating boundaries that allow humans to comprehend and modify systems that would otherwise
 exceed cognitive limits.
 
-If we shortly reflect on what methodology is in constrast ([ch06](./../../ch06/method/)):
+If we shortly reflect on what *methodology* is in contrast ([ch06](./../../ch06/method/)):
 
 | Aspect | *Architecture* | *Methodology* |
 |---|---|---|
