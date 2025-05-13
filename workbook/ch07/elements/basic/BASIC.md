@@ -1,257 +1,161 @@
 
-## History of BASIC
+## The Structure of BASIC
 
-*BASIC* (Beginner's All-purpose Symbolic Instruction Code) was created in 1964 at Dartmouth College
-by John G. Kemeny and Thomas E. Kurtz. Their mission was to make computing accessible to students and
-non-specialists, particularly in an educational context. At the time, programming required expertise
-in languages like Fortran or COBOL and access to batch-processing systems with punch cards. BASIC,
-designed for time-sharing systems, allowed interactive programming with immediate feedback, a radical
-shift that aligned with its pedagogical goal of teaching problem-solving through coding.
+*BASIC comes in many dialects.*
 
-The original Dartmouth BASIC was simple, with commands like `PRINT`, `LET`, `IF...THEN`, and `GOTO`.
-Its English-like syntax and minimalistic design made it an ideal teaching tool. Distributed freely,
-it was adopted by other institutions, setting the stage for its widespread use.
+BASIC (Beginner’s All-purpose Symbolic Instruction Code) is not a single, standardised language[^stand] but
+rather a family of related de facto programming languages. Since its creation in the 1960s at Dartmouth College,
+BASIC has evolved into numerous dialects, each tailored to different platforms, educational goals, hardware
+constraints, or vendor-specific features. Read more [history](./HISTORY.md) of the language.
 
+Some dialects like Microsoft BASIC, QBASIC, GW-BASIC, Commodore BASIC, or BBC BASIC include graphical or sound
+commands specific to the machines they ran on. Others, like FreeBASIC or VB.NET, introduced more modern language
+constructs like structured programming, modules, and even object orientation.
 
-### Pedagogical Value
+Despite the diversity, most BASIC dialects share a few core traits, such as:
+- A line-numbered program structure (in early versions),
+- Simple syntax for variable assignment, arithmetic, and flow control,
+- Built-in interactive interpreters allowing commands to be executed directly.
 
-BASIC's design was rooted in education, and its pedagogical impact was profound:
+This diagram reflects the common logical flow found in many of these classic BASIC interpreters.
 
-- *Lowering Barriers*: BASIC's intuitive syntax allowed students with no prior computing experience
-  to write programs quickly. Commands like `INPUT` and `PRINT` mirrored natural language, making
-  abstract concepts like variables and loops tangible.
-
-- *Immediate Feedback*: Running a program line-by-line in an interactive environment helped learners
-  see cause-and-effect relationships, reinforcing debugging and logical thinking skills.
-
-- *Encouraging Exploration*: BASIC's simplicity enabled students to experiment, fostering creativity.
-  For example, writing a program to print patterns or calculate grades gave students a sense of
-  ownership over technology.
-
-- *Democratising Computing*: By teaching BASIC in schools and colleges, educators empowered non-STEM
-  students to engage with computers, broadening participation in an era when computing was elitist.
-
-- *Foundation for Computational Thinking*: BASIC introduced core programming concepts (variables,
-  conditionals, loops) in a forgiving environment, preparing students for more complex languages.
-
-In the 1970s and 1980s, BASIC's role in education expanded as microcomputers entered classrooms and homes.
-Books like *BASIC Computer Games* (1978)--yes I have one still--and magazines like *Creative Computing*
-provided engaging exercises, turning learning into a playful, self-directed activity. This approach
-influenced modern educational tools like Scratch, which prioritise interactive learning.
+[^stand]: BASIC did have formal standards developed to bring consistency across implementations.
+Two notable standards are: ANSI Minimal BASIC (ANSI X3.60-1978), and ISO Full BASIC (ISO/IEC 6373:1984).
 
 
-### Rise on Microcomputers
-
-BASIC's popularity surged in the 1970s and 1980s with the microcomputer revolution. Its low resource
-requirements (minimally fitting in just 4KB of RAM) and simplicity made it perfect for early personal
-computers. Naturally it could be expanded with more features. Developments include:
-
-- *1975: Altair BASIC*: Developed by Bill Gates and Paul Allen for the Altair 8800, this was
-  Microsoft's first product. Distributed on paper tape, it brought programming to hobbyists.[^code]
-
-- *Home Computers*: Manufacturers embedded BASIC interpreters in ROM, making it the default interface
-  for machines like the Commodore 64, Apple II, Atari 400/800, and Sinclair ZX Spectrum. Users could
-  boot directly into BASIC, encouraging experimentation.
-  - *Commodore BASIC* (1977) powered the PET and Commodore 64, widely used in homes and schools.
-  - *Applesoft BASIC* (1978), written by Microsoft for the Apple II, added graphics and floating-point math.
-  - *Sinclair BASIC* (1980) was optimized for the ZX80 and ZX Spectrum's limited memory.
-
-- *Cultural Impact*: BASIC's accessibility democratised programming. Students, hobbyists, and children
-wrote games, utilities, and educational tools, fostering a DIY programming culture. Publications like
-*Compute!* shared BASIC listings, amplifying its reach.
-
-BASIC became synonymous with personal computing, particularly in education, where it was a staple in
-computer literacy curricula.
-
-[^code]: A released source version can be found at: https://www.gatesnotes.com/microsoft-original-source-code.
-
-
-### Dialects of BASIC
-
-BASIC's open design led to numerous dialects, each adapted to specific platforms or purposes. Examples include:
-
-1. *Dartmouth BASIC* (1964)
-- Features: Basic commands (`PRINT`, `INPUT`, `GOTO`), line numbers, educational focus.
-- Example:
-```basic
-10 PRINT "Hello, World!"
-20 END
+```mermaid
+graph TD
+    A[Start: User Input] --> B{Is Line Number Present?}
+    B -->|Yes| C[Store Code with Line Number]
+    B -->|No| D[Tokenize Input]
+    C --> E[Program Loaded]
+    D --> F[Parse Tokens]
+    F --> G[Evaluate Expression]
+    G --> H{Is Command?}
+    H -->|Yes| I[Execute Command]
+    H -->|No| J[Assign Variable/Array]
+    I --> K[Update State]
+    J --> K
+    K --> L{Program Running?}
+    L -->|Yes| M[Fetch Next Line]
+    M --> B
+    L -->|No| N[End]
 ```
 
-2. *Altair BASIC* (1975)
-- Features: Compact, supporting arithmetic and strings.
-- Example:
+### BASIC
+
+The BASIC interpreter in [01](./01/) is a modern implementation of a classic BASIC language, designed to run
+simple programs with features like variables, arrays, loops, conditionals, and input/output operations. Below
+is a concise introduction covering its essentials, how it works, and its implementation.
+
+- *Commands*: Supports standard BASIC commands like `PRINT`, `INPUT`, `LET`, `IF`, `FOR`, `NEXT`, `GOTO`, `GOSUB`,
+  `DIM` (for arrays), `WHILE`, `WEND`, and utility commands like `LIST`, `SAVE`, `LOAD`, `RENUMBER`, and `BYE`.
+- *Expressions*: Handles arithmetic (`+`, `-`, `*`, `/`), comparisons (`=`, `<>`, `<`, `>`, `<=`, `>=`), and functions
+  (e.g., `SIN`, `ABS`, `RND`, `LEN`, `MID$`) for numbers and strings.
+- *Variables and Arrays*: Supports numeric and string variables (e.g., `X`, `A$`) and 1D/2D arrays (e.g., `DIM A(10)`).
+  Variables are dynamically typed and stored in a dictionary.
+- *Program Structure*: Programs are line-numbered, stored as a dictionary mapping line numbers to code strings.
+  Execution follows line numbers sequentially unless altered by `GOTO`, `GOSUB`, or loops.
+- *Interactivity*: Runs in an interactive REPL (Read-Eval-Print Loop) or executes loaded programs. Users can pause
+  (`STOP`), resume (`CONTINUE`), or trace execution (`TRACE`).
+- *I/O*: Supports console-based input (`INPUT`) and output (`PRINT`) with formatting options like `TAB` and `USING`
+  for numeric precision.
+
+Programs can be entered line by line, loaded from files (`.bas` extension), or saved. The interpreter handles errors
+gracefully, printing error messages for syntax issues or invalid operations.
+
+
+### Implementation
+
+The interpreter is written in Python and modularly structured across several files, each handling a specific aspect
+of the system:
+
+1. *Tokenizer (`basic_tokenizer.py`)*:
+   - Converts input strings into tokens (e.g., `NUMBER`, `STRING`, `IDENTIFIER`, `OPERATOR`).
+   - Uses regex and character-based parsing to handle numbers, strings, identifiers, and operators.
+   - Skips whitespace and tracks token positions for error reporting.
+
+2. *Parser (`basic_parser.py`)*:
+   - Builds an Abstract Syntax Tree (AST) from tokens, represented as `Expression` subclasses (`NumberExpression`,
+     `BinaryExpression`, `ArrayExpression`, etc.).
+   - Implements a recursive descent parser to handle operator precedence (e.g., `*` before `+`) and nested
+     expressions.
+   - Supports reserved functions (e.g., `SIN`, `LEN`) and distinguishes between variables and arrays.
+
+3. *Evaluator (`basic_evaluator.py`)*:
+   - Evaluates AST expressions to produce values (numbers, strings, or array elements).
+   - Handles arithmetic, comparisons, and function calls using Python’s `math` and `random` modules.
+   - Manages array access with 1-based indexing, adjusting internally to 0-based for storage.
+
+4. *Commands (`basic_commands.py`)*:
+   - Defines command classes (e.g., `PrintCommand`, `LetCommand`, `ForCommand`) that encapsulate execution
+     logic.
+   - Uses a `CommandFactory` to map command names to classes, supporting both parsed commands (e.g., `PRINT`)
+     and simple ones (e.g., `BYE`).
+   - Handles program flow (e.g., `GOTO`, `FOR`, `WHILE`) using an `InterpreterState` to track variables,
+     arrays, and line numbers.
+
+5. *Interpreter Engine (`basic_interpreter.py`, `basic_commands.py`)*:
+   - The `InterpreterEngine` manages program execution, maintaining state (line number, variables, stack)
+     in `InterpreterState`.
+   - Executes lines by tokenizing, parsing, and dispatching to appropriate commands.
+   - Supports tracing, pausing, and resuming execution, with error handling for interrupts (`KeyboardInterrupt`).
+
+6. *State Management (`basic_shared.py`)*:
+   - `InterpreterState` stores program state: variables (`Dict[str, Any]`), arrays (`Dict[str, Dict[tuple, Any]]`),
+     code (`Dict[int, str]`), loop info, and stack.
+   - Provides methods to reset state while optionally preserving code.
+
+7. *Utilities (`basic_utils.py`)*:
+   - Helper functions, such as creating parsers, to integrate components.
+
+
+### Execution Flow
+
+1. *Input*: A line is entered (e.g., `10 PRINT "Hello"`) or loaded from a file.
+2. *Tokenization*: The `Tokenizer` splits the line into tokens (e.g., `NUMBER:10`, `IDENTIFIER:PRINT`, `STRING:"Hello"`).
+3. *Parsing*: If the line starts with a number, it’s stored in `state.code`. Otherwise, the `Parser` creates
+   an AST for immediate execution.
+4. *Command Execution*: The `InterpreterEngine` identifies the command (e.g., `PRINT`) and uses `CommandFactory`
+   to instantiate it. The command’s `execute` method processes arguments, often evaluating expressions via `Evaluator`.
+5. *State Update*: Results (e.g., variable assignments, line number changes) update `InterpreterState`.
+6. *Program Flow*: The engine advances to the next line or jumps based on `GOTO`, `FOR`, etc., until the program
+   ends (`END`, `BYE`, or no more lines).
+
+
+### Implementation Features
+
+- *Modularity*: Each component (tokenizer, parser, evaluator, commands) is self-contained, making it easy to extend or modify.
+- *Error Handling*: Robust error reporting for syntax errors, undefined variables, or invalid array indices, with
+  fallback behaviors (e.g., defaulting to 0).
+- *1-Based Indexing*: Arrays use BASIC’s 1-based indexing, internally adjusted to 0-based for Python dictionaries.
+- *Dynamic Typing*: Variables and array elements can hold numbers or strings, checked at runtime.
+- *Debugging*: Debug output (e.g., `DEBUG: Evaluated...`) and tracing (`TRACE`) aid development and user understanding.
+
+
+### Example
+
 ```basic
-10 LET A = 5
-20 PRINT A * 2
-30 END
+10 DIM A(5)
+20 LET A(1) = 42
+30 PRINT A(1)
+40 FOR I = 1 TO 3
+50 PRINT "Loop"; I
+60 NEXT I
+RUN
 ```
-
-3. *Tiny BASIC* (1976)
-- Features: Extremely minimal interpreter designed for
-  microcomputers with as little as 2 KB of RAM.
-- Example:
-```basic
-10 LET A = 3
-20 LET B = A + A
-30 PRINT B
-40 END
-```
-
-4. *ABC80 BASIC* (1978)
-- Features:  `OUT` and `IN` for I/O signaling, very fast close to *BBC BASIC* (1981).
-- Example:
-```basic
-10 A% = 5
-20 FOR I% = 1% TO 5% : ; A% + I% : NEXT I%
-```
-
-5. *Applesoft BASIC* (1978)
-- Features: Floating-point math, graphics (`HPLOT`).
-- Example:
-```basic
-10 HGR
-20 HCOLOR=3
-30 HPLOT 100,100
-40 END
-```
-
-6. *Commodore BASIC* (1977–1982)
-- Features: `PEEK` and `POKE` for memory manipulation.
-- Example:
-```basic
-10 POKE 53280,0
-20 PRINT "Black Border"
-30 END
-```
-
-7. *Sinclair BASIC* (1980)
-- Features: Single-key entry, optimised for low memory.
-- Example:
-```basic
-10 PRINT AT 10,10;"Hello"
-20 PAUSE 50
-30 CLS
-40 END
-```
-
-8. *Microsoft BASIC* (1976–1980s)
-- Features: Portable across platforms (e.g., TRS-80, IBM PC).
-- Example:
-```basic
-10 INPUT "Enter a number: ", N
-20 PRINT N * N
-30 END
-```
-
-9. *QuickBASIC/QBASIC* (1985/1991)
-- Features: Structured programming, IDE.
-- Example:
- ```basic
- CLS
- INPUT "Enter your name: ", name$
- PRINT "Hello, "; name$
- END
- ```
-
-10. *Visual Basic* (1991)
-- Features: GUI design, event-driven programming.
-- Example:
-```basic
-Private Sub Command1_Click()
-     MsgBox "Hello, World!"
-End Sub
-```
-
-### Decline of BASIC
-
-BASIC's dominance faded in the late 1980s and 1990s due to technical, cultural, and pedagogical factors:
-
-- *Performance*: Interpreted BASIC was slow compared to compiled languages like C or Pascal, limiting
-  its use for complex applications.
-
-- *Unstructured Code*: Early BASIC's reliance on `GOTO` produced "spaghetti code," criticised for being
-  unmaintainable. Structured dialects like QuickBASIC mitigated this, but the stigma persisted.
-
-- *Professionalization*: As software development formalised, languages with strong typing and modularity
-  (e.g., C++) during the late 80 became industry standards, marginalising BASIC's beginner-focused design.
-
-- *Hardware Advances*: Powerful PCs and GUI-based operating systems (e.g., Windows) reduced the need for
-  lightweight languages. Visual Basic thrived briefly for rapid application development but was later
-  eclipsed by .NET and C#.
-
-- *Educational Shift*: BASIC faced criticism in academia for encouraging bad habits. In 1975, Edsger
-  Dijkstra famously critiqued BASIC, stating it "cripples the mind" by allowing unstructured programming,
-  potentially hindering students' ability to learn disciplined coding practices. This view gained
-  traction as educators favored languages like Pascal, which emphasised structure.
-
-[^cripple]: Dijkstra, E. W. (1975). EWD498: *How do we tell truths that might hurt?*
-Archived by the University of Texas:
-https://www.cs.utexas.edu/users/EWD/ewd04xx/EWD498.PDF
-
-By the 2000s, BASIC was a niche language, though Visual Basic and open-source projects like FreeBASIC
-persisted. Its educational role diminished as Python and visual tools like Scratch took over.
+- Output: `42`, `Loop 1`, `Loop 2`, `Loop 3`.
+- The interpreter declares an array, assigns a value, prints it,
+and loops to print a sequence.
 
 
-### Criticisms of BASIC
+### Limitations
 
-BASIC faced significant criticism, particularly from academics and professional programmers:
+- No advanced graphics or sound, as it’s console-based.
+- Limited function set compared to modern languages.
+- Performance may degrade for large programs due to Python’s interpretive nature.
 
-- *Unstructured Programming*: The heavy use of `GOTO` led to convoluted code, making it hard to teach
-  modular design. Critics argued this instilled poor habits in beginners, complicating transitions to
-  languages like C or Pascal.
-
-- *Oversimplification*: BASIC's simplicity, while pedagogically valuable, was seen as a double-edged
-  sword. It shielded learners from low-level concepts like memory management, leaving them unprepared
-  for systems programming.
-
-- *Lack of Standardization*: The proliferation of dialects created inconsistencies, frustrating learners
-  who moved between platforms (e.g., Commodore BASIC's `POKE` vs. Applesoft's `HPLOT`).
-
-- *Perceived Amateurism*: BASIC's association with hobbyists and "toy" programs led to a perception that
-  it was not serious, alienating it from professional and academic circles.
-
-- *Pedagogical Harm*: Dijkstra and others argued that BASIC's leniency (e.g., no type declarations)
-  fostered sloppy thinking, potentially limiting students' ability to grasp rigorous programming principles.
-
-Despite these critiques, defenders noted that BASIC's accessibility sparked interest in computing for
-millions, and structured dialects like QuickBASIC addressed some concerns. The debate reflects a tension
-between ease of learning and preparation for advanced programming.
-
-
-### Lessons from BASIC
-
-BASIC's history offers valuable insights, particularly in pedagogy and language design:
-
-1. *Pedagogical Power of Simplicity*: BASIC's success in education stemmed from its low entry barrier,
-   showing that beginner-friendly tools can inspire lifelong interest in computing. Modern tools like
-   Python and Scratch build on this legacy.
-
-2. *Balancing Simplicity and Structure*: BASIC's unstructured nature was both a strength (easy to learn)
-   and a weakness (hard to scale). This highlights the need for languages to evolve with learners, as
-   seen in QuickBASIC's structured features.
-
-3. *Ecosystem Drives Adoption*: BASIC's integration into microcomputers made it ubiquitous, underscoring
-   the importance of accessibility and distribution in educational tools.
-
-4. *Criticism Informs Progress*: The backlash against BASIC spurred improvements in programming education,
-  leading to languages like Pascal and Python that balance simplicity with discipline.
-
-5. *Cultural Legacy*: BASIC's role in fostering a DIY programming culture shows how tools shape communities.
-   Its decline reflects the challenge of staying relevant amid technological shifts.
-
-6. *Pedagogical Evolution*: BASIC's immediate feedback and interactivity remain gold standards in teaching.
-   However, its criticisms emphasize the need for tools that transition learners to advanced concepts without
-   sacrificing engagement.
-
-
-### Conclusion
-
-BASIC was a cornerstone of the microcomputer era, transforming computing from an elite discipline to a tool
-for all. Its pedagogical value--rooted in simplicity, interactivity, and accessibility--made it a gateway for
-millions to learn programming, shaping the tech industry and educational practices. However, criticisms of
-its unstructured design and perceived limitations highlight the challenges of balancing beginner-friendliness
-with rigour. BASIC's rise and fall illustrate the power of accessible tools and the need for evolution in
-response to changing needs. Its legacy endures in modern educational languages and the ethos of democratising
-technology.
+This BASIC interpreter is useful for educational purposes, retro computing enthusiasts, or simple scripting,
+offering a faithful yet extensible implementation of a classic programming language. For more details, run `HELP`
+in the interpreter or explore the command-specific code in `basic_commands.py`.
 
