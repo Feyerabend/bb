@@ -7,6 +7,13 @@ ongoing discovery of new material, I've chosen to publish the book's bibliograph
 rather than include it directly in the print version.
 
 
+## Documents
+
+Folders may contain documents in the Microsoft ".docx" format. These are generated directly
+by Gemini Deep Research. They are heavily referenced and can serve as a starting point for
+further exploration or guidance on the topics.
+
+
 ## Audio Discussions
 
 With the assistance of Google’s NotebookLM, a series of WAVE files has been produced.
