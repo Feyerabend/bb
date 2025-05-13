@@ -88,7 +88,7 @@ instead of traditional libraries:
 
 #### When to Choose or Avoid
 
-__May Be Beneficial__
+*May Be Beneficial*
 
 *1 Domain Stability*
 * *Green flag*: The problem domain is well-understood and relatively stable  
@@ -116,7 +116,7 @@ __May Be Beneficial__
 * *Example*: Smart contract languages, security policies, or financial transaction systems
 
 
-__When to Avoid__
+*When to Avoid*
 
 *1 Premature Abstraction*
 * *Red flag*: The domain is still evolving rapidly  
