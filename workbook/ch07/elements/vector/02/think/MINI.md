@@ -260,7 +260,7 @@ The history of JavaScript and spread offer important lessons about mini-language
 differ significantly from the more deliberate design paths of COBOL, BASIC, and Python.
 
 
-__JavaScript: The Accidental Mini-Language Success Story: The Unexpected Journey__
+#### JavaScript: The Accidental Mini-Language Success Story: The Unexpected Journey
 
 JavaScript's history is remarkable in how it contradicts conventional wisdom about language design:
 * *Created in just 10 days* (May 1995) by Brendan Eich at Netscape  
@@ -334,7 +334,7 @@ YHTML occupies a fascinating middle ground that shares important characteristics
 while serving as perhaps the most successful intermediary between humans and computers ever created.
 
 
-__HTML: The Universal Declarative Interface__
+#### HTML: The Universal Declarative Interface
 
 *HTML as a Proto-Mini-Language*
 
@@ -347,7 +347,7 @@ it embodies many of the same principles:
 4. *Progressive complexity*: Can start with basic tags and gradually adopt more advanced features  
 5. *Separation of concerns*: Content structure separate from presentation and behavior
 
-## *HTML's Unique Position in Computing History*
+*HTML's Unique Position in Computing History*
 
 HTML represents perhaps the most successful example of a structured language that:
 1. *Crossed the expertise barrier*: Used by everyone from complete novices to experts  
