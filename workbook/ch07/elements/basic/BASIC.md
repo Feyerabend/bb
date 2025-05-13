@@ -122,7 +122,7 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
 ```basic
 10 POKE 53280,0
 20 PRINT "Black Border"
-0 END
+30 END
 ```
 
 7. *Sinclair BASIC* (1980)
