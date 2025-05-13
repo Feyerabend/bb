@@ -195,7 +195,7 @@ __Mini-Languages in an LLM-Powered Ecosystem__
 In an LLM-powered future, mini-languages could thrive for several reasons:
 
 
-*1 Natural Language to Structured Intent*
+*1) Natural Language to Structured Intent*
 
 LLMs excel at interpreting natural language and can translate it into more structured
 mini-languages, creating a two-tier system:
@@ -209,7 +209,7 @@ This brings tremendous benefits:
 * Mini-languages serve as an auditable, versionable intermediate representation
 
 
-*2 Evolving Languages Through Usage*
+*2) Evolving Languages Through Usage*
 
 LLMs could enable mini-languages to evolve organically based on usage patterns:
 * Track common user requests that don't map well to current language features  
@@ -217,7 +217,7 @@ LLMs could enable mini-languages to evolve organically based on usage patterns:
 * Help formalize new constructs that emerge from natural interactions
 
 
-*3 Contextual Assistance and Education*
+*3) Contextual Assistance and Education*
 
 LLMs could provide scaffolding around mini-languages:
 * Offer explanations of language constructs in natural language  
@@ -360,13 +360,13 @@ HTML represents perhaps the most successful example of a structured language tha
 
 HTML's journey offers valuable insights for mini-language design in an LLM future:
 
-*1 The Power of Declarative Approaches*
+*1) The Power of Declarative Approaches*
 
 HTML lets users declare their intent ("this is a heading") without specifying implementation
 details. This aligns perfectly with how non-technical users think about content and is precisely
 how LLMs can help bridge the gap to computation.
 
-*2 Progressive Disclosure of Complexity*
+*2 )Progressive Disclosure of Complexity*
 
 Users can create a valid HTML page[^w3] with just:
 
@@ -382,7 +382,7 @@ and integration with other technologies. This "low floor, high ceiling" approach
 mini-languages.
 
 
-*3 Meaningful Defaults with Optional Specificity*
+*3) Meaningful Defaults with Optional Specificity*
 
 HTML provides sensible defaults (how a paragraph renders) while allowing progressive customisation
 (via attributes, then CSS). This pattern of "works immediately, customizable later" encourages adoption.
