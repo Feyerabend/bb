@@ -49,15 +49,17 @@ dynamically rather than following a rigid sequence. Callbacks are scheduled by f
 later during normal program flow, typically in response to events like user input or asynchronous
 operations. Signal handlers, by contrast, respond spontaneously to low-level hardware or OS signals,
 often interrupting normal execution unpredictably. Event loops provide the structural foundation,
-continuously polling or waiting for events and dispatching control to appropriate callbacks or handlers.  
+continuously polling or waiting for events and dispatching control to appropriate callbacks or handlers.
+
 Together, these techniques enable reactive, responsive systems in domains such as GUIs, servers,
 embedded systems, and asynchronous programming environments.
 
-| Mechanism       | Description                                                            | Use Cases                                            | Related Pattern(s)                     |
-|-----------------|------------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------|
+| Mechanism | Description | Use Cases | Related Pattern(s) |
+|---|---|---|---|
 | Callback        | Function invoked at a later point, usually by a framework              | Event handling, async operations, sorting hooks      | Observer, Inversion of Control          |
 | Signal Handler  | Async routine called in response to OS or hardware signals             | Interrupt handling, Unix signals, exceptions         | Observer, Interrupt Vector Table        |
 | Event Loop      | Central loop dispatching async events                                  | GUIs, servers, JavaScript runtimes                   | Reactor, Proactor                       |
+
 
 ### Computation Models
 
@@ -65,6 +67,7 @@ embedded systems, and asynchronous programming environments.
 execution, enabling cooperative multitasking, generators, and simulations. They are often used
 in the Actor model and State Machine patterns to manage concurrency and control flow in a structured,
 non-preemptive way.
+
 
 ### Conclusion
 
