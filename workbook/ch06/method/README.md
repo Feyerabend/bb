@@ -132,15 +132,15 @@ graph TD
     A[User Journey: First-Time Loan Applicant]
 
     A --> B[Discover Options]
-    B --> B1[As a user, I want to compare rates (Priority: High)]
+    B --> B1[As a user, I want to compare rates<br>Priority: High]
     B1 --> B1a[Design Task: Rate calculator widget]
 
     A --> C[Apply]
-    C --> C1[As a user, I want to save partial application (Priority: Medium)]
+    C --> C1[As a user, I want to save partial application<br>Priority: Medium]
     C1 --> C1a[Tech Spike: Browser storage vs. backend draft]
 
     A --> D[Post-Submission]
-    D --> D1[As a user, I want SMS status updates (Priority: Low)]
+    D --> D1[As a user, I want SMS status updates<br>Priority: Low]
 ```
 
 This virtual whiteboard applies Herb Simon's 1969 "sciences of the artificial" to
