@@ -101,12 +101,12 @@ BASIC's open design led to numerous dialects, each adapted to specific platforms
 4. *Applesoft BASIC* (1978)
    - Features: Floating-point math, graphics (`HPLOT`).
    - Example:
-     ```basic
-     10 HGR
-     20 HCOLOR=3
-     30 HPLOT 100,100
-     40 END
-     ```
+    ```basic
+    10 HGR
+    20 HCOLOR=3
+    30 HPLOT 100,100
+    40 END
+    ```
 
 5. *Commodore BASIC* (1977–1982)
    - Features: `PEEK` and `POKE` for memory manipulation.
