@@ -1,22 +1,27 @@
-# Makefile for Lisp interpreter operations
 
-.PHONY: run test clean help
+.PHONY: all clean run iclean
 
-run:
-	@python3 lisp.py
+all: help b8 tiger thumb
 
-test:
-	@echo "Running unit tests..."
-	@python3 -m unittest test_lisp.py -v
-
-clean:
-	@echo "Cleaning up..."
-	@rm -rf __pycache__
-	@rm -f *.pyc
 
 help:
-	@echo "Available targets:"
-	@echo "  run     - Start the Lisp REPL"
-	@echo "  test    - Run unit tests with verbose output"
-	@echo "  clean   - Remove Python cache files"
-	@echo "  help    - Show this help message"
+	python3 svg.py --help
+
+b8:
+	python3 svg.py b8.svg b8.png --width 400 --height 400
+
+tiger:
+	python3 svg.py tiger.svg tiger.png --width 600 --height 600
+
+thumb:
+	python3 svg.py thumb.svg thumb.png --width 800 --height 800 --clear-intermediate False
+
+clean:
+	rm -rf __pycache__
+
+iclean:
+	rm b8.png
+	rm tiger.png
+	rm thumb.png
+
+run: iclean all clean
