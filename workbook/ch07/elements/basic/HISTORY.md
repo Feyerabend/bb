@@ -68,100 +68,194 @@ computer literacy curricula.
 
 ### Dialects of BASIC
 
-BASIC's open design led to numerous dialects, each adapted to specific platforms or purposes. Examples include:
+#### 1. *Dartmouth BASIC* (1964) - *The Original*
 
-1. *Dartmouth BASIC* (1964)
-- Features: Basic commands (`PRINT`, `INPUT`, `GOTO`), line numbers, educational focus.
-- Example:
+The first BASIC implementation was designed for time-sharing systems at Dartmouth College, focusing on education and accessibility. It introduced the core syntax that would influence all future variants.
+
 ```basic
-10 PRINT "Hello, World!"
-20 END
+10 REM CALCULATE AVERAGE OF THREE NUMBERS
+20 INPUT "ENTER THREE NUMBERS: "; A, B, C
+30 LET AVG = (A + B + C) / 3
+40 PRINT "THE AVERAGE IS"; AVG
+50 END
 ```
 
-2. *Altair BASIC* (1975)
-- Features: Compact, supporting arithmetic and strings.
-- Example:
+*Historical Significance*: Dartmouth BASIC pioneered the concept of interactive programming for non-specialists, with its English-like commands and straightforward execution model fundamentally changing who could program computers.
+
+
+#### 2. *Microsoft BASIC* (1975) - *The Foundation of an Empire*
+
+Initially developed for the Altair 8800, Microsoft BASIC became the foundation of Bill Gates and Paul Allen's software empire. It was adapted for dozens of microcomputers and established many conventions that persisted across later dialects.
+
 ```basic
-10 LET A = 5
-20 PRINT A * 2
+10 PRINT "RANDOM NUMBERS:"
+20 FOR I = 1 TO 5
+30 N = INT(RND(1) * 100) + 1
+40 PRINT N
+50 NEXT I
+60 GOTO 10
+```
+
+*Historical Significance*: This dialect launched Microsoft as a company and established the precedent of licensing software separately from hardware. Its widespread adoption created the first standard BASIC that worked across multiple manufacturers' computers.
+
+
+#### 3. *Tiny BASIC* (1975-1976) - *The First Open Source Movement*
+
+Developed in response to Altair BASIC's $150 price tag, Tiny BASIC emerged from the Homebrew Computer Club when Dr. Li-Chen Wang created a minimal BASIC interpreter published with the notation "Copyleft" - an early precursor to open-source licensing.
+
+```basic
+10 REM TINY BASIC PRIME NUMBER FINDER
+20 N=3
+30 PRINT 2
+40 GOSUB 100
+50 N=N+2
+60 IF N<100 THEN 40
+70 END
+100 FOR I=3 TO SQR(N) STEP 2
+110 IF N/I=INT(N/I) THEN RETURN
+120 NEXT I
+130 PRINT N
+140 RETURN
+```
+
+*Historical Significance*: Tiny BASIC represented computing's first significant "copyleft" project, with its specification published in the People's Computer Company newsletter and implementations shared freely. This challenge to proprietary software models preceded the Free Software movement by nearly a decade and demonstrated the potential of community-developed software.
+
+
+#### 4. *Commodore BASIC* (1977) - *The People's Programming Language*
+
+Embedded in ROM on Commodore's wildly popular PET, VIC-20, and Commodore 64 computers, this dialect introduced millions of users to programming through direct hardware access commands.
+
+```basic
+10 POKE 53280,0: POKE 53281,0: REM BLACK SCREEN AND BORDER VIC II
+20 FOR I = 0 TO 24
+30 POKE 1024+(I*40), 42: REM PLOT ASTERISK DOWN SCREEN EDGE
+40 POKE 55296+(I*40), 1: REM COLOR IT WHITE
+50 NEXT I
+60 FOR T = 1 TO 1000: NEXT T: REM DELAY LOOP
+70 GOTO 10
+```
+
+*Historical Significance*: Commodore BASIC exemplified how programming languages could be tailored to specific hardware. Its `PEEK` and `POKE` commands gave users direct memory access, encouraging a generation to experiment with graphics and sound by manipulating the computer's memory directly.
+
+
+#### 4. *BBC BASIC* (1981) - *The Educational Standard*
+
+Developed for the BBC Microcomputer System as part of the UK's Computer Literacy Project, BBC BASIC combined educational accessibility with advanced features like procedures, multi-line IF statements, and built-in assembly language.
+
+```basic
+10 MODE 2
+20 PROCdrawSquare(640, 512, 200)
 30 END
+40 
+50 DEF PROCdrawSquare(x, y, size)
+60   LOCAL s2
+70   s2 = size/2
+80   MOVE x-s2, y-s2
+90   DRAW x+s2, y-s2
+100  DRAW x+s2, y+s2
+110  DRAW x-s2, y+s2
+120  DRAW x-s2, y-s2
+130 ENDPROC
 ```
 
-3. *Tiny BASIC* (1976)
-- Features: Extremely minimal interpreter designed for
-  microcomputers with as little as 2 KB of RAM.
-- Example:
+*Historical Significance*: BBC BASIC showed how a teaching language could evolve to include structured programming concepts without sacrificing accessibility. Its influence on UK education created a generation of programmers who benefited from its balance of simplicity and sophistication.
+
+
+#### 5. *ABC80 BASIC* (1978) - *The Scandinavian Speedster*
+
+Developed for the Luxor ABC80 computer, this dialect became dominant in Nordic countries, particularly Sweden, and was known for its exceptional execution speed and efficient memory usage. Its performance rivaled that of BBC BASIC despite being developed earlier.
+
 ```basic
-10 LET A = 3
-20 LET B = A + A
-30 PRINT B
-40 END
+10 REM ABC80 BASIC - HORISONTAL SCROLLING ASTERISK
+20 PRINT CHR$(12); : REM CLEAR SCREEN
+30 FOR X% = 0 TO 39
+40 ; CUR(X%, 10);"*"; : REM MOVE CURSOR TO COLUMN X%, ROW 10
+50 FOR W% = 1% TO 100% : NEXT W% : REM SMALL DELAY
+60 ; CUR(X%, 10);" "; : REM MOVE CURSOR BACK TO COLUMN X%, ROW 10
+70 NEXT X%
+90 GOTO 30
 ```
 
-4. *ABC80 BASIC* (1978)
-- Features:  `OUT` and `IN` for I/O signaling, very fast close to *BBC BASIC* (1981).
-- Example:
+*Historical Significance*: ABC80 BASIC demonstrated that interpreted languages could achieve performance comparable to compiled code through careful optimization. Its popularity in educational settings throughout Scandinavia created a generation of programmers who benefited from its balance of accessibility and power. The machine's dominance in Swedish schools and universities established a strong computing culture that would later contribute to the Nordic region's outsized impact on technology.
+
+
+#### 6. *BBC BASIC* (1981) - *The Educational Standard*
+
+Bundled with early versions of MS-DOS, GW-BASIC became the default BASIC implementation on IBM PCs and compatibles, bringing the language into business environments.
+
 ```basic
-10 A% = 5
-20 FOR I% = 1% TO 5% : ; A% + I% : NEXT I%
+10 SCREEN 1: CLS
+20 COLOR 1
+30 LINE (0,0)-(319,199),3,B
+40 FOR I = 1 TO 100
+50   X = INT(RND * 300) + 10
+60   Y = INT(RND * 180) + 10
+70   CIRCLE (X,Y), 5, 2
+80 NEXT I
+90 LOCATE 23, 10: PRINT "PRESS ANY KEY TO CONTINUE"
+100 A$ = INPUT$(1)
 ```
 
-5. *Applesoft BASIC* (1978)
-- Features: Floating-point math, graphics (`HPLOT`).
-- Example:
+*Historical Significance*: GW-BASIC bridged the gap between home computers and business machines, establishing BASIC as a universal language across computing environments.
+
+
+#### 6. *QuickBASIC* (1985) - *The Professional Evolution*
+
+Microsoft's QuickBASIC transformed BASIC from an interpreted language into a modern development environment with a compiler, subroutines, and structured programming constructs.
+
 ```basic
-10 HGR
-20 HCOLOR=3
-30 HPLOT 100,100
-40 END
+' Modern structured programming approach
+DECLARE SUB DrawBox (x1!, y1!, x2!, y2!)
+SCREEN 12
+
+DrawBox 100, 100, 300, 200
+DrawBox 150, 150, 250, 350
+
+SUB DrawBox (x1, y1, x2, y2)
+    LINE (x1, y1)-(x2, y2), 15, B
+END SUB
 ```
 
-6. *Commodore BASIC* (1977–1982)
-- Features: `PEEK` and `POKE` for memory manipulation.
-- Example:
+*Historical Significance*: QuickBASIC represented BASIC's coming of age, answering critics who dismissed it as unstructured and inefficient. Its IDE and compiler technologies influenced future development environments.
+
+
+#### 7. *Visual Basic* (1991) - *The Business Revolution*
+
+Reimagining BASIC for Windows' graphical environment, Visual Basic pioneered event-driven programming and visual development techniques that democratized business application creation.
+
 ```basic
-10 POKE 53280,0
-20 PRINT "Black Border"
-30 END
+GraphicsWindow.BackgroundColor = "Black"
+GraphicsWindow.PenColor = "White"
+GraphicsWindow.Width = 480
+GraphicsWindow.Height = 320
+
+For i = 1 To 100
+  x = Math.GetRandomNumber(GraphicsWindow.Width)
+  y = Math.GetRandomNumber(GraphicsWindow.Height)
+  GraphicsWindow.DrawText(x, y, "*")
+EndFor
 ```
 
-7. *Sinclair BASIC* (1980)
-- Features: Single-key entry, optimised for low memory.
-- Example:
-```basic
-10 PRINT AT 10,10;"Hello"
-20 PAUSE 50
-30 CLS
-40 END
-```
+*Historical Significance*: Small Basic demonstrated the enduring value of BASIC's pedagogical approach, adapting its simplicity for modern object-oriented environments while maintaining the focus on immediate feedback and visual results.
 
-8. *Microsoft BASIC* (1976–1980s)
-- Features: Portable across platforms (e.g., TRS-80, IBM PC).
-- Example:
-```basic
-10 INPUT "Enter a number: ", N
-20 PRINT N * N
-30 END
-```
 
-9. *QuickBASIC/QBASIC* (1985/1991)
-- Features: Structured programming, IDE.
-- Example:
- ```basic
- CLS
- INPUT "Enter your name: ", name$
- PRINT "Hello, "; name$
- END
- ```
+#### 9. *Visual Basic* (1991) - *The Business Revolution*
 
-10. *Visual Basic* (1991)
-- Features: GUI design, event-driven programming.
-- Example:
+Microsoft's return to BASIC's educational origins, designed specifically to teach programming concepts to beginners in the modern era.
+
 ```basic
 Private Sub Command1_Click()
-     MsgBox "Hello, World!"
+    If Text1.Text = "" Then
+        MsgBox "Please enter your name", vbExclamation, "Input Required"
+    Else
+        Label1.Caption = "Hello, " & Text1.Text & "!"
+        Text1.Text = ""
+    End If
 End Sub
 ```
+
+*Historical Significance*: Visual Basic transformed BASIC from a learning tool to an enterprise development platform. Its visual form designer and event model created a template for rapid application development that continues in modern frameworks.
+
 
 ### Decline of BASIC
 
