@@ -1,14 +1,6 @@
 # From Basics To Bytecode: A guide to computers and programming
 # Workbook
 
-- graphics
-    - (3d simple Clifford vs trad.)
-    - 2d (ps/svg)
-- artifacts
-    - modules
-    - apis
-    - minilang
-
 
 ideas?
 - security
@@ -32,7 +24,6 @@ more
     - Texture mapping and projection: texture mapping, perspective projection
     - Modeling: Constructive Solid Geometry (CSG), Bezier curves and surfaces, subdivision surfaces
     - Animation: interpolation (keyframe animation), skeletal animation, particle systems (JS)
-
 
 other?
 * Geometric: computational geometry tasks like convex hull, intersection detection, Voronoi diagrams ..
