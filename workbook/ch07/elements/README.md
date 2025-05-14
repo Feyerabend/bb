@@ -19,6 +19,20 @@ If we shortly reflect on what *methodology* is in contrast ([ch06](./../../ch06/
 |  *Nature of Evolution* | Architecture must be refactored or rethought when requirements shift. | Methodology often cycles and reincarnates older ideas in new forms. |
 
 
+### Folders
+
+Principles:
+* simplec
+* simplepy
+
+Readymade:
+* basic
+
+Explorative:
+* vector
+
+
+
 ### History
 
 The history of software architecture mirrors the evolution of computing itself. In the 1960s, as systems
