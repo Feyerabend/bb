@@ -1,5 +1,5 @@
 
-## How About Makeing Concurrent Drawings?
+## How About Making Concurrent Drawings?
 
 We go directly to implementation, because partly we think in code ..
 
@@ -24,7 +24,7 @@ they appear in the SVG file, which is critical because SVG rendering is order-de
 *Cons:*
 - Can be slow for complex SVGs with many paths, especially if parsing or
   rendering is computationally expensive.
-- Does not utilize multi-core CPUs effectively (which could be another path--pun intended).
+- Does not utilise multi-core CPUs effectively (which could be another path--pun intended).
 
 
 ### Now, How About Concurrency?
@@ -44,13 +44,13 @@ However, we could parallelise certain aspects of parsing:
   and transformations (`_parse_transform`) for each element could be done in parallel, as these operations
   are independent for each element.
 - *Path Data Parsing*: For `<path>` elements, parsing the `d` attribute (`_parse_path_data`) is computationally
-  intensive for complex paths. You could parallelize this across multiple paths, but you’d need to ensure that
+  intensive for complex paths. You could parallelise this across multiple paths, but you’d need to ensure that
   the resulting `Path` objects are collected in the correct order.
 
 *Challenges*:
 - *Order Preservation*: The `self.paths` list must maintain the order of elements as they appear in the SVG
   to ensure correct rendering (e.g., later paths are drawn on top of earlier ones).
-- *Thread Safety*: If using threads (e.g., Python’s `threading` module), you’d need to synchronize access to
+- *Thread Safety*: If using threads (e.g., Python’s `threading` module), you’d need to synchronise access to
   shared data structures like `self.paths`.
 - *Overhead*: For small SVGs, the overhead of setting up threads or processes might outweigh the benefits.
 
@@ -63,7 +63,7 @@ the final canvas is a shared resource, so concurrent rendering requires careful 
 
 *Approaches to Concurrent Rendering*:
 1. *ThreadPoolExecutor* (Thread-Based):
-   - Use `concurrent.futures.ThreadPoolExecutor` to parallelize the rendering of individual paths.
+   - Use `concurrent.futures.ThreadPoolExecutor` to parallelise the rendering of individual paths.
    - Each thread processes a path’s fill and stroke operations, but instead of directly modifying the shared
      canvas, it could render to a temporary buffer (e.g., a separate `numpy` array for the path).
    - After all threads complete, merge the temporary buffers onto the main canvas in the correct order.
@@ -71,7 +71,7 @@ the final canvas is a shared resource, so concurrent rendering requires careful 
 2. *ProcessPoolExecutor* (Process-Based):
    - Use `concurrent.futures.ProcessPoolExecutor` to leverage multiple CPU cores, bypassing Python’s
      Global Interpreter Lock (GIL).
-   - Each process renders a path to a temporary buffer, serializes the result (e.g., to a file or
+   - Each process renders a path to a temporary buffer, serialises the result (e.g., to a file or
      in-memory object), and returns it to the main process.
    - The main process merges the buffers.
 
@@ -186,7 +186,7 @@ them in the correct z-order.
 
 3. *NumPy Operations*:
    - If using `numpy` arrays (as implied by `AntiAliasedRasterizer`), you can use
-     vectorized operations for blending.
+     vectored operations for blending.
    - Example (simplified):
      ```python
      def blend_buffers(bottom, top):
@@ -327,7 +327,7 @@ effectiveness depends on the use case and implementation details.
 - *Large, Complex SVGs*: With many paths or computationally intensive geometries (e.g., many Bézier curves or arcs).
 - *Repeated Renders*: When the same SVG is rendered multiple times with consistent parameters (e.g., in a web server or
   interactive viewer).
-- *High-Resolution Outputs*: Where rendering time dominates, and parallelization can leverage multiple cores.
+- *High-Resolution Outputs*: Where rendering time dominates, and parallelisation can leverage multiple cores.
 
 *When It’s Less Effective*:
 - *Small SVGs*: Simple SVGs with few paths may not benefit from concurrency due to setup overhead.
@@ -340,9 +340,9 @@ effectiveness depends on the use case and implementation details.
 2. *Implement Caching*: Use an in-memory cache (e.g., `functools.lru_cache` or a dictionary) for small SVGs
    and a disk-based cache for larger ones.
 3. *Profile First*: Measure the time spent in parsing vs. rendering to identify bottlenecks. For example,
-   if `_parse_path_data` is slow for complex paths, prioritize parallelizing that.
+   if `_parse_path_data` is slow for complex paths, prioritise parallelising that.
 4. *Test Z-Order*: Ensure the merging step correctly handles overlapping paths with transparency.
-5. *Consider Libraries*: For production use, libraries like `cairo` or `Pillow` might offer optimized rendering
+5. *Consider Libraries*: For production use, libraries like `cairo` or `Pillow` might offer optimised rendering
    and compositing, potentially simplifying the process.
 
 *Potential Enhancements*:
