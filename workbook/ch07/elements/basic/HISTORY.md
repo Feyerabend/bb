@@ -70,7 +70,8 @@ computer literacy curricula.
 
 #### 1. *Dartmouth BASIC* (1964) - *The Original*
 
-The first BASIC implementation was designed for time-sharing systems at Dartmouth College, focusing on education and accessibility. It introduced the core syntax that would influence all future variants.
+The first BASIC implementation was designed for time-sharing systems at Dartmouth College, focusing on education
+and accessibility. It introduced the core syntax that would influence all future variants.
 
 ```basic
 10 REM CALCULATE AVERAGE OF THREE NUMBERS
@@ -80,12 +81,14 @@ The first BASIC implementation was designed for time-sharing systems at Dartmout
 50 END
 ```
 
-*Historical Significance*: Dartmouth BASIC pioneered the concept of interactive programming for non-specialists, with its English-like commands and straightforward execution model fundamentally changing who could program computers.
+*Historical Significance*: Dartmouth BASIC pioneered the concept of interactive programming for non-specialists,
+with its English-like commands and straightforward execution model fundamentally changing who could program computers.
 
 
 #### 2. *Microsoft BASIC* (1975) - *The Foundation of an Empire*
 
-Initially developed for the Altair 8800, Microsoft BASIC became the foundation of Bill Gates and Paul Allen's software empire. It was adapted for dozens of microcomputers and established many conventions that persisted across later dialects.
+Initially developed for the Altair 8800, Microsoft BASIC became the foundation of Bill Gates and Paul Allen's software
+empire. It was adapted for dozens of microcomputers and established many conventions that persisted across later dialects.
 
 ```basic
 10 PRINT "RANDOM NUMBERS:"
@@ -96,12 +99,16 @@ Initially developed for the Altair 8800, Microsoft BASIC became the foundation o
 60 GOTO 10
 ```
 
-*Historical Significance*: This dialect launched Microsoft as a company and established the precedent of licensing software separately from hardware. Its widespread adoption created the first standard BASIC that worked across multiple manufacturers' computers.
+*Historical Significance*: This dialect launched Microsoft as a company and established the precedent of licensing
+software separately from hardware. Its widespread adoption created the first standard BASIC that worked across multiple
+manufacturers' computers.
 
 
 #### 3. *Tiny BASIC* (1975-1976) - *The First Open Source Movement*
 
-Developed in response to Altair BASIC's $150 price tag, Tiny BASIC emerged from the Homebrew Computer Club when Dr. Li-Chen Wang created a minimal BASIC interpreter published with the notation "Copyleft" - an early precursor to open-source licensing.
+Developed in response to Altair BASIC's $150 price tag, Tiny BASIC emerged from the Homebrew Computer Club when
+Dr. Li-Chen Wang created a minimal BASIC interpreter published with the notation "Copyleft"--an early precursor
+to open-source licensing.
 
 ```basic
 10 REM TINY BASIC PRIME NUMBER FINDER
@@ -118,12 +125,16 @@ Developed in response to Altair BASIC's $150 price tag, Tiny BASIC emerged from 
 140 RETURN
 ```
 
-*Historical Significance*: Tiny BASIC represented computing's first significant "copyleft" project, with its specification published in the People's Computer Company newsletter and implementations shared freely. This challenge to proprietary software models preceded the Free Software movement by nearly a decade and demonstrated the potential of community-developed software.
+*Historical Significance*: Tiny BASIC represented computing's first significant "copyleft" project, with its
+specification published in the People's Computer Company newsletter and implementations shared freely. This
+challenge to proprietary software models preceded the Free Software movement by nearly a decade and demonstrated
+the potential of community-developed software.
 
 
 #### 4. *Commodore BASIC* (1977) - *The People's Programming Language*
 
-Embedded in ROM on Commodore's wildly popular PET, VIC-20, and Commodore 64 computers, this dialect introduced millions of users to programming through direct hardware access commands.
+Embedded in ROM on Commodore's wildly popular PET, VIC-20, and Commodore 64 computers, this dialect introduced
+millions of users to programming through direct hardware access commands.
 
 ```basic
 10 POKE 53280,0: POKE 53281,0: REM BLACK SCREEN AND BORDER VIC II
@@ -135,12 +146,16 @@ Embedded in ROM on Commodore's wildly popular PET, VIC-20, and Commodore 64 comp
 70 GOTO 10
 ```
 
-*Historical Significance*: Commodore BASIC exemplified how programming languages could be tailored to specific hardware. Its `PEEK` and `POKE` commands gave users direct memory access, encouraging a generation to experiment with graphics and sound by manipulating the computer's memory directly.
+*Historical Significance*: Commodore BASIC exemplified how programming languages could be tailored to specific
+hardware. Its `PEEK` and `POKE` commands gave users direct memory access, encouraging a generation to experiment
+with graphics and sound by manipulating the computer's memory directly.
 
 
 #### 4. *BBC BASIC* (1981) - *The Educational Standard*
 
-Developed for the BBC Microcomputer System as part of the UK's Computer Literacy Project, BBC BASIC combined educational accessibility with advanced features like procedures, multi-line IF statements, and built-in assembly language.
+Developed for the BBC Microcomputer System as part of the UK's Computer Literacy Project, BBC BASIC combined
+educational accessibility with advanced features like procedures, multi-line IF statements, and built-in assembly
+language.
 
 ```basic
 10 MODE 2
@@ -158,12 +173,16 @@ Developed for the BBC Microcomputer System as part of the UK's Computer Literacy
 130 ENDPROC
 ```
 
-*Historical Significance*: BBC BASIC showed how a teaching language could evolve to include structured programming concepts without sacrificing accessibility. Its influence on UK education created a generation of programmers who benefited from its balance of simplicity and sophistication.
+*Historical Significance*: BBC BASIC showed how a teaching language could evolve to include structured programming
+concepts without sacrificing accessibility. Its influence on UK education created a generation of programmers who
+benefited from its balance of simplicity and sophistication.
 
 
 #### 5. *ABC80 BASIC* (1978) - *The Scandinavian Speedster*
 
-Developed for the Luxor ABC80 computer, this dialect became dominant in Nordic countries, particularly Sweden, and was known for its exceptional execution speed and efficient memory usage. Its performance rivaled that of BBC BASIC despite being developed earlier.
+Developed for the Luxor ABC80 computer, this dialect became dominant in Nordic countries, particularly Sweden,
+and was known for its exceptional execution speed and efficient memory usage. Its performance rivaled that of
+BBC BASIC despite being developed earlier.
 
 ```basic
 10 REM ABC80 BASIC - HORISONTAL SCROLLING ASTERISK
@@ -176,12 +195,16 @@ Developed for the Luxor ABC80 computer, this dialect became dominant in Nordic c
 90 GOTO 30
 ```
 
-*Historical Significance*: ABC80 BASIC demonstrated that interpreted languages could achieve performance comparable to compiled code through careful optimisation ("semi-compiled" or tokenized). Its popularity in educational settings throughout Scandinavia created a generation of programmers who benefited from its balance of accessibility and power. The machine's dominance in Swedish schools and universities established a strong computing culture.
+*Historical Significance*: ABC80 BASIC demonstrated that interpreted languages could achieve performance comparable
+to compiled code through careful optimisation ("semi-compiled" or tokenized). Its popularity in educational settings
+throughout Scandinavia created a generation of programmers who benefited from its balance of accessibility and power.
+The machine's dominance in Swedish schools and universities established a strong computing culture.
 
 
 #### 6. *BBC BASIC* (1981) - *The Educational Standard*
 
-Bundled with early versions of MS-DOS, GW-BASIC became the default BASIC implementation on IBM PCs and compatibles, bringing the language into business environments.
+Bundled with early versions of MS-DOS, GW-BASIC became the default BASIC implementation on IBM PCs and compatibles,
+bringing the language into business environments.
 
 ```basic
 10 SCREEN 1: CLS
@@ -196,12 +219,14 @@ Bundled with early versions of MS-DOS, GW-BASIC became the default BASIC impleme
 100 A$ = INPUT$(1)
 ```
 
-*Historical Significance*: GW-BASIC bridged the gap between home computers and business machines, establishing BASIC as a universal language across computing environments.
+*Historical Significance*: GW-BASIC bridged the gap between home computers and business machines, establishing
+BASIC as a universal language across computing environments.
 
 
 #### 6. *QuickBASIC* (1985) - *The Professional Evolution*
 
-Microsoft's QuickBASIC transformed BASIC from an interpreted language into a modern development environment with a compiler, subroutines, and structured programming constructs.
+Microsoft's QuickBASIC transformed BASIC from an interpreted language into a modern development environment with
+a compiler, subroutines, and structured programming constructs.
 
 ```basic
 ' Modern structured programming approach
@@ -216,12 +241,15 @@ SUB DrawBox (x1, y1, x2, y2)
 END SUB
 ```
 
-*Historical Significance*: QuickBASIC represented BASIC's coming of age, answering critics who dismissed it as unstructured and inefficient. Its IDE and compiler technologies influenced future development environments.
+*Historical Significance*: QuickBASIC represented BASIC's coming of age, answering critics who dismissed
+it as unstructured and inefficient. Its IDE and compiler technologies influenced future development
+environments.
 
 
 #### 7. *Visual Basic* (1991) - *The Business Revolution*
 
-Reimagining BASIC for Windows' graphical environment, Visual Basic pioneered event-driven programming and visual development techniques that democratized business application creation.
+Reimagining BASIC for Windows' graphical environment, Visual Basic pioneered event-driven programming and
+visual development techniques that democratized business application creation.
 
 ```basic
 GraphicsWindow.BackgroundColor = "Black"
@@ -236,12 +264,15 @@ For i = 1 To 100
 EndFor
 ```
 
-*Historical Significance*: Small Basic demonstrated the enduring value of BASIC's pedagogical approach, adapting its simplicity for modern object-oriented environments while maintaining the focus on immediate feedback and visual results.
+*Historical Significance*: Small Basic demonstrated the enduring value of BASIC's pedagogical approach,
+adapting its simplicity for modern object-oriented environments while maintaining the focus on immediate
+feedback and visual results.
 
 
 #### 9. *Visual Basic* (1991) - *The Business Revolution*
 
-Microsoft's return to BASIC's educational origins, designed specifically to teach programming concepts to beginners in the modern era.
+Microsoft's return to BASIC's educational origins, designed specifically to teach programming concepts
+to beginners in the modern era.
 
 ```basic
 Private Sub Command1_Click()
@@ -254,7 +285,9 @@ Private Sub Command1_Click()
 End Sub
 ```
 
-*Historical Significance*: Visual Basic transformed BASIC from a learning tool to an enterprise development platform. Its visual form designer and event model created a template for rapid application development that continues in modern frameworks.
+*Historical Significance*: Visual Basic transformed BASIC from a learning tool to an enterprise development
+platform. Its visual form designer and event model created a template for rapid application development
+that continues in modern frameworks.
 
 
 ### Decline of BASIC
