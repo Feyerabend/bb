@@ -176,7 +176,7 @@ Developed for the Luxor ABC80 computer, this dialect became dominant in Nordic c
 90 GOTO 30
 ```
 
-*Historical Significance*: ABC80 BASIC demonstrated that interpreted languages could achieve performance comparable to compiled code through careful optimization. Its popularity in educational settings throughout Scandinavia created a generation of programmers who benefited from its balance of accessibility and power. The machine's dominance in Swedish schools and universities established a strong computing culture that would later contribute to the Nordic region's outsized impact on technology.
+*Historical Significance*: ABC80 BASIC demonstrated that interpreted languages could achieve performance comparable to compiled code through careful optimisation ("semi-compiled" or tokenized). Its popularity in educational settings throughout Scandinavia created a generation of programmers who benefited from its balance of accessibility and power. The machine's dominance in Swedish schools and universities established a strong computing culture.
 
 
 #### 6. *BBC BASIC* (1981) - *The Educational Standard*
