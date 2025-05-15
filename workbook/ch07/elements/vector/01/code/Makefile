@@ -14,9 +14,6 @@ tiger:
 thumb:
 	python3 svg.py thumb.svg thumb.png 800 800
 
-golfer:
-	python3 svg.py golfer.svg golfer.png 800 800
-
 picasso:
 	python3 svg.py picasso.svg picasso.png 800 800
 

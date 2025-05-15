@@ -7,6 +7,9 @@ ideas?
 - legacy
 - refactor
 
+- error correcting soundex
+
+
 
 samples of thinking
 - 60s/70s flow charts -> code

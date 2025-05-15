@@ -30,3 +30,10 @@
     mathematical framework for understanding logic programming languages like Prolog, making
     it essential reading for those interested in the theoretical underpinnings of logic-based
     computation.
+
+
+- Burkov, A. (2019[2019]). *The hundred-page machine learning book*. [Quebec City, Canada]: Andriy Burkov.
+
+- Davidson-Pilon, C. (2016). *Bayesian methods for hackers: probabilistic programming and Bayesian inference*. New York: Addison-Wesley.
+
+

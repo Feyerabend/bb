@@ -14,9 +14,6 @@ tiger:
 thumb:
 	python3 svg.py thumb.svg thumb.png --width 800 --height 800
 
-golfer:
-	python3 svg.py golfer.svg golfer.png --width 200 --height 200
-
 picasso:
 	python3 svg.py picasso.svg picasso.png --width 400 --height 400
 
