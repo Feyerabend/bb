@@ -1,6 +1,10 @@
 
 ## C Project
 
+> [!WARNING]  
+> In this example the (file) *structure* is the important focus, and __not__ the *implementation*.
+> Actual code might therefore not be correct or even compile.
+
 ### Core Concepts
 
 | Concept | Scope | Example (C Project) | Relation to API |
