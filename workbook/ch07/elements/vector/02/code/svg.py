@@ -76,7 +76,6 @@ class SVGParser:
         if not transform_str:
             debug_print("No transform string, returning None")
             return None
-        # Default identity matrix
         matrix = [1, 0, 0, 1, 0, 0]
         for transform in re.finditer(r'(matrix|translate|scale|rotate|skewX|skewY)\s*\(([^)]+)\)', transform_str):
             name, args = transform.groups()
@@ -84,6 +83,8 @@ class SVGParser:
             debug_print(f"Processing transform: {name} with args: {args}")
             if name == 'matrix' and len(args) == 6:
                 matrix = args
+                if args == [1, 0, 0, -1, 0, args[5]]:
+                    debug_print(f"Detected vertical flip matrix with y-translation: {args[5]}")
             elif name == 'translate' and len(args) in (1, 2):
                 tx, ty = args[0], args[1] if len(args) == 2 else 0
                 matrix = self._multiply_matrices(matrix, [1, 0, 0, 1, tx, ty])
