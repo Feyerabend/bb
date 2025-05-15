@@ -208,8 +208,7 @@ Flow Analysis
 | *System*     | Executable binary     | Linker             | `bash`, `httpd`        |
 
 
-
 In C, the hierarchy emerges through *compilation units* and *linking stages* rather than
 *language-enforced constructs*. The physical file organisation directly mirrors the conceptual
-hierarchy, making C's modularization uniquely tied to its build system and file structure.
+hierarchy, making C's modularisation uniquely tied to its build system and file structure.
 
