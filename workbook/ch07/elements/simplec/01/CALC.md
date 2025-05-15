@@ -3,7 +3,7 @@
 
 > [!WARNING]  
 > In this example the (file) *structure* is the important focus, and __not__ the *implementation*.
-> Actual code might therefore not be correct or even compile. You might take this as a task to do!
+> Actual code might therefore not be correct or even compile. You might undertake this as a task to do!
 
 ### Core Concepts
 
