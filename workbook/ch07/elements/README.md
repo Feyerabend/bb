@@ -119,16 +119,16 @@ accumulated wisdom, every structural choice a vote for how future generations wi
 
 ### Code Organisation: Some Foundational Structures
 
-These foundational structures are not mere conventions but the distilled lessons of computing’s iterative
+These foundational structures are not mere conventions but the distilled lessons of computing's iterative
 reformation, each pattern a response to the chaos of unbridled complexity or the rigidity of over-engineered
-systems. Let’s explore a few illustrative examples of how these concepts manifest in code organisation,
+systems. Let's explore a few illustrative examples of how these concepts manifest in code organisation,
 grounding the theoretical in the practical, and tracing their roots to the architectural challenges they
 were designed to address.
 
 
 #### Modular Decomposition: Python
 
-Consider a simple Python project structured to embody Parnas’ principle of information hiding. A directory
+Consider a simple Python project structured to embody Parnas' principle of information hiding. A directory
 might look like this:
 
 ```
@@ -147,10 +147,10 @@ Here, `data_processor.py` encapsulates logic for transforming data, exposing onl
 `process_dataset()`. The `storage.py` module handles persistence, abstracting whether data is saved to disk
 or a database behind a clean interface like `save_data()`. The `api.py` in the `interfaces` directory defines
 an external contract, perhaps a REST API endpoint, that orchestrates calls to `core` without exposing its
-internals. This structure echoes Dijkstra’s 1960s call for structured programming, where clear boundaries
+internals. This structure echoes Dijkstra's 1960s call for structured programming, where clear boundaries
 prevent the "spaghetti code" that plagued early systems. By organising code into modules, the architect ensures
-that changes to `storage.py` (e.g., swapping a file-based store for a cloud database) don’t ripple through
-the entire system, a direct application of Parnas’ 1972 insight that modules should conceal their "secrets."
+that changes to `storage.py` (e.g., swapping a file-based store for a cloud database) don't ripple through
+the entire system, a direct application of Parnas' 1972 insight that modules should conceal their "secrets."
 
 
 #### Libraries: C
@@ -169,9 +169,9 @@ The `mathlib.h` header declares function prototypes like `double compute_average
 while `mathlib.c` contains the implementation. A consuming program, `main.c`, includes `mathlib.h` and links
 against the compiled library, unaware of its internal logic. This separation, rooted in the 1970s modular
 design movement, ensures that the library can evolve (e.g., optimising the averaging algorithm) without
-recompiling dependent programs, provided the interface remains stable. The library concept reflects architecture’s
-eternal quest for reuse, a principle that powered the success of Unix’s modular utilities and survives in
-modern ecosystems like Python’s `numpy` or Rust’s `crates`.
+recompiling dependent programs, provided the interface remains stable. The library concept reflects architecture's
+eternal quest for reuse, a principle that powered the success of Unix's modular utilities and survives in
+modern ecosystems like Python's `numpy` or Rust's `crates`.
 
 
 #### APIs: Contracts for Interoperation
@@ -191,11 +191,11 @@ Consider a REST API service in a Node.js project:
 ```
 
 Here, `users.js` defines endpoints like `GET /users/:id`, orchestrating calls to `user.js` for data access.
-The API’s public contract—its endpoints, request formats, and response codes—remains stable, even if the
+The API's public contract—its endpoints, request formats, and response codes—remains stable, even if the
 underlying `user.js` model switches from a SQL to a NoSQL database. This structure descends from the 1990s
-component-based design era and conceptually inspired by Roy Fielding’s 2000 REST dissertation, which argued
-that stateless, resource-oriented interfaces enable scalable, evolvable systems. The API’s role as a contract
-mirrors the IDL’s cross-language ambitions, ensuring that a Python client or a Go microservice can interact
+component-based design era and conceptually inspired by Roy Fielding's 2000 REST dissertation, which argued
+that stateless, resource-oriented interfaces enable scalable, evolvable systems. The API's role as a contract
+mirrors the IDL's cross-language ambitions, ensuring that a Python client or a Go microservice can interact
 with the Node.js service without knowing its internals.
 
 
@@ -215,7 +215,7 @@ A Django project might look like:
   settings.py
 ```
 
-Django’s structure enforces the Model-View-Controller (MVC) pattern, with `models.py` defining data schemas,
+Django's structure enforces the Model-View-Controller (MVC) pattern, with `models.py` defining data schemas,
 `views.py` handling logic, and `urls.py` mapping routes. This rigidity, a deliberate constraint, prevents the
 entropy of ad-hoc designs, a lesson from the 1980s object-oriented movement that valued guided development
 over unrestricted freedom. Plugins, conversely, offer extension points. In a VSCode plugin project:
@@ -226,8 +226,8 @@ over unrestricted freedom. Plugins, conversely, offer extension points. In a VSC
   package.json
 ```
 
-The `extension.js` hooks into VSCode’s API to add custom functionality, like a new command. This extensibility,
-a direct descendant of Unix’s filter paradigm and Parnas’ change-accommodation principle, allows the core system
+The `extension.js` hooks into VSCode's API to add custom functionality, like a new command. This extensibility,
+a direct descendant of Unix's filter paradigm and Parnas' change-accommodation principle, allows the core system
 to remain stable while enabling user-driven innovation.
 
 
@@ -251,8 +251,8 @@ countless systems during the Y2K remediation efforts.
 ### Tying It to the Broader Narrative
 
 These organisational patterns are not arbitrary but the scars of battles fought against complexity, fragility,
-and obsolescence. The Python module inherits Parnas’ modular wisdom; the C library operationalises the 1970s
-reuse imperative; the REST API service channels Kleinrock’s packet-switching vision into modern cloud systems.
+and obsolescence. The Python module inherits Parnas' modular wisdom; the C library operationalises the 1970s
+reuse imperative; the REST API service channels Kleinrock's packet-switching vision into modern cloud systems.
 Each structure is a vote for how systems should evolve, balancing immediate needs with the inevitability of
 change. As microservices face scrutiny for their operational overhead--perhaps the next architectural paradigm
 to be questioned--these foundational patterns remind us that architecture is less about inventing anew and more
@@ -263,4 +263,21 @@ or AI-driven architectures. Yet, the core principles—modularity, encapsulation
 bedrock, ensuring that as systems grow, they remain comprehensible, adaptable, and resilient. Architects, like
 historians, must learn from the past to design for the future, knowing that every choice they make will one day
 be a fossilised lesson for the next reformation.
+
+
+### References
+
+* Conway, M. E. (1968). How do committees invent? Datamation, 14(4), 28–31.
+
+* Dijkstra, E. W. (1968). Go to statement considered harmful. Communications of the ACM, 11(3), 147–148. https://doi.org/10.1145/362929.362947
+
+* Dijkstra, E. W. (1972). The humble programmer. Communications of the ACM, 15(10), 859–866. https://doi.org/10.1145/355604.361591
+
+* Fielding, R. T. (2000). Architectural styles and the design of network-based software architectures (Doctoral dissertation). University of California, Irvine. 
+
+* Kleinrock, L. (1964). Communication nets: Stochastic message flow and delay. New York: McGraw-Hill.
+
+* Parnas, D. L. (1972). On the criteria to be used in decomposing systems into modules. Communications of the ACM, 15(12), 1053–1058. https://doi.org/10.1145/361598.361623
+
+
 
