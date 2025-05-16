@@ -2,6 +2,9 @@
 
 all: b8 clinton tiger thumb golfer picasso
 
+golfer:
+	python3 svg.py golfer.svg golfer.png 400 400
+
 b8:
 	python3 svg.py b8.svg b8.png 400 400
 
