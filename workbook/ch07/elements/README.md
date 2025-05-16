@@ -264,10 +264,10 @@ bedrock, ensuring that as systems grow, they remain comprehensible, adaptable, a
 historians, must learn from the past to design for the future, knowing that every choice they make will one day
 be a fossilised lesson for the next reformation.*
 
-Working in a library with special collections—manuscripts, letters, early printed books--the librarians over the
+Working in a library with special collections--manuscripts, letters, early printed books--the librarians over the
 centuries have developed physical systems to maintain order amidst growing complexity. One such mechanism is
-the use of *signia*: small, discrete identifiers used to mark and reference items. A signium acts like a pointer—
-an abstract handle that links to a concrete object. But like pointers in programming, they are vulnerable to
+the use of *signia*: small, discrete identifiers used to mark and reference items. A signium acts like a
+pointer--an abstract handle that links to a concrete object. But like pointers in programming, they are vulnerable to
 context loss: when shelving systems change, or rooms are reordered, the signium may no longer resolve. In this
 way, even the archival world encounters the limits of indirection and the fragility of implicit architecture.
 
@@ -275,7 +275,7 @@ Just as software engineers rely on type systems or URI schemes to stabilise refe
 linking mechanisms into catalogues and finding aids. Whether in bytes or in bindings, the struggle to preserve
 meaning across time and transformation reflects a shared architectural concern: how to design structures that
 survive reorganisation, reinterpretation, and decay. Working in a library with exactly these fossilised structures,
-I can testify to the interesting, but sometimes cumbersome historical artifacts.
+I can testify to the interesting, but sometimes cumbersome historical artifacts.[^ub]
 
 One often encounters systems whose original rationale has been lost, yet which continue to shape present--day
 practice--schemas that reflect obsolete taxonomies, shelving codes from long-abandoned floor plans, or index cards
@@ -289,6 +289,8 @@ is an ethics of continuity, a discipline of stewardship. What we inherit is stru
 intent embedded in that structure. The challenge is to make it legible--to expose structure and intent clearly--without
 making it brittle or overly rigid. And to evolve it--adapting it to new contexts or needs--without erasing the historical
 layers that give it meaning.
+
+[^ub]: Uppsala University Library: https://www.uu.se/en/library.
 
 
 ### References
