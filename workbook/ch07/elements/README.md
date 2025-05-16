@@ -277,7 +277,7 @@ meaning across time and transformation reflects a shared architectural concern: 
 survive reorganisation, reinterpretation, and decay. Working in a library with exactly these fossilised structures,
 I can testify to the interesting, but sometimes cumbersome historical artifacts.[^ub]
 
-One often encounters systems whose original rationale has been lost, yet which continue to shape present--day
+One often encounters systems whose original rationale has been lost, yet which continue to shape present-day
 practice--schemas that reflect obsolete taxonomies, shelving codes from long-abandoned floor plans, or index cards
 repurposed from earlier cataloguing philosophies. These are not just legacy systems; they are inherited interfaces,
 accidentally stable, quietly constraining. To revise them is to risk breaking the fragile web of references that
