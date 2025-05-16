@@ -92,10 +92,10 @@ def raise_error(message="not yet implemented"):
 
 def negate(value):
     if is_atomic(value):
-        if isinstance(value, bool):
-            return not value
-        elif isinstance(value, (int, float)):
+        if isinstance(value, (int, float)):
             return -value
+        elif isinstance(value, bool):
+            return not value
         else:
             raise_error("type error: cannot negate string")
     else:
@@ -405,8 +405,10 @@ def modulo(x, y):
 def take(x, y):
     if not is_atomic(x):
         raise_error("rank error: take requires atomic first argument")
+    
     if not isinstance(x, int):
         raise_error("type error: take requires integer first argument")
+    
     if is_atomic(y):
         return [y] * x
     else:
@@ -420,7 +422,7 @@ def take(x, y):
             result = []
             for i in range(x):
                 result.append(y[-(i % len(y) + 1)])
-            return result
+            return list(reversed(result))
 
 def drop(x, y):
     if not is_atomic(x):
@@ -758,41 +760,17 @@ def parse_value(token):
     else:
         return token
 
-def parse_lambda_body(body):
-    for op in operation_registry.operations:
-        if op in body:
-            left, right = body.split(op, 1)
-            left = left.strip()
-            right = right.strip()
-            return [left, op, right]
-    raise_error(f"syntax error: cannot parse lambda body: {body}")
-
-class LambdaFunction:
-    def __init__(self, body):
-        self.body = parse_lambda_body(body)
-        self.params = ['x', 'y', 'z']
-    def __call__(self, *args):
-        old_vars = global_variables.copy()
-        try:
-            for i, arg in enumerate(args):
-                if i < len(self.params):
-                    global_variables[self.params[i]] = arg
-            return evaluate_expression(self.body)
-        finally:
-            for param in self.params:
-                if param in global_variables and param not in old_vars:
-                    del global_variables[param]
-                elif param in old_vars:
-                    global_variables[param] = old_vars[param]
-
 def evaluate_expression(expression):
+    # Handle empty expression
     if not expression:
         return None
     
+    # Handle pre-parsed list expressions
     if isinstance(expression, list):
         if not expression:
             return []
         
+        # Monadic operation: [op, arg]
         if len(expression) == 2:
             op, arg = expression
             if isinstance(op, str) and operation_registry.has_monadic(op):
@@ -802,22 +780,37 @@ def evaluate_expression(expression):
                     evaluated_arg = evaluate_expression(arg)
                 return operation_registry.get_monadic(op)(evaluated_arg)
         
+        # Dyadic operation: [left, op, right]
         if len(expression) == 3:
             left, op, right = expression
             if isinstance(op, str) and operation_registry.has_dyadic(op):
-                evaluated_left = global_variables[left] if isinstance(left, str) and left in global_variables else evaluate_expression(left)
-                evaluated_right = global_variables[right] if isinstance(right, str) and right in global_variables else evaluate_expression(right)
+                # Evaluate left
+                if isinstance(left, str) and left in global_variables:
+                    evaluated_left = global_variables[left]
+                else:
+                    evaluated_left = evaluate_expression(left)
+                # Evaluate right
+                if isinstance(right, (int, float)):
+                    evaluated_right = right
+                elif isinstance(right, str) and right in global_variables:
+                    evaluated_right = global_variables[right]
+                else:
+                    evaluated_right = evaluate_expression(right)
                 return operation_registry.get_dyadic(op)(evaluated_left, evaluated_right)
         
+        # Handle lists of atomic values (e.g., [1.0, 2.0, 3.0])
         if all(is_atomic(item) and not isinstance(item, str) for item in expression):
             return expression
         
         raise_error("syntax error: invalid list expression")
     
+    # Handle atomic values (int, float, bool)
     if isinstance(expression, (int, float, bool)):
         return expression
     
+    # Handle string expressions
     if isinstance(expression, str):
+        # List literal: (1;2;3)
         if expression.startswith('(') and expression.endswith(')'):
             items = []
             current = ''
@@ -826,6 +819,7 @@ def evaluate_expression(expression):
             
             while i < len(expression) - 1:
                 char = expression[i]
+                
                 if char == '(':
                     paren_count += 1
                     current += char
@@ -845,6 +839,7 @@ def evaluate_expression(expression):
             
             return items
         
+        # Dictionary literal: [a:1;b:2]
         if expression.startswith('[') and expression.endswith(']'):
             result = {}
             current = ''
@@ -853,6 +848,7 @@ def evaluate_expression(expression):
             
             while i < len(expression) - 1:
                 char = expression[i]
+                
                 if char == '[':
                     bracket_count += 1
                     current += char
@@ -882,55 +878,18 @@ def evaluate_expression(expression):
             
             return result
         
+        # Lambda expression: {x+y}
         if expression.startswith('{') and expression.endswith('}'):
             body = expression[1:-1]
             return LambdaFunction(body)
         
+        # Atomic value or variable
         value = parse_value(expression)
         if isinstance(value, str) and not (expression.startswith('"') and expression.endswith('"')):
             if value in global_variables:
                 return global_variables[value]
             else:
-                return value  # Return the string itself for lambda expressions
+                raise_error(f"undefined variable: {value}")
         return value
     
     raise_error("syntax error: cannot evaluate expression")
-
-
-''''
-if expression.startswith('[') and expression.endswith(']'):
-    result = {}
-    current = ''
-    bracket_count = 0
-    i = 1
-    while i < len(expression) - 1:
-        char = expression[i]
-        if char == '[':
-            bracket_count += 1
-            current += char
-        elif char == ']':
-            bracket_count -= 1
-            current += char
-        elif char == ';' and bracket_count == 0:
-            if current.strip():
-                key_val = current.split(':')
-                if len(key_val) != 2:
-                    raise_error("syntax error: invalid dictionary entry")
-                key_str = key_val[0].strip()
-                key = parse_value(key_str) if key_str.startswith('"') or key_str in ('true', 'false') or key_str.replace('.', '', 1).replace('-', '', 1).isdigit() else key_str
-                val = evaluate_expression(key_val[1].strip())
-                result[key] = val
-            current = ''
-        else:
-            current += char
-        i += 1
-    if current.strip():
-        key_val = current.split(':')
-        if len(key_val) != 2:
-            raise_error("syntax error: invalid dictionary entry")
-        key_str = key_val[0].strip()
-        key = parse_value(key_str) if key_str.startswith('"') or key_str in ('true', 'false') or key_str.replace('.', '', 1).replace('-', '', 1).isdigit() else key_str
-        val = evaluate_expression(key_val[1].strip())
-        result[key] = val
-    return result
-'''
