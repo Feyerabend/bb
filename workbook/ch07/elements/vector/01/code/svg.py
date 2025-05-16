@@ -46,23 +46,33 @@ class SVGParser:
         self._process_element(root, parent_style={}, parent_transform=None)
 
     def _parse_dimension(self, value: str) -> float:
+        """Convert SVG dimension string to pixels, handling units and percentages"""
+        value = value.strip().lower()
         if not value:
-            debug_print("Dimension value is empty, returning 0")
-            return 0
-        match = re.match(r'([0-9.]+)([a-z%]*)', value.lower())
+            return 0.0
+        
+        # Match numbers with optional units
+        match = re.match(r"^([+-]?\d*\.?\d+)(%|px|pt|pc|cm|mm|in|em|ex)?$", value)
         if not match:
-            try:
-                result = float(value)
-                debug_print(f"Parsed dimension: {value} -> {result}")
-                return result
-            except ValueError:
-                debug_print(f"Invalid dimension value: {value}, returning 0")
-                return 0
-        num, unit = match.groups()
-        # TODO: Add support for pt, cm, mm, in, %, em, ex
-        result = float(num)
-        debug_print(f"Parsed dimension: {value} -> {result} (unit: {unit})")
-        return result
+            return 0.0
+            
+        number, unit = match.groups()
+        num = float(number)
+        
+        # Convert units to pixels (using 96 DPI standard)
+        conversions = {
+            '%': 0,        # Percentage needs viewport context
+            'px': 1,
+            'pt': 1.3333,   # 1pt = 1.333px
+            'pc': 16,       # 1pc = 16px
+            'cm': 37.795,   # 1cm = 37.795px
+            'mm': 3.7795,   # 1mm = 3.7795px
+            'in': 96,       # 1in = 96px
+            'em': 16,       # 1em ≈ 16px (default)
+            'ex': 8         # 1ex ≈ 8px (default)
+        }
+        
+        return num * conversions.get(unit, 1)
 
     def _parse_transform(self, transform_str: str) -> Optional[List[float]]:
         debug_print(f"Parsing transform: {transform_str}")
@@ -854,161 +864,125 @@ class SVGParser:
         return (r, g, b)
 
     def render_to_image(self, output_path: str, width: int = None, height: int = None) -> None:
-        if width is None:
-            width = int(self.width)
-        if height is None:
-            height = int(self.height)
-        width = max(width, 1)
-        height = max(height, 1)
+        # Priority: 1. Command-line args, 2. SVG dimensions, 3. ViewBox, 4. Default 400x400
+        output_width = 400
+        output_height = 400
         
-        debug_print(f"Rendering to {output_path} with dimensions {width}x{height}")
-        debug_print(f"SVG dimensions: {self.width}x{self.height}, ViewBox: {self.view_box}")
-        debug_print(f"PreserveAspectRatio: {self.preserve_aspect_ratio}")
-        debug_print(f"Number of paths parsed: {len(self.paths)}")
-
-        rasterizer = AntiAliasedRasterizer(width, height)
-        scale_x, scale_y = 1.0, 1.0
-        translate_x, translate_y = 0.0, 0.0
-
-        src_width = self.width
-        src_height = self.height
-        if self.view_box:
-            src_width = self.view_box[2]
-            src_height = self.view_box[3]
-
-        if src_width <= 0 or src_height <= 0:
-            debug_print("Warning: Invalid source dimensions, using output dimensions")
-            src_width = width
-            src_height = height
-
-        src_aspect = src_width / src_height
-        dst_aspect = width / height
-
-        # Parse preserveAspectRatio
-        align, meet_or_slice = self.preserve_aspect_ratio.split()
-        align_x, align_y = 'mid', 'mid'
-        if align == 'xMinYMin':
-            align_x, align_y = 'min', 'min'
-        elif align == 'xMidYMin':
-            align_x, align_y = 'mid', 'min'
-        elif align == 'xMaxYMin':
-            align_x, align_y = 'max', 'min'
-        elif align == 'xMinYMid':
-            align_x, align_y = 'min', 'mid'
-        elif align == 'xMidYMid':
-            align_x, align_y = 'mid', 'mid'
-        elif align == 'xMaxYMid':
-            align_x, align_y = 'max', 'mid'
-        elif align == 'xMinYMax':
-            align_x, align_y = 'min', 'max'
-        elif align == 'xMidYMax':
-            align_x, align_y = 'mid', 'max'
-        elif align == 'xMaxYMax':
-            align_x, align_y = 'max', 'max'
-        debug_print(f"preserveAspectRatio: align={align}, meet_or_slice={meet_or_slice}")
-        
-        if meet_or_slice == 'meet':
-            if src_aspect > dst_aspect:
-                scale_x = scale_y = width / src_width
-                translate_y = (height - src_height * scale_y) * {'min': 0, 'mid': 0.5, 'max': 1}[align_y]
+        # Use viewBox if SVG dimensions are missing/invalid
+        if self.view_box and len(self.view_box) >= 4:
+            vb_x, vb_y, vb_w, vb_h = self.view_box[:4]
+            if vb_w > 0 and vb_h > 0:
+                content_width = vb_w
+                content_height = vb_h
             else:
-                scale_x = scale_y = height / src_height
-                translate_x = (width - src_width * scale_x) * {'min': 0, 'mid': 0.5, 'max': 1}[align_x]
-        else:  # slice
-            if src_aspect < dst_aspect:
-                scale_x = scale_y = width / src_width
-                translate_y = (height - src_height * scale_y) * {'min': 0, 'mid': 0.5, 'max': 1}[align_y]
-            else:
-                scale_x = scale_y = height / src_height
-                translate_x = (width - src_width * scale_x) * {'min': 0, 'mid': 0.5, 'max': 1}[align_x]
-        
-        vb_offset_x = -self.view_box[0] if self.view_box else 0
-        vb_offset_y = -self.view_box[1] if self.view_box else 0
-        
-        scale_x = min(max(scale_x, 0.001), 1000.0)
-        scale_y = min(max(scale_y, 0.001), 1000.0)
-        
-        debug_print(f"Transformation: scale=({scale_x}, {scale_y}), translate=({translate_x + vb_offset_x}, {translate_y + vb_offset_y})")
-        
-        leng = len(self.paths)-1
+                content_width = self.width or 400
+                content_height = self.height or 400
+        else:
+            content_width = self.width or 400
+            content_height = self.height or 400
+
+        # Apply command-line arguments
+        if width is not None and width > 0:
+            output_width = width
+        if height is not None and height > 0:
+            output_height = height
+
+        debug_print(f"Final output dimensions: {output_width}x{output_height}")
+        debug_print(f"Content dimensions: {content_width}x{content_height}")
+
+        # Calculate aspect ratio preservation
+        align, meet_slice = self.preserve_aspect_ratio.split()
+        content_aspect = content_width / content_height
+        target_aspect = output_width / output_height
+
+        # Calculate scale factors
+        if meet_slice == 'meet':
+            scale = min(output_width / content_width, output_height / content_height)
+        else:
+            scale = max(output_width / content_width, output_height / content_height)
+
+        scaled_w = content_width * scale
+        scaled_h = content_height * scale
+        extra_x = output_width - scaled_w
+        extra_y = output_height - scaled_h
+
+        # Calculate alignment
+        align_parts = re.match(r'x(Max|Mid|Min)Y(Max|Mid|Min)', align)
+        x_align = {'min': 0.0, 'mid': 0.5, 'max': 1.0}[align_parts.group(1).lower()]
+        y_align = {'min': 0.0, 'mid': 0.5, 'max': 1.0}[align_parts.group(2).lower()]
+
+        tx = extra_x * x_align
+        ty = extra_y * y_align
+
+        # Create final transform matrix
+        transform = [
+            scale, 0,
+            0, scale,
+            -vb_x * scale + tx if self.view_box else tx,
+            -vb_y * scale + ty if self.view_box else ty
+        ]
+
+        # Initialize rasterizer with EXACT output dimensions
+        rasterizer = AntiAliasedRasterizer(output_width, output_height)
+        debug_print(f"Initialized rasterizer: {output_width}x{output_height}")
+
+        # Process all paths
         for i, path_data in enumerate(self.paths):
-            path = path_data['path']
-            stroke_props = path_data['stroke']
-            fill_props = path_data['fill']
-            element_transform = path_data.get('transform')
+            path = path_data['path'].copy()
             
-            debug_print(f"Path {i}/{leng}:")
-            debug_print(f"  Elements: {len(path.elements)}")
-            debug_print(f"  Closed: {path.closed}")
-            debug_print(f"  Stroke: {stroke_props}")
-            debug_print(f"  Fill: {fill_props}")
-            debug_print(f"  Transform: {element_transform}")
+            # Apply element transform first
+            if element_transform := path_data.get('transform'):
+                path = path.transform(*element_transform)
             
-            transformed_path = path.copy()
-
-            if element_transform:
-                transformed_path = transformed_path.transform(*element_transform)
-
-            transformed_path = transformed_path.transform(
-                scale_x, 0, 0, scale_y,
-                (translate_x + vb_offset_x) * scale_x,
-                (translate_y + vb_offset_y) * scale_y
-            )
+            # Apply main viewBox transform
+            transformed_path = path.transform(*transform)
             
-            if fill_props:
-                debug_print(f"  Filling path with color {fill_props.color}")
+            # Render with proper scaling
+            if fill_props := path_data['fill']:
                 rasterizer.fill_path(transformed_path, fill_props)
-            if stroke_props:
+                
+            if stroke_props := path_data['stroke']:
+                stroke_scale = math.sqrt(abs(transform[0] * transform[3]))
                 scaled_stroke = StrokeProperties(
-                    width=stroke_props.width * (scale_x + scale_y) / 2,  # average scale for stroke
+                    width=stroke_props.width * stroke_scale,
                     color=stroke_props.color,
                     line_cap=stroke_props.line_cap,
                     line_join=stroke_props.line_join,
                     miter_limit=stroke_props.miter_limit
                 )
-                debug_print(f"  Stroking path with color {scaled_stroke.color}, width {scaled_stroke.width}")
                 rasterizer.stroke_path(transformed_path, scaled_stroke)
-        
-        canvas = rasterizer.get_buffer()
-        debug_print(f"Canvas shape: {canvas.shape}")
-        save_to_png(canvas, output_path, width, height)
-        debug_print(f"Saved image to {output_path}")
 
+        save_to_png(rasterizer.get_buffer(), output_path, output_width, output_height)
+        debug_print(f"Successfully saved rendered image to {output_path}")
 
 class SVGRenderer:
     @staticmethod
     def render(svg_path: str, output_path: str, width: int = None, height: int = None) -> None:
-        debug_print(f"Starting render: {svg_path} -> {output_path}, width={width}, height={height}")
+        debug_print(f"\nStarting render process")
+        debug_print(f"Input file: {svg_path}")
+        debug_print(f"Output file: {output_path}")
+        debug_print(f"Requested dimensions: {width}x{height}")
+
         parser = SVGParser()
         parser.parse_file(svg_path)
+        debug_print(f"Parsed {len(parser.paths)} paths")
+        
         parser.render_to_image(output_path, width, height)
-        debug_print(f"Rendered {svg_path} to {output_path}")
+        debug_print("Render completed successfully")
 
 
 if __name__ == "__main__":
     import sys
 
-    if len(sys.argv) < 3 or len(sys.argv) > 5:
+    if len(sys.argv) < 3:
         print(f"Usage: {sys.argv[0]} input.svg output.png [width] [height]")
         sys.exit(1)
 
-    svg_path = sys.argv[1]
-    output_path = sys.argv[2]
+    try:
+        width = int(sys.argv[3]) if len(sys.argv) >= 4 else None
+        height = int(sys.argv[4]) if len(sys.argv) >= 5 else None
+    except ValueError:
+        print("Error: Width and height must be integers")
+        sys.exit(1)
 
-    width = None
-    height = None
-
-    if len(sys.argv) >= 4:
-        try:
-            width = int(sys.argv[3])
-        except ValueError:
-            print("Error: width must be an integer")
-            sys.exit(1)
-    if len(sys.argv) == 5:
-        try:
-            height = int(sys.argv[4])
-        except ValueError:
-            print("Error: height must be an integer")
-            sys.exit(1)
-
-    SVGRenderer.render(svg_path, output_path, width, height)
+    SVGRenderer.render(sys.argv[1], sys.argv[2], width, height)
