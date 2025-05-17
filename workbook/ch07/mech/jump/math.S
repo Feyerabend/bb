@@ -14,7 +14,6 @@ main:
     LDR     r3, [r3, r0, LSL #2]  // Load function pointer from table
     BX      r3                    // Jump to selected function
 
-// ==== Operation Implementations ====
 
 add_func:
     ADD     r0, r1, r2
@@ -29,7 +28,7 @@ mul_func:
     BX      lr
 
 div_func:
-    // naive division assuming r2 ≠ 0
+    // naive division assuming r2 != 0
     MOV     r3, r1
     MOV     r0, #0
 div_loop:
@@ -41,7 +40,7 @@ div_loop:
 div_done:
     BX      lr
 
-// ==== Jump Table ====
+
 
 .align 2
 jump_table:
