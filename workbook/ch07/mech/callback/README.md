@@ -3,7 +3,7 @@
 
 A *callback* is a function passed as an argument to another function, which is then
 invoked ("called back") at a specific time or after a particular operation completes.
-Callbacks enable *asynchronous behavior*, *event-driven programming*, and *customisable logic*
+Callbacks enable *asynchronous behaviour*, *event-driven programming*, and *customisable logic*
 without modifying the original function. They are widely used for handling I/O operations,
 events, or asynchronous tasks.
 
@@ -101,7 +101,7 @@ async def main():
 asyncio.run(main())  # coroutines instead of callbacks.
 ```
 
-*Note*: Python increasingly favors coroutines (via `async/await`) over callbacks for async code.
+*Note*: Python increasingly favours coroutines (via `async/await`) over callbacks for async code.
 
 
 ### Callbacks in C
@@ -151,6 +151,6 @@ int main(int argc, char* argv[]) {
 
 - *JavaScript*: Callbacks are central to async/event-driven code but can lead to complexity. Modern code uses Promises/`async/await`.
 - *Python*: Used in GUIs, threading, and older async code. Newer codebases prefer coroutines.
-- *C*: Callbacks via function pointers, often seen in libraries for sorting, event systems, or customization.
+- *C*: Callbacks via function pointers, often seen in libraries for sorting, event systems, or customisation.
 
 Callbacks remain a foundational concept for flexible and non-blocking code across programming paradigms.
