@@ -18,6 +18,30 @@ A context switch:
 - Transfers control (via low-level code, often in assembly).
 
 
+In pseudo-c code:
+
+```c
+typedef struct {
+    int pc;
+    int sp;
+    int registers[8];
+} Context;
+
+Context taskA_ctx, taskB_ctx;
+Context* current;
+Context* next;
+
+void save_context(Context* ctx);
+void load_context(Context* ctx);
+
+void scheduler() {
+    save_context(current);
+    if (current == &taskA_ctx) next = &taskB_ctx;
+    else next = &taskA_ctx;
+    current = next;
+    load_context(current);
+}```
+
 ```mermaid
 sequenceDiagram
     participant TaskA
