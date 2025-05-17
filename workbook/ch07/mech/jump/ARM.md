@@ -75,4 +75,6 @@ Notes
 2. LDR r3, =jump_table (pseudo instruction) loads the address of the table into r3.
 3. LDR r3, [r3, r0, LSL #2] indexes into the jump table (each address is 4 bytes).
    It uses r0 (the operation index) to calculate the address.
+   Uses the LSL #2 (logical shift left by 2) to multiply the index by 4
+   (since each address is 4 bytes).
 4. BX r3 branches (jumps) to the handler.
