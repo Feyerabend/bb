@@ -156,7 +156,7 @@ state (e.g., where to continue after yield). This is the same principle as a con
 in user space, without involving the OS.
 
 You can even simulate coroutine-like context switching in C using:
-- setjmp/longjmp for saving and restoring register state
+- setjmp/longjmp for saving and restoring register state (see above)
 - Separate stacks
 - A scheduler loop
 
@@ -166,11 +166,15 @@ You can even simulate coroutine-like context switching in C using:
 Context switches are relatively expensive:
 - Saving/restoring CPU state
 - Cache invalidation (loss of locality)
-- TLB flushes (on full address space switches)
+- TLB[^tlb] flushes (on full address space switches)
 
 That's why high-frequency context switches (e.g., due to too many threads)
 can degrade performance.
 
+[^tlb]: The TLB (Translation Lookaside Buffer) is a small, fast cache in the CPU that stores recent
+virtual-to-physical memory address translations to speed up memory access. A TLB flush clears this
+cache, typically during a context switch or when page tables change, which can temporarily degrade
+performance until it's repopulated.
 
 ### Summary
 
