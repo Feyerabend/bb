@@ -147,7 +147,8 @@ int main(int argc, char* argv[]) {
 
 
 
-### *Key Takeaways*
+### Takeaways
+
 - *JavaScript*: Callbacks are central to async/event-driven code but can lead to complexity. Modern code uses Promises/`async/await`.
 - *Python*: Used in GUIs, threading, and older async code. Newer codebases prefer coroutines.
 - *C*: Callbacks via function pointers, often seen in libraries for sorting, event systems, or customization.
