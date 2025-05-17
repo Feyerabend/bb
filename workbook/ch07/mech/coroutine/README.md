@@ -93,12 +93,12 @@ int main() {
 
 How It Works:
 
-1. setjmp: This function saves the current execution context (e.g., stack, registers)
+1. `setjmp`: This function saves the current execution context (e.g., stack, registers)
    into the env buffer. If setjmp is called directly, it returns 0, indicating a fresh
    context. Later, if we call longjmp, it will return from setjmp with the value passed
    to longjmp, indicating a "resumed" state.
 
-2. longjmp: This function restores the state saved by setjmp and continues execution
+2. `longjmp`: This function restores the state saved by setjmp and continues execution
    from the point where setjmp was called. It’s used to simulate the "resume" of the
    coroutine, allowing it to continue where it left off.
 

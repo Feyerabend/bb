@@ -13,7 +13,7 @@ interrupt handling, lock-free programming, and real-time systems where timing an
 |--|--|--|--|
 | [Re-entrant](./reentrant/) | Function safe to be re-entered concurrently | Multithreading, interrupt-safe routines | Thread-safe design, Stateless design |
 | Context Switch  | Save/restore execution context between tasks                           | Thread scheduling, green threads, RTOS               | Scheduler design                        |
-| Memory Barrier  | Prevent CPU from reordering memory operations                          | Lock-free concurrency, shared memory                 | Happens-before relations                |
+| [Memory Barrier](./barrier/) | Prevent CPU from reordering memory operations | Lock-free concurrency, shared memory | Happens-before relations |
 
 [Threads](./THREADS.md) represent an execution context that runs independently yet shares memory with other threads
 within the same process. They serve as a concrete mechanism beneath higher-level concurrency constructs, enabling
