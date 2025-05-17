@@ -40,7 +40,8 @@ void scheduler() {
     else next = &taskA_ctx;
     current = next;
     load_context(current);
-}```
+}
+```
 
 ```mermaid
 sequenceDiagram
