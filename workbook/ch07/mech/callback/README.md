@@ -168,7 +168,7 @@ flowchart TD
     B --> C["Sorting Algorithm Begins"]
     C --> D{Compare Needed?}
     D -->|Yes| E["Call Callback: compare(a, b)"]
-    E --> F["compare() returns:<br>>- Negative if a < b<br>- Zero if a == b<br>- Positive if a > b"]
+    E --> F["compare() returns:<br>- Negative if a < b<br>- Zero if a == b<br>- Positive if a > b"]
     F --> D
     D -->|No| G["Sorting Complete"]
     G --> H["Return to main()"]
