@@ -17,23 +17,16 @@ They do not block threads like mutexes--they only affect ordering, not atomicity
 
 ```mermaid
 flowchart TB
-    A1[data = 123]
-    A2[atomic_thread_fence(release)]
-    A3[flag = 1]
-    B1[read flag]
-    B2[atomic_thread_fence(acquire)]
-    B3[read data]
+    T1_data[Thread 1: data = 123]
+    T1_fence[Thread 1: release fence]
+    T1_flag[Thread 1: flag = 1]
 
-    subgraph Thread 1
-        A1 --> A2 --> A3
-    end
+    T2_check[Thread 2: if flag == 1]
+    T2_fence[Thread 2: acquire fence]
+    T2_read[Thread 2: read data]
 
-    subgraph Thread 2
-        B1 --> B2 --> B3
-    end
-
-    style A1 fill:#f9f,stroke:#333,stroke-width:1px
-    style B3 fill:#f9f,stroke:#333,stroke-width:1px
+    T1_data --> T1_fence --> T1_flag
+    T2_check --> T2_fence --> T2_read
 ```
 
 
