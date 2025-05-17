@@ -4,8 +4,8 @@
 A *callback* is a function passed as an argument to another function, which is then
 invoked ("called back") at a specific time or after a particular operation completes.
 Callbacks enable *asynchronous behaviour*, *event-driven programming*, and *customisable logic*
-without modifying the original function. They are widely used for handling I/O operations,
-events, or asynchronous tasks.
+without modifying the original function. They are widely used for handling I/O
+operations, events, or asynchronous tasks.
 
 Historically, callbacks originated in low-level systems programming and early event-driven
 models, where they were used to defer execution or handle asynchronous events—such as
@@ -21,8 +21,10 @@ and event-driven programming.
 
 *Purpose*: 
   - *Inversion of Control*: Let the callee decide when to execute your code.
-  - *Asynchrony*: Continue execution without blocking (e.g., waiting for a file read to finish).
-  - *Reusability*: Decouple logic (e.g., a sorting algorithm letting you define how to compare items).
+  - *Asynchrony*: Continue execution without blocking (e.g., waiting for a
+    file read to finish).
+  - *Reusability*: Decouple logic (e.g., a sorting algorithm letting you define
+    how to compare items).
 
 *Use Cases*: Event handling, asynchronous operations (HTTP requests, timers), and customising
 library/framework behaviour.
@@ -137,7 +139,7 @@ int main(int argc, char* argv[]) {
     gtk_init(&argc, &argv);
     GtkWidget* button = gtk_button_new_with_label("Click Me");
     g_signal_connect(button, "clicked", G_CALLBACK(on_button_click), NULL);
-    // ... show window and start event loop
+    // .. show window and start event loop
 }
 ```
 
@@ -149,9 +151,11 @@ int main(int argc, char* argv[]) {
 
 ### Takeaways
 
-- *JavaScript*: Callbacks are central to async/event-driven code but can lead to complexity. Modern code uses Promises/`async/await`.
+- *JavaScript*: Callbacks are central to async/event-driven code but can lead to complexity.
+  Modern code uses Promises/`async/await`.
 - *Python*: Used in GUIs, threading, and older async code. Newer codebases prefer coroutines.
-- *C*: Callbacks via function pointers, often seen in libraries for sorting, event systems, or customisation.
+- *C*: Callbacks via function pointers, often seen in libraries for sorting, event systems,
+  or customisation.
 
 Callbacks remain a foundational concept for flexible and non-blocking code across programming paradigms.
 
@@ -164,7 +168,7 @@ flowchart TD
     B --> C["Sorting Algorithm Begins"]
     C --> D{Compare Needed?}
     D -->|Yes| E["Call Callback: compare(a, b)"]
-    E --> F["compare() returns:\n- Negative if a < b\n- Zero if a == b\n- Positive if a > b"]
+    E --> F["compare() returns:<br>>- Negative if a < b<br>- Zero if a == b<br>- Positive if a > b"]
     F --> D
     D -->|No| G["Sorting Complete"]
     G --> H["Return to main()"]
@@ -202,5 +206,6 @@ This demonstrates how C uses function pointers for:
 - Algorithm extensibility
 - Separation of sorting logic from comparison logic
 
-The callback pattern here is synchronous--`compare` is called immediately during the `qsort` execution.
+The callback pattern here is synchronous--`compare` is
+called immediately during the `qsort` execution.
 
