@@ -145,7 +145,7 @@ int main(int argc, char* argv[]) {
 - No closures: State must be passed via `void*` parameters.
 - Function pointers have strict signatures.
 
----
+
 
 ### *Key Takeaways*
 - *JavaScript*: Callbacks are central to async/event-driven code but can lead to complexity. Modern code uses Promises/`async/await`.
