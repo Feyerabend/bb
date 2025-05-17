@@ -27,17 +27,6 @@ and event-driven programming.
 *Use Cases*: Event handling, asynchronous operations (HTTP requests, timers), and customising
 library/framework behaviour.
 
-```mermaid
-flowchart TD
-    A[Caller Function] --> B[Pass Callback Function]
-    B --> C[Performs Operation (sync or async)]
-    C --> D[Invokes Callback with Result]
-    D --> E[Callback Executes Logic]
-
-    style A fill:#eef,stroke:#000
-    style E fill:#efe,stroke:#000
-```
-
 
 ### Callbacks in JavaScript
 
