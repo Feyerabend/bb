@@ -154,3 +154,53 @@ int main(int argc, char* argv[]) {
 - *C*: Callbacks via function pointers, often seen in libraries for sorting, event systems, or customisation.
 
 Callbacks remain a foundational concept for flexible and non-blocking code across programming paradigms.
+
+
+### Example: Qsort again in C
+
+```mermaid
+flowchart TD
+    A[main] --> B["qsort(arr, 4, sizeof(int), compare)"]
+    B --> C["Sorting Algorithm Begins"]
+    C --> D{Compare Needed?}
+    D -->|Yes| E["Call Callback: compare(a, b)"]
+    E --> F["compare() returns:\n- Negative if a < b\n- Zero if a == b\n- Positive if a > b"]
+    F --> D
+    D -->|No| G["Sorting Complete"]
+    G --> H["Return to main()"]
+    H --> I[End]
+
+    style E fill:#cdf,stroke:#03a
+    style A fill:#eef,stroke:#000
+    style B fill:#f9f,stroke:#333
+```
+
+
+1. main Function (Start):
+   - Calls `qsort` with the array and `compare` callback
+   - `qsort(arr, 4, sizeof(int), compare)`
+
+2. Sorting Process:
+   - `qsort` implements the quick sort algorithm
+   - Repeatedly calls the `compare` callback to determine element order
+
+3. Callback Invocation (Blue Node):
+   ```c
+   int compare(const void* a, const void* b) {
+       return (*(int*)a - *(int*)b);
+   }
+   ```
+   - Called multiple times during sorting
+   - Returns comparison result to guide sorting
+
+4. Sorting Completion:
+   - Returns control to `main`
+   - Final sorted array: `[1, 2, 5, 8]`
+
+This demonstrates how C uses function pointers for:
+- Customizable sorting behavior
+- Algorithm extensibility
+- Separation of sorting logic from comparison logic
+
+The callback pattern here is synchronous--`compare` is called immediately during the `qsort` execution.
+
