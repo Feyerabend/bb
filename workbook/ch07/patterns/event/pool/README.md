@@ -61,7 +61,7 @@ graph TD
 |---|---|
 | Decoupled components via pub/sub pattern | Tightly coupled components |
 | Event-driven architecture | Imperative/procedural flow |
-| Centralized event management | Direct state mutations |
+| Centralised event management | Direct state mutations |
 | Observer pattern for communication | Direct method calls |
 
 
@@ -119,7 +119,7 @@ graph TD
    - Event Bus: Traceable via event flow (e.g., `'ball:collision'` events)  
    - Direct: Requires breakpoints in linear code
 
-4. Code Organization  
+4. Code Organisation  
    - Event Bus: Natural separation (input, physics, render subsystems)  
    - Direct: Mixed responsibilities in game loop
 
@@ -142,7 +142,7 @@ graph TD
 
 - Choose Direct for:  
   - Simple single-developer projects  
-  - Performance-critical micro-optimizations  
+  - Performance-critical micro-optimisations  
   - Quick prototypes/POCs  
   - Limited scope/short-lived projects
 
