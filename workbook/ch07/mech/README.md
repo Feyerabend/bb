@@ -3,7 +3,7 @@
 
 At the heart of every (major) software system lies a silent negotiation between raw hardware
 capabilities and the abstractions that shield developers from complexity. Low-level programming
-mechanisms are the bedrock of this negotiation—tools that directly orchestrate memory, CPU cycles,
+mechanisms are the bedrock of this negotiation--tools that directly orchestrate memory, CPU cycles,
 and peripheral interactions to carve order from chaos. Unlike high-level paradigms that prioritise
 developer convenience, these mechanisms demand a granular understanding of *how* computation
 unfolds: how threads contend for shared resources, how control flow navigates unpredictable paths,
