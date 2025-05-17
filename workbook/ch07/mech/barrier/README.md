@@ -16,19 +16,17 @@ Memory barriers force ordering. They ensure that:
 They do not block threads like mutexes--they only affect ordering, not atomicity or blocking.
 
 ```mermaid
-sequenceDiagram
-    participant Thread1
-    participant Thread2
+flowchart TB
+    T1_data[Thread 1: data = 123]
+    T1_fence[Thread 1: release fence]
+    T1_flag[Thread 1: flag = 1]
 
-    Note over Thread1, Thread2: Shared variables: `data = 0`, `flag = 0`
+    T2_check[Thread 2: if flag == 1]
+    T2_fence[Thread 2: acquire fence]
+    T2_read[Thread 2: read data]
 
-    Thread1->>Thread1: data = 42
-    Thread1->>Thread1: fence (release)
-    Thread1->>Thread1: atomic_store(flag, 1)
-
-    Thread2->>Thread2: while (!atomic_load(flag)) {}
-    Thread2->>Thread2: fence (acquire)
-    Thread2->>Thread2: read data (safe: 42)
+    T1_data --> T1_fence --> T1_flag
+    T2_check --> T2_fence --> T2_read
 ```
 
 
