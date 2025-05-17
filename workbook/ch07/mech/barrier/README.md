@@ -15,20 +15,6 @@ Memory barriers force ordering. They ensure that:
 
 They do not block threads like mutexes--they only affect ordering, not atomicity or blocking.
 
-```mermaid
-flowchart TB
-    T1_data[Thread 1: data = 123]
-    T1_fence[Thread 1: release fence]
-    T1_flag[Thread 1: flag = 1]
-
-    T2_check[Thread 2: if flag == 1]
-    T2_fence[Thread 2: acquire fence]
-    T2_read[Thread 2: read data]
-
-    T1_data --> T1_fence --> T1_flag
-    T2_check --> T2_fence --> T2_read
-```
-
 
 
 ### Types of Memory Barriers
@@ -98,6 +84,19 @@ atomic_thread_fence(memory_order_acquire);
 printf("Data = %d\n", data);
 ```
 
+```mermaid
+flowchart TB
+    T1_data[Thread 1: data = 123]
+    T1_fence[Thread 1: release fence]
+    T1_flag[Thread 1: flag = 1]
+
+    T2_check[Thread 2: if flag == 1]
+    T2_fence[Thread 2: acquire fence]
+    T2_read[Thread 2: read data]
+
+    T1_data --> T1_fence --> T1_flag
+    T2_check --> T2_fence --> T2_read
+```
 
 ### Memory Barriers and the Hardware
 
