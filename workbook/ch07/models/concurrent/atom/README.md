@@ -1,11 +1,26 @@
 
 ## Atomic Counter
 
-The code in the folder defines a modular virtual machine (`ToyVM`) that simulates *cooperative multithreading*
+Atomic counters are shared variables that guarantee thread-safe read-modify-write operations in *parallel*
+(not just concurrent) systems. They are enforced by hardware/OS primitives, not just logical scheduling,
+and are critical for performance-sensitive systems like databases, OS kernels, and game engines.
+
+The code in the folder defines a modular virtual machine (ToyVM) that simulates *cooperative multithreading*
 with synchronisation primitives, message passing, and stack-based instruction execution. It models OS-like concepts
 (locks, semaphores, atomic counters, message queues) and supports configurable scheduling policies (round-robin,
 priority-based). Threads execute in discrete *atomic steps*, managed by a non-preemptive scheduler, ensuring
 operations like `acquire()` or `send()` are treated as indivisible within the VM’s concurrency model.
+
+### Comparison to Real-World Counters
+
+| Feature             | ToyVM AtomicCounter                   | Real-World Atomic (e.g., C++/Java)              |
+|---------------------|---------------------------------------|-------------------------------------------------|
+| Atomicity Guarantee | Cooperative scheduler steps           | Hardware instructions (e.g., x86 `LOCK` prefix) |
+| Concurrency Model   | Simulated (single-threaded)           | Parallel (true multithreading)                  |
+| Use Case            | Education/deterministic sim           | High-performance, thread-safe code              |
+| Overhead            | None (logical abstraction)            | Low-level CPU/OS overhead                       |
+| Operations          | `increment()`, `decrement()`, `get()` | `fetch_add()`, `compare_exchange_strong()`, etc.|
+| Thread Safety       | VM-enforced via cooperative steps     | Hardware/OS-enforced                            |
 
 
 ### Atomicity in the ToyVM Context
@@ -87,16 +102,5 @@ enabling deterministic concurrency simulation.
 This version emphasises the VM’s *simulated* concurrency model, distinguishes logical vs. 
 hardware atomicity, and aligns terminology with cooperative multithreading paradigms.
 
-
-### Comparison to Real-World Counters
-
-| Feature             | ToyVM AtomicCounter                   | Real-World Atomic (e.g., C++/Java)              |
-|---------------------|---------------------------------------|-------------------------------------------------|
-| Atomicity Guarantee | Cooperative scheduler steps           | Hardware instructions (e.g., x86 `LOCK` prefix) |
-| Concurrency Model   | Simulated (single-threaded)           | Parallel (true multithreading)                  |
-| Use Case            | Education/deterministic sim           | High-performance, thread-safe code              |
-| Overhead            | None (logical abstraction)            | Low-level CPU/OS overhead                       |
-| Operations          | `increment()`, `decrement()`, `get()` | `fetch_add()`, `compare_exchange_strong()`, etc.|
-| Thread Safety       | VM-enforced via cooperative steps     | Hardware/OS-enforced                            |
 
 
