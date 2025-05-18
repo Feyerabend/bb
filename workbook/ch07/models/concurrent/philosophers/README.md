@@ -3,11 +3,15 @@
 
 The Dining Philosophers problem is a classic thought experiment in computer science that illustrates
 the challenges of resource allocation and synchronization in concurrent systems. It was first introduced
-by Edsger Dijkstra in 1965 as a way to explore the complexities of avoiding *deadlocks*--a
+by Edsger Dijkstra in 1965 as a way to explore the complexities of avoiding *deadlocks*[^dead]--a
 situation where processes or threads become permanently stuck, waiting for resources that will never
 become available. Later, Tony Hoare, a pioneer in formal methods for program correctness, reformulated
 the problem using forks instead of Dijkstra's original "chopsticks." The problem has since become a
 cornerstone example in discussions about concurrency, operating systems, and distributed computing.
+
+[^dead]: Deadlock occurs when two or more threads are each waiting for the other to release a resource,
+causing all of them to block forever. It usually involves circular waiting on locks or semaphores.
+It is almost a "chatch 22" of programs.
 
 Imagine five philosophers sitting around a circular table, each with a plate of spaghetti in front of
 them. Between each pair of plates is a single fork, meaning there are five forks in total. To eat, a
