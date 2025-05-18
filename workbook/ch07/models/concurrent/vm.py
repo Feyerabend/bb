@@ -464,24 +464,19 @@ def example_atomic_counter():
         ("LOAD", "i"),            # PC 2: Load i
         ("PUSH", 100),            # PC 3: Push 100
         ("SUB",),                 # PC 4: Compute i - 100
-        ("JUMP_IF", 18),          # PC 5: Jump to PC 18 if i == 100
+        ("JUMP_IF", 17),          # PC 5: Jump to PC 17 if i >= 100
         ("LOAD", "counter"),      # PC 6: Load counter
-        ("ATOMIC_GET",),          # PC 7: Get counter value
-        ("PUSH", 100),            # PC 8: Push 100
-        ("SUB",),                 # PC 9: counter - 100
-        ("JUMP_IF", 18),          # PC 10: Jump to PC 18 if counter >= 100
-        ("POP",),                 # PC 11: Clear counter - 100
-        ("LOAD", "counter"),      # PC 12: Load counter
-        ("ATOMIC_INCREMENT",),    # PC 13: Atomically increment counter
-        ("DUP",),                 # PC 14: Duplicate counter value
-        ("PRINT", "Worker increment to {}"), # PC 15: Debug print
-        ("POP",),                 # PC 16: Pop counter value
-        ("LOAD", "i"),            # PC 17: Load i
-        ("PUSH", 1),              # PC 18: Push 1
-        ("ADD",),                 # PC 19: i += 1
-        ("STORE", "i"),           # PC 20: Store i
-        ("JUMP", 2),              # PC 21: Loop back
-        ("NOP",),                 # PC 22: Loop exit
+        ("ATOMIC_INCREMENT",),    # PC 7: Atomically increment counter
+        ("DUP",),                 # PC 8: Duplicate counter value
+        ("PRINT", "Worker increment to {}"), # PC 9: Debug print
+        ("POP",),                 # PC 10: Pop duplicated counter value
+        ("POP",),                 # PC 11: Pop original counter value
+        ("LOAD", "i"),            # PC 12: Load i
+        ("PUSH", 1),              # PC 13: Push 1
+        ("ADD",),                 # PC 14: i += 1
+        ("STORE", "i"),           # PC 15: Store i
+        ("JUMP", 2),              # PC 16: Loop back to PC 2
+        ("NOP",),                 # PC 17: Loop exit
     ]
 
     main_instructions = [
@@ -492,9 +487,9 @@ def example_atomic_counter():
         ("THREAD_CREATE", [worker_instructions]), # PC 4
         ("PUSH", 0),              # PC 5: Create thread 1
         ("THREAD_CREATE", [worker_instructions]), # PC 6
-        ("LOAD", "thread-0"),     # PC 7: Join thread-0
+        ("LOAD", "thread-0"),     # PC 7: Load thread-0 name
         ("THREAD_JOIN",),         # PC 8: Join thread-0
-        ("LOAD", "thread-1"),     # PC 9: Join thread-1
+        ("LOAD", "thread-1"),     # PC 9: Load thread-1 name
         ("THREAD_JOIN",),         # PC 10: Join thread-1
         ("LOAD", "counter"),      # PC 11: Load counter
         ("ATOMIC_GET",),          # PC 12: Get counter value
@@ -502,15 +497,14 @@ def example_atomic_counter():
         ("PRINT", "Final counter value: {}"), # PC 14: Print value
         ("PUSH", 200),            # PC 15: Push 200
         ("SUB",),                 # PC 16: counter - 200
-        ("JUMP_IF", 18),          # PC 17: Jump to 18 if counter == 200
-        ("PRINT", "Test PASSED - Atomic counter correct"), # PC 18
+        ("JUMP_IF", 19),          # PC 17: Jump to 19 if counter == 200
+        ("PRINT", "Test FAILED - Atomic counter incorrect"), # PC 18
         ("JUMP", 20),             # PC 19: Skip failure
-        ("PRINT", "Test FAILED - Atomic counter incorrect"), # PC 20
-        ("POP",),                 # PC 21: Clear stack
+        ("PRINT", "Test PASSED - Atomic counter correct"), # PC 20
     ]
     
     vm.create_thread(main_instructions, "main", priority=1)
-    vm.run(debug=True)
+    vm.run(debug=True, max_steps=50000)  # Keep increased max_steps for debugging
 
 if __name__ == "__main__":
     print("\n=== Example: Atomic Counter ===")
