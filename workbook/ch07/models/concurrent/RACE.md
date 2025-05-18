@@ -47,6 +47,8 @@ flowchart TD
 ```
 
 
+#### Shared Memory in Processes
+
 Now, let’s extend this to *shared memory in processes*. Unlike threads, processes have separate
 memory spaces by default. To share data, we use explicit shared memory objects like `multiprocessing.Value`.
 Even here, race conditions persist without synchronisation:
@@ -73,6 +75,22 @@ if __name__ == "__main__":
 Despite using shared memory across processes, the same problem occurs: overlapping read-modify-write
 operations corrupt the value. The shared memory allows processes to interact with the same data,
 but without coordination, the result is still wrong.
+
+```mermaid
+sequenceDiagram
+    participant Thread A
+    participant Shared Counter
+    participant Thread B
+
+    Note over Thread A, Thread B: Unsynchronized increment operations
+    Thread A->>Shared Counter: Read value (e.g., 100)
+    Thread B->>Shared Counter: Read value (e.g., 100)
+    Thread A->>Thread A: Increment to 101
+    Thread B->>Thread B: Increment to 101
+    Thread A->>Shared Counter: Write 101
+    Thread B->>Shared Counter: Write 101
+    Note over Shared Counter: Final value is 101 (lost update).\nExpected 200000 after many iterations!
+```
 
 
 #### Fixing the Race Condition
