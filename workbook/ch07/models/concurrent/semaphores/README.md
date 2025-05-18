@@ -79,3 +79,24 @@ Python's `threading.Semaphore(value)` starts with a given value (3 in this case)
 when entering the critical section and semaphore.release() when exiting (implicitly done by with block). This ensures at
 most 3 threads can work concurrently in the guarded block.
 
+
+```mermaid
+graph TD
+    S1[Semaphore Count = 3]
+
+    subgraph Threads
+        T1[Thread 1] --> A1[acquire()]
+        T2[Thread 2] --> A2[acquire()]
+        T3[Thread 3] --> A3[acquire()]
+        T4[Thread 4] --> A4[acquire()]
+    end
+
+    A1 --> CS1[CS: Work 1]
+    A2 --> CS2[CS: Work 2]
+    A3 --> CS3[CS: Work 3]
+    A4 --> W4[Wait (blocked)]
+
+    CS1 --> R1[release()]
+    R1 --> A4
+    A4 --> CS4[CS: Work 4]
+```
