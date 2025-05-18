@@ -81,22 +81,20 @@ most 3 threads can work concurrently in the guarded block.
 
 
 ```mermaid
-graph TD
-    S1[Semaphore Count = 3]
+flowchart TD
+    S[Semaphore count = 3]
 
-    subgraph Threads
-        T1[Thread 1] --> A1[acquire()]
-        T2[Thread 2] --> A2[acquire()]
-        T3[Thread 3] --> A3[acquire()]
-        T4[Thread 4] --> A4[acquire()]
-    end
+    T1[Thread 1 wants access] --> A1[Acquire S]
+    T2[Thread 2 wants access] --> A2[Acquire S]
+    T3[Thread 3 wants access] --> A3[Acquire S]
+    T4[Thread 4 wants access] --> A4[Acquire S]
 
-    A1 --> CS1[CS: Work 1]
-    A2 --> CS2[CS: Work 2]
-    A3 --> CS3[CS: Work 3]
-    A4 --> W4[Wait (blocked)]
+    A1 --> C1[Critical Section 1]
+    A2 --> C2[Critical Section 2]
+    A3 --> C3[Critical Section 3]
+    A4 --> W4[Blocked - Waiting for Slot]
 
-    CS1 --> R1[release()]
+    C1 --> R1[Release S]
     R1 --> A4
-    A4 --> CS4[CS: Work 4]
+    A4 --> C4[Critical Section 4]
 ```
