@@ -125,6 +125,31 @@ if __name__ == "__main__":
 In both cases, the lock acts as a gatekeeper, ensuring that only one thread or process can execute
 the critical section (the increment operation) at any time. This restores the expected result of `200000`.
 
+```mermaid
+sequenceDiagram
+    participant Thread A
+    participant Lock
+    participant Shared Counter
+    participant Thread B
+
+    Note over Thread A, Thread B: Synchronized with Lock
+    Thread A->>Lock: Acquire Lock
+    activate Lock
+    Thread A->>Shared Counter: Read value
+    Thread A->>Shared Counter: Increment & Write
+    Thread A->>Lock: Release Lock
+    deactivate Lock
+
+    Thread B->>Lock: Acquire Lock (waits if busy)
+    activate Lock
+    Thread B->>Shared Counter: Read value
+    Thread B->>Shared Counter: Increment & Write
+    Thread B->>Lock: Release Lock
+    deactivate Lock
+    Note over Shared Counter: Final value increments correctly!
+```
+
+
 
 ### Observations
 
