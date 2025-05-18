@@ -17,7 +17,7 @@ flowchart LR
 
 1. *Client*: Interacts only with the Facade
 2. *Facade*: Coordinates work between subsystems
-3. *Subsystems*: Independent components with specialized functionality
+3. *Subsystems*: Independent components with specialised functionality
 
 
 ### Example
@@ -46,7 +46,7 @@ graph TD
 
 ```c
 // Simplified facade operations
-void initVM(...);          // Initialize subsystems
+void initVM(...);          // Initialise subsystems
 void parseScript(...);     // Handle script parsing
 void executeAST(...);      // Coordinate rendering
 void outputImage(...);     // Manage final export
@@ -63,7 +63,7 @@ int main() {
 
 ```c
 bool processScriptFile(...) {
-    VM* vm = initVM(...);         // 1. Initialize subsystems
+    VM* vm = initVM(...);         // 1. Initialise subsystems
     parseScript(vm, ...);         // 2. Coordinate parsing
     executeAST(vm);               // 3. Manage execution
     outputImage(vm, ...);         // 4. Handle rendering
@@ -102,7 +102,7 @@ bool processScriptFile(...) {
      ```
 
 4. *Error Handling*:
-   - Centralized error recovery:
+   - Centralised error recovery:
      ```c
      if (!parseScript(...)) {
          freeVM(vm);  // Automatically cleans all subsystems
@@ -117,12 +117,3 @@ The implementation demonstrates "ideal use cases" for Facade:
 - *Graphics pipelines*: Coordinating rendering steps
 - *Language interpreters*: Managing parsing/execution
 - *Resource-heavy systems*: Centralising memory management
-
-
-
-
-VM structure as central interface
-
-VM encapsulates all system components
-
-Simplified API via `processScriptFile(`

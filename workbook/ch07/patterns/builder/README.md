@@ -107,6 +107,139 @@ Benefits:
 - *Readability*: Each method corresponds to a grammar rule (e.g., `build_while_loop()`).
 
 
+```mermaid
+classDiagram
+    direction LR
+
+    %% Lexer Components
+    class PL0Lexer {
+        - code: str
+        - token_strategy: TokenMatchStrategy
+        - iterator: TokenIterator
+        + get_iterator() TokenIterator
+        + next_token() bool
+    }
+
+    class TokenIterator {
+        - lexer: PL0Lexer
+        - current_token: str
+        - current_kind: str
+        - has_next: bool
+        + next() bool
+    }
+
+    class TokenMatchStrategy {
+        <<interface>>
+        + match(code: str) tuple
+    }
+
+    class RegexTokenMatchStrategy {
+        - token_patterns: re.Pattern
+        + match(code: str) tuple
+    }
+
+    PL0Lexer --> TokenIterator : creates
+    PL0Lexer --> TokenMatchStrategy : uses
+    TokenMatchStrategy <|.. RegexTokenMatchStrategy : implements
+    TokenIterator --> PL0Lexer : references
+
+    %% Parser Components
+    class ASTBuilder {
+        - iterator: TokenIterator
+        + build() ASTNode
+        + build_block() BlockNode
+        + build_statement() ASTNode
+    }
+
+    ASTBuilder --> TokenIterator : uses
+
+    %% AST Nodes
+    class ASTNode {
+        <<abstract>>
+        + accept(visitor: Visitor)
+    }
+
+    class BlockNode {
+        - variables: List[str]
+        - procedures: List[Tuple[str, ASTNode]]
+        - statement: ASTNode
+        + accept(Visitor)
+    }
+
+    class AssignNode {
+        - var_name: str
+        - expression: ASTNode
+        + accept(Visitor)
+    }
+
+    class CompoundNode {
+        - statements: List[ASTNode]
+        + accept(Visitor)
+    }
+
+    ASTNode <|-- BlockNode
+    ASTNode <|-- AssignNode
+    ASTNode <|-- CompoundNode
+    ASTNode <|-- CallNode
+    ASTNode <|-- ReadNode
+    ASTNode <|-- WriteNode
+    ASTNode <|-- IfNode
+    ASTNode <|-- WhileNode
+    ASTNode <|-- OperationNode
+    ASTNode <|-- VariableNode
+    ASTNode <|-- NumberNode
+
+    %% Visitor Pattern
+    class Visitor {
+        <<interface>>
+        + visit_block(BlockNode)
+        + visit_assign(AssignNode)
+        + visit_compound(CompoundNode)
+        + ...other methods...
+    }
+
+    class Interpreter {
+        - scope: Scope
+        + interpret(ASTNode)
+        + visit_block(BlockNode)
+        + ...other visit methods...
+    }
+
+    Visitor <|.. Interpreter : implements
+
+    %% Execution Components
+    class Scope {
+        - parent: Scope
+        - variables: dict
+        - procedures: dict
+        + find_variable(name: str) any
+        + find_procedure(name: str) tuple
+    }
+
+    class OperatorFactory {
+        + get_operator(op_symbol: str) Callable
+    }
+
+    Interpreter --> Scope : uses
+    Interpreter --> OperatorFactory : uses
+    Scope --> Scope : parent
+
+    %% Main Interpreter
+    class PL0Interpreter {
+        + run_file(filename: str)
+    }
+
+    PL0Interpreter --> PL0Lexer : uses
+    PL0Interpreter --> ASTBuilder : uses
+    PL0Interpreter --> Interpreter : uses
+
+    %% Relationships
+    BlockNode --> ASTNode : contains
+    CompoundNode --> ASTNode : contains
+    BlockNode --> BlockNode : procedures
+```
+
+
 ### Summary
 
 The Builder Pattern decouples complex object construction from its representation. In

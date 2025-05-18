@@ -19,6 +19,6 @@ subscribers handle them, without being directly aware of each other.
 
 Use Cases
 - GUI frameworks (e.g., button clicked, mouse moved)
-- Game engines (e.g., collision, input events)
+- Game engines (e.g., collision, input events etc. in [pool game](./pool/))
 - Microservices or plugin systems
 - Logging, analytics, or telemetry collection

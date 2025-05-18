@@ -1,26 +1,33 @@
 
 ## Low-Level Control-Flow and Execution Mechanisms
 
+At the heart of every (major) software system lies a silent negotiation between raw hardware
+capabilities and the abstractions that shield developers from complexity. Low-level programming
+mechanisms are the bedrock of this negotiation--tools that directly orchestrate memory, CPU cycles,
+and peripheral interactions to carve order from chaos. Unlike high-level paradigms that prioritise
+developer convenience, these mechanisms demand a granular understanding of *how* computation
+unfolds: how threads contend for shared resources, how control flow navigates unpredictable paths,
+and how state persists or evaporates across failures.  
+
+This discipline emerged from necessity. Early systems operated under stringent constraints--limited
+memory, single-core CPUs, and real-time demands--forcing programmers to craft meticulous, manual
+control over execution. Today, even as abstractions like containers and serverless computing
+obscure the metal, low-level patterns remain indispensable. They underpin operating systems,
+embedded firmware, high-frequency trading systems, and latency-sensitive applications where
+predictability and efficiency are non-negotiable. To master these patterns is to wield control
+over *time* (scheduling, interrupts), *space* (memory layout, caches), and *failure* (state recovery,
+atomicity)--the triad that defines reliability in hostile environments. These mechanisms are not
+relics but you could view them as timeless instruments.
+
+
 ### Concurrency & Threading
 
-Concurrency and threading mechanisms manage safe and predictable execution when multiple tasks operate simultaneously,
-ensuring isolation, coordination, and ordering. Re-entrancy guarantees that functions behave correctly under concurrent
-calls; context switching enables multitasking by preserving and restoring task states; memory barriers enforce visibility
-and ordering of shared memory operations. Together, these techniques build the foundation for reliable thread scheduling,
-interrupt handling, lock-free programming, and real-time systems where timing and correctness are critical.
-
-| Mechanism | Description | Use Cases | Related Pattern(s) |
-|--|--|--|--|
-| [Re-entrant](./reentrant/) | Function safe to be re-entered concurrently | Multithreading, interrupt-safe routines | Thread-safe design, Stateless design |
-| Context Switch  | Save/restore execution context between tasks                           | Thread scheduling, green threads, RTOS               | Scheduler design                        |
-| Memory Barrier  | Prevent CPU from reordering memory operations                          | Lock-free concurrency, shared memory                 | Happens-before relations                |
-
-[Threads](./THREADS.md) represent an execution context that runs independently yet shares memory with other threads
-within the same process. They serve as a concrete mechanism beneath higher-level concurrency constructs, enabling
-multitasking at the granularity of individual flows of control. Threads provide the substrate upon which re-entrancy,
-context switching, and memory barriers operate--each ensuring safe and efficient coordination between threads. Without
-threads (or their equivalents), these concurrency techniques would lack an execution model to act upon.
-
+[Concurrency](./CONCURRENCY.md) and threading mechanisms manage safe and predictable execution when multiple
+tasks operate simultaneously, ensuring isolation, coordination, and ordering. Re-entrancy guarantees that
+functions behave correctly under concurrent calls; context switching enables multitasking by preserving and
+restoring task states; memory barriers enforce visibility and ordering of shared memory operations. Together,
+these techniques build the foundation for reliable thread scheduling, interrupt handling, lock-free programming,
+and real-time systems where timing and correctness are critical.
 
 ### Control Flow & Dispatch
 
@@ -31,7 +38,6 @@ decisions from rigid call structures, enabling flexibility, efficiency, and modu
 are foundational for building interpreters, managing embedded protocols, optimising recursion, and handling
 complex execution paths in functional and system-level programming.
 
-
 ### Memory & State Management
 
 [State management mechanisms](./MEMORY.md) control how a program preserves, restores, and navigates its
@@ -40,7 +46,6 @@ for resumption or recovery, stack frames organise local data during nested or re
 systematically reverts to earlier states when encountering dead ends. These techniques are central to building
 interpreters, recovery systems, logic solvers, and any software requiring controlled exploration or structured
 undo capability.
-
 
 ### Event-Driven & Reactive
 
@@ -56,7 +61,7 @@ embedded systems, and asynchronous programming environments.
 
 | Mechanism | Description | Use Cases | Related Pattern(s) |
 |---|---|---|---|
-| Callback        | Function invoked at a later point, usually by a framework              | Event handling, async operations, sorting hooks      | Observer, Inversion of Control          |
+| [Callback](./callback/) | Function invoked at a later point, usually by a framework | Event handling, async operations, sorting hooks | Observer, Inversion of Control |
 | Signal Handler  | Async routine called in response to OS or hardware signals             | Interrupt handling, Unix signals, exceptions         | Observer, Interrupt Vector Table        |
 | Event Loop      | Central loop dispatching async events                                  | GUIs, servers, JavaScript runtimes                   | Reactor, Proactor                       |
 
