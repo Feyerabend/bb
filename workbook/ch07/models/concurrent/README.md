@@ -2,14 +2,6 @@
 # Workbook
 
 
-- race ok (not really working as expected but good enough)
-
-- phil ok
-
-- readwrite ok
-
-- sema ok
-
 - proco ?
 
 - atom ? (not)

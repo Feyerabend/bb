@@ -33,13 +33,15 @@ class Thread:
         if self.wait_condition and self.wait_condition():
             self.waiting = False
             self.wait_condition = None
-        instruction = self.instructions[self.pc]
-        opcode = instruction[0]
-        args = instruction[1:] if len(instruction) > 1 else []
-        self.vm.execute_instruction(self, opcode, args)
-        self.pc += 1
-        self.last_scheduled = time.time()
-        return True
+        if not self.waiting:
+            instruction = self.instructions[self.pc]
+            opcode = instruction[0]
+            args = instruction[1:] if len(instruction) > 1 else []
+            self.vm.execute_instruction(self, opcode, args)
+            self.pc += 1
+            self.last_scheduled = time.time()
+            return True
+        return False
 
 class Lock:
     def __init__(self, name: str):
@@ -132,9 +134,8 @@ class ToyVM:
         self.globals = {}
         self.next_thread_id = 0
         self.running = False
-        self.scheduler_type = "round_robin"
+        self.scheduler_type = "priority"
         self.step_interval = 0.01
-        self.active_threads = deque()
 
     def create_thread(self, instructions: List[Tuple], name: str = None, priority: int = 0) -> str:
         if name is None:
@@ -142,8 +143,6 @@ class ToyVM:
             self.next_thread_id += 1
         thread = Thread(self, name, instructions, priority=priority)
         self.threads[name] = thread
-        self.active_threads.append(name)
-        print(f"[DEBUG] Created thread {name}")
         return name
 
     def create_lock(self, name: str = None) -> str:
@@ -198,20 +197,14 @@ class ToyVM:
             return "waiting"
         return "runnable"
 
-    def run(self, max_steps: int = 20000, debug: bool = False):
+    def run(self, max_steps: int = 10000, debug: bool = False):
         self.running = True
         step_count = 0
+        active_threads = list(self.threads.keys())
         while self.running and step_count < max_steps:
             step_count += 1
-            runnable_threads = [t for t in self.active_threads if self.threads[t].running and not self.threads[t].waiting]
-            if not runnable_threads:
-                for t in self.active_threads:
-                    thread = self.threads[t]
-                    if thread.waiting and thread.wait_condition and thread.wait_condition():
-                        runnable_threads.append(t)
-                        thread.waiting = False
-                        thread.wait_condition = None
-            if not runnable_threads:
+            active_threads = [t for t in self.threads if self.threads[t].running]
+            if not active_threads:
                 break
             if self.detect_deadlock():
                 if debug:
@@ -219,7 +212,7 @@ class ToyVM:
                     self.print_thread_states(debug)
                 self.running = False
                 break
-            thread_name = self.select_thread(runnable_threads)
+            thread_name = self.select_thread(active_threads)
             thread = self.threads[thread_name]
             if debug:
                 print(f"Step {step_count}: Running thread {thread_name} (priority {thread.priority}) at PC {thread.pc}")
@@ -240,22 +233,18 @@ class ToyVM:
         return step_count
 
     def select_thread(self, active_threads: List[str]) -> str:
-        if not active_threads:
-            return None
         if self.scheduler_type == "priority":
             candidates = [
                 (t, self.threads[t].priority, -self.threads[t].last_scheduled)
                 for t in active_threads
             ]
-            selected = max(candidates, key=lambda x: (x[1], x[2]))[0]
+            return max(candidates, key=lambda x: (x[1], x[2]))[0]
         elif self.scheduler_type == "round_robin":
-            selected = self.active_threads[0]
-            self.active_threads.rotate(-1)
+            thread_name = active_threads[0]
+            active_threads.append(active_threads.pop(0))
+            return thread_name
         else:
-            selected = random.choice(active_threads)
-        if selected:
-            print(f"[DEBUG] Selected thread {selected}")
-        return selected
+            return random.choice(active_threads)
 
     def print_thread_states(self, debug: bool):
         if not debug:
@@ -318,7 +307,7 @@ class ToyVM:
             thread.pc = args[0] - 1
         elif opcode == "JUMP_IF":
             condition = thread.stack.pop() if thread.stack else False
-            if condition >= 0:
+            if condition == 0:
                 thread.pc = args[0] - 1
         elif opcode == "PRINT":
             if args:
@@ -454,64 +443,3 @@ class ToyVM:
             pass
         else:
             print(f"[{thread.name}] Unknown opcode: {opcode}")
-
-def example_atomic_counter():
-    vm = ToyVM()
-    
-    worker_instructions = [
-        ("PUSH", 0),              # PC 0: Initialize i = 0
-        ("STORE", "i"),           # PC 1: Store i
-        ("LOAD", "i"),            # PC 2: Load i
-        ("PUSH", 100),            # PC 3: Push 100
-        ("SUB",),                 # PC 4: Compute i - 100
-        ("JUMP_IF", 18),          # PC 5: Jump to PC 18 if i == 100
-        ("LOAD", "counter"),      # PC 6: Load counter
-        ("ATOMIC_GET",),          # PC 7: Get counter value
-        ("PUSH", 100),            # PC 8: Push 100
-        ("SUB",),                 # PC 9: counter - 100
-        ("JUMP_IF", 18),          # PC 10: Jump to PC 18 if counter >= 100
-        ("POP",),                 # PC 11: Clear counter - 100
-        ("LOAD", "counter"),      # PC 12: Load counter
-        ("ATOMIC_INCREMENT",),    # PC 13: Atomically increment counter
-        ("DUP",),                 # PC 14: Duplicate counter value
-        ("PRINT", "Worker increment to {}"), # PC 15: Debug print
-        ("POP",),                 # PC 16: Pop counter value
-        ("LOAD", "i"),            # PC 17: Load i
-        ("PUSH", 1),              # PC 18: Push 1
-        ("ADD",),                 # PC 19: i += 1
-        ("STORE", "i"),           # PC 20: Store i
-        ("JUMP", 2),              # PC 21: Loop back
-        ("NOP",),                 # PC 22: Loop exit
-    ]
-
-    main_instructions = [
-        ("PUSH", 0),              # PC 0: Push 0
-        ("ATOMIC_CREATE",),       # PC 1: Create atomic counter
-        ("GLOBAL_STORE", "counter"), # PC 2: Store to counter
-        ("PUSH", 0),              # PC 3: Create thread 0
-        ("THREAD_CREATE", [worker_instructions]), # PC 4
-        ("PUSH", 0),              # PC 5: Create thread 1
-        ("THREAD_CREATE", [worker_instructions]), # PC 6
-        ("LOAD", "thread-0"),     # PC 7: Join thread-0
-        ("THREAD_JOIN",),         # PC 8: Join thread-0
-        ("LOAD", "thread-1"),     # PC 9: Join thread-1
-        ("THREAD_JOIN",),         # PC 10: Join thread-1
-        ("LOAD", "counter"),      # PC 11: Load counter
-        ("ATOMIC_GET",),          # PC 12: Get counter value
-        ("DUP",),                 # PC 13: Duplicate for print
-        ("PRINT", "Final counter value: {}"), # PC 14: Print value
-        ("PUSH", 200),            # PC 15: Push 200
-        ("SUB",),                 # PC 16: counter - 200
-        ("JUMP_IF", 18),          # PC 17: Jump to 18 if counter == 200
-        ("PRINT", "Test PASSED - Atomic counter correct"), # PC 18
-        ("JUMP", 20),             # PC 19: Skip failure
-        ("PRINT", "Test FAILED - Atomic counter incorrect"), # PC 20
-        ("POP",),                 # PC 21: Clear stack
-    ]
-    
-    vm.create_thread(main_instructions, "main", priority=1)
-    vm.run(debug=True)
-
-if __name__ == "__main__":
-    print("\n=== Example: Atomic Counter ===")
-    example_atomic_counter()
