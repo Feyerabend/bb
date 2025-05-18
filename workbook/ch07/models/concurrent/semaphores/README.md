@@ -25,12 +25,12 @@ acquire it may still release it--this flexibility comes with both power and risk
 
 ```mermaid
 flowchart TD
-    A[Start Thread] --> B[Attempt to acquire semaphore]
-    B --> C{Semaphore count > 0?}
+    A[Start Thread] --> B[Try to acquire semaphore]
+    B --> C{Semaphore count > 0}
     C -- Yes --> D[Decrement count]
     D --> E[Enter critical section]
-    E --> F[Execute work]
-    F --> G[Release semaphore (increment count)]
+    E --> F[Do work]
+    F --> G[Release semaphore - increment count]
     G --> H[Thread exits]
 
     C -- No --> W[Wait until count > 0]
