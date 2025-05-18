@@ -23,6 +23,22 @@ Semaphores are useful for:
 Unlike locks or mutexes, semaphores do not necessarily enforce *ownership*, meaning a thread that didn’t
 acquire it may still release it--this flexibility comes with both power and risk.
 
+```mermaid
+flowchart TD
+    A[Start Thread] --> B[Attempt to acquire semaphore]
+    B --> C{Semaphore count > 0?}
+    C -- Yes --> D[Decrement count]
+    D --> E[Enter critical section]
+    E --> F[Execute work]
+    F --> G[Release semaphore (increment count)]
+    G --> H[Thread exits]
+
+    C -- No --> W[Wait until count > 0]
+    W --> B
+```
+
+
+
 Simple Example in Python with threading.Semaphore
 
 ```python
