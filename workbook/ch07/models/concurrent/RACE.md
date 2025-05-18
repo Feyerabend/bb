@@ -39,46 +39,11 @@ their local copies to `101` and both write back `101`, losing one increment. Ove
 of iterations, this discrepancy compounds, resulting in a final value smaller than expected.
 
 ```mermaid
-%% Race Condition in Threads (Problem)
-sequenceDiagram
-    participant Thread A
-    participant Shared Counter
-    participant Thread B
-
-    Note over Thread A, Thread B: Unsynchronized increment operations
-
-    Thread A->>Shared Counter: Read value (e.g., 100)
-    Thread B->>Shared Counter: Read value (e.g., 100)
-    Thread A->>Thread A: Increment to 101
-    Thread B->>Thread B: Increment to 101
-    Thread A->>Shared Counter: Write 101
-    Thread B->>Shared Counter: Write 101
-    Note over Shared Counter: Final value is 101 (lost update) <br> Expected 200000 after many iterations!
-
-%% Fixing with a Lock (Solution)
-sequenceDiagram
-    participant Thread A
-    participant Lock
-    participant Shared Counter
-    participant Thread B
-
-    Note over Thread A, Thread B: Synchronized with Lock
-
-    Thread A->>Lock: Acquire Lock
-    activate Lock
-    Thread A->>Shared Counter: Read value
-    Thread A->>Shared Counter: Increment & Write
-    Thread A->>Lock: Release Lock
-    deactivate Lock
-
-    Thread B->>Lock: Acquire Lock (waits if busy)
-    activate Lock
-    Thread B->>Shared Counter: Read value
-    Thread B->>Shared Counter: Increment & Write
-    Thread B->>Lock: Release Lock
-    deactivate Lock
-
-    Note over Shared Counter: Final value increments correctly!
+%% Shared Memory Race Condition in Processes
+flowchart TD
+    Process1 -->|Read/Modify/Write| SharedMemory
+    Process2 -->|Read/Modify/Write| SharedMemory
+    SharedMemory -->|Uncoordinated writes| CorruptedData
 ```
 
 
