@@ -28,11 +28,11 @@ class Thread:
         self.waiting = False
         self.wait_condition: Optional[Callable[[], bool]] = None
         self.joined_by = []  # Threads waiting for this thread to complete
-    
+
     def step(self):
         if not self.running or self.waiting:
             return False
-        
+
         if self.pc >= len(self.instructions):
             self.running = False
             # Wake up any threads waiting on this one
@@ -41,21 +41,21 @@ class Thread:
                 if thread and thread.waiting:
                     thread.waiting = False
             return False
-        
+
         # Check if wait condition is satisfied
         if self.wait_condition and self.wait_condition():
             self.waiting = False
             self.wait_condition = None
-        
+
         if not self.waiting:
             instruction = self.instructions[self.pc]
             opcode = instruction[0]
             args = instruction[1:] if len(instruction) > 1 else []
-            
+
             self.vm.execute_instruction(self, opcode, args)
             self.pc += 1
             return True
-        
+
         return False
 
 
@@ -65,14 +65,14 @@ class Lock:
         self.locked = False
         self.owner = None
         self.waiting_threads = []
-    
+
     def acquire(self, thread_name: str) -> bool:
         if not self.locked:
             self.locked = True
             self.owner = thread_name
             return True
         return False
-    
+
     def release(self, thread_name: str) -> bool:
         if self.locked and self.owner == thread_name:
             # Wake up one waiting thread if any
@@ -93,13 +93,13 @@ class Semaphore:
         self.name = name
         self.count = count
         self.waiting_threads = []
-    
+
     def acquire(self, thread_name: str) -> bool:
         if self.count > 0:
             self.count -= 1
             return True
         return False
-    
+
     def release(self) -> Optional[str]:
         if self.waiting_threads:
             next_thread = self.waiting_threads.pop(0)
@@ -114,7 +114,7 @@ class MessageQueue:
         self.name = name
         self.messages = deque()
         self.waiting_receivers = []
-    
+
     def send(self, message: Any) -> Optional[str]:
         if self.waiting_receivers:
             receiver = self.waiting_receivers.pop(0)
@@ -122,7 +122,7 @@ class MessageQueue:
         else:
             self.messages.append(message)
             return None
-    
+
     def receive(self, thread_name: str) -> Tuple[bool, Any]:
         if self.messages:
             message = self.messages.popleft()
@@ -134,11 +134,11 @@ class AtomicCounter:
     def __init__(self, name: str, initial_value: int = 0):
         self.name = name
         self.value = initial_value
-    
+ 
     def increment(self) -> int:
         self.value += 1
         return self.value
-    
+
     def decrement(self) -> int:
         self.value -= 1
         return self.value
@@ -155,40 +155,40 @@ class ToyVM:
         self.next_thread_id = 0
         self.running = False
         self.scheduler_type = "round_robin"  # Can be "round_robin" or "random"
-    
+
     def create_thread(self, instructions: List[Tuple], name: str = None) -> str:
         if name is None:
             name = f"thread-{self.next_thread_id}"
             self.next_thread_id += 1
-        
+
         thread = Thread(self, name, instructions)
         self.threads[name] = thread
         return name
-    
+
     def create_lock(self, name: str = None) -> str:
         if name is None:
             name = f"lock-{len(self.locks)}"
-        
+
         lock = Lock(name)
         self.locks[name] = lock
         return name
-    
+
     def create_semaphore(self, count: int, name: str = None) -> str:
         if name is None:
             name = f"semaphore-{len(self.semaphores)}"
-        
+
         semaphore = Semaphore(name, count)
         self.semaphores[name] = semaphore
         return name
-    
+
     def create_message_queue(self, name: str = None) -> str:
         if name is None:
             name = f"queue-{len(self.message_queues)}"
-        
+
         queue = MessageQueue(name)
         self.message_queues[name] = queue
         return name
-    
+
     def create_atomic_counter(self, initial_value: int = 0, name: str = None) -> str:
         if name is None:
             name = f"counter-{len(self.atomic_counters)}"
@@ -196,7 +196,7 @@ class ToyVM:
         counter = AtomicCounter(name, initial_value)
         self.atomic_counters[name] = counter
         return name
-    
+
     def run(self, max_steps: int = 1000, debug: bool = False):
         self.running = True
         step_count = 0
@@ -240,7 +240,7 @@ class ToyVM:
                 print(f"Stopped after {max_steps} steps")
             else:
                 print(f"All threads completed after {step_count} steps")
-        
+
         return step_count
 
     def execute_instruction(self, thread: Thread, opcode: str, args: List[Any]):
@@ -254,7 +254,7 @@ class ToyVM:
         elif opcode == "DUP":
             if thread.stack:
                 thread.stack.append(thread.stack[-1])
-        
+
         # Arithmetic operations
         elif opcode == "ADD":
             if len(thread.stack) >= 2:
@@ -277,7 +277,7 @@ class ToyVM:
                 a = thread.stack.pop()
                 if b != 0:
                     thread.stack.append(a // b)
-        
+
         # Variable operations
         elif opcode == "LOAD":
             var_name = args[0]
@@ -1044,7 +1044,7 @@ def example_readers_writers():
         ("SLEEP",),
         ("PRINT", "Readers-writers simulation complete"),
     ]
-    
+
     vm.create_thread(main_instructions, "main")
     vm.run(debug=True)
 
@@ -1052,44 +1052,44 @@ def example_readers_writers():
 def example_barrier_synchronization():
     """Example demonstrating barrier synchronization."""
     vm = ToyVM()
-    
+
     # Worker thread instructions
     worker_instructions = [
         # Parameters: worker_id, num_workers
         # Each worker does some work, then waits at a barrier for all workers to complete
         # Then they all proceed to the next phase together
-        
+
         # Phase 1
         ("LOAD", "worker_id"),
         ("PRINT", "Worker {} starting phase 1"),
-        
+
         # Simulate some work
         ("PUSH", 30),
         ("SLEEP",),
-        
+
         ("LOAD", "worker_id"),
         ("PRINT", "Worker {} completed phase 1, waiting at barrier"),
-        
+
         # Increment the barrier counter
         ("LOAD", "barrier_counter"),
         ("ATOMIC_INCREMENT",),
         ("STORE", "count"),
-        
+
         # Check if all workers have arrived
         ("LOAD", "count"),
         ("LOAD", "num_workers"),
         ("SUB",),
         ("JUMP_IF", 15),  # If equal, we're the last one
-        
+
         # Not the last one, wait for barrier to be released
         ("LOAD", "barrier_sem"),
         ("SEMAPHORE_ACQUIRE",),
         ("JUMP", 18),  # Jump to phase 2
-        
+
         # Last worker to arrive releases the barrier
         ("PUSH", 1),
         ("STORE", "i"),
-        
+
         # Loop to release all waiting workers
         ("LOAD", "i"),
         ("LOAD", "num_workers"),
@@ -1097,76 +1097,76 @@ def example_barrier_synchronization():
         ("SUB",),  # num_workers - 1 (exclude self)
         ("SUB",),
         ("JUMP_IF", 27),  # Jump to self-release if done
-        
+
         ("LOAD", "barrier_sem"),
         ("SEMAPHORE_RELEASE",),
-        
+
         ("LOAD", "i"),
         ("PUSH", 1),
         ("ADD",),
         ("STORE", "i"),
         ("JUMP", 16),  # Jump back to release loop
-        
+
         # Phase 2
         ("LOAD", "worker_id"),
         ("PRINT", "Worker {} starting phase 2"),
-        
+
         # Simulate more work
         ("PUSH", 30),
         ("SLEEP",),
-        
+
         ("LOAD", "worker_id"),
         ("PRINT", "Worker {} completed all phases"),
     ]
-    
+
     main_instructions = [
         # Create synchronization primitives
         ("PUSH", 0),
         ("ATOMIC_CREATE",),
         ("GLOBAL_STORE", "barrier_counter"),
-        
+
         ("PUSH", 0),
         ("SEMAPHORE_CREATE",),
         ("GLOBAL_STORE", "barrier_sem"),
-        
+
         # Number of workers
         ("PUSH", 5),
         ("GLOBAL_STORE", "num_workers"),
-        
+
         # Create workers
         ("PUSH", 5),
         ("STORE", "worker_count"),
         ("PUSH", 1),
         ("STORE", "worker_idx"),
-        
+
         # Loop to create workers
         ("LOAD", "worker_idx"),
         ("LOAD", "worker_count"),
         ("SUB",),
         ("JUMP_IF", 24),  # Jump to end if done
-        
+
         # Set worker ID
         ("LOAD", "worker_idx"),
         ("GLOBAL_STORE", "worker_id"),
-        
+
         # Create worker thread
         ("PUSH", 0),
         ("THREAD_CREATE", [worker_instructions]),
         ("POP",),
-        
+
         # Increment worker index
         ("LOAD", "worker_idx"),
         ("PUSH", 1),
         ("ADD",),
         ("STORE", "worker_idx"),
         ("JUMP", 15),  # Jump back to loop condition
-        
+
         # Wait for a while and then exit
         ("PUSH", 300),
         ("SLEEP",),
         ("PRINT", "Barrier synchronization simulation complete"),
     ]
-    
+
     vm.create_thread(main_instructions, "main")
     vm.run(debug=True)
 
@@ -1175,24 +1175,26 @@ def example_barrier_synchronization():
 if __name__ == "__main__":
     print("\n=== Example: Counter Race Condition ===")
     example_counter_race_condition()
-    
-#    print("\n=== Example: Mutex Protection ===")
-#    example_mutex_protection()
-    
-#    print("\n=== Example: Producer-Consumer Pattern ===")
-#    example_producer_consumer()
-    
-#    print("\n=== Example: Semaphore Usage ===")
-#    example_semaphore()
-    
-#    print("\n=== Example: Atomic Counter ===")
-#    example_atomic_counter()
-    
-#    print("\n=== Example: Dining Philosophers Problem ===")
-#    example_dining_philosophers()
-    
-#    print("\n=== Example: Readers-Writers Problem ===")
-#    example_readers_writers()
-    
-#    print("\n=== Example: Barrier Synchronization ===")
-#    example_barrier_synchronization()
+
+    print("\n=== Example: Mutex Protection ===")
+    example_mutex_protection()
+
+    print("\n=== Example: Producer-Consumer Pattern ===")
+    example_producer_consumer()
+
+    print("\n=== Example: Semaphore Usage ===")
+    example_semaphore()
+
+    print("\n=== Example: Atomic Counter ===")
+    example_atomic_counter()
+
+    print("\n=== Example: Dining Philosophers Problem ===")
+    example_dining_philosophers()
+
+    print("\n=== Example: Readers-Writers Problem ===")
+    example_readers_writers()
+
+    print("\n=== Example: Barrier Synchronization ===")
+    example_barrier_synchronization()
+
+
