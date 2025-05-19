@@ -4,7 +4,6 @@
 
 - proco ?
 
-- mutex ?
 
 
 ## Concurrency
