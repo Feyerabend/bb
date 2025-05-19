@@ -1,0 +1,4 @@
+
+## Errors
+
+- parity etc
