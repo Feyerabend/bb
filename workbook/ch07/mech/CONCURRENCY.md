@@ -1,7 +1,7 @@
 
 ### Concurrency & Threading
 
-> [NOTE]
+> [!NOTE]
 > Also compare with [concurrent](./../models/concurrent/) programming lanuages constructs.
 
 | Mechanism | Description | Use Cases | Related Pattern(s) |

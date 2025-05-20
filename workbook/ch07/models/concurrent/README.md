@@ -1,7 +1,7 @@
 
 ## Concurrency
 
-> [NOTE]
+> [!NOTE]
 > Also compare with low level constructs on [concurrecy](./../../mech/CONCURRENCY.md).
 
 *Concurrency*, as a concept in computing, has evolved through a rich interplay between hardware capabilities,
