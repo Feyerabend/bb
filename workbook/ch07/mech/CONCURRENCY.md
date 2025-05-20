@@ -1,6 +1,9 @@
 
 ### Concurrency & Threading
 
+> [!NOTE]
+> Also compare with [concurrent](./../models/concurrent/) programming lanuages constructs.
+
 | Mechanism | Description | Use Cases | Related Pattern(s) |
 |--|--|--|--|
 | [Re-entrant](./reentrant/) | Function safe to be re-entered concurrently | Multithreading, interrupt-safe routines | Thread-safe design, Stateless design |
