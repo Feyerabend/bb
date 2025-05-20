@@ -1,8 +1,9 @@
 
-Threads
+### Threads
 
-Python’s threading module allows running multiple threads concurrently.
+Python's threading module allows running multiple threads concurrently.
 
+```python
 import threading
 
 def worker():
@@ -11,13 +12,14 @@ def worker():
 t = threading.Thread(target=worker)
 t.start()
 t.join()
+```
 
 
-
-Locks & Mutexes
+### Locks & Mutexes
 
 A Lock ensures only one thread accesses a shared resource at a time.
 
+```python
 lock = threading.Lock()
 
 def safe_increment():
@@ -32,14 +34,15 @@ for t in threads:
     t.start()
 for t in threads:
     t.join()
+```
 
 
 
-
-Semaphores
+### Semaphores
 
 A Semaphore limits the number of concurrent accesses.
 
+```python
 semaphore = threading.Semaphore(3)
 
 def worker():
@@ -52,14 +55,15 @@ for t in threads:
     t.start()
 for t in threads:
     t.join()
+```
 
 
 
-
-Atomic Operations
+### Atomic Operations
 
 Using threading for atomic increments is unreliable due to the Global Interpreter Lock (GIL), but multiprocessing.Value allows atomic operations in parallel processes.
 
+```python
 from multiprocessing import Value, Process
 
 counter = Value('i', 0)
@@ -75,15 +79,16 @@ for p in processes:
     p.join()
 
 print(counter.value)
+```
 
 
 
 
-
-Message Passing
+### Message Passing
 
 The queue.Queue module allows safe communication between threads.
 
+```python
 from queue import Queue
 
 queue = Queue()
@@ -104,15 +109,16 @@ t1.start()
 t1.join()
 t2.start()
 t2.join()
+```
 
 
 
 
+### Parallelism
 
-Parallelism
+Python's multiprocessing module bypasses the GIL for true parallelism.
 
-Python’s multiprocessing module bypasses the GIL for true parallelism.
-
+```python
 from multiprocessing import Pool
 
 def square(n):
@@ -121,11 +127,16 @@ def square(n):
 with Pool(4) as p:
     results = p.map(square, range(10))
 print(results)
+```
 
-Condition Variables
+
+
+
+### Condition Variables
 
 A Condition allows threads to wait for a condition before proceeding.
 
+```python
 condition = threading.Condition()
 ready = False
 
@@ -145,4 +156,4 @@ t1 = threading.Thread(target=worker)
 t1.start()
 threading.Thread(target=starter).start()
 t1.join()
-
+```
