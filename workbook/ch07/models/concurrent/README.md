@@ -1,14 +1,14 @@
 
 ## Concurrency
 
-*Concurrency*[^low], as a concept in computing, has evolved through a rich interplay between hardware capabilities,
+> [NOTE]
+> Also compare with low level constructs on [concurrecy](./../../mech/CONCURRENCY.md).
+
+*Concurrency*, as a concept in computing, has evolved through a rich interplay between hardware capabilities,
 theoretical breakthroughs, and the development of programming languages. Its roots stretch back to the earliest
 days of computing, yet its meaning and implementation have changed profoundly over time. To understand concurrency
 in a historical sense is to trace the gradual realisation that computers can—and often must—do more than one
 thing at a time, or at least appear to.
-
-[^low]: Also cf. [low-level constructs](./../../mech/CONCURRENCY.md) of concurrency and
-[threading](./../../mech/THREADS.md). 
 
 In the earliest digital computers of the 1940s and 1950s, programs were executed sequentially, in a single stream
 of instructions. These machines ran one task at a time, and control remained firmly in the hands of the program's
