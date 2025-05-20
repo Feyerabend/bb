@@ -2,7 +2,7 @@
 ## Concurrency
 
 > [!NOTE]
-> Also compare with low level constructs on [concurrecy](./../../mech/CONCURRENCY.md).
+> Also compare with low level constructs on [concurrency](./../../mech/CONCURRENCY.md).
 
 *Concurrency*, as a concept in computing, has evolved through a rich interplay between hardware capabilities,
 theoretical breakthroughs, and the development of programming languages. Its roots stretch back to the earliest
