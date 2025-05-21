@@ -294,11 +294,11 @@ def example_system():
 
 def example_advanced_system():
     Server = Process("Server", [
-        ('new_channel', 'reply'),
+        ('receive', ('reply_ch', 'reply')),  # Receive the reply channel from Coordinator
         ('log', "Server waiting for requests"),
         ('receive', ('request', 'client_msg')),
         ('log', ('var', 'client_msg')),
-        ('send', (('var', 'reply'), ('add', ('var', 'client_msg'), 100))),  # Fixed line
+        ('send', (('var', 'reply'), ('add', ('var', 'client_msg'), 100))),
         ('stop', ())
     ])
     
@@ -313,10 +313,12 @@ def example_advanced_system():
     Coordinator = Process("Coordinator", [
         ('new_channel', 'request'),
         ('new_channel', 'reply_ch'),
+        ('new_channel', 'reply'),
         ('spawn', ('ServerProcess', [
-            ('send', ('reply_ch', 'reply')),
+            ('send', ('reply_ch', ('var', 'reply'))),  # Send reply channel to Server
             ('stop', ())
         ])),
+        ('send', ('reply_ch', ('var', 'reply'))),  # Send reply channel to Client
         ('stop', ())
     ])
     
@@ -327,16 +329,33 @@ def example_replication():
     RequestHandler = Process("RequestHandler", [
         ('new_channel', 'requests'),
         ('new_channel', 'response_ch'),
-        ('spawn', ("Handler", [
-            ('receive', ('requests', 'req')),
+        ('new_channel', 'handler1_req'),
+        ('new_channel', 'handler2_req'),
+        ('new_channel', 'handler3_req'),
+        ('spawn', ("Handler1", [
+            ('receive', ('handler1_req', 'req')),
             ('log', ('var', 'req')),
             ('send', ('response_ch', ('add', ('var', 'req'), 1))),
-            ('if', (('ne', ('var', 'req'), None),  # Continue if req is not None
-                    [('receive', ('requests', 'req')),  # Loop back to receive
-                     ('log', ('var', 'req')),
-                     ('send', ('response_ch', ('add', ('var', 'req'), 1)))],
-                    [('stop', ())]))  # Stop when no more requests
+            ('stop', ())
         ])),
+        ('spawn', ("Handler2", [
+            ('receive', ('handler2_req', 'req')),
+            ('log', ('var', 'req')),
+            ('send', ('response_ch', ('add', ('var', 'req'), 1))),
+            ('stop', ())
+        ])),
+        ('spawn', ("Handler3", [
+            ('receive', ('handler3_req', 'req')),
+            ('log', ('var', 'req')),
+            ('send', ('response_ch', ('add', ('var', 'req'), 1))),
+            ('stop', ())
+        ])),
+        ('receive', ('requests', 'req1')),
+        ('send', ('handler1_req', ('var', 'req1'))),
+        ('receive', ('requests', 'req2')),
+        ('send', ('handler2_req', ('var', 'req2'))),
+        ('receive', ('requests', 'req3')),
+        ('send', ('handler3_req', ('var', 'req3'))),
         ('stop', ())
     ])
     
@@ -344,18 +363,20 @@ def example_replication():
         ('send', ('requests', 1)),
         ('send', ('requests', 2)),
         ('send', ('requests', 3)),
+        ('close', 'requests'),
         ('receive', ('response_ch', 'resp1')),
         ('log', ('var', 'resp1')),
         ('receive', ('response_ch', 'resp2')),
         ('log', ('var', 'resp2')),
         ('receive', ('response_ch', 'resp3')),
         ('log', ('var', 'resp3')),
+        ('close', 'response_ch'),
         ('stop', ())
     ])
     
     run_vm([RequestHandler, Client])
 
-    
+
 if __name__ == "__main__":
     print("=== Basic Example ===")
     example_system()
