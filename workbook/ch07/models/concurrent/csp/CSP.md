@@ -57,36 +57,44 @@ you to execute and observe the behavior of CSP processes.
  A diagram representing the structure of the `main_process` example. Wwe'll focus on the parallel
  composition and the nested structure of your processes.
 
+
 ```mermaid
 graph TD
+    %% Nodes
+    A[producer]
+    B[consumer]
+    C[monitor]
+    D[deadlocker]
+    E[Parallel]:::parallel
+    F[Parallel]:::parallel
+
+    %% Subgraph grouping only
     subgraph Main_Process
-        A[producer]
-        B[consumer]
-        C[monitor]
-        D[deadlocker]
-
-        style A fill:#aaffaa,stroke:#333,stroke-width:2px
-        style B fill:#aaffaa,stroke:#333,stroke-width:2px
-        style C fill:#aaffaa,stroke:#333,stroke-width:2px
-        style D fill:#aaffaa,stroke:#333,stroke-width:2px
-
-        subgraph data_channel_A
-            A --||-- E
-        end
-
-        subgraph data_status_channel_B
-            B --||-- F
-        end
-
-        subgraph data_status_channel_C
-            C --||-- D
-        end
-
-        E[Parallel]:::parallel --> B
-        F[Parallel]:::parallel --> C
-        F --> D
+        A
+        B
+        C
+        D
+        E
+        F
     end
 
+    %% Styles
+    style A fill:#aaffaa,stroke:#333,stroke-width:2px
+    style B fill:#aaffaa,stroke:#333,stroke-width:2px
+    style C fill:#aaffaa,stroke:#333,stroke-width:2px
+    style D fill:#aaffaa,stroke:#333,stroke-width:2px
+
+    %% Connections outside subgraphs
+    A --||-- E
+    E --> B
+
+    B --||-- F
+    F --> C
+    F --> D
+
+    C --||-- D
+
+    %% Class for parallel channels
     classDef parallel fill:#e0e0e0,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5;
 ```
 
