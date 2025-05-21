@@ -323,29 +323,19 @@ def example_advanced_system():
     run_vm([Server, Client, Coordinator])
 
 
-'''
-
 def example_replication():
     RequestHandler = Process("RequestHandler", [
         ('new_channel', 'requests'),
-        ('new_channel', 'response_ch'),  # ? shared response channel
-        ('replicate', ("Handler", [
+        ('new_channel', 'response_ch'),
+        ('spawn', ("Handler", [
             ('receive', ('requests', 'req')),
             ('log', ('var', 'req')),
             ('send', ('response_ch', ('add', ('var', 'req'), 1))),
-            ('stop', ())
-        ])),
-        ('replicate', ("Handler", [
-            ('receive', ('requests', 'req')),
-            ('log', ('var', 'req')),
-            ('send', ('response_ch', ('add', ('var', 'req'), 1))),
-            ('stop', ())
-        ])),
-        ('replicate', ("Handler", [
-            ('receive', ('requests', 'req')),
-            ('log', ('var', 'req')),
-            ('send', ('response_ch', ('add', ('var', 'req'), 1))),
-            ('stop', ())
+            ('if', (('ne', ('var', 'req'), None),  # Continue if req is not None
+                    [('receive', ('requests', 'req')),  # Loop back to receive
+                     ('log', ('var', 'req')),
+                     ('send', ('response_ch', ('add', ('var', 'req'), 1)))],
+                    [('stop', ())]))  # Stop when no more requests
         ])),
         ('stop', ())
     ])
@@ -364,7 +354,7 @@ def example_replication():
     ])
     
     run_vm([RequestHandler, Client])
-'''
+
     
 if __name__ == "__main__":
     print("=== Basic Example ===")
@@ -373,5 +363,5 @@ if __name__ == "__main__":
     print("\n=== Advanced Example ===")
     example_advanced_system()
     
-#    print("\n=== Replication Example ===")
-#    example_replication()
+    print("\n=== Replication Example ===")
+    example_replication()

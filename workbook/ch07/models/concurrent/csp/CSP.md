@@ -6,7 +6,8 @@ Developed by Tony Hoare in the late 1970s, it provides a mathematical framework 
 processes can interact with each other. Think of it as a blueprint language for building complex software systems
 where multiple parts run at the same time and need to coordinate their actions.
 
-[^hoare]: Hoare ..
+[^hoare]: Hoare, C. A. R. (1978). Communicating sequential processes. *Communications of the ACM*, 21(8), 666–677.
+https://doi.org/10.1145/359576.359585. https://www.cs.cmu.edu/~crary/819-f09/Hoare78.pdf.
 
 Here are the core ideas behind CSP:
 
