@@ -1,32 +1,32 @@
 
 ## Π-calculus
 
-The π-calculus is a foundational framework in theoretical computer science, designed to model and analyze
-systems characterized by concurrent interactions and dynamic communication structures. Developed in the
+The π-calculus is a foundational framework in theoretical computer science, designed to model and analyse
+systems characterised by concurrent interactions and dynamic communication structures. Developed in the
 late 1980s by Robin Milner, Joachim Parrow, and David Walker, it extends earlier process calculi such as
 Milner’s Calculus of Communicating Systems (CCS) by introducing a novel feature: the ability for processes
 to transmit communication channels themselves as messages. This capability, termed *mobility*, enables the
 π-calculus to elegantly represent systems where the network topology or communication links evolve during
-execution, making it particularly suited for modeling modern distributed systems, network protocols, and
+execution, making it particularly suited for modelling modern distributed systems, network protocols, and
 mobile applications.
 
 At its core, the π-calculus revolves around the concept of *processes*--autonomous entities that execute
 concurrently and interact by sending and receiving messages through named channels. A channel in this context
-is a medium for communication, akin to a rendezvous point where processes synchronize to exchange data.
+is a medium for communication, akin to a rendezvous point where processes synchronise to exchange data.
 Unlike traditional models where communication channels are static, the π-calculus allows channels to be
 dynamically created and shared. For instance, a process might send a newly created channel name over an
 existing channel, thereby granting the recipient access to a private communication line or a fresh computational
 resource. This mechanism of *name passing* underpins the calculus’s expressive power, enabling it to capture
 scenarios such as service discovery in distributed systems or protocol negotiation in networked environments.
 
-The syntax of the π-calculus is built from a small set of operators that define process behaviors. Processes
+The syntax of the π-calculus is built from a small set of operators that define process behaviours. Processes
 can perform *actions*--such as sending an output prefix (e.g., `x!y` to send name `y` over channel `x`) or
 receiving an input prefix (e.g., `x?z` to bind a received name to variable `z`). These actions are combined
 using operators for parallel composition (`P | Q`), which allows processes to run side by side; restriction
 (`(νx)P`), which creates a new channel `x` private to process `P`; and replication (`!P`), which represents
 an unbounded number of copies of `P`. Silent actions, denoted by `τ`, model internal steps not visible to
 external observers. Reduction semantics govern how processes evolve: when two parallel processes perform
-complementary send and receive actions on the same channel, they synchronize, leading to a state transition
+complementary send and receive actions on the same channel, they synchronise, leading to a state transition
 where the communicated name replaces the bound variable in the receiving process. For example, if process
 `x!y | x?z.P` executes, the name `y` is transmitted over `x`, and the receiver proceeds as `P` with `z`
 replaced by `y`.
@@ -39,11 +39,11 @@ original boundary. This feature mirrors real-world patterns such as capability d
 reconfiguration of communication networks, where privileges or resources are distributed at runtime.
 
 The expressive power of the π-calculus is profound: it is Turing-complete, capable of encoding arbitrary
-computable functions, and its bisimulation equivalence—a behavioral equivalence relation—provides a rigorous
-method for comparing process behaviors. Variants like the *spi-calculus* extend it with cryptographic
-primitives for analyzing security protocols, while the *applied π-calculus* incorporates arbitrary data
+computable functions, and its bisimulation equivalence—a behavioural equivalence relation—provides a rigorous
+method for comparing process behaviours. Variants like the *spi-calculus* extend it with cryptographic
+primitives for analysing security protocols, while the *applied π-calculus* incorporates arbitrary data
 structures and functions, broadening its applicability to modern programming paradigms. Practically, the
-π-calculus has influenced the design of programming languages such as Erlang and Go, which emphasize
+π-calculus has influenced the design of programming languages such as Erlang and Go, which emphasise
 concurrency and message-passing. Its theoretical insights underpin tools for protocol verification,
 deadlock detection, and type safety in distributed systems.
 
@@ -80,7 +80,7 @@ The behavior of processes is governed by reduction rules (\( \rightarrow \)) and
    \[  
    \frac{}{x!y.P \mid x?z.Q \rightarrow P \mid Q[y/z]} \quad \text{(COMM)}  
    \]  
-   If two parallel processes synchronize on channel \( x \), the receiver \( Q \) substitutes \( z \) with \( y \).  
+   If two parallel processes synchronise on channel \( x \), the receiver \( Q \) substitutes \( z \) with \( y \).  
  
 2. *Scope Extrusion*:  
    \[  
@@ -102,7 +102,7 @@ Two processes exchange a message on channel \( a \):
 ```pi-calculus  
 (νa)(a!hello.0 | a?x.0)  
 ```  
-- *Reduction*: The sender \( a!hello.0 \) and receiver \( a?x.0 \) synchronize. After communication, both reduce to \( \mathbf{0} \).  
+- *Reduction*: The sender \( a!hello.0 \) and receiver \( a?x.0 \) synchronise. After communication, both reduce to \( \mathbf{0} \).  
  
 *Example 2: Recursive Server*  
 A server that repeatedly receives requests on channel \( s \):  
@@ -149,12 +149,12 @@ Using sequent calculus rules:
   \vdash x!y \mid x?z.P : \mathbf{0} \mid C  
 } \quad \text{(Cut Elimination)}  
 \]  
-The communication step in π-calculus corresponds to eliminating the "cut" (synchronization)
+The communication step in π-calculus corresponds to eliminating the "cut" (synchronisation)
 between \( \otimes \) and \( \multimap \).  
  
 *Bisimulation as Logical Equivalence*  
 Bisimulation in π-calculus aligns with *proof equivalence* in logic. Two processes are bisimilar
-if their logical derivations (proofs) can be transformed into one another, preserving observable behavior.  
+if their logical derivations (proofs) can be transformed into one another, preserving observable behaviour.  
  
  
 #### Summary
@@ -162,7 +162,7 @@ if their logical derivations (proofs) can be transformed into one another, prese
 The π-calculus provides a rigorous mathematical framework for concurrency, enriched by its
 operational semantics and structural congruence. Its connection to sequent calculus reveals
 a profound duality: process interactions mirror logical derivations, and bisimulation corresponds
-to proof normalization. This interplay has inspired tools like session types, where protocols
+to proof normalisation. This interplay has inspired tools like session types, where protocols
 are verified using type systems derived from linear logic, bridging programming languages and
 formal logic.
 
