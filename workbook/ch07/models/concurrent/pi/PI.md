@@ -60,17 +60,15 @@ its role as a cornerstone of concurrency theory.
 The π-calculus is defined by a small set of operators. Let \( P, Q \) range over processes, \( x, y, z \)
 over channel names, and \( \tau \) denote silent actions. The syntax is formally defined as:  
  
-\[  
-\begin{align*}  
-P, Q \quad ::= \quad & \mathbf{0} \quad &\text{(inactive process)} \\  
-& \quad x!y.P \quad &\text{(send \( y \) on \( x \), then \( P \))} \\  
-& \quad x?z.P \quad &\text{(receive on \( x \), bind to \( z \), then \( P \))} \\  
-& \quad \tau.P \quad &\text{(internal action, then \( P \))} \\  
-& \quad P \mid Q \quad &\text{(parallel composition)} \\  
-& \quad (\nu x)P \quad &\text{(restrict \( x \) to \( P \))} \\  
-& \quad !P \quad &\text{(replication: infinite copies of \( P \))} \\  
-\end{align*}  
-\]  
+```text
+P, Q ::=   0            (inactive process)
+         | x!y.P        (send y on x, then P)
+         | x?z.P        (receive on x, bind to z, then P)
+         | τ.P          (internal action, then P)
+         | P | Q        (parallel composition)
+         | (ν x)P       (restrict x to P)
+         | !P           (replication: infinite copies of P)
+```
  
 *Operational Semantics*  
 The behavior of processes is governed by reduction rules (\( \rightarrow \)) and structural congruence
