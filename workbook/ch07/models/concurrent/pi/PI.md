@@ -1,5 +1,5 @@
 
-## π-calculus
+## Π-calculus
 
 The π-calculus is a foundational framework in theoretical computer science, designed to model and analyze
 systems characterized by concurrent interactions and dynamic communication structures. Developed in the
