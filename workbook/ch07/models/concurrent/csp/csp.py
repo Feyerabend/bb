@@ -91,7 +91,7 @@ class Var:
 
 Process = STOP | SKIP | Prefix | Seq | Choice | ExtChoice | Parallel | If | Rec | Var
 
-# --- Channel and State Management ---
+
 class Channel:
     def __init__(self, name: str):
         self.name = name
@@ -128,6 +128,7 @@ class Channel:
             print(f"[Channel {self.name}] Tau action, no channel interaction")
         return continuation, True
 
+
 class State:
     def __init__(self):
         self.variables: Dict[str, Any] = {}
@@ -148,7 +149,7 @@ class State:
         print(f"[State] Get variable {var} = {value}")
         return value
 
-# --- Condition Evaluator ---
+
 def evaluate_condition(cond: Condition, state: State, verbose: bool) -> bool:
     if verbose:
         print(f"[Condition] Evaluating {cond}")
@@ -166,7 +167,7 @@ def evaluate_condition(cond: Condition, state: State, verbose: bool) -> bool:
         return result
     raise ValueError(f"Unknown condition: {cond}")
 
-# --- CSP Interpreter ---
+
 class CSPInterpreter:
     def __init__(self, env: Optional[Dict[str, Process]] = None, verbose: bool = False):
         self.state = State()
@@ -479,3 +480,6 @@ if __name__ == "__main__":
     interpreter = CSPInterpreter(verbose=True)
     print("Test CSP example with verbose logging:")
     interpreter.run(main_process, max_steps=50, time_limit=5.0)
+
+
+
