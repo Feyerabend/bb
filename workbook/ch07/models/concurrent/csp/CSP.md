@@ -59,7 +59,7 @@ you to execute and observe the behavior of CSP processes.
 
 ```mermaid
 graph TD
-    subgraph Main Process
+    subgraph Main_Process
         A[producer]
         B[consumer]
         C[monitor]
@@ -70,15 +70,15 @@ graph TD
         style C fill:#aaffaa,stroke:#333,stroke-width:2px
         style D fill:#aaffaa,stroke:#333,stroke-width:2px
 
-        subgraph Parallel (data_channel)
+        subgraph data_channel_A
             A --||-- E
         end
 
-        subgraph Parallel (data_channel, status_channel)
+        subgraph data_status_channel_B
             B --||-- F
         end
 
-        subgraph Parallel (data_channel, status_channel)
+        subgraph data_status_channel_C
             C --||-- D
         end
 
