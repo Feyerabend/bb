@@ -1,5 +1,5 @@
 
-## Π-calculus
+## π-calculus
 
 The π-calculus is a foundational framework in theoretical computer science, designed to model and analyse
 systems characterised by concurrent interactions and dynamic communication structures.[^pi] Developed in the
@@ -60,7 +60,7 @@ computing architectures. Its legacy endures in both academic research and indust
 its role as a cornerstone of concurrency theory.
 
  
-#### *Mathematical Foundations of the π-Calculus*  
+#### Mathematical Foundations
  
 *Syntax*  
 The π-calculus is defined by a small set of operators. Let \($` P, Q `$\) range over processes, \($` x, y, z `$\)
@@ -76,27 +76,34 @@ P, Q ::=   0            (inactive process)
          | !P           (replication: infinite copies of P)
 ```
 
-*Operational Semantics*  
-The behavior of processes is governed by reduction rules ($\rightarrow$) and structural congruence ($\equiv$). Key rules include:
+The *behavior of processes* in this system is precisely defined by *reduction rules* ($\rightarrow$)
+and *structural congruence* ($\equiv$). These rules dictate how processes evolve and when they are
+considered equivalent. Key rules include:
 
-1. *Communication*:  
+1.  *Communication*:
 
-$$ \frac{}{x!y.P \mid x?z.Q \rightarrow P \mid Q[y/z]} \quad \text{(COMM)} $$  
+    $$\frac{}{x!y.P \mid x?z.Q \rightarrow P \mid Q[y/z]} \quad \text{(COMM)}$$
 
-If two parallel processes synchronise on channel $x$, the receiver $Q$ substitutes $z$ with $y$. 
+    This rule describes *synchronous communication*. When a process $P$ sends a value $y$ on channel
+    $x$ and another process $Q$ receives a value $z$ on the same channel, they can *communicate*.
+    Upon communication, $Q$ proceeds with its continuation where $z$ is replaced by the received value $y$.
 
-2. *Scope Extrusion*:  
+2.  *Scope Extrusion*:
 
-$$ (\nu x)(P \mid Q) \equiv P \mid (\nu x)Q \quad \text{if } x \notin \text{fn}(P) $$  
+    $$(\nu x)(P \mid Q) \equiv P \mid (\nu x)Q \quad \text{if } x \notin \text{fn}(P)$$
 
-A restricted name \($` x `$\) can be moved outside a parallel composition if \($` P `$\) does not use \($` x `$\).  
- 
-3. *Replication*:  
-   \[  
-   !P \equiv P \mid !P  
-   \]  
-   Replication spawns a copy of \( P \) on demand.  
- 
+    *Scope extrusion* allows a *restricted name* ($x$) to be moved out of a parallel composition.
+    This is permissible *only if* the process $P$ does not depend on or use the name $x$, ensuring
+    that the scope of $x$ is not unintentionally extended.
+
+3.  *Replication*:
+
+    $$!P \equiv P \mid !P$$
+
+    The *replication operator* ($!$) enables the creation of an *unlimited supply of processes*.
+    Essentially, $!P$ can always "spawn" a fresh copy of $P$ whenever needed, allowing for continuous
+    or repeated actions.
+
 
 #### Sample Programs
  
@@ -125,41 +132,67 @@ reads \( secret \) from \( k \), demonstrating dynamic scope extension.
  
  
 #### Connection to Logic via Sequent Calculus
- 
-The π-calculus has deep ties to linear logic, particularly through *session types*, which
-model protocols as logical propositions. Sequent calculus, a formalism for proving logical
-statements, mirrors π-calculus communication.  
- 
-*Mapping π-Calculus to Linear Logic*  
-- *Channels* ≈ *Linear logic propositions*.  
-- *Input (\( x?z.P \))* ≈ *Right rule for implication (\( \multimap \))*.  
-- *Output (\( x!y.P \))* ≈ *Left rule for implication*.  
-- *Parallel (\( P \mid Q \))* ≈ *Multiplicative conjunction (\( \otimes \))*.  
- 
-*Example: Logical Derivation of Communication*  
-Consider the process \( x!y \mid x?z.P \). In linear logic, this corresponds to the sequent:  
-\[  
-\vdash x : A \otimes B, \; x : A \multimap C  
-\]  
-Here, \( x!y \) is \( A \otimes B \) (sending \( y \) of type \( B \)), and \( x?z.P \)
-is \( A \multimap C \) (receiving \( A \) to produce \( C \)).  
- 
-Using sequent calculus rules:  
-\[  
-\frac{  
-  \vdash y : B \quad \vdash P[y/z] : C  
-}{  
-  \vdash x!y \mid x?z.P : \mathbf{0} \mid C  
-} \quad \text{(Cut Elimination)}  
-\]  
-The communication step in π-calculus corresponds to eliminating the "cut" (synchronisation)
-between \( \otimes \) and \( \multimap \).  
- 
-*Bisimulation as Logical Equivalence*  
-Bisimulation in π-calculus aligns with *proof equivalence* in logic. Two processes are bisimilar
-if their logical derivations (proofs) can be transformed into one another, preserving observable behaviour.  
- 
- 
+
+The $\pi$-calculus, a foundational model for concurrent computation, exhibits *deep and significant
+ties to linear logic*. This connection is particularly evident through *session types*, which provide
+a formal system for describing communication protocols as logical propositions. Furthermore,
+*sequent calculus*, a powerful proof-theoretic formalism for constructing logical derivations, offers
+a striking parallel to the communication patterns observed in the $\pi$-calculus. This alignment
+allows us to understand process behavior from a logical perspective.
+
+*Mapping $\pi$-Calculus to Linear Logic*
+The core elements of the $\pi$-calculus find direct logical counterparts in linear logic:
+
+* *Channels* ($\nu x$ in $\pi$-calculus) $\approx$ *Linear logic propositions*. In linear logic, propositions
+  represent resources that are consumed or produced exactly once. Channels behave similarly, as messages sent
+  or received consume a resource.
+
+* *Input ($x?z.P$)* $\approx$ *Right rule for implication ($\multimap$)*. An input operation corresponds to
+  the introduction of an implication on the right side of a sequent, signifying the ability to receive a
+  resource and then continue.
+
+* *Output ($x!y.P$)* $\approx$ *Left rule for implication ($\multimap$)*. An output operation corresponds
+  to the elimination of an implication on the left side of a sequent, representing the act of providing a resource.
+
+* *Parallel ($P \mid Q$)* $\approx$ *Multiplicative conjunction ($\otimes$)*. The parallel composition of processes
+  naturally aligns with the multiplicative conjunction in linear logic, where two resources (or processes) exist
+  concurrently and can interact.
+
+*Example: Logical Derivation of Communication*
+Let's consider the fundamental communication step in the $\pi$-calculus: $x!y.P \mid x?z.Q$. In the context of
+linear logic, specifically with session types, this interaction can be elegantly represented as a sequent:
+
+$$\vdash x : A \otimes B, \; x : A \multimap C$$
+
+Here, $x!y.P$ is interpreted as a proposition indicating the intention to send a value $y$ of type $B$ on channel
+$x$, where $x$ itself has type $A$ for the communication (represented as $A \otimes B$). Conversely, $x?z.Q
+represents the intention to receive a value of type $A$ on channel $x$, which will then enable the continuation
+$Q$ to produce a result of type $C$ (represented as $A \multimap C$).
+
+Using sequent calculus rules, the communication proceeds as a *cut elimination* step:
+
+$$
+\frac{
+  \vdash y : B \quad \vdash Q[y/z] : C
+}{
+  \vdash x!y.P \mid x?z.Q \rightarrow P \mid Q[y/z] \quad \text{corresponds to} \quad \vdash P, Q[y/z] : \mathbf{0} \mid C
+} \quad \text{(Cut Elimination)}
+$$
+
+The communication step in $\pi$-calculus, where $y$ is transmitted and $z$ is substituted, directly corresponds
+to the *elimination of a "cut"* in the sequent calculus. This "cut" signifies the synchronization point between
+the multiplicative conjunction ($\otimes$, representing the sender) and the implication ($\multimap$, representing
+the receiver), yielding the subsequent states of $P$ and $Q[y/z]$. This provides a powerful logical underpinning
+for concurrent communication.
+
+*Bisimulation as Logical Equivalence*
+Perhaps one of the most profound connections lies in the equivalence notions. *Bisimulation*, the standard and
+widely accepted notion of observational equivalence in process calculi like the $\pi$-calculus, directly aligns
+with *proof equivalence* in logic. This means that two processes are bisimilar if and only if their corresponding
+logical derivations (or proofs) can be transformed into one another in a way that preserves all observable behavior.
+This deep correspondence provides a robust logical foundation for understanding and verifying concurrent systems.
+
+
 #### Summary
 
 The π-calculus provides a rigorous mathematical framework for concurrency, enriched by its
@@ -168,4 +201,5 @@ a profound duality: process interactions mirror logical derivations, and bisimul
 to proof normalisation. This interplay has inspired tools like session types, where protocols
 are verified using type systems derived from linear logic, bridging programming languages and
 formal logic.
+
 
