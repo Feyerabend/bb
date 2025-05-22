@@ -112,7 +112,7 @@ Two processes exchange a message on channel \( a \):
 ```pi-calculus  
 (νa)(a!hello.0 | a?x.0)  
 ```  
-- *Reduction*: The sender \( a!hello.0 \) and receiver \( a?x.0 \) synchronise. After communication, both reduce to \( \mathbf{0} \).  
+- *Reduction*: The sender \( a!hello.0 \) and receiver \( a?x.0 \) synchronise. After communication, both reduce to \($` \mathbf{0} `$\).  
  
 *Example 2: Recursive Server*  
 A server that repeatedly receives requests on channel \( s \):  
