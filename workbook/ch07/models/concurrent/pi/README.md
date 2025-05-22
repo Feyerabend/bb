@@ -204,3 +204,58 @@ are verified using type systems derived from linear logic, bridging programming 
 formal logic.
 
 
+
+### Programs
+
+#### Threading-Based Version: PIVM
+
+*Key Characteristics:*
+- Uses Python's `threading` module
+- Implements lightweight concurrency within a single process
+- Shared memory access (no serialization needed)
+- Simpler channel implementation with `queue.Queue`
+- Process registry maintained in a shared dictionary
+
+*Example Flow (P and Q):*
+
+```
+P → [Channel a] → Q
+1. P sends 42 on channel 'a'
+2. Q receives from 'a', stores in variable x
+3. Q logs the received value
+```
+
+#### Multiprocessing-Based Version: MPPI
+
+*Key Characteristics:*
+- Uses Python's `multiprocessing` module
+- True parallel execution across CPU cores
+- Requires explicit shared memory management
+- Channels use managed queues with locks
+- Objects are serialized when crossing process boundaries
+- Includes process-safe printing with locks
+- More robust process cleanup with timeouts
+
+*Example Flow (P and Q):*
+```
+(Process P) → [Managed Channel a] → (Process Q)
+1. P serializes and sends 42 via multiprocessing.Queue
+2. Q receives and deserializes the value
+3. Cross-process logging with lock synchronization
+```
+
+#### Differences
+
+| Feature          | Threading Version          | Multiprocessing Version                  |
+|------------------|----------------------------|------------------------------------------|
+| Concurrency Model| Preemptive threading       | True parallel processes                  |
+| Memory           | Shared address space       | Isolated memory (requires serialization) |
+| Channel Implementation | Simple Queue.Queue   | Managed Queue with Lock                  |
+| Safety           | Potential race conditions  | Process isolation prevents races         |
+| Overhead         | Low (green threads)        | Higher (IPC serialization)               |
+| Use Case         | I/O-bound tasks            | CPU-bound parallel processing            |
+
+Both implement the same π-calculus-inspired semantics but with different Python concurrency primitives
+underneath. The multiprocessing version is heavier but avoids GIL limitations, while the threading
+version is more lightweight but constrained to single-core execution for CPU-bound work.
+
