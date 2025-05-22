@@ -4,6 +4,29 @@
 ..
 
 
+
+### Example: Pixel Fonts
+
+The code implements a *BitmapFont* class using the *Prototype* design pattern to efficiently create
+font instances with varied configurations. The *Prototype* pattern is realized through an abstract
+base class *Prototype*, defining a `clone()` method. *BitmapFont* inherits this and implements `clone()`
+with Python's `deepcopy`, creating an independent copy of the font object, including its glyphs and
+properties like color and outline.
+
+The `clone()` method enables creating new font instances without redefining the complex glyph set,
+which includes bitmap arrays for digits, letters, and punctuation. This is efficient, as glyph creation
+(via `_create_glyphs`) is resource-heavy. For example, the main block creates a green font, clones it,
+and modifies the clone to yellow with a red outline, demonstrating flexible customization without
+affecting the original.
+
+The *BitmapFont* class supports text rendering with customizable colors, backgrounds, and outlines via
+`render_char` and `render_text`. The *ColorUtils* class aids color manipulation but is secondary to the
+Prototype pattern. The main block uses PIL to render styled text, showcasing cloning's efficiency in
+creating font variations.
+
+In short, the Prototype pattern allows *BitmapFont* to clone instances, preserving glyph data while
+enabling style modifications, optimizing resource use for bitmap font rendering.
+
 ### Example: Formtext
 
 The code implements a text rendering system with the *Prototype* design pattern as a key component,
@@ -31,27 +54,3 @@ font loading with fallbacks for robustness.
 
 In summary, the *Prototype* pattern in *RenderingConfig* enables efficient creation of varied rendering
 configurations by cloning, supporting flexible text rendering while minimising setup costs.
-
-
-### Example: Pixel Fonts
-
-The code implements a *BitmapFont* class using the *Prototype* design pattern to efficiently create
-font instances with varied configurations. The *Prototype* pattern is realized through an abstract
-base class *Prototype*, defining a `clone()` method. *BitmapFont* inherits this and implements `clone()`
-with Python's `deepcopy`, creating an independent copy of the font object, including its glyphs and
-properties like color and outline.
-
-The `clone()` method enables creating new font instances without redefining the complex glyph set,
-which includes bitmap arrays for digits, letters, and punctuation. This is efficient, as glyph creation
-(via `_create_glyphs`) is resource-heavy. For example, the main block creates a green font, clones it,
-and modifies the clone to yellow with a red outline, demonstrating flexible customization without
-affecting the original.
-
-The *BitmapFont* class supports text rendering with customizable colors, backgrounds, and outlines via
-`render_char` and `render_text`. The *ColorUtils* class aids color manipulation but is secondary to the
-Prototype pattern. The main block uses PIL to render styled text, showcasing cloning's efficiency in
-creating font variations.
-
-In short, the Prototype pattern allows *BitmapFont* to clone instances, preserving glyph data while
-enabling style modifications, optimizing resource use for bitmap font rendering.
-
