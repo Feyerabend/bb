@@ -140,7 +140,7 @@ a formal system for describing communication protocols as logical propositions. 
 a striking parallel to the communication patterns observed in the $\pi$-calculus. This alignment
 allows us to understand process behavior from a logical perspective.
 
-*Mapping $\pi$-Calculus to Linear Logic*
+*Mapping $`\pi`$-Calculus to Linear Logic*
 The core elements of the $\pi$-calculus find direct logical counterparts in linear logic:
 
 * *Channels* ($\nu x$ in $\pi$-calculus) $\approx$ *Linear logic propositions*. In linear logic, propositions
