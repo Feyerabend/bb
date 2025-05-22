@@ -81,13 +81,13 @@ The behavior of processes is governed by reduction rules ($\rightarrow$) and str
 
 1. *Communication*:  
 
-$$\frac{}{x!y.P \mid x?z.Q \rightarrow P \mid Q[y/z]} \quad \text{(COMM)}$$  
+$$ \frac{}{x!y.P \mid x?z.Q \rightarrow P \mid Q[y/z]} \quad \text{(COMM)} $$  
 
 If two parallel processes synchronise on channel $x$, the receiver $Q$ substitutes $z$ with $y$. 
 
 2. *Scope Extrusion*:  
 
-$$\[  (\nu x)(P \mid Q) \equiv P \mid (\nu x)Q \quad \text{if } x \notin \text{fn}(P)     \]$$  
+$$ (\nu x)(P \mid Q) \equiv P \mid (\nu x)Q \quad \text{if } x \notin \text{fn}(P) $$  
 
 A restricted name \($` x `$\) can be moved outside a parallel composition if \($` P `$\) does not use \($` x `$\).  
  
