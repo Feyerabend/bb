@@ -2,7 +2,7 @@
 ## Π-calculus
 
 The π-calculus is a foundational framework in theoretical computer science, designed to model and analyse
-systems characterised by concurrent interactions and dynamic communication structures.[¨^pi] Developed in the
+systems characterised by concurrent interactions and dynamic communication structures.[^pi] Developed in the
 late 1980s by Robin Milner, Joachim Parrow, and David Walker, it extends earlier process calculi such as
 Milner’s Calculus of Communicating Systems (CCS) by introducing a novel feature: the ability for processes
 to transmit communication channels themselves as messages. This capability, termed *mobility*, enables the
@@ -63,8 +63,8 @@ its role as a cornerstone of concurrency theory.
 #### *Mathematical Foundations of the π-Calculus*  
  
 *Syntax*  
-The π-calculus is defined by a small set of operators. Let \($` P, Q `$\) range over processes, $`\( x, y, z \)`$
-over channel names, and $`\( \tau \)`$ denote silent actions. The syntax is formally defined as:  
+The π-calculus is defined by a small set of operators. Let \($` P, Q `$\) range over processes, \($` x, y, z `$\)
+over channel names, and \($` \tau `$\) denote silent actions. The syntax is formally defined as:  
  
 ```text
 P, Q ::=   0            (inactive process)
@@ -80,10 +80,10 @@ P, Q ::=   0            (inactive process)
 The behavior of processes is governed by reduction rules ($\rightarrow$) and structural congruence ($\equiv$). Key rules include:
 
 1. *Communication*:  
-   $$
+$$
    \frac{}{x!y.P \mid x?z.Q \rightarrow P \mid Q[y/z]} \quad \text{(COMM)}
-   $$  
-   If two parallel processes synchronise on channel $x$, the receiver $Q$ substitutes $z$ with $y$. 
+$$  
+If two parallel processes synchronise on channel $x$, the receiver $Q$ substitutes $z$ with $y$. 
 
 2. *Scope Extrusion*:  
    \[  
