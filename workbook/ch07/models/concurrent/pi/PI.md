@@ -2,13 +2,19 @@
 ## Π-calculus
 
 The π-calculus is a foundational framework in theoretical computer science, designed to model and analyse
-systems characterised by concurrent interactions and dynamic communication structures. Developed in the
+systems characterised by concurrent interactions and dynamic communication structures.[¨^pi] Developed in the
 late 1980s by Robin Milner, Joachim Parrow, and David Walker, it extends earlier process calculi such as
 Milner’s Calculus of Communicating Systems (CCS) by introducing a novel feature: the ability for processes
 to transmit communication channels themselves as messages. This capability, termed *mobility*, enables the
 π-calculus to elegantly represent systems where the network topology or communication links evolve during
 execution, making it particularly suited for modelling modern distributed systems, network protocols, and
 mobile applications.
+
+[^pi]: Milner, R., Parrow, J., & Walker, D. (1992a). A calculus of mobile processes, I. *Information and
+Computation*, 100(1), 1–40. https://doi.org/10.1016/0890-5401(92)90008-4. Milner, R., Parrow, J., & Walker,
+D. (1992b). A calculus of mobile processes, II. *Information and Computation*, 100(1), 41–77.
+https://doi.org/10.1016/0890-5401(92)90009-5.
+
 
 At its core, the π-calculus revolves around the concept of *processes*--autonomous entities that execute
 concurrently and interact by sending and receiving messages through named channels. A channel in this context
@@ -39,13 +45,13 @@ original boundary. This feature mirrors real-world patterns such as capability d
 reconfiguration of communication networks, where privileges or resources are distributed at runtime.
 
 The expressive power of the π-calculus is profound: it is Turing-complete, capable of encoding arbitrary
-computable functions, and its bisimulation equivalence—a behavioural equivalence relation—provides a rigorous
-method for comparing process behaviours. Variants like the *spi-calculus* extend it with cryptographic
-primitives for analysing security protocols, while the *applied π-calculus* incorporates arbitrary data
-structures and functions, broadening its applicability to modern programming paradigms. Practically, the
-π-calculus has influenced the design of programming languages such as Erlang and Go, which emphasise
-concurrency and message-passing. Its theoretical insights underpin tools for protocol verification,
-deadlock detection, and type safety in distributed systems.
+computable functions, and its bisimulation equivalence--a behavioural equivalence relation--provides
+a rigorous method for comparing process behaviours. Variants like the *spi-calculus* extend it with
+cryptographic primitives for analysing security protocols, while the *applied π-calculus* incorporates
+arbitrary data structures and functions, broadening its applicability to modern programming paradigms.
+Practically, the π-calculus has influenced the design of programming languages such as Erlang and Go,
+which emphasise concurrency and message-passing. Its theoretical insights underpin tools for protocol
+verification, deadlock detection, and type safety in distributed systems.
 
 In summary, the π-calculus offers a minimalist yet potent language for reasoning about concurrency, mobility,
 and interaction. By abstracting away implementation details and focusing on communication dynamics, it
@@ -69,7 +75,7 @@ P, Q ::=   0            (inactive process)
          | (ν x)P       (restrict x to P)
          | !P           (replication: infinite copies of P)
 ```
- 
+
 *Operational Semantics*  
 The behavior of processes is governed by reduction rules (\( \rightarrow \)) and structural congruence
 (\( \equiv \)). Key rules include:  
