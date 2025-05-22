@@ -63,8 +63,8 @@ its role as a cornerstone of concurrency theory.
 #### *Mathematical Foundations of the π-Calculus*  
  
 *Syntax*  
-The π-calculus is defined by a small set of operators. Let \( P, Q \) range over processes, \( x, y, z \)
-over channel names, and \( \tau \) denote silent actions. The syntax is formally defined as:  
+The π-calculus is defined by a small set of operators. Let $`\( P, Q \)`$ range over processes, $`\( x, y, z \)`$
+over channel names, and $`\( \tau \)`$ denote silent actions. The syntax is formally defined as:  
  
 ```text
 P, Q ::=   0            (inactive process)
@@ -77,15 +77,14 @@ P, Q ::=   0            (inactive process)
 ```
 
 *Operational Semantics*  
-The behavior of processes is governed by reduction rules (\( \rightarrow \)) and structural congruence
-(\( \equiv \)). Key rules include:  
- 
+The behavior of processes is governed by reduction rules ($\rightarrow$) and structural congruence ($\equiv$). Key rules include:
+
 1. *Communication*:  
-   \[  
-   \frac{}{x!y.P \mid x?z.Q \rightarrow P \mid Q[y/z]} \quad \text{(COMM)}  
-   \]  
-   If two parallel processes synchronise on channel \( x \), the receiver \( Q \) substitutes \( z \) with \( y \).  
- 
+   $$
+   \frac{}{x!y.P \mid x?z.Q \rightarrow P \mid Q[y/z]} \quad \text{(COMM)}
+   $$  
+   If two parallel processes synchronise on channel $x$, the receiver $Q$ substitutes $z$ with $y$. 
+
 2. *Scope Extrusion*:  
    \[  
    (\nu x)(P \mid Q) \equiv P \mid (\nu x)Q \quad \text{if } x \notin \text{fn}(P)  
