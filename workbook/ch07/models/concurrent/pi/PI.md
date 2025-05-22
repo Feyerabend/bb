@@ -147,19 +147,19 @@ The core elements of the $\pi$-calculus find direct logical counterparts in line
   represent resources that are consumed or produced exactly once. Channels behave similarly, as messages sent
   or received consume a resource.
 
-* *Input ($x?z.P$)* $\approx$ *Right rule for implication ($\multimap$)*. An input operation corresponds to
+* *Input ($`x?z.P`$)* $\approx$ *Right rule for implication ($`\multimap`$)*. An input operation corresponds to
   the introduction of an implication on the right side of a sequent, signifying the ability to receive a
   resource and then continue.
 
-* *Output ($x!y.P$)* $\approx$ *Left rule for implication ($\multimap$)*. An output operation corresponds
+* *Output ($`x!y.P`$)* $\approx$ *Left rule for implication ($`\multimap`$)*. An output operation corresponds
   to the elimination of an implication on the left side of a sequent, representing the act of providing a resource.
 
-* *Parallel ($P \mid Q$)* $\approx$ *Multiplicative conjunction ($\otimes$)*. The parallel composition of processes
+* *Parallel ($`P \mid Q`$)* $\approx$ *Multiplicative conjunction ($`\otimes`$)*. The parallel composition of processes
   naturally aligns with the multiplicative conjunction in linear logic, where two resources (or processes) exist
   concurrently and can interact.
 
 *Example: Logical Derivation of Communication*
-Let's consider the fundamental communication step in the $\pi$-calculus: $x!y.P \mid x?z.Q$. In the context of
+Let's consider the fundamental communication step in the $`\pi`$-calculus: $`x!y.P \mid x?z.Q`$. In the context of
 linear logic, specifically with session types, this interaction can be elegantly represented as a sequent:
 
 $$\vdash x : A \otimes B, \; x : A \multimap C$$
