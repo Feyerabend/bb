@@ -80,9 +80,7 @@ P, Q ::=   0            (inactive process)
 The behavior of processes is governed by reduction rules ($\rightarrow$) and structural congruence ($\equiv$). Key rules include:
 
 1. *Communication*:  
-$$
-   \frac{}{x!y.P \mid x?z.Q \rightarrow P \mid Q[y/z]} \quad \text{(COMM)}
-$$  
+$$\frac{}{x!y.P \mid x?z.Q \rightarrow P \mid Q[y/z]} \quad \text{(COMM)}$$  
 If two parallel processes synchronise on channel $x$, the receiver $Q$ substitutes $z$ with $y$. 
 
 2. *Scope Extrusion*:  
