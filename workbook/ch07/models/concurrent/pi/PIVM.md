@@ -2,6 +2,7 @@
 
 1. Basic Example (P and Q)
 
+```mermaid
 sequenceDiagram
     participant P
     participant a as Channel a
@@ -10,11 +11,12 @@ sequenceDiagram
     P->>a: send(42)
     a->>Q: receive(x)
     Q->>Q: log(x=42)
-
+```
 
 
 2. Advanced Example (Client-Server-Coordinator)
 
+```mermaid
 sequenceDiagram
     participant Coordinator
     participant Server
@@ -34,11 +36,11 @@ sequenceDiagram
     Server->>reply: send(client_msg+100)
     Client->>reply: receive(response)
     Client->>Client: log(response)
-
+```
 
 3. Replication Example (Request Handlers)
 
-
+```mermaid
 sequenceDiagram
     participant Client
     participant Handler
@@ -69,5 +71,5 @@ sequenceDiagram
     Client->>response_ch: receive(resp1=2)
     Client->>response_ch: receive(resp2=3)
     Client->>response_ch: receive(resp3=4)
-
+```
 
