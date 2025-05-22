@@ -63,7 +63,7 @@ its role as a cornerstone of concurrency theory.
 #### *Mathematical Foundations of the π-Calculus*  
  
 *Syntax*  
-The π-calculus is defined by a small set of operators. Let $`\( P, Q \)`$ range over processes, $`\( x, y, z \)`$
+The π-calculus is defined by a small set of operators. Let \($` P, Q `$\) range over processes, $`\( x, y, z \)`$
 over channel names, and $`\( \tau \)`$ denote silent actions. The syntax is formally defined as:  
  
 ```text
