@@ -22,20 +22,20 @@ Here are the core ideas behind CSP:
 * *Actions:* The fundamental building blocks of a CSP process are *actions*. These include:
     * *Send (!):* A process sends a message on a channel.
     * *Receive (?):* A process receives a message on a channel.
-    * *Tau ($\tau$):* An internal, unobservable action. This represents an action that happens within a process and doesn't
+    * *Tau ($`\tau`$):* An internal, unobservable action. This represents an action that happens within a process and doesn't
       involve communication with other processes.
 
 * *Operators:* CSP provides a set of operators to combine basic actions and processes into more complex behaviours:
-    * *Prefix (a $\rightarrow$ P):* An action `a` followed by a process `P`. `P` can only start after `a` has completed.
+    * *Prefix (a $`\rightarrow`$ P):* An action `a` followed by a process `P`. `P` can only start after `a` has completed.
     * *Sequential Composition (P; Q):* Process `P` runs to completion, and then process `Q` starts.
-    * *Choice (P $\Box$ Q or P $\sqcap$ Q):*
-        * *External Choice ($\Box$):* The environment (or an external event) determines which of `P` or `Q` will execute.
-        * *Internal Choice ($\sqcap$):* The process itself non-deterministically chooses to behave as `P` or `Q`.
+    * *Choice (P $`\Box`$ Q or P $`\sqcap`$ Q):*
+        * *External Choice ($`\Box`$):* The environment (or an external event) determines which of `P` or `Q` will execute.
+        * *Internal Choice ($`\sqcap`$):* The process itself non-deterministically chooses to behave as `P` or `Q`.
     * *Parallel (P || Q):* Processes `P` and `Q` execute concurrently. If they share channels, communication on those
       channels must be synchronised.
     * *Interleaving (P ||| Q):* Processes `P` and `Q` execute concurrently without any shared channels, meaning their
       actions can be interleaved in any order.
-    * *Recursion ($\mu$ X . P):* Allows for repeating behaviours, where `X` refers to the process `P` itself, enabling loops.
+    * *Recursion ($`\mu`$ X . P):* Allows for repeating behaviours, where `X` refers to the process `P` itself, enabling loops.
 
 * *Trace Semantics:* CSP uses traces (sequences of observable actions) to describe the behaviour of processes. This allows
   for formal reasoning about properties like deadlock (where processes are stuck waiting for each other indefinitely) and
