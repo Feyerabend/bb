@@ -62,7 +62,7 @@ embedded systems, and asynchronous programming environments.
 | Mechanism | Description | Use Cases | Related Pattern(s) |
 |---|---|---|---|
 | [Callback](./callback/) | Function invoked at a later point, usually by a framework | Event handling, async operations, sorting hooks | Observer, Inversion of Control |
-| Signal Handler  | Async routine called in response to OS or hardware signals             | Interrupt handling, Unix signals, exceptions         | Observer, Interrupt Vector Table        |
+| [Signal Handler](./signal/) | Async routine called in response to OS or hardware signals | Interrupt handling, Unix signals, exceptions | Observer, Interrupt Vector Table |
 | Event Loop      | Central loop dispatching async events                                  | GUIs, servers, JavaScript runtimes                   | Reactor, Proactor                       |
 
 

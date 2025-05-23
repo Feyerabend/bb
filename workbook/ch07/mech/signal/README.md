@@ -185,16 +185,16 @@ if __name__ == "__main__":
 ```
 
 
-| Concept                 | Code Implementation                                                                 | Key Characteristics                                                                 |
-|-------------------------|-------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
-| *Signal Handler*      | `signal.signal(signal.SIGUSR1, signal_handler)`<br>`def signal_handler(sig_num, frame):` | OS-to-Python bridge, immediately delegates to dispatcher                           |
-| *Async Routine*       | `asyncio.ensure_future(handler())`<br>`await asyncio.sleep(0)`                         | Non-blocking execution via event loop                                              |
-| *Unix Signal*         | `signal.SIGUSR1`<br>`kill -USR1 {os.getpid()}`                                        | External interrupt trigger                                                        |
-| *Observer Pattern*    | `dispatcher.register(sig, handler)`<br>`dispatcher.table[sig].append(handler)`         | Multiple handlers per signal<br>Decoupled publishers/subscribers                  |
-| *Interrupt Vector Table* | `dispatcher.table: Dict[int, List[Callable]]`                                        | Signal-to-handlers mapping<br>Dynamic registration system                          |
-| *Async Safety*        | `await asyncio.sleep(0)` in `_run_async()`                                            | Prevents handler blocking signal delivery                                          |
-| *Event Loop*          | `asyncio.run(main())`<br>`while True: await asyncio.sleep(1)`                         | Central async coordinator<br>Executes handlers as tasks                            |
-| *Handler Execution*   | `handler_A()`, `handler_B()`                                                          | Arbitrary user-defined logic<br>Runs in undetermined order                         |
+| Concept | Code Implementation | Key Characteristics |
+|---|---|---|
+| *Signal Handler* | `signal.signal(signal.SIGUSR1, signal_handler)`<br>`def signal_handler(sig_num, frame):` | OS-to-Python bridge, immediately delegates to dispatcher |
+| *Async Routine* | `asyncio.ensure_future(handler())`<br>`await asyncio.sleep(0)` | Non-blocking execution via event loop |
+| *Unix Signal* | `signal.SIGUSR1`<br>`kill -USR1 {os.getpid()}` | External interrupt trigger |
+| *Observer Pattern* | `dispatcher.register(sig, handler)`<br>`dispatcher.table[sig].append(handler)` | Multiple handlers per signal<br>Decoupled publishers/subscribers |
+| *Interrupt Vector Table* | `dispatcher.table: Dict[int, List[Callable]]` | Signal-to-handlers mapping<br>Dynamic registration system |
+| *Async Safety* | `await asyncio.sleep(0)` in `_run_async()` | Prevents handler blocking signal delivery                                          |
+| *Event Loop* | `asyncio.run(main())`<br>`while True: await asyncio.sleep(1)` | Central async coordinator<br>Executes handlers as tasks |
+| *Handler Execution* | `handler_A()`, `handler_B()` | Arbitrary user-defined logic<br>Runs in undetermined order |
 
 
 __Relationships__
@@ -330,13 +330,13 @@ To Test
 1. Compile:
 
 ```shell
-gcc -o signal_dispatcher signal_dispatcher.c
+gcc -o sig sig.c
 ```
 
 2. Run:
 
 ```shell
-./signal_dispatcher
+./sig
 ```
 
 3. In another terminal:
@@ -344,8 +344,6 @@ gcc -o signal_dispatcher signal_dispatcher.c
 ```shell
 kill -USR1 <pid>
 ```
-
-
 
 | Concept                  | C Implementation                                          |
 |--------------------------|-----------------------------------------------------------|
@@ -401,8 +399,7 @@ __Description__
 - *Loop behaviour*: After handling, the program returns to `pause()` and waits for the next signal.
 
 
-
-
+--
 Skip ? For comparison with the Python version:
 
 | Aspect            | C Version                     | Python Version               |
@@ -410,9 +407,9 @@ Skip ? For comparison with the Python version:
 | Signal Safety     | Strict requirements           | No restrictions              |
 | Latency           | Microsecond response          | Millisecond+ due to GIL      |
 | Handler Complexity| Limited to signal-safe ops    | Can use full Python stdlib   |
+--
 
-
-### Example: Pthread
+### Example: pthread.c
 
 Here’s a pthread-based C version of an Interrupt Vector Table (IVT)-style signal dispatcher. This version uses:
 - pthread to launch concurrent handlers
@@ -475,11 +472,11 @@ void signal_handler(int sig) {
 
 // example handlers
 void handler_A() {
-    printf("Handler A (thread %lu) reacting!\n", pthread_self());
+    printf("Handler A (thread %p) reacting!\n", (void*)pthread_self());
 }
 
 void handler_B() {
-    printf("Handler B (thread %lu) doing work!\n", pthread_self());
+    printf("Handler B (thread %p) doing work!\n", (void*)pthread_self());
 }
 
 int main() {
@@ -509,7 +506,7 @@ int main() {
 To Build and Run
 
 ```shell
-gcc -o signal_pthread signal_pthread.c -pthread
+gcc -o pthread pthread.c -pthread
 ./signal_pthread
 ```
 
@@ -631,7 +628,6 @@ int main() {
 ```
 
 
-
 Python Equivalent Using signal, queue, threading
 
 ```python
@@ -705,4 +701,126 @@ __Differences__
 3. *Signal Fidelity*:  
    - C version captures low-level OS signals exactly  
    - Python's signal handling runs in interpreter context
+
+
+### Print Queue Simulation: printqueue.py
+
+The code simulates a *print queue management system*--like what you'd find in an office printer
+or print server. It demonstrates how Unix/Linux signals can be used for *inter-process communication*
+to control a running program.
+
+
+#### What It Simulates
+
+*A Real Print Queue System:*
+- Office workers send documents to a shared printer
+- Documents get queued up waiting to be printed
+- Some documents are marked "urgent" and jump ahead in line
+- The printer processes one job at a time
+- System administrators can add jobs or shut down the system remotely
+
+*The Simulation:*
+- Instead of real documents, it creates fake jobs with random names like "Document_1", "Document_2"
+- Instead of actual printing, it just counts down pages with delays
+- Instead of users clicking "Print", external signals add jobs to the queue
+
+
+#### Signal Handling Explained
+
+*What Signals Are:*
+Signals are a way for the operating system (or other processes) to send messages to running programs.
+Think of them like "tapping someone on the shoulder" to get their attention.
+
+*The Four Signals Used:*
+
+1. *SIGUSR1* (`kill -USR1 <pid>`) - "Add a normal print job"
+   - User-defined signal #1
+   - Triggers creation of a regular priority document
+
+2. *SIGUSR2* (`kill -USR2 <pid>`) - "Add a high priority job" 
+   - User-defined signal #2
+   - Creates a priority job that jumps to the front of the queue
+
+3. *SIGTERM* (`kill -TERM <pid>`) - "Please shut down gracefully"
+   - Standard termination signal
+   - Lets current job finish, then exits cleanly
+
+4. *SIGINT* (`kill -INT <pid>` or Ctrl+C) - "Stop immediately"
+   - Interrupt signal
+   - Emergency shutdown
+
+
+#### Real-World Applications
+
+*Where This Pattern Is Actually Used:*
+
+1. *Print Servers* - Exactly what this simulates
+   - CUPS (Common Unix Printing System) uses similar concepts
+   - Print jobs added via network protocols instead of signals
+
+2. *Web Servers* - Apache, Nginx
+   - `SIGHUP` to reload configuration
+   - `SIGTERM` for graceful shutdown
+   - `SIGUSR1` to reopen log files
+
+3. *Database Servers* - PostgreSQL, MySQL
+   - `SIGTERM` for graceful shutdown
+   - `SIGHUP` to reload config files
+   - Custom signals for maintenance tasks
+
+4. *System Daemons* - Background services
+   - Log rotation systems
+   - Backup schedulers
+   - Monitoring services
+
+*Example Real Scenario:*
+```bash
+# system administrator managing a print server
+sudo systemctl status print-server  # check if running
+kill -USR1 $(pidof print-server)    # add test job
+kill -HUP $(pidof print-server)     # reload configuration
+kill -TERM $(pidof print-server)    # graceful shutdown
+```
+
+
+#### How Signal Handling Works
+
+*The Technical Process:*
+
+1. *Registration:* Program tells OS "When you receive signal X, call my function Y"
+2. *Signal Delivery:* OS interrupts the program when signal arrives
+3. *Handler Execution:* Program temporarily stops what it's doing and runs the signal handler
+4. *Resume:* Program continues from where it left off
+
+*Why Signals Are Useful:*
+- *Non-intrusive:* Don't need to modify a running program
+- *Standard:* Work across all Unix-like systems
+- *Immediate:* Signal delivery is nearly instantaneous
+- *Safe:* OS handles the low-level details
+
+#### Code Architecture
+
+*Multi-threading Design:*
+- *Main Thread:* Listens for signals and coordinates shutdown
+- *Worker Thread:* Continuously processes jobs from the queue
+- *Signal Handlers:* Quickly add jobs and set flags
+
+*Thread Safety:*
+- Uses Python's `deque` which is thread-safe for basic operations
+- Simple flags (`running`) for coordination
+- Minimal shared state to avoid race conditions
+
+
+#### Pedagogical/Educational Value
+
+This code teaches several important concepts:
+
+1. *Signal Handling* - How to respond to OS-level events
+2. *Queue Management* - Priority queues and job scheduling
+3. *Multi-threading* - Separating concerns into different threads
+4. *Process Control* - Graceful vs immediate shutdown
+5. *Inter-Process Communication* - How separate programs can communicate
+
+It's a practical example that bridges system programming concepts with real-world applications,
+making abstract ideas concrete and demonstrable.
 
