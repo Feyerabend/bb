@@ -263,13 +263,13 @@ __Characteristics__
 flowchart TD
     Start([Start])
     Main[Main: Register signal handler and handlers A/B]
-    Wait[pause(): Wait for SIGUSR1]
-    OS[OS delivers SIGUSR1]
-    SignalHandler[signal_handler(sig)]
-    Dispatch[dispatch(sig)]
-    ForLoop[for each handler in ivt[sig]]
-    HandlerA[handler_A()]
-    HandlerB[handler_B()]
+    Wait["pause(): Wait for SIGUSR1"]
+    OS["OS delivers SIGUSR1"]
+    SignalHandler["signal_handler(sig)"]
+    Dispatch["dispatch(sig)"]
+    ForLoop["for each handler in ivt[sig]"]
+    HandlerA["handler_A()"]
+    HandlerB["handler_B()"]
     End([Back to wait])
 
     Start --> Main --> Wait
