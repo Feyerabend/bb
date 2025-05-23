@@ -8,10 +8,10 @@ in handling large datasets. K is part of the APL family, emphasising tacit progr
 
 [^wiki]: https://en.wikipedia.org/wiki/K_(programming_language)
 
-- *Array-Oriented*: K treats data as arrays (lists, matrices, etc.), enabling efficient vectorized operations without explicit loops.
+- *Array-Oriented*: K treats data as arrays (lists, matrices, etc.), enabling efficient vectored operations without explicit loops.
 - *Concise Syntax*: K uses single-character operators and minimal punctuation, reducing code verbosity.
 - *Functional Style*: Supports tacit (point-free) programming, where functions are composed without explicitly naming arguments.
-- *High Performance*: Optimized for speed, K is ideal for financial modeling, time-series analysis, and big data processing.
+- *High Performance*: Optimised for speed, K is ideal for financial modelling, time-series analysis, and big data processing.
 - *Interpreted*: K is typically run in an interactive interpreter, allowing rapid prototyping.
 
 
@@ -52,9 +52,9 @@ Output: `returns` is `(0.02;0.02;0.02)` or `(2.0;2.0;2.0)` if scaled by 100.
 
 #### Use Cases
 
-- *Finance*: Portfolio analysis, risk modeling, high-frequency trading (as in the provided example).
+- *Finance*: Portfolio analysis, risk modelling, high-frequency trading (as in the provided example).
 - *Data Analysis*: Time-series processing, statistical computations.
-- *Big Data*: Efficient handling of large datasets due to vectorized operations.
+- *Big Data*: Efficient handling of large datasets due to vectored operations.
 
 #### Strengths and Challenges
 

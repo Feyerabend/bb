@@ -3,7 +3,7 @@
 
 Concatenative programming, the paradigm upon which Forth is built below, constructs programs by composing
 functions through sequential placement. This approach establishes an implicit data flow through a stack,
-minimizing the need for explicitly named variables. Its point-free style, where functions operate without
+minimising the need for explicitly named variables. Its point-free style, where functions operate without
 naming their parameters, and the emphasis on factoring programs into small, reusable functions are
 hallmarks of this paradigm. Other concatenative languages, such as Factor, Joy, Cat, and PostScript,
 share these characteristics.
@@ -72,17 +72,17 @@ its minimalist design, remarkable extensibility, and a distinctive approach to p
 At its core, Forth operates on a data stack, where operations primarily manipulate values. Programs
 are built by concatenating functions in sequence, reflecting its concatenative nature. Employing
 postfix notation, operators follow their operands, as seen in "2 3 +," which differs from the more
-common infix notation. The language utilizes a dictionary-based system, storing definitions, known as
+common infix notation. The language utilises a dictionary-based system, storing definitions, known as
 "words," in a searchable dictionary. Forth's interactive nature is facilitated by a REPL (Read-Eval-Print Loop)
 environment, enabling immediate feedback and exploration. Furthermore, its ability to produce extremely
 compact executables with minimal overhead has been a significant advantage.
 
 The language's history is marked by key milestones. Initial development took place at the National
 Radio Astronomy Observatory between 1968 and 1970, followed by the first complete implementation at
-Mohasco Industries in 1971. In 1977, Charles Moore founded FORTH, Inc. to commercialize the language.
+Mohasco Industries in 1971. In 1977, Charles Moore founded FORTH, Inc. to commercialise the language.
 The 1978 publication of the influential "BYTE Magazine" Forth issue and the 1979 development of fig-Forth
-contributed to the language's widespread adoption across numerous platforms. Standardization efforts
-led to FORTH-83 in 1983 and ANSI standardization (ANS Forth) in 1994.
+contributed to the language's widespread adoption across numerous platforms. Standardisation efforts
+led to FORTH-83 in 1983 and ANSI standardisation (ANS Forth) in 1994.
 
 Forth's influence extends to various areas of computing. PostScript, Adobe's page description language,
 adopts Forth's stack-based approach. Open Firmware, a boot environment used in Sun, Apple, and IBM systems,
@@ -96,7 +96,7 @@ A typical Forth programming style is exemplified by the following code: `: SQUAR
 and `: SUM-OF-SQUARES ( a b -- c ) SQUARED SWAP SQUARED + ;`. This defines two words: `SQUARED`, which
 duplicates a value and multiplies it by itself, and `SUM-OF-SQUARES`, which uses `SQUARED` to compute
 $a^2 + b^2$. The comments within parentheses illustrate the stack effects, indicating the inputs and outputs.
-Forth's philosophy, prioritizing simplicity, direct hardware control, and the composition of programs
+Forth's philosophy, prioritising simplicity, direct hardware control, and the composition of programs
 from small, reusable parts, has solidified its significance, particularly within the realm of embedded
 systems, while its influence resonates across diverse computing domains.
 

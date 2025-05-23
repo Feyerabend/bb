@@ -9,7 +9,7 @@ we get for each unit of risk taken. A higher Sharpe ratio means a better balance
 volatility, which is critical for making smart investment choices.
 
 The script is written in a variant of the K language, a concise and array-focused language well suited
-for financial computations. K's vectorized operations allow us to perform calculations like returns,
+for financial computations. K's vectorised operations allow us to perform calculations like returns,
 weighted sums, and variance without loops, making the code both fast and compact. This small example
 illustrates how even simple data, when paired with the right tools, can reveal insights about portfolio
 performance and guide optimisation strategies.
@@ -136,7 +136,7 @@ The debug output shows K expressions like `['transposed_prices', '@', 1]` and `[
 ### Conclusion
 
 The portfolio analysis script leverages K's array-oriented power to compute stock returns,
-portfolio metrics, and optimize weights. The calculations are accurate, and the optimisation
+portfolio metrics, and optimise weights. The calculations are accurate, and the optimisation
 improves the Sharpe ratio. The K language's efficiency makes it well-suited for such financial
 modeling tasks.
 

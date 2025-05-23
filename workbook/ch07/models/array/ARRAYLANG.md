@@ -140,8 +140,8 @@ providing a more familiar programming experience.
   grayscale = np.mean(image, axis=2)
   ```
 
-#### d. Financial Modeling
-- AOP is used in financial modeling for tasks like portfolio optimization, risk analysis, and time series analysis.
+#### d. Financial Modelling
+- AOP is used in financial modelling for tasks like portfolio optimisation, risk analysis, and time series analysis.
 - Example: Calculate the daily returns of a stock:
   ```python
   prices = np.array([100, 102, 105, 107])
@@ -183,7 +183,7 @@ providing a more familiar programming experience.
 Here are some popular tools and libraries for array-oriented programming:
 
 #### a. NumPy (Python)
-- A library for numerical computing with support for arrays and vectorized operations.
+- A library for numerical computing with support for arrays and vectored operations.
 - Example: Matrix multiplication:
   ```python
   import numpy as np

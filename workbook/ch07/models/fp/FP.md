@@ -3,7 +3,7 @@
 
 Functional programming (FP) represents a paradigm fundamentally different from imperative programming.
 While imperative programming focuses on describing _how_ to perform operations through sequences of
-statements that change program state, functional programming emphasizes _what_ the program should
+statements that change program state, functional programming emphasises _what_ the program should
 accomplish through expressions that transform values without changing state.
 
 
@@ -17,14 +17,14 @@ laying the mathematical foundation for functional programming languages.
 
 ### Core Philosophical Principles
 
-1. *Declarative over Imperative*: Functional programming favors describing the desired outcome rather
+1. *Declarative over Imperative*: Functional programming favours describing the desired outcome rather
    than the step-by-step process to achieve it. This shifts focus from "how" to "what."
 
 2. *Expressions over Statements*: Programs are constructed primarily from expressions that produce
    values, not statements that execute actions.
 
 3. *Referential Transparency*: An expression can be replaced by its value without changing program
-   behavior. This property makes programs more predictable and easier to reason about.
+   behaviour. This property makes programs more predictable and easier to reason about.
 
 4. *Function Purity*: Functions should be pure mathematical mappings that:
    - Always produce the same output for the same input
