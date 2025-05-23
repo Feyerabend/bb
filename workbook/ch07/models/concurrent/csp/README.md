@@ -202,7 +202,7 @@ def execute_action(action, cont):
 ```
 ⟨P ⟦C⟧ Q, σ⟩ ─[τ]→ ⟨P' ⟦C⟧ Q', σ'⟩ 
 ```
-↔ Your `Parallel` handling:
+↔ `Parallel` handling:
 ```python
 class Parallel:
     def step(self):
