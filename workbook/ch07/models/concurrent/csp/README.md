@@ -146,6 +146,8 @@ This implementation can be useful for:
 
 ### 1. Process Algebra Formalisation
 
+To give a more formal approach to CSP, some concepts can be introduced which correcponds with both implementation and theory.
+
 #### Basic Processes
 | CSP Math Notation | Python Class    | Example Usage            | Semantics                   |
 |-------------------|-----------------|--------------------------|-----------------------------|
