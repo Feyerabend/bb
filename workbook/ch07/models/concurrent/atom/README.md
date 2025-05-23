@@ -40,7 +40,7 @@ enabling deterministic concurrency simulation.
      - `release()`: Clears ownership and unblocks a waiting thread (if any).  
 
 3. *Semaphore*  
-   - Counting-based synchronization.  
+   - Counting-based synchronisation.  
    - *Atomic operations*:  
      - `acquire()`: Decrements `count` or blocks the thread.  
      - `release()`: Increments `count` and wakes one blocked thread.  
@@ -56,7 +56,7 @@ enabling deterministic concurrency simulation.
    - *Atomic operations*: `increment()`, `decrement()`, and `get()` appear indivisible.  
 
 
-*Core Behavior*  
+*Core Behaviour*  
 1. *Instruction Execution*  
    - Threads execute instructions sequentially via `step()`, with each step treated as atomic.  
    - Example instructions: `PUSH`, `ADD`, `ACQUIRE_LOCK`, `SEND_MSG`.  
@@ -68,12 +68,12 @@ enabling deterministic concurrency simulation.
      - *Priority*: Selects threads based on priority.  
    - Deadlock detection halts execution if all threads are blocked.  
 
-3. *Synchronization & Communication*  
+3. *Synchronisation & Communication*  
    - Threads block on locks/semaphores/message queues, managed by the VM.  
    - `join()`: Blocks until a target thread terminates.  
 
 4. *Debugging*  
-   - Verbose logging tracks thread states, instruction flow, and synchronization events.  
+   - Verbose logging tracks thread states, instruction flow, and synchronisation events.  
 
 
 
@@ -90,14 +90,14 @@ enabling deterministic concurrency simulation.
 
 *Class Diagram Highlights*  
 - *ToyVM*: Central coordinator managing threads, primitives, and scheduling.  
-- *Primitives (Lock/Semaphore/MessageQueue)*: Decouple synchronization logic from threads.  
+- *Primitives (Lock/Semaphore/MessageQueue)*: Decouple synchronisation logic from threads.  
 - *Cooperative Design*: Threads rely on the scheduler to advance, enabling deterministic atomicity.  
 
 
 *Key Clarifications*  
 - *Simulated Concurrency*: No parallelism; atomicity is enforced via scheduling, not hardware.  
 - *Non-Preemptive*: Threads yield control explicitly (e.g., via `WAIT` or `BLOCK` instructions).  
-- *Determinism*: Atomic steps and cooperative scheduling enable reproducible behavior.  
+- *Determinism*: Atomic steps and cooperative scheduling enable reproducible behaviour.  
 
 This version emphasises the VM’s *simulated* concurrency model, distinguishes logical vs. 
 hardware atomicity, and aligns terminology with cooperative multithreading paradigms.

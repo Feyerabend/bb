@@ -13,7 +13,7 @@ programming in a controlled environment.
 
 The ToyVM is designed to:
 - *Simulate Multithreading*: Execute multiple threads with different scheduling strategies (e.g., round-robin, priority-based).
-- *Support Synchronization*: Provide mechanisms like locks, semaphores, and atomic counters to manage shared resources.
+- *Support Synchronisation*: Provide mechanisms like locks, semaphores, and atomic counters to manage shared resources.
 - *Facilitate Communication*: Enable inter-thread communication through message queues.
 - *Demonstrate Concurrency Concepts*: Serve as a teaching tool for understanding thread states, deadlocks, and synchronisation primitives.
 - *Allow Experimentation*: Offer a flexible environment for testing concurrent algorithms without the complexity of real-world operating systems.
@@ -319,7 +319,7 @@ a deadlock in debug mode.
 - *Use Debug Mode*: Enable `debug=True` to trace execution and diagnose issues.
 - *Name Resources Explicitly*: Assign meaningful names to threads, locks, and queues for clarity.
 - *Avoid Infinite Loops*: Ensure threads terminate to prevent the VM from hitting `max_steps`.
-- *Test Synchronization*: Use locks or semaphores for shared resources to avoid race conditions.
+- *Test Synchronisation*: Use locks or semaphores for shared resources to avoid race conditions.
 
 #### Limitations
 - *No Floating-Point Support*: Arithmetic is integer-based.

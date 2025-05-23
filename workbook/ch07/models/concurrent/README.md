@@ -26,7 +26,7 @@ sections, and mutual exclusion. Dijkstra, Hoare, and others developed theoretica
 understanding concurrency, such as semaphores and monitors.
 
 The challenge at this stage was not just how to run concurrent processes, but how to reason about them. Theoretical
-computer science developed a rich body of work on process calculi (like CSP and π-calculus), synchronization, and
+computer science developed a rich body of work on process calculi (like CSP and π-calculus), synchronisation, and
 deadlock avoidance. These abstractions had a major influence on both operating system design and the emerging field
 of concurrent programming languages.
 

@@ -161,7 +161,7 @@ may not reproduce consistently.
 
 Shared memory amplifies these risks because it allows direct interaction between concurrent entities
 (threads/processes). While threads inherently share memory, processes require explicit mechanisms
-(like `multiprocessing.Value`), but the core problem remains: without synchronization, concurrent modifications
+(like `multiprocessing.Value`), but the core problem remains: without synchronisation, concurrent modifications
 corrupt data. Tools like locks, semaphores, or atomic operations (e.g., `queue.Queue` for thread-safe data exchange)
 are essential to avoid these pitfalls.
 

@@ -19,7 +19,7 @@ Manager = !(νnew_channel)(new_channel!⟨⟩.Manager)
 ### Basic Example (P and Q) in π-calculus
 
 ```pi-calculus
-(* System initialization *)
+(* System initialisation *)
 System = (νmanager)(Manager | 
           (νprint_lock)(NewLock(print_lock) |
           (νenvP)(NewEnv(envP) |
@@ -73,14 +73,14 @@ Dict(d) = !d?put⟨k,v⟩.Dict(d) | !d?get⟨k⟩.d!v⟨⟩.Dict(d)
 
 ### Extended Version with Full Semantics
 
-For the complete multiprocessing behavior, we'd need to model:
+For the complete multiprocessing behaviour, we'd need to model:
 
 1. *Process Isolation*:
    ```pi-calculus
    Process[env] = (νprivate_memory)(...)
    ```
 
-2. *Serialization* (Python's `Manager`):
+2. *Serialisation* (Python's `Manager`):
    ```pi-calculus
    Proxy(x) = !x?get⟨⟩.x!val⟨⟩.Proxy(x) | !x?set⟨v⟩.Proxy(x[v])
    ```
@@ -93,6 +93,6 @@ For the complete multiprocessing behavior, we'd need to model:
 ### Differences from Standard π-calculus
 
 1. *Shared Memory*: Real π-calculus has no shared state--we model it with helper processes
-2. *Serialization*: Implicit in Python, explicit in our π-calculus via message forwarding
+2. *Serialisation*: Implicit in Python, explicit in our π-calculus via message forwarding
 3. *OS Processes*: The `(νp)` creation maps to OS-level process forking
 

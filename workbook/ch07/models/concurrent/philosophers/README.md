@@ -2,7 +2,7 @@
 ## Dining Philosophers
 
 The Dining Philosophers problem is a classic thought experiment in computer science that illustrates
-the challenges of resource allocation and synchronization in concurrent systems. It was first introduced
+the challenges of resource allocation and synchronisation in concurrent systems. It was first introduced
 by Edsger Dijkstra in 1965 as a way to explore the complexities of avoiding *deadlocks*[^dead]--a
 situation where processes or threads become permanently stuck, waiting for resources that will never
 become available. Later, Tony Hoare, a pioneer in formal methods for program correctness, reformulated
@@ -11,14 +11,14 @@ cornerstone example in discussions about concurrency, operating systems, and dis
 
 [^dead]: Deadlock occurs when two or more threads are each waiting for the other to release a resource,
 causing all of them to block forever. It usually involves circular waiting on locks or semaphores.
-It is almost a "chatch 22" of programs.
+It is almost a "catch 22" of programs.
 
 Imagine five philosophers sitting around a circular table, each with a plate of spaghetti in front of
 them. Between each pair of plates is a single fork, meaning there are five forks in total. To eat, a
 philosopher must pick up both the fork to their left and the fork to their right. Once they finish
-eating, they put both forks back on the table, allowing their neighbors to use them. The philosophers
+eating, they put both forks back on the table, allowing their neighbours to use them. The philosophers
 alternate between thinking and eating indefinitely. The challenge arises because the forks are shared
-resources: if one philosopher picks up a fork, their neighbor cannot use it until it is returned.
+resources: if one philosopher picks up a fork, their neighbour cannot use it until it is returned.
 The problem asks: *How can the philosophers coordinate their actions to avoid starvation (where a
 philosopher never gets to eat) and deadlock (where all philosophers are stuck waiting for forks)?*
 
@@ -64,7 +64,7 @@ control but creates a potential bottleneck.
 
 Modern solutions often leverage higher-level abstractions like *monitors* or *message passing* to encapsulate
 fork management. For example, a monitor could enforce atomic acquisition of both forks, or philosophers could
-exchange messages to negotiate access. Some approaches even randomize the wait time between fork pickup attempts
+exchange messages to negotiate access. Some approaches even randomise the wait time between fork pickup attempts
 to reduce contention. However, no solution is perfect: trade-offs exist between fairness, efficiency, and
 complexity. The problem also highlights the importance of avoiding circular waits (by ordering resources)
 and ensuring preemption (letting processes release resources if they can’t proceed).

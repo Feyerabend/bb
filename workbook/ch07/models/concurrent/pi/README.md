@@ -139,7 +139,7 @@ ties to linear logic*. This connection is particularly evident through *session 
 a formal system for describing communication protocols as logical propositions. Furthermore,
 *sequent calculus*, a powerful proof-theoretic formalism for constructing logical derivations, offers
 a striking parallel to the communication patterns observed in the $\pi$-calculus. This alignment
-allows us to understand process behavior from a logical perspective.
+allows us to understand process behaviour from a logical perspective.
 
 *Mapping $`\pi`$-Calculus to Linear Logic*
 The core elements of the $\pi$-calculus find direct logical counterparts in linear logic:
@@ -181,7 +181,7 @@ $$
 $$
 
 The communication step in $\pi$-calculus, where $y$ is transmitted and $z$ is substituted, directly corresponds
-to the *elimination of a "cut"* in the sequent calculus. This "cut" signifies the synchronization point between
+to the *elimination of a "cut"* in the sequent calculus. This "cut" signifies the synchronisation point between
 the multiplicative conjunction ($\otimes$, representing the sender) and the implication ($\multimap$, representing
 the receiver), yielding the subsequent states of $P$ and $Q[y/z]$. This provides a powerful logical underpinning
 for concurrent communication.
@@ -190,7 +190,7 @@ for concurrent communication.
 Perhaps one of the most profound connections lies in the equivalence notions. *Bisimulation*, the standard and
 widely accepted notion of observational equivalence in process calculi like the $\pi$-calculus, directly aligns
 with *proof equivalence* in logic. This means that two processes are bisimilar if and only if their corresponding
-logical derivations (or proofs) can be transformed into one another in a way that preserves all observable behavior.
+logical derivations (or proofs) can be transformed into one another in a way that preserves all observable behaviour.
 This deep correspondence provides a robust logical foundation for understanding and verifying concurrent systems.
 
 
@@ -212,7 +212,7 @@ formal logic.
 *Key Characteristics:*
 - Uses Python's `threading` module
 - Implements lightweight concurrency within a single process
-- Shared memory access (no serialization needed)
+- Shared memory access (no serialisation needed)
 - Simpler channel implementation with `queue.Queue`
 - Process registry maintained in a shared dictionary
 
@@ -232,7 +232,7 @@ P → [Channel a] → Q
 - True parallel execution across CPU cores
 - Requires explicit shared memory management
 - Channels use managed queues with locks
-- Objects are serialized when crossing process boundaries
+- Objects are serialised when crossing process boundaries
 - Includes process-safe printing with locks
 - More robust process cleanup with timeouts
 
@@ -240,8 +240,8 @@ P → [Channel a] → Q
 ```
 (Process P) → [Managed Channel a] → (Process Q)
 1. P serializes and sends 42 via multiprocessing.Queue
-2. Q receives and deserializes the value
-3. Cross-process logging with lock synchronization
+2. Q receives and deserialises the value
+3. Cross-process logging with lock synchronisation
 ```
 
 #### Differences
@@ -249,10 +249,10 @@ P → [Channel a] → Q
 | Feature          | Threading Version          | Multiprocessing Version                  |
 |------------------|----------------------------|------------------------------------------|
 | Concurrency Model| Preemptive threading       | True parallel processes                  |
-| Memory           | Shared address space       | Isolated memory (requires serialization) |
+| Memory           | Shared address space       | Isolated memory (requires serialisation) |
 | Channel Implementation | Simple Queue.Queue   | Managed Queue with Lock                  |
 | Safety           | Potential race conditions  | Process isolation prevents races         |
-| Overhead         | Low (green threads)        | Higher (IPC serialization)               |
+| Overhead         | Low (green threads)        | Higher (IPC serialisation)               |
 | Use Case         | I/O-bound tasks            | CPU-bound parallel processing            |
 
 Both implement the same π-calculus-inspired semantics but with different Python concurrency primitives
