@@ -140,3 +140,132 @@ This implementation can be useful for:
 - Concurrency pattern experimentation
 - Model checking foundations
 
+
+
+
+
+### 1. Process Algebra Formalisation
+
+#### Basic Processes
+| CSP Math Notation | Python Class    | Example Usage            | Semantics                   |
+|-------------------|-----------------|--------------------------|-----------------------------|
+| `STOP`            | `STOP()`        | Terminal deadlock        | Inaction (deadlock)         |
+| `SKIP`            | `SKIP()`        | Graceful termination     | Successful termination      |
+| `a → P`           | `Prefix(a, P)`  | `Prefix(Send(c,x), Q)`   | Action `a` then process `P` |
+
+#### Communication Primitives
+| CSP Notation | Python Class | Example                          | Channel Behavior                       |
+|--------------|--------------|----------------------------------|----------------------------------------|
+| `c!v`        | `Send(c,v)`  | `Send("chan1", 42)`              | Output value `v` on channel `c`        |
+| `c?x`        | `Receive(c,x)`| `Receive("chan1", "data")`      | Input to variable `x` from channel `c` |
+| `τ`          | `Tau()`      | `Prefix(Tau(), P)`               | Internal silent action                 |
+
+### 2. Composition Operators
+| CSP Operator | Python Class    | Example Code                         | Implementation Behavior              |
+|--------------|-----------------|--------------------------------------|--------------------------------------|
+| `P ; Q`      | `Seq(P, Q)`     | `Seq(Send(c,x), Receive(c,y))`       | Sequential composition               |
+| `P □ Q`      | `ExtChoice(P,Q)`| `ExtChoice(recv1, recv2)`            | External (environment-driven) choice |
+| `P ⊓ Q`      | `Choice(P,Q)`   | `Choice(Send(a,x), Send(b,y))`       | Non-deterministic internal choice    |
+| `P ⟦C⟧ Q`    | `Parallel(P,Q,C)`| `Parallel(P,Q,{"chan1","chan2"})`    | Synchronized parallel on channels `C`|
+
+### 3. Recursion & Variables
+| CSP Notation  | Python Class | Example                          | Compilation Behavior          |
+|---------------|--------------|----------------------------------|-------------------------------|
+| `μX.P`        | `Rec(X,P)`   | `Rec("P", Prefix(a, Var("P")))`  | Creates recursive process     |
+| `X`           | `Var(X)`     | `Var("P")`                       | Unfolds recursive definition  |
+
+### 4. Conditionals
+| CSP Math          | Python Class       | Example                                   |
+|-------------------|--------------------|-------------------------------------------|
+| `[b]→P`           | `If(b,P,Q)`        | `If(Eq(x,1), P, Q)`                       |
+| Boolean conditions | `Eq/LogicalOp`    | `LogicalOp("and", cond1, cond2)`          |
+
+
+### 5. Operational Semantics Correspondence
+
+*Prefix Rule*:
+```
+⟨a → P, σ⟩ ─[α]→ ⟨P, σ'⟩ 
+```
+↔ `Prefix.execute_action()`:
+```python
+def execute_action(action, cont):
+    if action is Tau:
+        return cont  # τ-transition
+    elif channel_match(action):
+        return cont  # communication transition
+```
+
+*Parallel Composition*:
+```
+⟨P ⟦C⟧ Q, σ⟩ ─[τ]→ ⟨P' ⟦C⟧ Q', σ'⟩ 
+```
+↔ Your `Parallel` handling:
+```python
+class Parallel:
+    def step(self):
+        # sync on shared channels
+        for chan in self.channels:
+            match_actions(chan)  # CSP's sync rule
+```
+
+### 6. Channel Semantics
+`Channel.try_match()` implements CSP's synchronous communication:
+```python
+def try_match(action, cont):
+    if isinstance(action, Send):
+        for (recv_action, recv_cont) in waiting_receives:
+            if compatible(action, recv_action):  # CSP handshake
+                return (cont, recv_cont)  # both progress
+    # .. similar for receives
+```
+This directly models CSP's:
+```
+⟨c!v → P ⟦{c}⟧ c?x → Q, σ⟩ ─[τ]→ ⟨P ⟦{c}⟧ Q[v/x], σ⟩
+```
+
+### 7. Deadlock Detection
+Dependency graph analysis corresponds to CSP's:
+```
+deadlock ≡ ∃ processes where ∀P ∈ processes, blocked(P, waiting_channels)
+```
+Implemented via:
+```python
+def detect_deadlock():
+    cycles = find_cycles(dependency_graph)
+    return any(processes_blocked_on(cycle) for cycle in cycles)
+```
+
+### 8. Example Mappings
+
+*Theoretical CSP*:
+```
+μP. (coin?x → (if x=£1 then tea!P → STOP 
+               else coffee!P → STOP))
+```
+
+*Implementation*:
+```python
+Rec("P", 
+    Prefix(Receive("coin", "x"),
+    If(Eq("x", "£1"),
+       Prefix(Send("tea", "P"), STOP()),
+       Prefix(Send("coffee", "P"), STOP())))
+```
+
+### 9. Trace Semantics Connection
+The interpreter's step-by-step execution generates CSP-style traces:
+```
+[ (P1, Send(c,1)), (P2, Receive(c,x)), τ, ... ]
+```
+Matching CSP's:
+```
+traces(P) = {⟨⟩, ⟨c!1⟩, ⟨c!1, c?1⟩, ...}
+```
+
+This formalisation shows how the Python implementation:
+1. Preserves CSP's algebraic laws
+2. Implements the operational semantics
+3. Extends the formalism with practical debugging
+4. Maintains the synchronous communication model
+
