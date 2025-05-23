@@ -291,13 +291,11 @@ __Description__
 
 Skip ? For comparison with the Python version:
 
-```markdown
 | Aspect            | C Version                     | Python Version               |
 |-------------------|-------------------------------|------------------------------|
 | Signal Safety     | Strict requirements           | No restrictions              |
 | Latency           | Microsecond response          | Millisecond+ due to GIL      |
 | Handler Complexity| Limited to signal-safe ops    | Can use full Python stdlib   |
-```
 
 
 ### Example: Pthread
