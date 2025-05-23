@@ -1,7 +1,121 @@
 
-## Signal
+## Signals in Unix
 
-..
+As we get closer to the hardware and OS, the less general the descriptions tend to be. In this case
+we will have a look at signals in the Unix system.
+
+Signals are software interrupts that provide a way to handle asynchronous events in Unix-like systems.
+They represent a basic form of inter-process communication (IPC) where:
+
+- *Origins*: Can come from the kernel, other processes, or the process itself
+- *Purposes*: Used for process control, error handling, and event notification
+- *Examples*:
+  - `SIGINT` (Ctrl+C termination)
+  - `SIGKILL` (forceful termination)
+  - `SIGUSR1/SIGUSR2` (user-defined signals)
+
+
+#### 1. Signal Handling Architecture
+```mermaid
+flowchart LR
+    OS-->|Signal|Handler
+    Handler-->|Dispatch|IVT
+    IVT-->|Execute|Observers
+```
+
+#### 2. Python vs C Implementations
+
+| Characteristic     | Python Version              | C Version                          |
+|--------------------|-----------------------------|------------------------------------|
+| *Registration*     | `signal.signal()`           | `sigaction()`                      |
+| *Concurrency*      | Asyncio event loop          | POSIX threads                      |
+| *Safety*           | No special restrictions     | Async-signal-safe requirements     |
+| *Queueing*         | Built-in `queue.Queue`      | Manual ring buffer implementation  |
+| *Latency*          | Higher (GIL limitations)    | Lower (true parallelism)           |
+
+
+#### 3. Core Components Explained
+
+*Interrupt Vector Table (IVT)*
+- Acts as a registry mapping signals to handlers
+- Enables the Observer pattern (multiple handlers per signal)
+- Implemented as:
+
+  ```python
+  # Python
+  class InterruptDispatcher:
+      def __init__(self):
+          self.table: Dict[int, List[Callable]] = {} 
+  ```
+
+  ```c
+  // C
+  typedef struct {
+      Handler handlers[MAX_HANDLERS];
+      int count;
+  } SignalHandlerList;
+  ```
+
+*Async Execution Models*
+
+- *Python*: Uses asyncio's event loop
+  ```python
+  async def _run_async(handler):
+      await asyncio.sleep(0)  # yield to event loop
+      handler()
+  ```
+
+- *C*: Uses pthreads
+  ```c
+  void* thread_wrapper(void* arg) {
+      Handler h = (Handler)arg;
+      h();
+      return NULL;
+  }
+  ```
+
+### Practical Usage
+
+1. *Python Example*:
+   ```python
+   # register handler
+   dispatcher.register(signal.SIGUSR1, handler_A)
+   
+   # send test signal from terminal:
+   # kill -USR1 <pid>
+   ```
+
+2. *C Example*:
+   ```c
+   // register handler
+   register_handler(SIGUSR1, handler_A);
+   
+   // compile and test:
+   // gcc -pthread signal.c -o signal
+   // ./signal
+   ```
+
+### Considerations
+
+1. *Safety Constraints*:
+   - In C, signal handlers have severe restrictions (can't call most library functions)
+   - Python handlers have no restrictions but are subject to GIL
+
+2. *Real-world Applications*:
+   - Process lifecycle management
+   - Custom IPC mechanisms
+   - System monitoring tools
+   - Graceful shutdown handlers
+
+3. *Advanced Patterns*:
+   - Signal masking (blocking certain signals during critical sections)
+   - Signal queues (proper ordering of received signals)
+   - Process groups (signaling multiple processes)
+
+The examples demonstrate progressively more sophisticated implementations from basic
+synchronous handling to threaded queue-based systems, mirroring how real operating
+systems manage interrupts.
+
 
 ### Example: sig.py
 
@@ -406,13 +520,13 @@ kill -USR1 <pid>
 ```
 
 
-| Concept                  | Implementation                                             |
-|--------------------------|------------------------------------------------------------|
-| *Async Routine*        | Each handler runs in its own detached `pthread`            |
-| *Observer Pattern*     | `register_handler()` tracks all listeners                  |
+| Concept                  | Implementation                                           |
+|--------------------------|----------------------------------------------------------|
+| *Async Routine*          | Each handler runs in its own detached `pthread`          |
+| *Observer Pattern*       | `register_handler()` tracks all listeners                |
 | *Interrupt Vector Table* | `ivt[]` dispatches by signal number                      |
-| *Signal Handler*       | `sigaction()` invokes `dispatch()`                         |
-| *Real-world Simulation* | Threads mimic concurrent handler execution (like IRQs)    |
+| *Signal Handler*         | `sigaction()` invokes `dispatch()`                       |
+| *Real-world Simulation*  | Threads mimic concurrent handler execution (like IRQs)   |
 
 
 __Differences from Previous__
