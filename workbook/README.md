@@ -20,6 +20,8 @@ With the assistance of Google’s NotebookLM, a series of WAVE files has been pr
 Each episode can be downloaded individually, and you'll need a suitable audio player
 to listen to them.
 
+Also some are Gemini-generated Audio Overview in MP3 format.
+
 
 ## Code
 
