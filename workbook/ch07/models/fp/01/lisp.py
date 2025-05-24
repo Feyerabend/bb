@@ -1,483 +1,689 @@
 import re
-
+from typing import Any, List, Union, Optional, Dict, Callable
+from functools import reduce as functools_reduce
+from abc import ABC, abstractmethod
 
 class LispError(Exception):
     pass
 
+class ParseError(LispError):
+    pass
+
+class RuntimeError(LispError):
+    pass
+
+class ErrorHandler:
+    @staticmethod
+    def parse_error(message: str, token: Optional[str] = None, pos: Optional[int] = None) -> ParseError:
+        context = f" at position {pos} near '{token}'" if token and pos is not None else ""
+        return ParseError(f"Parse error: {message}{context}")
+
+    @staticmethod
+    def runtime_error(message: str) -> RuntimeError:
+        return RuntimeError(f"Runtime error: {message}")
+
 class Environment:
-    def __init__(self, parent=None):
-        self.bindings = {}
+    def __init__(self, parent: Optional['Environment'] = None):
+        self.bindings: Dict[str, Any] = {}
         self.parent = parent
-    
-    def define(self, name, value):
+
+    def define(self, name: str, value: Any) -> Any:
+        if not isinstance(name, str):
+            raise ErrorHandler.runtime_error(f"Variable name must be a string, got {type(name)}")
         self.bindings[name] = value
         return value
-    
-    def get(self, name):
+
+    def get(self, name: str) -> Any:
         if name in self.bindings:
             return self.bindings[name]
         if self.parent:
             return self.parent.get(name)
-        raise LispError(f"Undefined variable: {name}")
-    
-    def set(self, name, value):
+        raise ErrorHandler.runtime_error(f"Undefined variable: {name}")
+
+    def set(self, name: str, value: Any) -> Any:
         if name in self.bindings:
             self.bindings[name] = value
             return value
         if self.parent:
             return self.parent.set(name, value)
-        raise LispError(f"Cannot set undefined variable: {name}")
+        raise ErrorHandler.runtime_error(f"Cannot set undefined variable: {name}")
 
 class Procedure:
-    def __init__(self, params, body, env, interpreter):
+    def __init__(self, params: List[str], body: Any, env: Environment, interpreter: 'Lisp'):
         self.params = params
         self.body = body
         self.env = env
         self.interpreter = interpreter
-    
-    def __call__(self, *args):
+        if not isinstance(params, list):
+            raise ErrorHandler.runtime_error("Function parameters must be a list")
+        for param in params:
+            if not isinstance(param, str):
+                raise ErrorHandler.runtime_error(f"Parameter names must be strings, got {type(param)}")
+
+    def __call__(self, *args) -> Any:
         if len(args) != len(self.params):
-            raise LispError(f"Expected {len(self.params)} arguments, got {len(args)}")
-        
+            raise ErrorHandler.runtime_error(f"Function expects {len(self.params)} arguments, got {len(args)}")
         env = Environment(self.env)
         for param, arg in zip(self.params, args):
             env.define(param, arg)
-        
         return self.interpreter.eval(self.body, env)
+
+class Token:
+    def __init__(self, kind: str, value: str, pos: int):
+        self.kind = kind
+        self.value = value
+        self.pos = pos
+
+class TokenFactory:
+    TOKEN_REGEX = re.compile(r'''
+        (?P<STRING>"(?:[^"\\]|\\.)*")           |  # Strings with escape sequences
+        (?P<COMMENT>;[^\n]*)                    |  # Comments
+        (?P<QUOTE>')                            |  # Quote shorthand
+        (?P<PAREN>[()[\]])                      |  # Parentheses and brackets
+        (?P<NUMBER>-?(?:\d*\.\d+([eE][+-]?\d+)?|\d+))  |  # Numbers (int, float, scientific)
+        (?P<SYMBOL>[^\s()[\]'"`;]+)             |  # Symbols
+        (?P<WHITESPACE>\s+)                        # Whitespace
+    ''', re.VERBOSE)
+
+    @classmethod
+    def create_tokens(cls, text: str) -> List[Token]:
+        tokens = []
+        pos = 0
+        while pos < len(text):
+            match = cls.TOKEN_REGEX.match(text, pos)
+            if not match:
+                # Check for unterminated string
+                if text[pos] == '"':
+                    # Find the next quote or end of string
+                    end_pos = text.find('"', pos + 1)
+                    if end_pos == -1:
+                        raise ErrorHandler.parse_error("Unterminated string", text[pos:], pos)
+                    value = text[pos:end_pos + 1]
+                    tokens.append(Token('STRING', value, pos))
+                    pos = end_pos + 1
+                else:
+                    raise ErrorHandler.parse_error("Invalid character", text[pos], pos)
+            else:
+                kind = match.lastgroup
+                value = match.group()
+                pos = match.end()
+                if kind == 'WHITESPACE' or kind == 'COMMENT':
+                    continue
+                if kind == 'STRING' and not value.endswith('"'):
+                    raise ErrorHandler.parse_error("Unterminated string", value, match.start())
+                tokens.append(Token(kind, value, match.start()))
+        return tokens
+
+class Symbol:
+    def __init__(self, name: str):
+        self.name = name
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f"Symbol({self.name})"
+
+    def __eq__(self, other):
+        return isinstance(other, Symbol) and self.name == other.name
+
+    def __hash__(self):
+        return hash(self.name)
+
+class ExpressionFactory:
+    @staticmethod
+    def create_atom(token: Token) -> Any:
+        if token.kind == 'STRING':
+            content = token.value[1:-1]
+            return content.replace('\\n', '\n').replace('\\t', '\t').replace('\\"', '"').replace('\\\\', '\\')
+        try:
+            if '.' in token.value or 'e' in token.value.lower():
+                return float(token.value)
+            return int(token.value)
+        except ValueError:
+            pass
+        if token.value.lower() == 'true':
+            return True
+        if token.value.lower() == 'false':
+            return False
+        if token.value == 'nil':
+            return None
+        return Symbol(token.value)
+
+    @staticmethod
+    def create_list(elements: List[Any]) -> List[Any]:
+        return elements
+
+class Parser:
+    def __init__(self, tokens: List[Token]):
+        self.tokens = tokens
+        self.pos = 0
+        self.expr_factory = ExpressionFactory()
+
+    def parse(self) -> Any:
+        if self.pos >= len(self.tokens):
+            raise ErrorHandler.parse_error("Unexpected end of input")
+        return self._parse_expression()
+
+    def _parse_expression(self) -> Any:
+        if self.pos >= len(self.tokens):
+            raise ErrorHandler.parse_error("Unexpected end of input")
+        token = self.tokens[self.pos]
+        if token.value == '(':
+            return self._parse_list()
+        elif token.value == '[':
+            return self._parse_list(end_token=']')
+        elif token.value == "'":
+            self.pos += 1
+            quoted_expr = self._parse_expression()
+            return ['quote', quoted_expr]
+        elif token.value in (')', ']'):
+            raise ErrorHandler.parse_error(f"Unexpected closing '{token.value}'", token.value, self.pos)
+        else:
+            self.pos += 1
+            return self.expr_factory.create_atom(token)
+
+    def _parse_list(self, end_token: str = ')') -> List[Any]:
+        self.pos += 1
+        elements = []
+        while self.pos < len(self.tokens) and self.tokens[self.pos].value != end_token:
+            elements.append(self._parse_expression())
+        if self.pos >= len(self.tokens):
+            expected = ']' if end_token == ']' else ')'
+            raise ErrorHandler.parse_error(f"Missing closing '{expected}'")
+        self.pos += 1
+        return self.expr_factory.create_list(elements)
+
+class Evaluator(ABC):
+    @abstractmethod
+    def evaluate(self, expr: List[Any], env: Environment, interpreter: 'Lisp') -> Any:
+        pass
+
+class QuoteEvaluator(Evaluator):
+    def evaluate(self, expr: List[Any], env: Environment, interpreter: 'Lisp') -> Any:
+        if len(expr) != 2:
+            raise ErrorHandler.runtime_error("quote requires exactly 1 argument")
+        return expr[1]
+
+class IfEvaluator(Evaluator):
+    def evaluate(self, expr: List[Any], env: Environment, interpreter: 'Lisp') -> Any:
+        if len(expr) < 3 or len(expr) > 4:
+            raise ErrorHandler.runtime_error("if requires 2 or 3 arguments")
+        condition = interpreter.eval(expr[1], env)
+        if interpreter._is_truthy(condition):
+            return interpreter.eval(expr[2], env)
+        return interpreter.eval(expr[3], env) if len(expr) == 4 else None
+
+class CondEvaluator(Evaluator):
+    def evaluate(self, expr: List[Any], env: Environment, interpreter: 'Lisp') -> Any:
+        for clause in expr[1:]:
+            if not isinstance(clause, list) or len(clause) != 2:
+                raise ErrorHandler.runtime_error("cond clauses must be lists of length 2")
+            condition, result = clause
+            if (isinstance(condition, Symbol) and condition.name == 'else') or condition == 'else' or interpreter._is_truthy(interpreter.eval(condition, env)):
+                return interpreter.eval(result, env)
+        return None
+
+class AndEvaluator(Evaluator):
+    def evaluate(self, expr: List[Any], env: Environment, interpreter: 'Lisp') -> Any:
+        for sub_expr in expr[1:]:
+            result = interpreter.eval(sub_expr, env)
+            if not interpreter._is_truthy(result):
+                return False
+        return True
+
+class OrEvaluator(Evaluator):
+    def evaluate(self, expr: List[Any], env: Environment, interpreter: 'Lisp') -> Any:
+        for sub_expr in expr[1:]:
+            result = interpreter.eval(sub_expr, env)
+            if interpreter._is_truthy(result):
+                return result
+        return False
+
+class DefineEvaluator(Evaluator):
+    def evaluate(self, expr: List[Any], env: Environment, interpreter: 'Lisp') -> Any:
+        if len(expr) != 3:
+            raise ErrorHandler.runtime_error("define requires exactly 2 arguments")
+        target = expr[1]
+        if isinstance(target, list):
+            if not target:
+                raise ErrorHandler.runtime_error("define: function name cannot be empty")
+            func_name = target[0]
+            params = target[1:]
+            body = expr[2]
+            param_names = [param.name if isinstance(param, Symbol) else str(param) for param in params]
+            procedure = Procedure(param_names, body, env, interpreter)
+            return env.define(func_name.name if isinstance(func_name, Symbol) else str(func_name), procedure)
+        elif isinstance(target, Symbol) or isinstance(target, str):
+            value = interpreter.eval(expr[2], env)
+            name = target.name if isinstance(target, Symbol) else target
+            return env.define(name, value)
+        else:
+            raise ErrorHandler.runtime_error("define: first argument must be a symbol or list")
+
+class SetEvaluator(Evaluator):
+    def evaluate(self, expr: List[Any], env: Environment, interpreter: 'Lisp') -> Any:
+        if len(expr) != 3:
+            raise ErrorHandler.runtime_error("set! requires exactly 2 arguments")
+        var_name = expr[1]
+        if isinstance(var_name, Symbol):
+            var_name = var_name.name
+        elif not isinstance(var_name, str):
+            raise ErrorHandler.runtime_error("set!: first argument must be a symbol")
+        value = interpreter.eval(expr[2], env)
+        return env.set(var_name, value)
+
+class LambdaEvaluator(Evaluator):
+    def evaluate(self, expr: List[Any], env: Environment, interpreter: 'Lisp') -> Any:
+        if len(expr) != 3:
+            raise ErrorHandler.runtime_error("lambda requires exactly 2 arguments")
+        params = expr[1]
+        body = expr[2]
+        if not isinstance(params, list):
+            raise ErrorHandler.runtime_error("lambda: parameters must be a list")
+        param_names = [param.name if isinstance(param, Symbol) else str(param) for param in params]
+        return Procedure(param_names, body, env, interpreter)
+
+class LetEvaluator(Evaluator):
+    def evaluate(self, expr: List[Any], env: Environment, interpreter: 'Lisp') -> Any:
+        if len(expr) < 3:
+            raise ErrorHandler.runtime_error("let requires at least 2 arguments")
+        bindings = expr[1]
+        body_exprs = expr[2:]
+        if not isinstance(bindings, list):
+            raise ErrorHandler.runtime_error("let: bindings must be a list")
+        new_env = Environment(env)
+        for binding in bindings:
+            if not isinstance(binding, list) or len(binding) != 2:
+                raise ErrorHandler.runtime_error("let: each binding must be a list of length 2")
+            var_name, value_expr = binding
+            if isinstance(var_name, Symbol):
+                var_name = var_name.name
+            elif not isinstance(var_name, str):
+                raise ErrorHandler.runtime_error("let: variable names must be symbols")
+            value = interpreter.eval(value_expr, env)
+            new_env.define(var_name, value)
+        return interpreter._eval_begin(body_exprs, new_env)
+
+class BeginEvaluator(Evaluator):
+    def evaluate(self, expr: List[Any], env: Environment, interpreter: 'Lisp') -> Any:
+        return interpreter._eval_begin(expr[1:], env)
+
+class WhileEvaluator(Evaluator):
+    def evaluate(self, expr: List[Any], env: Environment, interpreter: 'Lisp') -> Any:
+        if len(expr) < 3:
+            raise ErrorHandler.runtime_error("while requires a condition and at least one body expression")
+        condition_expr = expr[1]
+        body_exprs = expr[2:]
+        result = None
+        while interpreter._is_truthy(interpreter.eval(condition_expr, env)):
+            result = interpreter._eval_begin(body_exprs, env)
+        return result
+
+class BuiltInCommand(ABC):
+    @abstractmethod
+    def execute(self, *args: Any) -> Any:
+        pass
+
+class AddCommand(BuiltInCommand):
+    def execute(self, *args: Any) -> Any:
+        return sum(args)
+
+class SubtractCommand(BuiltInCommand):
+    def execute(self, *args: Any) -> Any:
+        if not args:
+            return 0
+        if len(args) == 1:
+            return -args[0]
+        return args[0] - sum(args[1:])
+
+class MultiplyCommand(BuiltInCommand):
+    def execute(self, *args: Any) -> Any:
+        return functools_reduce(lambda x, y: x * y, args, 1)
+
+class DivideCommand(BuiltInCommand):
+    def execute(self, *args: Any) -> Any:
+        if not args:
+            raise ErrorHandler.runtime_error("divide requires at least 1 argument")
+        if len(args) == 1:
+            if args[0] == 0:
+                raise ErrorHandler.runtime_error("Division by zero")
+            return 1.0 / args[0]
+        result = args[0]
+        for arg in args[1:]:
+            if arg == 0:
+                raise ErrorHandler.runtime_error("Division by zero")
+            result /= arg
+        return result
+
+class ModCommand(BuiltInCommand):
+    def execute(self, a: Any, b: Any) -> Any:
+        return a % b
+
+class AbsCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return abs(x)
+
+class MaxCommand(BuiltInCommand):
+    def execute(self, *args: Any) -> Any:
+        return max(args)
+
+class MinCommand(BuiltInCommand):
+    def execute(self, *args: Any) -> Any:
+        return min(args)
+
+class EqualCommand(BuiltInCommand):
+    def execute(self, a: Any, b: Any) -> Any:
+        return a == b
+
+class NotEqualCommand(BuiltInCommand):
+    def execute(self, a: Any, b: Any) -> Any:
+        return a != b
+
+class LessCommand(BuiltInCommand):
+    def execute(self, a: Any, b: Any) -> Any:
+        return a < b
+
+class GreaterCommand(BuiltInCommand):
+    def execute(self, a: Any, b: Any) -> Any:
+        return a > b
+
+class LessEqualCommand(BuiltInCommand):
+    def execute(self, a: Any, b: Any) -> Any:
+        return a <= b
+
+class GreaterEqualCommand(BuiltInCommand):
+    def execute(self, a: Any, b: Any) -> Any:
+        return a >= b
+
+class NotCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return not x
+
+class ConsCommand(BuiltInCommand):
+    def execute(self, a: Any, b: Any) -> Any:
+        return [a] + (b if isinstance(b, list) else [b])
+
+class CarCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return x[0] if x else None
+
+class CdrCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return x[1:] if len(x) > 1 else []
+
+class ListCommand(BuiltInCommand):
+    def execute(self, *args: Any) -> Any:
+        return list(args)
+
+class AppendCommand(BuiltInCommand):
+    def execute(self, *lists: Any) -> Any:
+        return sum(lists, [])
+
+class LengthCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return len(x)
+
+class ReverseCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return list(reversed(x))
+
+class NullCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return x is None or x == []
+
+class EmptyCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return len(x) == 0 if hasattr(x, '__len__') else False
+
+class NumberCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return isinstance(x, (int, float))
+
+class StringCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return isinstance(x, str)
+
+class SymbolCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return isinstance(x, Symbol)
+
+class ListPredCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return isinstance(x, list)
+
+class ProcedureCommand(BuiltInCommand):
+    def execute(self, x: Any) -> Any:
+        return callable(x)
+
+class MapCommand(BuiltInCommand):
+    def execute(self, func: Callable, lst: List[Any]) -> Any:
+        if not isinstance(lst, list):
+            raise ErrorHandler.runtime_error("map: second argument must be a list")
+        return [func(x) for x in lst]
+
+class FilterCommand(BuiltInCommand):
+    def execute(self, func: Callable, lst: List[Any]) -> Any:
+        if not isinstance(lst, list):
+            raise ErrorHandler.runtime_error("filter: second argument must be a list")
+        return [x for x in lst if func(x)]
+
+class ReduceCommand(BuiltInCommand):
+    def execute(self, func: Callable, lst: List[Any], *initial: Any) -> Any:
+        if not isinstance(lst, list):
+            raise ErrorHandler.runtime_error("reduce: second argument must be a list")
+        if not lst and not initial:
+            raise ErrorHandler.runtime_error("reduce: empty list with no initial value")
+        if initial:
+            return functools_reduce(func, lst, initial[0])
+        return functools_reduce(func, lst)
+
+class ApplyCommand(BuiltInCommand):
+    def execute(self, func: Callable, args: List[Any]) -> Any:
+        if not isinstance(args, list):
+            raise ErrorHandler.runtime_error("apply: second argument must be a list")
+        return func(*args)
+
+class PrintCommand(BuiltInCommand):
+    def execute(self, *args: Any) -> Any:
+        formatted_args = [arg.name if isinstance(arg, Symbol) else arg for arg in args]
+        print(*formatted_args)
+        return None
+
+class DisplayCommand(BuiltInCommand):
+    def execute(self, *args: Any) -> Any:
+        formatted_args = [arg.name if isinstance(arg, Symbol) else arg for arg in args]
+        print(*formatted_args, end='')
+        return None
+
+class ResultFormatter:
+    def format(self, result: Any) -> str:
+        return self.visit(result)
+
+    def visit(self, result: Any) -> str:
+        if isinstance(result, str):
+            return f'"{result}"'
+        elif isinstance(result, Symbol):
+            return result.name
+        elif isinstance(result, list):
+            formatted_items = [self.visit(item) for item in result]
+            return f"({' '.join(formatted_items)})"
+        else:
+            return str(result)
 
 class Lisp:
     def __init__(self):
         self.global_env = Environment()
-        self._setup_global_environment()
-    
-    def _setup_global_environment(self):
+        self.special_forms: Dict[str, Evaluator] = {}
+        self.formatter = ResultFormatter()
+        self._setup_special_forms()
+        self._setup_builtins()
 
-        self.global_env.define('+', lambda *args: sum(args))
-        self.global_env.define('-', lambda a, *args: a - sum(args) if args else -a)
+    def _setup_special_forms(self):
+        self.special_forms = {
+            'quote': QuoteEvaluator(),
+            'if': IfEvaluator(),
+            'cond': CondEvaluator(),
+            'and': AndEvaluator(),
+            'or': OrEvaluator(),
+            'define': DefineEvaluator(),
+            'set!': SetEvaluator(),
+            'lambda': LambdaEvaluator(),
+            'let': LetEvaluator(),
+            'begin': BeginEvaluator(),
+            'while': WhileEvaluator(),
+        }
 
-        self.global_env.define('*', lambda *args: 
-            1 if not args else 
-            args[0] if len(args) == 1 else 
-            args[0] * args[1] if len(args) == 2 else
-            args[0] * args[1] * args[2] if len(args) == 3 else
-            args[0] * self.global_env.get('*')(*args[1:]))
+    def _setup_builtins(self):
+        env = self.global_env
+        env.define('+', AddCommand())
+        env.define('-', SubtractCommand())
+        env.define('*', MultiplyCommand())
+        env.define('/', DivideCommand())
+        env.define('mod', ModCommand())
+        env.define('abs', AbsCommand())
+        env.define('max', MaxCommand())
+        env.define('min', MinCommand())
+        env.define('=', EqualCommand())
+        env.define('==', EqualCommand())
+        env.define('!=', NotEqualCommand())
+        env.define('<', LessCommand())
+        env.define('>', GreaterCommand())
+        env.define('<=', LessEqualCommand())
+        env.define('>=', GreaterEqualCommand())
+        env.define('not', NotCommand())
+        env.define('cons', ConsCommand())
+        env.define('car', CarCommand())
+        env.define('cdr', CdrCommand())
+        env.define('list', ListCommand())
+        env.define('append', AppendCommand())
+        env.define('length', LengthCommand())
+        env.define('reverse', ReverseCommand())
+        env.define('null?', NullCommand())
+        env.define('empty?', EmptyCommand())
+        env.define('number?', NumberCommand())
+        env.define('string?', StringCommand())
+        env.define('symbol?', SymbolCommand())
+        env.define('list?', ListPredCommand())
+        env.define('procedure?', ProcedureCommand())
+        env.define('map', MapCommand())
+        env.define('filter', FilterCommand())
+        env.define('reduce', ReduceCommand())
+        env.define('apply', ApplyCommand())
+        env.define('print', PrintCommand())
+        env.define('display', DisplayCommand())
+        env.define('true', True)
+        env.define('false', False)
+        env.define('nil', None)
 
-        self.global_env.define('/', lambda a, *args: 
-            a if not args else 
-            a / args[0] if len(args) == 1 else 
-            a / args[0] / args[1] if len(args) == 2 else
-            a / (args[0] * args[1] * args[2:] if args[2:] else 1))
-        
-        self.global_env.define('True', True)
-        self.global_env.define('False', False)
-        
-        self.global_env.define('=', lambda a, b: a == b)
-        self.global_env.define('<', lambda a, b: a < b)
-        self.global_env.define('>', lambda a, b: a > b)
-        self.global_env.define('<=', lambda a, b: a <= b)
-        self.global_env.define('>=', lambda a, b: a >= b)
-        
-        self.global_env.define('cons', lambda a, b: [a] + (b if isinstance(b, list) else [b]))
-        self.global_env.define('car', lambda x: x[0])
-        self.global_env.define('cdr', lambda x: x[1:])
-        self.global_env.define('list', lambda *args: list(args))
-        self.global_env.define('null?', lambda x: not x)
-        self.global_env.define('length', lambda x: len(x))
-        
-        self.global_env.define('not', lambda x: not x)
-        self.global_env.define('and', lambda *args: all(args))
-        self.global_env.define('or', lambda *args: any(args))
-        
-        self.global_env.define('number?', lambda x: isinstance(x, (int, float)))
-        self.global_env.define('symbol?', lambda x: isinstance(x, str))
-        self.global_env.define('list?', lambda x: isinstance(x, list))
-        
-        self.global_env.define('compose', lambda f, g: lambda *args: f(g(*args)))
-        self.global_env.define('pipe', lambda x, *funcs: self._pipe(x, funcs))
-        
-        self.global_env.define('map', lambda f, lst: [f(x) for x in lst])
-        self.global_env.define('filter', lambda f, lst: [x for x in lst if f(x)])
-        self.global_env.define('reduce', self._reduce)
-    
-    def _reduce(self, f, lst, initial=None):
-        if not lst:
-            if initial is None:
-                raise LispError("reduce: empty list with no initial value")
-            return initial
-        
-        if initial is None:
-            result = lst[0]
-            lst = lst[1:]
-        else:
-            result = initial
-        
-        for item in lst:
-            result = f(result, item)
-        
-        return result
-    
-    def _pipe(self, x, funcs):
-        result = x
-        for f in funcs:
-            result = f(result)
-        return result
-    
-
-    def tokenize(self, program):
-        token_regex = r'("(?:\\"|.)*?")|([()])|([^\s()]+)'
-        tokens = []
-        for match in re.finditer(token_regex, program):
-            string_token, paren_token, other_token = match.groups()
-            if string_token:
-                tokens.append(string_token)
-            elif paren_token:
-                tokens.append(paren_token)
-            elif other_token:
-                tokens.append(other_token)
-        # replace single quotes with 'quote'
-        processed = []
-        for token in tokens:
-            if token == "'":
-                processed.append('quote')
-            else:
-                processed.append(token)
-        return processed
-
-    def parse(self, program):
-        tokens = self.tokenize(program)
-        return self._read_from_tokens(tokens)
-
-
-    def _read_from_tokens(self, tokens):
-        if not tokens:
-            raise LispError("Unexpected EOF")
-        token = tokens.pop(0)
-        if token == '(':
-            L = []
-            while tokens and tokens[0] != ')':
-                L.append(self._read_from_tokens(tokens))
-            if not tokens:
-                raise LispError("Unexpected EOF")
-            tokens.pop(0)  # remove ')'
-            return L
-        elif token == ')':
-            raise LispError("Unexpected ')'")
-        else:
-            return self._atom(token)
-    
-    def _atom(self, token):
+    def parse(self, text: str) -> Any:
         try:
-            return int(token)
-        except ValueError:
-            try:
-                return float(token)
-            except ValueError:
-                if token == 'True':
-                    return True
-                elif token == 'False':
-                    return False
-                return token  # do NOT strip quotes here!
+            tokens = TokenFactory.create_tokens(text)
+            if not tokens:
+                raise ErrorHandler.parse_error("Empty input")
+            parser = Parser(tokens)
+            return parser.parse()
+        except Exception as e:
+            raise ErrorHandler.parse_error(str(e))
 
-    def eval(self, expr, env=None):
+    def eval(self, expr: Any, env: Optional[Environment] = None) -> Any:
         if env is None:
             env = self.global_env
-        
-#        print(f"Evaluating: {expr}")  # Debug statement
-        if isinstance(expr, str):
-            if len(expr) >= 2 and expr.startswith('"') and expr.endswith('"'):
-                return expr[1:-1]
-            else:
-                return env.get(expr)
-        
-        if not isinstance(expr, list):
+        try:
+            return self._eval_expr(expr, env)
+        except Exception as e:
+            if isinstance(e, (RuntimeError, LispError)):
+                raise
+            raise ErrorHandler.runtime_error(str(e))
+
+    def _eval_expr(self, expr: Any, env: Environment) -> Any:
+        if isinstance(expr, (int, float, str, bool)) or expr is None:
             return expr
-        
+        if isinstance(expr, Symbol):
+            return env.get(expr.name)
+        if isinstance(expr, str):  # Handle string as symbol for test compatibility
+            return env.get(expr)
+        if isinstance(expr, list):
+            return self._eval_list(expr, env)
+        raise ErrorHandler.runtime_error(f"Cannot evaluate expression of type {type(expr)}: {expr}")
+
+    def _eval_list(self, expr: List[Any], env: Environment) -> Any:
         if not expr:
             return []
-        
-        first, *rest = expr
-        if first == 'quote':
-            result = self._eval_quote(expr, env)
- #           print(f"Result of quote: {result}")
-            return result
-        elif first == 'if':
-            return self._eval_if(expr, env)
-        elif first == 'define':
-            return self._eval_define(expr, env)
-        elif first == 'lambda':
-            return self._eval_lambda(expr, env)
-        elif first == 'begin':
-            return self._eval_begin(expr, env)
-        elif first == 'let':
-            return self._eval_let(expr, env)
-        elif first == 'set!':
-            return self._eval_set(expr, env)
-        elif first == 'while':
-            return self._eval_while(expr, env)
-        
+        first = expr[0]
+        # Check if the first element is a special form
+        first_name = first.name if isinstance(first, Symbol) else str(first) if isinstance(first, str) else None
+        if first_name in self.special_forms:
+            return self.special_forms[first_name].evaluate(expr, env, self)
+        # Evaluate the first element to resolve symbols to functions or commands
         func = self.eval(first, env)
-        args = [self.eval(arg, env) for arg in rest]
-        return self.apply(func, args)   
- 
-    def apply(self, func, args):
-        return func(*args)
-    
-    def _eval_quote(self, expr, env):
-        if len(expr) != 2:
-            raise LispError("quote requires exactly 1 argument")
-        return expr[1] # return as string or as list?
-    
-    def _eval_if(self, expr, env):
-        if len(expr) < 3 or len(expr) > 4:
-            raise LispError("if requires 2 or 3 arguments")
-        
-        cond = self.eval(expr[1], env)
-        
-        if cond:
-            return self.eval(expr[2], env)
-        elif len(expr) == 4:
-            return self.eval(expr[3], env)
-        else:
+        # Evaluate arguments for non-special forms
+        args = [self.eval(arg, env) for arg in expr[1:]]
+        if isinstance(func, BuiltInCommand):
+            return func.execute(*args)
+        if callable(func):
+            return func(*args)
+        raise ErrorHandler.runtime_error(f"'{first}' is not a function: {type(func)} {func}")
+
+    def _eval_begin(self, exprs: List[Any], env: Environment) -> Any:
+        if not exprs:
             return None
-    
-    def _eval_begin(self, expr, env):
-        if len(expr) < 2:
-            raise LispError("begin requires at least 1 expression")
-        
         result = None
-        for sub_expr in expr[1:]:
-            result = self.eval(sub_expr, env)
-        
-        return result
-    
-    def _eval_define(self, expr, env):
-        if len(expr) != 3:
-            raise LispError("define requires exactly 2 arguments")
-        
-        name = expr[1]
-        
-        # definition shorthand: (define (f x) body) -> (define f (lambda (x) body))
-        if isinstance(name, list):
-            func_name = name[0]
-            params = name[1:]
-            body = expr[2]
-            return env.define(func_name, Procedure(params, body, env, self))
-        
-        # variable definition: (define var value)
-        value = self.eval(expr[2], env)
-        return env.define(name, value)
-    
-    def _eval_lambda(self, expr, env):
-        if len(expr) != 3:
-            raise LispError("lambda requires exactly 2 arguments")
-        
-        params = expr[1]
-        if not isinstance(params, list):
-            raise LispError("lambda parameters must be a list")
-        
-        body = expr[2]
-        return Procedure(params, body, env, self)
-    
-    def _eval_let(self, expr, env):
-        if len(expr) < 3:
-            raise LispError("let requires at least 2 arguments")
-        
-        bindings = expr[1]
-        if not isinstance(bindings, list):
-            raise LispError("let bindings must be a list")
-        
-        new_env = Environment(env)
-        
-        # evaluate bindings in the original environment
-        for binding in bindings:
-            if not isinstance(binding, list) or len(binding) != 2:
-                raise LispError("let binding must be a list of length 2")
-            
-            name = binding[0]
-            value = self.eval(binding[1], env)
-            new_env.define(name, value)
-        
-        # evaluate the body in the new environment
-        result = None
-        for body_expr in expr[2:]:
-            result = self.eval(body_expr, new_env)
-        
-        return result
-    
-    def _eval_set(self, expr, env):
-        if len(expr) != 3:
-            raise LispError("set! requires exactly 2 arguments: a variable and a value")
-        
-        var_name = expr[1]
-        if not isinstance(var_name, str):
-            raise LispError("First argument to set! must be a symbol")
-        
-        new_value = self.eval(expr[2], env)
-        
-        return env.set(var_name, new_value)
-    
-    def _eval_while(self, expr, env):
-        if len(expr) < 3:
-            raise LispError("while requires a condition and at least one expression in the body")
-        
-        condition = expr[1]
-        body = expr[2:]
-        result = None
-        
-        # keep evaluating body as long as condition true
-        while self.eval(condition, env):
-            for sub_expr in body:
-                result = self.eval(sub_expr, env)
-        
-        # return last evaluated result or None if loop never executed
-        return result if result is not None else None
-    
-    def run(self, program):
-        try:
-            # try to parse the entire program as a single expression
-            parsed = self.parse(program)
-            result = self.eval(parsed)
-            return result
-        except LispError:
-            # else try to parse it line by line
-            lines = program.strip().split('\n')
-            result = None
-            expressions = []
-            current_expr = []
-            
-            for line in lines:
-                line = line.strip()
-                if not line:
-                    continue
-                    
-                current_expr.append(line)
-                full_expr = ' '.join(current_expr)
-                open_parens = full_expr.count('(')
-                close_parens = full_expr.count(')')
-                
-                if open_parens == close_parens:
-                    expressions.append(full_expr)
-                    current_expr = []
-            
-            for expr in expressions:
-                try:
-                    parsed = self.parse(expr)
-                    result = self.eval(parsed)
-                except LispError as e:
-                    # ifline is a section title, skip it
-                    if "Undefined variable" in str(e) and any(keyword in expr for keyword in 
-                                                          ["Arithmetic", "Operations", "Predicates", "Functions", "Definition", 
-                                                           "Application", "Composition", "Pipeline", "Expression"]):
-                        continue
-                    raise
-            
-            return result
-    
-    def run_all(self, programs):
-        result = None
-        for program in programs:
-            result = self.run(program)
+        for expr in exprs:
+            result = self.eval(expr, env)
         return result
 
-def run_tests(lisp):
-    try:
-        with open('samples.lisp', 'r') as f:
-            code = f.read()
-    except FileNotFoundError:
-        pass # exit?
-    
-    # process each section separately to maintain variable definitions between related expressions
-    sections = code.split(';;')
-    current_env = Environment()
-    interpreter = Lisp()
-    
-    for section in sections:
-        if not section.strip():
-            continue
-            
-        # extract section title (if any) from the first line
-        lines = section.strip().split('\n')
-        if not lines:
-            continue
-            
-        section_title = lines[0].strip()
-        code_lines = [line for line in lines[1:] if line.strip() and not line.strip().startswith(';')]
-        
-        if not code_lines:
-            continue
-            
-        # join all the code lines for this section
-        code_to_run = '\n'.join(code_lines)
-        
+    def _is_truthy(self, value: Any) -> bool:
+        return value is not False and value is not None
+
+    def run(self, source: str) -> Any:
         try:
-            # multi-line expressions by counting parentheses
-            expressions = []
-            current_expr = []
-            
-            for line in code_lines:
-                current_expr.append(line)
-                full_expr = ' '.join(current_expr)
-                open_parens = full_expr.count('(')
-                close_parens = full_expr.count(')')
-                
-                if open_parens == close_parens:
-                    expressions.append(full_expr)
-                    current_expr = []
-            
-            # if there are leftover lines, add them too
-            if current_expr:
-                expressions.append(' '.join(current_expr))
-            
-            # run each expression in the section
-            result = None
-            for expr in expressions:
-                try:
-                    # skip section titles that might look like expressions
-                    if "Operations" in expr or "Predicates" in expr or "Functions" in expr:
-                        continue
-                        
-                    result = interpreter.run(expr)
-                    print(f"Expression: {expr}")
-                    print(f"Result: {result}")
-                    print("-" * 40)
-                except Exception as e:
-                    print(f"Error running: {expr}")
-                    print(f"Error: {e}")
-                    print("-" * 40)
-                    
+            expr = self.parse(source)
+            return self.eval(expr)
+        except (ParseError, RuntimeError, LispError) as e:
+            raise e
         except Exception as e:
-            print(f"Error in section {section_title}: {e}")
-            print("-" * 40)
+            raise ErrorHandler.runtime_error(f"Unexpected error: {e}")
 
 class LispREPL:
     def __init__(self):
         self.lisp = Lisp()
-    
+        self.multiline_buffer = []
+        self.paren_count = 0
+
     def start(self):
-        print("Lisp REPL (Type 'exit' to quit)")
+        print("Design Pattern Lisp REPL")
+        print("Type 'exit', 'quit', or press Ctrl+C to quit")
+        print("Multi-line expressions are supported")
+        print()
         while True:
             try:
-                expr = input("> ").strip()
-                if expr.lower() in ("exit", "quit"):
+                prompt = ".. " if self.multiline_buffer else ">> "
+                line = input(prompt).strip()
+                if line.lower() in ("exit", "quit"):
                     break
-                if not expr:
+                if not line:
                     continue
-                
-                result = self.lisp.run(expr)
-                print(result)
-            except LispError as e:
-                print(f"Error: {e}")
-            except Exception as e:
-                print(f"Unexpected error: {e}")
-
+                self.multiline_buffer.append(line)
+                self.paren_count += line.count('(') + line.count('[')
+                self.paren_count -= line.count(')') + line.count(']')
+                if self.paren_count == 0:
+                    source = ' '.join(self.multiline_buffer)
+                    self.multiline_buffer = []
+                    try:
+                        result = self.lisp.run(source)
+                        if result is not None:
+                            print(self.lisp.formatter.format(result))
+                    except (ParseError, RuntimeError, LispError) as e:
+                        print(f"Error: {e}")
+                elif self.paren_count < 0:
+                    print("Error: Unmatched closing parenthesis")
+                    self.multiline_buffer = []
+                    self.paren_count = 0
+            except (KeyboardInterrupt, EOFError):
+                print("\nBye!")
+                break
 
 if __name__ == '__main__':
-#    lisp = Lisp()
-#    run_tests(lisp)
-
-    # run individual expressions
-#    print(lisp.run("(begin 1 2 3)"))  # Output: 3    
-
-    # run REPL instead ..
     repl = LispREPL()
     repl.start()
