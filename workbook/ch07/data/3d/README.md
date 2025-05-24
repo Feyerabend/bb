@@ -6,7 +6,7 @@
 | 1       | Sphere           | 1 Point  | Lambertian     | None             | None    | None    | None   |
 | 2       | Sphere + Plane   | 1 Point  | Lambertian     | None             | None    | Yes     | None   |
 | 3       | + Y Bounce       | 1 Point  | Lambertian     | Vertical         | None    | Yes     | None   |
-| 4       | + X Bounce       | 1 Point  | Lambertian     | Full 2D          | None    | Yes     | None   |
+| 4       | + X Bounce       | 1 Point  | Lambertian     | Full 2D          | Image   | Yes     | None   |
 | 5       | + Texture        | 1 Point  | Phong + Tex    | Full 2D + Rot    | Image   | Yes     | File   |
 
 
