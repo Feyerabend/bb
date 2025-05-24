@@ -5,191 +5,227 @@
 |---------|------------------|----------|----------------|------------------|---------|---------|--------|
 | 1       | Sphere           | 1 Point  | Lambertian     | None             | None    | None    | None   |
 | 2       | Sphere + Plane   | 1 Point  | Lambertian     | None             | None    | Yes     | None   |
-| 3       | + Y Bounce       | 1 Point  | Lambertian     | Vertical         | None    | Yes     | None   |
-| 4       | + X Bounce       | 1 Point  | Lambertian     | Full 2D          | Image   | Yes     | None   |
-| 5       | + Texture        | 1 Point  | Phong + Tex    | Full 2D + Rot    | Image   | Yes     | File   |
-
+| 3       | Sphere + Plane   | 1 Point  | Lambertian     | Vertical         | None    | Yes     | None   |
+| 4       | Sphere + Plane   | 1 Point  | Lambertian     | Full 2D          | Image   | Yes     | None   |
+| 5       | Sphere + Plane   | 1 Point  | Phong + Tex    | Full 2D + Rot    | Image   | Yes     | File   |
 
 ### 1. Static Raytracer
 
-Conceptual Features
+*Conceptual Features*
 - Ray casting from camera to pixel.
-- Ray-sphere intersection with quadratic root.
-- Single light source for illumination.
+- Ray-sphere intersection using the quadratic formula.
+- Single point light source for illumination.
 - Diffuse (Lambertian) shading using dot product.
 
-Code Characteristics
-- Constants for resolution, FOV, sphere center.
-- Camera rays constructed by pixel-to-viewport mapping.
-- discriminant computed for sphere intersection:
+*Code Characteristics*
+- Constants for resolution, field of view (FOV), and sphere center.
+- Camera rays constructed by mapping pixel coordinates to viewport.
+- Discriminant computed for sphere intersection:
 
 ```javascript
+const a = dot(rayDir, rayDir);
+const b = 2 * dot(subtract(rayOrigin, sphereCenter), rayDir);
+const c = dot(subtract(rayOrigin, sphereCenter), subtract(rayOrigin, sphereCenter)) - sphereRadius * sphereRadius;
 const discriminant = b * b - 4 * a * c;
-```
-
-- Normal at hit point used for simple Lambert shading:
-
-```javascript
-const diffuse = Math.max(dot(normal, lightDir), 0);
-```
-
-
-### 2. Adding Plane and Shadows
-
-Conceptual Additions
-- Ray-plane intersection (y = -1 plane).
-- Shadow rays from hit point to light.
-- Occlusion testing to simulate hard shadows.
-
-Code Enhancements
-- Introduced function to test if any object blocks light:
-
-```javascript
-if (discriminantShadow >= 0 && tShadow > 0 && tShadow < lightDist) {
-  inShadow = true;
+if (discriminant >= 0) {
+  const t = (-b - Math.sqrt(discriminant)) / (2 * a);
+  // Compute hit point and normal
 }
 ```
 
-- When hit, compute whether pixel is shadowed.
-- Added a checkerboard pattern on the plane using:
+- Lambertian shading using the normal and light direction:
 
 ```javascript
-const checker = (Math.floor(hitPoint[0]) + Math.floor(hitPoint[2])) % 2;
+const hitPoint = add(rayOrigin, scale(rayDir, t));
+const normal = normalize(subtract(hitPoint, sphereCenter));
+const lightDir = normalize(subtract(lightPos, hitPoint));
+const diffuse = Math.max(0, dot(normal, lightDir));
+const color = scale([0.8, 0.3, 0.3], diffuse);
 ```
 
+### 2. Adding Plane and Shadows
 
-Impact
-- Introduced multiple object intersections.
-- Illumination becomes context-sensitive: light blocked → shadow.
+*Conceptual Additions*
+- Ray-plane intersection for a ground plane (y = -1).
+- Shadow rays from hit point to light source.
+- Occlusion testing for hard shadows.
 
+*Code Enhancements*
+- Ray-plane intersection and shadow testing:
 
+```javascript
+function rayPlaneIntersection(rayOrigin, rayDir) {
+  const t = -(rayOrigin[1] + 1) / rayDir[1];
+  return t > 0 ? t : Infinity;
+}
+
+function isInShadow(hitPoint, lightPos, sphereCenter, sphereRadius) {
+  const lightDir = normalize(subtract(lightPos, hitPoint));
+  const tShadow = raySphereIntersection(hitPoint, lightDir, sphereCenter, sphereRadius);
+  return tShadow > 0 && tShadow < distance(hitPoint, lightPos);
+}
+```
+
+- Checkerboard pattern on the plane:
+
+```javascript
+const checker = (Math.floor(hitPoint[0]) + Math.floor(hitPoint[2])) % 2 === 0 ? 1 : 0;
+const planeColor = checker ? [1, 1, 1] : [0.5, 0.5, 0.5];
+```
+
+*Impact*
+- Supports multiple objects (sphere and plane).
+- Shadows enhance realism by accounting for light occlusion.
 
 ### 3. Vertical Animation (Bouncing Sphere)
 
-Conceptual Additions
-- Animation system using requestAnimationFrame.
+*Conceptual Additions*
+- Animation using `requestAnimationFrame`.
 - Time-dependent vertical position via sine wave.
-- Simulates bouncing sphere over time.
+- Simulates a bouncing sphere.
 
-Code Additions
-- Frame time used to control bounce phase:
+*Code Additions*
+- Dynamic sphere position:
 
 ```javascript
 const bounceY = BASE_Y + Math.abs(Math.sin(time * 0.002)) * BOUNCE_HEIGHT;
-const SPHERE_CENTER = [0, bounceY, -3];
+const sphereCenter = [0, bounceY, -3];
+
+function render() {
+  // Update canvas with new sphere position
+  requestAnimationFrame(render);
+}
 ```
 
-- Scene is now redrawn per frame.
-
-Impact
-- Introduced temporal component.
-- Rendering becomes continuous, not single-frame.
-
-
+*Impact*
+- Introduces temporal dynamics for continuous rendering.
+- Shadows adapt to the moving sphere.
 
 ### 4. 2D Motion (X + Y)
 
-Conceptual Additions
-- Horizontal sinusoidal motion added to vertical bounce.
-- Sphere moves along ellipse-like path.
+*Conceptual Additions*
+- Horizontal sinusoidal motion combined with vertical bounce.
+- Sphere follows an elliptical path.
 
-Code Additions
-- Independent horizontal phase:
+*Code Additions*
+- 2D motion for the sphere:
 
 ```javascript
-const bounceX = Math.sin(horizontalPhase * Math.PI * 2) * HORIZONTAL_BOUNCE_AMPLITUDE;
-const SPHERE_CENTER = [bounceX, bounceY, -3];
+const bounceX = Math.sin(time * 0.001 * Math.PI * 2) * HORIZONTAL_BOUNCE_AMPLITUDE;
+const bounceY = BASE_Y + Math.abs(Math.sin(time * 0.002)) * BOUNCE_HEIGHT;
+const sphereCenter = [bounceX, bounceY, -3];
 ```
 
-- Same raycasting logic applies, but position is now 2D-animated.
+- Texture applied to the sphere (image-based):
 
-Impact
-- More complex animation path, giving scene liveliness.
-- Illumination/shadowing must track new positions dynamically.
+```javascript
+const textureColor = sampleTexture(imageData, u, v);
+```
 
-
+*Impact*
+- Enhances animation complexity with 2D motion.
+- Texture mapping introduces image-based rendering.
 
 ### 5. Texture Mapping and User Interaction
 
-Conceptual Additions
-- UV texture mapping based on surface normal.
+*Conceptual Additions*
+- UV texture mapping using spherical projection.
 - Texture coordinate rotation over time.
-- Image upload from user via file input.
-- Phong specular highlights for realism.
+- User-uploaded image via file input.
+- Phong shading with specular highlights.
 
-Code Additions
-- UV from normal using spherical projection:
-
-```javascript
-let u = 0.5 + Math.atan2(normal[2], normal[0]) / (2 * Math.PI);
-let v = 0.5 - Math.asin(normal[1]) / Math.PI;
-```
-
-- Image loaded and sampled from ImageData:
+*Code Additions*
+- UV coordinates from normal:
 
 ```javascript
-const pixelIndex = (y * textureImage.width + x) * 4;
-const texColor = [...];
+const u = 0.5 + Math.atan2(normal[2], normal[0]) / (2 * Math.PI);
+const v = 0.5 - Math.asin(normal[1]) / Math.PI;
 ```
 
-- Texture rotation using:
+- Texture sampling:
 
 ```javascript
-const uRotated = (u + rotationPhase) % 1.0;
+function sampleTexture(imageData, u, v) {
+  const x = Math.floor(u * imageData.width);
+  const y = Math.floor(v * imageData.height);
+  const pixelIndex = (y * imageData.width + x) * 4;
+  return [
+    imageData.data[pixelIndex] / 255,
+    imageData.data[pixelIndex + 1] / 255,
+    imageData.data[pixelIndex + 2] / 255
+  ];
+}
 ```
 
-- Lighting includes specular term:
+- Texture rotation:
 
 ```javascript
-const specular = Math.pow(Math.max(dot(normal, halfDir), 0), SPECULAR_POWER);
+const uRotated = (u + time * 0.0001) % 1.0;
 ```
 
+- Phong shading:
 
-Impact
-- Moves from procedural color to photographic realism.
-- Adds user-driven interactivity (uploading textures).
-- Introduces full Phong model (ambient + diffuse + specular).
-- Demonstrates how raytracing can incorporate raster texture logic.
+```javascript
+const viewDir = normalize(subtract(cameraPos, hitPoint));
+const halfDir = normalize(add(lightDir, viewDir));
+const diffuse = Math.max(0, dot(normal, lightDir));
+const specular = Math.pow(Math.max(0, dot(normal, halfDir)), SPECULAR_POWER);
+const finalColor = add(scale(texColor, diffuse + AMBIENT), scale([1, 1, 1], specular));
+```
 
+- File input handling:
+
+```javascript
+document.getElementById('fileInput').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    textureImage = ctx.getImageData(0, 0, img.width, img.height);
+  };
+  img.src = URL.createObjectURL(file);
+});
+```
+
+*Impact*
+- Enables photographic realism with user textures.
+- Adds interactivity via file uploads.
+- Implements full Phong model for enhanced lighting.
 
 ### Evolution
 
-1. From Geometry → Material Realism
-- Geometry remained similar (single sphere + plane), but appearance became dramatically richer via:
-- Procedural color → shadows → textures
-- Hardcoded colors → per-pixel texture sampling
+1. *Geometry → Material Realism*
+   - Simple sphere evolves to textured sphere with shadows and plane.
+   - Hardcoded colors → user-uploaded textures.
 
-2. From Static Image → Continuous Animation
-- Initially rendered once.
-- Later versions render 60 FPS animations using requestAnimationFrame.
+2. *Static → Continuous Animation*
+   - Single-frame rendering evolves to 60 FPS animations using `requestAnimationFrame`.
 
-3. From Local → Global Scene Awareness
-- Shadows and moving light increased awareness of inter-object relationships (occlusion, projection).
-- Texture mapping introduced surface orientation awareness via normals → UV.
+3. *Local → Global Scene Awareness*
+   - Shadows and dynamic lighting introduce inter-object relationships.
+   - Texture mapping uses surface normals for UV coordinates.
 
-4. From Single-purpose → Flexible & Interactive
-- Later versions allow arbitrary images.
-- Code generalizes for arbitrary lighting, animation parameters.
-
-
+4. *Single-purpose → Interactive*
+   - User input via file uploads enables dynamic textures.
+   - Generalized code supports flexible lighting and animation.
 
 ### Conclusion
 
+This project traces the evolution of a raytracing engine from a basic static renderer to a dynamic, interactive system.
+Each version builds incrementally:
 
-| Feature           | Early Versions           | Later Versions                                      |
-|-------------------|--------------------------|-----------------------------------------------------|
-| Scene Definition  | Constants only           | Parametrized by time, user input                    |
-| Rendering Flow    | Single render loop       | Continuous redraw (`requestAnimationFrame`)         |
-| Materials         | Hardcoded RGB            | Textures from user image + procedural fallback      |
-| Lighting          | Diffuse (Lambert) only   | Phong: ambient + diffuse + specular                 |
-| Interactivity     | None                     | Image file upload (`<input type="file">`)           |
-| Shadows           | None initially           | Implemented with occlusion logic                    |
-| Code Layout       | Monolithic loop          | Modular logic with functions (intersection, shading, etc.) |
+- *Version 1*: Establishes ray-sphere intersection and Lambertian shading.
+- *Version 2*: Adds a plane and shadows for multi-object scenes.
+- *Version 3*: Introduces vertical animation for dynamic rendering.
+- *Version 4*: Extends to 2D motion and basic texture mapping.
+- *Version 5*: Incorporates user-uploaded textures, texture rotation, and Phong shading.
 
+The progression highlights core graphics concepts: raycasting, lighting models, animation, and texture mapping.
+The modular design and interactive features make it a versatile foundation for further enhancements, such as complex
+geometries or advanced lighting. This serves as an effective educational tool for understanding 3D rendering principles.
 
-The project demonstrates a clear and progressive pedagogical trajectory:
-- Starts from the fundamentals of ray-object intersection and lighting.
-- Introduces animation and shadows to enrich scene dynamics.
-- Adds texture mapping and real-time interactivity for realism.
-- Gradually transitions from a toy renderer into a miniature raytracing engine with extensible scene and material systems.
 
