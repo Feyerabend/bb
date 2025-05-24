@@ -95,8 +95,6 @@ The deeper analysis of the summary below, you can find in the document [Secure P
 
 ### The Interplay of Security and Programming
 
-#### Core Challenges
-
 Software security is inherently tied to programming practices, with vulnerabilities often arising from:  
 - *Memory Management*: Manual handling in languages like C/C++ leads to buffer overflows,
   use-after-free errors, and data races.  
@@ -175,5 +173,5 @@ Secure programming demands a *multi-layered approach*:
 - *Human*: Training, code reviews, and a security-first culture.  
 
 No single solution suffices; security is an ongoing process requiring adaptation to evolving threats.
-The shift from reactive to proactive strategies—embracing memory safety, formal methods, and hardware
-innovations—will define the next era of secure software.
+The shift from reactive to proactive strategies--embracing memory safety, formal methods, and hardware
+innovations--will define the next era of secure software.
