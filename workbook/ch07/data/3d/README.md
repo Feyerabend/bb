@@ -6,7 +6,7 @@
 | 1       | Sphere           | 1 Point  | Lambertian     | None             | None    | None    | None   |
 | 2       | Sphere + Plane   | 1 Point  | Lambertian     | None             | None    | Yes     | None   |
 | 3       | Sphere + Plane   | 1 Point  | Lambertian     | Vertical         | None    | Yes     | None   |
-| 4       | Sphere + Plane   | 1 Point  | Lambertian     | Full 2D          | Image   | Yes     | None   |
+| 4       | Sphere + Plane   | 1 Point  | Lambertian     | Full 2D          | Image   | Yes     | File   |
 | 5       | Sphere + Plane   | 1 Point  | Phong + Tex    | Full 2D + Rot    | Image   | Yes     | File   |
 
 ### 1. Static Raytracer
