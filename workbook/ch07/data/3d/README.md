@@ -1,7 +1,7 @@
 
 ## Some 3D Algorithms
 
-It can be interesting to start with the code of a simple 3D renderer, and build toward the mathemathics
+It can be interesting to start with the code of a simple ray-tracing 3D renderer, and build toward the mathemathics
 instead of doing the opposite. Here is a suggestion of where to start. As you might see the reflection
 isn't working properly, and is given to you as a task to correct. More can be found in [projects](PROJECTS.md).
 
