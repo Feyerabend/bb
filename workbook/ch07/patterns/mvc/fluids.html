@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluid in Petri Dish - MVC Simulation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .subtitle {
+            text-align: center;
+            margin-bottom: 20px;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .control-group label {
+            font-size: 12px;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+        
+        input[type="range"] {
+            width: 100px;
+        }
+        
+        button {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+        
+        .instructions {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        canvas {
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            background: radial-gradient(circle at center, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .stats {
+            margin-top: 15px;
+            display: flex;
+            gap: 20px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fluid in Petri Dish Simulation</h1>
+    <div class="subtitle">Model-View-Controller Design Pattern Implementation</div>
+    
+    <div class="controls">
+        <!--<div class="control-group">
+            <label>Particles</label>
+            <input type="range" id="particleCount" min="50" max="400" value="200">
+            <span id="particleValue">200</span>
+        </div>-->
+        <div class="control-group">
+            <label>Viscosity</label>
+            <input type="range" id="viscosity" min="0" max="50" value="15">
+            <span id="viscosityValue">15</span>
+        </div>
+        <div class="control-group">
+            <label>Surface Tension</label>
+            <input type="range" id="tension" min="0" max="100" value="30">
+            <span id="tensionValue">30</span>
+        </div>
+        <div class="control-group">
+            <label>Gravity</label>
+            <input type="range" id="gravity" min="10" max="100" value="40">
+            <span id="gravityValue">40</span>
+        </div>
+        <button id="resetBtn">Reset Simulation</button>
+    </div>
+    
+    <div class="instructions">
+        Hold <strong>Left/Right Arrow Keys</strong> to tilt the dish • <strong>Mouse</strong> to interact with fluid
+    </div>
+    
+    <canvas id="canvas" width="800" height="600"></canvas>
+    
+    <div class="stats">
+        <span>FPS: <span id="fps">60</span></span>
+        <span>Tilt: <span id="tiltDisplay">0°</span></span>
+        <span>Particles: <span id="particleDisplay">200</span></span>
+    </div>
+
+    <script>
+ 
+        // ===== MODEL (Data and Physics) =====
+        class FluidModel {
+            constructor() {
+                this.particles = [];
+                this.config = {
+                    particleCount: 200,
+                    particleRadius: 2,
+                    smoothingRadius: 12,
+                    viscosity: 0.15,
+                    surfaceTension: 0.03,
+                    gravity: 0.4,
+                    restDensity: 1000,
+                    gasConstant: 2000,
+                    damping: 0.9,
+                    timeStep: 0.016,
+                    mass: 1
+                };
+                // Circular petri dish bounds
+                this.bounds = {
+                    centerX: 400, centerY: 300, radius: 180
+                };
+                this.tiltAngle = 0;
+                this.spatialGrid = new Map();
+                this.gridSize = this.config.smoothingRadius;
+            }
+            
+            initialize() {
+                this.particles = [];
+                const { centerX, centerY, radius } = this.bounds;
+                
+                // Create particles in a circular formation (like liquid in petri dish)
+                for (let i = 0; i < this.config.particleCount; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const r = Math.random() * (radius * 0.6);
+                    const px = centerX + Math.cos(angle) * r;
+                    const py = centerY + Math.sin(angle) * r;
+                    
+                    this.particles.push({
+                        x: px, y: py,
+                        vx: 0, vy: 0,
+                        density: 0, pressure: 0,
+                        id: i
+                    });
+                }
+            }
+            
+            updateSpatialGrid() {
+                this.spatialGrid.clear();
+                
+                for (let particle of this.particles) {
+                    const gridX = Math.floor(particle.x / this.gridSize);
+                    const gridY = Math.floor(particle.y / this.gridSize);
+                    const key = `${gridX},${gridY}`;
+                    
+                    if (!this.spatialGrid.has(key)) {
+                        this.spatialGrid.set(key, []);
+                    }
+                    this.spatialGrid.get(key).push(particle);
+                }
+            }
+            
+            getNeighbors(particle) {
+                const neighbors = [];
+                const gridX = Math.floor(particle.x / this.gridSize);
+                const gridY = Math.floor(particle.y / this.gridSize);
+                
+                for (let dx = -1; dx <= 1; dx++) {
+                    for (let dy = -1; dy <= 1; dy++) {
+                        const key = `${gridX + dx},${gridY + dy}`;
+                        const cell = this.spatialGrid.get(key);
+                        if (cell) {
+                            neighbors.push(...cell);
+                        }
+                    }
+                }
+                return neighbors;
+            }
+            
+            // SPH Kernels with improved smoothing
+            poly6Kernel(distSq, h) {
+                if (distSq >= h * h) return 0;
+                const coeff = 315 / (64 * Math.PI * Math.pow(h, 9));
+                const diff = h * h - distSq;
+                return coeff * diff * diff * diff;
+            }
+            
+            spikyGradient(dx, dy, dist, h) {
+                if (dist >= h || dist === 0) return { x: 0, y: 0 };
+                const coeff = -45 / (Math.PI * Math.pow(h, 6)) * (h - dist) * (h - dist) / dist;
+                return { x: coeff * dx, y: coeff * dy };
+            }
+            
+            viscosityLaplacian(dist, h) {
+                if (dist >= h) return 0;
+                return 45 / (Math.PI * Math.pow(h, 6)) * (h - dist);
+            }
+            
+            update(tiltAngle, mouseX = -1, mouseY = -1) {
+                this.tiltAngle = tiltAngle;
+                this.updateSpatialGrid();
+                this.calculateDensityPressure();
+                this.calculateForces(mouseX, mouseY);
+                this.integrate();
+                this.handleCircularBoundaries();
+            }
+            
+            calculateDensityPressure() {
+                for (let particle of this.particles) {
+                    let density = 0;
+                    const neighbors = this.getNeighbors(particle);
+                    
+                    for (let neighbor of neighbors) {
+                        const dx = particle.x - neighbor.x;
+                        const dy = particle.y - neighbor.y;
+                        const distSq = dx * dx + dy * dy;
+                        
+                        if (distSq < this.config.smoothingRadius * this.config.smoothingRadius) {
+                            density += this.config.mass * this.poly6Kernel(distSq, this.config.smoothingRadius);
+                        }
+                    }
+                    
+                    particle.density = Math.max(density, this.config.restDensity * 0.1);
+                    particle.pressure = this.config.gasConstant * (particle.density - this.config.restDensity);
+                }
+            }
+            
+            calculateForces(mouseX, mouseY) {
+                const gravityX = this.config.gravity * Math.sin(this.tiltAngle) * 0.1;
+                const gravityY = this.config.gravity * Math.cos(this.tiltAngle) * 0.1;
+                
+                for (let particle of this.particles) {
+                    let fx = gravityX;
+                    let fy = gravityY;
+                    
+                    const neighbors = this.getNeighbors(particle);
+                    
+                    for (let neighbor of neighbors) {
+                        if (particle.id === neighbor.id) continue;
+                        
+                        const dx = particle.x - neighbor.x;
+                        const dy = particle.y - neighbor.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (dist < this.config.smoothingRadius && dist > 0.001) {
+                            // Pressure force
+                            const pressureForce = (particle.pressure + neighbor.pressure) / (2 * particle.density);
+                            const gradient = this.spikyGradient(dx, dy, dist, this.config.smoothingRadius);
+                            fx -= this.config.mass * pressureForce * gradient.x;
+                            fy -= this.config.mass * pressureForce * gradient.y;
+                            
+                            // Viscosity force
+                            const viscosity = this.viscosityLaplacian(dist, this.config.smoothingRadius);
+                            fx += this.config.viscosity * this.config.mass * (neighbor.vx - particle.vx) * viscosity / particle.density;
+                            fy += this.config.viscosity * this.config.mass * (neighbor.vy - particle.vy) * viscosity / particle.density;
+                            
+                            // Surface tension
+                            const tensionMag = this.config.surfaceTension * this.config.mass / particle.density;
+                            fx -= tensionMag * dx / dist;
+                            fy -= tensionMag * dy / dist;
+                        }
+                    }
+                    
+                    // Mouse interaction
+                    if (mouseX >= 0 && mouseY >= 0) {
+                        const mdx = particle.x - mouseX;
+                        const mdy = particle.y - mouseY;
+                        const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                        if (mdist < 50 && mdist > 0.1) {
+                            const force = 500 / (mdist * mdist);
+                            fx += force * mdx / mdist;
+                            fy += force * mdy / mdist;
+                        }
+                    }
+                    
+                    particle.vx += fx * this.config.timeStep;
+                    particle.vy += fy * this.config.timeStep;
+                }
+            }
+            
+            integrate() {
+                for (let particle of this.particles) {
+                    particle.x += particle.vx * this.config.timeStep;
+                    particle.y += particle.vy * this.config.timeStep;
+                }
+            }
+            
+            handleCircularBoundaries() {
+                const { centerX, centerY, radius } = this.bounds;
+                const effectiveRadius = radius - this.config.particleRadius;
+                
+                for (let particle of this.particles) {
+                    const dx = particle.x - centerX;
+                    const dy = particle.y - centerY;
+                    const distFromCenter = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distFromCenter > effectiveRadius) {
+                        // Push particle back inside circle
+                        const normal = { x: dx / distFromCenter, y: dy / distFromCenter };
+                        particle.x = centerX + normal.x * effectiveRadius;
+                        particle.y = centerY + normal.y * effectiveRadius;
+                        
+                        // Reflect velocity along normal
+                        const velDotNormal = particle.vx * normal.x + particle.vy * normal.y;
+                        particle.vx -= 2 * velDotNormal * normal.x * this.config.damping;
+                        particle.vy -= 2 * velDotNormal * normal.y * this.config.damping;
+                    }
+                }
+            }
+            
+            updateConfig(key, value) {
+                this.config[key] = value;
+                if (key === 'particleCount') {
+                    this.initialize();
+                }
+            }
+        }
+        
+ 
+ 
+        // ===== VIEW (Rendering) =====
+        class FluidView {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.frameCount = 0;
+                this.lastTime = 0;
+                this.fps = 60;
+            }
+            
+            render(model, mouseX, mouseY) {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                this.drawBackground();
+                this.drawPetriDish(model.bounds, model.tiltAngle);
+                this.drawFluid(model.particles);
+                this.drawMouseEffect(mouseX, mouseY);
+                
+                this.updateFPS();
+            }
+            
+            drawBackground() {
+                const gradient = this.ctx.createRadialGradient(
+                    this.canvas.width / 2, this.canvas.height / 2, 0,
+                    this.canvas.width / 2, this.canvas.height / 2, this.canvas.width / 2
+                );
+                gradient.addColorStop(0, '#f8f9fa');
+                gradient.addColorStop(1, '#e9ecef');
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+            
+            drawPetriDish(bounds, tiltAngle) {
+                const { centerX, centerY, radius } = bounds;
+                
+                this.ctx.save();
+                this.ctx.translate(centerX, centerY);
+                
+                // Create 3D perspective effect based on tilt
+                const scaleY = Math.cos(tiltAngle) * 0.3 + 0.7; // Elliptical perspective
+                this.ctx.scale(1, scaleY);
+                
+                // Petri dish shadow
+                this.ctx.save();
+                this.ctx.translate(3, 6);
+                this.ctx.beginPath();
+                this.ctx.arc(0, 0, radius + 5, 0, Math.PI * 2);
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                this.ctx.fill();
+                this.ctx.restore();
+                
+                // Petri dish outer rim
+                this.ctx.beginPath();
+                this.ctx.arc(0, 0, radius + 8, 0, Math.PI * 2);
+                this.ctx.strokeStyle = '#ccc';
+                this.ctx.lineWidth = 6;
+                this.ctx.stroke();
+                
+                // Petri dish inner area
+                this.ctx.beginPath();
+                this.ctx.arc(0, 0, radius, 0, Math.PI * 2);
+                this.ctx.strokeStyle = '#ddd';
+                this.ctx.lineWidth = 2;
+                this.ctx.stroke();
+                
+                // Glass highlight effect
+                this.ctx.beginPath();
+                this.ctx.arc(-radius * 0.3, -radius * 0.3, radius * 0.6, 0, Math.PI * 2);
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+                this.ctx.lineWidth = 1;
+                this.ctx.setLineDash([5, 5]);
+                this.ctx.stroke();
+                this.ctx.setLineDash([]);
+                
+                this.ctx.restore();
+            }
+            
+            drawFluid(particles) {
+                // Create realistic fluid with proper color mixing
+                this.ctx.save();
+                
+                // First pass: soft glow for fluid cohesion
+                this.ctx.globalCompositeOperation = 'multiply';
+                for (let particle of particles) {
+                    const gradient = this.ctx.createRadialGradient(
+                        particle.x, particle.y, 0,
+                        particle.x, particle.y, 10
+                    );
+                    gradient.addColorStop(0, 'rgba(0, 123, 255, 0.8)');
+                    gradient.addColorStop(0.5, 'rgba(0, 100, 255, 0.4)');
+                    gradient.addColorStop(1, 'rgba(0, 80, 255, 0.1)');
+                    
+                    this.ctx.fillStyle = gradient;
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x, particle.y, 8, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+                
+                // Second pass: core fluid particles
+                this.ctx.globalCompositeOperation = 'source-over';
+                this.ctx.fillStyle = 'rgba(30, 144, 255, 0.85)';
+                for (let particle of particles) {
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x, particle.y, 3, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+                
+                // Third pass: surface highlights
+                this.ctx.fillStyle = 'rgba(173, 216, 230, 0.6)';
+                for (let particle of particles) {
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x - 1, particle.y - 1, 1.5, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+                
+                this.ctx.restore();
+            }
+            
+            drawMouseEffect(mouseX, mouseY) {
+                if (mouseX >= 0 && mouseY >= 0) {
+                    this.ctx.save();
+                    this.ctx.strokeStyle = 'rgba(255, 100, 100, 0.6)';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.setLineDash([5, 5]);
+                    this.ctx.beginPath();
+                    this.ctx.arc(mouseX, mouseY, 50, 0, Math.PI * 2);
+                    this.ctx.stroke();
+                    this.ctx.restore();
+                }
+            }
+            
+            updateFPS() {
+                this.frameCount++;
+                const now = performance.now();
+                if (now - this.lastTime >= 1000) {
+                    this.fps = Math.round(this.frameCount * 1000 / (now - this.lastTime));
+                    this.frameCount = 0;
+                    this.lastTime = now;
+                }
+            }
+            
+            getFPS() {
+                return this.fps;
+            }
+        }
+
+
+
+        // ===== CONTROLLER (Input and Logic) =====
+        class FluidController {
+            constructor(model, view) {
+                this.model = model;
+                this.view = view;
+                this.keys = { left: false, right: false };
+                this.mouse = { x: -1, y: -1, down: false };
+                this.maxTilt = Math.PI / 6; // 30 degrees for petri dish
+                this.tiltSpeed = 0.02;
+                this.currentTilt = 0;
+                
+                this.setupEventListeners();
+                this.setupControls();
+            }
+            
+            setupEventListeners() {
+                // Keyboard input
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') this.keys.left = true;
+                    if (e.key === 'ArrowRight') this.keys.right = true;
+                    if (e.key.toLowerCase() === 'r') this.reset();
+                });
+                
+                document.addEventListener('keyup', (e) => {
+                    if (e.key === 'ArrowLeft') this.keys.left = false;
+                    if (e.key === 'ArrowRight') this.keys.right = false;
+                });
+                
+                // Mouse input
+                const canvas = this.view.canvas;
+                canvas.addEventListener('mousemove', (e) => {
+                    const rect = canvas.getBoundingClientRect();
+                    this.mouse.x = e.clientX - rect.left;
+                    this.mouse.y = e.clientY - rect.top;
+                });
+                
+                canvas.addEventListener('mouseleave', () => {
+                    this.mouse.x = -1;
+                    this.mouse.y = -1;
+                });
+            }
+            
+            setupControls() {
+                const controls = {
+                    particleCount: document.getElementById('particleCount'),
+                    viscosity: document.getElementById('viscosity'),
+                    tension: document.getElementById('tension'),
+                    gravity: document.getElementById('gravity')
+                };
+                
+                const displays = {
+                    particleValue: document.getElementById('particleValue'),
+                    viscosityValue: document.getElementById('viscosityValue'),
+                    tensionValue: document.getElementById('tensionValue'),
+                    gravityValue: document.getElementById('gravityValue')
+                };
+                
+                // Check if elements exist before adding event listeners
+                for (let [key, slider] of Object.entries(controls)) {
+                    if (slider && displays[key + 'Value']) {
+                        slider.addEventListener('input', (e) => {
+                            const value = parseFloat(e.target.value);
+                            displays[key + 'Value'].textContent = value;
+                            
+                            // Map slider values to model parameters
+                            switch(key) {
+                                case 'particleCount':
+                                    this.model.updateConfig('particleCount', value);
+                                    break;
+                                case 'viscosity':
+                                    this.model.updateConfig('viscosity', value / 100);
+                                    break;
+                                case 'tension':
+                                    this.model.updateConfig('surfaceTension', value / 1000);
+                                    break;
+                                case 'gravity':
+                                    this.model.updateConfig('gravity', value / 100);
+                                    break;
+                            }
+                        });
+                    }
+                }
+                
+                const resetBtn = document.getElementById('resetBtn');
+                if (resetBtn) {
+                    resetBtn.addEventListener('click', () => this.reset());
+                }
+            }
+            
+            update() {
+                // Handle tilting
+                if (this.keys.left) {
+                    this.currentTilt = Math.min(this.currentTilt + this.tiltSpeed, this.maxTilt);
+                }
+                if (this.keys.right) {
+                    this.currentTilt = Math.max(this.currentTilt - this.tiltSpeed, -this.maxTilt);
+                }
+                
+                // Apply decay when no keys pressed
+                if (!this.keys.left && !this.keys.right) {
+                    this.currentTilt *= 0.98;
+                }
+                
+                // Update model
+                this.model.update(this.currentTilt, this.mouse.x, this.mouse.y);
+                
+                // Update displays safely
+                const fpsDisplay = document.getElementById('fps');
+                const tiltDisplay = document.getElementById('tiltDisplay');
+                const particleDisplay = document.getElementById('particleDisplay');
+                
+                if (fpsDisplay) fpsDisplay.textContent = this.view.getFPS();
+                if (tiltDisplay) tiltDisplay.textContent = Math.round(this.currentTilt * 180 / Math.PI) + '°';
+                if (particleDisplay) particleDisplay.textContent = this.model.particles.length;
+            }
+            
+            render() {
+                this.view.render(this.model, this.mouse.x, this.mouse.y);
+            }
+            
+            reset() {
+                this.model.initialize();
+                this.currentTilt = 0;
+            }
+            
+            start() {
+                const animate = () => {
+                    this.update();
+                    this.render();
+                    requestAnimationFrame(animate);
+                };
+                animate();
+            }
+        }
+        
+ 
+        // ===== INIT =====
+        const canvas = document.getElementById('canvas');
+        const model = new FluidModel();
+        const view = new FluidView(canvas);
+        const controller = new FluidController(model, view);
+        
+        model.initialize();
+        controller.start();
+    </script>
+</body>
+</html>
