@@ -7,7 +7,6 @@ ideas?
 - legacy
 - refactor
 
-- (soundex)
 
 
 
