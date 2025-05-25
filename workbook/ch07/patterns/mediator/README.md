@@ -81,6 +81,7 @@ without requiring them to interact directly with one another. These real-world e
 how centralised coordination can simplify complex interactions between multiple parties.
 
 ```mermaid
+classDiagram
     %% ====== Mediator Pattern ======
     class Mediator {
         <<interface>>
@@ -98,9 +99,9 @@ how centralised coordination can simplify complex interactions between multiple 
         +mediate(Colleague colleague)
     }
 
-    Mediator <|-- ConcreteMediator : Implements
+    Mediator <|.. ConcreteMediator : Implements
     Colleague "2..*" --> "1" Mediator : Communicates via
-    Colleague <-- ConcreteMediator : Manages
+    ConcreteMediator --> Colleague : Manages
 ```
 
 ### Text Rendering System
