@@ -134,6 +134,24 @@ const sphereCenter = [bounceX, bounceY, -3];
 const textureColor = sampleTexture(imageData, u, v);
 ```
 
+- File input handling:
+
+```javascript
+document.getElementById('fileInput').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    textureImage = ctx.getImageData(0, 0, img.width, img.height);
+  };
+  img.src = URL.createObjectURL(file);
+});
+```
+
 *Impact*
 - Enhances animation complexity with 2D motion.
 - Texture mapping introduces image-based rendering.
@@ -185,23 +203,6 @@ const specular = Math.pow(Math.max(0, dot(normal, halfDir)), SPECULAR_POWER);
 const finalColor = add(scale(texColor, diffuse + AMBIENT), scale([1, 1, 1], specular));
 ```
 
-- File input handling:
-
-```javascript
-document.getElementById('fileInput').addEventListener('change', function(event) {
-  const file = event.target.files[0];
-  const img = new Image();
-  img.onload = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
-    textureImage = ctx.getImageData(0, 0, img.width, img.height);
-  };
-  img.src = URL.createObjectURL(file);
-});
-```
 
 *Impact*
 - Enables photographic realism with user textures.
