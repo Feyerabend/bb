@@ -7,9 +7,8 @@ spelled differently. For example, "Smith" and "Smyth" would be considered equiva
 
 It was originally developed by Robert C. Russell and Margaret K. Odell and patented in 1918
 and 1922. The U.S. National Archives later adopted it, and it has been widely used in genealogy,
-databases, and record linkage systems.[^names]
+databases, and record linkage systems.
 
-[^names]: IN the example I've used names from https://github.com/aruljohn/popular-baby-names/tree/master/1900.
 
 ### How It Works
 
@@ -122,3 +121,4 @@ The use case mimics a realistic scenario: integrating a phonetic matching system
 system (database) that wasn't designed for phonetic queries. This is common in legacy systems or when combining
 third-party components.
 
+(In the coding example I've used names from https://github.com/aruljohn/popular-baby-names/tree/master/1900.)
