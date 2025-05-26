@@ -7,8 +7,9 @@ spelled differently. For example, "Smith" and "Smyth" would be considered equiva
 
 It was originally developed by Robert C. Russell and Margaret K. Odell and patented in 1918
 and 1922. The U.S. National Archives later adopted it, and it has been widely used in genealogy,
-databases, and record linkage systems.
+databases, and record linkage systems.[^names]
 
+[^names]: IN the example I've used names from https://github.com/aruljohn/popular-baby-names/tree/master/1900.
 
 ### How It Works
 
