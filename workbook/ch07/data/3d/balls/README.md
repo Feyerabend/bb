@@ -5,16 +5,115 @@ It can be interesting to start with the code of a simple ray-tracing 3D renderer
 instead of doing the opposite. Here is a suggestion of where to start. As you might see the reflection
 isn't working properly, and is given to you as a task to correct. More can be found in [projects](PROJECTS.md).
 
-| Version | Scene Elements   | Lighting | Shading Model  | Animation        | Texture | Shadows | Input  |
-|---------|------------------|----------|----------------|------------------|---------|---------|--------|
-| 1       | Sphere           | 1 Point  | Lambertian     | None             | None    | None    | None   |
-| 2       | Sphere + Plane   | 1 Point  | Lambertian     | None             | None    | Yes     | None   |
-| 3       | Sphere + Plane   | 1 Point  | Lambertian     | Vertical         | None    | Yes     | None   |
-| 4       | Sphere + Plane   | 1 Point  | Lambertian     | Full 2D          | Image   | Yes     | File   |
-| 5       | Sphere + Plane   | 1 Point  | Phong + Tex    | Full 2D + Rot    | Image   | Yes     | File   |
-| 6       | Sphere + Plane   | 1 Point  | Phong + Tex    | Full 2D + Rot    | Image   | Yes     | File   |
 
-Version 7. WebWorkers edition.
+### Journey into 3D: Understanding Raytracing through Simple Web Examples
+
+If you've ever wondered how realistic images are created on your screens, these simple web examples
+offer a hands-on introduction to one of the fundamental techniques: *raytracing*.
+
+There is a series of HTML files (`01.html` through `07.html`, and `five.html`), each building upon
+the last to illustrate different aspects of 3D rendering. We'll explore them sequentially to understand
+the magic behind bringing virtual worlds to life.
+
+
+#### What is 3D Rendering?
+
+At its core, 3D rendering is the process of converting a 3D model into a 2D image. Think of it like
+taking a photograph of a sculpture. In computer graphics, we define objects (like spheres or planes),
+lights, and a camera within a virtual 3D space. The rendering process then calculates what each pixel
+on your screen should look like from the camera's perspective.
+
+Raytracing is a rendering technique that simulates the path of light. Instead of tracing light from
+the light source, it works backward:
+
+1. *Rays from the Camera:* For every single pixel on your screen, a "ray" of light is cast from the
+   virtual camera through that pixel into the 3D scene.
+2. *Intersection:* The first thing the ray hits in the scene (e.g., a sphere or a plane) determines
+   what that pixel will display.
+3. *Lighting & Shading:* Once an intersection is found, the program calculates how light would
+   illuminate that point, considering light sources, surface properties (color, shininess), and shadows.
+4. *Coloring the Pixel:* Based on these calculations, the pixel is assigned a color, and this process
+   repeats for every pixel, eventually forming the complete image.
+
+This approach often results in very realistic images because it accurately models how light interacts
+with objects.
+
+
+#### Core Concepts You'll Encounter in These Samples:
+
+Let's break down the key 3D concepts demonstrated in these files:
+
+* *Vectors and Basic Math:* You'll see a `Vector` class in the JavaScript code. In 3D graphics, vectors
+are essential for representing:
+    * *Positions:* Where objects are in space (e.g., `x, y, z` coordinates).
+    * *Directions:* Which way a light ray is traveling, or the "normal" (outward-facing) direction of a surface.
+    * *Operations:* Adding, subtracting, scaling, and performing "dot products" (which help determine
+      angles and how much light hits a surface).
+* *Scene Setup:*
+    * *Camera:* Defines the viewpoint from which the scene is rendered. This includes its position
+      (`CAMERA_POS`) and Field of View (`FOV`), which is like the zoom level of a camera lens.
+    * *Objects:* In these samples, you'll mainly see a `Sphere` and a `Plane`. Each has properties like
+      its position and radius (for the sphere) or `y` coordinate (for the plane).
+    * *Light Source:* A `LIGHT_POS` defines where the light is coming from, crucial for calculating
+      shadows and diffuse lighting.
+* *Ray-Object Intersection:* This is the heart of raytracing. The code calculates if and where a ray
+  intersects with a sphere or a plane. This often involves solving mathematical equations (e.g.,
+  quadratic equations for spheres).
+* *Lighting Models:*
+    * *Diffuse Lighting:* How much light "spreads" from a surface. It depends on the angle between the
+      light direction and the surface's normal. Surfaces directly facing the light appear brighter.
+    * *Ambient Light:* A base level of light in the scene that illuminates all surfaces equally, preventing
+      completely black areas.
+    * *Shadows:* By casting a "shadow ray" from the hit point towards the light source, the program can
+      determine if another object blocks the light, creating a shadow.
+* *Animation:* By updating object positions or properties over time (using `requestAnimationFrame` in
+  JavaScript), the scenes come to life.
+* *Textures:* Instead of a solid color, surfaces can have images (textures) applied to them. This adds
+  detail and realism. You'll see how pixel data from an image is used to color a surface.
+* *Reflection:* Simulating how light bounces off shiny surfaces. This involves casting new "reflection rays"
+  from the hit point.
+* *Multithreading (Web Workers):* For more complex scenes, rendering can be slow. Modern web browsers allow
+  JavaScript to perform tasks in the background using "Web Workers," which can significantly speed up
+  rendering by dividing the workload.
+
+
+#### Exploring the Samples Sequentially:
+
+Let's take a quick look at what each file likely demonstrates:
+
+* `01.html` (Raytraced Sphere with Shadow): This is your basic starting point. It will render a static
+  sphere and a plane, demonstrating fundamental ray-sphere and ray-plane intersection, along with basic
+  diffuse lighting and shadows.
+
+* `02.html` (Raytraced Sphere with Animated Color): Builds on `01.html` by introducing animation. You'll
+  see the sphere's color changing over time. This shows how time can be incorporated into the rendering
+  loop.
+
+* `03.html` (Raytraced Bouncing Sphere with Animated Color): Adds more complex animation. The sphere will
+  bounce up and down, demonstrating dynamic object positioning.
+
+* `04.html` (Raytraced Bouncing Sphere with Texture): Introduces texture mapping. Instead of a plain colored
+  sphere, it will display a texture (like the `checker.png` file) on its surface. You might even be able
+  to load your own textures.
+
+* `05.html` (Raytraced Bouncing Sphere with Texture - Enhanced/Multiple Spheres): This
+  continue to refine the texture implementation.
+
+* `06.html` (Raytraced Bouncing Sphere with Texture and Reflection): This file will demonstrate
+  poor and faulty reflections, making the plane or sphere appear shiny and reflective of other
+  objects in the scene. Build it better!
+
+* `07.html` (Multi-threaded Raytracer with Web Workers): Focuses on performance. This example will show
+  how the rendering workload can be distributed across multiple CPU cores using Web Workers, making the
+  animations smoother, especially on more complex scenes.
+
+* `five.html` (Multi-Sphere Raytracer): Introduce multiple spheres or a more complex scene setups. The
+  textures are distored and have to be fixed ..
+
+By examining the JavaScript code in each file, you'll see how these concepts are implemented step-by-step,
+giving you a practical understanding of 3D raytracing from the ground up.
+
+Next we wil give you some more detailed notes on the implementations.
 
 
 ### 1. Static Raytracer
@@ -247,4 +346,3 @@ Each version builds incrementally:
 The progression highlights core graphics concepts: raycasting, lighting models, animation, and texture mapping.
 The modular design and interactive features make it a versatile foundation for further enhancements, such as complex
 geometries or advanced lighting. This serves as an effective educational tool for understanding 3D rendering principles.
-
