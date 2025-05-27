@@ -332,7 +332,7 @@ a horizontal plane (the floor).
 ### Summary Concepts
 
 * *Coordinate Systems*: Everything starts with defining points in a 3D space (`[x, y, z]`).
-* *Transformations (Rotation, Translation, Scaling)**: How we move, rotate, and resize objects
+* *Transformations (Rotation, Translation, Scaling)*: How we move, rotate, and resize objects
   in 3D space. These are typically done using matrix multiplications. Imagine a stamp: transformations
   are how you position, turn, or size that stamp before pressing it down.
 * *Projection*: The process of converting 3D points to 2D points on your screen. This is crucial
@@ -354,6 +354,6 @@ a horizontal plane (the floor).
   or mirrored for reflections) and rendering them in the correct order with adjusted properties
   (transparency, color).
 
-This series of files provides a fantastic, hands-on journey into the fundamentals of 3D graphics,
-showing how basic linear algebra and geometry come together to create compelling visual effects.
+This series of files provides a hands-on journey into the fundamentals of 3D graphics,
+showing how basic linear algebra and geometry come together to create visual effects.
 
