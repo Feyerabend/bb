@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple 3D Cube - Matrix Rotations</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+        }
+        canvas {
+            display: block;
+            margin: 20px auto;
+            background: #2a2a2a;
+            border: 2px solid #444;
+            border-radius: 8px;
+        }
+        .info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .math {
+            background: #333;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px auto;
+            max-width: 600px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>3D Cube - Standard Matrix Rotations</h1>
+        <p>Working foundation before implementing Clifford algebra</p>
+    </div>
+
+    <canvas id="cubeCanvas" width="600" height="600"></canvas>
+
+    <div class="math">
+        <strong>Standard 3D Rotation Matrices:</strong><br>
+        • X-axis: Rx(θ) = [[1,0,0], [0,cos,-sin], [0,sin,cos]]<br>
+        • Y-axis: Ry(θ) = [[cos,0,sin], [0,1,0], [-sin,0,cos]]<br>
+        • Z-axis: Rz(θ) = [[cos,-sin,0], [sin,cos,0], [0,0,1]]<br>
+        • Combined: R = Rz * Ry * Rx
+    </div>
+
+    <div class="controls">
+        <button onclick="toggleAnimation()">Toggle Animation</button>
+        <button onclick="resetRotation()">Reset</button>
+        <button onclick="changeSpeed()">Change Speed</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cubeCanvas');
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Cube vertices (unit cube centered at origin)
+        const vertices = [
+            [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],  // back face (z = -1)
+            [-1, -1,  1], [1, -1,  1], [1, 1,  1], [-1, 1,  1]   // front face (z = 1)
+        ];
+
+        // Cube edges (which vertices to connect)
+        const edges = [
+            [0, 1], [1, 2], [2, 3], [3, 0],  // back face
+            [4, 5], [5, 6], [6, 7], [7, 4],  // front face
+            [0, 4], [1, 5], [2, 6], [3, 7]   // connecting edges
+        ];
+
+        // Matrix multiplication: multiply 3x3 matrix by 3x1 vector
+        function matrixVectorMult(matrix, vector) {
+            return [
+                matrix[0][0] * vector[0] + matrix[0][1] * vector[1] + matrix[0][2] * vector[2],
+                matrix[1][0] * vector[0] + matrix[1][1] * vector[1] + matrix[1][2] * vector[2],
+                matrix[2][0] * vector[0] + matrix[2][1] * vector[1] + matrix[2][2] * vector[2]
+            ];
+        }
+
+        // Matrix multiplication: multiply two 3x3 matrices
+        function matrixMult(a, b) {
+            const result = [[0,0,0], [0,0,0], [0,0,0]];
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    for (let k = 0; k < 3; k++) {
+                        result[i][j] += a[i][k] * b[k][j];
+                    }
+                }
+            }
+            return result;
+        }
+
+        // Create rotation matrix around X-axis
+        function rotationX(angle) {
+            const c = Math.cos(angle);
+            const s = Math.sin(angle);
+            return [
+                [1,  0,  0],
+                [0,  c, -s],
+                [0,  s,  c]
+            ];
+        }
+
+        // Create rotation matrix around Y-axis  
+        function rotationY(angle) {
+            const c = Math.cos(angle);
+            const s = Math.sin(angle);
+            return [
+                [ c,  0,  s],
+                [ 0,  1,  0],
+                [-s,  0,  c]
+            ];
+        }
+
+        // Create rotation matrix around Z-axis
+        function rotationZ(angle) {
+            const c = Math.cos(angle);
+            const s = Math.sin(angle);
+            return [
+                [c, -s,  0],
+                [s,  c,  0],
+                [0,  0,  1]
+            ];
+        }
+
+        // 3D to 2D projection with perspective
+        function project([x, y, z]) {
+            const distance = 5;  // camera distance
+            const scale = 150 / (distance - z);  // perspective scaling
+            return [
+                x * scale + width / 2,
+                -y * scale + height / 2  // flip Y for screen coordinates
+            ];
+        }
+
+        // Draw the cube
+        function drawCube(angleX, angleY, angleZ) {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Create individual rotation matrices
+            const Rx = rotationX(angleX);
+            const Ry = rotationY(angleY);  
+            const Rz = rotationZ(angleZ);
+            
+            // Combine rotations: R = Rz * Ry * Rx
+            const R = matrixMult(matrixMult(Rz, Ry), Rx);
+            
+            // Transform all vertices
+            const transformedVertices = vertices.map(vertex => 
+                matrixVectorMult(R, vertex)
+            );
+
+            // Sort edges by average Z for simple depth sorting
+            const edgeDepths = edges.map(([start, end]) => ({
+                edge: [start, end],
+                depth: (transformedVertices[start][2] + transformedVertices[end][2]) / 2
+            }));
+            edgeDepths.sort((a, b) => a.depth - b.depth);  // back to front
+
+            // Draw edges (back to front)
+            edgeDepths.forEach(({edge: [start, end], depth}) => {
+                const [x1, y1] = project(transformedVertices[start]);
+                const [x2, y2] = project(transformedVertices[end]);
+                
+                // Color based on depth
+                const brightness = Math.floor(100 + (depth + 2) * 60);
+                ctx.strokeStyle = `rgb(${brightness}, ${brightness + 50}, ${brightness + 100})`;
+                ctx.lineWidth = 2;
+                
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            });
+
+            // Draw vertices
+            transformedVertices.forEach((vertex, i) => {
+                const [x, y] = project(vertex);
+                const depth = vertex[2];
+                const size = 4 + depth;  // bigger when closer
+                
+                ctx.fillStyle = depth > 0 ? '#ff6666' : '#4444ff';
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+
+            // Display rotation angles
+            ctx.fillStyle = 'white';
+            ctx.font = '14px monospace';
+            ctx.fillText(`X: ${(angleX * 180 / Math.PI).toFixed(1)}°`, 20, 30);
+            ctx.fillText(`Y: ${(angleY * 180 / Math.PI).toFixed(1)}°`, 20, 50);
+            ctx.fillText(`Z: ${(angleZ * 180 / Math.PI).toFixed(1)}°`, 20, 70);
+        }
+
+        // Animation variables
+        let angleX = 0;
+        let angleY = 0; 
+        let angleZ = 0;
+        let animating = true;
+        let speed = 1;
+
+        function animate() {
+            if (animating) {
+                drawCube(angleX, angleY, angleZ);
+                
+                angleX += 0.007 * speed;
+                angleY += 0.011 * speed;
+                angleZ += 0.013 * speed;
+            }
+            requestAnimationFrame(animate);
+        }
+
+        function toggleAnimation() {
+            animating = !animating;
+        }
+
+        function resetRotation() {
+            angleX = angleY = angleZ = 0;
+        }
+
+        function changeSpeed() {
+            speed = speed === 1 ? 2 : speed === 2 ? 0.5 : 1;
+        }
+
+        // Start animation
+        animate();
+    </script>
+</body>
+</html>
