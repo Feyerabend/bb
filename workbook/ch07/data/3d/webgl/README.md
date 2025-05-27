@@ -2,7 +2,11 @@
 ## WebGL and OBJ files
 
 > [!NOTE]  
-> Not all browsers implements WebGL, which is required for this JS/HTML code.
+> Not all browsers implement WebGL, which is required for this JS/HTML code. This also
+> highlights the problem of relying on less established or non-standard programming
+> languages and runtimes. As a task, you can adapt the JavaScript to your current
+> operating system and web browser to run this simple OBJ viewer. Or let a LLM
+> do another one for you.
 
 To get acquainted with 3D graphics and rendering, you don't always have to start entirely from the bottom
 and build everything from scratch. A top-down approach can also be useful. By exploring WebGL together
@@ -26,5 +30,4 @@ by the OBJ file, it is omitted here). Each line in the file typically begins wit
 for vertices, vt for texture coordinates, vn for normals, and f for face definitions that refer to
 indices of previously listed elements. Because of its simplicity and wide support, the OBJ format is a
 popular interchange format across 3D software and rendering pipelines.
-
 
