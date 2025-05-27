@@ -158,8 +158,9 @@
         </div>
         
         <div class="control-group">
-            <label>Scale: <span class="range-value" id="scaleValue">1.00</span></label>
-            <input type="range" id="scaleSlider" min="0.1" max="10.0" step="0.1" value="1.0">
+            <!--<label>Scale: <span class="range-value" id="scaleValue">1.00</span></label>-->
+            <label>Scale: <span class="range-value" id="scaleValue">1.000</span></label>
+            <input type="range" id="scaleSlider" min="0.001" max="100.0" step="0.001" value="1.0">
             <!--<input type="range" id="scaleSlider" min="0.1" max="10.0" step="0.01" value="1.0">-->
         </div>        
 
@@ -671,15 +672,26 @@
                 if (!this.modelBounds) return;
                 
                 const maxSize = this.modelBounds.maxSize;
-                const optimalScale = Math.min(10.0, Math.max(0.1, 3.0 / maxSize)); // Clamp to slider range
+                // More aggressive scaling for very large models
+                let optimalScale;
+                if (maxSize > 1000) {
+                    optimalScale = 0.001;
+                } else if (maxSize > 100) {
+                    optimalScale = 0.01;
+                } else if (maxSize > 10) {
+                    optimalScale = 0.1;
+                } else {
+                    optimalScale = Math.min(100.0, Math.max(0.001, 3.0 / maxSize));
+                }
                 
                 this.scale = optimalScale;
-                this.zoom = -Math.max(6.0, maxSize * 1.5);
+                this.zoom = -Math.max(6.0, maxSize * 0.1); // Less aggressive zoom for large models
                 this.rotation = { x: 0, y: 0 };
                 
                 // Update UI
                 document.getElementById('scaleSlider').value = optimalScale.toString();
-                document.getElementById('scaleValue').textContent = optimalScale.toFixed(1);
+                const displayValue = optimalScale < 0.01 ? optimalScale.toExponential(2) : optimalScale.toFixed(3);
+                document.getElementById('scaleValue').textContent = displayValue;
             }
             
             resizeCanvas() {
@@ -756,14 +768,15 @@
                 this.canvas.addEventListener('wheel', (e) => {
                     e.preventDefault();
                     this.zoom += e.deltaY * 0.01;
-                    this.zoom = Math.max(-50, Math.min(-0.5, this.zoom));
+                    this.zoom = Math.max(-500, Math.min(-0.1, this.zoom));  // <-- UPDATED LINE
                 });
                 
                 // Control handlers
                 const scaleSlider = document.getElementById('scaleSlider');
                 scaleSlider.addEventListener('input', (e) => {
                     this.scale = parseFloat(e.target.value);
-                    document.getElementById('scaleValue').textContent = this.scale.toFixed(1);
+                    const displayValue = this.scale < 0.01 ? this.scale.toExponential(2) : this.scale.toFixed(3);
+                    document.getElementById('scaleValue').textContent = displayValue;
                 });
                 
                 document.getElementById('solidMode').addEventListener('click', () => {
@@ -783,7 +796,7 @@
                     this.scale = 1.0;
                     this.zoom = -6.0;
                     document.getElementById('scaleSlider').value = '1.0';
-                    document.getElementById('scaleValue').textContent = '1.0';
+                    document.getElementById('scaleValue').textContent = '1.000';
                 });
                 
                 document.getElementById('autoRotate').addEventListener('click', () => {
