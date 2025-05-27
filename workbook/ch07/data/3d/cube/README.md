@@ -126,7 +126,7 @@ This file builds on the `fixedcube.html` by adding animation.
          to rotate.
 
 
-### 03. User-Rotated Cube: `userrot.html`
+### 02. User-Rotated Cube: `userrot.html`
 
 This file adds interactivity, allowing the user to rotate the cube by dragging the mouse.
 
@@ -151,7 +151,7 @@ This file adds interactivity, allowing the user to rotate the cube by dragging t
 
 * *HUD (`info` div)*: A `div` element is added to display the current rotation angles to the user.
 
-### 04. Solid, Filled Cube: `filled.html`
+### 03. Solid, Filled Cube: `filled.html`
 
 This file moves from a wireframe to a solid cube with colored faces. It introduces the crucial concept of rendering order.
 
@@ -208,7 +208,7 @@ indices that form a quadrilateral.
     Instead of `lineTo` for edges, `ctx.fill()` is now used to fill the polygon defined by the face's projected
     vertices. A semi-transparent color (`"88"` at the end of the hex code) and a black stroke are applied.
 
-### 05. Lit Cube with Culling and Shadow: `litcube.html`
+### 04. Lit Cube with Culling and Shadow: `litcube.html`
 
 This file significantly enhances realism by adding lighting, back-face culling, and a rudimentary shadow.
 
@@ -280,7 +280,7 @@ This file significantly enhances realism by adding lighting, back-face culling, 
 
 * *Floor*: A simple perspective floor is drawn with a gradient.
 
-### 06. Reflective Cube: `reflectcube.html`
+### 05. Reflective Cube: `reflectcube.html`
 
 This final file adds reflections to the cube, making the scene even more dynamic.
 
