@@ -219,9 +219,9 @@ def print_results(results: Dict):
     print(f"{'='*60}")
     
     if results['valid']:
-        print("✅ FILE IS VALID")
+        print("FILE IS VALID")
     else:
-        print("❌ FILE HAS ERRORS")
+        print("FILE HAS ERRORS")
     
     # Header info
     if results['header']:
@@ -231,7 +231,7 @@ def print_results(results: Dict):
     
     # Data info
     if results['data_info']:
-        print(f"\n📊 DATA INFORMATION:")
+        print(f"\nDATA INFORMATION:")
         data = results['data_info']
         print(f"   Expected values: {data.get('expected_values', 'N/A')}")
         print(f"   Actual values: {data.get('actual_values', 'N/A')}")
@@ -244,13 +244,13 @@ def print_results(results: Dict):
     
     # Errors
     if results['errors']:
-        print(f"\n❌ ERRORS ({len(results['errors'])}):")
+        print(f"\nERRORS ({len(results['errors'])}):")
         for i, error in enumerate(results['errors'], 1):
             print(f"   {i}. {error}")
     
     # Warnings
     if results['warnings']:
-        print(f"\n⚠️  WARNINGS ({len(results['warnings'])}):")
+        print(f"\nWARNINGS ({len(results['warnings'])}):")
         for i, warning in enumerate(results['warnings'], 1):
             print(f"   {i}. {warning}")
     
