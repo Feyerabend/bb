@@ -1,7 +1,9 @@
 
 ## What is a Shader?
 
-A shader is a small, specialized program that runs on the GPU (Graphics Processing Unit). It controls how 3D objects are drawn — including how their surfaces appear, how they are lit, colored, textured, and transformed into the final 2D image seen on the screen.
+A shader is a small, specialised program that runs on the GPU (Graphics Processing Unit). It controls how 3D objects are
+drawn--including how their surfaces appear, how they are lit, colored, textured, and transformed into the final 2D image
+seen on the screen.
 
 In essence:
 > A shader defines how pixels and vertices look on the screen.
@@ -100,13 +102,13 @@ stages rather than fixed-function pipelines.
 
 ### Summary Table
 
-|Feature              | Vertex Shader     | Fragment Shader     | Other|
-|---------------------|-------------------|----------------------|-------------------------|
-|Runs on              | GPU (per vertex)  | GPU (per pixel)      | Geometry, Compute, etc.|
-|Purpose              | Transform geometry| Compute color        | Effects, deformation, etc.|
-|Written in           | GLSL, HLSL, etc.  | GLSL, HLSL, etc.     | Same|
-|Typical Output       | Position          | Color                | Varies|
-|Controls             | Geometry placement| Pixel appearance     | Special effects, logic|
+|Feature           | Vertex Shader     | Fragment Shader      | Other|
+|------------------|-------------------|----------------------|-------------------------|
+|Runs on           | GPU (per vertex)  | GPU (per pixel)      | Geometry, Compute, etc.|
+|Purpose           | Transform geometry| Compute color        | Effects, deformation, etc.|
+|Written in        | GLSL, HLSL, etc.  | GLSL, HLSL, etc.     | Same|
+|Typical Output    | Position          | Color                | Varies|
+|Controls          | Geometry placement| Pixel appearance     | Special effects, logic|
 
 
 ### Reference
