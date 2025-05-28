@@ -13,7 +13,7 @@ and build everything from scratch. A top-down approach can also be useful. By ex
 with the simple and widely supported OBJ file format, you can quickly gain insight into how 3D rendering
 works and create a foundation for further experimentation and deeper understanding.
 
-*[WebGL](./WEBGL.md* (Web Graphics Library) is a JavaScript API that allows rendering interactive 2D
+*[WebGL](./WEBGL.md)* (Web Graphics Library) is a JavaScript API that allows rendering interactive 2D
 and 3D graphics directly in web browsers without needing plug-ins. Built on top of OpenGL ES (a lightweight
 version of OpenGL for embedded systems), WebGL exposes low-level hardware-accelerated graphics functionality
 through the browser's HTML5 <canvas> element. Developers write [shaders](./SHADER.md) in GLSL
