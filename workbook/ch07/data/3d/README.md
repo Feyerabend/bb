@@ -126,9 +126,9 @@ highlight different aspects of the graphics pipeline:
 
 ### WebGL and the file format OBJ
 
-1. *Introduction of New Technologies:* The third folder focuses on *WebGL* and the *OBJ file format*.
+The third folder focuses on *WebGL* and the *OBJ file format*.
 
-2. *WebGL as a Rendering API:* This folder explains that WebGL is a *JavaScript API* for rendering
+   *WebGL as a Rendering API:* This folder explains that WebGL is a *JavaScript API* for rendering
    *hardware-accelerated 2D and 3D graphics* directly in web browsers. It's built on OpenGL ES and
    requires using *GLSL shaders*. While the first two folders manually calculate aspects like ray
    intersections, transformations, projections, lighting, and shadows in JavaScript, WebGL provides
@@ -136,19 +136,20 @@ highlight different aspects of the graphics pipeline:
    manual approach to one that utilises specialised hardware for potentially much higher performance,
    especially for complex scenes.
 
-3. *OBJ for Model Data:* The document introduces the *OBJ file format* as a standard, text-based way
+   *OBJ for Model Data:* The document introduces the *OBJ file format* as a standard, text-based way
    to define and store 3D geometry, including *vertices, texture coordinates, normals, and polygonal faces*.
    This differs from the first two folders, where the geometry (e.g., sphere parameters, cube vertices
    and faces) is defined directly within the JavaScript code. Using OBJ allows for loading pre-existing
    3D models rather than hardcoding simple shapes.
 
-4. *Different Learning Approach:* We suggests that exploring WebGL and OBJ files can offer a
+   *Different Learning Approach:* We suggests that exploring WebGL and OBJ files can offer a
    *top-down approach* to understanding 3D rendering, contrasting with the *bottom-up* method of
    building everything from scratch shown in the first two folders. It implies that this top-down
    method can help you quickly gain insight and build a foundation. The first two folders, conversely,
    meticulously build complexity from basic elements like vectors, scene setup, and fundamental algorithms.
 
-5. *Requirements and Limitations:* We also notes that *not all browsers implement WebGL*, highlighting
+   *Requirements and Limitations:* We also notes that *not all browsers implement WebGL*, highlighting
    a potential dependency issue that the pure JavaScript examples in the first two folders do not have.
    Learning WebGL also requires understanding concepts like shaders, which adds a new layer of complexity
    beyond the mathematics used in the first two documents.
+
