@@ -139,12 +139,12 @@ WebGL is:
 - Mature, widely supported
 - Based on OpenGL
 
-WebGPU (upcoming):
+WebGPU (upcoming):[^webgpu]
 - Based on Vulkan/Metal/Direct3D12
 - More modern, supports compute shaders and better performance
 - Still not fully available in all browsers
 
-
+[^webgpu]: https://codelabs.developers.google.com/your-first-webgpu-app
 
 | Feature             | WebGL                                        |
 |---------------------|----------------------------------------------|
@@ -154,3 +154,7 @@ WebGPU (upcoming):
 | Libraries           | Three.js, Babylon.js, regl, PicoGL, twgl     |
 | Use Cases           | Games, simulations, visualizations, AR/VR    |
 | Modern Alternative  | WebGPU (next-gen graphics API for web)       |
+
+
+Specification WebGL:
+https://registry.khronos.org/webgl/specs/latest/1.0/
