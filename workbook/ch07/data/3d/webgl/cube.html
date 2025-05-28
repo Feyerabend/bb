@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Improved Rotating Cube (WebGL)</title>
+  <style>
+    body { 
+      margin: 0; 
+      background: #000;
+      overflow: hidden;
+    }
+    canvas { 
+      display: block; 
+      width: 100vw; 
+      height: 100vh; 
+    }
+  </style>
+</head>
+<body>
+<canvas id="glcanvas"></canvas>
+<script type="module">
+// Optimized matrix utilities with proper typing
+class Mat4 {
+  constructor() {
+    this.data = new Float32Array([
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1
+    ]);
+  }
+  
+  perspective(fovy, aspect, near, far) {
+    const f = 1.0 / Math.tan(fovy * 0.5);
+    const nf = 1.0 / (near - far);
+    
+    this.data[0] = f / aspect;
+    this.data[5] = f;
+    this.data[10] = (far + near) * nf;
+    this.data[11] = -1.0;
+    this.data[14] = 2.0 * far * near * nf;
+    this.data[15] = 0.0;
+    
+    // Zero out other elements
+    this.data[1] = this.data[2] = this.data[3] = 0;
+    this.data[4] = this.data[6] = this.data[7] = 0;
+    this.data[8] = this.data[9] = 0;
+    this.data[12] = this.data[13] = 0;
+    
+    return this;
+  }
+  
+  translate(x, y, z) {
+    this.data[12] += x;
+    this.data[13] += y;
+    this.data[14] += z;
+    return this;
+  }
+  
+  rotateY(rad) {
+    const c = Math.cos(rad);
+    const s = Math.sin(rad);
+    const m00 = this.data[0], m02 = this.data[8];
+    const m10 = this.data[1], m12 = this.data[9];
+    const m20 = this.data[2], m22 = this.data[10];
+    const m30 = this.data[3], m32 = this.data[11];
+    
+    this.data[0] = m00 * c - m02 * s;
+    this.data[1] = m10 * c - m12 * s;
+    this.data[2] = m20 * c - m22 * s;
+    this.data[3] = m30 * c - m32 * s;
+    this.data[8] = m00 * s + m02 * c;
+    this.data[9] = m10 * s + m12 * c;
+    this.data[10] = m20 * s + m22 * c;
+    this.data[11] = m30 * s + m32 * c;
+    
+    return this;
+  }
+  
+  identity() {
+    this.data.set([
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1
+    ]);
+    return this;
+  }
+}
+
+// WebGL context setup with error handling
+const canvas = document.getElementById("glcanvas");
+const gl = canvas.getContext("webgl", {
+  antialias: true,
+  depth: true,
+  alpha: false
+});
+
+if (!gl) {
+  throw new Error("WebGL not supported in this browser");
+}
+
+// Shader sources with precision qualifiers
+const vertexShaderSource = `
+precision mediump float;
+attribute vec3 a_position;
+uniform mat4 u_projection;
+uniform mat4 u_modelview;
+void main() {
+  gl_Position = u_projection * u_modelview * vec4(a_position, 1.0);
+}`;
+
+const fragmentShaderSource = `
+precision mediump float;
+void main() {
+  gl_FragColor = vec4(0.4, 0.7, 1.0, 1.0);
+}`;
+
+// Improved shader compilation with better error handling
+function compileShader(gl, type, source) {
+  const shader = gl.createShader(type);
+  gl.shaderSource(shader, source);
+  gl.compileShader(shader);
+  
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    const error = gl.getShaderInfoLog(shader);
+    gl.deleteShader(shader);
+    throw new Error(`Shader compilation error: ${error}`);
+  }
+  
+  return shader;
+}
+
+function createProgram(gl, vertexShader, fragmentShader) {
+  const program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    const error = gl.getProgramInfoLog(program);
+    gl.deleteProgram(program);
+    throw new Error(`Program linking error: ${error}`);
+  }
+  
+  return program;
+}
+
+// Create shaders and program
+const vertexShader = compileShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+const fragmentShader = compileShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+const program = createProgram(gl, vertexShader, fragmentShader);
+
+// Get attribute and uniform locations
+const positionLocation = gl.getAttribLocation(program, 'a_position');
+const projectionLocation = gl.getUniformLocation(program, 'u_projection');
+const modelviewLocation = gl.getUniformLocation(program, 'u_modelview');
+
+// Cube geometry - optimized vertex data
+const vertices = new Float32Array([
+  // Front face
+  -1, -1,  1,   1, -1,  1,   1,  1,  1,  -1,  1,  1,
+  // Back face
+  -1, -1, -1,  -1,  1, -1,   1,  1, -1,   1, -1, -1,
+  // Top face
+  -1,  1, -1,  -1,  1,  1,   1,  1,  1,   1,  1, -1,
+  // Bottom face
+  -1, -1, -1,   1, -1, -1,   1, -1,  1,  -1, -1,  1,
+  // Right face
+   1, -1, -1,   1,  1, -1,   1,  1,  1,   1, -1,  1,
+  // Left face
+  -1, -1, -1,  -1, -1,  1,  -1,  1,  1,  -1,  1, -1
+]);
+
+const indices = new Uint16Array([
+   0,  1,  2,   0,  2,  3,    // front
+   4,  5,  6,   4,  6,  7,    // back
+   8,  9, 10,   8, 10, 11,    // top
+  12, 13, 14,  12, 14, 15,    // bottom
+  16, 17, 18,  16, 18, 19,    // right
+  20, 21, 22,  20, 22, 23     // left
+]);
+
+// Create and bind buffers
+const vertexBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+const indexBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+
+// WebGL state setup
+gl.enable(gl.DEPTH_TEST);
+gl.depthFunc(gl.LEQUAL);
+gl.enable(gl.CULL_FACE);
+gl.cullFace(gl.BACK);
+gl.clearColor(0.1, 0.1, 0.1, 1.0);
+gl.clearDepth(1.0);
+
+// Matrices
+const projectionMatrix = new Mat4();
+const modelviewMatrix = new Mat4();
+
+// Canvas resize handling
+function resizeCanvas() {
+  const displayWidth = canvas.clientWidth;
+  const displayHeight = canvas.clientHeight;
+  
+  if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+    canvas.width = displayWidth;
+    canvas.height = displayHeight;
+    gl.viewport(0, 0, displayWidth, displayHeight);
+  }
+}
+
+// Optimized render loop
+function render(timestamp) {
+  const time = timestamp * 0.001; // Convert to seconds
+  
+  resizeCanvas();
+  
+  // Clear buffers
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  
+  // Set up projection matrix
+  const aspect = canvas.width / canvas.height;
+  projectionMatrix.identity().perspective(Math.PI * 0.25, aspect, 0.1, 100.0);
+  
+  // Set up modelview matrix
+  modelviewMatrix.identity().translate(0, 0, -6).rotateY(time);
+  
+  // Use shader program
+  gl.useProgram(program);
+  
+  // Set uniforms
+  gl.uniformMatrix4fv(projectionLocation, false, projectionMatrix.data);
+  gl.uniformMatrix4fv(modelviewLocation, false, modelviewMatrix.data);
+  
+  // Bind vertex buffer and set up attribute
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+  gl.enableVertexAttribArray(positionLocation);
+  gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
+  
+  // Bind index buffer and draw
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+  gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+  
+  requestAnimationFrame(render);
+}
+
+// Start the render loop
+requestAnimationFrame(render);
+
+// Handle context loss (WebGL best practice)
+canvas.addEventListener('webglcontextlost', (e) => {
+  e.preventDefault();
+  console.warn('WebGL context lost');
+});
+
+canvas.addEventListener('webglcontextrestored', () => {
+  console.log('WebGL context restored');
+  // Would need to recreate all WebGL resources here
+});
+</script>
+</body>
+</html>
