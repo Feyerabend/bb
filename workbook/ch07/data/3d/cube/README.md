@@ -16,10 +16,10 @@ This file introduces the fundamental building blocks of our 3D cube.
   each inner array represents a point in 3D space with `[x, y, z]` coordinates.
     ```javascript
     const vertices = [
-        [-1, -1, -1], [1, -1, -1],
-        [1,  1, -1], [-1,  1, -1],
-        [-1, -1,  1], [1, -1,  1],
-        [1,  1,  1], [-1,  1,  1]
+        [-1, -1, -1], [1,  -1, -1],
+        [1,   1, -1], [-1,  1, -1],
+        [-1, -1,  1], [1,  -1,  1],
+        [1,   1,  1], [-1,  1,  1]
     ];
     ```
     * *Concept: Vertices*
