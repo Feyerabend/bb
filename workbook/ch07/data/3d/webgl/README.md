@@ -13,14 +13,15 @@ and build everything from scratch. A top-down approach can also be useful. By ex
 with the simple and widely supported OBJ file format, you can quickly gain insight into how 3D rendering
 works and create a foundation for further experimentation and deeper understanding.
 
-*WebGL* (Web Graphics Library) is a JavaScript API that allows rendering interactive 2D and 3D graphics
-directly in web browsers without needing plug-ins. Built on top of OpenGL ES (a lightweight version of
-OpenGL for embedded systems), WebGL exposes low-level hardware-accelerated graphics functionality through
-the browser's HTML5 <canvas> element. Developers write shaders in GLSL (OpenGL Shading Language) and use
-JavaScript to issue rendering commands, manage buffers, define geometry, and manipulate transformation
-matrices. WebGL operates very close to the metal, which means it offers high performance and flexibility
-but requires a good understanding of computer graphics principles. It forms the basis for many higher-level
-libraries like Three.js that simplify common tasks like scene management, lighting, and camera control.
+*[WebGL](./WEBGL.md* (Web Graphics Library) is a JavaScript API that allows rendering interactive 2D
+and 3D graphics directly in web browsers without needing plug-ins. Built on top of OpenGL ES (a lightweight
+version of OpenGL for embedded systems), WebGL exposes low-level hardware-accelerated graphics functionality
+through the browser's HTML5 <canvas> element. Developers write [shaders](./SHADER.md) in GLSL
+(OpenGL Shading Language) and use JavaScript to issue rendering commands, manage buffers, define geometry,
+and manipulate transformation matrices. WebGL operates very close to the metal, which means it offers
+high performance and flexibility but requires a good understanding of computer graphics principles.
+It forms the basis for many higher-level libraries like Three.js that simplify common tasks like scene
+management, lighting, and camera control.
 
 *OBJ* files are a simple, text-based 3D geometry format commonly used for storing and exchanging models.
 Originally developed by Wavefront Technologies, the .obj format encodes a model’s vertex positions,
