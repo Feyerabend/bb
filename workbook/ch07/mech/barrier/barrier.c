@@ -32,7 +32,7 @@ void* consumer(void* arg) {
     return NULL;
 }
 
-int main() {
+int main(void) {
     pthread_t t1, t2;
 
     pthread_create(&t1, NULL, producer, NULL);

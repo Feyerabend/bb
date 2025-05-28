@@ -42,7 +42,7 @@ void* worker(void* arg) {
     return NULL;
 }
 
-int main() {
+int main(void) {
     pthread_t threads[NUM_THREADS];
     Task tasks[NUM_THREADS];
     int range = MAX / NUM_THREADS;

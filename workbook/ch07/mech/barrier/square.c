@@ -37,7 +37,7 @@ void* reader(void* arg) {
     return NULL;
 }
 
-int main() {
+int main(void) {
     pthread_t producer_thread, consumer_thread;
 
     pthread_create(&producer_thread, NULL, compute_sum_of_squares, NULL);
