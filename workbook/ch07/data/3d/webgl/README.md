@@ -23,7 +23,7 @@ high performance and flexibility but requires a good understanding of computer g
 It forms the basis for many higher-level libraries like Three.js that simplify common tasks like scene
 management, lighting, and camera control.
 
-*OBJ* files are a simple, text-based 3D geometry format commonly used for storing and exchanging models.
+*OBJ* files[^obj] are a simple, text-based 3D geometry format commonly used for storing and exchanging models.
 Originally developed by Wavefront Technologies, the .obj format encodes a model’s vertex positions,
 texture coordinates, normals, and polygonal faces. It does not include information about materials,
 lighting, or animation (though material properties can be defined in a separate .mtl file referenced
@@ -32,3 +32,4 @@ for vertices, vt for texture coordinates, vn for normals, and f for face definit
 indices of previously listed elements. Because of its simplicity and wide support, the OBJ format is a
 popular interchange format across 3D software and rendering pipelines.
 
+[^obj]: https://en.wikipedia.org/wiki/Wavefront_.obj_file
