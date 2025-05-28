@@ -135,7 +135,7 @@ Weaknesses
 
 ### WebGL vs WebGPU
 
-WebGL is:
+WebGL is:[^webgl]
 - Mature, widely supported
 - Based on OpenGL
 
@@ -144,7 +144,7 @@ WebGPU (upcoming):[^webgpu]
 - More modern, supports compute shaders and better performance
 - Still not fully available in all browsers
 
-[^webgpu]: https://codelabs.developers.google.com/your-first-webgpu-app
+[^webgpu]: https://www.w3.org/TR/webgpu/, https://codelabs.developers.google.com/your-first-webgpu-app
 
 | Feature             | WebGL                                        |
 |---------------------|----------------------------------------------|
@@ -156,5 +156,5 @@ WebGPU (upcoming):[^webgpu]
 | Modern Alternative  | WebGPU (next-gen graphics API for web)       |
 
 
-Specification WebGL:
+[^webgl]: Specification WebGL:
 https://registry.khronos.org/webgl/specs/latest/1.0/
