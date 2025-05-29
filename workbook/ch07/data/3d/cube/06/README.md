@@ -2,7 +2,7 @@
 ## Birbs Flying over Sea?
 
 To move beyond simple box reflections, you could explore more game-like graphical constructions. For example,
-you might simulate ocean or sea waves, then add something flying above them—whatever that may be. I’m not a
+you might simulate ocean or sea waves, then add something flying above them--whatever that may be. I’m not a
 fan of weapons, conflict, or warlike themes, but of course, you may choose otherwise ..
 
 
