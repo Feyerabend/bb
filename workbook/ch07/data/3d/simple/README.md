@@ -132,8 +132,8 @@ the engine further.
 
 ### Going Further
 
-Next in [02](./02/), there is a comment on both programming in general, but also the specifics here
-as a rotating cube sample. You could use another mathematical approach than ordinary matrix operations as
-we have done so far. This other approach is harder in some respect and easier in others. But the main point
-is that solutions doesn't have to be always in the same manner as traditionally been taken. Explore
-and experiment, you might find something you didn't expected!
+In [02](./02/), we delve into both general programming concepts and the specifics of rendering a rotating
+cube. While we've primarily employed standard matrix operations thus far, alternative mathematical approaches
+are available. These methods may present increased complexity in some aspects but offer simplifications in
+others. The key takeaway is that solutions need not always follow traditional paths. By exploring and
+experimenting with different techniques, you may uncover unexpected and valuable insights.
