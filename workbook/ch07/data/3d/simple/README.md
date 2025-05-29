@@ -137,3 +137,5 @@ cube. While we've primarily employed standard matrix operations thus far, altern
 are available. These methods may present increased complexity in some aspects but offer simplifications in
 others. The key takeaway is that solutions need not always follow traditional paths. By exploring and
 experimenting with different techniques, you may uncover unexpected and valuable insights.
+
+This is not in C, but prototyping in JavaScript to see how it affects the animation.
