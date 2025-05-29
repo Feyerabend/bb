@@ -2,7 +2,7 @@
 ## Project: Develop Your Own 3D Engine in C
 
 Many students in game development are drawn to learning C and C++ because these languages sit at the
-heart of the game industry’s technical foundation. A major reason is the sheer abundance of mature
+heart of the game industry's technical foundation. A major reason is the sheer abundance of mature
 libraries and engines--such as SDL, OpenGL, DirectX, Vulkan, Bullet Physics, and Unreal Engine--that
 are either written in or provide first-class support for C and C++. This ecosystem gives learners
 direct access to powerful, low-level tools for graphics, physics, input handling, audio, and networking.
@@ -22,10 +22,10 @@ Many also want to develop their own 3D engine for making games. Here the project
 1. Set Up a Basic Rendering Pipeline
 Begin with a minimal application using OpenGL or SDL to create a window and draw simple shapes. Learn how
 to clear the screen, handle buffers, and draw colored triangles. This step introduces the fundamental flow
-of a real-time rendering loop: input → update → render.
+of a real-time rendering loop: *input → update → render*.
 
 2. Implement a Math Library
-To manipulate 3D geometry, you’ll need basic linear algebra: vectors, matrices, dot and cross products,
+To manipulate 3D geometry, you'll need basic linear algebra: vectors, matrices, dot and cross products,
 transformations, and projections. Rather than relying on external libraries, implementing your own helps
 solidify the mathematical concepts that underpin 3D engines.
 
@@ -46,7 +46,7 @@ Extend your renderer to support texture loading and mapping. Learn how to apply 
 textures in shaders, and handle materials defined in OBJ/MTL files.
 
 7. Scene Graph or Entity System
-As complexity grows, you’ll need a way to manage multiple objects and their transformations. Implement
+As complexity grows, you'll need a way to manage multiple objects and their transformations. Implement
 a simple scene graph or entity-component system to organize updates, rendering, and object hierarchies.
 
 8. Physics and Collision Detection
@@ -68,13 +68,13 @@ bloom, fog, or shadow mapping.
 
 ### Simple Start
 
-If you’re completely new to this field, a beginner-friendly starting point is provided in the folder [01](./01/).
-This setup is designed to stay within the familiar territory of C, Python, and JavaScript, and we’ve intentionally
+If you're completely new to this field, a beginner-friendly starting point is provided in the folder [01](./01/).
+This setup is designed to stay within the familiar territory of C, Python, and JavaScript, and we've intentionally
 kept external dependencies to a minimum.
 
-In this first part, we’ll use:
+In this first part, we'll use:
 - C for generating 3D geometry and rendering wireframes
-- Python (with the Pillow library) for image processing
+- Python (with the Pillow library as an addition) for image processing
 - JavaScript (in the browser) for viewing PAM files
 
 
@@ -123,5 +123,7 @@ Finally, you can merge the sequence of frames into a single animated image using
 This creates an animated GIF, allowing you to easily view the rotating cube as a continuous animation.
 
 This sequence of steps introduces the basics of 3D rendering, image processing, and minimal animation,
-while keeping the system simple, transparent, and easily inspectable.
+while keeping the system simple, transparent, and easily inspectable. You can walk this path for 
+sometime, but eventually you will have to switch to other tools which makes much more sense developing
+the engine further.
 
