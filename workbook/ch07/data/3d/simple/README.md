@@ -95,8 +95,10 @@ The first two files show the cube as a wireframe, rendered from different rotate
 The third file contains the 3D point data.
 
 You can view the wireframe images using the provided pam7viewer.html tool in your browser.
-The PAM7 format (in ASCII) is simple to read and inspect manually, which makes it ideal for
+The PAM7 format (in ASCII)[^pam] is simple to read and inspect manually, which makes it ideal for
 learning and debugging.
+
+[^pam]: See e.g. https://en.wikipedia.org/wiki/Netpbm#PAM_graphics_format.
 
 
 __Step 2: Compile the Solid Renderer__
