@@ -3,7 +3,7 @@
 
 A shader is a small, specialised program that runs on the GPU (Graphics Processing Unit). It controls how 3D objects are
 drawn--including how their surfaces appear, how they are lit, colored, textured, and transformed into the final 2D image
-seen on the screen.
+seen on the screen. For a simplified comparison between traditional and shader rendering, see [shaders](./shaders/).
 
 In essence:
 > A shader defines how pixels and vertices look on the screen.
@@ -70,7 +70,6 @@ void main() {
 }
 ```
 
-
 ### Where Are Shaders Used?
 
 Shaders are everywhere in modern 3D rendering:
@@ -83,7 +82,6 @@ Shaders are everywhere in modern 3D rendering:
 - Special Effects in Films
 
 Even mobile apps using Metal (Apple), Vulkan, or OpenGL ES on phones use shaders.
-
 
 
 ### How Are Shaders Related to Hardware?
