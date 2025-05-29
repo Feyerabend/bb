@@ -129,3 +129,11 @@ while keeping the system simple, transparent, and easily inspectable. You can wa
 sometime, but eventually you will have to switch to other tools which makes much more sense developing
 the engine further.
 
+
+### Going Further
+
+Next in [02](./02/), there is a comment on both programming in general, but also the specifics here
+as a rotating cube sample. You could use another mathematical approach than ordinary matrix operations as
+we have done so far. This other approach is harder in some respect and easier in others. But the main point
+is that solutions doesn't have to be always in the same manner as traditionally been taken. Explore
+and experiment, you might find something you didn't expected!
