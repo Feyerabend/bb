@@ -1,9 +1,9 @@
 
-## Birbs Flying over Sea?
+## Birbs Flying Over The Sea?
 
-To move beyond simple box reflections, you could explore more game-like graphical constructions. For example,
-you might simulate ocean or sea waves, then add something flying above them--whatever that may be. I’m not a
-fan of weapons, conflict, or warlike themes, but of course, you may choose otherwise ..
+Experiment! To move beyond simple box reflections, you could explore more game-like graphical constructions.
+For example, you might simulate ocean or sea waves, then add something flying above them--whatever that may
+be. I’m not a fan of weapons, conflict, or warlike themes, but of course, you may choose otherwise ..
 
 
 ### The Sea
@@ -12,9 +12,9 @@ A virtual 3D grid (x, z) is created, and each grid point is assigned a height (y
 (getWaveHeight). This simulates a heightmap-based ocean surface.
 
 Each vertex is represented by a 3D point:
-
+```javascript
 (x, y, z)
-
+```
 Where:
 - x and z define grid positions
 - y is computed as the wave height at that point.
@@ -101,8 +101,9 @@ let pz = z - this.cam.z;
 This is analogous to the view matrix translation stage in standard 3D graphics pipelines.
 
 Combined with rotation and projection, this provides a full camera transformation chain:
+```
 World → Camera Space → Clip Space → Screen
-
+```
 
 Simulated depth fog is applied based on distance from the camera:
 
