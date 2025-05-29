@@ -129,3 +129,13 @@ while keeping the system simple, transparent, and easily inspectable. You can wa
 sometime, but eventually you will have to switch to other tools which makes much more sense developing
 the engine further.
 
+
+### Going Further
+
+In [02](./02/), we delve into both general programming concepts and the specifics of rendering a rotating
+cube. While we've primarily employed standard matrix operations thus far, alternative mathematical approaches
+are available. These methods may present increased complexity in some aspects but offer simplifications in
+others. The key takeaway is that solutions need not always follow traditional paths. By exploring and
+experimenting with different techniques, you may uncover unexpected and valuable insights.
+
+This is not in C, but prototyping in JavaScript to see how it affects the animation.
