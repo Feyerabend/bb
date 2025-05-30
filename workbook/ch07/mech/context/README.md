@@ -190,44 +190,30 @@ int main() {
 
 This *illustrates* the context switch with [coroutines](./../coroutine/).
 
-```mermaid
-stateDiagram-v2
-    [*] --> MainScheduler
-    MainScheduler --> TaskA: Start first task
-    MainScheduler --> TaskB: Switch to task
-    
-    state MainScheduler {
-        [*] --> Setup
-        Setup --> SaveContext: setjmp(ctx_main)
-        
-        state Decision {
-            SaveContext --> ChooseTask
-            ChooseTask --> RunTaskA: if should_run_A
-            ChooseTask --> RunTaskB: if should_run_B
-            RunTaskA --> TaskA
-            RunTaskB --> TaskB
-        }
-        
-        HandleReturn --> CheckCompletion
-        CheckCompletion --> Decision: More work
-        CheckCompletion --> [*]: All done
-    }
-    
-    state TaskA {
-        [*] --> Running
-        Running --> YieldPoint: setjmp(ctx_a)==0
-        YieldPoint --> MainScheduler: longjmp(ctx_main,1)
-        Running --> Complete: Loop done
-        Complete --> MainScheduler: longjmp(ctx_main,2)
-    }
-    
-    state TaskB {
-        [*] --> Running
-        Running --> YieldPoint: setjmp(ctx_b)==0
-        YieldPoint --> MainScheduler: longjmp(ctx_main,1)
-        Running --> Complete: Loop done
-        Complete --> MainScheduler: longjmp(ctx_main,2)
-    }
+```
+1. [MAIN FLOW]
+   Setup → SaveContext (setjmp)
+     |
+     ├─(initial)→ ChooseTask
+     |   ├─→ Run TaskA if should
+     |   └─→ Run TaskB if should
+     |
+     ├─(val==1)→ HandleYield → SwitchTask
+     |               ├─→ TaskA if last was B
+     |               └─→ TaskB if last was A
+     |
+     └─(val==2)→ HandleComplete → CheckDone
+                     ├─→ Exit if both done
+                     └─→ ChooseTask if work remains
+
+2. [TASK FLOWS]
+   TaskA:
+     Run → Yield point (setjmp)
+       ├─(yield)→ MainYield
+       └─(complete)→ MainComplete
+   
+   TaskB: 
+     (same structure as TaskA)
 ```
 
 ### Context Switch vs Coroutine
