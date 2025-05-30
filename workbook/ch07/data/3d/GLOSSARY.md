@@ -50,9 +50,15 @@ twelve triangles.
 
 ### Polygon
 
-*Explanation:* In 3D computer graphics, a polygon is the fundamental building block of a 3D model. It is a closed, two-dimensional shape formed by three or more vertices (points) connected by edges (lines). Polygons are typically triangulated (divided into triangles) for rendering efficiency. While often used interchangeably with "face," "polygon" can sometimes refer to the conceptual mathematical shape, whereas "face" is its implementation in a mesh.
+*Explanation:* In 3D computer graphics, a polygon is the fundamental building block of a 3D model. It is a
+closed, two-dimensional shape formed by three or more vertices (points) connected by edges (lines). Polygons
+are typically triangulated (divided into triangles) for rendering efficiency. While often used interchangeably
+with "face," "polygon" can sometimes refer to the conceptual mathematical shape, whereas "face" is its
+implementation in a mesh.
 
-*Example:* Understanding polygons is crucial because all 3D models are ultimately composed of them. For instance, a simple cube is made of 6 square polygons, each of which can be represented as two triangles for rendering.
+*Example:* Understanding polygons is essential because all 3D models are ultimately composed of them. For
+instance, a simple cube is made of 6 square polygons, each of which can be represented as two triangles for
+rendering.
 
 *Reference:* General 3D modeling principles, geometric primitives.
 
@@ -60,9 +66,13 @@ twelve triangles.
 
 ### Mesh
 
-*Explanation:* A mesh refers to the collection of vertices, edges, and faces (polygons) that define the shape and surface of a 3D object. It's the wireframe structure upon which textures and materials are applied and is the primary data structure for representing geometry in most 3D applications.
+*Explanation:* A mesh refers to the collection of vertices, edges, and faces (polygons) that define the shape
+and surface of a 3D object. It's the wireframe structure upon which textures and materials are applied and is
+the primary data structure for representing geometry in most 3D applications.
 
-*Example:* A well-constructed mesh is essential for good deformation during animation and efficient rendering. A low-polygon mesh might be used for real-time applications like games, while a high-polygon mesh is common for film production.
+*Example:* A well-constructed mesh is essential for good deformation during animation and efficient rendering.
+A low-polygon mesh might be used for real-time applications like games, while a high-polygon mesh is common
+for film production.
 
 *Reference:* 3D modeling terminology, data structures in computer graphics.
 
@@ -70,9 +80,14 @@ twelve triangles.
 
 ### Normal Vector
 
-*Explanation:* A normal vector (or simply "normal") is a vector that is perpendicular (at a 90-degree angle) to a surface at a given point. In 3D graphics, normals are crucial for determining how light reflects off a surface and for calculating shading. Vertex normals define the orientation of a surface at each vertex, while interpolated normals (used in Phong shading) provide a smoother representation across a polygon.
+*Explanation:* A normal vector (or simply "normal") is a vector that is perpendicular (at a 90-degree angle) to
+a surface at a given point. In 3D graphics, normals are crucial for determining how light reflects off a surface
+and for calculating shading. Vertex normals define the orientation of a surface at each vertex, while interpolated
+normals (used in Phong shading) provide a smoother representation across a polygon.
 
-*Example:* Accurate normal vectors are fundamental for correct lighting. If a flat face has a normal pointing directly up, a light source from above will illuminate it brightly. If the normal is incorrect, the lighting will appear wrong, even on a perfectly flat surface.
+*Example:* Accurate normal vectors are fundamental for correct lighting. If a flat face has a normal pointing
+directly up, a light source from above will illuminate it brightly. If the normal is incorrect, the lighting
+will appear wrong, even on a perfectly flat surface.
 
 *Reference:* Vector mathematics in computer graphics, lighting models.
 
@@ -80,9 +95,13 @@ twelve triangles.
 
 ### Texture Mapping
 
-*Explanation:* Texture mapping is the process of applying a 2D image (a "texture") onto the surface of a 3D model. This is achieved by mapping the 3D coordinates of the model's surface to 2D coordinates (UV coordinates) on the texture image, allowing for the addition of colour, detail, and surface properties without increasing the geometric complexity of the model.
+*Explanation:* Texture mapping is the process of applying a 2D image (a "texture") onto the surface of a 3D model.
+This is achieved by mapping the 3D coordinates of the model's surface to 2D coordinates (UV coordinates) on the texture
+image, allowing for the addition of colour, detail, and surface properties without increasing the geometric complexity
+of the model.
 
-*Example:* Texture mapping is essential for creating realistic and detailed 3D scenes efficiently. A simple flat quad can represent a wooden floor, with a high-resolution wood grain texture mapped onto it to provide visual detail.
+*Example:* Texture mapping is essential for creating realistic and detailed 3D scenes efficiently. A simple flat
+quad can represent a wooden floor, with a high-resolution wood grain texture mapped onto it to provide visual detail.
 
 *Reference:* Basic texturing in computer graphics.
 
@@ -90,9 +109,13 @@ twelve triangles.
 
 ### UV Mapping
 
-*Explanation:* UV mapping is the specific process of creating and arranging the 2D texture coordinates (often called UVs) that connect a 3D model's surface to a 2D texture image. It involves unfolding the 3D mesh into a flat 2D layout, allowing artists to paint or apply textures accurately without distortion. The "U" and "V" refer to the axes of this 2D texture space, analogous to X and Y.
+*Explanation:* UV mapping is the specific process of creating and arranging the 2D texture coordinates (often called UVs)
+that connect a 3D model's surface to a 2D texture image. It involves unfolding the 3D mesh into a flat 2D layout, allowing
+artists to paint or apply textures accurately without distortion. The "U" and "V" refer to the axes of this 2D texture
+space, analogous to X and Y.
 
-*Example:* UV mapping is critical for adding realistic detail and colour to 3D models. Without proper UVs, a texture of a brick wall applied to a house model would appear stretched or misaligned.
+*Example:* UV mapping is used for adding realistic detail and colour to 3D models. Without proper UVs, a texture of a
+brick wall applied to a house model would appear stretched or misaligned.
 
 *Reference:* Texture mapping techniques in computer graphics, 3D modeling workflow.
 
@@ -100,9 +123,14 @@ twelve triangles.
 
 ### Normal Map
 
-*Explanation:* A normal map is a type of texture map that stores surface normal information in its RGB channels. This information allows a low-polygon model to simulate the appearance of a high-polygon model's surface details (like bumps, cracks, or wrinkles) without actually increasing the polygon count. It achieves this by altering how light interacts with the surface at the pixel level.
+*Explanation:* A normal map is a type of texture map that stores surface normal information in its RGB channels. This
+information allows a low-polygon model to simulate the appearance of a high-polygon model's surface details (like bumps,
+cracks, or wrinkles) without actually increasing the polygon count. It achieves this by altering how light interacts
+with the surface at the pixel level.
 
-*Example:* Normal maps are widely used in video games and real-time rendering to achieve highly detailed visuals efficiently. For instance, a simple flat wall in a game can look like it has intricate brickwork thanks to a normal map, saving significant processing power.
+*Example:* Normal maps are widely used in video games and real-time rendering to achieve highly detailed visuals efficiently.
+For instance, a simple flat wall in a game can look like it has intricate brickwork thanks to a normal map, saving
+significant processing power.
 
 *Reference:* Advanced texturing techniques, PBR (Physically Based Rendering).
 
@@ -110,14 +138,21 @@ twelve triangles.
 
 ### Shader
 
-*Explanation:* A shader is a small program executed on the GPU that determines how graphics are rendered. There are several types, but the most common are:
-* *Vertex Shaders:* Process individual vertex data, performing transformations (e.g., model-view-projection) and passing attributes to the next stage.
-* *Fragment (Pixel) Shaders:* Determine the final colour of each pixel (or fragment) on the screen, often performing lighting calculations, texture lookups, and applying material properties.
-* *Geometry Shaders:* (Optional) Can generate or destroy primitives (points, lines, triangles) on the fly based on input primitives.
+*Explanation:* A shader is a small program executed on the GPU that determines how graphics are rendered. There are
+several types, but the most common are:
+* *Vertex Shaders:* Process individual vertex data, performing transformations (e.g., model-view-projection)
+  and passing attributes to the next stage.
+* *Fragment (Pixel) Shaders:* Determine the final colour of each pixel (or fragment) on the screen, often
+  performing lighting calculations, texture lookups, and applying material properties.
+* *Geometry Shaders:* (Optional) Can generate or destroy primitives (points, lines, triangles) on the fly
+  based on input primitives.
 * *Tessellation Shaders:* (Hull and Domain Shaders) Used for dynamic mesh subdivision.
-* *Compute Shaders:* General-purpose shaders for parallel computation on the GPU, not directly for rendering but used for tasks like physics or simulations.
+* *Compute Shaders:* General-purpose shaders for parallel computation on the GPU, not directly for rendering
+  but used for tasks like physics or simulations.
 
-*Example:* Shaders are the heart of modern real-time rendering, offering immense flexibility and programmability for visual effects. A fragment shader is responsible for applying a metallic look to an object by calculating how light reflects off its surface based on its material properties and incoming light.
+*Example:* Shaders are the heart of modern real-time rendering, offering immense flexibility and programmability
+for visual effects. A fragment shader is responsible for applying a metallic look to an object by calculating how
+light reflects off its surface based on its material properties and incoming light.
 
 *Reference:* GPU programming, OpenGL Shading Language (GLSL), High-Level Shading Language (HLSL).
 
@@ -125,19 +160,30 @@ twelve triangles.
 
 ### Shader Graph / Material Editor
 
-*Explanation:* A shader graph (or node-based material editor) is a visual programming interface used to create complex shaders and materials without writing code. Users connect nodes representing various operations (e.g., texture sampling, mathematical functions, lighting models) with wires to define the flow of data and computations that determine a material's appearance.
+*Explanation:* A shader graph (or node-based material editor) is a visual programming interface used to create complex
+shaders and materials without writing code. Users connect nodes representing various operations (e.g., texture
+sampling, mathematical functions, lighting models) with wires to define the flow of data and computations that
+determine a material's appearance.
 
-*Example:* Shader graphs make shader development more accessible to artists and designers, enabling rapid prototyping and iterative design of realistic or stylized materials. An artist might combine a base colour texture, a normal map, and a roughness map using a shader graph to define the look of a rusty metal surface.
+*Example:* Shader graphs make shader development more accessible to artists and designers, enabling rapid prototyping
+and iterative design of realistic or stylized materials. An artist might combine a base colour texture, a normal map,
+and a roughness map using a shader graph to define the look of a rusty metal surface.
 
-*Reference:* Game engine material systems (e.g., Unreal Engine's Material Editor, Unity's Shader Graph, Blender's Node Editor).
+*Reference:* Game engine material systems (e.g., Unreal Engine's Material Editor, Unity's Shader Graph, Blender's Node
+Editor).
 
 
 
 ### Gouraud Shading
 
-*Explanation:* Gouraud shading is an interpolation technique used to smooth the appearance of surfaces in 3D graphics by interpolating colour values across the face of a polygon. It calculates the colour (or lighting) at each vertex of a polygon, and then interpolates these colours linearly across the face during rasterization, resulting in a smoother gradient compared to flat shading.
+*Explanation:* Gouraud shading is an interpolation technique used to smooth the appearance of surfaces in 3D graphics
+by interpolating colour values across the face of a polygon. It calculates the colour (or lighting) at each vertex of
+a polygon, and then interpolates these colours linearly across the face during rasterization, resulting in a smoother
+gradient compared to flat shading.
 
-*Example:* Gouraud shading reduces the faceted look of low-polygon models without increasing the polygon count, making it a common choice for performance-sensitive applications. If a vertex is red, another green, and a third blue, Gouraud shading would create a smooth gradient from red to green to blue across the triangular face.
+*Example:* Gouraud shading reduces the faceted look of low-polygon models without increasing the polygon count, making
+it a common choice for performance-sensitive applications. If a vertex is red, another green, and a third blue, Gouraud
+shading would create a smooth gradient from red to green to blue across the triangular face.
 
 *Reference:* Classic shading models, computer graphics rendering algorithms.
 
@@ -145,9 +191,14 @@ twelve triangles.
 
 ### Phong Shading
 
-*Explanation:* Phong shading is an illumination model that calculates lighting at each pixel (or fragment) of a surface, rather than just at the vertices like Gouraud shading. It interpolates the surface normals across the polygon during rasterization and then calculates the lighting equation for each individual pixel using the interpolated normal, resulting in a much smoother and more accurate representation of reflections and highlights.
+*Explanation:* Phong shading is an illumination model that calculates lighting at each pixel (or fragment) of a surface,
+rather than just at the vertices like Gouraud shading. It interpolates the surface normals across the polygon during
+rasterisation and then calculates the lighting equation for each individual pixel using the interpolated normal, resulting
+in a much smoother and more accurate representation of reflections and highlights.
 
-*Example:* Phong shading provides a more realistic appearance, particularly for specular highlights, as it doesn't suffer from the interpolation artifacts of Gouraud shading. A small, sharp specular highlight will appear accurately rounded on a Phong-shaded surface, whereas it might appear faceted with Gouraud shading.
+*Example:* Phong shading provides a more realistic appearance, particularly for specular highlights, as it doesn't suffer
+from the interpolation artifacts of Gouraud shading. A small, sharp specular highlight will appear accurately rounded on
+a Phong-shaded surface, whereas it might appear faceted with Gouraud shading.
 
 *Reference:* Illumination models, advanced shading techniques.
 
@@ -155,19 +206,29 @@ twelve triangles.
 
 ### Tessellation
 
-*Explanation:* Tessellation is a technique that dynamically subdivides a coarse 3D mesh into a finer, higher-resolution mesh during the rendering pipeline. This process creates more triangles on the GPU, allowing for greater geometric detail to be added to surfaces without requiring the CPU to manage a high-polygon base mesh. It's often controlled by tessellation factors, which determine the level of subdivision based on factors like distance from the camera.
+*Explanation:* Tessellation is a technique that dynamically subdivides a coarse 3D mesh into a finer, higher-resolution
+mesh during the rendering pipeline. This process creates more triangles on the GPU, allowing for greater geometric detail
+to be added to surfaces without requiring the CPU to manage a high-polygon base mesh. It's often controlled by
+tessellation factors, which determine the level of subdivision based on factors like distance from the camera.
 
-*Example:* Tessellation is crucial for adaptive detail and cinematic quality in real-time rendering. For instance, a terrain might appear flat from a distance but, as the camera approaches, tessellation can automatically add geometric detail like bumps and valleys to the ground, giving it a more realistic appearance without prohibitive memory costs.
+*Example:* Tessellation is used for adaptive detail and cinematic quality in real-time rendering. For instance, a terrain
+might appear flat from a distance but, as the camera approaches, tessellation can automatically add geometric detail like
+bumps and valleys to the ground, giving it a more realistic appearance without prohibitive memory costs.
 
 *Reference:* Modern GPU pipelines (e.g., DirectX 11+, OpenGL 4+), tessellation shaders.
 
 
 
-### Rasterization
+### Rasterisation
 
-*Explanation:* Rasterization is the process of converting vector graphics (such as 3D models composed of vertices, edges, and polygons) into a raster image (a grid of pixels) for display on a screen. It involves determining which pixels on the screen are covered by each geometric primitive and then interpolating vertex attributes (like colour, texture coordinates, or normals) across those pixels to determine their final colour.
+*Explanation:* Rasterisation is the process of converting vector graphics (such as 3D models composed of vertices, edges,
+and polygons) into a raster image (a grid of pixels) for display on a screen. It involves determining which pixels on the
+screen are covered by each geometric primitive and then interpolating vertex attributes (like colour, texture coordinates,
+or normals) across those pixels to determine their final colour.
 
-*Example:* Rasterization is the core rendering technique for almost all real-time 3D applications (e.g., video games). When a triangle is processed by the rasteriser, it determines every pixel that falls within its boundaries and prepares them for the fragment shader.
+*Example:* Rasterisation is the core rendering technique for almost all real-time 3D applications (e.g., video games).
+When a triangle is processed by the rasteriser, it determines every pixel that falls within its boundaries and prepares
+them for the fragment shader.
 
 *Reference:* Real-time rendering pipeline, fixed-function pipeline vs. programmable pipeline.
 
@@ -175,9 +236,13 @@ twelve triangles.
 
 ### Fragment
 
-*Explanation:* In the rasterization stage of the rendering pipeline, a "fragment" is a potential pixel. It's the data generated for each pixel that a primitive (like a triangle) covers. A fragment contains all the interpolated attributes needed by the fragment shader, such as interpolated colour, texture coordinates, and interpolated normal vector, along with its screen-space coordinates and depth value. Not all fragments become actual pixels (e.g., due to depth testing).
+*Explanation:* In the rasterisation stage of the rendering pipeline, a "fragment" is a potential pixel. It's the data
+generated for each pixel that a primitive (like a triangle) covers. A fragment contains all the interpolated attributes
+needed by the fragment shader, such as interpolated colour, texture coordinates, and interpolated normal vector, along
+with its screen-space coordinates and depth value. Not all fragments become actual pixels (e.g., due to depth testing).
 
-*Example:* The fragment shader operates on fragments. For instance, if a triangle covers 100 screen pixels, the rasteriser will generate 100 fragments, and the fragment shader will execute for each one, determining its final colour.
+*Example:* The fragment shader operates on fragments. For instance, if a triangle covers 100 screen pixels, the rasteriser
+will generate 100 fragments, and the fragment shader will execute for each one, determining its final colour.
 
 *Reference:* Rasterization, fragment shader.
 
@@ -185,9 +250,13 @@ twelve triangles.
 
 ### Z-buffering (Depth Buffering)
 
-*Explanation:* Z-buffering (or depth buffering) is a technique used during rasterization to determine which pixels are visible when multiple objects overlap. It involves storing a depth value (the Z-coordinate) for each pixel in a special buffer (the Z-buffer). When a new pixel is rendered, its depth is compared to the existing depth in the Z-buffer. If the new pixel is closer to the camera, it overwrites the existing pixel colour and depth; otherwise, it is discarded.
+*Explanation:* Z-buffering (or depth buffering) is a technique used during rasterization to determine which pixels are
+visible when multiple objects overlap. It involves storing a depth value (the Z-coordinate) for each pixel in a special
+buffer (the Z-buffer). When a new pixel is rendered, its depth is compared to the existing depth in the Z-buffer. If the
+new pixel is closer to the camera, it overwrites the existing pixel colour and depth; otherwise, it is discarded.
 
-*Example:* Z-buffering is critical for correctly rendering overlapping objects, preventing further objects from drawing over closer ones. Without it, objects further away could be drawn on top of closer objects, leading to visual errors.
+*Example:* Z-buffering is critical for correctly rendering overlapping objects, preventing further objects from drawing
+over closer ones. Without it, objects further away could be drawn on top of closer objects, leading to visual errors.
 
 *Reference:* Visibility determination, real-time rendering techniques.
 
@@ -195,13 +264,16 @@ twelve triangles.
 
 ### Framebuffer
 
-*Explanation:* A framebuffer is a digital memory buffer in a computer's RAM or VRAM that holds a complete frame of image data ready for display on a screen. It typically consists of several logical buffers:
+*Explanation:* A framebuffer is a digital memory buffer in a computer's RAM or VRAM that holds a complete frame of image
+data ready for display on a screen. It typically consists of several logical buffers:
 * *colour Buffer:* Stores the final RGBA colour values for each pixel.
 * *Depth Buffer (Z-buffer):* Stores depth information for depth testing.
 * *Stencil Buffer:* Stores additional per-pixel information for advanced effects (e.g., masking, shadows).
 * *Accumulation Buffer:* (Less common now) Used for effects like motion blur or depth of field by accumulating multiple frames.
 
-*Example:* The rendering pipeline renders to the framebuffer. Once all drawing commands for a frame are complete, the contents of the colour buffer are sent to the display. When rendering a scene, objects are drawn into the colour buffer, and their depth is written to the depth buffer to handle visibility.
+*Example:* The rendering pipeline renders to the framebuffer. Once all drawing commands for a frame are complete, the
+contents of the colour buffer are sent to the display. When rendering a scene, objects are drawn into the colour buffer,
+and their depth is written to the depth buffer to handle visibility.
 
 *Reference:* Graphics hardware, rendering pipeline.
 
@@ -209,9 +281,14 @@ twelve triangles.
 
 ### Transform (Transformation Matrix)
 
-*Explanation:* A transform in 3D graphics refers to the mathematical operations of translation (moving), rotation (orienting), and scaling (resizing) of objects, points, or vectors in 3D space. These operations are typically represented by a 4x4 matrix (a transformation matrix). Chaining multiple transforms together (e.g., scale then rotate then translate) is done by multiplying their respective matrices.
+*Explanation:* A transform in 3D graphics refers to the mathematical operations of translation (moving), rotation
+(orienting), and scaling (resising) of objects, points, or vectors in 3D space. These operations are typically represented
+by a 4x4 matrix (a transformation matrix). Chaining multiple transforms together (e.g., scale then rotate then translate)
+is done by multiplying their respective matrices.
 
-*Example:* Transforms are fundamental to positioning and orienting every object in a 3D scene. An object's "model matrix" transforms it from its local object space into the global "world space," while the "view matrix" transforms from world space to camera space, and the "projection matrix" transforms to clip space.
+*Example:* Transforms are fundamental to positioning and orienting every object in a 3D scene. An object's
+"model matrix" transforms it from its local object space into the global "world space," while the "view matrix"
+transforms from world space to camera space, and the "projection matrix" transforms to clip space.
 
 *Reference:* Linear algebra for computer graphics, 3D rendering pipeline.
 
@@ -219,13 +296,18 @@ twelve triangles.
 
 ### Model-View-Projection (MVP) Matrix
 
-*Explanation:* The MVP matrix is a composite transformation matrix crucial for rendering 3D objects onto a 2D screen. It is the product of three individual matrices:
+*Explanation:* The MVP matrix is a composite transformation matrix crucial for rendering 3D objects onto a 2D screen.
+It is the product of three individual matrices:
 1. *Model Matrix:* Transforms vertices from the object's local space to the world space.
 2. *View Matrix:* Transforms vertices from world space to the camera's view space (or eye space).
-3. *Projection Matrix:* Transforms vertices from view space to clip space (a normalized cube from -1 to 1 on each axis), preparing them for rasterization.
-The combined MVP matrix allows vertices to be transformed from their initial definition to their final screen position in a single multiplication.
+3. *Projection Matrix:* Transforms vertices from view space to clip space (a normalized cube from -1 to 1
+   on each axis), preparing them for rasterisation.
+The combined MVP matrix allows vertices to be transformed from their initial definition to their final screen
+position in a single multiplication.
 
-*Example:* The MVP matrix is applied in the vertex shader for every vertex to position it correctly on the screen. For example, if a vertex is at $(0,0,0)$ in its local model space, the MVP matrix determines where that point appears on your screen based on the object's position, camera's position, and camera's perspective.
+*Example:* The MVP matrix is applied in the vertex shader for every vertex to position it correctly on the screen.
+For example, if a vertex is at $(0,0,0)$ in its local model space, the MVP matrix determines where that point appears
+on your screen based on the object's position, camera's position, and camera's perspective.
 
 *Reference:* Graphics pipeline, vertex shading.
 
@@ -233,21 +315,32 @@ The combined MVP matrix allows vertices to be transformed from their initial def
 
 ### Back-face Culling
 
-*Explanation:* Back-face culling is an optimization technique used in 3D rendering to avoid rendering polygons that are facing away from the camera. In a closed 3D model, the faces pointing away from the viewer are generally hidden by the front-facing faces. By determining the orientation of a face relative to the camera (e.g., using its normal vector and the camera's direction), these "back faces" can be discarded early in the rendering pipeline, saving processing time.
+*Explanation:* Back-face culling is an optimisation technique used in 3D rendering to avoid rendering polygons that
+are facing away from the camera. In a closed 3D model, the faces pointing away from the viewer are generally hidden
+by the front-facing faces. By determining the orientation of a face relative to the camera (e.g., using its normal
+vector and the camera's direction), these "back faces" can be discarded early in the rendering pipeline, saving
+processing time.
 
-*Example:* This technique significantly improves rendering performance by reducing the number of polygons that need to be processed by the later stages of the pipeline. For a simple cube, back-face culling means only 3 of its 6 faces need to be drawn at any given time.
+*Example:* This technique significantly improves rendering performance by reducing the number of polygons that need
+to be processed by the later stages of the pipeline. For a simple cube, back-face culling means only 3 of its 6 faces
+need to be drawn at any given time.
 
-*Reference:* Rendering optimizations, graphics pipeline.
+*Reference:* Rendering optimisations, graphics pipeline.
 
 
 
 ### Occlusion Culling
 
-*Explanation:* Occlusion culling is a rendering optimization technique that prevents objects or parts of objects from being rendered if they are completely hidden from the camera by other, closer objects (occluders). Unlike back-face culling which deals with individual polygon orientation, occlusion culling considers entire objects or groups of objects. It often involves pre-computation or real-time depth tests to identify occluded geometry.
+*Explanation:* Occlusion culling is a rendering optimization technique that prevents objects or parts of objects
+from being rendered if they are completely hidden from the camera by other, closer objects (occluders). Unlike back-face
+culling which deals with individual polygon orientation, occlusion culling considers entire objects or groups of
+objects. It often involves pre-computation or real-time depth tests to identify occluded geometry.
 
-*Example:* Occlusion culling is critical for performance in complex indoor scenes or highly detailed environments. In a building, if you are looking at a wall, occlusion culling would prevent the rendering of rooms and objects behind that wall, even if they are within the camera's frustum.
+*Example:* Occlusion culling is critical for performance in complex indoor scenes or highly detailed environments.
+In a building, if you are looking at a wall, occlusion culling would prevent the rendering of rooms and objects behind
+that wall, even if they are within the camera's frustum.
 
-*Reference:* Rendering optimizations, game engine architecture.
+*Reference:* Rendering optimisations, game engine architecture.
 
 
 
@@ -307,7 +400,7 @@ The combined MVP matrix allows vertices to be transformed from their initial def
 
 *Example:* AO greatly improves the perceived realism of a scene by adding soft contact shadows and defining spatial relationships between objects. A common application is Screen Space Ambient Occlusion (SSAO), which computes AO based on depth and normal information available in the screen buffer.
 
-*Reference:* Shading techniques, real-time rendering optimizations.
+*Reference:* Shading techniques, real-time rendering optimisations.
 
 
 
@@ -317,7 +410,7 @@ The combined MVP matrix allows vertices to be transformed from their initial def
 
 *Example:* LOD systems are indispensable in large open-world games. A tree in the distance might be a simple billboard or a very low-poly mesh, but as the player approaches, it smoothly transitions to a more detailed mesh with higher polygon count.
 
-*Reference:* Real-time rendering optimizations, game development.
+*Reference:* Real-time rendering optimisations, game development.
 
 
 
@@ -387,7 +480,7 @@ The combined MVP matrix allows vertices to be transformed from their initial def
 
 *Example:* Bounding boxes are a fundamental optimization. Instead of performing expensive per-polygon collision tests between two complex models, an engine first checks if their simple bounding boxes intersect. Only if they do, a more precise (and costly) test is performed.
 
-*Reference:* Collision detection, spatial partitioning, real-time rendering optimizations.
+*Reference:* Collision detection, spatial partitioning, real-time rendering optimisations.
 
 
 
@@ -397,7 +490,7 @@ The combined MVP matrix allows vertices to be transformed from their initial def
 
 *Example:* Frustum culling is essential for optimizing performance in any 3D scene. If a character is walking through a level, only the parts of the level visible through the camera's "lens" (frustum) are drawn, ignoring everything behind or to the sides.
 
-*Reference:* Visibility determination, rendering pipeline optimizations.
+*Reference:* Visibility determination, rendering pipeline optimisations.
 
 
 
@@ -447,7 +540,7 @@ The combined MVP matrix allows vertices to be transformed from their initial def
 
 *Example:* Instancing is vital for rendering large numbers of identical or similar objects efficiently, such as a forest of trees, a crowd of characters, or an army of identical units in a game. Instead of hundreds of draw calls for hundreds of trees, there might be just one.
 
-*Reference:* Rendering optimizations, GPU pipeline.
+*Reference:* Rendering optimisations, GPU pipeline.
 
 
 
@@ -482,7 +575,7 @@ vertices are connected to form the 12 triangles.
 by the camera's position, direction, and its lens properties (field of view, aspect ratio, near clip plane, and far
 clip plane). Only objects or parts of objects within this frustum will be rendered.
 
-*Example:* Understanding the view frustum is fundamental to camera setup and rendering optimizations like frustum
+*Example:* Understanding the view frustum is fundamental to camera setup and rendering optimisations like frustum
 culling. Objects entirely outside this volume are immediately discarded, saving rendering time.
 
 *Reference:* Camera projection, 3D graphics fundamentals.
