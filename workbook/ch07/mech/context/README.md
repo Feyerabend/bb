@@ -258,10 +258,11 @@ performance until it's repopulated.
 - It requires saving and restoring complete CPU and memory context.
 - It’s used in kernels, coroutine systems, and async runtimes.
 
-Beyond cooperative context switching (as seen in coroutines above), there are other approaches.
 
 
 ### Other Context Switch Solutions
+
+Beyond cooperative context switching (as seen in coroutines above), there are other approaches.
 
 #### Preemptive Context Switching
 
