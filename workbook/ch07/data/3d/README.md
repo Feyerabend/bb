@@ -156,6 +156,6 @@ The third folder [WebGL](./webgl/) focuses on *WebGL* and the *OBJ file format*.
 
 ### Build Your Own 3D Engine
 
-Students find it interesting to building their own 3D engine in C (often intended for games) to learn concepts.
-This folder [simple](./simple/) will only begin with one way to do that.
+Students can find it interesting to build their own 3D engine in C (often intended for games) to learn
+concepts. This folder [simple](./simple/) will only begin with one way to do that.
 
