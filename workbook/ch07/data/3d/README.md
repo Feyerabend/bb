@@ -3,9 +3,9 @@
 
 ### Cube: Basic Graphics Examples
 
-This folder introduces fundamental *3D graphics* concepts by rendering and manipulating a
-simple *cube* on a 2D screen using mathematical operations. The core process involves taking
-3D data (vertices) and transforming it into 2D coordinates for drawing.
+This [cube](./cube/) folder introduces fundamental *3D graphics* concepts by rendering and
+manipulating a simple *cube* on a 2D screen using mathematical operations. The core process
+involves taking 3D data (vertices) and transforming it into 2D coordinates for drawing.
 
 The examples demonstrate key concepts incrementally:
 - *Coordinate Systems:* Defining points in 3D space (x, y, z).
@@ -39,9 +39,9 @@ hands-on introduction to how linear algebra and geometry create visual effects i
 
 ### Balls: Raytracing Examples
 
-This folder introduces *3D rendering*, specifically the technique of *raytracing*, through a
-series of simple web examples. Raytracing simulates the path of light, working backward from
-the camera. For each pixel on the screen, a ray is cast from the camera into the 3D scene.
+This folder [balls](./balls/) introduces *3D rendering*, specifically the technique of *raytracing*,
+through a series of simple web examples. Raytracing simulates the path of light, working backward
+from the camera. For each pixel on the screen, a ray is cast from the camera into the 3D scene.
 The color of the pixel is determined by the first object the ray intersects, considering
 lighting, shading, and shadows at that intersection point. This method often results in
 very realistic images.
@@ -126,7 +126,7 @@ highlight different aspects of the graphics pipeline:
 
 ### WebGL and the file format OBJ
 
-The third folder focuses on *WebGL* and the *OBJ file format*.
+The third folder [WebGL](./webgl/) focuses on *WebGL* and the *OBJ file format*.
 
    *WebGL as a Rendering API:* This folder explains that WebGL is a *JavaScript API* for rendering
    *hardware-accelerated 2D and 3D graphics* directly in web browsers. It's built on OpenGL ES and
@@ -152,4 +152,10 @@ The third folder focuses on *WebGL* and the *OBJ file format*.
    a potential dependency issue that the pure JavaScript examples in the first two folders do not have.
    Learning WebGL also requires understanding concepts like shaders, which adds a new layer of complexity
    beyond the mathematics used in the first two documents.
+
+
+### Build Your Own 3D Engine
+
+Students find it interesting to building their own 3D engine in C (often intended for games) to learn concepts.
+This folder [simple](./simple/) will only begin with one way to do that.
 
