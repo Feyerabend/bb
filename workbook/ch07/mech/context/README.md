@@ -190,6 +190,60 @@ int main() {
 
 This *illustrates* the context switch with [coroutines](./../coroutine/).
 
+```mermaid
+stateDiagram-v2
+    [*] --> Main
+    Main --> TaskA: Start initial task
+    Main --> Main: Scheduler loop
+    
+    state Main {
+        [*] --> Setup
+        Setup --> SchedulerLoop: Start Task A
+        SchedulerLoop --> SchedulerLoop: Check task states
+        
+        state SchedulerLoop {
+            DecideNextTask --> RunTaskA: if (!a_done && last_task≠1)
+            DecideNextTask --> RunTaskB: if (!b_done && last_task≠2)
+            
+            RunTaskA --> TaskA: Call task
+            RunTaskB --> TaskB: Call task
+            
+            HandleYield --> SwitchTasks: val==1 (yield)
+            HandleComplete --> CheckDone: val==2 (done)
+        }
+    }
+    
+    state TaskA {
+        [*] --> Execution
+        Execution --> Print: Print iteration
+        Print --> Yield: setjmp(ctx_a)==0
+        Yield --> Main: longjmp(ctx_main,1)
+        
+        state Yield {
+            SaveContext --> ReturnToMain
+        }
+        
+        Execution --> Complete: i>=3
+        Complete --> Main: longjmp(ctx_main,2)
+    }
+    
+    state TaskB {
+        [*] --> Execution
+        Execution --> Print: Print iteration
+        Print --> Yield: setjmp(ctx_b)==0
+        Yield --> Main: longjmp(ctx_main,1)
+        
+        state Yield {
+            SaveContext --> ReturnToMain
+        }
+        
+        Execution --> Complete: i>=3
+        Complete --> Main: longjmp(ctx_main,2)
+    }
+    
+    Main --> [*]: All tasks done
+```
+
 ### Context Switch vs Coroutine
 
 | Feature       | Context Switch (Kernel/Thread)       | Coroutine (User-space)                |
