@@ -696,3 +696,218 @@ a single polygon to the wall mesh.
 
 Reference: Texture mapping, classic shading techniques, computer graphics fundamentals.
 
+
+
+### Affine Transformation
+
+*Explanation:* An affine transformation is a type of geometric transformation that preserves collinearity (points
+on a line remain on a line) and ratios of distances along a line. It includes translation, rotation, scaling,
+reflection, and shear. In 3D graphics, these transformations are typically represented by $4 \times 4$ matrices,
+where the last row is $(0, 0, 0, 1)$ for standard affine transformations.
+
+*Example:* Affine transformations are the backbone of how objects are positioned, oriented, and scaled in a 3D scene.
+Every object's model matrix, view matrix, and projection matrix are all types of affine (or projective, for
+projection) transformations.
+
+*Reference:* Linear algebra for computer graphics, geometric transformations.
+
+
+
+### Homogeneous Coordinates
+
+*Explanation:* Homogeneous coordinates are a system of coordinates used in computer graphics and projective geometry
+to represent points and vectors. A 3D point $(x, y, z)$ is represented as a 4D vector $(x, y, z, w)$, where $w$ is
+typically 1 for points and 0 for vectors. This allows all affine transformations (translation, rotation, scaling)
+to be represented as matrix multiplications, simplifying the mathematical pipeline. Division by $w$ (perspective
+division) occurs at the end of the projection stage.
+
+*Example:* Homogeneous coordinates unify the mathematical representation of translations with rotations and scaling,
+allowing all transformations to be combined into a single matrix multiplication. This is crucial for efficient GPU
+processing. For instance, a point $(X, Y, Z)$ becomes $(X, Y, Z, 1)$ before matrix multiplication.
+
+*Reference:* Projective geometry, linear algebra in computer graphics.
+
+
+
+### Orthographic Projection
+
+*Explanation:* Orthographic projection is a type of 3D projection where objects are projected onto the viewing plane
+with parallel lines, meaning there is no perspective distortion. Objects of the same size appear the same size regardless
+of their distance from the camera. It is commonly used for technical drawings, architectural blueprints, or isometric
+views where accurate measurements and lack of distortion are desired.
+
+*Example:* Orthographic projection is used when maintaining relative sizes and measurements is more important than
+visual realism. For example, in a CAD software, an orthographic top-down view of a building ensures that all walls
+of the same length appear equally long, regardless of their position in the scene.
+
+*Reference:* Camera projection, computer graphics fundamentals.
+
+
+
+### Perspective Projection
+
+*Explanation:* Perspective projection is a type of 3D projection that simulates how the human eye perceives depth and
+distance. Objects further from the camera appear smaller, and parallel lines appear to converge at a vanishing point.
+This creates a sense of realism and depth in the rendered image. It's the most common projection type for games, films,
+and general 3D visualisation.
+
+*Example:* Perspective projection is used for creating realistic 3D scenes. When looking down a long road, the edges of
+the road appear to converge in the distance due to perspective projection.
+
+*Reference:* Camera projection, computer graphics fundamentals.
+
+
+
+### Clipping
+
+*Explanation:* Clipping is the process of discarding (or "clipping") parts of geometric primitives (points, lines,
+triangles) that lie outside the camera's viewing frustum or other defined clipping planes. This ensures that only
+the visible portions of the scene are sent to the rasteriser, saving significant processing time. It occurs after
+vertex transformation but before rasterisation.
+
+*Example:* Clipping is a necessary step in the rendering pipeline for efficiency and correctness. If a triangle
+extends partially off-screen, clipping will cut it, creating new vertices at the intersection points with the
+frustum boundaries, ensuring only the visible part is drawn.
+
+*Reference:* Graphics pipeline, visibility determination.
+
+
+
+### Vertex Array Object (VAO)
+
+*Explanation:* A Vertex Array Object (VAO) is an OpenGL object that encapsulates all the state needed to describe
+vertex data for rendering. This includes pointers to Vertex Buffer Objects (VBOs), the layout of attributes within
+those VBOs (e.g., position, normal, UVs), and the binding to an Index Buffer Object (IBO). Binding a VAO restores
+all this state at once, simplifying rendering code and improving performance.
+
+*Example:* VAOs streamline the process of preparing vertex data for drawing. Instead of setting up buffer bindings
+and attribute pointers for each draw call, an application can simply bind a VAO and then issue a draw call for a
+specific mesh.
+
+*Reference:* OpenGL programming, modern graphics APIs.
+
+
+
+### State Machine (Graphics API)
+
+*Explanation:* Many traditional graphics APIs (like older OpenGL) operate as state machines. This means that rendering
+settings (such as current shader program, blend mode, depth test settings, active textures, etc.) are set globally.
+Subsequent drawing commands then use these currently active "states" until they are changed. This contrasts with more
+modern, object-oriented APIs (like Vulkan or DirectX 12) which are often "stateless" and require all necessary state
+to be specified explicitly for each command.
+
+*Example:* Understanding the state machine model is crucial when programming with APIs like OpenGL. If you enable
+blending, all subsequent objects will be blended until blending is explicitly disabled.
+
+*Reference:* Graphics API design, OpenGL programming.
+
+
+
+### Blending (Alpha Blending)
+
+*Explanation:* Blending, specifically alpha blending, is a technique used to combine the colors of a newly rendered
+(source) pixel with an existing pixel in the framebuffer (destination pixel). It relies on the alpha channel
+(transparency) of the source color. A common blend formula is: $C_{final} = C_{source} \times \alpha_{source} + C_{destination}
+\times (1 - \alpha_{source})$, where $C$ represents color components and $\alpha$ is the alpha value. This creates
+transparent or translucent effects.
+
+*Example:* Blending is essential for rendering transparent objects like glass, water, or particle effects. To correctly
+render a transparent window, the background scene is drawn first, and then the window is drawn on top, using blending
+to allow the background to show through.
+
+*Reference:* Rendering effects, rasterisation, alpha compositing.
+
+
+
+### Stencil Buffer
+
+*Explanation:* The stencil buffer is an additional per-pixel buffer in the framebuffer (alongside the color and depth
+buffers) that stores integer values (typically 8 bits per pixel). It allows for masking and selective rendering. Pixels
+can be conditionally rendered based on the value in the stencil buffer, enabling complex effects like reflections,
+shadows, portals, or outlining.
+
+*Example:* The stencil buffer is used for effects like planar reflections. First, a scene is drawn, marking the reflection
+plane in the stencil buffer. Then, the scene is drawn again (possibly inverted and translated), but only where the
+stencil buffer indicates the reflection plane, ensuring the reflection only appears on the mirror surface.
+
+*Reference:* Advanced rendering effects, framebuffer operations.
+
+
+
+### Frame Rate (FPS)
+
+*Explanation:* Frame rate, commonly measured in Frames Per Second (FPS), is the frequency (rate) at which consecutive
+images (frames) are displayed on a screen. A higher frame rate generally results in smoother animation and a more
+responsive user experience, as more visual updates occur per second. Typical target frame rates are 30 FPS for consoles
+and 60 FPS or higher for PCs.
+
+*Example:* Frame rate is a key performance metric in real-time 3D applications like video games. A low frame rate
+(e.g., consistently below 30 FPS) results in a "choppy" or "laggy" visual experience.
+
+*Reference:* Real-time graphics performance, human perception.
+
+
+
+### VSync (Vertical Synchronization)
+
+*Explanation:* VSync (Vertical Synchronization) is a display option that synchronises the frame rate of the graphics
+card with the refresh rate of the monitor. When VSync is enabled, the graphics card waits for the monitor's vertical
+blanking interval before sending a new frame to the display. This prevents "screen tearing," where parts of multiple
+frames are displayed simultaneously, but it can introduce input lag if the frame rate drops below the monitor's refresh
+rate.
+
+*Example:* VSync is used to ensure visual smoothness and prevent tearing. If a game renders at 100 FPS on a 60Hz monitor
+without VSync, you would see tearing artifacts. With VSync, it caps the framerate at 60 FPS, ensuring each frame is
+complete when displayed.
+
+*Reference:* Display technology, real-time graphics performance.
+
+
+
+### Render Pipeline
+
+*Explanation:* The render pipeline (or graphics pipeline) is the sequence of stages that 3D data goes through from
+its initial definition in an application to its final display as 2D pixels on a screen. It typically involves stages
+like application stage (CPU), geometry stage (vertex processing, transformations, culling), and rasterisation stage
+(fragment processing, shading, pixel output). Modern pipelines are highly programmable, especially on the GPU.
+
+*Example:* Understanding the render pipeline is fundamental to graphics programming, as it dictates the order of
+operations and where different computations occur. A vertex shader runs early in the pipeline to transform geometry,
+while a fragment shader runs later to determine pixel colors.
+
+*Reference:* Computer graphics architecture, GPU architecture.
+
+
+
+### Texture Filtering (Bilinear, Trilinear, Anisotropic)
+
+*Explanation:* Texture filtering refers to techniques used to determine the color of a pixel when its texture
+coordinate does not perfectly align with a texel (texture pixel). This is necessary to prevent aliasing artifacts
+(jagged edges, shimmering) when textures are scaled up or down.
+* *Bilinear Filtering:* Interpolates between the four nearest texels.
+* *Trilinear Filtering:* Adds interpolation between mipmap levels to reduce aliasing further, especially at distance.
+* *Anisotropic Filtering:* The most advanced, it samples textures non-uniformly along the direction of the view,
+significantly improving clarity for textures viewed at oblique angles.
+
+*Example:* Texture filtering ensures textures look smooth and clear regardless of scale or viewing angle. Without
+it, a texture seen from a distance would appear blocky or shimmer due to aliasing. Anisotropic filtering is especially
+important for ground textures stretching into the distance.
+
+*Reference:* Texture mapping, real-time rendering.
+
+
+
+### Mipmap
+
+*Explanation:* Mipmaps (derived from the Latin "multum in parvo" meaning "much in little") are pre-calculated,
+optimised sequences of progressively smaller and lower-resolution images of a given texture. Each mipmap level
+is typically half the size (width and height) of the previous level. During rendering, the graphics hardware
+automatically selects the appropriate mipmap level based on the distance of the textured object from the camera,
+reducing aliasing and improving performance.
+
+*Example:* Mipmaps are crucial for reducing visual artifacts like shimmering and moiré patterns when textures are
+viewed from a distance, and for optimising memory bandwidth by sampling smaller texture data. A brick wall texture
+might have a 1024x1024 base texture, then a 512x512 mipmap, a 256x256, and so on, down to a tiny 1x1 pixel version.
+
+*Reference:* Texture mapping, real-time rendering.
+
