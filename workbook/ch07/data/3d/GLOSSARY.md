@@ -594,9 +594,14 @@ It is often preferred for scenes with fewer lights or when complex per-pixel tra
 
 ### Compute Shader
 
-*Explanation:* A compute shader is a general-purpose shader program that runs on the GPU, designed for parallel computation on arbitrary data, not just for rendering graphics. It operates on data within GPU memory (e.g., buffers, textures) and can perform tasks like physics simulations, particle systems, image processing, or data manipulation that are not directly tied to drawing triangles to the screen.
+*Explanation:* A compute shader is a general-purpose shader program that runs on the GPU, designed for parallel
+computation on arbitrary data, not just for rendering graphics. It operates on data within GPU memory (e.g., buffers,
+textures) and can perform tasks like physics simulations, particle systems, image processing, or data manipulation
+that are not directly tied to drawing triangles to the screen.
 
-*Example:* Compute shaders enable powerful GPU acceleration for non-rendering tasks. For example, a game might use a compute shader to simulate the fluid dynamics of water or the behavior of a massive flock of birds, leveraging the GPU's parallel processing capabilities.
+*Example:* Compute shaders enable powerful GPU acceleration for non-rendering tasks. For example, a game might use
+a compute shader to simulate the fluid dynamics of water or the behavior of a massive flock of birds, leveraging
+the GPU's parallel processing capabilities.
 
 *Reference:* GPU programming, parallel computing, modern graphics APIs (e.g., OpenGL 4.3+, DirectX 11+).
 
@@ -604,9 +609,14 @@ It is often preferred for scenes with fewer lights or when complex per-pixel tra
 
 ### Signed Distance Field (SDF)
 
-*Explanation:* A Signed Distance Field (SDF) is a mathematical function that, for any given point in space, returns the shortest distance from that point to the surface of an object. The "signed" part means the distance is positive if the point is outside the object and negative if it's inside. SDFs can represent complex shapes and are powerful for rendering, collision detection, and procedural generation.
+*Explanation:* A Signed Distance Field (SDF) is a mathematical function that, for any given point in space, returns
+the shortest distance from that point to the surface of an object. The "signed" part means the distance is positive
+if the point is outside the object and negative if it's inside. SDFs can represent complex shapes and are powerful
+for rendering, collision detection, and procedural generation.
 
-*Example:* SDFs are used for rendering techniques like ray marching (where rays step through the field) to render smooth, complex shapes without traditional polygons. They are also excellent for booleans (combining/subtracting shapes) and for creating smooth blends between objects.
+*Example:* SDFs are used for rendering techniques like ray marching (where rays step through the field) to render
+smooth, complex shapes without traditional polygons. They are also excellent for booleans (combining/subtracting
+shapes) and for creating smooth blends between objects.
 
 *Reference:* Ray marching, procedural generation, computational geometry.
 
@@ -614,9 +624,14 @@ It is often preferred for scenes with fewer lights or when complex per-pixel tra
 
 ### Instancing
 
-*Explanation:* Instancing is a rendering optimization technique used to draw multiple copies of the same 3D mesh (or "instance") with a single draw call. Instead of submitting the geometry for each copy individually, the GPU is given the mesh once, along with an array of per-instance data (e.g., position, rotation, scale, colour variations) for each copy. This significantly reduces CPU overhead.
+*Explanation:* Instancing is a rendering optimization technique used to draw multiple copies of the same 3D mesh
+(or "instance") with a single draw call. Instead of submitting the geometry for each copy individually, the GPU
+is given the mesh once, along with an array of per-instance data (e.g., position, rotation, scale, colour variations)
+for each copy. This significantly reduces CPU overhead.
 
-*Example:* Instancing is vital for rendering large numbers of identical or similar objects efficiently, such as a forest of trees, a crowd of characters, or an army of identical units in a game. Instead of hundreds of draw calls for hundreds of trees, there might be just one.
+*Example:* Instancing is vital for rendering large numbers of identical or similar objects efficiently, such as a
+forest of trees, a crowd of characters, or an army of identical units in a game. Instead of hundreds of draw calls
+for hundreds of trees, there might be just one.
 
 *Reference:* Rendering optimisations, GPU pipeline.
 
@@ -624,9 +639,14 @@ It is often preferred for scenes with fewer lights or when complex per-pixel tra
 
 ### Vertex Buffer Object (VBO)
 
-*Explanation:* A Vertex Buffer Object (VBO) is a memory buffer on the GPU used to store vertex data (positions, normals, texture coordinates, colours, etc.). Storing vertex data on the GPU and binding it for drawing reduces the need to repeatedly transfer data from the CPU to the GPU, leading to significant performance improvements in real-time rendering.
+*Explanation:* A Vertex Buffer Object (VBO) is a memory buffer on the GPU used to store vertex data (positions,
+normals, texture coordinates, colours, etc.). Storing vertex data on the GPU and binding it for drawing reduces
+the need to repeatedly transfer data from the CPU to the GPU, leading to significant performance improvements
+in real-time rendering.
 
-*Example:* VBOs are a fundamental part of modern OpenGL/DirectX rendering. When an application renders a character, its entire mesh data (vertices) is typically stored in a VBO on the graphics card's memory, ready to be processed by the vertex shader.
+*Example:* VBOs are a fundamental part of modern OpenGL/DirectX rendering. When an application renders a character,
+its entire mesh data (vertices) is typically stored in a VBO on the graphics card's memory, ready to be processed
+by the vertex shader.
 
 *Reference:* OpenGL, DirectX, GPU memory management.
 
