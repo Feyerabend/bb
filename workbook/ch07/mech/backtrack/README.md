@@ -224,6 +224,8 @@ The implementation mirrors real Prolog engines by:
 
 The trail mechanism is particularly clever—it only records *changes* to variables, making undo operations O(1) per binding.
 
+Reference:
+- Warren, D.H.D. (1983). *An Abstract Prolog Instruction Set*. Technical Report 309, SRI International. https://www.sri.com/wp-content/uploads/2021/12/641.pdf
 
 ### Another Backtrack
 
