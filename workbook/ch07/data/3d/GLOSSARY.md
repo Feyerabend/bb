@@ -677,3 +677,22 @@ clip plane). Only objects or parts of objects within this frustum will be render
 culling. Objects entirely outside this volume are immediately discarded, saving rendering time.
 
 *Reference:* Camera projection, 3D graphics fundamentals.
+
+
+
+## Bump Map
+
+*Explanation:* A bump map is a grayscale texture map used to simulate the appearance of surface irregularities
+(bumps and dents) on a 3D model without actually altering the underlying geometry. It works by storing intensity
+values that displace the surface normal virtually during shading. Brighter areas indicate "higher" points, and
+darker areas indicate "lower" points. This virtual displacement affects how light interacts with the surface,
+creating the illusion of detail. Unlike normal maps, bump maps only provide height information, which is then
+converted into normal deviations.
+
+*Example:* Bump maps are an older, but still relevant, technique for adding fine surface detail efficiently,
+especially on objects viewed at a shallow angle. For instance, a bump map can make a flat brick wall texture
+appear to have individual bricks protruding, catching light and casting subtle self-shadows, without adding
+a single polygon to the wall mesh.
+
+Reference: Texture mapping, classic shading techniques, computer graphics fundamentals.
+
