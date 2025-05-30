@@ -33,3 +33,4 @@ indices of previously listed elements. Because of its simplicity and wide suppor
 popular interchange format across 3D software and rendering pipelines.
 
 [^obj]: https://en.wikipedia.org/wiki/Wavefront_.obj_file
+
