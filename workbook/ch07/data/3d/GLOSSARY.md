@@ -1,5 +1,5 @@
 
-## Short 3D Technical Glossary
+## 3D Technical Glossary
 
 This glossary provides definitions for key technical terms used in 3D computer graphics, focusing on rendering
 pipelines, geometric primitives, and GPU programming concepts.
