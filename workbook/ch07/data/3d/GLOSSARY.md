@@ -346,9 +346,14 @@ that wall, even if they are within the camera's frustum.
 
 ### Render Queue
 
-*Explanation:* The render queue (or rendering queue) is a mechanism within a graphics engine that manages the order in which objects are drawn. Objects are typically sorted based on various criteria, such as material properties (e.g., opaque vs. transparent), distance from the camera, or shader requirements. This ordering is crucial for correct blending of transparent objects, optimizing state changes on the GPU, and achieving desired visual effects.
+*Explanation:* The render queue (or rendering queue) is a mechanism within a graphics engine that manages the order
+in which objects are drawn. Objects are typically sorted based on various criteria, such as material properties
+(e.g., opaque vs. transparent), distance from the camera, or shader requirements. This ordering is crucial for correct
+blending of transparent objects, optimizing state changes on the GPU, and achieving desired visual effects.
 
-*Example:* Correct render queue management is essential for visual fidelity, especially with transparency. Opaque objects are usually rendered first (to fill the depth buffer), followed by transparent objects sorted from back to front, so their colours blend correctly with what's already been drawn.
+*Example:* Correct render queue management is essential for visual fidelity, especially with transparency. Opaque objects
+are usually rendered first (to fill the depth buffer), followed by transparent objects sorted from back to front, so
+their colours blend correctly with what's already been drawn.
 
 *Reference:* Game engine rendering loop, rendering pipeline management.
 
@@ -356,19 +361,29 @@ that wall, even if they are within the camera's frustum.
 
 ### Draw Call
 
-*Explanation:* A draw call is a command issued by the CPU to the GPU, instructing it to draw a batch of primitives (e.g., triangles). Each draw call incurs some CPU overhead (e.g., setting up GPU state, submitting data). Optimizing the number of draw calls (batching primitives together) is a key strategy for improving real-time rendering performance, as high draw call counts can bottleneck the CPU.
+*Explanation:* A draw call is a command issued by the CPU to the GPU, instructing it to draw a batch of primitives
+(e.g., triangles). Each draw call incurs some CPU overhead (e.g., setting up GPU state, submitting data). Optimising
+the number of draw calls (batching primitives together) is a key strategy for improving real-time rendering performance,
+as high draw call counts can bottleneck the CPU.
 
-*Example:* Reducing draw calls is a major optimization target in game development. Instead of issuing a separate draw call for every small object, a game engine might combine all similar objects into a single mesh and issue one draw call for them.
+*Example:* Reducing draw calls is a major optimisation target in game development. Instead of issuing a separate draw
+call for every small object, a game engine might combine all similar objects into a single mesh and issue one draw
+call for them.
 
-*Reference:* Performance optimization, GPU architecture, rendering API (e.g., DirectX, OpenGL, Vulkan).
+*Reference:* Performance optimisation, GPU architecture, rendering API (e.g., DirectX, OpenGL, Vulkan).
 
 
 
 ### PBR (Physically Based Rendering)
 
-*Explanation:* PBR is a collection of rendering techniques and shading models designed to simulate the interaction of light with materials in a physically plausible way. This approach aims for more realistic and consistent lighting across various lighting conditions, based on real-world material properties such as albedo, metallicness, roughness, and specular F0. PBR workflows often rely on energy conservation and microfacet theory.
+*Explanation:* PBR is a collection of rendering techniques and shading models designed to simulate the interaction of
+light with materials in a physically plausible way. This approach aims for more realistic and consistent lighting
+across various lighting conditions, based on real-world material properties such as albedo, metallicness, roughness,
+and specular F0. PBR workflows often rely on energy conservation and microfacet theory.
 
-*Example:* PBR has become the industry standard for realistic graphics in games and film due to its consistent results and easier material authoring. A PBR material for gold will look like gold under any light, whereas older non-PBR materials might require manual tweaking per lighting setup.
+*Example:* PBR has become the industry standard for realistic graphics in games and film due to its consistent results
+and easier material authoring. A PBR material for gold will look like gold under any light, whereas older non-PBR
+materials might require manual tweaking per lighting setup.
 
 *Reference:* Modern rendering techniques, material science, computer graphics research.
 
@@ -376,9 +391,14 @@ that wall, even if they are within the camera's frustum.
 
 ### Ray Tracing
 
-*Explanation:* Ray tracing is a rendering technique that simulates the path of light as individual "rays" from the camera through the 3D scene. For each pixel on the screen, a ray is cast into the scene, and its interactions with objects (reflections, refractions, shadows, etc.) are calculated to determine the final colour of that pixel. This often results in highly realistic lighting and reflections but can be computationally expensive.
+*Explanation:* Ray tracing is a rendering technique that simulates the path of light as individual "rays" from
+the camera through the 3D scene. For each pixel on the screen, a ray is cast into the scene, and its interactions
+with objects (reflections, refractions, shadows, etc.) are calculated to determine the final colour of that pixel.
+This often results in highly realistic lighting and reflections but can be computationally expensive.
 
-*Example:* Ray tracing produces highly realistic images, especially regarding reflections, refractions, and global illumination, making it a cornerstone of photorealistic rendering in film and architectural visualization. An example would be rendering a scene with a reflective metallic sphere accurately showing reflections of its surroundings.
+*Example:* Ray tracing produces highly realistic images, especially regarding reflections, refractions, and global
+illumination, making it a cornerstone of photorealistic rendering in film and architectural visualisation. An example
+would be rendering a scene with a reflective metallic sphere accurately showing reflections of its surroundings.
 
 *Reference:* Computer graphics rendering algorithms, advanced rendering techniques.
 
@@ -386,9 +406,15 @@ that wall, even if they are within the camera's frustum.
 
 ### Global Illumination (GI)
 
-*Explanation:* Global Illumination refers to algorithms that simulate how light interacts with a scene in a holistic way, accounting for indirect lighting phenomena beyond direct illumination. This includes effects like diffuse interreflection (light bouncing off surfaces and illuminating others), caustics (light focused by transparent objects), and colour bleeding (light picking up the colour of a surface it reflects off). GI significantly enhances realism but is computationally intensive.
+*Explanation:* Global Illumination refers to algorithms that simulate how light interacts with a scene in a holistic
+way, accounting for indirect lighting phenomena beyond direct illumination. This includes effects like diffuse
+interreflection (light bouncing off surfaces and illuminating others), caustics (light focused by transparent objects),
+and colour bleeding (light picking up the colour of a surface it reflects off). GI significantly enhances realism but
+is computationally intensive.
 
-*Example:* GI is crucial for photorealistic rendering, as it captures the subtle ways light fills a space. A room lit only by a window would have parts of its walls indirectly illuminated by light bouncing off the floor and other walls, an effect only captured by GI.
+*Example:* GI is crucial for photorealistic rendering, as it captures the subtle ways light fills a space. A room lit
+only by a window would have parts of its walls indirectly illuminated by light bouncing off the floor and other walls,
+an effect only captured by GI.
 
 *Reference:* Advanced rendering algorithms, ray tracing, path tracing, radiosity.
 
@@ -396,9 +422,14 @@ that wall, even if they are within the camera's frustum.
 
 ### Ambient Occlusion (AO)
 
-*Explanation:* Ambient Occlusion is a shading technique that approximates how exposed each point in a scene is to ambient light. Areas that are more occluded (e.g., cracks, corners, crevices) receive less ambient light and appear darker, adding subtle shadows and visual depth that enhances realism. It's an approximation of global illumination and is much faster to compute.
+*Explanation:* Ambient Occlusion is a shading technique that approximates how exposed each point in a scene is to
+ambient light. Areas that are more occluded (e.g., cracks, corners, crevices) receive less ambient light and appear
+darker, adding subtle shadows and visual depth that enhances realism. It's an approximation of global illumination
+and is much faster to compute.
 
-*Example:* AO greatly improves the perceived realism of a scene by adding soft contact shadows and defining spatial relationships between objects. A common application is Screen Space Ambient Occlusion (SSAO), which computes AO based on depth and normal information available in the screen buffer.
+*Example:* AO greatly improves the perceived realism of a scene by adding soft contact shadows and defining spatial
+relationships between objects. A common application is Screen Space Ambient Occlusion (SSAO), which computes AO based
+on depth and normal information available in the screen buffer.
 
 *Reference:* Shading techniques, real-time rendering optimisations.
 
@@ -406,9 +437,14 @@ that wall, even if they are within the camera's frustum.
 
 ### LOD (Level of Detail)
 
-*Explanation:* Level of Detail is a technique used to optimize rendering performance by providing different versions of a 3D model (or other assets like textures) with varying levels of geometric complexity. Objects further from the camera are rendered with lower-polygon LODs, while closer objects use higher-polygon LODs. This reduces the computational load without significantly impacting visual quality.
+*Explanation:* Level of Detail is a technique used to optimize rendering performance by providing different versions
+of a 3D model (or other assets like textures) with varying levels of geometric complexity. Objects further from the
+camera are rendered with lower-polygon LODs, while closer objects use higher-polygon LODs. This reduces the computational
+load without significantly impacting visual quality.
 
-*Example:* LOD systems are indispensable in large open-world games. A tree in the distance might be a simple billboard or a very low-poly mesh, but as the player approaches, it smoothly transitions to a more detailed mesh with higher polygon count.
+*Example:* LOD systems are indispensable in large open-world games. A tree in the distance might be a simple billboard
+or a very low-poly mesh, but as the player approaches, it smoothly transitions to a more detailed mesh with higher polygon
+count.
 
 *Reference:* Real-time rendering optimisations, game development.
 
@@ -416,9 +452,13 @@ that wall, even if they are within the camera's frustum.
 
 ### Rigging
 
-*Explanation:* Rigging is the process of creating a hierarchical "skeleton" or "rig" for a 3D model, typically for animation. This involves placing bones (joints) within the model and associating parts of the mesh with those bones, allowing animators to pose and deform the model by manipulating the rig rather than individual vertices. Skinning is the process of binding the mesh to the bones.
+*Explanation:* Rigging is the process of creating a hierarchical "skeleton" or "rig" for a 3D model, typically for
+animation. This involves placing bones (joints) within the model and associating parts of the mesh with those bones,
+allowing animators to pose and deform the model by manipulating the rig rather than individual vertices. Skinning is
+the process of binding the mesh to the bones.
 
-*Example:* Rigging is essential for animating characters and complex deformable objects. A character rig allows an animator to move an arm by rotating a single "upper arm bone" rather than manually adjusting thousands of vertices.
+*Example:* Rigging is essential for animating characters and complex deformable objects. A character rig allows an
+animator to move an arm by rotating a single "upper arm bone" rather than manually adjusting thousands of vertices.
 
 *Reference:* 3D animation pipelines, character animation.
 
@@ -426,9 +466,13 @@ that wall, even if they are within the camera's frustum.
 
 ### Skinning
 
-*Explanation:* Skinning is the process of associating the vertices of a 3D mesh with the bones of a rig. Each vertex is assigned weight values that determine how much it is influenced by one or more bones. When a bone moves, the vertices weighted to it deform the mesh, allowing for realistic character animation.
+*Explanation:* Skinning is the process of associating the vertices of a 3D mesh with the bones of a rig. Each vertex
+is assigned weight values that determine how much it is influenced by one or more bones. When a bone moves, the
+vertices weighted to it deform the mesh, allowing for realistic character animation.
 
-*Example:* Skinning enables organic deformation of character meshes. If a character's elbow bends, the vertices around the elbow joint are influenced by both the upper arm bone and the forearm bone, causing the mesh to bend smoothly.
+*Example:* Skinning enables organic deformation of character meshes. If a character's elbow bends, the vertices
+around the elbow joint are influenced by both the upper arm bone and the forearm bone, causing the mesh to bend
+smoothly.
 
 *Reference:* Character animation, rigging.
 
@@ -436,9 +480,12 @@ that wall, even if they are within the camera's frustum.
 
 ### Keyframe
 
-*Explanation:* In animation, a keyframe is a specific point in time where the properties of an object (e.g., position, rotation, scale, colour) are explicitly defined. The animation software then interpolates or "tweens" the values between these keyframes to create smooth motion.
+*Explanation:* In animation, a keyframe is a specific point in time where the properties of an object (e.g., position,
+rotation, scale, colour) are explicitly defined. The animation software then interpolates or "tweens" the values
+between these keyframes to create smooth motion.
 
-*Example:* Keyframes are the backbone of most animation workflows. To animate a bouncing ball, an animator would set keyframes for its position at the top of its arc and at the bottom of its bounce.
+*Example:* Keyframes are the backbone of most animation workflows. To animate a bouncing ball, an animator would
+set keyframes for its position at the top of its arc and at the bottom of its bounce.
 
 *Reference:* Principles of animation, animation software terminology.
 
@@ -446,9 +493,13 @@ that wall, even if they are within the camera's frustum.
 
 ### Render Farm
 
-*Explanation:* A render farm is a cluster of networked computers (or cloud-based servers) dedicated to rendering 3D images and animations. Rendering complex 3D scenes can be highly computationally intensive, so distributing the workload across multiple machines significantly speeds up the process.
+*Explanation:* A render farm is a cluster of networked computers (or cloud-based servers) dedicated to rendering
+3D images and animations. Rendering complex 3D scenes can be highly computationally intensive, so distributing the
+workload across multiple machines significantly speeds up the process.
 
-*Example:* Render farms are crucial for large-scale production, enabling studios to meet tight deadlines for animated films or visual effects. Without a render farm, rendering a feature-length animated movie would take an impossibly long time on a single computer.
+*Example:* Render farms are crucial for large-scale production, enabling studios to meet tight deadlines for animated
+films or visual effects. Without a render farm, rendering a feature-length animated movie would take an impossibly
+long time on a single computer.
 
 *Reference:* 3D production pipelines, cloud computing in graphics.
 
@@ -456,9 +507,14 @@ that wall, even if they are within the camera's frustum.
 
 ### Voxel
 
-*Explanation:* A voxel (short for "volume pixel") is a unit of graphic information that defines a point in 3D space. Analogous to a 2D pixel, a voxel represents a value on a regular grid in 3D space, often storing properties like colour, density, or temperature. Voxel-based rendering represents objects as collections of these volumetric elements rather than polygons.
+*Explanation:* A voxel (short for "volume pixel") is a unit of graphic information that defines a point in 3D space.
+Analogous to a 2D pixel, a voxel represents a value on a regular grid in 3D space, often storing properties like colour,
+density, or temperature. Voxel-based rendering represents objects as collections of these volumetric elements rather
+than polygons.
 
-*Example:* Voxels are used in medical imaging (e.g., CT scans, MRI), volume rendering, and increasingly in games for destructible environments or infinite procedural worlds. A cloud, for instance, might be represented more naturally as a collection of voxels rather than a polygon mesh.
+*Example:* Voxels are used in medical imaging (e.g., CT scans, MRI), volume rendering, and increasingly in games for
+destructible environments or infinite procedural worlds. A cloud, for instance, might be represented more naturally
+as a collection of voxels rather than a polygon mesh.
 
 *Reference:* Volumetric rendering, discrete geometry.
 
@@ -466,9 +522,13 @@ that wall, even if they are within the camera's frustum.
 
 ### Octree
 
-*Explanation:* An octree is a tree data structure in which each internal node has exactly eight children. Octrees are commonly used to subdivide a 3D space, often to organize spatial data (like voxels or objects) or for efficient spatial queries such as collision detection or frustum culling. Each node represents a cubical region of space.
+*Explanation:* An octree is a tree data structure in which each internal node has exactly eight children. Octrees
+are commonly used to subdivide a 3D space, often to organize spatial data (like voxels or objects) or for efficient
+spatial queries such as collision detection or frustum culling. Each node represents a cubical region of space.
 
-*Example:* Octrees efficiently manage large 3D scenes by quickly narrowing down the search space for objects. When performing a raycast (e.g., for picking an object with the mouse), an octree can rapidly identify which objects a ray intersects without checking every object in the scene.
+*Example:* Octrees efficiently manage large 3D scenes by quickly narrowing down the search space for objects. When
+performing a raycast (e.g., for picking an object with the mouse), an octree can rapidly identify which objects a
+ray intersects without checking every object in the scene.
 
 *Reference:* Spatial data structures, computer graphics algorithms.
 
@@ -476,9 +536,14 @@ that wall, even if they are within the camera's frustum.
 
 ### Bounding Box (AABB)
 
-*Explanation:* A bounding box is the smallest axis-aligned box (Axis-Aligned Bounding Box or AABB) that completely encloses a 3D object or a group of objects. It's a simple geometric primitive used for quick and coarse collision detection, frustum culling, and other spatial queries. Because it's axis-aligned, its calculation and intersection tests are very fast.
+*Explanation:* A bounding box is the smallest axis-aligned box (Axis-Aligned Bounding Box or AABB) that completely
+encloses a 3D object or a group of objects. It's a simple geometric primitive used for quick and coarse collision
+detection, frustum culling, and other spatial queries. Because it's axis-aligned, its calculation and intersection
+tests are very fast.
 
-*Example:* Bounding boxes are a fundamental optimization. Instead of performing expensive per-polygon collision tests between two complex models, an engine first checks if their simple bounding boxes intersect. Only if they do, a more precise (and costly) test is performed.
+*Example:* Bounding boxes are a fundamental optimization. Instead of performing expensive per-polygon collision tests
+between two complex models, an engine first checks if their simple bounding boxes intersect. Only if they do, a more
+precise (and costly) test is performed.
 
 *Reference:* Collision detection, spatial partitioning, real-time rendering optimisations.
 
@@ -486,9 +551,14 @@ that wall, even if they are within the camera's frustum.
 
 ### Frustum Culling
 
-*Explanation:* Frustum culling is a rendering optimization technique that eliminates objects from the rendering pipeline if they lie entirely outside the camera's viewing frustum. The viewing frustum is a pyramid-like shape that defines the visible volume of the camera. Objects outside this volume cannot be seen by the camera and are thus not rendered, saving significant processing time.
+*Explanation:* Frustum culling is a rendering optimisation technique that eliminates objects from the rendering
+pipeline if they lie entirely outside the camera's viewing frustum. The viewing frustum is a pyramid-like shape
+that defines the visible volume of the camera. Objects outside this volume cannot be seen by the camera and are
+thus not rendered, saving significant processing time.
 
-*Example:* Frustum culling is essential for optimizing performance in any 3D scene. If a character is walking through a level, only the parts of the level visible through the camera's "lens" (frustum) are drawn, ignoring everything behind or to the sides.
+*Example:* Frustum culling is essential for optimising performance in any 3D scene. If a character is walking
+through a level, only the parts of the level visible through the camera's "lens" (frustum) are drawn, ignoring
+everything behind or to the sides.
 
 *Reference:* Visibility determination, rendering pipeline optimisations.
 
@@ -496,9 +566,14 @@ that wall, even if they are within the camera's frustum.
 
 ### Deferred Shading
 
-*Explanation:* Deferred shading (or deferred rendering) is a rendering technique that separates the geometry pass from the lighting pass. In the first pass, geometric data (position, normal, albedo, etc.) is rendered into multiple intermediate textures called a G-buffer. In the second pass, a single full-screen shader then reads from this G-buffer to perform all lighting calculations, typically for many light sources.
+*Explanation:* Deferred shading (or deferred rendering) is a rendering technique that separates the geometry
+pass from the lighting pass. In the first pass, geometric data (position, normal, albedo, etc.) is rendered
+into multiple intermediate textures called a G-buffer. In the second pass, a single full-screen shader then
+reads from this G-buffer to perform all lighting calculations, typically for many light sources.
 
-*Example:* Deferred shading is highly efficient for scenes with many dynamic light sources, as lighting calculations are performed once per pixel, rather than once per pixel per light per object. This avoids redundant lighting calculations compared to forward rendering.
+*Example:* Deferred shading is highly efficient for scenes with many dynamic light sources, as lighting
+calculations are performed once per pixel, rather than once per pixel per light per object. This avoids
+redundant lighting calculations compared to forward rendering.
 
 *Reference:* Modern rendering architectures, real-time rendering.
 
@@ -506,9 +581,12 @@ that wall, even if they are within the camera's frustum.
 
 ### Forward Shading
 
-*Explanation:* Forward shading (or forward rendering) is a traditional rendering technique where each object is rendered individually, and for each object, all lighting calculations are performed on its pixels as it is drawn. This means that lighting for an object is computed based on all relevant light sources directly in the fragment shader.
+*Explanation:* Forward shading (or forward rendering) is a traditional rendering technique where each object is
+rendered individually, and for each object, all lighting calculations are performed on its pixels as it is drawn.
+This means that lighting for an object is computed based on all relevant light sources directly in the fragment shader.
 
-*Example:* Forward shading is simpler to implement and handles transparency more naturally than deferred shading. It is often preferred for scenes with fewer lights or when complex per-pixel transparency is required.
+*Example:* Forward shading is simpler to implement and handles transparency more naturally than deferred shading.
+It is often preferred for scenes with fewer lights or when complex per-pixel transparency is required.
 
 *Reference:* Rendering architectures, real-time rendering.
 
