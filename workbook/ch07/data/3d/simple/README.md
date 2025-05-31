@@ -139,3 +139,77 @@ others. The key takeaway is that solutions need not always follow traditional pa
 experimenting with different techniques, you may uncover unexpected and valuable insights.
 
 This is not in C, but prototyping in JavaScript to see how it affects the animation.
+
+
+### Lighting
+
+A model, like the cube in the code in [03](./03/), as you should be aware of now is made of vertices
+connected to form faces (triangles here). The cube has 8 vertices and 12 triangular faces, each with
+a color (red, green, blue, etc.).
+
+- Model Space: Vertices start in a local coordinate system relative to the object's center.
+- World Space: A transformation (translation for position, rotation for orientation) moves the model to a position
+  in the 3D world. The cube is placed at (0.5, 0.5, 0.0) and rotates over time.
+- View Space: The camera's position and orientation define a view. A view matrix shifts everything relative to the
+  camera, as if you're looking from a specific spot (e.g., camera at (0.5, 1.5, 8.0)).
+- Projection: A perspective projection matrix mimics human vision, making closer objects appear larger. It transforms
+  3D coordinates into a "frustum" (a clipped 3D volume) based on field of view (45 degrees in the code), aspect ratio
+  (800/600), and near/far planes (0.1 to 100). This maps 3D to a 2D-like space.
+
+- Screen Space: The world_to_screen function converts projected coordinates to pixel positions on a 2D screen
+  (800x600 pixels here), flipping the y-axis so higher y in world space appears lower on screen.
+- Rasterisation: Triangles are drawn to a framebuffer (a memory buffer of pixels) by filling in the areas between
+  vertices. Here we use a scanline method to color pixels inside each triangle.
+- Output: The framebuffer's pixel data (RGB colors) is saved as images (PAM files), which can be viewed or
+  combined into an animation.
+
+
+#### Lighting in 3D Rendering
+
+Lighting makes 3D scenes look more realistic by simulating how light interacts with surfaces. It affects colour
+and brightness based on surface properties and light sources.
+
+Light Types:
+- Directional Light: A light source with a direction but no position (like the sun). The Light struct defines a
+  direction, color, and intensity.
+- Ambient Light: A constant, low-level light that brightens everything equally, preventing total darkness in shadows.
+  The code has an ambient color and intensity (e.g., 0.3 intensity).
+
+
+Lighting Model:
+- Ambient Component: Multiplies the surface's base color (e.g., red face at 0.8, 0.2, 0.2) by the light's ambient
+  color and intensity. This ensures the cube is visible even when not directly lit.
+- Diffuse Component: Simulates light scattering based on the angle between the surface normal (a vector perpendicular
+  to the face) and the light direction. The dot product in calculate_lighting computes this: if the normal faces the
+  light, the surface is brighter. Here it clamps this to 0 or above (no negative light) and scales by light color and
+  intensity (0.8).
+- Final Color: Combines ambient and diffuse, clamped to 0-1, then scaled to 0-255 for RGB pixel values. Each face
+  (red, green, blue, etc.) changes brightness as the light direction moves with time.
+
+The create_default_light function sets a directional light (slightly warm white, moving direction), and calculate_lighting
+applies it to each face's normal and base color, making the cube's appearance dynamic as it rotates.
+
+
+#### Compile, Run and View
+
+A Makefile automates compiling, running, and manages the project. It builds the renderer, runs it to create images of
+the rotating, lit cube, and attempts to merge them.
+
+```shell
+make
+```
+
+Compiles: GCC turns main.c, model.c, rendering.c, and rmath.c into object files, then links them with the math library (-lm) to create renderer.
+
+Runs: Executes ./renderer, generating 60 PAM files (frame_000.pam to frame_059.pam), each showing the cube rotating with lighting effects.
+Merges: Tries to run python3 pam7merge.py to combine PAM files into an animation (e.g., GIF).
+
+You'll see output like “Rendering frame 1/60” and “Saved frame_000.pam”.
+
+With pam7merge.py: If the script works, open animation.gif in a browser or image viewer to see the cube rotate, with lighting shifting across its colored faces (red, green, blue, etc.). (The script requires installation of Pillow.)
+
+Without Merging: Convert frames to PNG, then combine: convert frame_*.png -delay 10 -loop 0 animation.gif. Open animation.gif to watch the lit, rotating cube.
+
+The cube stays at a fixed position (0.5, 0.5, 0.0), rotating on x, y, and z axes, with light moving to highlight different faces.
+
+
