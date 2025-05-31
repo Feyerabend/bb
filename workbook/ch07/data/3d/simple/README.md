@@ -199,17 +199,24 @@ the rotating, lit cube, and attempts to merge them.
 make
 ```
 
-Compiles: GCC turns main.c, model.c, rendering.c, and rmath.c into object files, then links them with the math library (-lm) to create renderer.
+Compiles: GCC turns main.c, model.c, rendering.c, and rmath.c into object files, then links them with the math library
+(-lm) to create renderer.
 
-Runs: Executes ./renderer, generating 60 PAM files (frame_000.pam to frame_059.pam), each showing the cube rotating with lighting effects.
-Merges: Tries to run python3 pam7merge.py to combine PAM files into an animation (e.g., GIF).
+Runs: Executes ./renderer, generating 60 PAM files (frame_000.pam to frame_059.pam), each showing the cube rotating with
+lighting effects. Merges: Tries to run python3 pam7merge.py to combine PAM files into an animation (e.g., GIF).
 
 You'll see output like “Rendering frame 1/60” and “Saved frame_000.pam”.
 
-With pam7merge.py: If the script works, open animation.gif in a browser or image viewer to see the cube rotate, with lighting shifting across its colored faces (red, green, blue, etc.). (The script requires installation of Pillow.)
+With pam7merge.py: If the script works, open animation.gif in a browser or image viewer to see the cube rotate, with
+lighting shifting across its colored faces (red, green, blue, etc.). (The script requires installation of Pillow.)
 
-Without Merging: Convert frames to PNG, then combine: convert frame_*.png -delay 10 -loop 0 animation.gif. Open animation.gif to watch the lit, rotating cube.
+Without Merging: Convert frames to PNG, then combine: convert frame_*.png -delay 10 -loop 0 animation.gif. Open
+animation.gif to watch the lit, rotating cube.
 
-The cube stays at a fixed position (0.5, 0.5, 0.0), rotating on x, y, and z axes, with light moving to highlight different faces.
+The cube stays at a fixed position (0.5, 0.5, 0.0), rotating on x, y, and z axes, with light moving to highlight
+different faces.
 
 
+### Texture
+
+Well testing further you might get better results on rendering textures .. [04](./04/).
