@@ -36,6 +36,7 @@ int main() {
 
 While functional, this approach lacks encapsulation and makes state transitions explicit in the client code.
 
+
 ### State Pattern Implementation
 
 The State Pattern formalises this by:
@@ -87,6 +88,11 @@ int main() {
     return 0;
 }
 ```
+
+The Context is the central object that holds the current state, delegates behavior to the state
+via `state->handle(ctx)`, provides a mechanism (`set_state`) to change the state, and allows states
+to modify the context by calling this mechanism (for example, `ctx->set_state(ctx, &ON)`).
+
 
 ### Object-Oriented Implementation
 
