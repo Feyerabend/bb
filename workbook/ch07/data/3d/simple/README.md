@@ -219,4 +219,4 @@ different faces.
 
 ### Texture
 
-Well testing further you might get better results on rendering textures .. [04](./04/).
+Well testing further you might get better results on rendering textures .. [04](./04/). As the light also goes out?
