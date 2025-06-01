@@ -26,6 +26,11 @@ or parsing.
 *It is left as an exercise for the reader or student to improve both the configuration system and the
 implementation of font rendering and parsing, particularly in relation to the Hershey fonts.*
 
+Run a sample, and look for 'rendered.png':
+
+```shell
+/path/to/hershey> python3 src/main.py fonts/cursive.json --sample
+```
 
 #### Components
 
