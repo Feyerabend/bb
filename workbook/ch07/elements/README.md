@@ -25,6 +25,9 @@ Principles:
 * simplec
 * simplepy
 
+Simple:
+* [config](./config/)
+
 Readymade:
 * basic
 
