@@ -35,6 +35,7 @@ __*Simple*__
 
 __*Ready-made*__
 * [basic]
+* [jvm](./jvm/) -- A project on a simple Java Virtual Machine (JVM) in Python.
 
 __*Explorative*__
 * vector
