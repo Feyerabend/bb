@@ -301,17 +301,17 @@ layers that give it meaning.
 
 ### References
 
-* Conway, M. E. (1968). How do committees invent? Datamation, 14(4), 28–31.
+* Conway, M. E. (1968). How do committees invent? *Datamation*, 14(4), 28–31.
 
-* Dijkstra, E. W. (1968). Go to statement considered harmful. Communications of the ACM, 11(3), 147–148. https://doi.org/10.1145/362929.362947
+* Dijkstra, E. W. (1968). Go to statement considered harmful. *Communications of the ACM*, 11(3), 147–148. https://doi.org/10.1145/362929.362947
 
-* Dijkstra, E. W. (1972). The humble programmer. Communications of the ACM, 15(10), 859–866. https://doi.org/10.1145/355604.361591
+* Dijkstra, E. W. (1972). The humble programmer. *Communications of the ACM*, 15(10), 859–866. https://doi.org/10.1145/355604.361591
 
-* Fielding, R. T. (2000). Architectural styles and the design of network-based software architectures (Doctoral dissertation). University of California, Irvine. 
+* Fielding, R. T. (2000). *Architectural styles and the design of network-based software architectures* (Doctoral dissertation). University of California, Irvine. 
 
-* Kleinrock, L. (1964). Communication nets: Stochastic message flow and delay. New York: McGraw-Hill.
+* Kleinrock, L. (1964). *Communication nets: Stochastic message flow and delay*. New York: McGraw-Hill.
 
-* Parnas, D. L. (1972). On the criteria to be used in decomposing systems into modules. Communications of the ACM, 15(12), 1053–1058. https://doi.org/10.1145/361598.361623
+* Parnas, D. L. (1972). On the criteria to be used in decomposing systems into modules. *Communications of the ACM*, 15(12), 1053–1058. https://doi.org/10.1145/361598.361623
 
 
 
