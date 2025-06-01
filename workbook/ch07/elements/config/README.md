@@ -32,7 +32,7 @@ Run a sample, and look for 'rendered.png':
 /path/to/hershey> python3 src/main.py fonts/cursive.json --sample
 ```
 
-The fonts have been converted from the 'jhf' format by Jim Hurt, to ordinary JSON files.
+The fonts have been converted from the 'jhf' format by James Hurt, to ordinary JSON files.
 Fonts may have lost information in the translation. Rendering might also be buggy.
 
 
