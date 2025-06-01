@@ -26,7 +26,10 @@ Principles:
 * simplepy
 
 Simple:
-* [config](./config/)
+* [config](./config/) -- A project that offers many configuration possibilities. You can start by passing
+                         arguments to main from the command line, and use YAML files to configure aspects
+                         such as font rendering. The architecture could be improved by restructuring the
+                         configuration system to support more flexible and thoughtful organisation.
 
 Readymade:
 * basic
