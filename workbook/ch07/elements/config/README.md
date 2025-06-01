@@ -1,26 +1,30 @@
 
 ## Configuration and Hershey Fonts
 
-
-
-
-https://en.wikipedia.org/wiki/Hershey_fonts
-
-https://github.com/kamalmostafa/hershey-fonts
-
-https://www.batbox.org/font.html
-
-
-
-
-
 This project is a *Hershey Font Renderer*, a Python-based application designed to render text
 using Hershey vector fonts, which are stored in JSON format. The system leverages a modular
 architecture to load fonts, apply rendering configurations, and adjust text appearance using
 font hints and kerning. It provides flexibility through a custom YAML-based configuration system,
 allowing users to customise rendering parameters such as scale, spacing, alignment, colors, and
 more. The project includes command-line functionality for rendering text or generating font samples,
-with robust error handling and logging for reliability.
+with error handling and logging for reliability.
+
+The Hershey font glyph data is covered by a permissive use and redistribution license.
+
+References:
+* More on the Hershey Font in Wikipedia: https://en.wikipedia.org/wiki/Hershey_fonts
+* Paul Bourke, parsing etc. https://paulbourke.net/dataformats/hershey/
+* Modern updates, Kamal Mostafa: https://github.com/kamalmostafa/hershey-fonts
+* From where the coding of data takes most inspiration, Jim Buzbee: https://www.batbox.org/font.html
+
+The parser and renderer shown here are intentionally simplistic and perform poorly at their respective
+tasks. In fact, they are deliberately minimal and not intended to serve as examples of how to build
+efficient font parsers or renderers. Their primary purpose is to illustrate how configurable components
+can be structured within an architecture, rather than to introduce the techniques of font rendering
+or parsing.
+
+*It is left as an exercise for the reader or student to improve both the configuration system and the
+implementation of font rendering and parsing, particularly in relation to the Hershey fonts.*
 
 
 #### Components
