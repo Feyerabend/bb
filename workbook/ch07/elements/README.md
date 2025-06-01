@@ -22,8 +22,10 @@ If we shortly reflect on what *methodology* is in contrast ([ch06](./../../ch06/
 ### Folders
 
 Principles:
-* simplec
-* simplepy
+* [simplec](./simplec/) -- A project where we illustrate the API (public contract), library (concrete
+                           deliverable), and modules/components (internal implementation).
+                           The structure/architecture is highly dependent on the programming language C. 
+* [simplepy]
 
 Simple:
 * [config](./config/) -- A project that offers many configuration possibilities. You can start by passing
@@ -32,7 +34,7 @@ Simple:
                          configuration system to support more flexible and thoughtful organisation.
 
 Readymade:
-* basic
+* [basic]
 
 Explorative:
 * vector
