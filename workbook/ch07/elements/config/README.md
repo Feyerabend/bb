@@ -149,29 +149,29 @@ flowchart TD
     hints_file["font_hints.yaml"]:::file
     font_file["Font JSON File"]:::file
 
-    main -->|Loads Config| config
-    main -->|Loads Hints| hints
-    main -->|Loads Font| font
-    main -->|Creates| renderer
-    main -->|Creates (if sample)| sample
+    main -->|"Loads Config"| config
+    main -->|"Loads Hints"| hints
+    main -->|"Loads Font"| font
+    main -->|"Creates"| renderer
+    main -->|"Creates if sample"| sample
     
-    config -->|Uses| yaml
-    hints -->|Uses| yaml
-    config -->|Reads/Writes| config_file
-    hints -->|Reads/Writes| hints_file
+    config -->|"Uses"| yaml
+    hints -->|"Uses"| yaml
+    config -->|"Reads/Writes"| config_file
+    hints -->|"Reads/Writes"| hints_file
     
-    font -->|Reads| font_file
+    font -->|"Reads"| font_file
     
-    renderer -->|Uses| font
-    renderer -->|Applies Settings| config
-    renderer -->|Applies Hints| hints
-    renderer -->|Uses| kerning
+    renderer -->|"Uses"| font
+    renderer -->|"Applies Settings"| config
+    renderer -->|"Applies Hints"| hints
+    renderer -->|"Uses"| kerning
     
-    kerning -->|Uses Strength| config
-    kerning -->|Adjusts via Hints| hints
+    kerning -->|"Uses Strength"| config
+    kerning -->|"Adjusts via Hints"| hints
     
-    sample -->|Uses| renderer
-    sample -->|Uses| font
+    sample -->|"Uses"| renderer
+    sample -->|"Uses"| font
 ```
 
 
