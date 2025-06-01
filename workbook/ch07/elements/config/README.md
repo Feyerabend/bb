@@ -11,7 +11,9 @@ with error handling and logging for reliability.
 
 The Hershey font glyph data is covered by a permissive use and redistribution license.
 
-References:
+
+__References__
+
 * More on the Hershey Font in Wikipedia: https://en.wikipedia.org/wiki/Hershey_fonts
 * Paul Bourke, parsing etc. https://paulbourke.net/dataformats/hershey/
 * Modern updates, Kamal Mostafa: https://github.com/kamalmostafa/hershey-fonts

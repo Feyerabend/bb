@@ -21,22 +21,22 @@ If we shortly reflect on what *methodology* is in contrast ([ch06](./../../ch06/
 
 ### Folders
 
-__Principles__
+__*Principles*__
 * [simplec](./simplec/) -- A project where we illustrate the API (public contract), library (concrete
                            deliverable), and modules/components (internal implementation).
                            The structure/architecture is highly dependent on the programming language C. 
 * [simplepy]
 
-__Simple__
+__*Simple*__
 * [config](./config/) -- A project that offers many configuration possibilities. You can start by passing
                          arguments to main from the command line, and use YAML files to configure aspects
                          such as font rendering. The architecture could be improved by restructuring the
                          configuration system to support more flexible and thoughtful organisation.
 
-__Ready-made__
+__*Ready-made*__
 * [basic]
 
-__Explorative__
+__*Explorative*__
 * vector
 
 
