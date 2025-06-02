@@ -81,7 +81,7 @@ __*Explorative*__
 In this final project, we haven't even begun to design the architecture--we only have some vague ideas.
 This highlights code as a means of thinking, rather than as a finished product. We might build prototypes
 to explore concurrent approaches or possible extensions, but may ultimately abandon them and return to
-more stable ground if they don't fulfill their promise. This should not be seen as a starting point for
+more stable ground if they don't fulfill their promise. This should *not* be seen as a starting point for
 concrete blueprints. However, it may inspire you to shape your own thoughts into code and experiment
 freely before committing to ideas that are meant to be solidified in real products.
 
