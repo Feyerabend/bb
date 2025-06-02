@@ -45,12 +45,12 @@ __2. Core Program (core.c)__
 
 *Steps:*
 Loading Plugins:
-- 1. Opens the plugins directory using opendir.
-- 2. Scans for files ending in _plugin.so (shared object files).
-- 3. Uses dlopen to load each plugin dynamically into memory.
-- 4. Finds the init_plugin function in each plugin via dlsym, which returns a Plugin struct.
-- 5. Calls init(config) to set up the plugin (e.g., with "log.txt" for logging).
-- 6. Stores loaded plugins and their handles in a PluginEntry array for tracking.
+  1. Opens the plugins directory using opendir.
+  2. Scans for files ending in _plugin.so (shared object files).
+  3. Uses dlopen to load each plugin dynamically into memory.
+  4. Finds the init_plugin function in each plugin via dlsym, which returns a Plugin struct.
+  5. Calls init(config) to set up the plugin (e.g., with "log.txt" for logging).
+  6. Stores loaded plugins and their handles in a PluginEntry array for tracking.
 
 *Running Commands:*
 - Takes a plugin name (e.g., "wordcount"), a Job (e.g., data "Hello world this is a test"), and a result buffer.
