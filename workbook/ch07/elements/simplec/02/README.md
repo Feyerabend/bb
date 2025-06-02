@@ -14,9 +14,9 @@ The project folder should look something like this:
      ├── core.c
      ├── plugin_interface.h
      ├── Makefile
-     ├── plugins/
-     │   ├── wordcount_plugin.c
-     │   ├── add_plugin.c
+     └── plugins/
+         ├── wordcount_plugin.c
+         └── add_plugin.c
 ```
 
 
