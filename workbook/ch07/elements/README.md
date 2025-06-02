@@ -53,12 +53,22 @@ We start with learning exercises. Study and explore different approaches to codi
 * [simplepy]
 
 __*Simple*__
+
+Next, you can make minor adjustments to the existing architecture. You should now be able to plan and
+describe the project independently or as part of a group. This includes defining the objectives, goals,
+estimated time required, and overall duration.
+
 * [config](./config/) -- A project that offers many configuration possibilities. You can start by passing
                          arguments to main from the command line, and use YAML files to configure aspects
                          such as font rendering. The architecture could be improved by restructuring the
                          configuration system to support more flexible and thoughtful organisation.
 
 __*Ready-made*__
+
+Taking it a step further brings these project closer to real-world applications. At this stage, not only
+does the architecture need refinement, but there is also a need for proper testing, documentation, and
+packaging--all essential steps toward deployment and delivery. The customers are waiting!
+
 * [basic](./basic/) -- An interpreter that needs to be separated into several parts to allow for
                        serious debugging and possible extension. Hints are given in what sort of
                        direction this change could take shape.
@@ -67,6 +77,8 @@ __*Ready-made*__
                    current interpreter/disassembler separated into more specific tools.
 
 __*Explorative*__
+
+
 * [vector]
 
 
