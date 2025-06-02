@@ -62,7 +62,7 @@ __*Ready-made*__
 * [basic]
 * [jvm](./jvm/) -- A project on a simple Java Virtual Machine (JVM) in Python. The challenge here is to
                    build for extension, but also towards a SDK. More tools added, change the current
-                   interpreter/debugger separated into more specific tools.
+                   interpreter/disassembler separated into more specific tools.
 
 __*Explorative*__
 * vector
