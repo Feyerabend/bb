@@ -60,7 +60,8 @@ __*Simple*__
 
 __*Ready-made*__
 * [basic](./basic/) -- An interpreter that needs to be separated into several parts to allow for
-                       serious debugging and possible extension.
+                       serious debugging and possible extension. Hints are given in what sort of
+                       direction this change could take shape.
 * [jvm](./jvm/) -- A project on a simple Java Virtual Machine (JVM) in Python. The challenge here is to
                    build for extension, but also towards an SDK. More tools added, optionally change the
                    current interpreter/disassembler separated into more specific tools.
