@@ -56,27 +56,28 @@ Components:
 
 IP Packet Structure (IPv4)
 
-```
-+-------------------+-------------------+
-| Version (4 bits)  | IHL (4 bits)      |
-+-------------------+-------------------+
-| Type of Service (ToS)                 |
-+-------------------+-------------------+
-| Total Length                          |
-+-------------------+-------------------+
-| Identification                       |
-| Flags | Fragment Offset               |
-+-------------------+-------------------+
-| TTL               | Protocol          |
-+-------------------+-------------------+
-| Header Checksum                      |
-+-------------------+-------------------+
-| Source IP Address                    |
-+-------------------+-------------------+
-| Destination IP Address               |
-+-------------------+-------------------+
-| Options (if any)                     |
-+-------------------+-------------------+
+```mermaid
+classDiagram
+    class IPv4_Header {
+        +Version (4 bits)
+        +IHL (4 bits)
+        +Type of Service (8 bits)
+        +Total Length (16 bits)
+        +Identification (16 bits)
+        +Flags (3 bits)
+        +Fragment Offset (13 bits)
+        +TTL (8 bits)
+        +Protocol (8 bits)
+        +Header Checksum (16 bits)
+        +Source Address (32 bits)
+        +Destination Address (32 bits)
+        +Options (variable)
+        +Padding (variable)
+    }
+
+    note for IPv4_Header "IHL = Internet Header Length\n(Header size in 32-bit words)"
+    note for IPv4_Header "Flags: Reserved(1), DF, MF"
+    note for IPv4_Header "Typical size: 20-60 bytes"
 ```
 
 
@@ -96,18 +97,25 @@ TCP (Transmission Control Protocol)
 
 TCP Header Fields:
 
-```
-+-------------------+-------------------+
-| Source Port       | Destination Port  |
-+-------------------+-------------------+
-| Sequence Number                     |
-+-------------------+-------------------+
-| Acknowledgment Number               |
-+-------------------+-------------------+
-| Offset | Flags | Window Size         |
-+-------------------+-------------------+
-| Checksum         | Urgent Pointer    |
-+-------------------+-------------------+
+```mermaid
+classDiagram
+    class TCP_Header {
+        +Source Port (16 bits)
+        +Destination Port (16 bits)
+        +Sequence Number (32 bits)
+        +Acknowledgment Number (32 bits)
+        +Data Offset (4 bits)
+        +Reserved (3 bits)
+        +Flags (9 bits)
+        +Window Size (16 bits)
+        +Checksum (16 bits)
+        +Urgent Pointer (16 bits)
+        +Options (0-320 bits, divisible by 32)
+        +Padding (variable)
+    }
+
+    note for TCP_Header "Flags include:\nNS, CWR, ECE, URG, ACK, PSH, RST, SYN, FIN"
+    note for TCP_Header "Typical header size: 20-60 bytes"
 ```
 
 UDP (User Datagram Protocol)
