@@ -21,7 +21,31 @@ If we shortly reflect on what *methodology* is in contrast ([ch06](./../../ch06/
 
 ### Folders
 
+We begin with rough sketches--mental outlines of what architecture might mean in the world of code. Not
+architecture in the traditional sense of concrete and steel, but the kind made of abstractions, flow,
+and structure--the scaffolding of thought that eventually becomes software.
+
+At this stage, we're not just writing code. We're making choices that shape how ideas take form--how
+fluid thinking solidifies into systems. It's a turning point: from internal logic to external communication.
+Code, after all, is not just something we write to make machines act. It's something we write to make
+intentions clear--to other developers, to future maintainers, and, in a broader sense, to users who
+experience our systems.
+
+The architecture we choose becomes a kind of language in itself. It speaks not only to how things work,
+but why they work that way. It carries assumptions, constraints, intentions--and sometimes, compromises.
+
+Because when thought becomes structure, some of its fluidity is inevitably lost. The abstractions we
+craft must contend with the realities of performance, maintainability, and time. Every architecture is,
+in some way, a frozen decision--a commitment to a particular way of seeing the problem. And like all
+commitments, it leaves other paths unexplored.
+
+Yet in that act of fixing the fluid--of turning thought into architecture--lies the essence of 
+software engineering.
+
+
 __*Principles*__
+
+
 * [simplec](./simplec/) -- A project where we illustrate the API (public contract), library (concrete
                            deliverable), and modules/components (internal implementation).
                            The structure/architecture is highly dependent on the programming language C. 
