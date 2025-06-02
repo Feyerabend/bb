@@ -45,6 +45,7 @@ software engineering.
 
 __*Principles*__
 
+We start with learning exercises. Study and explore different approaches to codify architecture.
 
 * [simplec](./simplec/) -- A project where we illustrate the API (public contract), library (concrete
                            deliverable), and modules/components (internal implementation).
@@ -59,7 +60,9 @@ __*Simple*__
 
 __*Ready-made*__
 * [basic]
-* [jvm](./jvm/) -- A project on a simple Java Virtual Machine (JVM) in Python.
+* [jvm](./jvm/) -- A project on a simple Java Virtual Machine (JVM) in Python. The challenge here is to
+                   build for extension, but also towards a SDK. More tools added, change the current
+                   interpreter/debugger separated into more specific tools.
 
 __*Explorative*__
 * vector
