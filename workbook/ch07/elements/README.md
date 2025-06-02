@@ -59,13 +59,14 @@ __*Simple*__
                          configuration system to support more flexible and thoughtful organisation.
 
 __*Ready-made*__
-* [basic]
+* [basic](./basic/) -- An interpreter that needs to be separated into several parts to allow for
+                       serious debugging and possible extension.
 * [jvm](./jvm/) -- A project on a simple Java Virtual Machine (JVM) in Python. The challenge here is to
-                   build for extension, but also towards an SDK. More tools added, change the current
-                   interpreter/disassembler separated into more specific tools.
+                   build for extension, but also towards an SDK. More tools added, optionally change the
+                   current interpreter/disassembler separated into more specific tools.
 
 __*Explorative*__
-* vector
+* [vector]
 
 
 

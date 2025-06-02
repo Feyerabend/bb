@@ -32,7 +32,7 @@ TCP/IP is a four-layer model, sometimes mapped to the seven-layer OSI model as f
 
 #### Layer-by-Layer Technical Breakdown
 
-__1. Link Layer (a.k.a. Network Interface Layer)__
+__*1. Link Layer (a.k.a. Network Interface Layer)*__
 - Lowest layer
 - Handles physical addressing, access to physical media (Ethernet, Wi-Fi, etc.)
 - Packets here are frames
@@ -45,7 +45,7 @@ Example protocols:
 
 
 
-__2. Internet Layer__
+__*2. Internet Layer*__
 - Primary protocol: IP (Internet Protocol)
 - Responsible for logical addressing, routing, and packet fragmentation
 
@@ -83,7 +83,7 @@ classDiagram
 
 
 
-__3. Transport Layer__
+__*3. Transport Layer*__
 
 Provides end-to-end communication between applications.
 
@@ -127,7 +127,7 @@ UDP (User Datagram Protocol)
 
 
 
-__4. Application Layer__
+__*4. Application Layer*__
 - High-level protocols for networked applications
 - Not concerned with how data is transported
 
@@ -146,7 +146,7 @@ Each application protocol typically uses a well-known port number:
 
 
 
-__Additional Notes__
+__*Additional Notes*__
 - Endianness: TCP/IP protocols generally use big-endian (network byte order)
 - Port numbers: 16-bit values; categorized as:
 - Well-known (0–1023)
