@@ -51,7 +51,7 @@ We start with learning exercises. Study and explore different approaches to codi
                            deliverable), and modules/components (internal implementation). Another
                            project shows a plug-in architecture for Unix-like (Linux) systems.
                            The structure/architecture is highly dependent on the programming language C. 
-* [simplepy]
+* [simplepy](./simplepy/) -- ..
 
 __*Simple*__
 
