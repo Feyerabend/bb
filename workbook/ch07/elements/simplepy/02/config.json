@@ -1,0 +1,13 @@
+{
+    "candidate_to_index": {
+        "output_dir": "temp_output",
+        "priority": 10
+    },
+    "comment_cleaner": {
+        "output_dir": "temp_output",
+        "comment_logfile": "logs/comments.log",
+        "auto_remove": false,
+        "comment_pattern": "% TODO",
+        "priority": 20
+    }
+}
