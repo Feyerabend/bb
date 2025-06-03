@@ -1,4 +1,37 @@
 
+## Java Virtual Machine-like Engine
+
+Some prior experience with Java is assumed. In essence, the workflow involves compiling a Java source
+file--such as src/Sample.java--into a corresponding bytecode file--e.g., classes/Sample.class.
+This compilation is performed using the `javac` command-line tool, which is included with the OpenJDK
+or the Oracle JDK distributions.
+
+Since the '.class' bytecode format has remained largely backward-compatible over the years, older
+versions of the Java class libraries are often still usable, depending on the features and class
+file version your code requires.
+
+To emulate what happens when the `java` command is run to execute a compiled class file, we instead
+use a custom interpreter implemented in Python. The script main.py serves as a command-line interface
+to this interpreter, which is built around the JavaClassInterpreter API here.
+
+The following command illustrates how to use it:
+
+```shell
+python3 main.py Sample ./classes -v
+```
+
+This will load the Sample.class file from the ./classes directory and execute its main method,
+also displaying verbose output due to the -v flag.
+
+
+### File Structure
+
+* *src* -- contains Sample.java
+* *classes* -- contains Sample.class
+* *java* -- contains a simulated runtime environment, minimal for the Sample,
+  and used by the interpreter
+
+
 ```
 jvm_interpreter/
 ├── __init__.py
@@ -24,7 +57,6 @@ jvm_interpreter/
 main.py
 ```
 
-## Java Virtual Machine-like Engine
 
 - *jvm_interpreter/*: Root package for the project, making it importable as a library.
 - *constants/*: Holds JVM-related constants (e.g., opcodes, tags, access flags).
@@ -81,11 +113,3 @@ The package structure makes it importable as a library for other projects.
 Clear separation of concerns allows individual components (e.g., `ClassLoader`,
 `Interpreter`) to be reused or extended.
 
-
-### Execution
-
-The *main.py* script serves as a command-line entry point, using the `JavaClassInterpreter` API.
-
-```shell
-python3 main.py Sample ./classes -v
-```
