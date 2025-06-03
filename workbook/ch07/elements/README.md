@@ -52,7 +52,7 @@ We start with learning exercises. Study and explore different approaches to codi
                            project shows a plug-in architecture for Unix-like (Linux) systems.
                            The structure/architecture is highly dependent on the programming language C. 
 * [simplepy](./simplepy/) -- One Project starts from the problem of indexing papers (books, articles)
-                             in LaTeX, and global word substitutions (really easier inside an editor),
+                             in LaTeX, and cleaning out comments ("types" specified in a configure file),
                              as illustration of plug-ins in architecture. Another takes our classical
                              example of an arithmetical parser and evaluator, and makes it into an
                              extensible architecture. Both can be point of departures for larger projects.
