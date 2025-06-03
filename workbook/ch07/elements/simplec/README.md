@@ -1,6 +1,10 @@
 
 ## C Code Hierarchy
 
+In C, the hierarchy emerges through *compilation units* and *linking stages* rather than
+*language-enforced constructs*. The physical file organisation directly mirrors the conceptual
+hierarchy, making C's modularisation uniquely tied to its build system and file structure.
+
 *(From Atoms to Systems)*
 
 ```mermaid
@@ -158,8 +162,8 @@ int math_execute(MathContext*, int opcode, ...);
 | Traditional View       | C-Centric Reality              |
 |------------------------|---------------------------------|
 | Functions → Modules    | *Functions are module members* |
-| Components before libs | *Libraries build components*  |
-| APIs as external        | *APIs start at header files*  |
+| Components before libs | *Libraries build components* |
+| APIs as external        | *APIs start at header files* |
 
 ### Why C is Different?
 - No native package/module system
@@ -199,16 +203,11 @@ Flow Analysis
 
 | Level        | Artifact              | Tools              | Scope Example          |
 |--------------|-----------------------|--------------------|------------------------|
-| *Functions*  | `.c` implementations  | Compiler           | `memcpy()`             |
-| *Modules*    | `.c/.h` pairs         | Preprocessor       | `list.c` + `list.h`    |
-| *APIs*       | Header files          | `#include`         | `stdio.h`              |
-| *Libraries*  | `.a` files            | `ar`, `ld`         | `libm.a`               |
+| *Functions* | `.c` implementations  | Compiler           | `memcpy()`             |
+| *Modules* | `.c/.h` pairs         | Preprocessor       | `list.c` + `list.h`    |
+| *APIs* | Header files          | `#include`         | `stdio.h`              |
+| *Libraries* | `.a` files            | `ar`, `ld`         | `libm.a`               |
 | *Components* | Directory structures  | Makefile           | `drivers/net/`         |
-| *Services*   | `.so`/`.ko` files     | `insmod`, `ldconfig` | `ext4.ko` (kernel module) |
-| *System*     | Executable binary     | Linker             | `bash`, `httpd`        |
-
-
-In C, the hierarchy emerges through *compilation units* and *linking stages* rather than
-*language-enforced constructs*. The physical file organisation directly mirrors the conceptual
-hierarchy, making C's modularisation uniquely tied to its build system and file structure.
+| *Services* | `.so`/`.ko` files     | `insmod`, `ldconfig` | `ext4.ko` (kernel module) |
+| *System* | Executable binary     | Linker             | `bash`, `httpd`        |
 
