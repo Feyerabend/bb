@@ -86,6 +86,6 @@ Clear separation of concerns allows individual components (e.g., `ClassLoader`,
 
 The *main.py* script serves as a command-line entry point, using the `JavaClassInterpreter` API.
 
-``shell
+```shell
 python3 main.py Sample ./classes -v
 ```
