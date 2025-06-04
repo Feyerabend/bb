@@ -52,9 +52,9 @@ analyze--building a foundation that scales naturally toward more advanced techni
 | t-SNE / UMAP               | Unsupervised       | Visualisation, clustering        | Non-linear, preserves local structure, non-parametric           |
 | Apriori / FP-Growth        | Unsupervised       | Market basket analysis           | Association rule mining                                         |
 | Neural Networks (MLP)      | Supervised         | General-purpose                  | Flexible, powerful, requires large data                         |
-| [CNN (Convolutional NN)](./mnist/cnn.py) | Supervised   | Image data               | Exploits spatial structure, translation invariance              |
-| [RNN](./rnn/) / [LSTM](./rnn/) / [GRU](./rnn/) | Supervised | Sequence data (text, time-series)| Captures temporal dependencies, vanishing gradient challenges |
-| GANs (Generative Adversarial Networks) | Unsupervised | Data generation          | Adversarial training, high-quality synthetic data                 |
+| [CNN](./mnist/cnn.py) (Convolutional NN) | Supervised | Image data | Exploits spatial structure, translation invariance |
+| [RNN](./rnn/) / [LSTM](./rnn/) / [GRU](./rnn/) | Supervised | Sequence data (text, time-series) | Captures temporal dependencies, vanishing gradient challenges |
+| [GANs](./gan/) (Generative Adversarial Networks) | Unsupervised | Data generation | Adversarial training, high-quality synthetic data |
 | [Reinforcement Learning](./../../../ch03/tictactoe/README.md) | Reinforcement | Game AI, robotics, control  | Trial-and-error learning, reward signal |
 
 
