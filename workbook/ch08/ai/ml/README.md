@@ -53,7 +53,7 @@ analyze--building a foundation that scales naturally toward more advanced techni
 | Apriori / FP-Growth        | Unsupervised       | Market basket analysis           | Association rule mining                                         |
 | Neural Networks (MLP)      | Supervised         | General-purpose                  | Flexible, powerful, requires large data                         |
 | [CNN (Convolutional NN)](./mnist/cnn.py) | Supervised   | Image data               | Exploits spatial structure, translation invariance              |
-| [RNN](./rnn/) / LSTM / GRU | Supervised | Sequence data (text, time-series)| Captures temporal dependencies, vanishing gradient challenges |
+| [RNN](./rnn/) / [LSTM](./rnn/) / [GRU](./rnn/) | Supervised | Sequence data (text, time-series)| Captures temporal dependencies, vanishing gradient challenges |
 | GANs (Generative Adversarial Networks) | Unsupervised | Data generation          | Adversarial training, high-quality synthetic data                 |
 | [Reinforcement Learning](./../../../ch03/tictactoe/README.md) | Reinforcement | Game AI, robotics, control  | Trial-and-error learning, reward signal |
 
