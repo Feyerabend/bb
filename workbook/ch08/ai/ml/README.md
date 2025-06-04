@@ -36,6 +36,13 @@ we focus on classical machine learning--models you can fully understand, impleme
 analyze--building a foundation that scales naturally toward more advanced techniques.
 
 
+> [!TIP]
+> As AI and machine learning continue to advance, supported by substantial financial investment,
+> the number of tutorials and introductions to these fields is rapidly growing. In this text,
+> we have selected only a few key components for examination, to give the reader or student a
+> sense of how various parts function and to illustrate concepts that might be particularly
+> interesting to explore.
+
 | *Algorithm* | *Type* | *Typical Use Cases* | *Key Properties* |
 |---|---|---|---|
 | [Linear Regression](./linear/) | Supervised | Predicting continuous values | Simple, interpretable, assumes linearity |
