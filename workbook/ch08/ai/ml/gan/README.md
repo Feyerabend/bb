@@ -6,7 +6,9 @@ new data similar to a training dataset. It consists of two neural networks: a *G
 trained simultaneously in a competitive setting.
 
 > [!IMPORTANT]
-> This code uses Tensor Flow, which has to be installed for the code to run. 
+> This code requires TensorFlow, which must be installed for it to run. Additionally, it is recommended to
+> use a computer with CUDA support or a compatible GPU, as training time will otherwise be significantly longer.
+
 
 ### How GANs Work
 
