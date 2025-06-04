@@ -2,7 +2,7 @@
 ## Security and Programming
 
 Security in computing is often imagined in terms of firewalls, passwords, and encryption.
-But beneath these mechanisms lies a deeper foundation: the code itself. Most digital
+But beneath these mechanisms lies a deeper foundation: the *code* itself. Most digital
 systems--whether web apps, operating systems, IoT devices, or embedded controllers--are
 ultimately shaped by the programming languages, tools, and practices used to build them.
 This makes programming not just a technical activity, but a frontline concern in cybersecurity.
@@ -175,3 +175,6 @@ Secure programming demands a *multi-layered approach*:
 No single solution suffices; security is an ongoing process requiring adaptation to evolving threats.
 The shift from reactive to proactive strategies--embracing memory safety, formal methods, and hardware
 innovations--will define the next era of secure software.
+
+
+3033
