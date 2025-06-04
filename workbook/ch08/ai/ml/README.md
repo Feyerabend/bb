@@ -81,8 +81,8 @@ part of AI. When we code DL models, we are implementing more powerful *learners*
 Coding AI means writing the logic for learning, decision-making, and sometimes even perception, planning,
 or reasoning, often by assembling ML and DL techniques.
 
-Thus: AI is the goal. ML is a method. DL is a specific technique within ML. The code we write builds
-the systems that realise them.
+Thus: *AI is the goal. ML is a method. DL is a specific technique within ML. The code we write builds
+the systems that realise them.*
 
 Examples
 ```
