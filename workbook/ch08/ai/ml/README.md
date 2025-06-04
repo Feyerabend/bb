@@ -39,10 +39,11 @@ we focus on classical machine learning--models you can fully understand, impleme
 analyze--building a foundation that scales naturally toward more advanced techniques.
 
 As AI and machine learning continue to advance, supported by substantial financial investment,
-the number of tutorials and introductions to these fields is rapidly growing. In this text,
-we have selected only a few key components for examination, to give the reader or student a
-sense of how various parts function and to illustrate concepts that might be particularly
-interesting to explore.
+the number of tutorials and introductions to these fields is rapidly growing. It should not
+be too difficult to find excellent materials to study on these topics. In these texts
+(book and workbook), we have selected only a few key components for examination, to give
+the reader or student a sense of how various parts function and to illustrate concepts that
+might be particularly interesting to explore, and also illustrates particulars in this vast space.
 
 
 
