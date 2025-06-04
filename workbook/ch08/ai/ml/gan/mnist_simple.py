@@ -302,7 +302,7 @@ def train_stylegan():
     )
     
     # Training loop
-    epochs = 60
+    epochs = 40
     save_interval = 10
     
     with open('stylegan_training_log.txt', 'w') as log_file:
