@@ -5,7 +5,8 @@ A *Generative Adversarial Network (GAN)* is a class of machine learning algorith
 new data similar to a training dataset. It consists of two neural networks: a *Generator* and a *Discriminator*,
 trained simultaneously in a competitive setting.
 
-> [NOTE] This code uses Tensor Flow, which has to be installed for the code to run. 
+> [!IMPORTANT]
+> This code uses Tensor Flow, which has to be installed for the code to run. 
 
 ### How GANs Work
 
