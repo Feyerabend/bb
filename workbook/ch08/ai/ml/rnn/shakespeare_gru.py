@@ -545,13 +545,16 @@ def main():
             
             # Train on each sequence in the batch
             for seq_inputs, seq_targets in zip(batch_sequences, batch_targets):
-                loss, _ = gru.train_step(seq_inputs, seq_targets)
-                batch_loss += loss
-                epoch_loss += loss
+                loss, _ = gru.train_step(seq_inputs, seq_targets)  # This is already averaged per sequence
+                batch_loss += loss  # Sum of averaged losses
+                epoch_loss += loss  # Sum of averaged losses
                 total_sequences += 1
-            
-            # Average loss for this batch (for display purposes)
-            batch_loss_avg = batch_loss / batch_size_actual
+
+            # Average loss for this batch
+            batch_loss_avg = batch_loss / batch_size_actual  # Average of the averaged losses
+
+            # At end of epoch:
+            epoch_loss_avg = epoch_loss / total_sequences  # Average of all sequence losses
             
             # Print progress every 50 batches
             if (batch_idx + 1) % 50 == 0:
