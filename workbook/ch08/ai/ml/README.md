@@ -45,7 +45,7 @@ understanding, illustrate key ideas, and encourage deeper exploration.
 ### A General Observation
 
 In traditional programming, the relationship between code and data is clear: a programmer writes fixed
-instructions to process data. The control flow—rules, conditions, and logic—is predefined. The program
+instructions to process data. The control flow--rules, conditions, and logic--is predefined. The program
 determines what happens to the data.
 
 In contrast, machine learning inverts this relationship. Here, data shapes the program. Instead of
