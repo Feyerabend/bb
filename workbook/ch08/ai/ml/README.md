@@ -3,7 +3,7 @@
 ## Machine Learning
 
 Machine Learning (ML) is a rapidly growing subfield of AI focused on building systems that learn from data
-and improve performance over time—without being explicitly programmed for every task. Instead of writing
+and improve performance over time--without being explicitly programmed for every task. Instead of writing
 hardcoded rules (as was common in earlier software development), ML models identify patterns from examples
 and use these patterns to make predictions or decisions.
 
