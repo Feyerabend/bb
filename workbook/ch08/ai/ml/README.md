@@ -12,7 +12,7 @@ Feature engineering is deciding which parts of the data that are important.[^fea
 
 [^feature]: Feature engineering is the process of selecting, transforming, or creating input
 variables (features) that make machine learning models more accurate and efficient. It often
-involves identifying important properties in the data, scaling or normalizing values, combining
+involves identifying important properties in the data, scaling or normalising values, combining
 existing features, and encoding categorical information into numerical form.
 E.g., from a date like 2025-04-28, you can create new features, abstractions, like "day of week"
 or "month" to help a model find patterns more easily.
@@ -36,7 +36,7 @@ However, in the context of providing code first for your learning, most of deep 
 the practical limits of this book. Deep models require large datasets, specialised architectures,
 and significant compute, making them less suited for compact, self-contained examples. Instead,
 we focus on classical machine learning--models you can fully understand, implement, and
-analyze--building a foundation that scales naturally toward more advanced techniques.
+analyse--building a foundation that scales naturally toward more advanced techniques.
 
 As AI and machine learning continue to advance, supported by substantial financial investment,
 the number of tutorials and introductions to these fields is rapidly growing. It should not
@@ -46,8 +46,34 @@ the reader or student a sense of how various parts function and to illustrate co
 might be particularly interesting to explore, and also illustrates particulars in this vast space.
 
 
+### A General Observation
+
+In traditional programming, the relationship between code and data is straightforward: a human
+explicitly defines a fixed program to manipulate data. Control logic, including rules, flow,
+and conditions, is hardcoded; data simply passes through this predetermined structure.
+The program dictates the data's processing.
+
+Machine learning and AI effectively *invert* this. Here, data shapes the program. Instead of
+explicit rule-writing, a learning algorithm infers a model--a form of program--by generalising
+patterns from provided data examples. This model is fluid; what we traditionally call the "program"
+emerges out of optimisation and training. As new data arrives, the model adapts or retrains,
+modifying its internal logic without direct code alteration.
+
+This leads to a core distinction:
+> Traditional programming encodes logic to manipulate data.
+> Machine learning uses data to induce logic.
+
+This represents a profound shift in software conception: from static, human-designed rule systems
+to dynamic, data-driven behavior. This new paradigm often defies full human understanding but
+proves more adaptable and performant in complex, real-world scenarios.
+
 
 ### A Selection of Algorithms
+
+As the field progresses, some of these early examples of machine learning algorithms may appear
+outdated or even obsolete by today’s standards. However, they remain highly valuable--not because
+of their cutting--edge performance, but because they clearly illustrate the fundamentally different
+way in which machine learning systems operate compared to traditional programming.
 
 | *Algorithm* | *Type* | *Typical Use Cases* | *Key Properties* |
 |---|---|---|---|
