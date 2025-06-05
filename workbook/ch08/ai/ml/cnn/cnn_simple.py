@@ -321,3 +321,6 @@ def quick_predict(model, image_path):
         'confidence': predicted_probs[top_idx],
         'all_probabilities': dict(zip(class_names, predicted_probs))
     }
+
+# Remeber that thois waas trained on CIFAR-10 dataset, swith images of size 32x32.
+# If you have a very detailed image, it might not work.
