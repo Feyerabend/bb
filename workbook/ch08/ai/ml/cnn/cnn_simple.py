@@ -2,8 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 import numpy as np
-import matplotlib.pyplot as plt
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 import os
 
 # CIFAR-10 class names
@@ -130,7 +129,60 @@ def preprocess_image(image_path):
         print(f"Error loading image: {e}")
         return None, None
 
-def predict_image(model, image_path, show_image=True):
+def create_prediction_image(original_img, processed_img, predictions, image_name):
+    """Create a combined image showing original, processed, and predictions using Pillow"""
+    # Resize original for display (max 300px width)
+    display_original = original_img.copy()
+    if display_original.width > 300:
+        ratio = 300 / display_original.width
+        new_height = int(display_original.height * ratio)
+        display_original = display_original.resize((300, new_height), Image.Resampling.LANCZOS)
+    
+    # Resize processed image for display (scale up from 32x32)
+    processed_pil = Image.fromarray((processed_img[0] * 255).astype(np.uint8))
+    processed_display = processed_pil.resize((150, 150), Image.Resampling.NEAREST)
+    
+    # Create combined image
+    total_width = display_original.width + processed_display.width + 20
+    max_height = max(display_original.height, processed_display.height) + 200
+    
+    combined = Image.new('RGB', (total_width, max_height), 'white')
+    
+    # Paste images
+    combined.paste(display_original, (0, 0))
+    combined.paste(processed_display, (display_original.width + 10, 0))
+    
+    # Add text
+    draw = ImageDraw.Draw(combined)
+    
+    try:
+        # Try to use a default font
+        font = ImageFont.truetype("arial.ttf", 16)
+        small_font = ImageFont.truetype("arial.ttf", 12)
+    except:
+        # Fall back to default font
+        font = ImageFont.load_default()
+        small_font = ImageFont.load_default()
+    
+    # Add labels
+    draw.text((display_original.width//2 - 40, display_original.height + 10), 
+              "Original", fill='black', font=font)
+    draw.text((display_original.width + processed_display.width//2 - 30, processed_display.height + 10), 
+              "32x32", fill='black', font=font)
+    
+    # Add predictions text
+    y_start = max(display_original.height, processed_display.height) + 50
+    draw.text((10, y_start), f"Predictions for {image_name}:", fill='black', font=font)
+    
+    for i, (class_name, prob) in enumerate(predictions[:3]):
+        y_pos = y_start + 30 + (i * 25)
+        confidence = prob * 100
+        text = f"{i+1}. {class_name}: {confidence:.2f}%"
+        draw.text((10, y_pos), text, fill='black', font=small_font)
+    
+    return combined
+
+def predict_image(model, image_path, save_result=False, show_predictions=True):
     """Predict the class of a custom image"""
     # Preprocess image
     processed_img, original_img = preprocess_image(image_path)
@@ -144,51 +196,38 @@ def predict_image(model, image_path, show_image=True):
     
     # Get top 3 predictions
     top_indices = np.argsort(predicted_probs)[::-1][:3]
+    predictions_list = [(class_names[idx], predicted_probs[idx]) for idx in top_indices]
     
     # Display results
-    print(f"\nPredictions for {os.path.basename(image_path)}:")
-    print("-" * 40)
+    if show_predictions:
+        print(f"\nPredictions for {os.path.basename(image_path)}:")
+        print("-" * 40)
+        
+        for i, (class_name, prob) in enumerate(predictions_list):
+            confidence = prob * 100
+            print(f"{i+1}. {class_name}: {confidence:.2f}%")
     
-    for i, idx in enumerate(top_indices):
-        confidence = predicted_probs[idx] * 100
-        print(f"{i+1}. {class_names[idx]}: {confidence:.2f}%")
-    
-    if show_image:
-        # Display original and resized image
-        plt.figure(figsize=(12, 4))
-        
-        plt.subplot(1, 3, 1)
-        plt.imshow(original_img)
-        plt.title('Original Image')
-        plt.axis('off')
-        
-        plt.subplot(1, 3, 2)
-        plt.imshow(processed_img[0])
-        plt.title('Resized to 32x32')
-        plt.axis('off')
-        
-        plt.subplot(1, 3, 3)
-        # Bar chart of predictions
-        plt.bar(range(len(class_names)), predicted_probs)
-        plt.xticks(range(len(class_names)), class_names, rotation=45)
-        plt.ylabel('Probability')
-        plt.title('Prediction Probabilities')
-        plt.tight_layout()
-        
-        plt.show()
+    # Create and save combined image
+    if save_result:
+        combined_img = create_prediction_image(
+            original_img, processed_img, predictions_list, os.path.basename(image_path)
+        )
+        output_path = f"prediction_{os.path.splitext(os.path.basename(image_path))[0]}.png"
+        combined_img.save(output_path)
+        print(f"Prediction image saved as: {output_path}")
     
     return {
-        'predictions': [(class_names[idx], predicted_probs[idx]) for idx in top_indices],
+        'predictions': predictions_list,
         'all_probabilities': dict(zip(class_names, predicted_probs))
     }
 
-def predict_multiple_images(model, image_paths):
+def predict_multiple_images(model, image_paths, save_results=False):
     """Predict multiple images at once"""
     results = []
     
     for image_path in image_paths:
         if os.path.exists(image_path):
-            result = predict_image(model, image_path, show_image=False)
+            result = predict_image(model, image_path, save_result=save_results, show_predictions=True)
             if result:
                 results.append({
                     'image_path': image_path,
@@ -214,10 +253,10 @@ if __name__ == "__main__":
     
     # Example image paths (replace with your actual image paths)
     example_images = [
-        "images/cat.png",
-#        "images/airplane.jpg", 
-#        "images/car.jpg"
-    ]
+        "images/cat.jpg",
+        "images/dog.jpg",
+        "images/airplane.jpg",
+        "images/ship.jpg"]
     
     print("# To predict a single image:")
     print("result = predict_image(model, 'path/to/your/image.jpg')")
@@ -231,14 +270,13 @@ if __name__ == "__main__":
     # results = predict_multiple_images(model, ["image1.jpg", "image2.jpg"])
     
     print("Instructions:")
-    print("1. Save this script as 'cifar10_predictor.py'")
-    print("2. Place your images in the same directory or provide full paths")
-    print("3. Call predict_image(model, 'your_image.jpg') to get predictions")
-    print("4. The script will show the original image, resized version, and probability bars")
-    print("5. It will print the top 3 most likely classes with confidence percentages")
+    print("1. Place your images in the same directory or provide full paths")
+    print("2. Call predict_image(model, 'your_image.jpg') to get predictions")
+    print("3. The script will show the original image, resized version, and probability")
+    print("4. It will print the top 3 most likely classes with confidence percentages")
 
 # Additional utility function for batch processing
-def batch_predict_from_folder(model, folder_path, image_extensions=('.jpg', '.jpeg', '.png', '.bmp')):
+def batch_predict_from_folder(model, folder_path, image_extensions=('.jpg', '.jpeg', '.png', '.bmp'), save_results=False):
     """Predict all images in a folder"""
     if not os.path.exists(folder_path):
         print(f"Folder not found: {folder_path}")
@@ -254,7 +292,7 @@ def batch_predict_from_folder(model, folder_path, image_extensions=('.jpg', '.jp
         return []
     
     print(f"Found {len(image_files)} images to process...")
-    results = predict_multiple_images(model, image_files)
+    results = predict_multiple_images(model, image_files, save_results=save_results)
     
     # Summary
     print(f"\nSummary of {len(results)} predictions:")
@@ -265,3 +303,21 @@ def batch_predict_from_folder(model, folder_path, image_extensions=('.jpg', '.jp
         print(f"{filename}: {top_class} ({confidence*100:.1f}%)")
     
     return results
+
+# Simple function to just get predictions without visual output
+def quick_predict(model, image_path):
+    """Quick prediction without image creation or detailed output"""
+    processed_img, _ = preprocess_image(image_path)
+    if processed_img is None:
+        return None
+    
+    predictions = model.predict(processed_img, verbose=0)
+    predicted_probs = predictions[0]
+    
+    # Get top prediction
+    top_idx = np.argmax(predicted_probs)
+    return {
+        'class': class_names[top_idx],
+        'confidence': predicted_probs[top_idx],
+        'all_probabilities': dict(zip(class_names, predicted_probs))
+    }
