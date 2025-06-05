@@ -49,7 +49,7 @@ instructions to process data. The control flow--rules, conditions, and logic--is
 determines what happens to the data.
 
 In contrast, machine learning inverts this relationship. Here, data shapes the program. Instead of
-specifying behaviour explicitly, we provide data to a learning algorithm that infers a model—effectively
+specifying behaviour explicitly, we provide data to a learning algorithm that infers a model--effectively
 creating a program based on observed patterns. This model is dynamic; it evolves with new data and can
 be updated or retrained without modifying the original code.
 
