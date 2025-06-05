@@ -1,79 +1,74 @@
 
+
 ## Machine Learning
 
-Machine Learning (ML) is an expanding field within AI, concerned with building systems that learn
-from data and improve their performance without being explicitly programmed for every task. Instead
-of hard-coding rules (like we did in the 80s), ML models extract patterns from examples and use
-these to make predictions or decisions.
+Machine Learning (ML) is a rapidly growing subfield of AI focused on building systems that learn from data
+and improve performance over time—without being explicitly programmed for every task. Instead of writing
+hardcoded rules (as was common in earlier software development), ML models identify patterns from examples
+and use these patterns to make predictions or decisions.
 
-Traditional ML methods, such as decision trees, support vector machines, and logistic regression,
-typically operate on structured data and require significant human effort in "feature engineering."
-Feature engineering is deciding which parts of the data that are important.[^feature]
+Traditional ML algorithms--such as decision trees, support vector machines, and logistic regression--typically
+work with structured data and rely heavily on feature engineering, where humans decide which parts of the
+data are most informative.[^feature]
 
-[^feature]: Feature engineering is the process of selecting, transforming, or creating input
-variables (features) that make machine learning models more accurate and efficient. It often
-involves identifying important properties in the data, scaling or normalising values, combining
-existing features, and encoding categorical information into numerical form.
-E.g., from a date like 2025-04-28, you can create new features, abstractions, like "day of week"
-or "month" to help a model find patterns more easily.
+[^feature]: Feature engineering involves selecting, transforming, or creating input variables (features) to
+improve model performance. This may include scaling values, encoding categories numerically, or abstracting
+new features--e.g., extracting “day of week” from a date like 2025-04-28.
 
-[Deep Learning (DL)](./DEEP.md), a newer branch of ML, reduces the need for manual feature
-engineering by *automatically* discovering high-level representations within data. Deep learning
-models, built with layered neural networks, have proven especially effective for complex tasks
-like image recognition, speech processing, and natural language understanding.
+[Deep Learning](./DEEP.md) (DL), a more recent and powerful branch of ML, automates much of this process.
+Deep learning models, built from multi-layered neural networks, learn hierarchical representations directly
+from raw data. This approach has proven especially effective for complex tasks like image recognition,
+speech processing, and natural language understanding.
 
-In simple projects, like MNIST digit recognition, traditional ML and deep learning can both be
-applied effectively. In more complex tasks, such as training language models to generate human-like
-text, deep learning is essential.
+For simpler tasks like digit recognition (e.g., MNIST), both traditional ML and deep learning can be
+effective. For more sophisticated challenges--such as generating human-like text--deep learning is
+today essential.
 
-Thus, ML provides the practical means by which AI systems can be made adaptive and intelligent,
-and DL pushes the frontier further by enabling machines to learn directly from raw data.
+Thus, ML offers the practical means for creating adaptive, intelligent systems, while DL extends these
+capabilities to domains that were previously out of reach.
+
 
 
 ### Study
 
-However, in the context of providing code first for your learning, most of deep learning exceeds
-the practical limits of this book. Deep models require large datasets, specialised architectures,
-and significant compute, making them less suited for compact, self-contained examples. Instead,
-we focus on classical machine learning--models you can fully understand, implement, and
-analyse--building a foundation that scales naturally toward more advanced techniques.
+While deep learning is a central part of modern AI, its full power requires large datasets, specialised
+architectures, and significant computational resources--often beyond the practical scope of this book.
+Instead, we focus on classical machine learning: models that are easier to implement, understand, and
+reason about, making them well-suited for compact, code-first examples.
 
-As AI and machine learning continue to advance, supported by substantial financial investment,
-the number of tutorials and introductions to these fields is rapidly growing. It should not
-be too difficult to find excellent materials to study on these topics. In these texts
-(book and workbook), we have selected only a few key components for examination, to give
-the reader or student a sense of how various parts function and to illustrate concepts that
-might be particularly interesting to explore, and also illustrates particulars in this vast space.
+As interest and investment in AI grow, so does the abundance of tutorials and educational resources.
+Rather than cover everything, we’ve selected a few representative techniques to provide a foundational
+understanding, illustrate key ideas, and encourage deeper exploration.
+
 
 
 ### A General Observation
 
-In traditional programming, the relationship between code and data is straightforward: a human
-explicitly defines a fixed program to manipulate data. Control logic, including rules, flow,
-and conditions, is hardcoded; data simply passes through this predetermined structure.
-The program dictates the data's processing.
+In traditional programming, the relationship between code and data is clear: a programmer writes fixed
+instructions to process data. The control flow—rules, conditions, and logic—is predefined. The program
+determines what happens to the data.
 
-Machine learning and AI effectively *invert* this. Here, data shapes the program. Instead of
-explicit rule-writing, a learning algorithm infers a model--a form of program--by generalising
-patterns from provided data examples. This model is fluid; what we traditionally call the "program"
-emerges out of optimisation and training. As new data arrives, the model adapts or retrains,
-modifying its internal logic without direct code alteration.
+In contrast, machine learning inverts this relationship. Here, data shapes the program. Instead of
+specifying behaviour explicitly, we provide data to a learning algorithm that infers a model—effectively
+creating a program based on observed patterns. This model is dynamic; it evolves with new data and can
+be updated or retrained without modifying the original code.
 
-This leads to a core distinction:
+This leads to a fundamental shift in mindset:
+
 > Traditional programming encodes logic to manipulate data.
 > Machine learning uses data to induce logic.
 
-This represents a profound shift in software conception: from static, human-designed rule systems
-to dynamic, data-driven behavior. This new paradigm often defies full human understanding but
-proves more adaptable and performant in complex, real-world scenarios.
+This change redefines how we think about software: from static, rule-based systems to adaptive, data-driven
+behaviors. These learned systems may be less transparent, but they are often more flexible and better suited
+to real-world complexity.
 
 
 ### A Selection of Algorithms
 
-As the field progresses, some of these early examples of machine learning algorithms may appear
-outdated or even obsolete by today’s standards. However, they remain highly valuable--not because
-of their cutting--edge performance, but because they clearly illustrate the fundamentally different
-way in which machine learning systems operate compared to traditional programming.
+As machine learning evolves, some early algorithms may seem outdated. However, they remain valuable, not for
+their state-of-the-art performance, but because they highlight the essential shift from explicit programming
+to data-driven inference. These methods help build intuition about how learning systems operate differently
+from traditional code and provide a strong conceptual starting point for further study.
 
 | *Algorithm* | *Type* | *Typical Use Cases* | *Key Properties* |
 |---|---|---|---|
