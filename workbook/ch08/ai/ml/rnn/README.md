@@ -7,14 +7,44 @@ time without explicit programming, and a specialised type of neural network, the
 making it a cornerstone for tasks like natural language processing and time series
 analysis.
 
-Recurrent Neural Networks (RNNs) are a class of artificial neural networks designed
-to recognise patterns in sequences of data, such as text, speech, or time series.
-Unlike traditional feedforward neural networks, RNNs have connections that loop back
-on themselves, allowing information from previous steps in a sequence to be retained
-and used in the current step through a "hidden state." This recurrent connection
-enables RNNs to maintain an internal memory of the sequence, making them suitable
-for tasks where context is important, such as language modeling where the prediction
-of the next word depends on the preceding words.
+*Recurrent Neural Networks* (RNNs) are a foundational class of artificial neural
+networks specifically designed to model and recognise patterns in sequential data.
+Typical applications include natural language processing (NLP), speech recognition,
+and time series forecasting--domains where the order and context of inputs play
+a crucial role.
+
+Unlike traditional feedforward neural networks, which process inputs in isolation,
+RNNs incorporate feedback connections that form directed cycles within the network.
+This architectural feature allows RNNs to maintain a dynamic hidden state, a form
+of internal memory that captures information about previous elements in the
+sequence. As a result, RNNs can, at least in principle, learn temporal dependencies
+and carry forward relevant context from one step to the next.
+
+This temporal aspect makes RNNs particularly well-suited for tasks such as language
+modeling, where the probability of a word appearing in a sentence depends on the
+words that precede it. For example, given the phrase "The cat sat on the", a
+well-trained RNN can leverage its memory to predict that the next word is likely to be "mat".
+
+However, traditional RNNs face significant challenges, including difficulty in
+learning long-range dependencies due to issues like vanishing and exploding gradients
+during training. These limitations led to the development of more advanced architectures
+such as Long Short-Term Memory (LSTM) networks and Gated Recurrent Units (GRUs),
+which introduce gating mechanisms to better manage information flow and maintain
+relevant context over longer sequences.
+
+In recent years, the landscape of sequence modeling has been transformed by the
+emergence of transformer-based architectures, most notably Large Language Models (LLMs)
+such as GPT. These models abandon recurrence entirely in favor of attention mechanisms,
+which allow them to capture dependencies over arbitrary distances without the need
+for sequential processing. As a result, LLMs have largely supplanted RNNs in many
+high-profile NLP tasks, offering greater scalability, parallelisability, and performance.
+
+Nonetheless, RNNs remain a conceptually important and historically significant approach
+to sequence learning, and they continue to be useful in certain settings--particularly
+when computational simplicity, online processing, or real-time constraints are factors.
+
+
+### Practical Examples
 
 The provided `rnn_sample.py` and `shakespeare_naive.py` code offers a foundational
 implementation of a Simple Recurrent Neural Network. The `SimpleRNN` class in
