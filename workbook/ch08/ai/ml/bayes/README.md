@@ -11,7 +11,9 @@ of digital text processing.
 Naive Bayes is a *probabilistic classifier* based on Bayes’ Theorem:
 
 ```math
-P(C | X) = (P(X | C) * P(C)) / P(X)
+\[
+P(C \mid X) = \frac{P(X \mid C) \cdot P(C)}{P(X)}
+\]
 ```
 
 Where:
