@@ -23,17 +23,18 @@ and carry forward relevant context from one step to the next.
 This temporal aspect makes RNNs particularly well-suited for tasks such as language
 modeling, where the probability of a word appearing in a sentence depends on the
 words that precede it. For example, given the phrase "The cat sat on the", a
-well-trained RNN can leverage its memory to predict that the next word is likely to be "mat".
+well-trained RNN can leverage its memory to predict that the next word is likely
+to be "mat".
 
 However, traditional RNNs face significant challenges, including difficulty in
 learning long-range dependencies due to issues like vanishing and exploding gradients
 during training. These limitations led to the development of more advanced architectures
-such as Long Short-Term Memory (LSTM) networks and Gated Recurrent Units (GRUs),
+such as *Long Short-Term Memory* (LSTM) networks and Gated Recurrent Units (GRUs),
 which introduce gating mechanisms to better manage information flow and maintain
 relevant context over longer sequences.
 
 In recent years, the landscape of sequence modeling has been transformed by the
-emergence of transformer-based architectures, most notably Large Language Models (LLMs)
+emergence of transformer-based architectures, most notably *Large Language Models* (LLMs)
 such as GPT. These models abandon recurrence entirely in favor of attention mechanisms,
 which allow them to capture dependencies over arbitrary distances without the need
 for sequential processing. As a result, LLMs have largely supplanted RNNs in many
