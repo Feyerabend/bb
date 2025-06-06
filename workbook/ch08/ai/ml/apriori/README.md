@@ -35,3 +35,90 @@ Support of itemset $X$:
 3. Generate k-itemsets from previous (k−1)-itemsets (by joining and filtering).
 4. Repeat until no new itemsets remain.
 
+
+
+
+
+### FP-Growth: Definitions and Notation
+
+Let:
+- $\mathcal{D}$ be a transaction database with N transactions.
+- $I = \{i_1, i_2, \ldots, i_m\}$ be the set of m distinct items.
+- $\sigma(i)$ denote the support count of item $i$, i.e., number
+  of transactions containing $i$.
+- $\text{minsup} \in (0,1]$ be the minimum support threshold (fraction).
+- An itemset is a subset $X \subseteq I$.
+- $\text{support}(X) = \frac{|\{ T \in \mathcal{D} \mid X \subseteq T \}|}{N}$
+
+Apriori uses a generate-and-test strategy in cadidate generation:
+- At level $k$, it generates candidate itemsets $C_k$ of size $k$,
+  and scans the database to count their supports.
+- Then it filters out infrequent ones to get $L_k$, the frequent
+  itemsets of size $k$.
+
+Cost:
+- Candidate explosion:
+    - Worst-case number of candidates:
+        $\sum_{k=1}^{m} \binom{m}{k} = 2^m - 1$
+    - Though pruning based on support limits this in practice,
+      it’s still exponential in $m$ when $\text{minsup}$ is low.
+- Database scans:
+    - Requires $k$ full scans for discovering all $L_1, L_2, …, L_k$.
+- Support counting cost per scan:
+    - For each candidate $X \in C_k$, check inclusion in each
+      transaction $T \in \mathcal{D}$, i.e., $\mathcal{O}(|C_k| \cdot N)$
+- Total time complexity (approx):
+    $\mathcal{O}\left(\sum_{k=1}^K |C_k| \cdot N \cdot k \right)$
+
+
+### FP-Growth: Divide-and-Conquer via FP-tree
+
+FP-Growth avoids candidate generation by compressing the database
+into a prefix tree (FP-tree) and mining recursively.
+
+FP-tree construction:
+- Single scan for frequency counts.
+- Second scan to build tree of only frequent items (in support-descending order).
+- Nodes store item name, count, and pointers.
+- Common prefixes are shared, drastically reducing storage size.
+
+Cost:
+- Tree size:
+- Let $\text{avg\_prefix\_len}$ be average number of frequent items per transaction.
+- Total number of nodes $\leq N \cdot \text{avg\_prefix\_len}$
+- Mining cost (recursive pattern growth):
+- For each item $i$, extract conditional pattern base (all prefix paths ending in $i$).
+- Build a conditional FP-tree and recurse.
+- Total time complexity (approx):
+    $\mathcal{O}(N \cdot \text{avg\_prefix\_len} + \text{#conditional_trees})$
+- Number of conditional trees is $\leq \text{#frequent items}$, but recursion can go deep.
+- Space complexity:
+    $\mathcal{O}(N \cdot \text{avg\_prefix\_len})$
+- Much lower than storing all $C_k$ in Apriori.
+
+
+
+### Comparison Table
+
+| Aspect                    | Apriori                                 | FP-Growth                                 |
+|---------------------------|-----------------------------------------|-------------------------------------------|
+| Strategy                  | Generate-and-test                       | Divide-and-conquer                        |
+| Candidate Generation      | Explicit                                | None                                      |
+| Database Scans            | $begin:math:text$ \\geq k $end:math:text$                            | 2    |
+| Time Complexity           | $begin:math:text$ \\mathcal{O}\\left(\\sum_k |C_k| \\cdot N \\cdot k \\right) $end:math:text$ | $begin:math:text$ \\mathcal{O}(N \\cdot \\text{avg\\_prefix\\_len} + \\text{#conditional\\_trees}) $end:math:text$ |
+| Memory Use                | High (stores all $begin:math:text$ C_k $end:math:text$)             | Low (compact tree)   |
+| Performance on Sparse Data| Acceptable                              | Excellent                                 |
+| Performance on Dense Data | Slow (many $begin:math:text$ C_k $end:math:text$)                   | Much faster       |
+
+
+
+### Mathematical Insight
+
+- FP-Growth performs better because it leverages prefix sharing, turning the
+  exponential number of possible itemsets into a linear traversal of a shared
+  tree structure.
+
+- The FP-tree is a compressed representation of the database, exploiting the
+  downward closure property (if X is frequent, all subsets are frequent), just
+  like Apriori, but without enumerating subsets.
+
