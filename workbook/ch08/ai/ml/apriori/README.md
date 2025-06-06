@@ -37,8 +37,6 @@ Support of itemset $X$:
 
 
 
-
-
 ### FP-Growth: Definitions and Notation
 
 Let:
@@ -98,7 +96,6 @@ Cost:
   $\mathcal{O}\left(\sum_{k=1}^K |C_k| \cdot N \cdot k \right)$
 
 
-
 ### Comparison Table
 
 | Aspect                     | Apriori                  | FP-Growth                      |
@@ -112,14 +109,13 @@ Cost:
 | Performance on Dense Data  | Slow (many $C_k$)        | Much faster                    |
 
 
-
 ### Mathematical Insight
 
-- FP-Growth performs better because it leverages prefix sharing, turning the
+- *FP-Growth* performs better because it leverages prefix sharing, turning the
   exponential number of possible itemsets into a linear traversal of a shared
   tree structure.
 
 - The FP-tree is a compressed representation of the database, exploiting the
-  downward closure property (if X is frequent, all subsets are frequent), just
-  like Apriori, but without enumerating subsets.
+  downward closure property (if $X$ is frequent, all subsets are frequent), just
+  like *Apriori*, but without enumerating subsets.
 
