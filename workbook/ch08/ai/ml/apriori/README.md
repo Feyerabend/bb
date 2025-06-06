@@ -15,7 +15,7 @@ Conversely, if a candidate itemset is infrequent, none of its supersets can be f
 pruning of the search space.
 
 
-### Mathematical Foundations
+#### Mathematical Foundations
 
 Let:
 - $I = \{ i_1, i_2, \dots, i_n \}$: set of all items.
@@ -28,7 +28,7 @@ Support of itemset $X$:
 ```
 
 
-### The Algorithm Simplified
+#### The Algorithm Simplified
 
 1. Generate 1-itemsets and count support.
 2. Prune those below `minSupport`.
