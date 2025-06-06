@@ -70,7 +70,7 @@ Normal Thinking
 
 Bayesian Thinking
 - Decisions are made using expected utility: weigh outcomes by their probabilities and consequences.
-- Tradeoffs are analyzed probabilistically.
+- Tradeoffs are analysed probabilistically.
 - Risk and uncertainty are part of the decision, not noise to be ignored.
 
 
@@ -89,11 +89,10 @@ Bayesian Thinking
     - Openness to updating
     - Tolerance of uncertainty
     - Rational integration of new data
-
-But:
-- Computationally intensive
-- Requires explicit modeling of priors and likelihoods
-- Can seem counterintuitive in everyday life
+- But:
+    - Computationally intensive
+    - Requires explicit modeling of priors and likelihoods
+    - Can seem counterintuitive in everyday life
 
 
 
