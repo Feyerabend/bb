@@ -223,3 +223,5 @@ dogmatic--but also more cognitively taxed. The cost is complexity; the benefit i
 - Davidson-Pilon, C. (2016). *Bayesian methods for hackers: probabilistic programming and Bayesian inference*. New York: Addison-Wesley.
 - Kahneman, D. (2011). *Thinking, fast and slow*. (1.ed.) New York: Farrar, Straus and Giroux.
 - Suppes, P. (1957). *Introduction to logic*. New York: Van Nostrand.
+- Taleb, N.N. (2007). *The black swan: the impact of the highly improbable*. (1. ed.) New York: Random House.
+
