@@ -80,9 +80,9 @@ Bayesian Thinking
 Normal Thinking
 - Susceptible to:
     - Anchoring[^anchor]
-    - Belief perseverance
-    - Motivated reasoning
-    - Poor at dealing with rare events or probabilistic chains (e.g., conjunction fallacy).
+    - Belief perseverance[^belief]
+    - Motivated reasoning[^motivated]
+    - Poor at dealing with rare events or probabilistic chains (e.g., conjunction fallacy). More, see below.
 
 [^anchor]: *Anchoring* is a cognitive bias where people rely too heavily on the first piece of
 information they receive--the "anchor"--when making decisions. For example:
@@ -90,6 +90,16 @@ You're looking to buy a house. The real estate agent sets the asking price at $4
 Even if the price isn't based on market value or the house's true condition, you're likely
 to judge the value of the house in relation to that figure. Instead of making your own
 independent assessment, your expectations and negotiation range are shaped by the initial number--the anchor.
+
+[^belief]: *Belief perseverance* is the tendency to maintain a belief even after the evidence
+for it has been discredited or completely refuted. Once a belief is formed, especially if emotionally
+or socially anchored, it can persist stubbornly--even in the face of clear, contradictory information.
+
+[^motivated]: *Motivated reasoning* is the cognitive bias where people process information not
+to arrive at the most accurate belief, but to reach a conclusion they *want* to be true. Instead
+of adjusting beliefs to fit the evidence, we often do the reverse: selectively interpret evidence
+to support pre-existing beliefs, desires, or identities.
+
 
 Bayesian Thinking
 - Promotes:
