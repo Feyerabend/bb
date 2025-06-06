@@ -203,3 +203,9 @@ For Society:
 *Perhaps, if we all thought a bit more like Bayesians, we'd likely be more humble, more curious, and less
 dogmatic--but also more cognitively taxed. The cost is complexity; the benefit is accuracy.*
 
+
+### Reference
+
+- Davidson-Pilon, C. (2016). *Bayesian methods for hackers: probabilistic programming and Bayesian inference*. New York: Addison-Wesley.
+- Kahneman, D. (2011). *Thinking, fast and slow*. (1.ed.) New York: Farrar, Straus and Giroux.
+- Suppes, P. (1957). *Introduction to logic*. New York: Van Nostrand.
