@@ -115,25 +115,47 @@ Scientific Discovery
 - Bayesian thinking: "How surprising is this result if the theory were false? How does this update our confidence in the theory compared to competing ones?"
 
 Risk Assessment  
-- Normal thinking: "It hasn’t happened before, so it probably won’t happen."  
+- Normal thinking: "It hasn't happened before, so it probably won't happen."  
 - Bayesian thinking: "Even if something hasn't happened yet, rare events still have a probability. Let's estimate it based on indirect evidence and update over time."
 
 Economics and Forecasting  
 - Normal thinking: "The market is crashing; everything is doomed."  
-- Bayesian thinking: "Given past data and external conditions, how likely is a full collapse? Let’s adjust our expectations as more signals appear."
+- Bayesian thinking: "Given past data and external conditions, how likely is a full collapse? Let's adjust our expectations as more signals appear."
 
 Programming and Debugging  
 - Normal thinking: "It worked yesterday, so the bug must be in the new code."  
-- Bayesian thinking: "What’s the likelihood the bug is in the new code vs. an unnoticed earlier issue? How should I revise my hypothesis as I test each possibility?"
+- Bayesian thinking: "What's the likelihood the bug is in the new code vs. an unnoticed earlier issue? How should I revise my hypothesis as I test each possibility?"
 
 Machine Learning and Model Evaluation  
-- Normal thinking: "My model performs well on the test set, so it’s reliable."  
-- Bayesian thinking: "Given the size and variability of the data, and potential overfitting, how confident should I really be? What’s the probability this model generalizes well?"
+- Normal thinking: "My model performs well on the test set, so it's reliable."  
+- Bayesian thinking: "Given the size and variability of the data, and potential overfitting, how confident should I really be? What's the probability this model generalizes well?"
 
 Software Design  
-- Normal thinking: "This feature is rarely used, so optimising it isn’t worth the time."  
-- Bayesian thinking: "Given low usage now but potential future growth or edge cases, what’s the expected value of optimising this path? Can we update this belief with telemetry data?"
+- Normal thinking: "This feature is rarely used, so optimising it isn't worth the time."  
+- Bayesian thinking: "Given low usage now but potential future growth or edge cases, what's the expected value of optimising this path? Can we update this belief with telemetry data?"
 
+
+
+### Rare Events and Black Swans
+
+One of the major shortcomings of normal thinking is the tendency to dismiss unlikely events simply because
+they haven't happened before. This leads to what Nassim Nicholas Taleb calls the *Black Swan problem*:
+the failure to anticipate rare, high-impact events because they fall outside our usual models of expectation.
+
+- Normal thinking: "It's never happened before, so it won't happen."  
+- Bayesian thinking: "Even rare events have probabilities. Just because we've never seen it doesn't mean it's impossible. We should assign a low—but non-zero—prior probability and remain open to updating it."
+
+Bayesian reasoning doesn't eliminate surprise, but it gives us a structured way to be less blindsided. For example:
+- In cybersecurity, a Bayesian mindset encourages preparation for unexpected attack vectors.
+- In infrastructure design, it justifies spending resources on rare but catastrophic failure scenarios (earthquakes, data loss, grid collapse).
+- In software systems, it helps us reason about tail risks, edge cases, and out-of-distribution behavior.
+
+The Bayesian approach doesn't pretend to predict every black swan, but it *admits the existence* of unknowns
+and provides a rational method for updating beliefs as signs appear. It encourages humility, resilience, and
+skepticism toward certainty—qualities often missing in traditional planning.
+
+In this sense, Bayesian thinking doesn't just describe a better way to reason--it acts as a hedge against
+overconfidence and brittleness in complex systems, including code, models, institutions, and our own minds.
 
 
 ### Consequences
@@ -161,6 +183,6 @@ For Society:
 | Risk handling   | Prone to misjudgment                 | Explicitly modeled                          |
 
 
-Perhaps, if we all thought a bit more like Bayesians, we'd likely be more humble, more curious, and less
-dogmatic--but also more cognitively taxed. The cost is complexity; the benefit is accuracy.
+*Perhaps, if we all thought a bit more like Bayesians, we'd likely be more humble, more curious, and less
+dogmatic--but also more cognitively taxed. The cost is complexity; the benefit is accuracy.*
 
