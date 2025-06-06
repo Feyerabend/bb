@@ -85,17 +85,17 @@ FP-tree construction:
 Cost:
 - Candidate explosion:
 - Worst-case number of candidates:  
-  `$\sum_{k=1}^{m} \binom{m}{k} = 2^m - 1$`
+  $\sum_{k=1}^{m} \binom{m}{k} = 2^m - 1$
 - Though pruning based on support limits this in practice,
-  it’s still exponential in `m` when `minsup` is low.
+  it’s still exponential in $m$ when $minsup$ is low.
 - Database scans:
-- Requires `k` full scans for discovering all `L_1, L_2, ..., L_k`.
+- Requires $k$ full scans for discovering all $L_1, L_2, ..., L_k$.
 - Support counting cost per scan:
-- For each candidate `X \in C_k`, check inclusion in each
-  transaction `T \in \mathcal{D}`, i.e.,  
-  `$\mathcal{O}(|C_k| \cdot N)$`
+- For each candidate $X \in C_k$, check inclusion in each
+  transaction $T \in \mathcal{D}$, i.e.,  
+  $\mathcal{O}(|C_k| \cdot N)$
 - Total time complexity (approx):  
-  `$\mathcal{O}\left(\sum_{k=1}^K |C_k| \cdot N \cdot k \right)$`
+  $\mathcal{O}\left(\sum_{k=1}^K |C_k| \cdot N \cdot k \right)$
 
 
 
