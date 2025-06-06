@@ -104,11 +104,11 @@ Cost:
 |---------------------------|-----------------------------------------|-------------------------------------------|
 | Strategy                  | Generate-and-test                       | Divide-and-conquer                        |
 | Candidate Generation      | Explicit                                | None                                      |
-| Database Scans            | $begin:math:text$ \\geq k $end:math:text$                            | 2    |
-| Time Complexity           | $begin:math:text$ \\mathcal{O}\\left(\\sum_k |C_k| \\cdot N \\cdot k \\right) $end:math:text$ | $begin:math:text$ \\mathcal{O}(N \\cdot \\text{avg\\_prefix\\_len} + \\text{#conditional\\_trees}) $end:math:text$ |
-| Memory Use                | High (stores all $begin:math:text$ C_k $end:math:text$)             | Low (compact tree)   |
+| Database Scans            | $\\geq k$                            | 2    |
+| Time Complexity           | $\\mathcal{O}\\left(\\sum_k |C_k| \\cdot N \\cdot k \\right)$ | $ \\mathcal{O}(N \\cdot \\text{avg\\_prefix\\_len} + \\text{#conditional\\_trees})$ |
+| Memory Use                | High (stores all $C_k$)             | Low (compact tree)   |
 | Performance on Sparse Data| Acceptable                              | Excellent                                 |
-| Performance on Dense Data | Slow (many $begin:math:text$ C_k $end:math:text$)                   | Much faster       |
+| Performance on Dense Data | Slow (many $C_k$)                   | Much faster       |
 
 
 
