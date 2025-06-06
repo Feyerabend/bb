@@ -1,11 +1,12 @@
 \documentclass[12pt]{article}
 \usepackage{makeidx}
 \usepackage{hyperref}
+\usepackage{graphicx}
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
 \usepackage{geometry}
 \geometry{margin=1in}
-\newcommand{\candidate}[2]{#1}
+\newcommand{\candidate}[2]{#1} % TODO: fix this to better have hierarchical indexing? 
 \makeindex
 
 \title{Recreational Computing: \\The Joy of Machines for Their Own Sake}
@@ -14,6 +15,10 @@
 
 \begin{document}
 \maketitle
+
+\begin{minipage}{0.15\textwidth}
+    \includegraphics[width=\textwidth]{./teapot.png} % Include your QR code image file
+\end{minipage}
 
 \subsection*{Introduction}
 There is an entire universe of computing that exists not for productivity, not for profit, but purely for the love of the machine itself---a kind of \textit{recreational computing}\index{recreational computing}, where the act of tinkering, exploring, or even deliberately wasting cycles is the point.
