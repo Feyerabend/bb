@@ -79,16 +79,16 @@ Bayesian Thinking
 
 Normal Thinking
 - Susceptible to:
-- Anchoring
-- Belief perseverance
-- Motivated reasoning
-- Poor at dealing with rare events or probabilistic chains (e.g., conjunction fallacy).
+    - Anchoring
+    - Belief perseverance
+    - Motivated reasoning
+    - Poor at dealing with rare events or probabilistic chains (e.g., conjunction fallacy).
 
 Bayesian Thinking
 - Promotes:
-- Openness to updating
-- Tolerance of uncertainty
-- Rational integration of new data
+    - Openness to updating
+    - Tolerance of uncertainty
+    - Rational integration of new data
 
 But:
 - Computationally intensive

@@ -277,7 +277,7 @@ class TransformerBlock(Layer):
         })
         return config
 
-# Fixed custom layers
+# Custom layers without lambda functions
 class MaskLayer(Layer):
     def __init__(self, **kwargs):
         super(MaskLayer, self).__init__(**kwargs)
@@ -292,7 +292,7 @@ class PositionalEncodingLayer(Layer):
         super(PositionalEncodingLayer, self).__init__(**kwargs)
         self.max_length = max_length
         self.d_model = d_model
-        self.supports_masking = True  # Enable masking support
+        self.supports_masking = True
         
     def build(self, input_shape):
         pos = tf.range(self.max_length, dtype=tf.float32)[:, tf.newaxis]
@@ -317,7 +317,7 @@ class PositionalEncodingLayer(Layer):
         return output
     
     def compute_mask(self, inputs, mask=None):
-        return mask  # Pass through the mask
+        return mask
     
     def get_config(self):
         config = super().get_config()
@@ -335,7 +335,21 @@ class MaskLogitsLayer(Layer):
         logits, mask = inputs
         return logits + mask * -1e9
 
-# Create improved model with better architecture
+# Custom layer to replace Lambda for squeezing
+class SqueezeLayer(Layer):
+    def __init__(self, axis=-1, **kwargs):
+        super(SqueezeLayer, self).__init__(**kwargs)
+        self.axis = axis
+    
+    def call(self, inputs):
+        return tf.squeeze(inputs, axis=self.axis)
+    
+    def get_config(self):
+        config = super().get_config()
+        config.update({'axis': self.axis})
+        return config
+
+# Create improved model with better architecture (no lambda layers)
 def create_model(vocab_size, max_length=512, d_model=256, num_heads=8, num_layers=6, dff=1024, dropout_rate=0.15):
     input_ids = Input(shape=(max_length,), dtype=tf.int32, name='input_ids')
     attention_mask = Input(shape=(max_length,), dtype=tf.int32, name='attention_mask')
@@ -360,7 +374,7 @@ def create_model(vocab_size, max_length=512, d_model=256, num_heads=8, num_layer
         x = TransformerBlock(d_model, num_heads, dff, dropout_rate)([x, mask])
     
     # Additional processing layers
-    x = Dense(d_model, activation='gelu')(x)  # Use GELU activation
+    x = Dense(d_model, activation='gelu')(x)
     x = LayerNormalization()(x)
     x = Dropout(dropout_rate)(x)
     
@@ -371,9 +385,9 @@ def create_model(vocab_size, max_length=512, d_model=256, num_heads=8, num_layer
     start_logits = Dense(1, name='start_dense')(x)
     end_logits = Dense(1, name='end_dense')(x)
     
-    # Squeeze to remove last dimension
-    start_logits = tf.keras.layers.Lambda(lambda x: tf.squeeze(x, -1))(start_logits)
-    end_logits = tf.keras.layers.Lambda(lambda x: tf.squeeze(x, -1))(end_logits)
+    # Use custom SqueezeLayer instead of Lambda
+    start_logits = SqueezeLayer(axis=-1)(start_logits)
+    end_logits = SqueezeLayer(axis=-1)(end_logits)
     
     # Apply mask to logits
     start_logits = MaskLogitsLayer(name='start_logits')([start_logits, mask])
@@ -457,7 +471,7 @@ def train_model(model, dataset, epochs=20, batch_size=12):
     
     return history
 
-# Fixed save function?
+# Save function
 def save_model_and_vocab(model, vocab, model_path='qa_model.keras', vocab_path='vocab.json'):
     """Save the trained model and vocabulary"""
     model.save(model_path)
@@ -467,8 +481,6 @@ def save_model_and_vocab(model, vocab, model_path='qa_model.keras', vocab_path='
     
     print(f"Model saved to {model_path}")
     print(f"Vocabulary saved to {vocab_path}")
-
-
 
 # Prediction function
 def predict_answer(model, vocab, question, context, max_length=512):
