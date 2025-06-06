@@ -22,12 +22,12 @@ def simple_tokenize(text):
     return [token for token in tokens if token.strip()]
 
 # Build vocabulary from dataset
-def build_vocab(dataset, vocab_size=15000):  # Increased vocab size
+def build_vocab(dataset, vocab_size=15000):
     vocab = {"<pad>": 0, "<unk>": 1, "<sep>": 2, "<cls>": 3}
     word_counts = {}
     
     # Count words in a larger sample
-    for i, example in enumerate(dataset.take(10000)):  # Increased sample size
+    for i, example in enumerate(dataset.take(10000)):
         if i >= 10000:
             break
         context = example['context'].numpy().decode('utf-8')
@@ -47,7 +47,7 @@ def build_vocab(dataset, vocab_size=15000):  # Increased vocab size
     return vocab
 
 # Improved preprocessing with better answer alignment
-def preprocess_data(dataset, vocab, max_length=512, num_examples=5000):  # Increased context length
+def preprocess_data(dataset, vocab, max_length=512, num_examples=8000):
     def find_answer_positions(context_tokens, answer_tokens, context_start_idx):
         if not answer_tokens:
             return context_start_idx, context_start_idx
@@ -62,10 +62,10 @@ def preprocess_data(dataset, vocab, max_length=512, num_examples=5000):  # Incre
             if match:
                 return i, i + len(answer_tokens) - 1
         
-        # Fallback to partial match
+        # Fallback: find best partial match
         best_start = context_start_idx
         best_score = 0
-        for i in range(context_start_idx, min(len(context_tokens), context_start_idx + 50)):
+        for i in range(context_start_idx, min(len(context_tokens), context_start_idx + 100)):
             score = 0
             for j, ans_token in enumerate(answer_tokens):
                 if i + j < len(context_tokens) and context_tokens[i + j] == ans_token:
@@ -98,10 +98,9 @@ def preprocess_data(dataset, vocab, max_length=512, num_examples=5000):  # Incre
         
         # Truncate if too long
         if len(input_ids) > max_length:
-            # Try to keep the question and truncate context intelligently
-            question_sep_len = len(question_tokens) + 2  # [CLS] + question + [SEP]
+            question_sep_len = len(question_tokens) + 2
             available_context_len = max_length - question_sep_len
-            if available_context_len > 50:  # Keep at least 50 tokens of context
+            if available_context_len > 50:
                 input_ids = input_ids[:question_sep_len] + input_ids[question_sep_len:question_sep_len + available_context_len]
                 input_tokens = input_tokens[:question_sep_len] + input_tokens[question_sep_len:question_sep_len + available_context_len]
             else:
@@ -134,7 +133,7 @@ def preprocess_data(dataset, vocab, max_length=512, num_examples=5000):  # Incre
     processed_data = []
     valid_examples = 0
     
-    for example in dataset.take(num_examples * 2):  # Take more to filter out invalid ones
+    for example in dataset.take(num_examples * 2):
         result = _preprocess(example)
         if result is not None:
             processed_data.append(result)
@@ -278,7 +277,7 @@ class TransformerBlock(Layer):
         })
         return config
 
-# Custom layers
+# Fixed custom layers
 class MaskLayer(Layer):
     def __init__(self, **kwargs):
         super(MaskLayer, self).__init__(**kwargs)
@@ -293,6 +292,7 @@ class PositionalEncodingLayer(Layer):
         super(PositionalEncodingLayer, self).__init__(**kwargs)
         self.max_length = max_length
         self.d_model = d_model
+        self.supports_masking = True  # Enable masking support
         
     def build(self, input_shape):
         pos = tf.range(self.max_length, dtype=tf.float32)[:, tf.newaxis]
@@ -311,9 +311,13 @@ class PositionalEncodingLayer(Layer):
         )
         super().build(input_shape)
     
-    def call(self, inputs):
+    def call(self, inputs, mask=None):
         seq_len = tf.shape(inputs)[1]
-        return inputs + self.pos_encoding[:, :seq_len, :]
+        output = inputs + self.pos_encoding[:, :seq_len, :]
+        return output
+    
+    def compute_mask(self, inputs, mask=None):
+        return mask  # Pass through the mask
     
     def get_config(self):
         config = super().get_config()
@@ -331,28 +335,37 @@ class MaskLogitsLayer(Layer):
         logits, mask = inputs
         return logits + mask * -1e9
 
-# Create improved model
-def create_model(vocab_size, max_length=512, d_model=256, num_heads=8, num_layers=4, dff=1024, dropout_rate=0.1):
+# Create improved model with better architecture
+def create_model(vocab_size, max_length=512, d_model=256, num_heads=8, num_layers=6, dff=1024, dropout_rate=0.15):
     input_ids = Input(shape=(max_length,), dtype=tf.int32, name='input_ids')
     attention_mask = Input(shape=(max_length,), dtype=tf.int32, name='attention_mask')
     
     # Create padding mask
     mask = MaskLayer()(attention_mask)
     
-    # Embedding layer with larger dimension
-    embedding = Embedding(vocab_size, d_model, mask_zero=True)(input_ids)
+    # Embedding layer with improved initialization
+    embedding = Embedding(
+        vocab_size, 
+        d_model, 
+        mask_zero=True,
+        embeddings_initializer='glorot_uniform'
+    )(input_ids)
     embedding = Dropout(dropout_rate)(embedding)
     
-    # Add positional encoding
+    # Add positional encoding (now supports masking)
     x = PositionalEncodingLayer(max_length, d_model)(embedding)
     
-    # Multiple transformer blocks
-    for _ in range(num_layers):
+    # Multiple transformer blocks with residual connections
+    for i in range(num_layers):
         x = TransformerBlock(d_model, num_heads, dff, dropout_rate)([x, mask])
     
-    # Add another layer before output for better representations
-    x = Dense(d_model // 2, activation='relu')(x)
+    # Additional processing layers
+    x = Dense(d_model, activation='gelu')(x)  # Use GELU activation
+    x = LayerNormalization()(x)
     x = Dropout(dropout_rate)(x)
+    
+    x = Dense(d_model // 2, activation='gelu')(x)
+    x = Dropout(dropout_rate * 0.5)(x)
     
     # Output layers for start and end positions
     start_logits = Dense(1, name='start_dense')(x)
@@ -369,94 +382,56 @@ def create_model(vocab_size, max_length=512, d_model=256, num_heads=8, num_layer
     model = Model(inputs=[input_ids, attention_mask], outputs=[start_logits, end_logits])
     return model
 
-# Training function with better settings
-def train_model(model, dataset, epochs=10, batch_size=8):  # Increased epochs and batch size
-    """Train the model with better monitoring"""
+# Improved training function
+def train_model(model, dataset, epochs=20, batch_size=12):
+    """Train the model with improved settings"""
     
     # Split dataset
     dataset_size = sum(1 for _ in dataset)
-    train_size = int(0.85 * dataset_size)  # Use more data for training
+    train_size = int(0.85 * dataset_size)
     
-    train_dataset = dataset.take(train_size).shuffle(1000).batch(batch_size).prefetch(tf.data.AUTOTUNE)
+    train_dataset = dataset.take(train_size).shuffle(2000).batch(batch_size).prefetch(tf.data.AUTOTUNE)
     val_dataset = dataset.skip(train_size).batch(batch_size).prefetch(tf.data.AUTOTUNE)
+    
+    # Learning rate schedule
+    initial_learning_rate = 1e-4
+    decay_schedule = tf.keras.optimizers.schedules.CosineDecayRestarts(
+        initial_learning_rate=initial_learning_rate,
+        first_decay_steps=1000,
+        t_mul=2.0,
+        m_mul=1.0,
+        alpha=0.1
+    )
     
     # Improved callbacks
     callbacks = [
         tf.keras.callbacks.EarlyStopping(
             monitor='val_loss', 
-            patience=3, 
+            patience=5, 
             restore_best_weights=True, 
-            verbose=1
+            verbose=1,
+            min_delta=0.001
         ),
         tf.keras.callbacks.ReduceLROnPlateau(
             monitor='val_loss',
             factor=0.5, 
-            patience=2, 
+            patience=3, 
             min_lr=1e-7,
             verbose=1
         ),
         tf.keras.callbacks.ModelCheckpoint(
-            'best_model.h5',
+            'best_model.keras',
             monitor='val_loss',
             save_best_only=True,
             verbose=1
         )
     ]
     
-    # Train the model
-    history = model.fit(
-        train_dataset,
-        validation_data=val_dataset,
-        epochs=epochs,
-        callbacks=callbacks,
-        verbose=1
-    )
-    
-    return history
-
-# Save model and vocab
-def save_model_and_vocab(model, vocab, model_path='qa_model.keras', vocab_path='vocab.json'):
-    """Save the trained model and vocabulary"""
-    model.save(model_path)
-    
-    with open(vocab_path, 'w') as f:
-        json.dump(vocab, f)
-    
-    print(f"Model saved to {model_path}")
-    print(f"Vocabulary saved to {vocab_path}")
-
-# alt .h5 format
-def save_model_and_vocab_h5(model, vocab, model_path='qa_model.h5', vocab_path='vocab.json'):
-    """Save the trained model and vocabulary in H5 format"""
-    model.save(model_path)
-    
-    with open(vocab_path, 'w') as f:
-        json.dump(vocab, f)
-    
-    print(f"Model saved to {model_path}")
-    print(f"Vocabulary saved to {vocab_path}")
-
-
-# Main execution
-def main():
-    print("Loading dataset...")
-    train_dataset, info = load_squad_dataset()
-    
-    print("Building vocabulary...")
-    vocab = build_vocab(train_dataset, vocab_size=15000)
-    vocab_size = len(vocab)
-    print(f"Vocabulary size: {vocab_size}")
-    
-    print("Preprocessing data...")
-    processed_dataset = preprocess_data(train_dataset, vocab, max_length=512, num_examples=8000)
-    
-    print("Creating model...")
-    model = create_model(vocab_size, max_length=512, d_model=256, num_layers=4)
-    
-    # Compile model with improved settings
+    # Compile with improved optimizer
     model.compile(
-        optimizer=tf.keras.optimizers.Adam(
-            learning_rate=2e-4,  # Slightly higher learning rate
+        optimizer=tf.keras.optimizers.AdamW(
+            learning_rate=decay_schedule,
+            weight_decay=0.01,
             clipnorm=1.0,
             beta_1=0.9,
             beta_2=0.999
@@ -471,15 +446,102 @@ def main():
         }
     )
     
+    # Train the model
+    history = model.fit(
+        train_dataset,
+        validation_data=val_dataset,
+        epochs=epochs,
+        callbacks=callbacks,
+        verbose=1
+    )
+    
+    return history
+
+# Fixed save function?
+def save_model_and_vocab(model, vocab, model_path='qa_model.keras', vocab_path='vocab.json'):
+    """Save the trained model and vocabulary"""
+    model.save(model_path)
+    
+    with open(vocab_path, 'w') as f:
+        json.dump(vocab, f, indent=2)
+    
+    print(f"Model saved to {model_path}")
+    print(f"Vocabulary saved to {vocab_path}")
+
+
+
+# Prediction function
+def predict_answer(model, vocab, question, context, max_length=512):
+    """Predict answer for a given question and context"""
+    # Reverse vocabulary for decoding
+    reverse_vocab = {v: k for k, v in vocab.items()}
+    
+    # Tokenize inputs
+    question_tokens = simple_tokenize(question)
+    context_tokens = simple_tokenize(context)
+    
+    # Create input sequence
+    input_tokens = ["<cls>"] + question_tokens + ["<sep>"] + context_tokens
+    input_ids = [vocab.get(token, vocab["<unk>"]) for token in input_tokens[:max_length]]
+    
+    # Pad sequence
+    padding_length = max_length - len(input_ids)
+    input_ids.extend([vocab["<pad>"]] * padding_length)
+    attention_mask = [1] * len(input_tokens[:max_length]) + [0] * padding_length
+    
+    # Convert to tensors
+    input_ids = tf.expand_dims(tf.constant(input_ids, dtype=tf.int32), 0)
+    attention_mask = tf.expand_dims(tf.constant(attention_mask, dtype=tf.int32), 0)
+    
+    # Predict
+    start_logits, end_logits = model([input_ids, attention_mask])
+    
+    # Get positions
+    start_pos = tf.argmax(start_logits, axis=1).numpy()[0]
+    end_pos = tf.argmax(end_logits, axis=1).numpy()[0]
+    
+    # Extract answer tokens
+    if start_pos <= end_pos and start_pos < len(input_tokens):
+        answer_tokens = input_tokens[start_pos:end_pos+1]
+        answer = " ".join([token for token in answer_tokens if token not in ["<cls>", "<sep>", "<pad>", "<unk>"]])
+        return answer
+    
+    return "No answer found"
+
+# Main execution
+def main():
+    print("Loading dataset...")
+    train_dataset, info = load_squad_dataset()
+    
+    print("Building vocabulary...")
+    vocab = build_vocab(train_dataset, vocab_size=15000)
+    vocab_size = len(vocab)
+    print(f"Vocabulary size: {vocab_size}")
+    
+    print("Preprocessing data...")
+    processed_dataset = preprocess_data(train_dataset, vocab, max_length=512, num_examples=8000)
+    
+    print("Creating improved model...")
+    model = create_model(vocab_size, max_length=512, d_model=256, num_layers=6, dropout_rate=0.15)
+    
     # Show model summary
     print("\nModel Summary:")
     model.summary()
     
     print("\nTraining model...")
-    history = train_model(model, processed_dataset, epochs=15, batch_size=8)  # More epochs
+    history = train_model(model, processed_dataset, epochs=20, batch_size=12)
     
     # Save the model and vocabulary
     save_model_and_vocab(model, vocab)
+    
+    # Test prediction
+    print("\nTesting prediction...")
+    test_question = "What is the capital of France?"
+    test_context = "France is a country in Europe. The capital of France is Paris, which is also its largest city."
+    
+    answer = predict_answer(model, vocab, test_question, test_context)
+    print(f"Question: {test_question}")
+    print(f"Answer: {answer}")
     
     return model, vocab
 
