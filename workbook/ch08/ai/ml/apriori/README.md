@@ -9,7 +9,7 @@ and observe how frequent itemsets are found.
 The Apriori algorithm is used to mine frequent itemsets (sets of items that often appear together in
 transactions) and can be extended to generate association rules. It relies on the Apriori Principle:
 
-> If an itemset is frequent, all of its subsets must also be frequent.
+If an itemset is frequent, all of its subsets must also be frequent.
 
 Conversely, if a candidate itemset is infrequent, none of its supersets can be frequent. This allows
 pruning of the search space.
@@ -83,32 +83,33 @@ FP-tree construction:
 - Common prefixes are shared, drastically reducing storage size.
 
 Cost:
-- Tree size:
-- Let $\text{avg\_prefix\_len}$ be average number of frequent items per transaction.
-- Total number of nodes $\leq N \cdot \text{avg\_prefix\_len}$
-- Mining cost (recursive pattern growth):
-- For each item $i$, extract conditional pattern base (all prefix paths ending in $i$).
-- Build a conditional FP-tree and recurse.
-- Total time complexity (approx):
-    $\mathcal{O}(N \cdot \text{avg\_prefix\_len} + \text{#conditional_trees})$
-- Number of conditional trees is $\leq \text{#frequent items}$, but recursion can go deep.
-- Space complexity:
-    $\mathcal{O}(N \cdot \text{avg\_prefix\_len})$
-- Much lower than storing all $C_k$ in Apriori.
+- Candidate explosion:
+- Worst-case number of candidates:  
+  `$\sum_{k=1}^{m} \binom{m}{k} = 2^m - 1$`
+- Though pruning based on support limits this in practice,
+  it’s still exponential in `m` when `minsup` is low.
+- Database scans:
+- Requires `k` full scans for discovering all `L_1, L_2, ..., L_k`.
+- Support counting cost per scan:
+- For each candidate `X \in C_k`, check inclusion in each
+  transaction `T \in \mathcal{D}`, i.e.,  
+  `$\mathcal{O}(|C_k| \cdot N)$`
+- Total time complexity (approx):  
+  `$\mathcal{O}\left(\sum_{k=1}^K |C_k| \cdot N \cdot k \right)$`
 
 
 
 ### Comparison Table
 
-| Aspect                     | Apriori                  | FP-Growth                    |
-|----------------------------|--------------------------|------------------------------|
-| Strategy                   | Generate-and-test        | Divide-and-conquer           |
-| Candidate Generation       | Explicit                 | None                         |
-| Database Scans             | $\\geq k$                | 2                            |
+| Aspect                     | Apriori                  | FP-Growth                      |
+|----------------------------|--------------------------|--------------------------------|
+| Strategy                   | Generate-and-test        | Divide-and-conquer             |
+| Candidate Generation       | Explicit                 | None                           |
+| Database Scans             | $\\geq k$                | 2                              |
 | Time Complexity            | $O(∑ₖ \|Cₖ\| ⋅ N ⋅ k)$    | $O(N ⋅ avg\\_prefix\\_len + T)$|
-| Memory Use                 | High (stores all $C_k$)  | Low (compact tree)           |
-| Performance on Sparse Data | Acceptable               | Excellent                    |
-| Performance on Dense Data  | Slow (many $C_k$)        | Much faster                  |
+| Memory Use                 | High (stores all $C_k$)  | Low (compact tree)             |
+| Performance on Sparse Data | Acceptable               | Excellent                      |
+| Performance on Dense Data  | Slow (many $C_k$)        | Much faster                    |
 
 
 
