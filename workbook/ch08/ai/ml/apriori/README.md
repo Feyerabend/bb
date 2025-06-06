@@ -105,7 +105,7 @@ Cost:
 | Strategy                  | Generate-and-test            | Divide-and-conquer         |
 | Candidate Generation      | Explicit                     | None                       |
 | Database Scans            | $\\geq k$                    | 2                          |
-| Time Complexity           | $O(∑ₖ |Cₖ| ⋅ N ⋅ k)$          | $O(N ⋅ avg_prefix_len + T)$|
+| Time Complexity           | $O(∑ₖ \|Cₖ\| ⋅ N ⋅ k)$          | $O(N ⋅ avg_prefix_len + T)$|
 | Memory Use                | High (stores all $C_k$)      | Low (compact tree)         |
 | Performance on Sparse Data| Acceptable                   | Excellent                  |
 | Performance on Dense Data | Slow (many $C_k$)            | Much faster                |
