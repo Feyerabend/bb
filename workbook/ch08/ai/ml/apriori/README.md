@@ -116,6 +116,11 @@ Cost:
   tree structure.
 
 - The FP-tree is a compressed representation of the database, exploiting the
-  downward closure property (if $X$ is frequent, all subsets are frequent), just
-  like *Apriori*, but without enumerating subsets.
+  downward closure property (if $X$ is frequent, all subsets are frequent),
+  just like *Apriori*, but without enumerating subsets.
+
+- *FP-Growth*: No candidate generation, which eliminates the expensive step
+  of generating and testing candidate itemsets. Pattern growth approach:
+  mines patterns by growing frequent itemsets directly. And, reduced memory
+  usage: more efficient data structure than Apriori's approach.
 
