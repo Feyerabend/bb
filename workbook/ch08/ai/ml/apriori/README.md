@@ -69,7 +69,7 @@ Cost:
     $\mathcal{O}\left(\sum_{k=1}^K |C_k| \cdot N \cdot k \right)$
 
 
-### FP-Growth: Divide-and-Conquer via FP-tree
+#### FP-Growth: Divide-and-Conquer via FP-tree
 
 FP-Growth avoids candidate generation by compressing the database
 into a prefix tree (FP-tree) and mining recursively.
@@ -96,7 +96,7 @@ Cost:
   $\mathcal{O}\left(\sum_{k=1}^K |C_k| \cdot N \cdot k \right)$
 
 
-### Comparison Table
+#### Comparison Table
 
 | Aspect                     | Apriori                  | FP-Growth                      |
 |----------------------------|--------------------------|--------------------------------|
@@ -109,7 +109,7 @@ Cost:
 | Performance on Dense Data  | Slow (many $C_k$)        | Much faster                    |
 
 
-### Mathematical Insight
+#### Mathematical Insight
 
 - *FP-Growth* performs better because it leverages prefix sharing, turning the
   exponential number of possible itemsets into a linear traversal of a shared
