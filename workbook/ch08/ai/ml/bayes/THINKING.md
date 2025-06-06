@@ -153,7 +153,7 @@ Software Design
 
 
 
-### Rare Events and Black [Swans]
+### Rare Events and Black [Swans](#swans)
 
 One of the major shortcomings of Ordinary thinking is the tendency to dismiss unlikely events simply because
 they haven't happened before. This leads to what Nassim Nicholas Taleb calls the *Black Swan problem*:
