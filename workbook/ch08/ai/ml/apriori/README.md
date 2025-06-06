@@ -6,9 +6,6 @@ in data mining for discovering frequent itemsets in a transaction database (for 
 analysis as here). The HTML/CSS/JavaScript-based application lets you experiment with support thresholds
 and observe how frequent itemsets are found.
 
-
-## What Is It?
-
 The Apriori algorithm is used to mine frequent itemsets (sets of items that often appear together in
 transactions) and can be extended to generate association rules. It relies on the Apriori Principle:
 
@@ -25,13 +22,13 @@ Let:
 - \($ D = \{ T_1, T_2, \dots, T_m \} $\): set of transactions, where each \($ T_i \subseteq I $\).
 - An itemset \($ X \subseteq I $\) is frequent if its support exceeds a user-defined threshold.
 
-Support of itemset \($ X $\):
+Support of itemset $X$:
 ```math
 \text{support}(X) = \frac{|\{ T \in D \mid X \subseteq T \}|}{|D|}
 ```
 
 
-## Apriori Algorithm
+## The Algorithm Simplified
 
 1. Generate 1-itemsets and count support.
 2. Prune those below `minSupport`.
