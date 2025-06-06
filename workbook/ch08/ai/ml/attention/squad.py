@@ -415,7 +415,7 @@ def train_model(model, dataset, epochs=10, batch_size=8):  # Increased epochs an
     return history
 
 # Save model and vocab
-def save_model_and_vocab(model, vocab, model_path='qa_model', vocab_path='vocab.json'):
+def save_model_and_vocab(model, vocab, model_path='qa_model.keras', vocab_path='vocab.json'):
     """Save the trained model and vocabulary"""
     model.save(model_path)
     
@@ -424,6 +424,18 @@ def save_model_and_vocab(model, vocab, model_path='qa_model', vocab_path='vocab.
     
     print(f"Model saved to {model_path}")
     print(f"Vocabulary saved to {vocab_path}")
+
+# alt .h5 format
+def save_model_and_vocab_h5(model, vocab, model_path='qa_model.h5', vocab_path='vocab.json'):
+    """Save the trained model and vocabulary in H5 format"""
+    model.save(model_path)
+    
+    with open(vocab_path, 'w') as f:
+        json.dump(vocab, f)
+    
+    print(f"Model saved to {model_path}")
+    print(f"Vocabulary saved to {vocab_path}")
+
 
 # Main execution
 def main():
