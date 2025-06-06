@@ -1,4 +1,3 @@
-# pip install tensorflow tensorflow_datasets
 import tensorflow as tf
 import tensorflow_datasets as tfds
 from tensorflow.keras.layers import Dense, Input, Layer, Embedding, Dropout, LayerNormalization
@@ -47,7 +46,7 @@ def build_vocab(dataset, vocab_size=15000):
     return vocab
 
 # Improved preprocessing with better answer alignment
-def preprocess_data(dataset, vocab, max_length=512, num_examples=8000):
+def preprocess_data(dataset, vocab, max_length=512, num_examples=None):
     def find_answer_positions(context_tokens, answer_tokens, context_start_idx):
         if not answer_tokens:
             return context_start_idx, context_start_idx
@@ -132,13 +131,14 @@ def preprocess_data(dataset, vocab, max_length=512, num_examples=8000):
     # Process dataset
     processed_data = []
     valid_examples = 0
+    max_examples = float('inf') if num_examples is None else num_examples
     
-    for example in dataset.take(num_examples * 2):
+    for example in dataset:
         result = _preprocess(example)
         if result is not None:
             processed_data.append(result)
             valid_examples += 1
-            if valid_examples >= num_examples:
+            if valid_examples >= max_examples:
                 break
     
     if not processed_data:
@@ -335,7 +335,6 @@ class MaskLogitsLayer(Layer):
         logits, mask = inputs
         return logits + mask * -1e9
 
-# Custom layer to replace Lambda for squeezing
 class SqueezeLayer(Layer):
     def __init__(self, axis=-1, **kwargs):
         super(SqueezeLayer, self).__init__(**kwargs)
@@ -426,13 +425,6 @@ def train_model(model, dataset, epochs=20, batch_size=12):
             verbose=1,
             min_delta=0.001
         ),
-        tf.keras.callbacks.ReduceLROnPlateau(
-            monitor='val_loss',
-            factor=0.5, 
-            patience=3, 
-            min_lr=1e-7,
-            verbose=1
-        ),
         tf.keras.callbacks.ModelCheckpoint(
             'best_model.keras',
             monitor='val_loss',
@@ -472,7 +464,8 @@ def train_model(model, dataset, epochs=20, batch_size=12):
     return history
 
 # Save function
-def save_model_and_vocab(model, vocab, model_path='qa_model.keras', vocab_path='vocab.json'):
+def save_model_and_voc
+ab(model, vocab, model_path='qa_model.keras', vocab_path='vocab.json'):
     """Save the trained model and vocabulary"""
     model.save(model_path)
     
@@ -531,7 +524,7 @@ def main():
     print(f"Vocabulary size: {vocab_size}")
     
     print("Preprocessing data...")
-    processed_dataset = preprocess_data(train_dataset, vocab, max_length=512, num_examples=8000)
+    processed_dataset = preprocess_data(train_dataset, vocab, max_length=512, num_examples=None)
     
     print("Creating improved model...")
     model = create_model(vocab_size, max_length=512, d_model=256, num_layers=6, dropout_rate=0.15)
