@@ -19,8 +19,8 @@ pruning of the search space.
 
 Let:
 - $I = \{ i_1, i_2, \dots, i_n \}$: set of all items.
-- \($ D = \{ T_1, T_2, \dots, T_m \} $\): set of transactions, where each \($ T_i \subseteq I $\).
-- An itemset \($ X \subseteq I $\) is frequent if its support exceeds a user-defined threshold.
+- $D = \{ T_1, T_2, \dots, T_m \}$: set of transactions, where each $T_i \subseteq I$.
+- An itemset $X \subseteq I$ is frequent if its support exceeds a user-defined threshold.
 
 Support of itemset $X$:
 ```math
