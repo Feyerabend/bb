@@ -82,14 +82,16 @@ Ordinary Thinking
     - Anchoring[^anchor]
     - Belief perseverance[^belief]
     - Motivated reasoning[^motivated]
-    - Poor at dealing with rare events or probabilistic chains (e.g., conjunction fallacy). More, see [below](#rare-events-and-black-swans).
+    - Poor at dealing with rare events or probabilistic chains (e.g., conjunction fallacy).
+      More, see [below](#rare-events-and-black-swans).
 
 [^anchor]: *Anchoring* is a cognitive bias where people rely too heavily on the first piece of
 information they receive--the "anchor"--when making decisions. For example:
 You're looking to buy a house. The real estate agent sets the asking price at $4.5 million.
 Even if the price isn't based on market value or the house's true condition, you're likely
 to judge the value of the house in relation to that figure. Instead of making your own
-independent assessment, your expectations and negotiation range are shaped by the initial number--the anchor.
+independent assessment, your expectations and negotiation range are shaped by the initial
+number--the anchor.
 
 [^belief]: *Belief perseverance* is the tendency to maintain a belief even after the evidence
 for it has been discredited or completely refuted. Once a belief is formed, especially if emotionally
@@ -117,39 +119,48 @@ Bayesian Thinking
 
 Medical Diagnosis  
 - Ordinary thinking: "The test is positive, so I probably have the disease."  
-- Bayesian thinking: "What's the base rate of the disease? How accurate is the test? Let me update my belief accordingly."
+- Bayesian thinking: "What's the base rate of the disease? How accurate is the test?
+  Let me update my belief accordingly."
 
 Judging Claims  
 - Ordinary thinking: "I saw a video; it must be true."  
-- Bayesian thinking: "How likely is this video to exist under different hypotheses? What's the prior likelihood?"
+- Bayesian thinking: "How likely is this video to exist under different hypotheses?
+  What's the prior likelihood?"
 
 Legal Reasoning  
 - Ordinary thinking: "The suspect has no alibi, so they must be guilty."  
-- Bayesian thinking: "How likely is it that an innocent person would lack an alibi? What prior probability do we assign to guilt before the evidence?"
+- Bayesian thinking: "How likely is it that an innocent person would lack an alibi?
+  What prior probability do we assign to guilt before the evidence?"
 
 Scientific Discovery  
 - Ordinary thinking: "This experiment confirms the theory, so the theory is true."  
-- Bayesian thinking: "How surprising is this result if the theory were false? How does this update our confidence in the theory compared to competing ones?"
+- Bayesian thinking: "How surprising is this result if the theory were false? How
+  does this update our confidence in the theory compared to competing ones?"
 
 Risk Assessment  
 - Ordinary thinking: "It hasn't happened before, so it probably won't happen."  
-- Bayesian thinking: "Even if something hasn't happened yet, rare events still have a probability. Let's estimate it based on indirect evidence and update over time."
+- Bayesian thinking: "Even if something hasn't happened yet, rare events still
+  have a probability. Let's estimate it based on indirect evidence and update over time."
 
 Economics and Forecasting  
 - Ordinary thinking: "The market is crashing; everything is doomed."  
-- Bayesian thinking: "Given past data and external conditions, how likely is a full collapse? Let's adjust our expectations as more signals appear."
+- Bayesian thinking: "Given past data and external conditions, how likely is a full
+  collapse? Let's adjust our expectations as more signals appear."
 
 Programming and Debugging  
 - Ordinary thinking: "It worked yesterday, so the bug must be in the new code."  
-- Bayesian thinking: "What's the likelihood the bug is in the new code vs. an unnoticed earlier issue? How should I revise my hypothesis as I test each possibility?"
+- Bayesian thinking: "What's the likelihood the bug is in the new code vs. an unnoticed
+  earlier issue? How should I revise my hypothesis as I test each possibility?"
 
 Machine Learning and Model Evaluation  
 - Ordinary thinking: "My model performs well on the test set, so it's reliable."  
-- Bayesian thinking: "Given the size and variability of the data, and potential overfitting, how confident should I really be? What's the probability this model generalizes well?"
+- Bayesian thinking: "Given the size and variability of the data, and potential
+  overfitting, how confident should I really be? What's the probability this model generalizes well?"
 
 Software Design  
 - Ordinary thinking: "This feature is rarely used, so optimising it isn't worth the time."  
-- Bayesian thinking: "Given low usage now but potential future growth or edge cases, what's the expected value of optimising this path? Can we update this belief with telemetry data?"
+- Bayesian thinking: "Given low usage now but potential future growth or edge cases,
+  what's the expected value of optimising this path? Can we update this belief with telemetry data?"
 
 
 
@@ -160,11 +171,14 @@ they haven't happened before. This leads to what Nassim Nicholas Taleb calls the
 the failure to anticipate rare, high-impact events because they fall outside our usual models of expectation.
 
 - Ordinary thinking: "It's never happened before, so it won't happen."  
-- Bayesian thinking: "Even rare events have probabilities. Just because we've never seen it doesn't mean it's impossible. We should assign a low—but non-zero—prior probability and remain open to updating it."
+- Bayesian thinking: "Even rare events have probabilities. Just because we've never seen
+  it doesn't mean it's impossible. We should assign a low--but non-zero--prior probability
+  and remain open to updating it."
 
 Bayesian reasoning doesn't eliminate surprise, but it gives us a structured way to be less blindsided. For example:
 - In cybersecurity, a Bayesian mindset encourages preparation for unexpected attack vectors.
-- In infrastructure design, it justifies spending resources on rare but catastrophic failure scenarios (earthquakes, data loss, grid collapse).
+- In infrastructure design, it justifies spending resources on rare but catastrophic failure scenarios
+  (earthquakes, data loss, grid collapse).
 - In software systems, it helps us reason about tail risks, edge cases, and out-of-distribution behavior.
 
 The Bayesian approach doesn't pretend to predict every black swan, but it *admits the existence* of unknowns
@@ -191,13 +205,13 @@ For Society:
 
 ### Summary
 
-| Aspect          | Ordinary Thinking                    | Bayesian Thinking                           |
-|-----------------|--------------------------------------|---------------------------------------------|
-| Beliefs         | Binary or vague                      | Probabilistic                               |
-| Evidence        | Often filtered or ignored            | Systematically updates beliefs              |
-| Decision-making | Heuristic/emotional                  | Rational, expectation-based                 |
-| Flexibility     | Resistant to change                  | Encourages continuous refinement            |
-| Risk handling   | Prone to misjudgment                 | Explicitly modeled                          |
+| Aspect          | Ordinary Thinking          | Bayesian Thinking                 |
+|-----------------|----------------------------|-----------------------------------|
+| Beliefs         | Binary or vague            | Probabilistic                     |
+| Evidence        | Often filtered or ignored  | Systematically updates beliefs    |
+| Decision-making | Heuristic/emotional        | Rational, expectation-based       |
+| Flexibility     | Resistant to change        | Encourages continuous refinement  |
+| Risk handling   | Prone to misjudgment       | Explicitly modeled                |
 
 
 *Perhaps, if we all thought a bit more like Bayesians, we'd likely be more humble, more curious, and less
