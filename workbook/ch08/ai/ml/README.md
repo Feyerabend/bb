@@ -84,7 +84,7 @@ from traditional code and provide a strong conceptual starting point for further
 | DBSCAN                     | Unsupervised       | Clustering with noise            | Handles arbitrary shapes, density-based                         |
 | PCA (Principal Component Analysis) | Unsupervised | Dimensionality reduction     | Linear transformation, unsupervised, captures variance            |
 | t-SNE / UMAP               | Unsupervised       | Visualisation, clustering        | Non-linear, preserves local structure, non-parametric           |
-| [Apriori](./apriori/) / FP-Growth        | Unsupervised | Market basket analysis | Association rule mining |
+| [Apriori](./apriori/) / [FP-Growth](./apriori/) | Unsupervised | Market basket analysis | Association rule mining |
 | Neural Networks (MLP)      | Supervised         | General-purpose                  | Flexible, powerful, requires large data                         |
 | [CNN](./cnn/) (Convolutional NN) | Supervised | Image data | Exploits spatial structure, translation invariance |
 | [RNN](./rnn/) / [LSTM](./rnn/) / [GRU](./rnn/) | Supervised | Sequence data (text, time-series) | Captures temporal dependencies, vanishing gradient challenges |
