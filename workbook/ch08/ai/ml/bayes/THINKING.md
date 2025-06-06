@@ -46,14 +46,16 @@ Normal Thinking
 Bayesian Thinking
 - New evidence modifies the strength of belief through Bayes' Theorem:
 
+```math
 P(H|E) = \frac{P(E|H) \cdot P(H)}{P(E)}
+```
 
 Where:
-- H = hypothesis
-- E = evidence
-- P(H|E) = updated belief (posterior)
-- P(H) = prior belief
-- P(E|H) = likelihood of evidence if hypothesis is true
+- $H$ = hypothesis
+- $E$ = evidence
+- $P(H|E)$ = updated belief (posterior)
+- $P(H)$ = prior belief
+- $P(E|H)$ = likelihood of evidence if hypothesis is true
 
 - Even weak evidence has some influence, gradually refining beliefs.
 
