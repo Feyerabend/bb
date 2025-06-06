@@ -82,7 +82,7 @@ Ordinary Thinking
     - Anchoring[^anchor]
     - Belief perseverance[^belief]
     - Motivated reasoning[^motivated]
-    - Poor at dealing with rare events or probabilistic chains (e.g., conjunction fallacy). More, see below.
+    - Poor at dealing with rare events or probabilistic chains (e.g., conjunction fallacy). More, see [below](#swan).
 
 [^anchor]: *Anchoring* is a cognitive bias where people rely too heavily on the first piece of
 information they receive--the "anchor"--when making decisions. For example:
@@ -153,7 +153,7 @@ Software Design
 
 
 
-### Rare Events and Black Swans
+### Rare Events and Black Swans(#swan)
 
 One of the major shortcomings of Ordinary thinking is the tendency to dismiss unlikely events simply because
 they haven't happened before. This leads to what Nassim Nicholas Taleb calls the *Black Swan problem*:
