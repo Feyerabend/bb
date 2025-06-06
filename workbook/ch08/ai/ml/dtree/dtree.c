@@ -368,12 +368,4 @@ int main() {
  * 8. Better memory management
  * 9. More robust split finding algorithm
  * 10. Stopping criteria to prevent overfitting
- * 
- * Key Improvements over original:
- * - More flexible and configurable
- * - Better code organization and documentation
- * - Support for multiple classes and features
- * - Added evaluation metrics
- * - More sophisticated stopping criteria
- * - Tree visualization capabilities
  */
