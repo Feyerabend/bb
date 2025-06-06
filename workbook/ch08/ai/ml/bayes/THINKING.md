@@ -79,10 +79,17 @@ Bayesian Thinking
 
 Normal Thinking
 - Susceptible to:
-    - Anchoring
+    - Anchoring[^anchor]
     - Belief perseverance
     - Motivated reasoning
     - Poor at dealing with rare events or probabilistic chains (e.g., conjunction fallacy).
+
+[^anchor]: *Anchoring* is a cognitive bias where people rely too heavily on the first piece of
+information they receive--the "anchor"--when making decisions. For example:
+You're looking to buy a house. The real estate agent sets the asking price at $4.5 million.
+Even if the price isn't based on market value or the house's true condition, you're likely
+to judge the value of the house in relation to that figure. Instead of making your own
+independent assessment, your expectations and negotiation range are shaped by the initial number--the anchor.
 
 Bayesian Thinking
 - Promotes:
@@ -152,7 +159,7 @@ Bayesian reasoning doesn't eliminate surprise, but it gives us a structured way 
 
 The Bayesian approach doesn't pretend to predict every black swan, but it *admits the existence* of unknowns
 and provides a rational method for updating beliefs as signs appear. It encourages humility, resilience, and
-skepticism toward certainty—qualities often missing in traditional planning.
+skepticism toward certainty--qualities often missing in traditional planning.
 
 In this sense, Bayesian thinking doesn't just describe a better way to reason--it acts as a hedge against
 overconfidence and brittleness in complex systems, including code, models, institutions, and our own minds.
