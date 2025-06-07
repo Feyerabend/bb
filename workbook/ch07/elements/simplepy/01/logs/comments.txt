@@ -1,0 +1,1 @@
+[2025-06-06 21:50:06] File: /var/folders/0x/dc62cbrx4pd2f4z480vx1pqh0000gn/T/latex_pipeline_48nv39bn/step_1_candidate_to_index/recreational.tex, Line: 9, Action: Skipped, Comment: TODO: fix this to better have hierarchical indexing?
