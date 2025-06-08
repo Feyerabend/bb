@@ -77,8 +77,9 @@ or even actively undermining, the underlying real problem. This can manifest as
 David Manheim and Scott Garrabrant[^mangar] provided a valuable categorisation of Goodhart
 effects, highlighting distinct mechanisms by which the law manifests.
 
-[^mangar]: Manheim, D., & Garrabrant, S. (2019). Categorizing Variants of Goodhart’s Law (arXiv:1803.04585).
-arXiv. [https://doi.org/10.48550/arXiv.1803.04585](https://doi.org/10.48550/arXiv.1803.04585)
+[^mangar]: Manheim, D., & Garrabrant, S. (2019). Categorizing Variants of Goodhart’s Law
+(arXiv:1803.04585). arXiv.
+[https://doi.org/10.48550/arXiv.1803.04585](https://doi.org/10.48550/arXiv.1803.04585)
 
 __1. Regressional Goodhart.__
 This occurs when optimising for an observable metric implicitly involves regressing against
@@ -129,21 +130,22 @@ without achieving the intended behaviour), and *unintended consequences* (the ge
 of undesirable or dangerous behaviours in complex algorithmic systems due to misaligned
 objectives). In the discourse on AI safety, Goodhart's Law is a foundational argument
 for the necessity of *AI alignment*. It highlights that simply giving an advanced AI a
-quantifiable objective function and letting it optimize will likely lead to perverse
+quantifiable objective function and letting it optimise will likely lead to perverse
 outcomes unless that objective function perfectly captures human values and intentions,
 which is an immensely difficult problem. It underscores the challenge of preventing
-powerful AIs from optimizing a proxy to the detriment of actual human well-being.
+powerful AIs from optimising a proxy to the detriment of actual human well-being.
 
 
 ### Summary
 
-The *core idea* of Goodhart's Law is that a quantitative measure, initially valuable for assessment,
-loses its diagnostic integrity and utility once it becomes the explicit target of optimisation, as
-agents adapt to manipulating the metric rather than improving the underlying reality it represents.
-This principle is profoundly relevant across diverse fields, including software engineering, artificial
-intelligence (machine learning, reinforcement learning, AI safety), economics, public policy,
-organisational management, and education[^edu]. The system's *failure mode* is optimising for a *proxy metric*
-(an imperfect stand-in) instead of genuinely pursuing the *real goal* or underlying objective it was
+The *core idea* of Goodhart's Law is that a quantitative measure, initially valuable for
+assessment, loses its diagnostic integrity and utility once it becomes the explicit target
+of optimisation, as agents adapt to manipulating the metric rather than improving the
+underlying reality it represents. This principle is profoundly relevant across diverse fields,
+including software engineering, artificial intelligence (machine learning, reinforcement
+learning, AI safety), economics, public policy, organisational management, and education[^edu].
+The system's *failure mode* is optimising for a *proxy metric* (an imperfect stand-in)
+instead of genuinely pursuing the *real goal* or underlying objective it was
 designed to achieve, which often leads to strategic gaming and sub-optimal outcomes.
 
 [^edu]: Please do compare with the aim, goal or hope of this book/workbook as stated in the section
