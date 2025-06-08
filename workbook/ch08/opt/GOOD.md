@@ -64,7 +64,7 @@ reputation and user loyalty.
 Within the context of algorithmic systems, particularly those involving autonomous agents,
 optimisation algorithms, or reinforcement learning, Goodhart's Law serves as a critical
 cautionary principle. If an objective function or reward signal is an imperfect proxy
-for the true, complex goal (such as maximizing societal well-being, ensuring robust
+for the true, complex goal (such as maximising societal well-being, ensuring robust
 system security, or fostering genuine user satisfaction), and the system is rigorously
 optimised against this proxy, the agents will inevitably learn to exploit it. This means
 they will achieve high scores on the metric without necessarily making progress towards,
@@ -80,7 +80,7 @@ effects, highlighting distinct mechanisms by which the law manifests.
 [^mangar]: Manheim, D., & Garrabrant, S. (2019). Categorizing Variants of Goodhart’s Law (arXiv:1803.04585).
 arXiv. [https://doi.org/10.48550/arXiv.1803.04585](https://doi.org/10.48550/arXiv.1803.04585)
 
-__1. Regressional Goodhart__
+__1. Regressional Goodhart.__
 This occurs when optimising for an observable metric implicitly involves regressing against
 it. By intensely optimising for the metric, the system inadvertently amplifies noise, biases
 and unrepresentative outliers present within the data used to define or measure that metric.
@@ -89,7 +89,7 @@ Grade Point Average (GPA) might select individuals who are merely exceptional te
 or specialised in narrow domains, rather than genuinely the most competent, adaptable, or
 innovative for the role, even though GPA is a proxy for academic diligence.
 
-__2. Extremal Goodhart__
+__2. Extremal Goodhart.__
 The relationship between a metric and the true underlying objective often holds true only
 within certain operating ranges. When optimisation pushes the system towards extreme values
 of the metric, this relationship can fundamentally break down or even reverse. An example
@@ -98,7 +98,7 @@ training data (e.g., into adversarial input spaces) can cause the model's intern
 representation and the validity of its performance proxy to collapse, leading to unpredictable
 and erroneous outputs.
 
-__3. Causal Goodhart__
+__3. Causal Goodhart.__
 This type arises when the system or agents misinterpret the causal relationship between the
 metric and the ultimate goal. They may optimise a correlational factor, assuming it's causative,
 and thus fail to influence the true objective. For example, equipping every individual in a
@@ -107,13 +107,14 @@ capita." However, this action would not causally lead to an increase in the numb
 qualified medical practitioners or an improvement in public health outcomes. The intervention
 targets a symptom or tool, not the underlying cause of medical expertise.
 
-__4. Adversarial Goodhart__
+__4. Adversarial Goodhart.__
 This is perhaps the most commonly understood form, where intelligent agents (human or artificial)
 intentionally and strategically manipulate or "game" the metric to their advantage, knowing that
 the metric is being used to evaluate or reward them. This is highly common in economic incentive
 structures, performance Key Performance Indicators (KPIs) in organizations, and presents a
 significant challenge in the field of AI safety, where autonomous systems might learn to
 exploit their reward function in unforeseen ways.
+
 
 ### Why It Matters in Programming and AI
 
@@ -149,10 +150,10 @@ designed to achieve, which often leads to strategic gaming and sub-optimal outco
 on the pedagogical values: [teach](./../../../teach/).
 
 *Examples* include using Lines of Code (LOC) as a metric for developer productivity, optimising
-Click-Through Rate (CTR) as the sole indicator of web content success, or maximizing test set
+Click-Through Rate (CTR) as the sole indicator of web content success, or maximising test set
 accuracy as the ultimate measure of machine learning model generalisation. Effective *defenses*
 involve employing a *diverse portfolio of metrics* (not relying on a single one), actively
-*detecting and counteracting gaming behaviors*, ensuring metrics are *causally linked* to
+*detecting and counteracting gaming behaviours*, ensuring metrics are *causally linked* to
 the true objectives, and maintaining a *close qualitative understanding* of the system's
 true performance.
 
