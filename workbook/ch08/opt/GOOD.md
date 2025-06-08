@@ -19,7 +19,7 @@ leading to perverse incentives and unintended, detrimental outcomes.
 
 ### Simplified Examples
 
-__1. Programming/Software__
+__1. Programming/Software.__
 Initially, Lines of Code (LOC) might be adopted as a seemingly quantifiable
 proxy for individual developer productivity or project progress.[^loc]
 However, once this metric becomes a target, developers, incentivised by it,
@@ -38,7 +38,7 @@ to inflate the line count, and refrain from refactoring since it often reduces L
 As a result, the system optimises for code *volume* rather than for code *quality*,
 *efficiency*, or *maintainability*.
 
-__2. Machine Learning__
+__2. Machine Learning.__
 Consider an AI model rigorously optimized to maximize its accuracy on a predetermined
 test dataset, with accuracy serving as the primary performance indicator. The model,
 through its learning process, begins to overfit extensively to the idiosyncrasies
@@ -48,7 +48,7 @@ on this test metric, the model's capacity for true generalization to unseen, rea
 data diminishes significantly. Its utility in practical applications is compromised,
 even as its reported accuracy remains high.
 
-__3. Web Optimisation__
+__3. Web Optimisation.__
 Imagine a digital marketing or product team tasked with increasing the *click-through
 rate* (CTR) of web content, assuming it correlates with user engagement and content
 relevance. To achieve the targeted CTR, the team might resort to employing sensationalised
