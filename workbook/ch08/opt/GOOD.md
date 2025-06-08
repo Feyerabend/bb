@@ -12,9 +12,18 @@ rather than genuinely improve the quality you're trying to capture.
 ### Simplified Examples
 
 1. Programming/Software
-- You use lines of code as a measure of developer productivity.
+- You use lines of code as a measure of developer productivity.[^loc]
 - Developers start writing longer, more verbose code to increase the count.
 - Result: productivity appears to increase, but code quality degrades.
+
+[^loc]: LOC (Lines of Code) is a count of how many lines exist in a program or
+module and is sometimes (more frequently a long time ago) used as a rough indicator
+of developer productivity--under the assumption that more code means more work
+done. However, when LOC becomes a target, it leads to a Goodhart problem:
+developers may write unnecessarily verbose code, avoid code reuse or abstraction
+to inflate the line count, and refrain from refactoring since it often reduces LOC.
+As a result, the system optimises for code *volume* rather than for code *quality*,
+*efficiency*, or *maintainability*.
 
 2. Machine Learning
 - You optimise a model to maximize accuracy on the test set.
