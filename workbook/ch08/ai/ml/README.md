@@ -13,7 +13,7 @@ data are most informative.[^feature]
 
 [^feature]: Feature engineering involves selecting, transforming, or creating input variables (features) to
 improve model performance. This may include scaling values, encoding categories numerically, or abstracting
-new features--e.g., extracting “day of week” from a date like 2025-04-28.
+new features--e.g., extracting "day of week" from a date like 2025-04-28.
 
 [Deep Learning](./DEEP.md) (DL), a more recent and powerful branch of ML, automates much of this process.
 Deep learning models, built from multi-layered neural networks, learn hierarchical representations directly
@@ -37,7 +37,7 @@ Instead, we focus on classical machine learning: models that are easier to imple
 reason about, making them well-suited for compact, code-first examples.
 
 As interest and investment in AI grow, so does the abundance of tutorials and educational resources.
-Rather than cover everything, we’ve selected a few representative techniques to provide a foundational
+Rather than cover everything, we've selected a few representative techniques to provide a foundational
 understanding, illustrate key ideas, and encourage deeper exploration.
 
 
@@ -85,7 +85,7 @@ from traditional code and provide a strong conceptual starting point for further
 | PCA (Principal Component Analysis) | Unsupervised | Dimensionality reduction     | Linear transformation, unsupervised, captures variance            |
 | t-SNE / UMAP               | Unsupervised       | Visualisation, clustering        | Non-linear, preserves local structure, non-parametric           |
 | [Apriori](./apriori/) / [FP-Growth](./apriori/) | Unsupervised | Market basket analysis | Association rule mining |
-| Neural Networks (MLP)      | Supervised         | General-purpose                  | Flexible, powerful, requires large data                         |
+| [Neural Networks](./mlp/) (MLP) | Supervised | General-purpose | Flexible, powerful, requires large data |
 | [CNN](./cnn/) (Convolutional NN) | Supervised | Image data | Exploits spatial structure, translation invariance |
 | [RNN](./rnn/) / [LSTM](./rnn/) / [GRU](./rnn/) | Supervised | Sequence data (text, time-series) | Captures temporal dependencies, vanishing gradient challenges |
 | [GANs](./gan/) (Generative Adversarial Networks) | Unsupervised | Data generation | Adversarial training, high-quality synthetic data |
@@ -153,7 +153,7 @@ model for binary classification, specifically designed to model the probability 
 It gained prominence as researchers sought methods to predict qualitative outcomes based on quantitative
 predictors, offering a more robust alternative to directly fitting linear models to binary responses,
 which could yield probabilities outside the meaningful 0-1 range. Its clear probabilistic interpretation
-and connections to generalized linear models cemented its place as a fundamental classification algorithm.
+and connections to generalised linear models cemented its place as a fundamental classification algorithm.
 
 
 *Decision Trees*
