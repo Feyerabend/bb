@@ -284,10 +284,11 @@ def create_scatter_plot(x_data, y_data, title, xlabel, ylabel, width=600, height
         x, y = int(x_plot[i]), int(y_plot[i])
         draw.ellipse([x-1, y-1, x+1, y+1], fill='blue')
     
-    # Draw diagonal line (perfect prediction)
+    # Draw diagonal line (perfect prediction) - FIXED
+    # Perfect prediction line should go from bottom-left to top-right
     x_min, x_max = margin_left, margin_left + plot_width
-    y_min, y_max = margin_top + plot_height, margin_top
-    draw.line([x_min, y_max, x_max, y_min], fill='red', width=2)
+    y_max, y_min = margin_top + plot_height, margin_top  # Note: y_max is bottom, y_min is top
+    draw.line([x_min, y_max, x_max, y_min], fill='red', width=2)  # Bottom-left to top-right
     
     # Draw axes
     draw.line([margin_left, margin_top, margin_left, margin_top + plot_height], fill='black', width=2)
@@ -328,7 +329,8 @@ def create_line_plot(x_data, y_data, title, xlabel, ylabel, width=600, height=40
     
     # Normalize data to plot area
     x_plot = normalize_data(x_data, margin_left, margin_left + plot_width)
-    y_plot = normalize_data(y_data, margin_top + plot_height, margin_top)
+    # FIXED: Invert the y-axis mapping so higher values appear at top, lower at bottom
+    y_plot = normalize_data(y_data, margin_top, margin_top + plot_height)
     
     # Draw line
     points = [(int(x_plot[i]), int(y_plot[i])) for i in range(len(x_plot))]
@@ -342,6 +344,23 @@ def create_line_plot(x_data, y_data, title, xlabel, ylabel, width=600, height=40
     # Add labels
     draw.text((width//2 - 50, 10), title, fill='black', font=font)
     draw.text((width//2 - 30, height - 20), xlabel, fill='black', font=font)
+    
+    # Y-axis label (rotated text approximation)
+    y_label_y = height // 2
+    for i, char in enumerate(ylabel):
+        draw.text((10, y_label_y + i * 15), char, fill='black', font=font)
+    
+    # Add axis values - FIXED: Update to match the corrected y-axis
+    x_min_val, x_max_val = np.min(x_data), np.max(x_data)
+    y_min_val, y_max_val = np.min(y_data), np.max(y_data)
+    
+    # X-axis labels
+    draw.text((margin_left - 5, margin_top + plot_height + 5), f'{x_min_val:.1f}', fill='black', font=font)
+    draw.text((margin_left + plot_width - 20, margin_top + plot_height + 5), f'{x_max_val:.1f}', fill='black', font=font)
+    
+    # Y-axis labels (corrected: min at bottom, max at top)
+    draw.text((margin_left - 40, margin_top + plot_height), f'{y_min_val:.4f}', fill='black', font=font)  # Bottom = min
+    draw.text((margin_left - 40, margin_top), f'{y_max_val:.4f}', fill='black', font=font)  # Top = max
     
     return img
 
