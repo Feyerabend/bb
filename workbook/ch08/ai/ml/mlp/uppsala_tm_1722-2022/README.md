@@ -12,13 +12,13 @@ for Uppsala, Sweden, maintained by the Swedish Meteorological and Hydrological I
 https://www.smhi.se/data/temperatur-och-vind/temperatur/uppsalas-temperaturserie
 
 Additional historical background, including commentary on the data’s continuity and adjustments
-over time, is available here: http://celsius.met.uu.se/default.aspx?pageid=31
+over time, is available here: http://celsius.met.uu.se/default.aspx?pageid=31.
 
 You may recognise the name Celsius as the unit of temperature measurement. Anders Celsius, the
 Swedish astronomer and physicist who proposed the Celsius scale, was also actively involved in
 early temperature measurements in Uppsala, where he lived and worked.
-*The temperature series from Uppsala is one of the longest continuous records in the world
-and has been used in numerous studies of historical climate trends.*
+> *The temperature series from Uppsala is one of the longest continuous records in the world
+> and has been used in numerous studies of historical climate trends.*
 
 
 ### Multilayer Perceptron (MLP)
@@ -115,4 +115,3 @@ The visualisations (scatter plots, histograms, bar charts) provide intuitive ins
 performance, error distributions, and training dynamics, making abstract concepts tangible. The
 comparison between MLP and Linear Regression highlights the trade-offs between model complexity
 and performance, addressing interest in evaluating overengineering in machine learning.
-
