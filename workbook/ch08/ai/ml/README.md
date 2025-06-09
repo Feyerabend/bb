@@ -161,8 +161,9 @@ and connections to generalized linear models cemented its place as a fundamental
 The concept of using hierarchical, tree-like structures for decision-making dates back to earlier statistical
 methods, but the modern era of Decision Trees truly began with the development of the ID3 algorithm by J.
 Ross Quinlan in the late 1970s, followed by its more robust successor, C4.5, in the 1990s. Simultaneously,
-Leo Breiman, Jerome Friedman, Richard Olshen, and Charles Stone introduced Classification and Regression
-Trees (CART) in 1984. These algorithms formalized how to recursively partition data based on features to
+CART was popularized by the 1984 book *Classification and Regression Trees* by Breiman, Friedman,
+Olshen & Stone, its algorithmic foundation dates back to circa 1977, when the team at Berkeley and Stanford
+began development. These algorithms formalised how to recursively partition data based on features to
 create interpretable rules, becoming popular for their clarity and ability to handle non-linear relationships.
 
 
