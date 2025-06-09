@@ -16,9 +16,9 @@ over time, is available here: http://celsius.met.uu.se/default.aspx?pageid=31
 
 You may recognise the name Celsius as the unit of temperature measurement. Anders Celsius, the
 Swedish astronomer and physicist who proposed the Celsius scale, was also actively involved in
-early temperature measurements in Uppsala, where he lived and worked. The temperature series
-from Uppsala is one of the longest continuous records in the world and has been used in numerous
-studies of historical climate trends.
+early temperature measurements in Uppsala, where he lived and worked.
+*The temperature series from Uppsala is one of the longest continuous records in the world
+and has been used in numerous studies of historical climate trends.*
 
 
 ### Multilayer Perceptron (MLP)
