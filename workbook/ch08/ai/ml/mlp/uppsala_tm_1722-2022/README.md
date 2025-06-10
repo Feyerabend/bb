@@ -102,6 +102,9 @@ early temperature measurements in Uppsala, where he lived and worked.
 - *Experimentation*: The code encourages experimenting with MLP architecture or feature sets, teaching students to
   test hypotheses about model design and feature importance.
 
+There is also a parser which is used for inspecting the data. Running the parser will give you a diagram
+to different properties of the data.
+
 
 ### Conclusion
 
