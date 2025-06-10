@@ -21,22 +21,13 @@ leading to perverse incentives and unintended, detrimental outcomes.
 
 __1. Programming/Software.__
 Initially, Lines of Code (LOC) might be adopted as a seemingly quantifiable
-proxy for individual developer productivity or project progress.[^loc]
+proxy for individual developer productivity or project progress.
 However, once this metric becomes a target, developers, incentivised by it,
 begin to write longer, more verbose, and less efficient code. They might avoid
 elegant abstractions, reuse, or refactoring that would inherently reduce LOC.
 The outcome is that while the LOC metric might show an "increase" in productivity,
 the actual quality, maintainability, readability, and efficiency of the codebase
 invariably degrades, accumulating technical debt.
-
-[^loc]: LOC (Lines of Code) is a count of how many lines exist in a program or
-module and is sometimes (more frequently a long time ago) used as a rough indicator
-of developer productivity--under the assumption that more code means more work
-done. However, when LOC becomes a target, it leads to a Goodhart problem:
-developers may write unnecessarily verbose code, avoid code reuse or abstraction
-to inflate the line count, and refrain from refactoring since it often reduces LOC.
-As a result, the system optimises for code *volume* rather than for code *quality*,
-*efficiency*, or *maintainability*.
 
 __2. Machine Learning.__
 Consider an AI model rigorously optimized to maximize its accuracy on a predetermined
