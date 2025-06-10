@@ -68,12 +68,12 @@ These systems often rely on techniques like PID controllers, Kalman filters, and
 control (MPC) to optimise real-time decision-making.
 
 - Mathematical Perspective: A common formulation is in optimal control theory, where
-  we define a function J(x, u) (cost function), and we seek to minimise:
+  we define a function $J(x, u)$ (cost function), and we seek to minimise:
   ```math
   J = \int_0^T L(x(t), u(t)) dt + \Phi(x(T))
   ```
-  where x(t) is the system state, u(t) is the control input, L(x,u) is the running cost,
-  and \Phi(x(T)) is the terminal cost.
+  where $x(t)$ is the system state, $u(t)$ is the control input, $L(x,u)$ is the running cost,
+  and $\Phi(x(T))$ is the terminal cost.
 
 
 
@@ -120,8 +120,8 @@ actions to maximise future expected rewards.
 ```math
 V(s) = \max_a \sum_{s{\prime}} P(s{\prime} | s, a) \left[ R(s, a) + \gamma V(s{\prime}) \right]
 ```
-where V(s) is the value function, P(s{\prime} | s, a) is the transition probability, R(s, a)
-is the reward, and \gamma is a discount factor.
+where $V(s)$ is the value function, $P(s{\prime} | s, a)$ is the transition probability, $R(s, a)$
+is the reward, and $\gamma$ is a discount factor.
 
 
 
@@ -137,7 +137,7 @@ under uncertainty.
   industrial process optimisation.
 
 - Example: In supervised learning, given input x and true output y, a model produces a prediction
-  f(x). A loss function L(y, f(x)) measures the error, and the goal is to minimise the expected loss:
+  $f(x)$. A loss function $L(y, f(x))$ measures the error, and the goal is to minimise the expected loss:
 ```math
 \min_f \mathbb{E}_{(x,y) \sim P} [ L(y, f(x)) ]
 ```
@@ -173,10 +173,10 @@ The core idea across all these fields is optimisation, but different domains fra
 
 | Field           | Objective                       | Function Type   |
 |-----------------|---------------------------------|-----------------|
-| Control Systems | Minimise cost function          | J(x, u)         |
-| Economics       | Maximise utility/profit/welfare | U(x), π(x)      |
-| Research (AI)   | Maximise expected rewards       | V(s) (Bellman)  |
-| Statistics/ML   | Minimise expected loss          | 𝔼[L(y, f(x))]   |
+| Control Systems | Minimise cost function          | $J(x, u)$         |
+| Economics       | Maximise utility/profit/welfare | $U(x), π(x)$      |
+| Research (AI)   | Maximise expected rewards       | $V(s)$ (Bellman)  |
+| Statistics/ML   | Minimise expected loss          | $𝔼[L(y, f(x))]$   |
 
 - Duality: Many problems can be framed in both ways. For example, maximising rewards is equivalent
   to minimising negative rewards.
