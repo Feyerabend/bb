@@ -20,6 +20,11 @@ early temperature measurements in Uppsala, where he lived and worked.
 > *The temperature series from Uppsala is one of the longest continuous records in the world
 > and has been used in numerous studies of historical climate trends.*
 
+The main lesson from this code: You will likely discover that the MLP performs similarly to
+linear regression on this data. This teaches that the crucial ML lesson: complexity isn't
+always better. You might therefore see when and why to choose simpler models, which is more
+valuable than just throwing complex models at everything.
+
 
 ### Multilayer Perceptron (MLP)
 
