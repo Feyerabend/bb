@@ -130,11 +130,11 @@ __4. Statistical Learning and Decision Theory__
 
 Statistical methods focus on minimising the expected error to improve predictions and decisions
 under uncertainty.
-- Machine Learning: Supervised models optimise loss functions (e.g., cross-entropy for classification,
+* *Machine Learning*: Supervised models optimise loss functions (e.g., cross-entropy for classification,
   MSE for regression).
-- Bayesian Decision Theory: Optimises decision-making under probabilistic uncertainty, crucial in
+* *Bayesian Decision Theory*: Optimises decision-making under probabilistic uncertainty, crucial in
   medical diagnosis, financial risk analysis, and automated trading.
-- Experimental Design: Ensures efficient data collection in fields like drug development and
+* *Experimental Design*: Ensures efficient data collection in fields like drug development and
   industrial process optimisation.
 
 - Example: In supervised learning, given input x and true output y, a model produces a prediction
