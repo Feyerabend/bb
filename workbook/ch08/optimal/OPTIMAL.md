@@ -99,7 +99,7 @@ preference over outcomes. A social welfare function aggregates individual utilit
 ```math
 W(U_1, U_2, …, U_n)
 ```
-where U_i is the utility of individual i, and different formulations (e.g., Pareto
+where $U_i$ is the utility of individual $i$, and different formulations (e.g., Pareto
 efficiency, Rawlsian max-min fairness) lead to different solutions.
 
 
