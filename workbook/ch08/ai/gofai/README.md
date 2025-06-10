@@ -6,7 +6,7 @@ that dominated the field from the 1950s through the 1990s. This paradigm fundame
 rule-based systems, and explicit knowledge representation as the primary means to emulate intelligent behaviour.
 Unlike modern AI, which heavily relies on statistical methods, machine learning, and neural networks to discover
 patterns from data, GOFAI focuses on the precise manipulation of predefined symbols and logical rules to solve
-problems in a structured, transparent, and largely deterministic manner.
+problems in a structured, transparent, and largely deterministic manner. 
 
 1. *Symbolic Representation*: At its heart, GOFAI operates by encoding knowledge about the world as abstract symbols.
 These symbols might represent concrete facts, complex rules, or various states within a problem domain. For example,
