@@ -33,14 +33,14 @@ class EightPuzzle:
     
     def display_state(self, state):
         """Display the puzzle state in a readable 3x3 format"""
-        print("┌─────────┐")
+        print("┌───────────┐")
         for i in range(3):
             row = state[i*3:(i+1)*3]
             display_row = [str(x) if x != 0 else ' ' for x in row]
             print(f"│ {display_row[0]} │ {display_row[1]} │ {display_row[2]} │")
             if i < 2:
                 print("├───┼───┼───┤")
-        print("└─────────┘")
+        print("└───┘───┘───┘")
     
     def get_neighbors(self, state):
         """

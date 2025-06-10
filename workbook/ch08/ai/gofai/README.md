@@ -63,8 +63,10 @@ natural language processing, and automated theorem proving, where structured kno
 remain vital. As a personal reflection in this, GOFAI is for me a natural follow-up in the development of
 algorithms.
 
-For a more personal and nuanced perspective on the evolution of AI, you might explore the
-[seasons](./SEASONS.md) in its history.
+For a more personal and nuanced view of how AI has evolved, you might explore the different
+[seasons](./SEASONS.md) in its history. The account that typically prevails--often called
+the “conventional” narrative--is shaped by the victors and tends to overlook ideas and traits
+that didn't fit the dominant storyline, as you will notice time and time again:
 
 
 *1950s–1960s: Foundations of AI*

@@ -50,10 +50,14 @@ class ExpertSystem:
         self.rules = []
     
     def add_fact(self, **kwargs):
-        """Add a new fact to the knowledge base"""
-        fact = Fact(**kwargs)
-        self.facts.append(fact)
-        print(f"Added: {fact}")
+        """Add a new fact to the knowledge base if it doesn't already exist"""
+        new_fact = Fact(**kwargs)
+        # Check for duplicate facts
+        if not any(fact.attributes == new_fact.attributes for fact in self.facts):
+            self.facts.append(new_fact)
+            print(f"Added: {new_fact}")
+            return True
+        return False
     
     def add_rule(self, name, conditions, action):
         """Add a new rule to the rule base"""
@@ -66,20 +70,26 @@ class ExpertSystem:
         print("\nStarting inference engine...")
         print("=" * 50)
         
-        fired_any = True
         iteration = 1
+        fired_rules = set()  # Track fired rules to prevent re-firing
         
-        while fired_any:
+        while True:
             print(f"\n--- Iteration {iteration} ---")
-            fired_any = False
+            new_facts_added = False
             
             for rule in self.rules:
-                if rule.can_fire(self.facts):
+                if rule.name not in fired_rules and rule.can_fire(self.facts):
                     new_facts = rule.fire(self.facts)
+                    fired_rules.add(rule.name)  # Mark rule as fired
                     if new_facts:
                         for fact_data in new_facts:
-                            self.add_fact(**fact_data)
-                        fired_any = True
+                            if self.add_fact(**fact_data):
+                                new_facts_added = True
+                                # Allow rules to fire again if new facts are added
+                                fired_rules.clear()
+            
+            if not new_facts_added:
+                break  # Exit if no new facts were added
             
             iteration += 1
             if iteration > 10:  # Safety check
@@ -95,8 +105,10 @@ class ExpertSystem:
         print("-" * 30)
         conclusions = [f for f in self.facts if 'conclusion' in f.attributes]
         if conclusions:
-            for conclusion in conclusions:
-                print(f". {conclusion.attributes['conclusion']}")
+            # Print unique conclusions
+            unique_conclusions = {f.attributes['conclusion'] for f in conclusions}
+            for conclusion in unique_conclusions:
+                print(f". {conclusion}")
         else:
             print("-- No specific conclusions derived")
 
