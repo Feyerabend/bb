@@ -1,5 +1,5 @@
 
-## Challanges and Solutions
+## Challenges and Solutions
 
 Developing effective machine learning and AI systems involves navigating a wide range of technical
 and conceptual challenges. Some of these are inherent to how learning algorithms work, while others
@@ -87,7 +87,7 @@ tasks with minimal labeled data.
 
 Finally, as ML systems are increasingly deployed in society, ethical and societal issues come to the
 fore. Biased training data can lead to biased models, potentially reinforcing social inequalities.
-Privacy can also be compromised when models memorize or inadvertently reveal sensitive training data.
+Privacy can also be compromised when models memorise or inadvertently reveal sensitive training data.
 Responsible AI development involves conducting bias audits, applying fairness constraints during training,
 and using privacy-preserving techniques like differential privacy and federated learning. It also
 requires careful thinking about the purpose of the system and the consequences of its deployment,
@@ -98,17 +98,17 @@ Each problem has well-developed solutions, but success depends on understanding 
 them, and on combining technical insight with domain knowledge and ethical awareness.
 
 
-| Problem                     | Typical Symptoms                           | Common Solutions                                       |
-|-----------------------------|--------------------------------------------|--------------------------------------------------------|
-| Underfitting                | Poor training/test performance             | More complex model, feature engineering                |
-| Overfitting                 | Good training, bad test performance        | Regularisation, early stopping, more data              |
-| Vanishing gradients         | Training stalls in deep nets               | ReLU, BatchNorm, better initialisation                 |
-| Exploding gradients         | Training instability, NaNs                 | Gradient clipping, smaller learning rates              |
-| Hyperparameter tuning       | Unstable or poor results                   | Grid search, Bayesian optimisation                     |
-| Bad data quality            | Inaccurate, inconsistent results           | Preprocessing, cleaning, augmentation                  |
-| Class imbalance             | One class dominates predictions            | Resampling, class weights, better metrics              |
-| Model interpretability      | Black-box decisions                        | Explainable AI tools, simpler models                   |
-| Generalisation / domain shift | Works in dev, fails in prod              | Cross-domain tests, retraining, robust features        |
-| Label scarcity              | Too little labeled data                    | Semi/self-supervised learning, transfer learning       |
-| Ethical concerns            | Bias, unfair outcomes, misuse              | Audits, fairness, privacy-aware learning               |
+| Problem                     | Typical Symptoms                      | Common Solutions                                   |
+|-----------------------------|---------------------------------------|----------------------------------------------------|
+| Underfitting                | Poor training/test performance        | More complex model, feature engineering            |
+| Overfitting                 | Good training, bad test performance   | Regularisation, early stopping, more data          |
+| Vanishing gradients         | Training stalls in deep nets          | ReLU, BatchNorm, better initialisation             |
+| Exploding gradients         | Training instability, NaNs            | Gradient clipping, smaller learning rates          |
+| Hyperparameter tuning       | Unstable or poor results              | Grid search, Bayesian optimisation                 |
+| Bad data quality            | Inaccurate, inconsistent results      | Preprocessing, cleaning, augmentation              |
+| Class imbalance             | One class dominates predictions       | Resampling, class weights, better metrics          |
+| Model interpretability      | Black-box decisions                   | Explainable AI tools, simpler models               |
+| Generalisation / domain shift | Works in dev, fails in prod         | Cross-domain tests, retraining, robust features    |
+| Label scarcity              | Too little labeled data               | Semi/self-supervised learning, transfer learning   |
+| Ethical concerns            | Bias, unfair outcomes, misuse         | Audits, fairness, privacy-aware learning           |
 
