@@ -69,9 +69,9 @@ control (MPC) to optimise real-time decision-making.
 
 - Mathematical Perspective: A common formulation is in optimal control theory, where
   we define a function $J(x, u)$ (cost function), and we seek to minimise:
-  ```math
+```math
   J = \int_0^T L(x(t), u(t)) dt + \Phi(x(T))
-  ```
+```
   where $x(t)$ is the system state, $u(t)$ is the control input, $L(x,u)$ is the running cost,
   and $\Phi(x(T))$ is the terminal cost.
 
