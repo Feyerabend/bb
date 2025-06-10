@@ -2,8 +2,8 @@
 ## GOFAI: Good Old-Fashioned Artificial Intelligence
 
 Good Old-Fashioned Artificial Intelligence (GOFAI) refers to the classical approach to artificial intelligence
-that dominated the field from the 1950s through the 1990s. This paradigm fundamentally emphasizes symbolic reasoning,
-rule-based systems, and explicit knowledge representation as the primary means to emulate intelligent behavior.
+that dominated the field from the 1950s through the 1990s. This paradigm fundamentally emphasises symbolic reasoning,
+rule-based systems, and explicit knowledge representation as the primary means to emulate intelligent behaviour.
 Unlike modern AI, which heavily relies on statistical methods, machine learning, and neural networks to discover
 patterns from data, GOFAI focuses on the precise manipulation of predefined symbols and logical rules to solve
 problems in a structured, transparent, and largely deterministic manner.
@@ -54,7 +54,7 @@ The history of Good Old-Fashioned Artificial Intelligence (GOFAI) traces back to
 reflecting the field’s initial optimism about replicating human intelligence through meticulously constructed
 symbolic systems. GOFAI, a term coined by philosopher John Haugeland in 1985, represents the classical approach
 to AI that dominated the mid-20th century. It emphasised the manipulation of symbols and logic to simulate
-intelligent behavior, drawing from the belief that human cognition could be understood as the processing of
+intelligent behaviour, drawing from the belief that human cognition could be understood as the processing of
 symbols according to formal rules.
 
 Despite its limitations, GOFAI laid the foundation for modern AI by introducing key concepts like knowledge
@@ -84,7 +84,7 @@ breaking down complex tasks into manageable goals and subgoals—a hallmark of G
 
 The 1960s witnessed the nascent rise of expert systems, which represented a significant advancement by
 encoding domain-specific knowledge as intricate sets of rules. *DENDRAL* (1965), developed at Stanford,
-was a pioneering example, successfully analyzing chemical compounds and demonstrating the potential for
+was a pioneering example, successfully analysing chemical compounds and demonstrating the potential for
 GOFAI to tackle complex real-world problems. Building on this success, the 1970s saw *MYCIN* (Stanford)
 become a landmark expert system, capable of diagnosing bacterial infections and recommending treatments
 using sophisticated rule-based reasoning, often achieving performance comparable to human medical experts.
@@ -110,7 +110,7 @@ saved the company millions annually. However, despite these successes, GOFAI fac
 
 By the late 1980s, the inherent limitations and the high costs associated with GOFAI, coupled with its
 failure to achieve broader, general intelligence, led to widespread disillusionment. This period triggered
-the "AI Winter," characterized by significantly reduced funding and diminished public and academic interest
+the "AI Winter," characterised by significantly reduced funding and diminished public and academic interest
 in AI research. Concurrently, the 1990s saw a pivotal shift in AI research, driven by the emergence of
 statistical methods and artificial neural networks. This new wave of data-driven approaches was bolstered
 by exponential increases in computational power and, critically, the growing availability of large datasets.
@@ -118,7 +118,7 @@ While systems like IBM’s *Deep Blue* (1997), which famously defeated chess cha
 incorporated classic GOFAI techniques such as extensive search and heuristics, its success also highlighted
 a growing reliance on brute-force computation and hinted at the power of learning from data. The overall
 research focus irrevocably shifted away from purely symbolic GOFAI towards data-driven AI. Although its
-dominance waned, GOFAI’s influence persisted in specialized areas like automated planning, logic programming,
+dominance waned, GOFAI’s influence persisted in specialised areas like automated planning, logic programming,
 and constraint satisfaction.
 
 
