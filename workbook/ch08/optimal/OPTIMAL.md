@@ -142,11 +142,12 @@ under uncertainty.
 ```math
 \min_f \mathbb{E}_{(x,y) \sim P} [ L(y, f(x)) ]
 ```
-- Common Loss Functions:
+- Common Loss Function 1:
   - Mean Squared Error (MSE) for regression:
 ```math
 L(y, f(x)) = (y - f(x))^2
 ```
+- Common Loss Function 2:
   - Cross-entropy loss for classification:
 ```math
 L(y, f(x)) = - \sum y_i \log f(x_i)
