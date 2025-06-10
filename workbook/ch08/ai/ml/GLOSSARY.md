@@ -39,21 +39,21 @@ algorithm (like gradient descent) to update the parameters.
 
 ### Batch Normalization
 
-*Explanation:* A technique that normalizes the inputs of each layer in a neural network, usually before the activation
-function. It aims to stabilize and accelerate the training process by reducing internal covariate shift and allowing
+*Explanation:* A technique that normalises the inputs of each layer in a neural network, usually before the activation
+function. It aims to stabilise and accelerate the training process by reducing internal covariate shift and allowing
 for higher learning rates.
 
-*Example:* After a linear transformation $y = Wx + b$, batch normalization would transform $y$ to $\hat{y}$ by
+*Example:* After a linear transformation $y = Wx + b$, batch normalisation would transform $y$ to $\hat{y}$ by
 subtracting the mini-batch mean and dividing by the mini-batch standard deviation, scaled by learned parameters
 $\gamma$ and $\beta$.
 
-*Reference:* Deep learning optimization, neural network regularisation.
+*Reference:* Deep learning optimisation, neural network regularisation.
 
 
 ### Bias (Machine Learning)
 
 *Explanation:* In machine learning, bias refers to the simplifying assumptions made by a model to make the target
-function easier to learn. High bias can lead to underfitting, where the model is too simple to capture theground
+function easier to learn. High bias can lead to underfitting, where the model is too simple to capture the ground
 truth.
 
 *Example:* A linear regression model applied to non-linear data will exhibit high bias because it assumes a linear
@@ -89,7 +89,7 @@ binary cross-entropy loss would be calculated as $-[1 \cdot \log(0.8) + (1-1) \l
 
 ### Dataset
 
-*Explanation:* A collection of related data, typically organized in a structured format, used for training, validating,
+*Explanation:* A collection of related data, typically organised in a structured format, used for training, validating,
 and testing machine learning models. Datasets can consist of various data types, including images, text, audio, and
 numerical data.
 
@@ -117,7 +117,7 @@ an epoch, the model processes all training examples, performs forward and backwa
 
 *Example:* If a training dataset has 1000 examples and the batch size is 100, one epoch would consist of 10 updates (1000 / 100).
 
-*Reference:* Neural network training, optimization.
+*Reference:* Neural network training, optimisation.
 
 
 ### Feature Engineering
@@ -144,13 +144,13 @@ and finally to an output layer representing class probabilities is a feedforward
 
 ### Gradient Descent
 
-*Explanation:* An iterative optimization algorithm used to minimize a function (e.g., a loss function) by iteratively moving
+*Explanation:* An iterative optimisation algorithm used to minimise a function (e.g., a loss function) by iteratively moving
 in the direction of the steepest descent of the function. It's a fundamental algorithm for training many machine learning models.
 
 *Example:* To train a linear regression model, gradient descent would iteratively adjust the slope and intercept parameters by
 taking small steps in the direction opposite to the gradient of the mean squared error.
 
-*Reference:* Optimization algorithms, machine learning training.
+*Reference:* Optimisation algorithms, machine learning training.
 
 
 ### Hyperparameters
@@ -170,24 +170,24 @@ examples of hyperparameters in a neural network.
 It iteratively assigns data points to the nearest centroid and then updates the centroids to be the mean of the points
 assigned to that cluster.
 
-*Example:* Grouping customer data into $K$ segments based on their purchasing behavior could be achieved using K-Means clustering.
+*Example:* Grouping customer data into $K$ segments based on their purchasing behaviour could be achieved using K-Means clustering.
 
 *Reference:* Unsupervised learning, clustering algorithms.
 
 
-### L1 Regularization (Lasso)
+### L1 Regularisation (Lasso)
 
-*Explanation:* A regularization technique that adds a penalty to the loss function proportional to the absolute value of the
+*Explanation:* A regularisation technique that adds a penalty to the loss function proportional to the absolute value of the
 model's coefficients. It encourages sparsity in the model by driving some coefficients exactly to zero, effectively performing
 feature selection.
 
 *Example:* In linear regression, adding an L1 penalty to the mean squared error can lead to a model where some features are
 completely ignored because their corresponding weights become zero.
 
-*Reference:* Regularization techniques, model complexity.
+*Reference:* Regularisation techniques, model complexity.
 
 
-### L2 Regularization (Ridge)
+### L2 Regularisation (Ridge)
 
 *Explanation:* A regularisation technique that adds a penalty to the loss function proportional to the square of the magnitude
 of the model's coefficients. It discourages large weights, preventing overfitting and leading to smoother models.
@@ -195,7 +195,7 @@ of the model's coefficients. It discourages large weights, preventing overfittin
 *Example:* In linear regression, adding an L2 penalty to the mean squared error will shrink the coefficients towards zero,
 reducing the impact of individual features.
 
-*Reference:* Regularization techniques, overfitting.
+*Reference:* Regularisation techniques, overfitting.
 
 
 ### Latent Space
@@ -212,14 +212,14 @@ new data points can be sampled and decoded to generate novel outputs similar to 
 
 ### Learning Rate
 
-*Explanation:* A hyperparameter in optimization algorithms that determines the step size at each iteration while moving
+*Explanation:* A hyperparameter in optimisation algorithms that determines the step size at each iteration while moving
 towards the minimum of a loss function. A small learning rate can lead to slow convergence, while a large learning rate
 can cause the algorithm to overshoot the minimum.
 
 *Example:* If the gradient of the loss function with respect to a weight is 0.1 and the learning rate is 0.01, the weight
 will be updated by $-0.01 \times 0.1 = -0.001$.
 
-*Reference:* Optimization algorithms, neural network training.
+*Reference:* Optimisation algorithms, neural network training.
 
 
 ### Long Short-Term Memory (LSTM)
@@ -231,24 +231,24 @@ information into and out of their memory cells.
 *Example:* An LSTM network can be used for predicting the next word in a sentence, where the context of words seen much
 earlier in the sentence needs to be remembered.
 
-*Reference:* Recurrent neural networks, sequence modeling.
+*Reference:* Recurrent neural networks, sequence modelling.
 
 
 ### Loss Function (Cost Function)
 
 *Explanation:* A function that quantifies the discrepancy between the predicted output of a machine learning model and
-the true target values. The goal of training is to minimize this loss function.
+the true target values. The goal of training is to minimise this loss function.
 
 *Example:* Mean Squared Error (MSE) is a common loss function for regression tasks, calculated as the average of the
 squared differences between predicted and actual values.
 
-*Reference:* Model evaluation, optimization.
+*Reference:* Model evaluation, optimisation.
 
 
 ### Machine Learning
 
 *Explanation:* A subfield of artificial intelligence that enables systems to learn from data without being explicitly
-programmed. It involves developing algorithms that can identify patterns, make predictions, and adapt their behavior
+programmed. It involves developing algorithms that can identify patterns, make predictions, and adapt their behaviour
 based on experience.
 
 *Example:* Training a spam filter to classify emails as "spam" or "not spam" based on a dataset of labeled emails is
@@ -275,7 +275,7 @@ make predictions or decisions on new, unseen data.
 
 *Example:* A trained neural network that can classify images of cats and dogs is a machine learning model.
 
-*Reference:* Machine learning fundamentals, predictive modeling.
+*Reference:* Machine learning fundamentals, predictive modelling.
 
 
 ### Natural Language Processing (NLP)
@@ -293,7 +293,7 @@ language. NLP aims to enable computers to understand, interpret, and generate hu
 *Explanation:* A computational model inspired by the structure and function of biological neural networks. It consists
 of interconnected nodes (neurons) organised in layers, that process information and learn from data.
 
-*Example:* A neural network can be trained to recognize handwritten digits by learning the patterns in pixel data.
+*Example:* A neural network can be trained to recognise handwritten digits by learning the patterns in pixel data.
 
 *Reference:* Deep learning, artificial intelligence.
 
@@ -301,7 +301,7 @@ of interconnected nodes (neurons) organised in layers, that process information 
 ### Overfitting
 
 *Explanation:* A phenomenon where a machine learning model learns the training data too well, including its noise and outliers,
-leading to poor generalization performance on unseen data. The model essentially memorizes the training data rather than
+leading to poor generalisation performance on unseen data. The model essentially memorises the training data rather than
 learning underlying patterns.
 
 *Example:* A decision tree that is allowed to grow to its full depth on a training set might perfectly classify all training
@@ -324,7 +324,7 @@ the benefits of AdaGrad and RMSprop.
 ### Parameter (Model Parameter)
 
 *Explanation:* Internal variables of a machine learning model whose values are learned from the training data. These parameters
-define the model's behavior and enable it to make predictions.
+define the model's behaviour and enable it to make predictions.
 
 *Example:* In a linear regression model $y = mx + b$, $m$ (slope) and $b$ (intercept) are the parameters that the model learns
 during training.
@@ -373,7 +373,7 @@ information to persist across steps. RNNs are suitable for tasks like natural la
 *Example:* An RNN can be used to generate text, where the model considers the sequence of previously generated words to predict
 the next word.
 
-*Reference:* Sequence modeling, deep learning architectures.
+*Reference:* Sequence modelling, deep learning architectures.
 
 
 ### Regression
@@ -382,18 +382,18 @@ the next word.
 
 *Example:* Predicting the price of a house based on its size, number of bedrooms, and location is a regression problem.
 
-*Reference:* Supervised learning, statistical modeling.
+*Reference:* Supervised learning, statistical modelling.
 
 
-### Regularization
+### Regularisation
 
 *Explanation:* Techniques used to prevent overfitting in machine learning models by adding a penalty to the loss function or
 by constraining the model's complexity.
 
-*Example:* Dropout is a regularization technique where randomly selected neurons are ignored during training, forcing the
+*Example:* Dropout is a regularisation technique where randomly selected neurons are ignored during training, forcing the
 network to learn more robust features.
 
-*Reference:* Overfitting, model generalization.
+*Reference:* Overfitting, model generalisation.
 
 
 ### ReLU (Rectified Linear Unit)
@@ -411,7 +411,7 @@ and zero otherwise. It helps to overcome the vanishing gradient problem and spee
 *Explanation:* A type of machine learning where an agent learns to make decisions by interacting with an environment.
 The agent receives rewards for desirable actions and penalties for undesirable ones, aiming to maximise cumulative reward.
 
-*Example:* Training an AI to play chess by rewarding it for winning games and penalizing it for losing is an example of
+*Example:* Training an AI to play chess by rewarding it for winning games and penalising it for losing is an example of
 reinforcement learning.
 
 *Reference:* Artificial intelligence, control theory.
@@ -453,14 +453,14 @@ scores into probabilities like [0.7, 0.2, 0.1] respectively, summing to 1.
 
 ### Stochastic Gradient Descent (SGD)
 
-*Explanation:* A variant of the gradient descent optimization algorithm where the model's parameters are updated for each
+*Explanation:* A variant of the gradient descent optimisation algorithm where the model's parameters are updated for each
 training example (or a small mini-batch) rather than after calculating the gradient over the entire dataset. This introduces
 more noise but can lead to faster convergence.
 
 *Example:* Instead of calculating the average gradient across all 10,000 training images, SGD might update the weights after
 processing each individual image (or a batch of 32 images).
 
-*Reference:* Optimization algorithms, neural network training.
+*Reference:* Optimisation algorithms, neural network training.
 
 
 ### Supervised Learning
@@ -487,7 +487,7 @@ spam emails from the legitimate ones in a high-dimensional feature space.
 
 ### Tensor
 
-*Explanation:* A multi-dimensional array, a generalization of vectors and matrices. In machine learning, particularly deep
+*Explanation:* A multi-dimensional array, a generalisation of vectors and matrices. In machine learning, particularly deep
 learning, data is typically represented as tensors.
 
 *Example:* A grayscale image can be represented as a 2D tensor (matrix), a color image as a 3D tensor
@@ -568,8 +568,7 @@ continue or if hyperparameters need adjustment.
 loss function with respect to the weights in earlier layers become extremely small during backpropagation. This makes it difficult
 for the network to learn long-term dependencies.
 
-*Example:* In a deep RNN processing a long sentence, the influence of words at the beginning of the sentence might be "forgotten"
-by the time the gradient signal propagates back to the initial layers due to vanishing gradients.
+*Example:* In a deep RNN processing a long sentence, the influence of words at the beginning of the sentence might be "forgotten" by the time the gradient signal propagates back to the initial layers due to vanishing gradients.
 
 *Reference:* Deep learning challenges, recurrent neural networks.
 
@@ -579,8 +578,7 @@ by the time the gradient signal propagates back to the initial layers due to van
 *Explanation:* In machine learning, variance refers to the model's sensitivity to small fluctuations or noise in the training data.
 High variance can lead to overfitting, where the model performs well on training data but poorly on unseen data.
 
-*Example:* A very complex decision tree with many branches might have high variance, as it can learn the noise in the training data,
-making it less generalizable.
+*Example:* A very complex decision tree with many branches might have high variance, as it can learn the noise in the training data, making it less generalisable.
 
 *Reference:* Bias-variance trade-off, model complexity.
 
