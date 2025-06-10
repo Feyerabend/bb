@@ -103,7 +103,7 @@ __4. Adversarial Goodhart.__
 This is perhaps the most commonly understood form, where intelligent agents (human or artificial)
 intentionally and strategically manipulate or "game" the metric to their advantage, knowing that
 the metric is being used to evaluate or reward them. This is highly common in economic incentive
-structures, performance Key Performance Indicators (KPIs) in organizations, and presents a
+structures, performance Key Performance Indicators (KPIs) in organisations, and presents a
 significant challenge in the field of AI safety, where autonomous systems might learn to
 exploit their reward function in unforeseen ways.
 
@@ -144,7 +144,7 @@ on the pedagogical values: [teach](./../../../teach/).
 
 *Examples* include using Lines of Code (LOC) as a metric for developer productivity, optimising
 Click-Through Rate (CTR) as the sole indicator of web content success, or maximising test set
-accuracy as the ultimate measure of machine learning model generalisation. Effective *defenses*
+accuracy as the ultimate measure of machine learning model generalisation. Effective *defences*
 involve employing a *diverse portfolio of metrics* (not relying on a single one), actively
 *detecting and counteracting gaming behaviours*, ensuring metrics are *causally linked* to
 the true objectives, and maintaining a *close qualitative understanding* of the system's
@@ -156,6 +156,6 @@ true performance.
 | Domain relevance | Programming, AI, economics, policy                                  |
 | Failure mode     | Optimising proxy instead of real goal                               |
 | Examples         | LOC as productivity, CTR as success, accuracy as generalisation     |
-| Defense          | Use multiple metrics, detect gaming, stay close to causal structure |
+| Defence          | Use multiple metrics, detect gaming, stay close to causal structure |
 
 
