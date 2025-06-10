@@ -169,12 +169,12 @@ create interpretable rules, becoming popular for their clarity and ability to ha
 
 *Random Forest*
 
-Building upon the concept of Decision Trees, Random Forest was introduced by Leo Breiman in 2001. Its
-innovation lay in combining multiple decorrelated decision trees, each trained on a random subset of the
-data and features, and then aggregating their predictions (bagging). This ensemble approach was a significant
-step forward, addressing the inherent overfitting tendencies of individual decision trees and leading to
-substantial improvements in predictive accuracy, making it a highly effective and widely adopted general-purpose
-machine learning algorithm.
+Building upon the concept of Decision Trees, Random Forest was formalised by Leo Breiman in 2001 (built on
+Tin Kam Ho, 1995, Amit & Geman in 1997, Salzberg & Heath, 1993). Its innovation lay in combining multiple
+decorrelated decision trees, each trained on a random subset of the data and features, and then aggregating
+their predictions (bagging). This ensemble approach was a significant step forward, addressing the inherent
+overfitting tendencies of individual decision trees and leading to substantial improvements in predictive
+accuracy, making it a highly effective and widely adopted general-purpose machine learning algorithm.
 
 
 *Support Vector Machine (SVM)*
