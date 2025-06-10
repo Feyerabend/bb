@@ -87,12 +87,13 @@ Optimisation plays a crucial role in individual, corporate, and societal decisio
 Methods like game theory, linear programming, and behavioural economics models help solve
 complex economic optimisation problems.
 
-Organizations (firms) maximise profit, defined as revenue minus costs.
+Organisations (firms) maximise profit, defined as revenue minus costs.
 Example: A firm seeks to maximise its profit function:
 ```math
-\max_{\text{price}, \text{output}} \quad \pi = \text{Revenue} - \text{Cost}
+\max_{Q} \quad \pi = P(Q) \cdot Q - C(Q)
 ```
-where revenue depends on price and quantity, and cost depends on production.
+where $P(Q)$ is the demand function, or explicitly over price and quantity subject
+to the demand constraint.
 
 - Mathematical Perspective: In game theory and microeconomics, utility functions measure
 preference over outcomes. A social welfare function aggregates individual utilities:
