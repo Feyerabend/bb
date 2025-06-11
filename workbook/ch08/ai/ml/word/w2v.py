@@ -1,10 +1,11 @@
 import numpy as np
 from collections import Counter #, defaultdict
 import re
-from typing import List, Tuple, Dict
+from typing import List, Tuple #, Dict
 from PIL import Image, ImageDraw
 import nltk
 nltk.download('punkt')
+nltk.download('punkt_tab')
 
 class SimpleWord2Vec:
     def __init__(self, vector_size=100, window_size=4, learning_rate=0.01, epochs=200):
@@ -62,6 +63,14 @@ class SimpleWord2Vec:
                         training_data.append((center_word_idx, context_word_idx))
         return training_data
     
+    def sigmoid(self, x):
+        """Numerically stable sigmoid function."""
+        # Clip x to prevent overflow
+        x = np.clip(x, -500, 500)
+        return np.where(x >= 0, 
+                       1 / (1 + np.exp(-x)), 
+                       np.exp(x) / (1 + np.exp(x)))
+    
     def normalize_vectors(self):
         norms = np.linalg.norm(self.W1, axis=1, keepdims=True)
         self.W1 = self.W1 / (norms + 1e-10)
@@ -69,8 +78,10 @@ class SimpleWord2Vec:
     def train(self, corpus: List[str], negative_samples=10):
         print("Building vocabulary...")
         self.build_vocabulary(corpus, min_count=5)
-        self.W1 = np.random.uniform(-0.1, 0.1, (self.vocab_size, self.vector_size))
-        self.W2 = np.random.uniform(-0.1, 0.1, (self.vector_size, self.vocab_size))
+        
+        # Initialize weights with smaller values for better stability
+        self.W1 = np.random.uniform(-0.05, 0.05, (self.vocab_size, self.vector_size))
+        self.W2 = np.random.uniform(-0.05, 0.05, (self.vector_size, self.vocab_size))
         
         print("Generating training data...")
         training_data = self.generate_training_data(corpus)
@@ -82,36 +93,48 @@ class SimpleWord2Vec:
             total_loss = 0
             np.random.shuffle(training_data)
             lr = self.learning_rate * (1 - epoch / self.epochs)
+            
             for center_word_idx, context_word_idx in training_data:
                 h = self.W1[center_word_idx].copy()
+                
+                # Positive sample
                 u_pos = np.dot(h, self.W2[:, context_word_idx])
-                y_pred_pos = 1 / (1 + np.exp(-u_pos))
+                y_pred_pos = self.sigmoid(u_pos)
                 loss = -np.log(y_pred_pos + 1e-10)
                 
                 error_pos = y_pred_pos - 1
                 dW2_pos = error_pos * h
                 dW1_pos = error_pos * self.W2[:, context_word_idx]
                 
+                # Negative samples
                 negative_indices = np.random.choice(self.vocab_size, negative_samples)
+                dW1_neg_total = np.zeros_like(h)
+                
                 for neg_idx in negative_indices:
                     if neg_idx != context_word_idx:
                         u_neg = np.dot(h, self.W2[:, neg_idx])
-                        y_pred_neg = 1 / (1 + np.exp(-u_neg))
+                        y_pred_neg = self.sigmoid(u_neg)
                         loss -= np.log(1 - y_pred_neg + 1e-10)
+                        
                         error_neg = y_pred_neg
                         dW2_neg = error_neg * h
                         dW1_neg = error_neg * self.W2[:, neg_idx]
+                        
+                        # Update negative sample weights
                         self.W2[:, neg_idx] -= lr * np.clip(dW2_neg, -1.0, 1.0)
-                        self.W1[center_word_idx] -= lr * np.clip(dW1_neg, -1.0, 1.0)
+                        dW1_neg_total += dW1_neg
                 
+                # Update positive sample weights
                 self.W2[:, context_word_idx] -= lr * np.clip(dW2_pos, -1.0, 1.0)
-                self.W1[center_word_idx] -= lr * np.clip(dW1_pos, -1.0, 1.0)
+                self.W1[center_word_idx] -= lr * np.clip(dW1_pos + dW1_neg_total, -1.0, 1.0)
                 
                 total_loss += loss
+            
             avg_loss = total_loss / len(training_data)
             losses.append(avg_loss)
+            
             if epoch % 10 == 0:
-                print(f"Epoch {epoch}, Average Loss: {avg_loss:.4f}")
+                print(f"Epoch {epoch}, Average Loss: {avg_loss:.4f}, Learning Rate: {lr:.6f}")
         
         self.normalize_vectors()
         self.plot_losses(losses)
@@ -206,5 +229,3 @@ if __name__ == "__main__":
                 print(f"\nWord '{word}' not in vocabulary")
     except ValueError as e:
         print(f"Error: {e}")
-
-

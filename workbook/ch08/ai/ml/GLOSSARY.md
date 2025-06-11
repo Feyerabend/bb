@@ -568,7 +568,8 @@ continue or if hyperparameters need adjustment.
 loss function with respect to the weights in earlier layers become extremely small during backpropagation. This makes it difficult
 for the network to learn long-term dependencies.
 
-*Example:* In a deep RNN processing a long sentence, the influence of words at the beginning of the sentence might be "forgotten" by the time the gradient signal propagates back to the initial layers due to vanishing gradients.
+*Example:* In a deep RNN processing a long sentence, the influence of words at the beginning of the sentence might be "forgotten"
+by the time the gradient signal propagates back to the initial layers due to vanishing gradients.
 
 *Reference:* Deep learning challenges, recurrent neural networks.
 
@@ -578,7 +579,8 @@ for the network to learn long-term dependencies.
 *Explanation:* In machine learning, variance refers to the model's sensitivity to small fluctuations or noise in the training data.
 High variance can lead to overfitting, where the model performs well on training data but poorly on unseen data.
 
-*Example:* A very complex decision tree with many branches might have high variance, as it can learn the noise in the training data, making it less generalisable.
+*Example:* A very complex decision tree with many branches might have high variance, as it can learn the noise in the training
+data, making it less generalisable.
 
 *Reference:* Bias-variance trade-off, model complexity.
 
