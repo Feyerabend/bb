@@ -209,7 +209,7 @@ class SimpleWord2Vec:
 
 if __name__ == "__main__":
     # Load The Iliad from a text file
-    file_path = "illiad/pg6130.txt"  # Replace with the actual path to your text file
+    file_path = "iliad/pg6130.txt"  # Replace with the actual path to your text file
     model = SimpleWord2Vec(vector_size=100, window_size=4, learning_rate=0.01, epochs=200)
     corpus = model.load_corpus(file_path)
     model.train(corpus, negative_samples=10)
