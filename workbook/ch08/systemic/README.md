@@ -39,6 +39,48 @@ eventually engage with, whether explicitly or implicitly.
 | *Errors*   | Arise from hardware faults, logic bugs, bad input, or user misunderstanding |
 
 
+
+
+### Noise
+
+Noise affects all real-world systems. In computing, it appears in analog signals, sensor inputs,
+transmission lines, and even in low-level digital logic (e.g., thermal noise, crosstalk). Robust
+systems account for it using filtering, error correction, shielding, or redundant design. Even
+high-level abstractions sometimes must accommodate noise, such as in signal processing or sensor fusion.
+
+
+### Randomness
+
+Randomness plays a fundamental role in cryptography, simulation, testing, and distributed protocols.
+It underpins Monte Carlo methods, probabilistic algorithms, randomized load balancing, and key generation.
+True randomness (e.g., from hardware) is often approximated with pseudorandom generators, whose properties
+are critical to system security and unpredictability.
+
+
+### Optimisation
+
+Optimisation permeates software and hardware design—from loop unrolling in compilers to energy-aware
+scheduling in CPUs. It seeks to reduce time, space, energy, or other resources. Often guided by cost
+models or heuristics, optimisation balances competing priorities like performance vs. clarity, or
+generality vs. specialisation.
+
+
+### Security
+
+Security spans from physical protection (tamper resistance, secure boot) to software-level controls
+(authentication, memory safety). Threats emerge at all levels: bugs, side-channels, protocol flaws,
+misconfigured permissions. Systemic security requires layered defenses and assumptions that are
+valid across abstraction boundaries.
+
+
+### Interface
+
+An interface defines how components interact. It shapes design choices, modularity, and compatibility.
+Interfaces may be formal (function signatures, protocols) or implicit (file formats, shared memory).
+Good interfaces abstract internal complexity and promote reuse, while bad ones can leak details or
+create coupling.
+
+
 ### Abstraction
 
 Central to all software and hardware design, abstraction allows systems to be built in layers,
@@ -114,4 +156,12 @@ frequency, or instruction efficiency.
 Broader than monetary cost: includes computational (CPU cycles), spatial (memory/disk usage),
 and temporal (latency) dimensions. Cost-benefit tradeoffs drive design decisions across hardware,
 software, and system architecture.
+
+
+### Errors
+
+Errors are inherent in computing—from flipped bits in memory to logic bugs and invalid inputs.
+Handling them involves detection, containment, reporting, and recovery. Some errors are transient
+(e.g., hardware glitches), others persistent (e.g., design flaws). Resilient systems embrace error-aware
+design, with graceful degradation or corrective strategies.
 
