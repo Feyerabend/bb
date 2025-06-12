@@ -14,7 +14,7 @@ Some of these concerns reflect inherent tensions: we optimise for speed but must
 but accept concurrency; we abstract for clarity but must still respect physical limits. Others help us reason more
 clearly about system behavior, especially when building or debugging layered, modular, or asynchronous systems.
 
-Here we present an overview of these systemic dimensions of computing—concepts that every practitioner will
+Here we present an overview of these systemic dimensions of computing--concepts that every practitioner will
 eventually engage with, whether explicitly or implicitly.
 
 
