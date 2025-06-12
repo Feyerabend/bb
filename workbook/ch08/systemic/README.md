@@ -1,5 +1,22 @@
 
-## Systemic
+## Systemic Concepts in Computing
+
+Beyond the specific algorithms, architectures, or programming languages, there exists a set of systemic concerns
+that permeate nearly *every* aspect of computing. These concepts are not tied to a single layer of abstraction--they
+cross boundaries between hardware and software, between design and implementation, between local computation
+and distributed systems.
+
+Systemic concepts like abstraction, latency, concurrency, error, and state shape how we think about, build, and
+interact with computer systems. They are the "forces" that govern complexity, performance, reliability, and usability,
+whether we’re designing a low-level device driver, a high-level API, or a fault-tolerant distributed protocol.
+
+Some of these concerns reflect inherent tensions: we optimise for speed but must manage energy; we aim for determinism
+but accept concurrency; we abstract for clarity but must still respect physical limits. Others help us reason more
+clearly about system behavior, especially when building or debugging layered, modular, or asynchronous systems.
+
+Here we present an overview of these systemic dimensions of computing—concepts that every practitioner will
+eventually engage with, whether explicitly or implicitly.
+
 
 | Concept      | Systemic            |
 |-------------------|--------------------------------------------------------|
