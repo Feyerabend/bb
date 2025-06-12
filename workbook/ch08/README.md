@@ -25,3 +25,4 @@ into one folder?
 | *Energy use*   | Crucial from battery devices to datacenters      |
 | *Cost*      | Not just economic, but computational, spatial, or temporal |
 
+
