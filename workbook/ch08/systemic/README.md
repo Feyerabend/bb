@@ -1,0 +1,100 @@
+
+## Systemic
+
+| Concept      | Systemic            |
+|-------------------|--------------------------------------------------------|
+| *Noise*      | Affects communication, sensing, and even logic gates  |
+| *Randomness*   | Critical in simulation, cryptography, testing, protocols |
+| *Optimisation*  | Present in compilers, algorithms, hardware, energy use |
+| *Security*    | Requires attention at every layer: physical to logical |
+| *Interface*    | Defines component interaction everywhere        |
+| *Abstraction*   | Central to all software and hardware design      |
+| *Scalability*   | Applies to data, computation, architecture       |
+| *Latency*     | Matters in networks, UI, hardware timing        |
+| *Concurrency*   | Appears from CPU pipelines to distributed systems   |
+| *Fault tolerance* | From ECC memory to retry loops in software       |
+| *Determinism*   | Affects debugging, simulation, and predictability   |
+| *Time*      | Scheduling, clocks, profiling, causality in distributed systems |
+| *Complexity*   | Measured algorithmically, but also felt in UX and architecture |
+| *State*      | Core to both computing and modeling; managed differently across layers |
+| *Energy use*   | Crucial from battery devices to datacenters      |
+| *Cost*      | Not just economic, but computational, spatial, or temporal |
+| *Errors*   | Arise from hardware faults, logic bugs, bad input, or user misunderstanding |
+
+
+### Abstraction
+
+Central to all software and hardware design, abstraction allows systems to be built in layers,
+hiding implementation details and exposing only essential behaviour. From hardware instruction
+sets to object-oriented programming, abstraction is the foundation of scalability and maintainability.
+
+
+### Scalability
+
+The ability of a system to handle increasing amounts of work or data. Scalability appears in
+storage systems (e.g., from local files to distributed databases), computation (single-threaded
+vs. parallel processing), and infrastructure (from one server to cloud clusters).
+
+
+### Latency
+
+The delay between cause and effect in a system. Important in user interfaces (responsiveness),
+network protocols (RTT), and hardware operations (cache misses, interrupt handling). Latency
+directly affects usability and throughput.
+
+
+### Concurrency
+
+Involves multiple computations happening at once, which may or may not interact. Concurrency
+is present in CPU instruction pipelines, multithreaded programming, operating systems, and
+distributed applications. It introduces complexity in synchronization and correctness.
+
+
+### Fault Tolerance
+
+The system’s ability to continue operating correctly despite failures. Found in ECC memory
+(hardware level), RAID (storage), retry mechanisms (software), and consensus protocols
+(distributed systems). Fault tolerance is essential for resilience.
+
+
+### Determinism
+
+A system is deterministic if the same inputs always produce the same outputs. Determinism is
+critical for debugging, testing, simulations, and safety-critical systems. However, it often
+conflicts with performance optimizations and concurrency.
+
+
+### Time
+
+Time governs system scheduling, real-time guarantees, clock synchronization (e.g., NTP, logical
+clocks), and profiling. In distributed systems, understanding causality and ordering events
+(e.g., Lamport timestamps) depends on reasoning about time.
+
+
+### Complexity
+
+Can refer to algorithmic complexity (Big O), code complexity (maintainability), or system-level
+complexity (emergent behavior). Complexity impacts performance, reliability, and usability. It’s
+often the root cause of bugs and poor design.
+
+
+### State
+
+The configuration of a system at a given moment. Managing state is a key concern in UI frameworks,
+databases, networking protocols, and CPU design. State introduces challenges like consistency,
+synchronization, and side effects.
+
+
+### Energy Use
+
+From battery-powered sensors to energy-hungry datacenters, power consumption affects performance,
+thermal design, and sustainability. Software can influence energy use via algorithm choices, polling
+frequency, or instruction efficiency.
+
+
+### Cost
+
+Broader than monetary cost: includes computational (CPU cycles), spatial (memory/disk usage),
+and temporal (latency) dimensions. Cost-benefit tradeoffs drive design decisions across hardware,
+software, and system architecture.
+
