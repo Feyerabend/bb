@@ -39,7 +39,6 @@ A wall socket is a physical interface:
 - A stable contract that enables safe interaction despite internal heterogeneity.
 
 
-
 ### Interface Types and Examples
 
 Interfaces take many forms in computing—from low-level machine integration to human-facing systems.
@@ -73,7 +72,6 @@ A User Interface (UI) is a direct interaction surface between a human and a syst
 
 From this perspective, a UI is not separate from interface theory—it is simply a human-facing interface, governed
 by the same principles: abstraction, encapsulation, explicit structure, and predictable semantics.
-
 
 
 ### Layered Interface Model
