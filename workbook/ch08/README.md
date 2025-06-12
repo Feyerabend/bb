@@ -24,5 +24,5 @@ into one folder?
 | *State*      | Core to both computing and modeling; managed differently across layers |
 | *Energy use*   | Crucial from battery devices to datacenters      |
 | *Cost*      | Not just economic, but computational, spatial, or temporal |
-
+| *Errors*   | Arise from hardware faults, logic bugs, bad input, or user misunderstanding |
 
