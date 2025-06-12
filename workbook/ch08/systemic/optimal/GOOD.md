@@ -30,12 +30,12 @@ the actual quality, maintainability, readability, and efficiency of the codebase
 invariably degrades, accumulating technical debt.
 
 __2. Machine Learning.__
-Consider an AI model rigorously optimized to maximize its accuracy on a predetermined
+Consider an AI model rigorously optimised to maximise its accuracy on a predetermined
 test dataset, with accuracy serving as the primary performance indicator. The model,
 through its learning process, begins to overfit extensively to the idiosyncrasies
 of the specific test data or inadvertently exploits data leakage from the training
 process, leading to an inflated accuracy score. Despite showing superior performance
-on this test metric, the model's capacity for true generalization to unseen, real-world
+on this test metric, the model's capacity for true generalisation to unseen, real-world
 data diminishes significantly. Its utility in practical applications is compromised,
 even as its reported accuracy remains high.
 
