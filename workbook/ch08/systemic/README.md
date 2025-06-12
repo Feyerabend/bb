@@ -39,6 +39,23 @@ eventually engage with, whether explicitly or implicitly.
 | *Errors*   | Arise from hardware faults, logic bugs, bad input, or user misunderstanding |
 
 
+This workbook does not attempt to provide an exhaustive catalogue of all systemic concerns in
+computing. Instead, it aims to introduce a selection of foundational and cross-cutting ideas
+that recur across many layers of hardware, software, and theory. These topics are not isolated;
+they connect and reappear in varied forms, from the architecture of a CPU to the design of a
+secure web protocol.
+
+The purpose here is to spark curiosity and cultivate awareness. Some of these systemic concepts
+are explored in detail, while others are only touched on briefly--or left open for you to
+investigate further. By now, you may already have formed your own questions, project ideas,
+or conceptual goals. Discuss them with your peers--what might the future hold in these areas?
+
+That's exactly the point: systemic thinking isn't about memorizing a list, but about recognising
+patterns, tensions, and principles that shape systems across domains.
+
+This workbook invites you to follow those threads--to explore, test, and build with these concepts
+in mind. Take security, for example: it's not a problem you solve once and for all, but an ongoing
+effort--one that will persist as long as computers behave even remotely like they do today.
 
 
 ### Noise
