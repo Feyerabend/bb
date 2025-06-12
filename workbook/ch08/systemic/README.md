@@ -12,7 +12,7 @@ whether we’re designing a low-level device driver, a high-level API, or a faul
 
 Some of these concerns reflect inherent tensions: we optimise for speed but must manage energy; we aim for determinism
 but accept concurrency; we abstract for clarity but must still respect physical limits. Others help us reason more
-clearly about system behavior, especially when building or debugging layered, modular, or asynchronous systems.
+clearly about system behaviour, especially when building or debugging layered, modular, or asynchronous systems.
 
 Here is an overview of some of these systemic dimensions of computing--concepts that every practitioner will
 eventually engage with, whether explicitly or implicitly.
@@ -52,14 +52,14 @@ high-level abstractions sometimes must accommodate noise, such as in signal proc
 ### Randomness
 
 Randomness plays a fundamental role in cryptography, simulation, testing, and distributed protocols.
-It underpins Monte Carlo methods, probabilistic algorithms, randomized load balancing, and key generation.
+It underpins Monte Carlo methods, probabilistic algorithms, randomised load balancing, and key generation.
 True randomness (e.g., from hardware) is often approximated with pseudorandom generators, whose properties
 are critical to system security and unpredictability.
 
 
 ### Optimisation
 
-Optimisation permeates software and hardware design—from loop unrolling in compilers to energy-aware
+Optimisation permeates software and hardware design--from loop unrolling in compilers to energy-aware
 scheduling in CPUs. It seeks to reduce time, space, energy, or other resources. Often guided by cost
 models or heuristics, optimisation balances competing priorities like performance vs. clarity, or
 generality vs. specialisation.
@@ -69,7 +69,7 @@ generality vs. specialisation.
 
 Security spans from physical protection (tamper resistance, secure boot) to software-level controls
 (authentication, memory safety). Threats emerge at all levels: bugs, side-channels, protocol flaws,
-misconfigured permissions. Systemic security requires layered defenses and assumptions that are
+misconfigured permissions. Systemic security requires layered defences and assumptions that are
 valid across abstraction boundaries.
 
 
@@ -106,7 +106,7 @@ directly affects usability and throughput.
 
 Involves multiple computations happening at once, which may or may not interact. Concurrency
 is present in CPU instruction pipelines, multithreaded programming, operating systems, and
-distributed applications. It introduces complexity in synchronization and correctness.
+distributed applications. It introduces complexity in synchronisation and correctness.
 
 
 ### Fault Tolerance
@@ -120,12 +120,12 @@ The system’s ability to continue operating correctly despite failures. Found i
 
 A system is deterministic if the same inputs always produce the same outputs. Determinism is
 critical for debugging, testing, simulations, and safety-critical systems. However, it often
-conflicts with performance optimizations and concurrency.
+conflicts with performance optimisations and concurrency.
 
 
 ### Time
 
-Time governs system scheduling, real-time guarantees, clock synchronization (e.g., NTP, logical
+Time governs system scheduling, real-time guarantees, clock synchronisation (e.g., NTP, logical
 clocks), and profiling. In distributed systems, understanding causality and ordering events
 (e.g., Lamport timestamps) depends on reasoning about time.
 
@@ -133,7 +133,7 @@ clocks), and profiling. In distributed systems, understanding causality and orde
 ### Complexity
 
 Can refer to algorithmic complexity (Big O), code complexity (maintainability), or system-level
-complexity (emergent behavior). Complexity impacts performance, reliability, and usability. It’s
+complexity (emergent behaviour). Complexity impacts performance, reliability, and usability. It’s
 often the root cause of bugs and poor design.
 
 
@@ -141,7 +141,7 @@ often the root cause of bugs and poor design.
 
 The configuration of a system at a given moment. Managing state is a key concern in UI frameworks,
 databases, networking protocols, and CPU design. State introduces challenges like consistency,
-synchronization, and side effects.
+synchronisation, and side effects.
 
 
 ### Energy Use
@@ -160,7 +160,7 @@ software, and system architecture.
 
 ### Errors
 
-Errors are inherent in computing—from flipped bits in memory to logic bugs and invalid inputs.
+Errors are inherent in computing--from flipped bits in memory to logic bugs and invalid inputs.
 Handling them involves detection, containment, reporting, and recovery. Some errors are transient
 (e.g., hardware glitches), others persistent (e.g., design flaws). Resilient systems embrace error-aware
 design, with graceful degradation or corrective strategies.
