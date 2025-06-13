@@ -24,7 +24,7 @@ eventually engage with, whether explicitly or implicitly.
 | *Randomness*   | Critical in simulation, cryptography, testing, protocols |
 | *Optimisation*  | Present in compilers, algorithms, hardware, energy use |
 | *Security*    | Requires attention at every layer: physical to logical |
-| *Interface*    | Defines component interaction everywhere        |
+| [*Interface*](./interface/) | Defines component interaction everywhere |
 | *Abstraction*   | Central to all software and hardware design      |
 | *Scalability*   | Applies to data, computation, architecture       |
 | *Latency*     | Matters in networks, UI, hardware timing        |
