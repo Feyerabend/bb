@@ -7,7 +7,7 @@ itself has a much longer history. The idea of "software agents" dates back at le
 distributed computing, gaining formal traction in the 1980s through work on expert systems and
 knowledge-based agents. In the 1990s, mobile agents--small programs capable of migrating between machines
 and executing remotely--were actively explored as part of early internet and networked systems research.
-These early visions emphasized autonomy, goal-driven behavior, and flexible interaction protocols, many
+These early visions emphasised autonomy, goal-driven behavior, and flexible interaction protocols, many
 of which prefigure today's developments.
 
 To provide some perspective on how these ideas were understood before the rise of LLMs and modern
