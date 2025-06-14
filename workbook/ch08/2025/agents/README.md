@@ -16,7 +16,7 @@ my non-native English--the core concepts remain strikingly relevant. The text to
 client-server dynamics, and communication models in ways that still resonate in current discussions
 around intelligent agents.
 
-- My [Paper](./agents.html) from 1997 on "Active agents and other concepts"
+- My small [paper](./agents.html) from 1997 on "Active agents and other concepts"
 - [Overview](./agents-grok-2025.pdf) of Current Developments by an LLM (Grok)
-- [Comments](./AGENTS.md) on my paper by an LLM (Gemini, Flash 2.5)
+- [Comments](./AGENTS.md) on my memprandum by an LLM (Gemini, Flash 2.5)
 
