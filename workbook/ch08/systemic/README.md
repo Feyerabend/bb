@@ -8,7 +8,7 @@ and distributed systems.
 
 Systemic concepts like abstraction, latency, concurrency, error, and state shape how we think about, build, and
 interact with computer systems. They are the "forces" that govern complexity, performance, reliability, and usability,
-whether we’re designing a low-level device driver, a high-level API, or a fault-tolerant distributed protocol.
+whether we're designing a low-level device driver, a high-level API, or a fault-tolerant distributed protocol.
 
 Some of these concerns reflect inherent tensions: we optimise for speed but must manage energy; we aim for determinism
 but accept concurrency; we abstract for clarity but must still respect physical limits. Others help us reason more
@@ -59,7 +59,7 @@ in mind. Take security, for example: it's not a problem you solve once and for a
 effort--one that will persist as long as computers behave even remotely like they do today.
 
 
-### Noise
+#### Noise
 
 Noise affects all real-world systems. In computing, it appears in analog signals, sensor inputs,
 transmission lines, and even in low-level digital logic (e.g., thermal noise, crosstalk). Robust
@@ -67,7 +67,7 @@ systems account for it using filtering, error correction, shielding, or redundan
 high-level abstractions sometimes must accommodate noise, such as in signal processing or sensor fusion.
 
 
-### Randomness
+#### Randomness
 
 Randomness plays a fundamental role in cryptography, simulation, testing, and distributed protocols.
 It underpins Monte Carlo methods, probabilistic algorithms, randomised load balancing, and key generation.
@@ -75,7 +75,7 @@ True randomness (e.g., from hardware) is often approximated with pseudorandom ge
 are critical to system security and unpredictability.
 
 
-### Optimisation
+#### Optimisation
 
 Optimisation permeates software and hardware design--from loop unrolling in compilers to energy-aware
 scheduling in CPUs. It seeks to reduce time, space, energy, or other resources. Often guided by cost
@@ -83,7 +83,7 @@ models or heuristics, optimisation balances competing priorities like performanc
 generality vs. specialisation.
 
 
-### Security
+#### Security
 
 Security spans from physical protection (tamper resistance, secure boot) to software-level controls
 (authentication, memory safety). Threats emerge at all levels: bugs, side-channels, protocol flaws,
@@ -91,7 +91,7 @@ misconfigured permissions. Systemic security requires layered defences and assum
 valid across abstraction boundaries.
 
 
-### Interface
+#### Interface
 
 An interface defines how components interact. It shapes design choices, modularity, and compatibility.
 Interfaces may be formal (function signatures, protocols) or implicit (file formats, shared memory).
@@ -99,87 +99,133 @@ Good interfaces abstract internal complexity and promote reuse, while bad ones c
 create coupling.
 
 
-### Abstraction
+#### Abstraction
 
 Central to all software and hardware design, abstraction allows systems to be built in layers,
 hiding implementation details and exposing only essential behaviour. From hardware instruction
 sets to object-oriented programming, abstraction is the foundation of scalability and maintainability.
 
 
-### Scalability
+#### Scalability
 
 The ability of a system to handle increasing amounts of work or data. Scalability appears in
 storage systems (e.g., from local files to distributed databases), computation (single-threaded
 vs. parallel processing), and infrastructure (from one server to cloud clusters).
 
 
-### Latency
+#### Latency
 
 The delay between cause and effect in a system. Important in user interfaces (responsiveness),
 network protocols (RTT), and hardware operations (cache misses, interrupt handling). Latency
 directly affects usability and throughput.
 
 
-### Concurrency
+#### Concurrency
 
 Involves multiple computations happening at once, which may or may not interact. Concurrency
 is present in CPU instruction pipelines, multithreaded programming, operating systems, and
 distributed applications. It introduces complexity in synchronisation and correctness.
 
 
-### Fault Tolerance
+#### Fault Tolerance
 
-The system’s ability to continue operating correctly despite failures. Found in ECC memory
+The system's ability to continue operating correctly despite failures. Found in ECC memory
 (hardware level), RAID (storage), retry mechanisms (software), and consensus protocols
 (distributed systems). Fault tolerance is essential for resilience.
 
 
-### Determinism
+#### Determinism
 
 A system is deterministic if the same inputs always produce the same outputs. Determinism is
 critical for debugging, testing, simulations, and safety-critical systems. However, it often
 conflicts with performance optimisations and concurrency.
 
 
-### Time
+#### Time
 
 Time governs system scheduling, real-time guarantees, clock synchronisation (e.g., NTP, logical
 clocks), and profiling. In distributed systems, understanding causality and ordering events
 (e.g., Lamport timestamps) depends on reasoning about time.
 
 
-### Complexity
+#### Complexity
 
 Can refer to algorithmic complexity (Big O), code complexity (maintainability), or system-level
 complexity (emergent behaviour). Complexity impacts performance, reliability, and usability. It’s
 often the root cause of bugs and poor design.
 
 
-### State
+#### State
 
 The configuration of a system at a given moment. Managing state is a key concern in UI frameworks,
 databases, networking protocols, and CPU design. State introduces challenges like consistency,
 synchronisation, and side effects.
 
 
-### Energy Use
+#### Energy Use
 
 From battery-powered sensors to energy-hungry datacenters, power consumption affects performance,
 thermal design, and sustainability. Software can influence energy use via algorithm choices, polling
 frequency, or instruction efficiency.
 
 
-### Cost
+#### Cost
 
 Broader than monetary cost: includes computational (CPU cycles), spatial (memory/disk usage),
 and temporal (latency) dimensions. Cost-benefit tradeoffs drive design decisions across hardware,
 software, and system architecture.
 
 
-### Errors
+#### Errors
 
 Errors are inherent in computing--from flipped bits in memory to logic bugs and invalid inputs.
 Handling them involves detection, containment, reporting, and recovery. Some errors are transient
 (e.g., hardware glitches), others persistent (e.g., design flaws). Resilient systems embrace error-aware
 design, with graceful degradation or corrective strategies.
+
+
+### Relations
+
+*Abstraction*, *Interface*, and *State* form a conceptual core around how systems are structured and composed.
+Abstraction allows us to hide complexity by defining layers of meaning or functionality, which in turn rely
+on interfaces to define the boundaries and protocols for communication between those layers. State is what
+these abstractions often manage or transform. For instance, a file system abstracts disk blocks and manages
+persistent state, while an API abstracts internal behavior and exposes a controlled interface to clients.
+State is fundamental because it anchors behavior in time, memory, and identity, which both abstraction and
+interface are mechanisms for organising and controlling.
+
+*Time*, *Latency*, and *Concurrency* are inseparable in systems where operations span time and resources are
+shared. Time underpins everything from scheduling to causality, especially in distributed systems where clocks
+may not agree. Latency arises when components wait--for I/O, communication, or scheduling--making it a temporal
+cost that must be optimised or hidden. Concurrency is a structural response to these temporal constraints,
+allowing systems to make progress while waiting or to exploit parallelism. These concepts directly influence
+how systems behave in real time, how responsive they are, and how well they utilise hardware.
+
+*Noise*, *Randomness*, and *Errors* all describe deviations from ideal behavior but differ in origin and function.
+Noise refers to uncontrolled variation, often physical or environmental, which can corrupt signals or data.
+Randomness can be harnessed deliberately, as in cryptography or simulation, but it also models uncertainty or
+lack of control. Errors arise when outcomes diverge from expectations, often due to noise or bugs. While noise
+is (often regarded as) physical and randomness can be both a tool and a problem, errors are logical or semantic
+failures that require detection and recovery mechanisms. Their interplay affects reliability and trustworthiness.
+
+*Optimisation*, *Cost*, *Energy Use*, and *Complexity* are all about managing constraints. Optimisation is the
+discipline of navigating trade-offs within these constraints, often minimising cost, energy, or time. Cost is not
+merely financial--it encompasses memory, computation, bandwidth, and even human effort. Energy use, though physical,
+has computational implications, especially in battery-bound or large-scale systems. Complexity arises when the
+interactions among parts become difficult to predict or manage, and it can be both a result of and a barrier to
+effective optimisation. These concepts together define the pressures that shape system design.
+
+*Security*, *Fault Tolerance*, *Resilience*, and *Determinism* are about predictability and robustness. Security
+demands systems behave predictably in the presence of adversaries, while fault tolerance ensures they remain
+functional despite faults. Resilience extends this to include graceful degradation and recovery--going beyond
+tolerating faults to actively adapting to and recovering from them. Determinism supports all of these by ensuring
+repeatability, which simplifies reasoning and testing. However, in practice, non-determinism is often unavoidable,
+making resilience and fault tolerance even more critical. These properties define a system's ability to handle
+the unexpected.
+
+*Scalability* and *Resilience* are particularly relevant at the system and network level. While scalability is
+about a system's ability to grow without performance collapse, resilience ensures that the system can sustain
+functionality as conditions change. These are not just performance issues--they are design philosophies that
+emphasise system behavior under load and stress. A scalable system may still be fragile; a resilient one
+prioritises survival and recovery.
 
