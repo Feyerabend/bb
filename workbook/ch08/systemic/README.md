@@ -37,7 +37,7 @@ eventually engage with, whether explicitly or implicitly.
 | *Energy use*   | Crucial from battery devices to datacenters      |
 | *Cost*      | Not just economic, but computational, spatial, or temporal |
 | *Errors*   | Arise from hardware faults, logic bugs, bad input, or user misunderstanding |
-| *Resilience* | Ensures systems degrade gracefully and recover from faults, attacks, or overload |
+| *Resilience* | Ensures systems degrade gracefully and recover from faults, attacks, or overload |
 
 
 This workbook does not attempt to provide an exhaustive catalogue of all systemic concerns in
