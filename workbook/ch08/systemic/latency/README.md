@@ -121,13 +121,15 @@ System designers employ various techniques to combat latency:
     - *Pipelining:* Overlapping the execution of different stages of a task. For example, in a CPU,
       while one instruction is fetching data, another might be executing.
     - *Prefetching/Preloading:* Anticipating future data needs and fetching it before it's explicitly
-      requested (e.g., preloading video frames in a streaming buffer, or operating system prefetching disk blocks).
+      requested (e.g., preloading video frames in a streaming buffer, or operating system prefetching
+      disk blocks).
     - *Multithreading/Multiprocessing:* Using multiple threads or processes to perform other useful work
       while one is blocked on a high-latency operation.
 
 3. *Managing Perception and Predictability:*
     - *Visual Feedback:* Providing immediate visual cues to the user (spinners, progress bars, skeleton
-      screens) acknowledges their action and makes the wait *feel* shorter, even if the actual latency is unchanged.
+      screens) acknowledges their action and makes the wait *feel* shorter, even if the actual latency
+      is unchanged.
     - *Progressive Loading:* Loading essential content first and then progressively loading less critical
       elements (e.g., images after text on a webpage).
     - *Throttling/Backpressure:* Mechanisms to prevent systems from being overwhelmed by too many requests,
@@ -172,28 +174,41 @@ Latency isn't a monolithic entity; it's an aggregation of delays from diverse so
 
 1. *Network Latency:* This is often the most significant and visible form of latency in distributed
    systems. It's the time data takes to travel across a network, influenced by:
-    - *Propagation Delay:* The time it takes for a signal to physically travel over the medium (e.g., fiber optic cable, wireless). This is limited by the speed of light.
-    - *Transmission Delay:* The time required to push all bits of a packet onto the wire. This depends on the packet size and network bandwidth.
+    - *Propagation Delay:* The time it takes for a signal to physically travel over the medium (e.g.,
+      fiber optic cable, wireless). This is limited by the speed of light.
+    - *Transmission Delay:* The time required to push all bits of a packet onto the wire. This depends
+      on the packet size and network bandwidth.
     - *Queuing Delay:* Time spent waiting in buffers at network devices (routers, switches) due to congestion.
     - *Processing Delay:* Time taken by network devices to process packet headers, perform routing lookups, etc.
     - *Distance:* The greater the geographical separation between communicating entities, the higher the propagation delay.
 
 2. *Storage Latency (I/O Latency):* The delay associated with reading or writing data to storage devices.
-    - *Disk Latency (HDD):* Mechanical disks have significant latency due to the physical movement of read/write heads and platter rotation (seek time and rotational latency).
-    - *SSD Latency (Solid State Drives):* While significantly faster than HDDs, SSDs still have latency associated with controller processing, flash translation layer overhead, and NAND flash memory access. NVMe SSDs further reduce this by using PCIe direct connections.
-    - *Network Attached Storage (NAS) / Storage Area Networks (SAN):* Introduce additional network latency on top of the storage device's inherent latency.
+    - *Disk Latency (HDD):* Mechanical disks have significant latency due to the physical movement of
+      read/write heads and platter rotation (seek time and rotational latency).
+    - *SSD Latency (Solid State Drives):* While significantly faster than HDDs, SSDs still have latency
+      associated with controller processing, flash translation layer overhead, and NAND flash memory access.
+      NVMe SSDs further reduce this by using PCIe direct connections.
+    - *Network Attached Storage (NAS) / Storage Area Networks (SAN):* Introduce additional network latency
+      on top of the storage device's inherent latency.
 
 3. *Memory Latency:* The time taken for the CPU to access data from memory.
-    - *Cache Latency (L1, L2, L3):* Accessing data from faster, smaller CPU caches is very low latency (nanoseconds).
-    - *Main Memory (RAM) Latency:* Accessing data from main memory is significantly slower (tens to hundreds of nanoseconds) compared to cache, leading to "cache misses" that cause CPU stalls.
-    - *NUMA (Non-Uniform Memory Access):* In multi-processor systems, accessing memory attached to a different CPU socket incurs higher latency than accessing local memory.
+    - *Cache Latency (L1, L2, L3):* Accessing data from faster, smaller CPU caches is very low latency
+      (nanoseconds).
+    - *Main Memory (RAM) Latency:* Accessing data from main memory is significantly slower (tens to hundreds
+      of nanoseconds) compared to cache, leading to "cache misses" that cause CPU stalls.
+    - *NUMA (Non-Uniform Memory Access):* In multi-processor systems, accessing memory attached to a different
+      CPU socket incurs higher latency than accessing local memory.
 
-4. *Compute/Processing Latency (Application Latency):* The time a CPU or application spends actively performing calculations or executing logic.
+4. *Compute/Processing Latency (Application Latency):* The time a CPU or application spends actively performing
+   calculations or executing logic.
     - *CPU Cycles:* The raw number of clock cycles required for an operation.
     - *Algorithm Complexity:* Inefficient algorithms can lead to significantly longer processing times.
-    - *Context Switching:* The overhead incurred when the operating system switches the CPU from one process or thread to another.
-    - *Garbage Collection:* In managed languages (like Java, C#), garbage collection pauses can introduce significant, often unpredictable, latency spikes.
-    - *Serialisation/Deserialisation:* Converting data structures to/from a format suitable for network transmission or storage (e.g., JSON, Protocol Buffers) adds processing overhead.
+    - *Context Switching:* The overhead incurred when the operating system switches the CPU from one process
+      or thread to another.
+    - *Garbage Collection:* In managed languages (like Java, C#), garbage collection pauses can introduce significant,
+      often unpredictable, latency spikes.
+    - *Serialisation/Deserialisation:* Converting data structures to/from a format suitable for network transmission
+      or storage (e.g., JSON, Protocol Buffers) adds processing overhead.
 
 5. *Contention Latency:* Delays arising from multiple components or threads trying to access the same shared resource simultaneously.
     - *Lock Contention:* When threads compete for a mutex or lock, threads waiting for the lock experience latency.
@@ -220,11 +235,17 @@ might tolerate high individual latencies if the overall volume of processed data
 
 Latency has far-reaching consequences:
 
-* *User Experience (UX):* As you noted, direct correlation. Slow applications lead to frustration, abandonment, and negative perception. In interactive applications like gaming or video conferencing, high latency (lag) makes them unusable.
-* *System Responsiveness:* Determines how quickly a system reacts to inputs. In real-time systems (autonomous vehicles, industrial control), low, predictable latency is a safety-critical requirement.
-* *Data Freshness and Consistency:* In distributed databases, high latency can exacerbate consistency issues. If updates take a long time to propagate, different nodes might temporarily have stale data. This forces system designers to make trade-offs between consistency and availability (CAP theorem).
-* *Resource Utilisation:* High latency often means resources (CPU, network links) are idle while waiting for data or responses. This reduces overall system efficiency.
-* *Scalability:* Latency can limit how much a system can scale. If adding more resources simply means more time spent waiting between components, the benefits of scaling diminish.
+* *User Experience (UX):* As you noted, direct correlation. Slow applications lead to frustration, abandonment,
+  and negative perception. In interactive applications like gaming or video conferencing, high latency (lag) makes them unusable.
+* *System Responsiveness:* Determines how quickly a system reacts to inputs. In real-time systems (autonomous
+  vehicles, industrial control), low, predictable latency is a safety-critical requirement.
+* *Data Freshness and Consistency:* In distributed databases, high latency can exacerbate consistency issues.
+  If updates take a long time to propagate, different nodes might temporarily have stale data. This forces system
+  designers to make trade-offs between consistency and availability (CAP theorem).
+* *Resource Utilisation:* High latency often means resources (CPU, network links) are idle while waiting for data
+  or responses. This reduces overall system efficiency.
+* *Scalability:* Latency can limit how much a system can scale. If adding more resources simply means more time
+  spent waiting between components, the benefits of scaling diminish.
 
 
 #### Strategies for Latency Management
@@ -232,28 +253,46 @@ Latency has far-reaching consequences:
 System designers employ a range of techniques to combat latency:
 
 1. *Reduce the "Distance":*
-    - *Geographical Colocation (Edge Computing):* Placing servers and data centres physically closer to users reduces network propagation delay. Content Delivery Networks (CDNs) are a prime example.
-    - *Data Locality:* Designing systems so that computations happen where the data resides, rather than moving large amounts of data across networks.
+    - *Geographical Colocation (Edge Computing):* Placing servers and data centres physically closer to users
+      reduces network propagation delay. Content Delivery Networks (CDNs) are a prime example.
+    - *Data Locality:* Designing systems so that computations happen where the data resides, rather than moving
+      large amounts of data across networks.
 
 2. *Optimise the "Wait":*
-    - *Caching:* Storing frequently accessed data closer to the consumer (e.g., CPU cache, in-memory caches like Redis, CDN caches) eliminates slower I/O or network trips.
+    - *Caching:* Storing frequently accessed data closer to the consumer (e.g., CPU cache, in-memory caches
+      like Redis, CDN caches) eliminates slower I/O or network trips.
     - *Indexing (Databases):* Accelerating database queries by providing fast lookups, reducing disk I/O.
-    - *Efficient Algorithms and Data Structures:* Optimising code to perform tasks with fewer operations, reducing compute latency.
-    - *Hardware Upgrades:* Using faster CPUs, SSDs (especially NVMe), and higher-bandwidth network interfaces directly reduces the inherent latency of these components.
-    - *Network Optimisation:* Using high-quality network infrastructure, minimising network hops, and employing techniques like Quality of Service (QoS) to prioritise critical traffic.
+    - *Efficient Algorithms and Data Structures:* Optimising code to perform tasks with fewer operations,
+      reducing compute latency.
+    - *Hardware Upgrades:* Using faster CPUs, SSDs (especially NVMe), and higher-bandwidth network interfaces
+      directly reduces the inherent latency of these components.
+    - *Network Optimisation:* Using high-quality network infrastructure, minimising network hops, and employing
+      techniques like Quality of Service (QoS) to prioritise critical traffic.
 
-3. *Hide the "Wait" (Latency Hiding):* This is where concurrency shines. Instead of waiting idly, the system performs other useful work.
-    - *Asynchronous I/O:* Initiating an I/O operation (e.g., reading from disk, making a network call) and immediately returning control to the caller. The system is notified when the I/O completes (callbacks, promises, async/await). This keeps the CPU busy with other tasks while I/O is in progress.
-    - *Multithreading/Multiprocessing:* Using multiple threads or processes to execute independent tasks concurrently. When one thread blocks on a slow operation, another can run.
-    - *Pipelining:* Breaking down a complex operation into sequential stages, allowing different stages to operate on different data in parallel. Common in CPU instruction execution and network protocols.
-    - *Prefetching:* Proactively fetching data into a faster memory hierarchy (e.g., cache) *before* it's explicitly requested, anticipating future needs.
-    - *Batching/Aggregation:* Grouping multiple small requests into a larger one to amortise the overhead of network trips or I/O operations.
+3. *Hide the "Wait" (Latency Hiding):* This is where concurrency shines. Instead of waiting idly, the system
+   performs other useful work.
+    - *Asynchronous I/O:* Initiating an I/O operation (e.g., reading from disk, making a network call) and
+      immediately returning control to the caller. The system is notified when the I/O completes (callbacks,
+      promises, async/await). This keeps the CPU busy with other tasks while I/O is in progress.
+    - *Multithreading/Multiprocessing:* Using multiple threads or processes to execute independent tasks
+      concurrently. When one thread blocks on a slow operation, another can run.
+    - *Pipelining:* Breaking down a complex operation into sequential stages, allowing different stages to
+      operate on different data in parallel. Common in CPU instruction execution and network protocols.
+    - *Prefetching:* Proactively fetching data into a faster memory hierarchy (e.g., cache) *before* it's
+      explicitly requested, anticipating future needs.
+    - *Batching/Aggregation:* Grouping multiple small requests into a larger one to amortise the overhead
+      of network trips or I/O operations.
 
 4. *Manage the "Perception":*
-    - *Progress Indicators:* Showing spinners, progress bars, or skeleton screens to inform users that the system is working, even if there's a delay.
-    - *Optimistic UI Updates:* Updating the user interface immediately with the *expected* result of an action, even before the server has confirmed it. If the server later rejects the action, the UI is rolled back.
-    - *Preloading/Buffering:* In streaming media, loading content ahead of playback to absorb network latency fluctuations and prevent buffering.
-    - *Predictable Latency:* For many applications, *consistent* latency is more important than absolute lowest latency. Users can adapt to a consistent delay, but unpredictable spikes (jitter) are highly disruptive. This is crucial in real-time communication.
+    - *Progress Indicators:* Showing spinners, progress bars, or skeleton screens to inform users that the
+      system is working, even if there's a delay.
+    - *Optimistic UI Updates:* Updating the user interface immediately with the *expected* result of an
+      action, even before the server has confirmed it. If the server later rejects the action, the UI is rolled back.
+    - *Preloading/Buffering:* In streaming media, loading content ahead of playback to absorb network
+      latency fluctuations and prevent buffering.
+    - *Predictable Latency:* For many applications, *consistent* latency is more important than absolute
+      lowest latency. Users can adapt to a consistent delay, but unpredictable spikes (jitter) are highly
+      disruptive. This is crucial in real-time communication.
 
 
 #### The Challenges of Latency Optimisation
