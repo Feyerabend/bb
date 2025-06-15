@@ -12,13 +12,11 @@ thoughts.
 
 ### Core Characteristics
 
-
 #### Fault Tolerance
 
 Systems continue operating despite component failures through redundancy and failover mechanisms.
 This includes handling hardware crashes, network partitions, and software exceptions without
 complete system failure.
-
 
 #### Graceful Degradation  
 
@@ -27,14 +25,12 @@ For example, a search service might return cached results when the primary datab
 unavailable, or an e-commerce site might disable recommendations while maintaining core
 purchasing functionality.
 
-
 #### Recoverability
 
 Systems include mechanisms for rapid restoration including:
 - *Automatic recovery*: Circuit breakers, retries with exponential backoff, health checks
 - *Manual intervention*: Rollback capabilities, safe mode operations, administrative overrides
 - *State restoration*: Checkpointing, transaction logs, snapshot recovery
-
 
 #### Observability
 
@@ -43,7 +39,6 @@ Comprehensive visibility into system behavior through:
 - *Metrics*: Performance indicators, error rates, resource utilization
 - *Distributed tracing*: Request flow across service boundaries
 - *Health checks*: Liveness and readiness probes
-
 
 #### Redundancy and Isolation
 
@@ -69,14 +64,12 @@ Comprehensive visibility into system behavior through:
 
 ### Architecture Components
 
-
 #### Execution Layer
 
 - *Stateless services*: Horizontally scalable application logic
 - *Background workers*: Asynchronous task processing with retry logic  
 - *Function-as-a-Service*: Event-driven, auto-scaling compute units
 - *Container orchestration*: Kubernetes pods with health checks and resource limits
-
 
 #### Data Layer
 
@@ -91,7 +84,6 @@ Comprehensive visibility into system behavior through:
 - *Load balancers*: Health-aware request distribution with circuit breaking
 - *API gateways*: Rate limiting, authentication, request routing
 - *Orchestrators*: Kubernetes, Docker Swarm for container lifecycle management
-
 
 #### Observability Stack
 
@@ -110,14 +102,12 @@ Comprehensive visibility into system behavior through:
 - Bulkhead pattern: Separate thread pools for different service calls
 - Idempotency: Include request IDs, design for safe retries
 
-
-### Health Check Protocols
+#### Health Check Protocols
 
 - Liveness probe: Basic service availability check
 - Readiness probe: Service ready to handle requests  
 - Startup probe: Slow-starting container initialization
 - Deep health: Dependency health aggregation
-
 
 #### Data Consistency Models
 
@@ -130,6 +120,7 @@ Comprehensive visibility into system behavior through:
 ### Resilience Patterns
 
 #### Circuit Breaker Pattern
+
 Automatically prevent calls to failing services and allow recovery:
 
 States: Closed (normal) → Open (failing) → Half-Open (testing)
@@ -138,6 +129,7 @@ Recovery: Gradual traffic increase, success rate monitoring
 
 
 #### Bulkhead Pattern  
+
 Isolate resources to prevent cascading failures:
 
 Thread pools: Separate pools for different operations
@@ -146,6 +138,7 @@ Rate limiting: Per-user, per-service request limits
 
 
 #### Saga Pattern
+
 Manage distributed transactions with compensation:
 
 Choreography: Event-driven coordination between services
@@ -162,14 +155,12 @@ Compensation: Rollback operations for failed transactions
 - *Inventory management*: Eventually consistent with conflict resolution
 - *Search*: Elasticsearch with read replicas and cached results
 
-
 #### Financial Services
 
 - *Transaction processing*: ACID compliance with distributed consensus
 - *Risk management*: Real-time fraud detection with fallback rules
 - *Regulatory reporting*: Immutable audit trails with backup verification
 - *Customer data*: Encrypted replication across geographic regions
-
 
 #### Content Management
 
@@ -183,6 +174,7 @@ Compensation: Rollback operations for failed transactions
 ### Implementation Checklist
 
 #### Development Phase
+
 - Define failure modes and recovery strategies
 - Implement health checks and readiness probes  
 - Add structured logging with correlation IDs
@@ -190,6 +182,7 @@ Compensation: Rollback operations for failed transactions
 - Create graceful shutdown procedures
 
 #### Testing Phase
+
 - Chaos engineering: Inject failures to test resilience
 - Load testing: Verify performance under stress
 - Disaster recovery: Test backup and restore procedures
@@ -197,6 +190,7 @@ Compensation: Rollback operations for failed transactions
 - Resource exhaustion: Test behavior under resource limits
 
 #### Production Phase
+
 - Monitoring dashboards with actionable alerts
 - Incident response procedures and escalation paths
 - Capacity planning based on usage patterns
@@ -207,16 +201,19 @@ Compensation: Rollback operations for failed transactions
 ### Key Metrics
 
 #### Availability Metrics
+
 - *Uptime percentage*: 99.9% (8.76 hours downtime/year)
 - *Mean Time To Recovery (MTTR)*: Average time to restore service
 - *Mean Time Between Failures (MTBF)*: Average operational time between failures
 - *Error budget*: Acceptable failure rate for innovation vs. reliability balance
 
 #### Performance Metrics  
+
 - *Response time percentiles*: P50, P95, P99 latency measurements
 - *Throughput*: Requests per second under normal and peak load
 - *Resource utilization*: CPU, memory, disk, network usage patterns
 - *Queue depths*: Backlog sizes in asynchronous processing systems
+
 
 ### Conclusion
 

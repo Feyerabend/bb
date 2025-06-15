@@ -18,8 +18,8 @@ Here is an overview of some of these systemic dimensions of computing--concepts 
 eventually engage with, whether explicitly or implicitly.
 
 
-| Concept      | Systemic            |
-|-------------------|--------------------------------------------------------|
+| Concept | Systemic |
+|---|---|
 | *Noise*      | Affects communication, sensing, and even logic gates  |
 | *Randomness*   | Critical in simulation, cryptography, testing, protocols |
 | *Optimisation*  | Present in compilers, algorithms, hardware, energy use |
