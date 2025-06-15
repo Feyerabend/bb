@@ -1,5 +1,5 @@
 
-## PREL: SPLIT
+## Preliminary Task: Split the Files
 
 To split the `basic_commands.py` file into more modular components while maintaining the functionality
 of the BASIC interpreter, you need to consider the logical groupings of commands and their dependencies.
