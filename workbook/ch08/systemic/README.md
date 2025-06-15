@@ -28,7 +28,7 @@ eventually engage with, whether explicitly or implicitly.
 | *Abstraction*   | Central to all software and hardware design      |
 | *Scalability*   | Applies to data, computation, architecture       |
 | *Latency*     | Matters in networks, UI, hardware timing        |
-| *Concurrency*   | Appears from CPU pipelines to distributed systems   |
+| [*Concurrency*](./../../ch07/models/concurrent/) | Appears from CPU pipelines to distributed systems |
 | *Fault tolerance* | From ECC memory to retry loops in software       |
 | *Determinism*   | Affects debugging, simulation, and predictability   |
 | *Time*      | Scheduling, clocks, profiling, causality in distributed systems |
