@@ -4,7 +4,7 @@
 Programming is more than writing code that compiles or runs. It's about how we think about problems,
 how we design our solutions, and how we adapt to complexity, change, and uncertainty. This section
 introduces you to broader, systemic dimensions of programming--such as paradigms, abstraction,
-resilience, and socio-technical design--and encourages you to reflect on how these ideas shape th
+resilience, and socio-technical design--and encourages you to reflect on how these ideas shape the
 systems we build.
 
 
@@ -111,7 +111,7 @@ To tie it all together, we'll ask you to create a manifesto or methodology based
 
 __Option A: Programming Manifesto__
 
-Write 1-2 pages summarizing your core principles. For example:
+Write 1-2 pages summarising your core principles. For example:
 - "Programming should reflect the domain, not distort it."
 - "Failure is normal. Design for it."
 

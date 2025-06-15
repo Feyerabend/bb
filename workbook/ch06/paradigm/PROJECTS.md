@@ -45,7 +45,8 @@ with varying programming experience.
     - Why might a library benefit from a DSL instead of a standard database system?
     - How do resilience principles like error budgeting or chaos engineering change the way we think about software?
 - *Brainstorming*:
-  - Students brainstorm a problem domain they're interested in (e.g., event planning, pet adoption, task scheduling, disaster response). Provide a list of example domains for inspiration:
+  - Students brainstorm a problem domain they're interested in (e.g., event planning, pet adoption, task scheduling,
+     disaster response). Provide a list of example domains for inspiration:
     - Library management (books, patrons, borrowings)
     - Event ticketing (events, attendees, payments)
     - Pet adoption (pets, adopters, matches)
@@ -77,7 +78,7 @@ with varying programming experience.
 - *Lecture/Guidance*:
   - Provide a mini-lecture on manifestos, using `RESILIENCE.pdf` (Section 3) as an example. Highlight how principles like
     "embrace risk" or "automate everything" guide decision-making.
-  - Discuss how your `README.md` advocates for a language-driven approach, emphasizing data and expressiveness.
+  - Discuss how your `README.md` advocates for a language-driven approach, emphasising data and expressiveness.
   - Share a simplified manifesto template:
     - Principle 1: [Statement] (e.g., "Prioritise flexibility over premature optimisation")
     - Justification: [Why this matters, with an example]
@@ -175,13 +176,13 @@ their manifesto principles.
 - A working prototype (code submitted via GitHub or similar) with:
   - A README explaining how to run it.
   - A demo of 1-5 operations or features.
-- A 1-page report summarizing the prototype and its alignment with the manifesto.
+- A 1-page report summarising the prototype and its alignment with the manifesto.
 
 *Prompt*:
 > (Optional for intermediate/advanced students) Implement a prototype of your methodology, such as a DSL interpreter or
   a resilience-focused system. Use the provided starter code or a framework of your choice (e.g., Python, Node.js).
   Your prototype should demonstrate at least 1-5 operations or features from your methodology. Submit your code with a
-  README explaining how to run it and a 1-page report summarizing the prototype and how it aligns with your manifesto
+  README explaining how to run it and a 1-page report summarising the prototype and how it aligns with your manifesto
   principles. Advanced students may include resilience features (e.g., retries, logging) or integrate with an LLM
   for natural language input.
 
