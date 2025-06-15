@@ -5,7 +5,7 @@ To split the `basic_commands.py` file into more modular components while maintai
 of the BASIC interpreter, you need to consider the logical groupings of commands and their dependencies.
 Below, is a theoretical approach to splitting the file and describe the dependencies between the resulting
 files and other parts of the system. There is also an outline how you can visualise the dependency
-graph conceptually.
+graph conceptually. 
 
 
 ### Theoretical Approach to Splitting `basic_commands.py`
