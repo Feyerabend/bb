@@ -20,7 +20,7 @@ eventually engage with, whether explicitly or implicitly.
 
 | Concept | Systemic |
 |---|---|
-| *Noise*      | Affects communication, sensing, and even logic gates  |
+| [*Noise*](./noice/) | Affects communication, sensing, and even logic gates |
 | *Randomness*   | Critical in simulation, cryptography, testing, protocols |
 | *Optimisation*  | Present in compilers, algorithms, hardware, energy use |
 | *Security*    | Requires attention at every layer: physical to logical |
