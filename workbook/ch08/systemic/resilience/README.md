@@ -6,8 +6,8 @@ gracefully when components fail. Rather than preventing all failures, resilient 
 anticipate, contain, and recover from failures while preserving core functionality and user
 experience.
 
-We've already made some aquaintance with resilient thoughts manifest in the section on
-[paradigms](./../../../ch06/paradigm/).
+We've already made some aquaintance with [resilient](./../../../ch06/paradigm/manifest/)
+thoughts.
 
 
 ### Core Characteristics
