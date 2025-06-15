@@ -17,8 +17,8 @@ problem of double-spending in digital currencies without relying on centralised 
 The first Bitcoin block, known as the genesis block, was mined in January 2009, marking the birth of
 blockchain in practice. While Bitcoin initially gained traction in niche tech and libertarian circles,
 the broader potential of blockchain became evident by the mid-2010s. Ethereum, launched in 2015 by
-Vitalik Buterin, expanded the technology’s scope by introducing smart contracts—self-executing code
-stored on the blockchain—unlocking applications beyond currency. Since then, blockchain has seen waves
+Vitalik Buterin, expanded the technology’s scope by introducing smart contracts--self-executing code
+stored on the blockchain--unlocking applications beyond currency. Since then, blockchain has seen waves
 of innovation, from enterprise adoption by companies like IBM and JPMorgan to decentralised finance
 (DeFi) and non-fungible tokens (NFTs), though it has also faced scrutiny over scalability, energy
 consumption, and regulatory challenges.
@@ -30,7 +30,7 @@ At its core, blockchain is a distributed database that records transactions in a
 sequence of blocks. Each block contains a list of transactions or data, a timestamp, and a cryptographic
 hash of the previous block, forming a chain that is resistant to alteration. This structure ensures that
 once data is added, it cannot be changed without altering all subsequent blocks, which requires consensus
-from the network—a computationally expensive and practically infeasible task in large, secure blockchains.
+from the network--a computationally expensive and practically infeasible task in large, secure blockchains.
 
 The technology relies on several key components. First, *decentralisation* distinguishes blockchain from
 traditional databases. Instead of a central authority, data is stored across a network of nodes (computers)
@@ -43,7 +43,7 @@ reducing energy use. Other mechanisms, like Delegated Proof of Stake or Practica
 cater to specific needs like speed or scalability.
 
 Cryptography underpins blockchain’s security. Transactions are signed with private-public key pairs,
-ensuring only authorised parties can initiate them. Hashes—fixed-length strings generated from data—link
+ensuring only authorised parties can initiate them. Hashes--fixed-length strings generated from data--link
 blocks and detect tampering. If even a single character in a block changes, its hash becomes invalid, breaking
 the chain’s integrity. Additionally, *smart contracts*, pioneered by Ethereum, allow programmable logic on
 the blockchain, automating agreements like payments or asset transfers when predefined conditions are met.
@@ -62,7 +62,7 @@ Blockchain’s applications extend far beyond cryptocurrencies. In *finance*, de
 like Uniswap or Aave use blockchain to offer lending, borrowing, and trading without banks, relying on smart
 contracts to automate processes. Stablecoins, cryptocurrencies pegged to assets like the dollar, facilitate fast,
 low-cost cross-border payments. In *supply chain management*, companies like Walmart use blockchain to track goods
-from source to shelf, ensuring transparency and reducing fraud—IBM’s Food Trust network, for instance, traces food
+from source to shelf, ensuring transparency and reducing fraud--IBM’s Food Trust network, for instance, traces food
 products to verify authenticity and safety. *Healthcare* leverages blockchain to secure patient records, enabling
 interoperable, tamper-proof data sharing while preserving privacy. *Digital identity* solutions use blockchain to
 create verifiable, self-sovereign identities, reducing reliance on centralised databases vulnerable to breaches.
