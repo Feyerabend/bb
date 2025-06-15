@@ -184,6 +184,14 @@ Handling them involves detection, containment, reporting, and recovery. Some err
 design, with graceful degradation or corrective strategies.
 
 
+#### Resilience
+
+The ability of a system to maintain acceptable service in the face of faults, overloads, or unexpected
+conditions. Resilience spans hardware (e.g., redundant circuits), software (e.g., retries, fallbacks),
+and distributed systems (e.g., failover, partition tolerance), focusing not just on preventing failure
+but on graceful degradation and recovery.
+
+
 ### Relations
 
 *Abstraction*, *Interface*, and *State* form a conceptual core around how systems are structured and composed.
