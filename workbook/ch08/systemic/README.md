@@ -27,11 +27,11 @@ eventually engage with, whether explicitly or implicitly.
 | [*Interface*](./interface/) | Defines component interaction everywhere |
 | *Abstraction*   | Central to all software and hardware design      |
 | *Scalability*   | Applies to data, computation, architecture       |
-| *Latency*     | Matters in networks, UI, hardware timing        |
+| [*Latency*](./latency/) | Matters in networks, UI, hardware timing |
 | [*Concurrency*](./../../ch07/models/concurrent/) | Appears from CPU pipelines to distributed systems |
 | *Fault tolerance* | From ECC memory to retry loops in software       |
 | *Determinism*   | Affects debugging, simulation, and predictability   |
-| *Time*      | Scheduling, clocks, profiling, causality in distributed systems |
+| [*Time*](./time/) | Scheduling, clocks, profiling, causality in distributed systems |
 | *Complexity*   | Measured algorithmically, but also felt in UX and architecture |
 | *State*      | Core to both computing and modeling; managed differently across layers |
 | *Energy use*   | Crucial from battery devices to datacenters      |
