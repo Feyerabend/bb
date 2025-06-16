@@ -1,5 +1,5 @@
 """
-t-SNE Visualization using Pillow (PIL) - Debug Version
+t-SNE Visualization using Pillow (PIL) - Fixed to read from file
 Scatter plots of t-SNE embeddings with automatic clustering.
 """
 
@@ -8,6 +8,7 @@ import math
 import colorsys
 from typing import List, Tuple, Optional, Dict, Any
 import random
+import csv
 
 
 class KMeans:
@@ -125,7 +126,7 @@ class KMeans:
 class TSNEVisualizer:
     """
     A class for creating visualizations of t-SNE embeddings using Pillow.
-    Now includes automatic clustering discovery with debugging.
+    Now includes automatic clustering discovery with debugging and file input support.
     """
     
     def __init__(self, width: int = 800, height: int = 600, margin: int = 60):
@@ -141,6 +142,60 @@ class TSNEVisualizer:
         self.text_color = (50, 50, 50)  # Dark gray
         self.point_size = 4
         self.alpha = 180  # Transparency for points
+    
+    def load_data_from_file(self, filename: str) -> Tuple[List[List[float]], List[int]]:
+        """
+        Load t-SNE data from a tab-separated file.
+        
+        Args:
+            filename: Path to the data file
+            
+        Returns:
+            Tuple of (embedding coordinates, original labels)
+        """
+        embedding = []
+        original_labels = []
+        
+        try:
+            with open(filename, 'r', encoding='utf-8') as file:
+                # Try to detect the delimiter
+                sample = file.read(1024)
+                file.seek(0)
+                
+                if '\t' in sample:
+                    delimiter = '\t'
+                elif ',' in sample:
+                    delimiter = ','
+                else:
+                    delimiter = '\t'  # default
+                
+                reader = csv.DictReader(file, delimiter=delimiter)
+                
+                for row in reader:
+                    try:
+                        # Extract x, y coordinates
+                        x = float(row['x'])
+                        y = float(row['y'])
+                        label = int(row['label'])
+                        
+                        embedding.append([x, y])
+                        original_labels.append(label)
+                        
+                    except (ValueError, KeyError) as e:
+                        print(f"Warning: Skipping invalid row: {row}. Error: {e}")
+                        continue
+            
+            print(f"Successfully loaded {len(embedding)} data points from '{filename}'")
+            print(f"Original labels found: {set(original_labels)}")
+            
+            return embedding, original_labels
+            
+        except FileNotFoundError:
+            print(f"Error: File '{filename}' not found.")
+            return [], []
+        except Exception as e:
+            print(f"Error reading file '{filename}': {e}")
+            return [], []
         
     def estimate_clusters(self, embedding: List[List[float]], max_clusters: int = 10) -> int:
         """
@@ -377,7 +432,6 @@ class TSNEVisualizer:
     
     def add_title(self, draw: ImageDraw.Draw, title: str, font_size: int = 16):
         """Add a title to the plot."""
-        # guess what
         try:
             font = ImageFont.truetype("arial.ttf", font_size)
         except (OSError, IOError):
@@ -404,9 +458,13 @@ class TSNEVisualizer:
                            color_scheme: str = "hsv",
                            show_grid: bool = True,
                            show_legend: bool = True,
-                           auto_cluster: bool = True) -> Tuple[Image.Image, List[int]]:
+                           auto_cluster: bool = True,
+                           use_original_labels: bool = False) -> Tuple[Image.Image, List[int]]:
         """
-        Create a complete t-SNE visualization with automatic clustering.
+        Create a complete t-SNE visualization.
+        
+        Args:
+            use_original_labels: If True, use the original labels from file instead of clustering
         """
         if not embedding:
             # Return empty image if no data
@@ -414,30 +472,33 @@ class TSNEVisualizer:
             return img, []
         
         # Determine cluster labels
-        if labels is None or auto_cluster:
+        if use_original_labels and labels is not None:
+            # Use original labels from the file
+            print(f"Using original labels from file: {set(labels)}")
+            cluster_labels = labels
+        elif labels is None or auto_cluster:
             if n_clusters is None:
                 n_clusters = self.estimate_clusters(embedding)
                 print(f"Estimated optimal number of clusters: {n_clusters}")
             
             # Perform clustering
             kmeans = KMeans(n_clusters=n_clusters, random_seed=42)
-            labels = kmeans.fit(embedding)
-            print(f"Discovered {len(set(labels))} clusters")
+            cluster_labels = kmeans.fit(embedding)
+            print(f"Discovered {len(set(cluster_labels))} clusters")
+        else:
+            cluster_labels = labels
         
         # Create image
         img = Image.new('RGB', (self.width, self.height), self.background_color)
         draw = ImageDraw.Draw(img)
         
         # Generate colors for clusters
-        unique_labels = sorted(list(set(labels)))
+        unique_labels = sorted(list(set(cluster_labels)))
         n_clusters_actual = len(unique_labels)
         colors = self.generate_colors(n_clusters_actual, color_scheme)
         
         print(f"DEBUG: Unique labels found: {unique_labels}")
         print(f"DEBUG: Colors generated: {colors}")
-        
-        # Create label to color mapping - FIXED
-        label_to_color_index = {label: i for i, label in enumerate(unique_labels)}
         
         # Normalize coordinates
         coordinates = self.normalize_coordinates(embedding)
@@ -447,103 +508,100 @@ class TSNEVisualizer:
             self.draw_grid(draw)
         
         self.draw_axes(draw)
-        self.draw_points(draw, coordinates, labels, colors)
+        self.draw_points(draw, coordinates, cluster_labels, colors)
         
         if show_legend:
-            legend_labels = [f"Cluster {label}" for label in unique_labels]
-            legend_colors = colors[:len(unique_labels)]  # actual colours
+            if use_original_labels:
+                legend_labels = [f"Class {label}" for label in unique_labels]
+            else:
+                legend_labels = [f"Cluster {label}" for label in unique_labels]
+            legend_colors = colors[:len(unique_labels)]
             self.draw_legend(draw, legend_colors, legend_labels)
         
-        # Update title to indicate automatic clustering
-        if auto_cluster and n_clusters_actual > 1:
+        # Update title based on visualization type
+        if use_original_labels:
+            title += f" (Original {n_clusters_actual} Classes)"
+        elif auto_cluster and n_clusters_actual > 1:
             title += f" ({n_clusters_actual} Auto-Discovered Clusters)"
         
         self.add_title(draw, title)
         
-        return img, labels
+        return img, cluster_labels
     
-    def save_visualization(self, embedding: List[List[float]], 
-                          labels: Optional[List[int]] = None,
-                          filename: str = "tsne_plot.png", 
-                          **kwargs) -> List[int]:
+    def save_visualization_from_file(self, filename: str, 
+                                   output_filename: str = "tsne_plot.png",
+                                   use_original_labels: bool = True,
+                                   **kwargs) -> List[int]:
         """
-        Create and save a t-SNE visualization with automatic clustering.
+        Create and save a t-SNE visualization from a data file.
         
+        Args:
+            filename: Input data file path
+            output_filename: Output image file path
+            use_original_labels: Whether to use original labels or perform clustering
+            
         Returns:
             The cluster labels that were used
         """
-        img, used_labels = self.create_visualization(embedding, labels, **kwargs)
-        img.save(filename, quality=95, optimize=True)
-        print(f"Visualization saved to '{filename}'")
-        return used_labels
-
-
-def generate_sample_data(n_points: int = 300, n_clusters: int = 4) -> List[List[float]]:
-    """
-    Generate sample t-SNE-like 2D data for testing.
-    """
-    embedding = []
-    
-    centers = []
-    for i in range(n_clusters):
-        angle = 2 * math.pi * i / n_clusters
-        radius = 8 + random.uniform(-1, 1)  # Increased separation
-        center_x = radius * math.cos(angle)
-        center_y = radius * math.sin(angle)
-        centers.append((center_x, center_y))
-    
-    print(f"DEBUG: Generated cluster centers: {centers}")
-    
-    # Generate points around centers
-    points_per_cluster = n_points // n_clusters
-    remaining_points = n_points % n_clusters
-    
-    for cluster_id, (center_x, center_y) in enumerate(centers):
-        n_points_this_cluster = points_per_cluster + (1 if cluster_id < remaining_points else 0)
+        # Load data from file
+        embedding, original_labels = self.load_data_from_file(filename)
         
-        for _ in range(n_points_this_cluster):
-            # Add noise around center - reduced noise for clearer clusters
-            noise_x = random.gauss(0, 0.5)  # Reduced from 0.8
-            noise_y = random.gauss(0, 0.5)  # Reduced from 0.8
-            
-            x = center_x + noise_x
-            y = center_y + noise_y
-            
-            embedding.append([x, y])
-    
-    return embedding
+        if not embedding:
+            print("No data loaded. Cannot create visualization.")
+            return []
+        
+        # Create visualization
+        img, used_labels = self.create_visualization(
+            embedding, 
+            original_labels if use_original_labels else None,
+            use_original_labels=use_original_labels,
+            **kwargs
+        )
+        
+        # Save image
+        img.save(output_filename, quality=95, optimize=True)
+        print(f"Visualization saved to '{output_filename}'")
+        return used_labels
 
 
 def main():
     """
-    Example usage of the fixed TSNEVisualizer with automatic clustering and debugging.
+    Example usage of the TSNEVisualizer with file input.
     """
-    print("Generating sample t-SNE embedding data...")
+    data_file = "tsne_output.tsv"
     
-    # Generate sample 2D embedding (as if from t-SNE output)
-    embedding = generate_sample_data(n_points=500, n_clusters=5)
-    
-    print(f"Generated {len(embedding)} 2D points")
-    
-    # Create visualizer
+    print(f"Loading t-SNE data from '{data_file}'...")
+
     visualizer = TSNEVisualizer(width=1200, height=900, margin=80)
     
-    print("Creating visualisation with automatic clustering...")
-    discovered_labels = visualizer.save_visualization(
-        embedding,
-        filename="tsne_clustered.png",
-        title="t-SNE Visualisation with Auto-Discovered Clusters",
+    print("Creating visualization with original labels...")
+    used_labels = visualizer.save_visualization_from_file(
+        data_file,
+        output_filename="tsne_original_labels.png",
+        title="t-SNE Visualization from File Data",
+        color_scheme="rainbow",
+        show_grid=True,
+        show_legend=True,
+        use_original_labels=True
+    )
+    
+    print(f"Used labels: {set(used_labels)}")
+
+    print("\nCreating visualisation with automatic clustering...")
+    auto_labels = visualizer.save_visualization_from_file(
+        data_file,
+        output_filename="tsne_auto_clusters.png",
+        title="t-SNE Visualisation with Auto-Clustering",
         color_scheme="hsv",
         show_grid=True,
         show_legend=True,
+        use_original_labels=False,
         auto_cluster=True
     )
     
-    print(f"Discovered clusters: {set(discovered_labels)}")
-    
-    print("Done! Check PNG file.")
+    print(f"Auto-discovered labels: {set(auto_labels)}")
+    print("\nDone! Check PNG files.")
 
 
 if __name__ == "__main__":
     main()
-
