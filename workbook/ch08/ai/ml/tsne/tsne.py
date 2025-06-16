@@ -1,6 +1,6 @@
 """
 t-SNE (t-Distributed Stochastic Neighbor Embedding)
-Pure Python - Fixed version with improved numerical stability
+Pure Python - Fixed version with improved numerical stability and realistic data generation
 """
 
 import math
@@ -404,16 +404,135 @@ def normalize_data(X: List[List[float]]) -> List[List[float]]:
     return X_normalized
 
 
-def generate_sample_data(n_clusters: int = 3, samples_per_cluster: int = 50, 
-                        dimensions: int = 10, noise: float = 0.5) -> Tuple[List[List[float]], List[int]]:
+def generate_realistic_data(dimensions: int = 15, total_samples: int = 300) -> Tuple[List[List[float]], List[int]]:
     """
-    Generate sample clustered data for testing t-SNE.
+    Generate realistic, varied data that mimics real-world scenarios.
+    Creates clusters with different shapes, sizes, densities, and outliers.
     
     Args:
-        n_clusters: Number of clusters
-        samples_per_cluster: Samples per cluster
+        dimensions: Number of dimensions for the data
+        total_samples: Total number of samples to generate
+    
+    Returns:
+        Tuple of (data, labels)
+    """
+    data = []
+    labels = []
+    current_label = 0
+    
+    # Cluster 1: Dense, spherical cluster (e.g., well-defined group)
+    n_samples_1 = int(total_samples * 0.25)
+    center_1 = [random.uniform(-2, 2) for _ in range(dimensions)]
+    for _ in range(n_samples_1):
+        point = []
+        for d in range(dimensions):
+            if d < 5:  # First few dimensions have tight clustering
+                point.append(center_1[d] + random.gauss(0, 0.3))
+            else:  # Other dimensions have more spread
+                point.append(center_1[d] + random.gauss(0, 0.8))
+        data.append(point)
+        labels.append(current_label)
+    current_label += 1
+    
+    # Cluster 2: Elongated cluster (e.g., data following a trend)
+    n_samples_2 = int(total_samples * 0.2)
+    base_point = [random.uniform(-1, 1) for _ in range(dimensions)]
+    direction = [random.gauss(0, 1) for _ in range(dimensions)]
+    # Normalize direction vector
+    magnitude = math.sqrt(sum(x**2 for x in direction))
+    direction = [x / magnitude for x in direction]
+    
+    for _ in range(n_samples_2):
+        # Generate points along the direction with some perpendicular spread
+        t = random.uniform(-3, 3)  # Parameter along the main direction
+        perpendicular_noise = [random.gauss(0, 0.4) for _ in range(dimensions)]
+        
+        point = []
+        for d in range(dimensions):
+            main_component = base_point[d] + t * direction[d]
+            point.append(main_component + perpendicular_noise[d])
+        
+        data.append(point)
+        labels.append(current_label)
+    current_label += 1
+    
+    # Cluster 3: Loose, irregular cluster (e.g., heterogeneous group)
+    n_samples_3 = int(total_samples * 0.25)
+    # Multiple sub-centers within this cluster
+    sub_centers = []
+    for _ in range(3):
+        sub_center = [random.uniform(1, 4) for _ in range(dimensions)]
+        sub_centers.append(sub_center)
+    
+    for i in range(n_samples_3):
+        # Choose a sub-center randomly
+        center = random.choice(sub_centers)
+        point = []
+        for d in range(dimensions):
+            # Vary the spread by dimension
+            if d % 3 == 0:  # Some dimensions have tight clustering
+                spread = 0.5
+            elif d % 3 == 1:  # Some have medium spread
+                spread = 1.2
+            else:  # Others have loose spread
+                spread = 2.0
+            
+            point.append(center[d] + random.gauss(0, spread))
+        
+        data.append(point)
+        labels.append(current_label)
+    current_label += 1
+    
+    # Cluster 4: Ring/Donut shaped cluster (non-spherical)
+    n_samples_4 = int(total_samples * 0.15)
+    ring_center = [random.uniform(-3, -1) for _ in range(dimensions)]
+    ring_radius = 2.0
+    
+    for _ in range(n_samples_4):
+        # Generate point on a ring in first two dimensions, noise in others
+        angle = random.uniform(0, 2 * math.pi)
+        radius = ring_radius + random.gauss(0, 0.3)  # Add some width to the ring
+        
+        point = ring_center[:]
+        point[0] += radius * math.cos(angle)
+        point[1] += radius * math.sin(angle)
+        
+        # Add noise to other dimensions
+        for d in range(2, dimensions):
+            point[d] += random.gauss(0, 0.6)
+        
+        data.append(point)
+        labels.append(current_label)
+    current_label += 1
+    
+    # Add outliers (scattered individual points)
+    n_outliers = total_samples - len(data)
+    for _ in range(n_outliers):
+        # Scattered outliers in random locations
+        point = [random.uniform(-6, 6) for _ in range(dimensions)]
+        data.append(point)
+        labels.append(current_label)  # Each outlier gets its own label
+        current_label += 1
+    
+    # Add some correlated noise across dimensions to make it more realistic
+    correlation_strength = 0.3
+    for i in range(len(data)):
+        base_noise = random.gauss(0, 1)
+        for d in range(dimensions):
+            # Add correlated noise to some dimensions
+            if d < dimensions // 2:
+                data[i][d] += correlation_strength * base_noise
+    
+    return data, labels
+
+
+def generate_mixed_density_clusters(dimensions: int = 12, total_samples: int = 250) -> Tuple[List[List[float]], List[int]]:
+    """
+    Generate clusters with very different densities and sizes - more like real data.
+    
+    Args:
         dimensions: Number of dimensions
-        noise: Noise level (standard deviation)
+        total_samples: Total number of samples
     
     Returns:
         Tuple of (data, labels)
@@ -421,15 +540,65 @@ def generate_sample_data(n_clusters: int = 3, samples_per_cluster: int = 50,
     data = []
     labels = []
     
-    for cluster_id in range(n_clusters):
-        # Random cluster center
-        center = [random.gauss(0, 3) for _ in range(dimensions)]
+    # Large, sparse cluster (like a broad category)
+    n_large = int(total_samples * 0.4)
+    center_large = [0] * dimensions
+    for _ in range(n_large):
+        point = []
+        for d in range(dimensions):
+            # Some dimensions cluster tightly, others spread widely
+            if d < 3:
+                spread = 0.8
+            elif d < 7:
+                spread = 2.5
+            else:
+                spread = 1.8
+            point.append(center_large[d] + random.gauss(0, spread))
+        data.append(point)
+        labels.append(0)
+    
+    # Small, dense cluster (like a specialized subgroup)
+    n_small_dense = int(total_samples * 0.15)
+    center_dense = [random.uniform(3, 5) for _ in range(dimensions)]
+    for _ in range(n_small_dense):
+        point = []
+        for d in range(dimensions):
+            point.append(center_dense[d] + random.gauss(0, 0.2))
+        data.append(point)
+        labels.append(1)
+    
+    # Medium cluster with internal structure
+    n_medium = int(total_samples * 0.25)
+    for i in range(n_medium):
+        # Create two sub-clusters within this group
+        if i < n_medium // 2:
+            center = [-2, -2] + [random.uniform(-1, 1) for _ in range(dimensions - 2)]
+        else:
+            center = [-1, -3] + [random.uniform(-1, 1) for _ in range(dimensions - 2)]
         
-        for _ in range(samples_per_cluster):
-            # Generate point around cluster center
-            point = [center[d] + random.gauss(0, noise) for d in range(dimensions)]
-            data.append(point)
-            labels.append(cluster_id)
+        point = []
+        for d in range(dimensions):
+            spread = random.uniform(0.4, 1.2)  # Variable spread per point
+            point.append(center[d] + random.gauss(0, spread))
+        data.append(point)
+        labels.append(2)
+    
+    # Bridge cluster (connects other clusters)
+    n_bridge = total_samples - len(data)
+    for _ in range(n_bridge):
+        # Points scattered between main clusters
+        if random.random() < 0.5:
+            # Between cluster 0 and 2
+            t = random.uniform(0, 1)
+            base = [t * (-1) + (1-t) * 0, t * (-2.5) + (1-t) * 0]
+        else:
+            # Between cluster 1 and 2
+            t = random.uniform(0, 1)
+            base = [t * 4 + (1-t) * (-1.5), t * 4 + (1-t) * (-2.5)]
+        
+        point = base + [random.gauss(0, 1.5) for _ in range(dimensions - 2)]
+        data.append(point)
+        labels.append(3)
     
     return data, labels
 
@@ -455,10 +624,27 @@ if __name__ == "__main__":
     # Set random seed for reproducibility
     random.seed(42)
     
-    # Generate sample data
-    print("Generating sample data...")
-    data, labels = generate_sample_data(n_clusters=4, samples_per_cluster=40, 
-                                       dimensions=20, noise=0.8)
+    # Choose between different data generation methods
+    print("Choose data generation method:")
+    print("1. Realistic varied clusters (default)")
+    print("2. Mixed density clusters")
+    
+    choice = input("Enter choice (1 or 2, or press Enter for 1): ").strip()
+    
+    if choice == "2":
+        print("Generating mixed density cluster data...")
+        data, labels = generate_mixed_density_clusters(dimensions=15, total_samples=300)
+    else:
+        print("Generating realistic varied cluster data...")
+        data, labels = generate_realistic_data(dimensions=18, total_samples=350)
+    
+    print(f"Generated {len(data)} samples with {len(data[0])} dimensions")
+    print(f"Number of unique clusters: {len(set(labels))}")
+    
+    # Show cluster sizes
+    from collections import Counter
+    cluster_counts = Counter(labels)
+    print("Cluster sizes:", dict(cluster_counts))
     
     # Normalize the data
     data = normalize_data(data)
@@ -466,7 +652,7 @@ if __name__ == "__main__":
     # Configure t-SNE
     config = TSNEConfig(
         dims=2,
-        perplexity=30.0,
+        perplexity=25.0,  # Slightly lower for more varied data
         iterations=1000,
         learning_rate=200.0,
         early_exaggeration=12.0,
@@ -485,10 +671,11 @@ if __name__ == "__main__":
         print(f"\nFinal cost: {tsne.cost_history[-1]:.6f}")
         if len(tsne.cost_history) > 1:
             print(f"Cost reduction: {tsne.cost_history[0] - tsne.cost_history[-1]:.6f}")
-
     else:
-        print("No cost history available. t-SNE may not have run successfully.")
+        print("No cost history available.")
+    
     # Print final embedding statistics
     print(f"Final embedding shape: {len(embedding)} points, {len(embedding[0])} dimensions")
-
-
+    
+    print("\nTo visualize the results, you can plot the tsne_output.tsv file")
+    print("The file contains x, y coordinates and cluster labels for each point")
