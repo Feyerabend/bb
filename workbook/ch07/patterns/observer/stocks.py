@@ -1,3 +1,4 @@
+
 class Stock:
     def __init__(self, symbol, price):
         self.symbol = symbol
@@ -24,11 +25,9 @@ class Stock:
         for observer, _ in self._observers:
             observer.update(self)
 
-
 class Observer:
     def update(self, stock):
         pass
-
 
 class Trader(Observer):
     def __init__(self, name, threshold):
@@ -42,7 +41,6 @@ class Trader(Observer):
         else:
             print(f"{self.name} (Trader): {stock.symbol} price at ${stock.get_price():.2f}, no action needed.")
 
-
 class Analyst(Observer):
     def __init__(self, name):
         self.name = name
@@ -52,7 +50,6 @@ class Analyst(Observer):
         report = f"Analysis for {stock.symbol}: Current price ${stock.get_price():.2f}"
         self.reports.append(report)
         print(f"{self.name} (Analyst): Generated report - {report}")
-
 
 class PortfolioManager:
     def __init__(self):
@@ -66,7 +63,6 @@ class PortfolioManager:
             self.stocks[symbol].set_price(price)
         else:
             print(f"Stock {symbol} not found in portfolio.")
-
 
 # example
 def main():
