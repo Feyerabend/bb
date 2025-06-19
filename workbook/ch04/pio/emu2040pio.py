@@ -835,8 +835,6 @@ def demo_blink():
     print("\nFinal state machine status:")
     sm.print_state()
 
-#if __name__ == "__main__":
-#    demo_blink()
 
 def demo_ws2812():
     """Demonstrate WS2812 RGB LED driver"""
