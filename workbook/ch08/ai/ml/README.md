@@ -82,7 +82,7 @@ from traditional code and provide a strong conceptual starting point for further
 | [Decision Trees](./dtree/) | Supervised | Classification and regression | Interpretable, handles non-linear data, prone to overfitting |
 | Random Forest              | Supervised         | General-purpose                  | Ensemble of trees, reduces overfitting, less interpretable      |
 | [Support Vector Machine](./svm/) | Supervised | High-dimensional classification | Margin maximisation, kernel trick for non-linearity |
-| K-Nearest Neighbours (KNN) | Supervised         | Classification, regression       | Instance-based, simple, no training phase                       |
+| [K-Nearest Neighbours](./knn/) (KNN) | Supervised | Classification, regression | Instance-based, simple, no training phase |
 | [Naive Bayes](./bayes/) | Supervised | Text classification, spam filtering | Probabilistic, strong independence assumptions |
 | Gradient Boosting (XGBoost, LightGBM) | Supervised | Structured data             | High accuracy, can overfit, less interpretable                    |
 | K-Means                    | Unsupervised       | Clustering, segmentation         | Simple, assumes spherical clusters, sensitive to initialisation |
