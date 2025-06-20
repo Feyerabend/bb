@@ -77,7 +77,7 @@ from traditional code and provide a strong conceptual starting point for further
 | [Logistic Regression](./logistic/) | Supervised | Binary classification | Probabilistic outputs, interpretable, linear decision boundary |
 | [Decision Trees](./dtree/) | Supervised | Classification and regression | Interpretable, handles non-linear data, prone to overfitting |
 | Random Forest              | Supervised         | General-purpose                  | Ensemble of trees, reduces overfitting, less interpretable      |
-| Support Vector Machine     | Supervised         | High-dimensional classification  | Margin maximisation, kernel trick for non-linearity             |
+| [Support Vector Machine](./svm/) | Supervised | High-dimensional classification | Margin maximisation, kernel trick for non-linearity |
 | K-Nearest Neighbours (KNN) | Supervised         | Classification, regression       | Instance-based, simple, no training phase                       |
 | [Naive Bayes](./bayes/) | Supervised | Text classification, spam filtering | Probabilistic, strong independence assumptions |
 | Gradient Boosting (XGBoost, LightGBM) | Supervised | Structured data             | High accuracy, can overfit, less interpretable                    |
