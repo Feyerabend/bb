@@ -40,7 +40,7 @@ Rather than cover everything, we've selected a few representative techniques to 
 understanding, illustrate key ideas, and encourage deeper exploration.
 
 You can [begin](./START.md) from your conventional programming experience, to understand the machine
-learning way of lettting machines do the work.
+learning way of letting machines do the work.
 
 
 ### A General Observation
@@ -164,7 +164,7 @@ effectively, especially when applied to complex, real-world data.
       scoring (classification), product recommendation (can involve both).
     * *Healthcare:* Disease diagnosis (classification), patient subgrouping (clustering).
     * *Science:* Classifying celestial objects, identifying gene expression patterns, grouping species.
-    * *Everyday Life:* Spam filtering, facial recognition, news categorization.
+    * *Everyday Life:* Spam filtering, facial recognition, news categorisation.
 
 3. *Data Availability and Definition:*
     * *Classification:* Requires *labeled data*, meaning you need examples where the correct
@@ -215,7 +215,7 @@ models more feasible and its simplicity and interpretability became highly value
     * *Statistical Relation:* This is a fundamental statistical method. It's about finding the
       best-fitting straight line (or hyperplane in higher dimensions) to describe the relationship
       between a dependent variable and one or more independent variables. It relies on the statistical
-      concept of minimizing the sum of squared errors (least squares).
+      concept of minimising the sum of squared errors (least squares).
     * *Problems Solved:* Predicting continuous outcomes. Examples: predicting house prices based
       on size and location, sales forecasting based on advertising spend, student performance based
       on study hours.
@@ -233,7 +233,7 @@ which could yield probabilities outside the meaningful 0-1 range. Its clear prob
 and connections to generalised linear models cemented its place as a fundamental classification algorithm.
 
 * *Logistic Regression:*
-    * *Statistical Relation:* Also a statistical model, specifically a generalized linear model. It
+    * *Statistical Relation:* Also a statistical model, specifically a generalised linear model. It
       uses the logistic function to model the probability of a binary outcome. It's based on maximum
       likelihood estimation.
     * *Problems Solved:* Binary classification. Examples: predicting whether a customer will churn,
@@ -311,14 +311,14 @@ expanded upon by Thomas Cover and Peter Hart in 1967. Its intuitive principle—
 the majority class among its closest neighbours—made it a straightforward choice for pattern recognition tasks,
 requiring no explicit training phase but relying entirely on the stored training data at prediction time.
 
-* *K-Nearest Neighbors (KNN):*
+* *K-Nearest Neighbours (KNN):*
     * *Statistical Relation:* A non-parametric, instance-based method. Its statistical foundation lies in the
       idea that similar data points are likely to belong to the same class or have similar values. It relies
       on distance metrics (e.g., Euclidean distance), a fundamental statistical concept.
     * *Problems Solved:* Classification and regression. Examples: recommendation systems, anomaly detection,
       handwriting recognition.
     * *Why ML Benefits:* Simplicity and effectiveness for certain datasets. ML frameworks handle efficient
-      neighbor searches, especially for large datasets.
+      neighbour searches, especially for large datasets.
 
 
 __Naive Bayes__
@@ -354,7 +354,7 @@ on structured data.
       to correct the errors of the previous ones. It leverages the concept of gradient descent, a core
       optimisation algorithm in statistics and mathematics, to minimise a loss function.
     * *Problems Solved:* Structured data with high accuracy. Examples: Kaggle competitions, predictive
-      maintenance, financial modeling.
+      maintenance, financial modelling.
     * *Why ML Benefits:* Achieves state-of-the-art results on many tabular datasets by iteratively
       improving predictions. ML frameworks provide highly optimised implementations.
 
@@ -411,7 +411,7 @@ scientific and engineering disciplines.
     * *Problems Solved:* Dimensionality reduction, noise reduction, data visualisation. Examples:
       reducing features for a machine learning model, visualising high-dimensional data, compressing images.
     * *Why ML Benefits:* Crucial for managing high-dimensional datasets and improving model performance
-      by removing redundant information. ML libraries provide optimized implementations for large matrices.
+      by removing redundant information. ML libraries provide optimised implementations for large matrices.
 
 
 __t-SNE / UMAP__
@@ -472,7 +472,7 @@ relationships, marking a significant step towards modern deep learning.
         * *MLP:* General function approximation.
         * *CNN:* Exploits spatial correlations, drawing parallels to local feature detectors and
           convolutions used in signal processing (which has statistical applications).
-        * *RNN/LSTM/GRU:* Designed for sequential data, modeling temporal dependencies.
+        * *RNN/LSTM/GRU:* Designed for sequential data, modelling temporal dependencies.
           They can be seen as highly complex time-series models, a field rich in statistics.
     * *Problems Solved:*
         * *MLP:* General-purpose, e.g., tabular data prediction, basic classification.
@@ -481,7 +481,7 @@ relationships, marking a significant step towards modern deep learning.
           time-series forecasting.
     * *Why ML Benefits:* Their power lies in their ability to learn extremely complex, hierarchical
       representations from raw data, often outperforming traditional methods on unstructured data.
-      This requires vast computational resources and specialized ML frameworks (TensorFlow, PyTorch).
+      This requires vast computational resources and specialised ML frameworks (TensorFlow, PyTorch).
 
 
 *CNN (Convolutional Neural Networks)*
@@ -519,10 +519,10 @@ AI applications.
       to generate new, similar data. The "adversarial" training process involves a generator and a discriminator
       network, which are essentially trying to outsmart each other by learning to approximate the real data
       distribution and distinguish real from fake, respectively. This is a very advanced form of statistical
-      modeling of distributions.
+      modelling of distributions.
     * *Problems Solved:* Data generation, image synthesis, style transfer. Examples: generating realistic
       faces, creating art, data augmentation.
-    * *Why ML Benefits:* Pushed the boundaries of what's possible in generative modeling, leading to highly
+    * *Why ML Benefits:* Pushed the boundaries of what's possible in generative modelling, leading to highly
       realistic synthetic data. ML provides the infrastructure for complex adversarial training.
 
 
