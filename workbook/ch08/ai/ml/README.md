@@ -66,6 +66,10 @@ to real-world complexity.
 
 ### A Selection of Algorithms
 
+> [!WARNING]  
+> Running Python in the context of machine learning often involves the use of external libraries and execution within a virtual environment (venv). Tools like TensorFlow and similar packages are commonly used. These environments evolve rapidly, and versions can become obsolete quickly. Consequently, the examples provided reflect the current state at the time of writing and may require adjustments to work with future versions.
+
+
 As machine learning evolves, some early algorithms may seem outdated. However, they remain valuable, not for
 their state-of-the-art performance, but because they highlight the essential shift from explicit programming
 to data-driven inference. These methods help build intuition about how learning systems operate differently
