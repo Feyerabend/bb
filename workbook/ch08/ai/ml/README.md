@@ -88,7 +88,7 @@ from traditional code and provide a strong conceptual starting point for further
 | K-Means                    | Unsupervised       | Clustering, segmentation         | Simple, assumes spherical clusters, sensitive to initialisation |
 | DBSCAN                     | Unsupervised       | Clustering with noise            | Handles arbitrary shapes, density-based                         |
 | PCA (Principal Component Analysis) | Unsupervised | Dimensionality reduction     | Linear transformation, unsupervised, captures variance            |
-| [t-SNE](./tsne/) / UMAP               | Unsupervised | Visualisation, clustering | Non-linear, preserves local structure, non-parametric |
+| [t-SNE](./tsne/) / [UMAP](./umap/) | Unsupervised | Visualisation, clustering | Non-linear, preserves local structure, non-parametric |
 | [Apriori](./apriori/) / [FP-Growth](./apriori/) | Unsupervised | Market basket analysis | Association rule mining |
 | [Neural Networks](./mlp/) (MLP) | Supervised | General-purpose | Flexible, powerful, requires large data |
 | [CNN](./cnn/) (Convolutional NN) | Supervised | Image data | Exploits spatial structure, translation invariance |
