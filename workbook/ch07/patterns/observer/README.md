@@ -87,14 +87,12 @@ sequenceDiagram
 5. *Dynamic Subscription*: Observers can subscribe or unsubscribe from the subject at runtime.
 
 
-#### Pros and Cons
-
-Pros:
+#### Pros
 - Promotes loose coupling between subject and observers.
 - Allows dynamic addition/removal of observers.
 - Supports broadcasting to multiple objects.
 
-Cons:
+#### Cons
 - Can lead to memory leaks if observers are not properly detached.
 - Notification overhead increases with many observers.
 - Observers may become dependent on the subject's state, creating implicit dependencies.
