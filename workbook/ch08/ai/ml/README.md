@@ -1,5 +1,4 @@
 
-
 ## Machine Learning
 
 Machine Learning (ML) is a rapidly growing subfield of AI focused on building systems that learn from data
@@ -40,6 +39,8 @@ As interest and investment in AI grow, so does the abundance of tutorials and ed
 Rather than cover everything, we've selected a few representative techniques to provide a foundational
 understanding, illustrate key ideas, and encourage deeper exploration.
 
+You can [begin](./START.md) from your conventional programming experience, to understand the machine
+learning way of lettting machines do the work.
 
 
 ### A General Observation
