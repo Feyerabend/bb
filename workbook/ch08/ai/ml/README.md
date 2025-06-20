@@ -201,7 +201,8 @@ effectively, especially when applied to complex, real-world data.
 Machine learning is, at its heart, applied statistics. Many of these algorithms can be understood
 as sophisticated statistical models designed to find patterns and make predictions from data.
 
-*Linear Regression*
+
+__Linear Regression__
 
 The method of least squares, foundational to linear regression, has roots stretching back to the
 early 19th century with contributions from Legendre (1805) and Gauss (1809), who developed it to
@@ -222,7 +223,7 @@ models more feasible and its simplicity and interpretability became highly value
       computation on large datasets, handling of multiple features, and integration into complex pipelines.
 
 
-*Logistic Regression*
+__Logistic Regression__
 
 Developed by statistician David Cox in 1958, Logistic Regression emerged as a powerful statistical
 model for binary classification, specifically designed to model the probability of a binary outcome.
@@ -241,7 +242,7 @@ and connections to generalised linear models cemented its place as a fundamental
       and integration into production systems.
 
 
-*Decision Trees*
+__Decision Trees__
 
 The concept of using hierarchical, tree-like structures for decision-making dates back to earlier statistical
 methods, but the modern era of Decision Trees truly began with the development of the ID3 algorithm by J.
@@ -261,7 +262,7 @@ create interpretable rules, becoming popular for their clarity and ability to ha
       make them valuable. ML provides the algorithms to efficiently construct and prune these trees.
 
 
-*Random Forest*
+__Random Forest__
 
 Building upon the concept of Decision Trees, Random Forest was formalised by Leo Breiman in 2001 (built on
 Tin Kam Ho, 1995, Amit & Geman in 1997, Salzberg & Heath, 1993). Its innovation lay in combining multiple
@@ -282,7 +283,7 @@ accuracy, making it a highly effective and widely adopted general-purpose machin
       thousands of trees efficiently.
 
 
-*Support Vector Machine (SVM)*
+__Support Vector Machine (SVM)__
 
 The foundational ideas behind Support Vector Machines originated from Vladimir Vapnik and Alexey Chervonenkis's
 work on statistical learning theory in the 1960s, particularly the concept of Vapnik-Chervonenkis (VC) dimension.
@@ -302,7 +303,7 @@ trick, quickly established SVM as a powerful and theoretically well-grounded alg
       or can be learned. ML provides efficient solvers for the quadratic programming problems involved.
 
 
-*K-Nearest Neighbours (KNN)*
+__K-Nearest Neighbours (KNN)__
 
 One of the oldest and simplest non-parametric classification algorithms, the K-Nearest Neighbours rule dates back
 to the early 1950s, with fundamental work often attributed to Evelyn Fix and Joseph Hodges in 1951, and later
@@ -320,7 +321,7 @@ requiring no explicit training phase but relying entirely on the stored training
       neighbor searches, especially for large datasets.
 
 
-*Naive Bayes*
+__Naive Bayes__
 
 Based on Bayes' Theorem (formulated by Thomas Bayes in the 18th century), the "Naive Bayes" classifier gained
 prominence in the machine learning community in the latter half of the 20th century, particularly with the rise
@@ -338,7 +339,7 @@ probabilistic model.
       ML provides the tools to estimate the probabilities from the data.
 
 
-*Gradient Boosting (XGBoost, LightGBM)*
+__Gradient Boosting (XGBoost, LightGBM)__
 
 Gradient Boosting, as a general framework for building powerful ensemble models, was formally introduced by
 Leo Breiman in 1997 and further developed by Jerome Friedman in 1999. It revolutionised supervised learning
@@ -358,7 +359,7 @@ on structured data.
       improving predictions. ML frameworks provide highly optimised implementations.
 
 
-*K-Means*
+__K-Means__
 
 The K-Means clustering algorithm has a somewhat diffused history, with precursors appearing in the late 1950s
 (e.g., Stuart Lloyd's work at Bell Labs in 1957, though published much later). It was formally popularised by
@@ -376,7 +377,7 @@ making it a cornerstone algorithm for unsupervised learning tasks like data segm
       handle various data types.
 
 
-*DBSCAN*
+__DBSCAN__
 
 DBSCAN (Density-Based Spatial Clustering of Applications with Noise) was introduced by Martin Ester, Hans-Peter
 Kriegel, Jörg Sander, and Xiaowei Xu in 1996. It offered a significant advancement over partition-based clustering
@@ -394,7 +395,7 @@ of lower density, filled a crucial gap in clustering algorithms.
       efficient spatial querying algorithms.
 
 
-*PCA (Principal Component Analysis)*
+__PCA (Principal Component Analysis)__
 
 The mathematical underpinnings of Principal Component Analysis can be traced back to Karl Pearson's work in 1901,
 where he introduced the method to find lines and planes of best fit to a system of points. It was then independently
@@ -413,7 +414,7 @@ scientific and engineering disciplines.
       by removing redundant information. ML libraries provide optimized implementations for large matrices.
 
 
-*t-SNE / UMAP*
+__t-SNE / UMAP__
 
 The t-Distributed Stochastic Neighbour Embedding (t-SNE) algorithm was developed by Laurens van der Maaten and
 Geoffrey Hinton and published in 2008, revolutionising the visualisation of high-dimensional data. Building on
@@ -435,7 +436,7 @@ of global structure for dimensionality reduction and clustering.
       ML provides the sophisticated optimisation algorithms required.
 
 
-*Apriori / FP-Growth*
+__Apriori / FP-Growth__
 
 The Apriori algorithm, a seminal algorithm for mining frequent item sets and association rules from transactional
 databases (like market basket data), was introduced by Rakesh Agrawal and Ramakrishnan Srikant in 1994. Its
@@ -454,7 +455,7 @@ item-set mining process by using a compact tree structure (FP-tree).
       is commercially valuable. ML provides the frameworks to efficiently search for these patterns.
 
 
-*Neural Networks (Multilayer Perceptrons - MLP)*
+__Neural Networks (Multilayer Perceptrons - MLP)__
 
 The concept of artificial neural networks dates back to the McCulloch-Pitts neuron model in the 1940s and Frank
 Rosenblatt's perceptron in the 1950s. However, the "multilayer perceptron" with backpropagation, the crucial
@@ -504,7 +505,7 @@ in 2014. These advancements made RNNs, LSTMs, and GRUs indispensable for tasks i
 language processing, speech recognition, and time-series analysis.
 
 
-*GANs (Generative Adversarial Networks)*
+__GANs (Generative Adversarial Networks)__
 
 Generative Adversarial Networks (GANs) were introduced by Ian Goodfellow and his colleagues in 2014, representing
 a groundbreaking development in unsupervised learning for generative modelling. Their innovative architecture
@@ -525,7 +526,7 @@ AI applications.
       realistic synthetic data. ML provides the infrastructure for complex adversarial training.
 
 
-*Reinforcement Learning*
+__Reinforcement Learning__
 
 The field of Reinforcement Learning (RL) has deep roots stretching back to early work in cybernetics, control
 theory, and animal learning psychology in the mid-20th century. Key theoretical advancements in the 1980s and
