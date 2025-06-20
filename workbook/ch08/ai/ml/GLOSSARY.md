@@ -164,6 +164,23 @@ examples of hyperparameters in a neural network.
 *Reference:* Model tuning, machine learning best practices.
 
 
+### Hyperplane
+
+*Explanation:* In a machine learning context, particularly for classification problems, a hyperplane serves as a decision
+boundary. Its purpose is to divide the space where your data points exist, separating them into different categories or
+classes. If your data can be visualised in two dimensions (like a scatter plot), the hyperplane is a simple line. For data
+in three dimensions, it becomes a flat plane. In situations with more than three dimensions (which are common in real-world
+datasets but hard for us to visualise), it remains a "hyperplane"--a flat, high-dimensional boundary that effectively splits
+the data into distinct regions for classification.
+
+*Example:* Imagine you have data points representing whether a customer will buy a product (one class) or not (another class),
+based on two features like their age and income. If you plot these customers on a graph, a machine learning model might discover
+a line (the hyperplane) that best separates the "will buy" customers from the "will not buy" customers. When a new customer's
+age and income are entered, their position relative to this line determines the prediction of whether they will buy or not.
+
+*Reference:* Classification, decision boundary, feature space, linear models.
+
+
 ### K-Means Clustering
 
 *Explanation:* An unsupervised learning algorithm used for partitioning a dataset into $K$ distinct, non-overlapping clusters.
