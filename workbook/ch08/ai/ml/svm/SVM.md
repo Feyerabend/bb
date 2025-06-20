@@ -44,7 +44,7 @@ $y_i (w \cdot x_i + b) \ge 1$
 The points that satisfy $y_i (w \cdot x_i + b) = 1$ are the support vectors. The distance from
 the origin to the hyperplane is $|b| / \|w\|$, and the margin is $2 / \|w\|$.
 
-To maximise the margin, we need to minimize $\|w\|^2$ (which is equivalent to minimizing $\|w\|$).
+To maximise the margin, we need to minimise $\|w\|^2$ (which is equivalent to minimising $\|w\|$).
 This can be formulated as a constrained optimisation problem:
 
 *Minimize:* $f(w) = \frac{1}{2} \|w\|^2$
@@ -68,13 +68,13 @@ $y_i (w \cdot x_i + b) \ge 1 - \xi_i$
 If $\xi_i > 0$, the data point is either within the margin or on the wrong side of the hyperplane.
 The optimisation problem now includes a penalty for misclassifications:
 
-*Minimize:* $\frac{1}{2} \|w\|^2 + C \sum_{i=1}^n \xi_i$
+*Minimise:* $\frac{1}{2} \|w\|^2 + C \sum_{i=1}^n \xi_i$
 
 *Subject to:*
 * $y_i (w \cdot x_i + b) \ge 1 - \xi_i$
 * $\xi_i \ge 0$
 
-Here, $C > 0$ is a regularization parameter.
+Here, $C > 0$ is a regularisation parameter.
 * A small $C$ allows for a larger margin but also more misclassifications (higher bias, lower variance).
 * A large $C$ enforces a smaller margin to reduce misclassifications (lower bias, higher variance).
 
@@ -84,7 +84,7 @@ Here, $C > 0$ is a regularization parameter.
 One of the most significant innovations in SVMs is the *Kernel Trick*. It allows SVMs to effectively handle
 non-linearly separable data without explicitly transforming the data into a higher-dimensional space.
 
-The core idea is that in the dual form of the SVM optimization problem, the data points $x_i$ only appear
+The core idea is that in the dual form of the SVM optimisation problem, the data points $x_i$ only appear
 in dot products, $x_i \cdot x_j$.
 
 The Kernel Trick replaces this dot product with a *kernel function*, $K(x_i, x_j) = \phi(x_i) \cdot \phi(x_j)$,
@@ -135,7 +135,7 @@ def normalize(X):
 ```
 
 *`normalize(X)` function:*
-* *Purpose:* This function performs min-max normalization on the input data `X`.
+* *Purpose:* This function performs min-max normalisation on the input data `X`.
 * *Mechanism:* It scales each feature (column) in `X` to a range between 0 and 1.
     * `X.min(axis=0)`: Finds the minimum value for each feature (column).
     * `X.max(axis=0)`: Finds the maximum value for each feature (column).
@@ -168,12 +168,12 @@ class SVM:
   algorithm goes through all training samples.
 * *`self.w` (weights):* Initialised to `None`. This will be a NumPy array representing the weight vector of the
   hyperplane. Its dimension will be equal to the number of features in the input data.
-* *`self.b` (bias):* Initialized to `None`. This will be a scalar representing the bias term of the hyperplane.
+* *`self.b` (bias):* Initialised to `None`. This will be a scalar representing the bias term of the hyperplane.
 
 ```python
     def fit(self, X, y):
         n_samples, n_features = X.shape
-        # Initialize weights and bias
+        # Init weights and bias
         self.w = np.zeros(n_features)
         self.b = 0.0
         
@@ -193,10 +193,10 @@ class SVM:
 *`fit(self, X, y)` method:*
 * *Purpose:* This is the training method of the SVM. It learns the optimal weights (`self.w`) and bias (`self.b`)
   based on the input features `X` and labels `y`.
-* *Initialization:*
+* *Initialisation:*
     * `n_samples, n_features = X.shape`: Gets the number of samples and features from the input data `X`.
-    * `self.w = np.zeros(n_features)`: Initializes the weight vector `w` with zeros.
-    * `self.b = 0.0`: Initializes the bias `b` to zero.
+    * `self.w = np.zeros(n_features)`: Initialises the weight vector `w` with zeros.
+    * `self.b = 0.0`: Initialises the bias `b` to zero.
 * *Training Loop:*
     * `for _ in range(self.n_iters):`: This is the outer loop, iterating for a specified number of epochs (`n_iters`).
       In each epoch, the algorithm processes all training samples.
@@ -222,7 +222,7 @@ class SVM:
               descent step when a misclassification occurs or a sample is within the margin.
                 * `y[idx] * x_i`: This term pushes the hyperplane in the direction that correctly classifies `x_i`.
                   If `y[idx]` is 1, `x_i` is added to `w`; if `y[idx]` is -1, `x_i` is subtracted.
-                * `- 2 * self.lambda_param * self.w`: This is the regularization term, penalizing large weights.
+                * `- 2 * self.lambda_param * self.w`: This is the regularisation term, penalising large weights.
             * `self.b += self.lr * y[idx]`: The bias `b` is updated to also help correctly classify `x_i`.
               If `y[idx]` is 1, `b` increases; if `y[idx]` is -1, `b` decreases.
 
@@ -253,7 +253,7 @@ class SVM:
 X = [[3.1, 2.5], [1.5, 2.2], [2.3, 3.3], [5.1, 1.6], [4.0, 2.0], [0.5, 0.8]]
 y = [1, 1, -1, -1, 1, -1]  # Added more points for better classification
 
-# Normalize the feature matrix
+# Normalise the feature matrix
 X_normalized = normalize(X)
 
 model = SVM(learning_rate=0.01, n_iters=20000)  # Increased iterations
@@ -266,7 +266,7 @@ print("SVM Predictions:", predictions)
 *Sample Data and Execution:*
 * *`X` and `y`:* This defines a small toy dataset. `X` contains 2D data points (features), and `y` contains
   their corresponding binary class labels (1 or -1). The points are chosen to be somewhat linearly separable.
-* *`X_normalized = normalize(X)`:* The input features are normalized using the previously defined `normalize`
+* *`X_normalized = normalize(X)`:* The input features are normalised using the previously defined `normalize`
   function. This is a crucial preprocessing step.
 * *`model = SVM(...)`:* An instance of the `SVM` class is created with a learning rate of `0.01` and a significantly
   increased number of iterations (`20000`) to allow for better convergence on this small dataset. The `lambda_param`
