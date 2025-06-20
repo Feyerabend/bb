@@ -87,7 +87,7 @@ from traditional code and provide a strong conceptual starting point for further
 | Gradient Boosting (XGBoost, LightGBM) | Supervised | Structured data             | High accuracy, can overfit, less interpretable                    |
 | K-Means                    | Unsupervised       | Clustering, segmentation         | Simple, assumes spherical clusters, sensitive to initialisation |
 | DBSCAN                     | Unsupervised       | Clustering with noise            | Handles arbitrary shapes, density-based                         |
-| PCA (Principal Component Analysis) | Unsupervised | Dimensionality reduction     | Linear transformation, unsupervised, captures variance            |
+| [PCA](./pca/) (Principal Component Analysis) | Unsupervised | Dimensionality reduction | Linear transformation, unsupervised, captures variance |
 | [t-SNE](./tsne/) / [UMAP](./umap/) | Unsupervised | Visualisation, clustering | Non-linear, preserves local structure, non-parametric |
 | [Apriori](./apriori/) / [FP-Growth](./apriori/) | Unsupervised | Market basket analysis | Association rule mining |
 | [Neural Networks](./mlp/) (MLP) | Supervised | General-purpose | Flexible, powerful, requires large data |
