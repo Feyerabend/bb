@@ -94,7 +94,7 @@ from traditional code and provide a strong conceptual starting point for further
 | [CNN](./cnn/) (Convolutional NN) | Supervised | Image data | Exploits spatial structure, translation invariance |
 | [RNN](./rnn/) / [LSTM](./rnn/) / [GRU](./rnn/) | Supervised | Sequence data (text, time-series) | Captures temporal dependencies, vanishing gradient challenges |
 | [GANs](./gan/) (Generative Adversarial Networks) | Unsupervised | Data generation | Adversarial training, high-quality synthetic data |
-| [Reinforcement Learning](./../../../ch03/tictactoe/README.md) | Reinforcement | Game AI, robotics, control  | Trial-and-error learning, reward signal |
+| [Reinforcement Learning](./rl/) | Reinforcement | Game AI, robotics, control  | Trial-and-error learning, reward signal |
 
 
 ### Language Models and Conventional Machine Learning Models
