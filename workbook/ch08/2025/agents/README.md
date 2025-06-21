@@ -18,5 +18,5 @@ around intelligent agents.
 
 - My small [paper](./agents.html) from 1997 on "Active agents and other concepts"
 - [Overview](./agents-grok-2025.pdf) of Current Developments by an LLM (Grok)
-- [Comments](./AGENTS.md) on my memprandum by an LLM (Gemini, Flash 2.5)
+- [Comments](./AGENTS.md) on my memorandum from 1997 by an LLM (Gemini, Flash 2.5) in 2025
 
