@@ -18,10 +18,10 @@ The biggest shift from conventional programming to ML is the fundamental change 
 In conventional programming, you define precise, step-by-step instructions for the computer to execute:
 
 ```python
-def classify\_email\_conventional(email\_text):  
-    if "nigerian prince" in email\_text.lower() and "urgent" in email\_text.lower():  
+def classify_email_conventional(email_text):  
+    if "nigerian prince" in email_text.lower() and "urgent" in email_text.lower():  
         return "spam"  
-    elif "free lottery" in email\_text.lower() or "click here" in email\_text.lower():  
+    elif "free lottery" in email_text.lower() or "click here" in email_text.lower():  
         return "spam"  
     else:  
         return "not spam"
