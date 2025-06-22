@@ -2,7 +2,7 @@
 
 RESTRUCTURE OF TEXT
 
-1. Introduction to Machine Learning: README
+1. Introduction to Machine Learning: README + MATH
 
 What is Machine Learning (ML)?
 Definition and Core Concept: Learning from Data
