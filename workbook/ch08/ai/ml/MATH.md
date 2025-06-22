@@ -52,10 +52,10 @@ to troubleshoot and improve your models.
     that quantifies how "wrong" our model's predictions are compared to the actual values. The goal
     of training is to minimize this loss. For linear regression, a common loss function is Mean Squared
     Error (MSE):  
-```math
-    MSE=N1​i=1∑N​(yi​−y^​i​)2
-```
-    where yi​ is the actual value, y^​i​ is the predicted value, and N is the number of data points.  
+$$
+\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+$$
+    where $yi$​ is the actual value, $\hat{y}_i$​ is the predicted value, and $N$ is the number of data points.  
   * Optimisation: Calculus provides the tools to find the minimum point of a function.  
 
 * Why it's used: Derivatives (from differential calculus) are central to the optimization process.
