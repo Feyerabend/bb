@@ -47,20 +47,36 @@ For different types of data and tasks, more specialized architectures have been 
 
 #### Convolutional Neural Networks (CNNs)
 
-CNNs are particularly powerful for processing data with a known grid-like topology, such as *images* and *video*. Instead of relying solely on fully connected layers, CNNs primarily use *convolutional layers*, which apply learnable filters (or kernels) across the input data. These filters are designed to automatically detect spatial features like edges, textures, and more complex patterns at various levels of abstraction within the image.
+CNNs are particularly powerful for processing data with a known grid-like topology, such as *images* and
+*video*. Instead of relying solely on fully connected layers, CNNs primarily use *convolutional layers*,
+which apply learnable filters (or kernels) across the input data. These filters are designed to automatically
+detect spatial features like edges, textures, and more complex patterns at various levels of abstraction
+within the image.
 
 Key components of CNNs include:
-* *Convolutional Layers*: These layers perform the core operation of applying filters to input to extract hierarchical features.
-* *Pooling Layers*: Typically, pooling layers (such as max pooling) follow convolutional layers and serve to reduce the spatial dimensions of the feature maps, which helps in reducing computational cost and making the detected features more robust to small shifts or distortions.
-* *Fully Connected Layers*: After several convolutional and pooling layers, the high-level features are flattened and fed into traditional fully connected layers for final classification or regression.
+* *Convolutional Layers*: These layers perform the core operation of applying filters to input to extract
+  hierarchical features.
+* *Pooling Layers*: Typically, pooling layers (such as max pooling) follow convolutional layers and serve
+  to reduce the spatial dimensions of the feature maps, which helps in reducing computational cost and
+  making the detected features more robust to small shifts or distortions.
+* *Fully Connected Layers*: After several convolutional and pooling layers, the high-level features are
+  flattened and fed into traditional fully connected layers for final classification or regression.
 
-CNNs, exemplified by architectures like AlexNet, VGG, ResNet, and EfficientNet, have revolutionized computer vision tasks, achieving state-of-the-art performance in areas like image recognition, object detection, and medical imaging.
+CNNs, exemplified by architectures like AlexNet, VGG, ResNet, and EfficientNet, have revolutionized computer
+vision tasks, achieving state-of-the-art performance in areas like image recognition, object detection,
+and medical imaging.
 
 #### Recurrent Neural Networks (RNNs), LSTMs, GRUs
 
-Recurrent Neural Networks (RNNs) are specifically designed to handle *sequential data*, such as time series, speech, and natural language. Unlike feedforward networks, RNNs possess internal loops that allow information to persist across time steps, enabling them to capture temporal dependencies within the data. This "memory" makes them suitable for tasks where the order of information is crucial.
+Recurrent Neural Networks (RNNs) are specifically designed to handle *sequential data*, such as time series,
+speech, and natural language. Unlike feedforward networks, RNNs possess internal loops that allow information
+to persist across time steps, enabling them to capture temporal dependencies within the data. This "memory"
+makes them suitable for tasks where the order of information is crucial.
 
-However, traditional or "vanilla" RNNs often suffer from practical limitations, most notably the *vanishing gradient problem*. This issue makes it difficult for them to learn and retain information over long sequences, hindering their effectiveness for long-term dependencies. To address this, more advanced architectures were developed:
+However, traditional or "vanilla" RNNs often suffer from practical limitations, most notably the
+*vanishing gradient problem*. This issue makes it difficult for them to learn and retain information
+over long sequences, hindering their effectiveness for long-term dependencies. To address this, more
+advanced architectures were developed:
 
 * *Long Short-Term Memory (LSTM) networks*: Introduced by Sepp Hochreiter and Jürgen Schmidhuber in 1997,
   LSTMs overcome the vanishing gradient problem by incorporating sophisticated "gating mechanisms" (input,
@@ -70,79 +86,146 @@ However, traditional or "vanilla" RNNs often suffer from practical limitations, 
   simplified variant of LSTMs. They achieve similar performance to LSTMs but with fewer parameters, making
   them computationally more efficient in some cases.
 
-While RNNs, LSTMs, and GRUs were widely used for sequence processing, particularly in Natural Language Processing (NLP) tasks like machine translation and text generation, they have been largely superseded by *Transformers* in recent years.
+While RNNs, LSTMs, and GRUs were widely used for sequence processing, particularly in Natural Language
+Processing (NLP) tasks like machine translation and text generation, they have been largely superseded
+by *Transformers* in recent years.
 
 
 ### Transformers and NLP
 
-Transformers represent a revolutionary deep learning architecture, fundamentally changing the landscape of Natural Language Processing (NLP) and extending their influence to other domains. Models like BERT, GPT, and T5 are built upon the Transformer architecture. A key innovation of Transformers is their ability to process data non-sequentially, which allows for much greater parallelization during training compared to RNNs, leading to significant efficiency gains.
+Transformers represent a revolutionary deep learning architecture, fundamentally changing the landscape
+of Natural Language Processing (NLP) and extending their influence to other domains. Models like BERT,
+GPT, and T5 are built upon the Transformer architecture. A key innovation of Transformers is their ability
+to process data non-sequentially, which allows for much greater parallelization during training compared
+to RNNs, leading to significant efficiency gains.
 
-The core mechanism enabling this parallel processing and improved understanding of relationships within sequences is the *self-attention mechanism*. This mechanism allows the model to weigh the importance of different words (or tokens) in an input sequence relative to each other, regardless of their position. For example, when processing a sentence, a Transformer can simultaneously consider how each word relates to every other word, capturing long-range dependencies effectively.
+The core mechanism enabling this parallel processing and improved understanding of relationships within
+sequences is the *self-attention mechanism*. This mechanism allows the model to weigh the importance of
+different words (or tokens) in an input sequence relative to each other, regardless of their position.
+For example, when processing a sentence, a Transformer can simultaneously consider how each word relates
+to every other word, capturing long-range dependencies effectively.
 
 Other important components of the Transformer architecture include:
-* *Positional Encodings*: Since Transformers do not process sequences sequentially, positional encodings are added to the input embeddings to inject information about the relative or absolute position of tokens in the sequence.
-* *Multi-head Attention*: This extension of self-attention allows the model to jointly attend to information from different representation subspaces at different positions. Essentially, it enables the model to capture various aspects of relationships between words simultaneously.
+* *Positional Encodings*: Since Transformers do not process sequences sequentially, positional encodings
+  are added to the input embeddings to inject information about the relative or absolute position of tokens
+  in the sequence.
+* *Multi-head Attention*: This extension of self-attention allows the model to jointly attend to information
+  from different representation subspaces at different positions. Essentially, it enables the model to
+  capture various aspects of relationships between words simultaneously.
 
-Transformer models typically come in different architectural flavors based on their use of the encoder and decoder components:
-* *GPT (Generative Pre-trained Transformer) models*: Such as ChatGPT, primarily use a *decoder-only* transformer architecture. They are adept at generative tasks, like producing coherent and contextually relevant text by predicting the next word in a sequence.
-* *BERT (Bidirectional Encoder Representations from Transformers)*: Utilizes an *encoder-only* architecture and is designed for tasks requiring a deep, bidirectional understanding of context, such as text classification, question answering, and named entity recognition.
+Transformer models typically come in different architectural flavors based on their use of the encoder
+and decoder components:
+* *GPT (Generative Pre-trained Transformer) models*: Such as ChatGPT, primarily use a *decoder-only*
+  transformer architecture. They are adept at generative tasks, like producing coherent and contextually
+  relevant text by predicting the next word in a sequence.
+* *BERT (Bidirectional Encoder Representations from Transformers)*: Utilizes an *encoder-only* architecture
+  and is designed for tasks requiring a deep, bidirectional understanding of context, such as text
+  classification, question answering, and named entity recognition.
 
 
 ### Generative Adversarial Networks (GANs)
 
-Generative Adversarial Networks (GANs), introduced by Ian Goodfellow and colleagues in 2014, represent a groundbreaking class of deep learning models designed for *generative tasks*. These tasks involve creating new data instances that resemble a given training dataset. GANs have found remarkable success in applications such as image synthesis, style transfer, and even the creation of highly realistic "deepfake" media.
+Generative Adversarial Networks (GANs), introduced by Ian Goodfellow and colleagues in 2014, represent a
+groundbreaking class of deep learning models designed for *generative tasks*. These tasks involve creating
+new data instances that resemble a given training dataset. GANs have found remarkable success in applications
+such as image synthesis, style transfer, and even the creation of highly realistic "deepfake" media.
 
 A GAN operates based on an innovative adversarial training framework involving two competing neural networks:
-* *Generator (G)*: This network's role is to produce synthetic data (e.g., fake images) that are as realistic as possible, attempting to mimic the statistical properties of the real data.
-* *Discriminator (D)*: This network acts as a critic; its job is to distinguish between real data samples (from the training set) and the synthetic data generated by the Generator.
+* *Generator (G)*: This network's role is to produce synthetic data (e.g., fake images) that are as realistic
+  as possible, attempting to mimic the statistical properties of the real data.
+* *Discriminator (D)*: This network acts as a critic; its job is to distinguish between real data samples
+  (from the training set) and the synthetic data generated by the Generator.
 
-During the training process, the Generator and Discriminator engage in a continuous "game." The Generator constantly tries to improve its ability to create more convincing fakes, while the Discriminator simultaneously improves its ability to detect these fakes. This competitive dynamic drives both networks to improve, until ideally, the Generator produces data so realistic that the Discriminator can no longer reliably differentiate it from real data.
+During the training process, the Generator and Discriminator engage in a continuous "game." The Generator
+constantly tries to improve its ability to create more convincing fakes, while the Discriminator simultaneously
+improves its ability to detect these fakes. This competitive dynamic drives both networks to improve, until
+ideally, the Generator produces data so realistic that the Discriminator can no longer reliably differentiate
+it from real data.
 
-GANs have led to significant breakthroughs in areas such as high-quality image generation (e.g., StyleGAN, BigGAN), super-resolution (enhancing image detail), and domain adaptation (transforming images from one domain to another while retaining content).
+GANs have led to significant breakthroughs in areas such as high-quality image generation (e.g., StyleGAN,
+BigGAN), super-resolution (enhancing image detail), and domain adaptation (transforming images from one domain
+to another while retaining content).
 
 
 ### Deep Reinforcement Learning
 
-Reinforcement Learning (RL) is a paradigm where an *agent* learns to make optimal decisions by interacting with an *environment* to maximize a cumulative *reward signal*. While traditional RL methods involve statistical decision theory, Markov Decision Processes (MDPs), and dynamic programming, *Deep Reinforcement Learning (Deep RL)* integrates deep neural networks into this framework. This integration allows RL agents to process raw, high-dimensional inputs (like pixel data from video games) and learn complex policies without explicit programming.
+Reinforcement Learning (RL) is a paradigm where an *agent* learns to make optimal decisions by interacting
+with an *environment* to maximize a cumulative *reward signal*. While traditional RL methods involve statistical
+decision theory, Markov Decision Processes (MDPs), and dynamic programming, *Deep Reinforcement Learning (Deep RL)*
+integrates deep neural networks into this framework. This integration allows RL agents to process raw,
+high-dimensional inputs (like pixel data from video games) and learn complex policies without explicit
+programming.
 
 Key concepts and algorithms in Deep RL include:
-* *Q-learning*: A fundamental RL algorithm where an agent learns an optimal policy by learning the value of taking a certain action in a certain state (Q-values).
-* *Deep Q-Networks (DQN)*: To handle environments with vast state spaces (like those involving images), DQN uses a deep neural network to approximate the Q-values, allowing the agent to learn directly from high-dimensional inputs.
-* *Policy Gradient Methods*: These methods directly optimize the agent's policy (the mapping from states to actions) to maximize the expected cumulative reward, often using algorithms like Proximal Policy Optimization (PPO) or Asynchronous Advantage Actor-Critic (A2C).
+* *Q-learning*: A fundamental RL algorithm where an agent learns an optimal policy by learning the value of
+  taking a certain action in a certain state (Q-values).
+* *Deep Q-Networks (DQN)*: To handle environments with vast state spaces (like those involving images),
+  DQN uses a deep neural network to approximate the Q-values, allowing the agent to learn directly from
+  high-dimensional inputs.
+* *Policy Gradient Methods*: These methods directly optimize the agent's policy (the mapping from states
+  to actions) to maximize the expected cumulative reward, often using algorithms like Proximal Policy
+  Optimization (PPO) or Asynchronous Advantage Actor-Critic (A2C).
 
 Deep RL has achieved remarkable successes in various applications, notably:
 * *Game AI*: Exemplified by DeepMind's AlphaGo, which mastered the complex game of Go, and OpenAI Five, which excelled in Dota 2.
 * *Robotics*: Training robots to perform complex manipulation tasks and navigate environments.
 * *Autonomous Driving*: Developing control systems for self-driving vehicles.
 
-Deep RL allows agents to learn optimal behaviors in complex, dynamic environments without explicit programming, with machine learning providing the necessary algorithms and computational power for large-scale simulations and learning.
+Deep RL allows agents to learn optimal behaviors in complex, dynamic environments without explicit programming,
+with machine learning providing the necessary algorithms and computational power for large-scale simulations and learning.
 
 
 ### Optimisation Techniques in Deep Learning
 
-Training deep learning models involves iteratively adjusting the network's weights and biases to minimize a predefined *loss function*. This process is essentially an optimization problem, and it heavily relies on various optimization techniques:
+Training deep learning models involves iteratively adjusting the network's weights and biases to minimize a predefined *loss
+function*. This process is essentially an optimization problem, and it heavily relies on various optimization techniques:
 
-* *Gradient Descent*: This is the foundational optimization algorithm in neural networks. It works by iteratively moving in the direction opposite to the gradient of the loss function with respect to the model's parameters. The gradient indicates the direction of the steepest ascent, so moving in the opposite direction leads to the minimum of the loss function.
-* *SGD (Stochastic Gradient Descent)*: While standard gradient descent computes the gradient over the entire dataset, SGD updates the weights using only a small *batch* of randomly selected training examples in each iteration. This makes the training process much faster and can help escape shallow local minima, although the updates are noisier.
-* *Adam (Adaptive Moment Estimation)*: Adam is one of the most widely used and effective adaptive optimization methods in deep learning. It combines the benefits of two other extensions of SGD: AdaGrad (which adapts learning rates based on the square of past gradients) and RMSProp (which uses a moving average of squared gradients). Adam computes adaptive learning rates for each parameter, making it suitable for a wide range of problems and often converging faster.
+* *Gradient Descent*: This is the foundational optimization algorithm in neural networks. It works by iteratively moving in
+  the direction opposite to the gradient of the loss function with respect to the model's parameters. The gradient indicates
+  the direction of the steepest ascent, so moving in the opposite direction leads to the minimum of the loss function.
+* *SGD (Stochastic Gradient Descent)*: While standard gradient descent computes the gradient over the entire dataset, SGD
+  updates the weights using only a small *batch* of randomly selected training examples in each iteration. This makes the
+  training process much faster and can help escape shallow local minima, although the updates are noisier.
+* *Adam (Adaptive Moment Estimation)*: Adam is one of the most widely used and effective adaptive optimization methods in
+  deep learning. It combines the benefits of two other extensions of SGD: AdaGrad (which adapts learning rates based on the
+  square of past gradients) and RMSProp (which uses a moving average of squared gradients). Adam computes adaptive learning
+  rates for each parameter, making it suitable for a wide range of problems and often converging faster.
 
-Beyond core optimization algorithms, *regularization techniques* are crucial for preventing *overfitting*—a phenomenon where a model learns the training data too well, leading to poor performance on unseen data. Common regularization techniques include:
-* *Dropout*: During training, dropout randomly sets a fraction of neuron activations to zero in each layer. This prevents neurons from co-adapting too much and forces the network to learn more robust features.
-* *Batch Normalization*: This technique normalizes the input features for each layer within a mini-batch. It helps stabilize and speed up the training process by reducing internal covariate shift, allowing for higher learning rates.
-* *Weight Decay (L2 Regularization)*: This technique adds a penalty to the loss function proportional to the square of the weights. This discourages large weights, effectively simplifying the model and reducing its tendency to overfit.
+Beyond core optimization algorithms, *regularization techniques* are crucial for preventing *overfitting*—a phenomenon where
+a model learns the training data too well, leading to poor performance on unseen data. Common regularization techniques include:
+* *Dropout*: During training, dropout randomly sets a fraction of neuron activations to zero in each layer. This prevents
+  neurons from co-adapting too much and forces the network to learn more robust features.
+* *Batch Normalization*: This technique normalizes the input features for each layer within a mini-batch. It helps stabilize
+  and speed up the training process by reducing internal covariate shift, allowing for higher learning rates.
+* *Weight Decay (L2 Regularization)*: This technique adds a penalty to the loss function proportional to the square of the
+  weights. This discourages large weights, effectively simplifying the model and reducing its tendency to overfit.
 
-These optimization and regularization techniques are vital for efficiently training deep learning models and ensuring their good generalization performance on new data.
+These optimization and regularization techniques are vital for efficiently training deep learning models and ensuring their
+good generalization performance on new data.
 
 
 ### Self-Supervised Learning and Beyond
 
-Self-supervised learning (SSL) is an emerging and rapidly advancing paradigm in machine learning where models learn valuable representations from data *without explicit human-provided labels*. Instead, the data itself provides the supervision. This is achieved by designing "pretext tasks" where part of the data is used to predict another part, generating supervisory signals automatically. This approach has been instrumental in training large-scale models, particularly in natural language processing and computer vision, like BERT, GPT, and SimCLR.
+Self-supervised learning (SSL) is an emerging and rapidly advancing paradigm in machine learning where models
+learn valuable representations from data *without explicit human-provided labels*. Instead, the data itself
+provides the supervision. This is achieved by designing "pretext tasks" where part of the data is used to predict
+another part, generating supervisory signals automatically. This approach has been instrumental in training 
+large-scale models, particularly in natural language processing and computer vision, like BERT, GPT, and SimCLR.
 
 Two prominent examples of self-supervised learning techniques are:
-* *Contrastive Learning*: In this approach, the model learns representations by distinguishing between similar and dissimilar data points. For instance, in computer vision, different augmented views of the same image are considered positive pairs (similar), while augmented views of different images are negative pairs (dissimilar). The model is trained to bring positive pairs closer in the embedding space and push negative pairs further apart.
-* *Masked Language Models (MLMs)*: Predominantly used for pre-training Transformer models like BERT, MLMs learn contextual word representations by predicting words that have been "masked" (hidden) in a sentence. By forcing the model to reconstruct missing information based on its surrounding context, it develops a rich understanding of language semantics and syntax.
+* *Contrastive Learning*: In this approach, the model learns representations by distinguishing between similar
+  and dissimilar data points. For instance, in computer vision, different augmented views of the same image are
+  considered positive pairs (similar), while augmented views of different images are negative pairs (dissimilar).
+  The model is trained to bring positive pairs closer in the embedding space and push negative pairs further apart.
+* *Masked Language Models (MLMs)*: Predominantly used for pre-training Transformer models like BERT, MLMs learn
+  contextual word representations by predicting words that have been "masked" (hidden) in a sentence. By forcing
+  the model to reconstruct missing information based on its surrounding context, it develops a rich understanding
+  of language semantics and syntax.
 
-Self-supervised learning significantly reduces the reliance on expensive, manually labeled datasets, making it possible to leverage massive amounts of unlabeled data for pre-training. The representations learned through SSL can then be fine-tuned on smaller labeled datasets for specific downstream tasks, often achieving performance comparable to or even surpassing fully supervised methods.
+Self-supervised learning significantly reduces the reliance on expensive, manually labeled datasets, making it
+possible to leverage massive amounts of unlabeled data for pre-training. The representations learned through SSL
+can then be fine-tuned on smaller labeled datasets for specific downstream tasks, often achieving performance
+comparable to or even surpassing fully supervised methods.
 
 
 ### Deep Learning Applications
