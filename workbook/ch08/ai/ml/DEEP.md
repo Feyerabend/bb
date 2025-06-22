@@ -30,18 +30,18 @@ structure and function of the human brain. These networks consist of layers of i
 referred to as "neurons," where each connection has an associated weight. During the training process,
 these weights are iteratively adjusted to minimise a loss function, allowing the network to learn from data.
 
-The simplest type of neural network is the *feedforward neural network (FNN)*, also known as a multilayer
-perceptron (MLP). In FNNs, information flows in one direction only--from the input layer, through one or more
-hidden layers, and finally to the output layer. While MLPs are general-purpose function approximators capable
-of learning complex non-linear relationships, their effectiveness can be limited for specific data types
-like images or sequences.
-
 | *Algorithm* | *Type* | *Typical Use Cases* | *Key Properties* |
 |---|---|---|---|
 | [Neural Networks](./mlp/) (MLP) | Supervised | General-purpose | Flexible, powerful, requires large data |
 | [CNN](./cnn/) (Convolutional NN) | Supervised | Image data | Exploits spatial structure, translation invariance |
 | [RNN](./rnn/) / [LSTM](./rnn/) / [GRU](./rnn/) | Supervised | Sequence data (text, time-series) | Captures temporal dependencies, vanishing gradient challenges |
 | [GANs](./gan/) (Generative Adversarial Networks) | Unsupervised | Data generation | Adversarial training, high-quality synthetic data |
+
+The simplest type of neural network is the *feedforward neural network (FNN)*, also known as a multilayer
+perceptron (MLP). In FNNs, information flows in one direction only--from the input layer, through one or more
+hidden layers, and finally to the output layer. While MLPs are general-purpose function approximators capable
+of learning complex non-linear relationships, their effectiveness can be limited for specific data types
+like images or sequences.
 
 For different types of data and tasks, more specialised architectures have been developed:
 
