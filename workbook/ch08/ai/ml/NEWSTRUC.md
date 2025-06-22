@@ -12,22 +12,22 @@ The Role of Mathematics: Linear Algebra and Calculus
 A General Observation: Traditional Programming vs. Machine Learning
 
 
-2. Core Machine Learning Concepts and Algorithms
+2. Core Machine Learning Concepts and Algorithms: CORE
 
 Overview of ML Algorithms:
-Cats (Supervised, Unsupervised, Reinforcement)
+  Cats (Supervised, Unsupervised, Reinforcement)
 Table of Algo: Use Cases and Properties
 Supervised Learning:
-Linear Regression: Principles, Use Cases, Statistical Relation
-Logistic Regression: Principles, Use Cases, Statistical Relation
+  Linear Regression: Principles, Use Cases, Statistical Relation
+  Logistic Regression: Principles, Use Cases, Statistical Relation
 Other algorithms (e.g., Decision Trees, Support Vector Machines, K-Nearest Neighbors, Naive Bayes)
 Unsupervised Learning:
-Algorithms (e.g., K-Means Clustering, DBSCAN, Principal Component Analysis (PCA))
+  Algorithms (e.g., K-Means Clustering, DBSCAN, Principal Component Analysis (PCA))
 Reinforcement Learning: Overview and Applications
 Why Classification and Clustering are Fundamental: Their importance as building blocks and ubiquitous problems in ML
 
 
-3. Deep Learning: Concepts and Architectures
+3. Deep Learning: Concepts and Architectures: DEEP
 
 Introduction to Deep Learning: Definition and foundational concepts using Artificial Neural Networks (ANN)
 Neural Networks and Architectures:
@@ -41,7 +41,7 @@ Self-Supervised Learning
 Language Models (LMs):
 
 
-4. Challenges and Solutions in Machine Learning
+4. Challenges and Solutions in Machine Learning: CHALLENGE
 
 Fundamental Difficulties: Underfitting and Overfitting
 Numerical Issues in Deep Networks: Vanishing and Exploding Gradients
@@ -53,7 +53,7 @@ Label Scarcity
 Ethical Concerns
 
 
-5. Glossary of Key Terms
+5. Glossary of Key Terms: GLOSSARY
 
 (Alphabetically ordered def and ex)
 Activation Function
@@ -78,6 +78,6 @@ Latent Space
 Learning Rate
 ..
 
-6. References
+6. References: REFERENCE
 
 ..
