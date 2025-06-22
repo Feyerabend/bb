@@ -9,9 +9,9 @@ used to make predictions or decisions on new, unseen data.
 
 Think of it this way:
 
-* Conventional Programming: You, the programmer, define the Rules that process Data to produce Answers.
+* *Conventional Programming.* You, the programmer, define the Rules that process Data to produce Answers.
   For instance, you might write code that specifies exactly how to calculate a tax based on income brackets.  
-* Machine Learning: You provide Data along with the Answers (or labels) for that data, and the computer's
+* *Machine Learning.* You provide Data along with the Answers (or labels) for that data, and the computer's
   algorithms work to learn the Rules (which collectively form a "model"). An example is feeding an ML
   system thousands of images of cats and dogs, each labeled correctly. The system learns to identify
   features that distinguish cats from dogs without being explicitly told "a cat has pointy ears and whiskers."
@@ -65,10 +65,10 @@ see [MATH.md](./MATH.md).
 
 To reiterate the core distinction:
 
-* Traditional Programming: You explicitly define the rules (algorithms, logic) that operate on given data to produce
-  answers. The flow is Rules + Data -> Answers.  
-* Machine Learning: You provide data along with the answers (labels or outcomes), and the system then learns the
-  rules (i.e., constructs a model) that connect the data to those answers. The flow is Data + Answers -> Rules (Model).
+* *Traditional Programming.* You explicitly define the rules (algorithms, logic) that operate on given data to produce
+  answers. The flow is `Rules + Data -> Answers`.  
+* *Machine Learning.* You provide data along with the answers (labels or outcomes), and the system then learns the
+  rules (i.e., constructs a model) that connect the data to those answers. The flow is `Data + Answers -> Rules (Model)`.
 
 This fundamental difference allows ML to tackle problems where the underlying rules are either unknown, too complex to
 define manually, or constantly evolving. By leveraging patterns discovered from vast amounts of data, ML systems can
