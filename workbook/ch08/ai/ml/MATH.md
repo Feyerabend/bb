@@ -53,7 +53,7 @@ to troubleshoot and improve your models.
       The primary objective of training a machine learning model is to minimise this loss.
       For linear regression, a commonly used loss function is the Mean Squared Error (MSE), defined as:
 $$\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
-Where:
+where:
 $y_i$ is the actual value,
 $\hat{y}_i$ is the predicted value,
 $n$ is the total number of data points.
