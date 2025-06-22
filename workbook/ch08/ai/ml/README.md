@@ -36,6 +36,8 @@ This is where the ML mindset comes into play:
 
 This paradigm shift enables the solution of problems that are otherwise intractable with traditional programming, especially those involving complex, nuanced patterns in large datasets, such as image recognition, natural language processing, and personalized recommendations.
 
+For a mathematical introduction to some core machine learning concepts from a conventional programmer's standpoint, see [MATH.md](./MATH.md).
+
 
 ### A General Observation: Traditional Programming vs. Machine Learning
 
