@@ -48,16 +48,16 @@ to troubleshoot and improve your models.
   calculus (dealing with rates of change and slopes) and integral calculus (dealing with accumulation).
   In the context of ML, differential calculus is paramount, primarily used for optimization—that is,
   finding the "best" set of parameters that make our model as accurate as possible.  
-  * Loss Functions: Every ML model has a "cost" or "loss" function, which is a mathematical expression
-    that quantifies how "wrong" our model's predictions are compared to the actual values. The goal
-    of training is to minimize this loss. For linear regression, a common loss function is Mean Squared
-    Error (MSE):  
-```math
-    \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
-```  
-    
-    
-    where $yi$​ is the actual value, $\hat{y}_i$​ is the predicted value, and $N$ is the number of data points.  
+    * Loss Functions in Machine Learning: In machine learning, every model has a loss function (or cost
+      function), which quantifies how inaccurate the model's predictions are compared to the actual values.
+      The primary objective of training a machine learning model is to minimise this loss.
+      For linear regression, a commonly used loss function is the Mean Squared Error (MSE), defined as:
+$$\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
+Where:
+$y_i$ is the actual value,
+$\hat{y}_i$ is the predicted value,
+$n$ is the total number of data points.
+
   * Optimisation: Calculus provides the tools to find the minimum point of a function.  
 
 * Why it's used: Derivatives (from differential calculus) are central to the optimization process.
