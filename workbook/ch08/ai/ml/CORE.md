@@ -5,14 +5,14 @@ Machine Learning (ML) is a subfield of AI focused on building systems that learn
 and improve performance over time without explicit programming. ML models identify patterns
 from examples to make predictions or decisions.
 
-ML algorithms can be broadly categorized into:
+ML algorithms can be broadly categorised into:
 
 * *Supervised Learning*: Algorithms that learn from labeled data, where the desired output
   is known for each input. The goal is to predict an output based on given input features.
-* *Unsupervised Learning*: Algorithms that work with unlabeled data to find patterns or
+* *Unsupervised Learning*: Algorithms that work with unlabelled data to find patterns or
   structures within the data without prior knowledge of the output.
 * *Reinforcement Learning*: Algorithms where an agent learns to make decisions by interacting
-  with an environment to maximize a cumulative reward signal.
+  with an environment to maximise a cumulative reward signal.
 
 
 ### Table of Algorithms: Use Cases and Properties
@@ -22,7 +22,7 @@ ML algorithms can be broadly categorized into:
 | [Linear Regression](./linear/) | Supervised | Predicting continuous values | Simple, interpretable, assumes linearity |
 | [Logistic Regression](./logistic/) | Supervised | Binary classification | Probabilistic outputs, interpretable, linear decision boundary |
 | [Decision Trees](./dtree/) | Supervised | Classification and regression | Interpretable, handles non-linear data, prone to overfitting |
-| Random Forest              | Supervised         | General-purpose                  | Ensemble of trees, reduces overfitting, less interpretable      |
+| [Random Forest](./forest/) | Supervised | General-purpose | Ensemble of trees, reduces overfitting, less interpretable |
 | [Support Vector Machine](./svm/) | Supervised | High-dimensional classification | Margin maximisation, kernel trick for non-linearity |
 | [K-Nearest Neighbours](./knn/) (KNN) | Supervised | Classification, regression | Instance-based, simple, no training phase |
 | [Naive Bayes](./bayes/) | Supervised | Text classification, spam filtering | Probabilistic, strong independence assumptions |
@@ -45,12 +45,12 @@ Supervised learning algorithms learn from data where the correct output is alrea
 * *Principles*: Linear Regression is a fundamental statistical method used to find the
   best-fitting straight line (or hyperplane in higher dimensions) that describes the
   relationship between a dependent variable and one or more independent variables. It
-  relies on minimizing the sum of squared errors (least squares).
+  relies on minimising the sum of squared errors (least squares).
 * *Use Cases*: Predicting continuous outcomes, such as house prices based on size and
   location, sales forecasting based on advertising spend, or student performance based
   on study hours.
 * *Statistical Relation*: It is a core statistical method focused on finding linear
-  relationships in data by minimizing the sum of squared errors. ML frameworks allow
+  relationships in data by minimising the sum of squared errors. ML frameworks allow
   for efficient computation on large datasets and handling of multiple features.
 
 #### Logistic Regression
@@ -60,9 +60,9 @@ Supervised learning algorithms learn from data where the correct output is alrea
   the probability of a binary outcome. It is based on maximum likelihood estimation.
 * *Use Cases*: Binary classification problems like predicting whether a customer will churn,
   classifying an email as spam, or diagnosing the presence or absence of a disease.
-* *Statistical Relation*: It is a statistical model, specifically a generalized linear model,
+* *Statistical Relation*: It is a statistical model, specifically a generalised linear model,
   that uses the logistic function to model binary outcomes based on maximum likelihood
-  estimation. ML provides tools for scaling, regularization, and integration into production
+  estimation. ML provides tools for scaling, regularisation, and integration into production
   systems.
 
 #### Other Supervised Algorithms
@@ -75,7 +75,7 @@ Supervised learning algorithms learn from data where the correct output is alrea
   that maximally separates data points of different classes. It has strong theoretical
   foundations in statistical learning theory (VC). The "kernel trick" allows it to implicitly
   map data into higher-dimensional spaces, enabling non-linear separation.
-* *K-Nearest Neighbors (KNN)*: A non-parametric, instance-based method. Its statistical
+* *K-Nearest Neighbours (KNN)*: A non-parametric, instance-based method. Its statistical
   foundation lies in the idea that similar data points are likely to belong to the same class
   or have similar values. It relies on distance metrics (e.g., Euclidean distance).
 * *Naive Bayes*: Based on Bayes' theorem of conditional probability, assuming strong (naive)
@@ -93,7 +93,7 @@ Supervised learning algorithms learn from data where the correct output is alrea
 
 ### Unsupervised Learning
 
-Unsupervised learning algorithms aim to find patterns or structures in unlabeled data.
+Unsupervised learning algorithms aim to find patterns or structures in unlabelled data.
 
 #### Algorithms
 
@@ -174,4 +174,4 @@ applied to complex, real-world data.
     * Recommendation systems use clustering to group similar users or items, and then
       classification/regression to predict preferences.
 
-*Continue learning [deep learning](./DEEP.md) ..*
+*Continue [deep learning](./DEEP.md) ..*

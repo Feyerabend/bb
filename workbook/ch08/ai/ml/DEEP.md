@@ -7,10 +7,10 @@ or symbolic reasoning, deep learning distinguishes itself by focusing on learnin
 directly from vast amounts of data using specialised structures called *artificial neural networks* (ANN).
 This approach has been a primary driver of significant advancements in various AI domains, including
 computer vision, natural language processing (NLP), and reinforcement learning, making AI systems more
-autonomous and capable of generalizing from experience.
+autonomous and capable of generalising from experience.
 
-Unlike traditional machine learning methods that frequently depend on *feature engineering*—where humans
-manually select, transform, or create input variables to improve model performance—deep learning models
+Unlike traditional machine learning methods that frequently depend on *feature engineering*--where humans
+manually select, transform, or create input variables to improve model performance--deep learning models
 inherently automate much of this process. Built from multi-layered neural networks, they learn hierarchical
 representations directly from raw data through multiple layers of abstraction. This capability makes deep
 learning exceptionally effective for complex tasks such as image recognition, speech processing, and
@@ -28,10 +28,10 @@ and self-supervised learning, to move closer to more generalised AI capabilities
 At the core of deep learning are artificial neural networks (ANNs), computational models inspired by the
 structure and function of the human brain. These networks consist of layers of interconnected nodes, often
 referred to as "neurons," where each connection has an associated weight. During the training process,
-these weights are iteratively adjusted to minimize a loss function, allowing the network to learn from data.
+these weights are iteratively adjusted to minimise a loss function, allowing the network to learn from data.
 
 The simplest type of neural network is the *feedforward neural network (FNN)*, also known as a multilayer
-perceptron (MLP). In FNNs, information flows in one direction only—from the input layer, through one or more
+perceptron (MLP). In FNNs, information flows in one direction only--from the input layer, through one or more
 hidden layers, and finally to the output layer. While MLPs are general-purpose function approximators capable
 of learning complex non-linear relationships, their effectiveness can be limited for specific data types
 like images or sequences.
@@ -43,7 +43,7 @@ like images or sequences.
 | [RNN](./rnn/) / [LSTM](./rnn/) / [GRU](./rnn/) | Supervised | Sequence data (text, time-series) | Captures temporal dependencies, vanishing gradient challenges |
 | [GANs](./gan/) (Generative Adversarial Networks) | Unsupervised | Data generation | Adversarial training, high-quality synthetic data |
 
-For different types of data and tasks, more specialized architectures have been developed:
+For different types of data and tasks, more specialised architectures have been developed:
 
 #### Convolutional Neural Networks (CNNs)
 
@@ -96,7 +96,7 @@ by *Transformers* in recent years.
 Transformers represent a revolutionary deep learning architecture, fundamentally changing the landscape
 of Natural Language Processing (NLP) and extending their influence to other domains. Models like BERT,
 GPT, and T5 are built upon the Transformer architecture. A key innovation of Transformers is their ability
-to process data non-sequentially, which allows for much greater parallelization during training compared
+to process data non-sequentially, which allows for much greater parallelisation during training compared
 to RNNs, leading to significant efficiency gains.
 
 The core mechanism enabling this parallel processing and improved understanding of relationships within
@@ -113,12 +113,12 @@ Other important components of the Transformer architecture include:
   from different representation subspaces at different positions. Essentially, it enables the model to
   capture various aspects of relationships between words simultaneously.
 
-Transformer models typically come in different architectural flavors based on their use of the encoder
+Transformer models typically come in different architectural flavours based on their use of the encoder
 and decoder components:
 * *GPT (Generative Pre-trained Transformer) models*: Such as ChatGPT, primarily use a *decoder-only*
   transformer architecture. They are adept at generative tasks, like producing coherent and contextually
   relevant text by predicting the next word in a sequence.
-* *BERT (Bidirectional Encoder Representations from Transformers)*: Utilizes an *encoder-only* architecture
+* *BERT (Bidirectional Encoder Representations from Transformers)*: Utilises an *encoder-only* architecture
   and is designed for tasks requiring a deep, bidirectional understanding of context, such as text
   classification, question answering, and named entity recognition.
 
@@ -150,7 +150,7 @@ to another while retaining content).
 ### Deep Reinforcement Learning
 
 Reinforcement Learning (RL) is a paradigm where an *agent* learns to make optimal decisions by interacting
-with an *environment* to maximize a cumulative *reward signal*. While traditional RL methods involve statistical
+with an *environment* to maximise a cumulative *reward signal*. While traditional RL methods involve statistical
 decision theory, Markov Decision Processes (MDPs), and dynamic programming, *Deep Reinforcement Learning (Deep RL)*
 integrates deep neural networks into this framework. This integration allows RL agents to process raw,
 high-dimensional inputs (like pixel data from video games) and learn complex policies without explicit
@@ -162,46 +162,46 @@ Key concepts and algorithms in Deep RL include:
 * *Deep Q-Networks (DQN)*: To handle environments with vast state spaces (like those involving images),
   DQN uses a deep neural network to approximate the Q-values, allowing the agent to learn directly from
   high-dimensional inputs.
-* *Policy Gradient Methods*: These methods directly optimize the agent's policy (the mapping from states
-  to actions) to maximize the expected cumulative reward, often using algorithms like Proximal Policy
-  Optimization (PPO) or Asynchronous Advantage Actor-Critic (A2C).
+* *Policy Gradient Methods*: These methods directly optimise the agent's policy (the mapping from states
+  to actions) to maximise the expected cumulative reward, often using algorithms like Proximal Policy
+  Optimisation (PPO) or Asynchronous Advantage Actor-Critic (A2C).
 
 Deep RL has achieved remarkable successes in various applications, notably:
 * *Game AI*: Exemplified by DeepMind's AlphaGo, which mastered the complex game of Go, and OpenAI Five, which excelled in Dota 2.
 * *Robotics*: Training robots to perform complex manipulation tasks and navigate environments.
 * *Autonomous Driving*: Developing control systems for self-driving vehicles.
 
-Deep RL allows agents to learn optimal behaviors in complex, dynamic environments without explicit programming,
+Deep RL allows agents to learn optimal behaviours in complex, dynamic environments without explicit programming,
 with machine learning providing the necessary algorithms and computational power for large-scale simulations and learning.
 
 
 ### Optimisation Techniques in Deep Learning
 
-Training deep learning models involves iteratively adjusting the network's weights and biases to minimize a predefined *loss
-function*. This process is essentially an optimization problem, and it heavily relies on various optimization techniques:
+Training deep learning models involves iteratively adjusting the network's weights and biases to minimise a predefined *loss
+function*. This process is essentially an optimisation problem, and it heavily relies on various optimisation techniques:
 
-* *Gradient Descent*: This is the foundational optimization algorithm in neural networks. It works by iteratively moving in
+* *Gradient Descent*: This is the foundational optimisation algorithm in neural networks. It works by iteratively moving in
   the direction opposite to the gradient of the loss function with respect to the model's parameters. The gradient indicates
   the direction of the steepest ascent, so moving in the opposite direction leads to the minimum of the loss function.
 * *SGD (Stochastic Gradient Descent)*: While standard gradient descent computes the gradient over the entire dataset, SGD
   updates the weights using only a small *batch* of randomly selected training examples in each iteration. This makes the
   training process much faster and can help escape shallow local minima, although the updates are noisier.
-* *Adam (Adaptive Moment Estimation)*: Adam is one of the most widely used and effective adaptive optimization methods in
+* *Adam (Adaptive Moment Estimation)*: Adam is one of the most widely used and effective adaptive optimisation methods in
   deep learning. It combines the benefits of two other extensions of SGD: AdaGrad (which adapts learning rates based on the
   square of past gradients) and RMSProp (which uses a moving average of squared gradients). Adam computes adaptive learning
   rates for each parameter, making it suitable for a wide range of problems and often converging faster.
 
-Beyond core optimization algorithms, *regularization techniques* are crucial for preventing *overfitting*—a phenomenon where
-a model learns the training data too well, leading to poor performance on unseen data. Common regularization techniques include:
+Beyond core optimisation algorithms, *regularisation techniques* are crucial for preventing *overfitting*--a phenomenon where
+a model learns the training data too well, leading to poor performance on unseen data. Common regularisation techniques include:
 * *Dropout*: During training, dropout randomly sets a fraction of neuron activations to zero in each layer. This prevents
   neurons from co-adapting too much and forces the network to learn more robust features.
-* *Batch Normalization*: This technique normalizes the input features for each layer within a mini-batch. It helps stabilize
+* *Batch Normalisation*: This technique normalises the input features for each layer within a mini-batch. It helps stabilise
   and speed up the training process by reducing internal covariate shift, allowing for higher learning rates.
-* *Weight Decay (L2 Regularization)*: This technique adds a penalty to the loss function proportional to the square of the
+* *Weight Decay (L2 Regularisation)*: This technique adds a penalty to the loss function proportional to the square of the
   weights. This discourages large weights, effectively simplifying the model and reducing its tendency to overfit.
 
-These optimization and regularization techniques are vital for efficiently training deep learning models and ensuring their
-good generalization performance on new data.
+These optimisation and regularisation techniques are vital for efficiently training deep learning models and ensuring their
+good generalisation performance on new data.
 
 
 ### Self-Supervised Learning and Beyond
@@ -223,7 +223,7 @@ Two prominent examples of self-supervised learning techniques are:
   of language semantics and syntax.
 
 Self-supervised learning significantly reduces the reliance on expensive, manually labeled datasets, making it
-possible to leverage massive amounts of unlabeled data for pre-training. The representations learned through SSL
+possible to leverage massive amounts of unlabelled data for pre-training. The representations learned through SSL
 can then be fine-tuned on smaller labeled datasets for specific downstream tasks, often achieving performance
 comparable to or even surpassing fully supervised methods.
 
@@ -233,7 +233,7 @@ comparable to or even surpassing fully supervised methods.
 Deep learning has profoundly impacted various fields, leading to breakthroughs and transforming
 how AI systems solve complex problems:
 
-* *Computer Vision*: Deep learning, particularly CNNs, has revolutionized computer vision.
+* *Computer Vision*: Deep learning, particularly CNNs, has revolutionised computer vision.
   Applications include:
     * *Image Recognition and Classification*: Identifying objects, scenes, or people in images
       (e.g., classifying a cat or dog).
@@ -245,7 +245,7 @@ how AI systems solve complex problems:
 * *Natural Language Processing (NLP)*: Transformers and earlier RNN-based architectures have driven
   immense progress in NLP. Applications include:
     * *Machine Translation*: Translating text from one language to another (e.g., Google Translate).
-    * *Text Generation*: Creating human-like text for chatbots, content creation, and summarization.
+    * *Text Generation*: Creating human-like text for chatbots, content creation, and summarisation.
     * *Sentiment Analysis*: Determining the emotional tone of text (e.g., positive, negative, neutral).
     * *Speech Recognition*: Converting spoken language into text.
     * *Question Answering*: Providing direct answers to questions based on given text.
@@ -264,7 +264,7 @@ how AI systems solve complex problems:
     * *Style Transfer*: Applying the artistic style of one image to the content of another.
     * *Data Augmentation*: Creating additional training data to improve model robustness.
 
-* *Language Models (LMs)*: A significant application area within NLP, LMs specialize in
+* *Language Models (LMs)*: A significant application area within NLP, LMs specialise in
   understanding and generating human language. While simpler LMs predict the next word
   in a sentence, advanced deep learning-based LMs (like GPT) can generate coherent articles,
   converse naturally, and perform a wide array of language-related tasks.
