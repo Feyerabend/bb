@@ -192,3 +192,4 @@ continuous improvements in training techniques. As computational power and datas
 to expand, deep learning is expected to further push the boundaries of artificial intelligence.
 
 
+*Continue read about the [challenges](./CHALLENGE.md) of ML and deep learning ..*

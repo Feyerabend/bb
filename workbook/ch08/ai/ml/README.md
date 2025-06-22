@@ -75,3 +75,4 @@ define manually, or constantly evolving. By leveraging patterns discovered from 
 achieve remarkable capabilities in areas like pattern recognition, prediction, and decision-making that are beyond the
 scope of traditional rule-based programming.
 
+*Continue learning the [CORE](./CORE.md) of ML ..*

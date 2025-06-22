@@ -174,3 +174,4 @@ applied to complex, real-world data.
     * Recommendation systems use clustering to group similar users or items, and then
       classification/regression to predict preferences.
 
+*Continue learning [deep learning](./DEEP.md) ..*
