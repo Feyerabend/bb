@@ -12,18 +12,18 @@ to troubleshoot and improve your models.
 
 * Concept: Linear algebra is the branch of mathematics that deals with vectors, vector spaces,
   linear equations, and matrices. In Machine Learning, data is almost universally represented
-  numerically and organized into structures that align perfectly with linear algebra concepts.  
+  numerically and organised into structures that align perfectly with linear algebra concepts.  
   * Vectors: A single data point (e.g., the features of one house: \[size, number of bedrooms,
     age\]) is often represented as a vector.  
   * Matrices: A collection of many data points (e.g., an entire dataset of houses, where each
     row is a house and each column is a feature) is typically represented as a matrix.  
   * Tensors: In more advanced deep learning, data might be represented as tensors, which are
-    generalizations of vectors and matrices to higher dimensions (e.g., an image being a 3D
-    tensor: height x width x color channels).  
+    generalisations of vectors and matrices to higher dimensions (e.g., an image being a 3D
+    tensor: height x width x colour channels).  
 
 * Why it's used: Linear algebra provides the essential tools for efficient manipulation,
   transformation, and processing of these numerical data structures.  
-  * Feature Scaling: Operations to normalize or standardize data often involve vector/matrix
+  * Feature Scaling: Operations to normalise or standardise data often involve vector/matrix
     operations.  
   * Dimensionality Reduction: Techniques like Principal Component Analysis (PCA) rely heavily
     on eigenvalue decomposition, a core linear algebra concept, to reduce the number of features
@@ -46,7 +46,7 @@ to troubleshoot and improve your models.
 
 * Concept: Calculus is the mathematical study of continuous change. It's divided into differential
   calculus (dealing with rates of change and slopes) and integral calculus (dealing with accumulation).
-  In the context of ML, differential calculus is paramount, primarily used for optimization—that is,
+  In the context of ML, differential calculus is paramount, primarily used for optimisation—that is,
   finding the "best" set of parameters that make our model as accurate as possible.  
     * Loss Functions in Machine Learning: In machine learning, every model has a loss function (or cost
       function), which quantifies how inaccurate the model's predictions are compared to the actual values.
@@ -60,10 +60,10 @@ $n$ is the total number of data points.
 
   * Optimisation: Calculus provides the tools to find the minimum point of a function.  
 
-* Why it's used: Derivatives (from differential calculus) are central to the optimization process.
+* Why it's used: Derivatives (from differential calculus) are central to the optimisation process.
   A derivative tells us the rate of change of a function with respect to one of its variables, and
   critically, the direction in which the function is increasing or decreasing most rapidly.  
-  * Gradient Descent: This is the most common optimization algorithm in ML. By calculating the partial
+  * Gradient Descent: This is the most common optimisation algorithm in ML. By calculating the partial
     derivative of our loss function with respect to each model parameter (e.g., m and b in linear
     regression), we can determine how much and in which direction to adjust those parameters to
     reduce the loss. Gradient Descent iteratively takes small steps "downhill" in the landscape
@@ -85,12 +85,12 @@ $n$ is the total number of data points.
 * Concept:  
   * Probability: Quantifies uncertainty, allowing us to describe the likelihood of events. It provides
     a framework for reasoning about random phenomena.  
-  * Statistics: Involves collecting, analyzing, interpreting, presenting, and organizing data to find
+  * Statistics: Involves collecting, analysing, interpreting, presenting, and organising data to find
     patterns, make inferences, and draw conclusions. In ML, we constantly deal with data that has inherent
     variability and uncertainty.  
 
 * Why it's used:  
-  * Modeling Uncertainty: Many ML models, particularly those involved in classification, are explicitly
+  * Modelling Uncertainty: Many ML models, particularly those involved in classification, are explicitly
     built upon probabilistic principles to estimate the likelihood of different outcomes. For example,
     a spam classifier might not just say "spam" or "not spam," but "95% probability of being spam."
     Naive Bayes classifiers are a prime example of models rooted in conditional probability.  
@@ -100,7 +100,7 @@ $n$ is the total number of data points.
     a model's strengths, weaknesses, and whether its predictions are statistically significant.  
   * Data Understanding and Preprocessing: Statistics is indispensable for exploring and understanding
     the distribution of our data. It helps identify outliers, detect correlations between different
-    features, and guide effective data preparation for modeling (e.g., normalization, imputation of
+    features, and guide effective data preparation for modelling (e.g., normalisation, imputation of
     missing values, sampling techniques). Understanding concepts like mean, median, variance, standard
     deviation, and different probability distributions (e.g., Gaussian) is fundamental.  
   * Inferential Statistics: This branch allows us to make predictions or draw conclusions about a larger
@@ -108,10 +108,10 @@ $n$ is the total number of data points.
     data and generalise to unseen data.  
 
 * *Programmer's view:* When you split your dataset into training, validation, and testing sets (to ensure
-  the model generalizes well), or when you analyze your model's performance metrics after training, you
+  the model generalises well), or when you analyse your model's performance metrics after training, you
   are applying fundamental statistical concepts. Understanding statistical significance helps you interpret
-  if an improvement in your model's performance is truly meaningful or just random chance. Many data science
-  libraries in Python (e.g., Pandas, Matplotlib, Seaborn, SciPy) have strong statistical underpinnings.
+  if an improvement in your model's performance is truly meaningful or just random chance. Many data
+  science libraries in Python (e.g., Pandas, Matplotlib, Seaborn, SciPy) have strong statistical underpinnings.
 
 
 ### Conclusion
@@ -122,3 +122,4 @@ evaluating performance--form the bedrock of Machine Learning. While you don't ne
 theoretical mathematician, a solid grasp of these concepts will empower you to move beyond
 simply using ML libraries as black boxes, enabling you to design, understand, debug, and
 innovate in the exciting field of machine learning.
+
