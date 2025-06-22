@@ -74,7 +74,7 @@ $n$ is the total number of data points.
 
 * *Programmer's view:* While you won't typically write derivative calculations from scratch when
   using modern ML frameworks (they use automatic differentiation), understanding *why* these calculations
-  are performed is somewwhat essential. You will regularly use optimisation algorithms (e.g., SGD for
+  are performed is somewhat essential. You will regularly use optimisation algorithms (e.g., SGD for
   Stochastic Gradient Descent, Adam, RMSprop) that implement these calculus-based concepts under the
   hood to automatically update model parameters based on the calculated gradients, pushing the model
   towards better performance.
