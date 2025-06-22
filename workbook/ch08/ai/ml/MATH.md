@@ -57,7 +57,7 @@ to troubleshoot and improve your models.
 ```  
     
     
-where $yi$​ is the actual value, $\hat{y}_i$​ is the predicted value, and $N$ is the number of data points.  
+    where $yi$​ is the actual value, $\hat{y}_i$​ is the predicted value, and $N$ is the number of data points.  
   * Optimisation: Calculus provides the tools to find the minimum point of a function.  
 
 * Why it's used: Derivatives (from differential calculus) are central to the optimization process.
