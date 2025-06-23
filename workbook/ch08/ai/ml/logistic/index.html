@@ -13,18 +13,10 @@
             margin: 20px auto;
             cursor: crosshair;
         }
-        .point {
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            transform: translate(-7px, -7px);
-            cursor: move;
-            border: 2px solid white;
-        }
         #equation {
-            font-size: 18px;
+            font-size: 16px;
             margin: 10px;
+            font-family: monospace;
         }
         #instructions {
             color: #666;
@@ -33,22 +25,63 @@
         #controls {
             margin: 15px;
         }
+        #stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        button {
+            margin: 0 5px;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+        .class-indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+            margin: 0 5px;
+            vertical-align: middle;
+        }
+        .class0 { background-color: #EA4335; }
+        .class1 { background-color: #4285F4; }
+        .active-class { border-color: #333 !important; border-width: 3px !important; }
     </style>
 </head>
 <body>
     <h1>Interactive Logistic Regression</h1>
     <div id="instructions">
-        Drag points to move them | Click to add points | Double-click to remove<br>
-        <div id="controls">
-            <button id="reset">Reset Points</button>
-            Class 0: <span id="class0-count">0</span> | 
-            Class 1: <span id="class1-count">0</span>
-        </div>
+        Left-click to add points | Drag to move | Double-click to remove | Right-click to toggle class<br>
+        Active class: <span class="class-indicator class0" id="class0-indicator"></span> Class 0 
+        <span class="class-indicator class1" id="class1-indicator"></span> Class 1
     </div>
+    
+    <div id="controls">
+        <button onclick="resetPoints()">Reset</button>
+        <button onclick="addRandomData()">Random Data</button>
+        <button onclick="clearAll()">Clear All</button>
+        <button onclick="toggleBoundaryMode()">Toggle Boundary</button>
+        <button onclick="exportData()">Export</button>
+    </div>
+    
+    <div id="stats">
+        <div>Class 0: <span id="class0-count">0</span></div>
+        <div>Class 1: <span id="class1-count">0</span></div>
+        <div>Accuracy: <span id="accuracy">N/A</span></div>
+        <div>Log Loss: <span id="logloss">N/A</span></div>
+        <div>Iterations: <span id="iterations">0</span></div>
+    </div>
+
     <div id="equation">
-        P(y=1) = 1 / (1 + e<sup>-(<span id="b0">0</span> + <span id="b1">0</span>x₁ + <span id="b2">0</span>x₂)</sup>)
+        P(y=1) = 1 / (1 + e<sup>-(<span id="b0">0.000</span> + <span id="b1">0.000</span>&times;X<sub>1</sub> + <span id="b2">0.000</span>&times;X<sub>2</sub>)</sup>)
     </div>
+
     <canvas id="chart" width="600" height="400"></canvas>
+    
+    <div id="prediction-info" style="margin-top: 10px; color: #666; font-size: 14px;"></div>
 
     <script>
         const canvas = document.getElementById('chart');
@@ -58,34 +91,91 @@
         const b2Span = document.getElementById('b2');
         const class0Count = document.getElementById('class0-count');
         const class1Count = document.getElementById('class1-count');
+        const accuracySpan = document.getElementById('accuracy');
+        const loglossSpan = document.getElementById('logloss');
+        const iterationsSpan = document.getElementById('iterations');
+        const predictionInfo = document.getElementById('prediction-info');
         
-        // Sample data points [x, y, class]
         let points = [
-            [100, 200, 0], [120, 180, 0], [150, 220, 0], [180, 200, 0],
-            [400, 300, 1], [420, 280, 1], [450, 320, 1], [480, 300, 1]
+            {x: 100, y: 200, class: 0},
+            {x: 120, y: 180, class: 0},
+            {x: 150, y: 220, class: 0},
+            {x: 180, y: 200, class: 0},
+            {x: 400, y: 300, class: 1},
+            {x: 420, y: 280, class: 1},
+            {x: 450, y: 320, class: 1},
+            {x: 480, y: 300, class: 1}
         ];
         
-        // Model parameters [bias, x1, x2]
         let coefficients = [0, 0, 0];
         let draggedPoint = null;
-        let currentClass = 0; // Toggle with right click
+        let currentClass = 0;
+        let showBoundary = true;
+        let modelTrained = false;
+        let trainingMetrics = { accuracy: 0, logloss: 0, iterations: 0 };
         
         // Initialize
-        drawChart();
-        updateClassCounts();
+        updateDisplay();
         
-        // Draw everything
+        function updateDisplay() {
+            updateClassIndicators();
+            updateClassCounts();
+            drawChart();
+        }
+        
+        function updateClassIndicators() {
+            const class0Indicator = document.getElementById('class0-indicator');
+            const class1Indicator = document.getElementById('class1-indicator');
+            
+            class0Indicator.classList.toggle('active-class', currentClass === 0);
+            class1Indicator.classList.toggle('active-class', currentClass === 1);
+        }
+        
+        function updateClassCounts() {
+            const class0 = points.filter(p => p.class === 0).length;
+            const class1 = points.filter(p => p.class === 1).length;
+            class0Count.textContent = class0;
+            class1Count.textContent = class1;
+        }
+        
         function drawChart() {
-            // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Draw decision boundary background
-            if (points.filter(p => p[2] === 0).length > 0 && 
-                points.filter(p => p[2] === 1).length > 0) {
+            // Draw decision boundary if enabled and we have both classes
+            if (showBoundary && hasBothClasses()) {
+                trainModel();
                 drawDecisionBoundary();
             }
             
-            // Draw axes
+            drawGrid();
+            drawAxes();
+            drawPoints();
+            updateEquationDisplay();
+            updateMetricsDisplay();
+        }
+        
+        function drawGrid() {
+            ctx.strokeStyle = '#eee';
+            ctx.lineWidth = 1;
+            
+            // Vertical lines
+            for (let x = 100; x <= 500; x += 50) {
+                ctx.beginPath();
+                ctx.moveTo(x, 50);
+                ctx.lineTo(x, 350);
+                ctx.stroke();
+            }
+            
+            // Horizontal lines
+            for (let y = 100; y <= 300; y += 50) {
+                ctx.beginPath();
+                ctx.moveTo(50, y);
+                ctx.lineTo(550, y);
+                ctx.stroke();
+            }
+        }
+        
+        function drawAxes() {
             ctx.beginPath();
             ctx.moveTo(50, 350);
             ctx.lineTo(550, 350);
@@ -95,151 +185,367 @@
             ctx.lineWidth = 2;
             ctx.stroke();
             
-            // Draw grid
-            ctx.strokeStyle = '#eee';
-            ctx.lineWidth = 1;
-            for (let x = 50; x <= 550; x += 50) {
-                ctx.beginPath();
-                ctx.moveTo(x, 50);
-                ctx.lineTo(x, 350);
-                ctx.stroke();
-            }
-            for (let y = 50; y <= 350; y += 50) {
-                ctx.beginPath();
-                ctx.moveTo(50, y);
-                ctx.lineTo(550, y);
-                ctx.stroke();
+            // Axis labels
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            
+            // X-axis labels
+            for (let x = 100; x <= 500; x += 100) {
+                const value = ((x - 50) / 500).toFixed(1);
+                ctx.fillText(value, x, 370);
             }
             
-            // Draw points
-            points.forEach(point => {
+            // Y-axis labels
+            ctx.textAlign = 'right';
+            for (let y = 100; y <= 300; y += 100) {
+                const value = ((350 - y) / 300).toFixed(1);
+                ctx.fillText(value, 45, y + 4);
+            }
+            
+            ctx.textAlign = 'left';
+        }
+        
+        function drawPoints() {
+            points.forEach((point, index) => {
+                // Draw prediction circle if model is trained
+                if (modelTrained && showBoundary) {
+                    const prob = predictProbability(point.x, point.y);
+                    const radius = 15 + prob * 10; // Larger circle = higher probability
+                    
+                    ctx.beginPath();
+                    ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${prob > 0.5 ? '66, 133, 244' : '234, 67, 53'}, 0.1)`;
+                    ctx.fill();
+                }
+                
+                // Draw main point
                 ctx.beginPath();
-                ctx.arc(point[0], point[1], 8, 0, Math.PI * 2);
-                ctx.fillStyle = point[2] === 1 ? '#4285F4' : '#EA4335';
+                ctx.arc(point.x, point.y, 8, 0, Math.PI * 2);
+                ctx.fillStyle = point.class === 1 ? '#4285F4' : '#EA4335';
                 ctx.fill();
+                
                 ctx.strokeStyle = 'white';
                 ctx.lineWidth = 2;
                 ctx.stroke();
+                
+                // Draw misclassification indicator
+                if (modelTrained) {
+                    const prob = predictProbability(point.x, point.y);
+                    const predicted = prob > 0.5 ? 1 : 0;
+                    
+                    if (predicted !== point.class) {
+                        ctx.beginPath();
+                        ctx.arc(point.x, point.y, 12, 0, Math.PI * 2);
+                        ctx.strokeStyle = '#FF0000';
+                        ctx.lineWidth = 3;
+                        ctx.stroke();
+                    }
+                }
             });
         }
         
-        // Draw the logistic regression decision boundary
         function drawDecisionBoundary() {
-            // Only draw if we have points in both classes
-            if (points.filter(p => p[2] === 0).length === 0 || 
-                points.filter(p => p[2] === 1).length === 0) {
-                return;
-            }
+            if (!modelTrained) return;
             
-            // Train logistic regression model
-            trainModel();
-            
-            // Create a probability map
-            const imageData = ctx.createImageData(canvas.width, canvas.height);
+            const imageData = ctx.createImageData(500, 300);
             const pixels = imageData.data;
             
-            for (let y = 0; y < canvas.height; y++) {
-                for (let x = 0; x < canvas.width; x++) {
-                    const idx = (y * canvas.width + x) * 4;
-                    if (x < 50 || x > 550 || y < 50 || y > 350) {
-                        // Outside chart area - white
-                        pixels[idx] = 255;
-                        pixels[idx+1] = 255;
-                        pixels[idx+2] = 255;
-                        pixels[idx+3] = 255;
+            for (let y = 0; y < 300; y++) {
+                for (let x = 0; x < 500; x++) {
+                    const idx = (y * 500 + x) * 4;
+                    const canvasX = x + 50;
+                    const canvasY = 350 - y;
+                    
+                    const prob = predictProbability(canvasX, canvasY);
+                    
+                    // Color interpolation based on probability
+                    const intensity = Math.abs(prob - 0.5) * 2; // 0 at boundary, 1 at extremes
+                    const alpha = Math.floor(intensity * 60 + 20);
+                    
+                    if (prob > 0.5) {
+                        pixels[idx] = 66;      // Blue for class 1
+                        pixels[idx+1] = 133;
+                        pixels[idx+2] = 244;
                     } else {
-                        // Calculate probability
-                        const prob = sigmoid(
-                            coefficients[0] + 
-                            coefficients[1] * (x - 50) / 500 + 
-                            coefficients[2] * (350 - y) / 300
-                        );
-                        
-                        // Interpolate between red (class 0) and blue (class 1)
-                        pixels[idx] = Math.floor(66 + (234 - 66) * prob);    // R
-                        pixels[idx+1] = Math.floor(133 - (133 - 32) * prob);  // G
-                        pixels[idx+2] = Math.floor(244 - (244 - 244) * prob); // B
-                        pixels[idx+3] = 80; // Alpha (transparency)
+                        pixels[idx] = 234;     // Red for class 0
+                        pixels[idx+1] = 67;
+                        pixels[idx+2] = 53;
+                    }
+                    pixels[idx+3] = alpha;
+                }
+            }
+            
+            ctx.putImageData(imageData, 50, 50);
+            
+            // Draw decision boundary line (prob = 0.5)
+            drawDecisionBoundaryLine();
+        }
+        
+        function drawDecisionBoundaryLine() {
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            
+            ctx.beginPath();
+            let firstPoint = true;
+            
+            for (let x = 50; x <= 550; x += 2) {
+                const y = findDecisionBoundaryY(x);
+                if (y >= 50 && y <= 350) {
+                    if (firstPoint) {
+                        ctx.moveTo(x, y);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(x, y);
                     }
                 }
             }
             
-            // Draw the probability map
-            ctx.putImageData(imageData, 0, 0);
-            
-            // Redraw grid lines on top
-            ctx.strokeStyle = '#eee';
-            ctx.lineWidth = 1;
-            for (let x = 50; x <= 550; x += 50) {
-                ctx.beginPath();
-                ctx.moveTo(x, 50);
-                ctx.lineTo(x, 350);
-                ctx.stroke();
-            }
-            for (let y = 50; y <= 350; y += 50) {
-                ctx.beginPath();
-                ctx.moveTo(50, y);
-                ctx.lineTo(550, y);
-                ctx.stroke();
-            }
-            
-            // Update equation display
-            b0Span.textContent = coefficients[0].toFixed(3);
-            b1Span.textContent = coefficients[1].toFixed(3);
-            b2Span.textContent = coefficients[2].toFixed(3);
+            ctx.stroke();
+            ctx.setLineDash([]);
         }
         
-        // Sigmoid function
+        function findDecisionBoundaryY(x) {
+            // Solve for y where probability = 0.5
+            // 0 = b0 + b1*x_norm + b2*y_norm
+            // y_norm = -(b0 + b1*x_norm) / b2
+            
+            if (Math.abs(coefficients[2]) < 1e-10) return -1; // Avoid division by zero
+            
+            const xNorm = (x - 50) / 500;
+            const yNorm = -(coefficients[0] + coefficients[1] * xNorm) / coefficients[2];
+            return 350 - yNorm * 300;
+        }
+        
+        function predictProbability(x, y) {
+            const xNorm = (x - 50) / 500;
+            const yNorm = (350 - y) / 300;
+            const z = coefficients[0] + coefficients[1] * xNorm + coefficients[2] * yNorm;
+            return sigmoid(z);
+        }
+        
         function sigmoid(z) {
+            // Clip z to prevent overflow
+            z = Math.max(-500, Math.min(500, z));
             return 1 / (1 + Math.exp(-z));
         }
         
-        // Simple gradient descent for logistic regression
+        function hasBothClasses() {
+            return points.some(p => p.class === 0) && points.some(p => p.class === 1);
+        }
+        
         function trainModel() {
-            const learningRate = 0.1;
-            const iterations = 100;
-            const n = points.length;
-            
-            // Initialize coefficients if needed
-            if (coefficients.every(c => c === 0)) {
-                coefficients = [Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1];
+            if (!hasBothClasses() || points.length < 2) {
+                modelTrained = false;
+                return;
             }
             
-            // Normalize points to [0,1] range
-            const normalizedPoints = points.map(p => [
-                (p[0] - 50) / 500,   // x1 (0-1)
-                (350 - p[1]) / 300,    // x2 (0-1, inverted)
-                p[2]                   // class
-            ]);
+            const learningRate = 0.5;
+            const maxIterations = 1000;
+            const tolerance = 1e-6;
+            let prevLoss = Infinity;
             
-            // Gradient descent
-            for (let i = 0; i < iterations; i++) {
+            // Initialize coefficients with small random values
+            coefficients = [
+                (Math.random() - 0.5) * 0.1,
+                (Math.random() - 0.5) * 0.1,
+                (Math.random() - 0.5) * 0.1
+            ];
+            
+            // Normalize points
+            const normalizedPoints = points.map(p => ({
+                x: (p.x - 50) / 500,
+                y: (350 - p.y) / 300,
+                class: p.class
+            }));
+            
+            let iterations = 0;
+            
+            // Gradient descent with convergence check
+            for (iterations = 0; iterations < maxIterations; iterations++) {
                 const gradients = [0, 0, 0];
+                let totalLoss = 0;
                 
-                // Calculate gradients
+                // Calculate gradients and loss
                 normalizedPoints.forEach(p => {
-                    const z = coefficients[0] + coefficients[1] * p[0] + coefficients[2] * p[1];
+                    const z = coefficients[0] + coefficients[1] * p.x + coefficients[2] * p.y;
                     const prediction = sigmoid(z);
-                    const error = prediction - p[2];
+                    const error = prediction - p.class;
                     
                     gradients[0] += error;
-                    gradients[1] += error * p[0];
-                    gradients[2] += error * p[1];
+                    gradients[1] += error * p.x;
+                    gradients[2] += error * p.y;
+                    
+                    // Log loss
+                    const epsilon = 1e-15;
+                    const clippedPred = Math.max(epsilon, Math.min(1 - epsilon, prediction));
+                    totalLoss += -(p.class * Math.log(clippedPred) + (1 - p.class) * Math.log(1 - clippedPred));
                 });
                 
-                // Update coefficients
-                coefficients[0] -= learningRate * gradients[0] / n;
-                coefficients[1] -= learningRate * gradients[1] / n;
-                coefficients[2] -= learningRate * gradients[2] / n;
+                const avgLoss = totalLoss / normalizedPoints.length;
+                
+                // Check convergence
+                if (Math.abs(prevLoss - avgLoss) < tolerance) {
+                    break;
+                }
+                prevLoss = avgLoss;
+                
+                // Update coefficients with regularization
+                const regularization = 0.01;
+                coefficients[0] -= learningRate * (gradients[0] / normalizedPoints.length + regularization * coefficients[0]);
+                coefficients[1] -= learningRate * (gradients[1] / normalizedPoints.length + regularization * coefficients[1]);
+                coefficients[2] -= learningRate * (gradients[2] / normalizedPoints.length + regularization * coefficients[2]);
+            }
+            
+            // Calculate metrics
+            let correct = 0;
+            let totalLogLoss = 0;
+            
+            normalizedPoints.forEach(p => {
+                const z = coefficients[0] + coefficients[1] * p.x + coefficients[2] * p.y;
+                const prediction = sigmoid(z);
+                const predicted = prediction > 0.5 ? 1 : 0;
+                
+                if (predicted === p.class) correct++;
+                
+                const epsilon = 1e-15;
+                const clippedPred = Math.max(epsilon, Math.min(1 - epsilon, prediction));
+                totalLogLoss += -(p.class * Math.log(clippedPred) + (1 - p.class) * Math.log(1 - clippedPred));
+            });
+            
+            trainingMetrics = {
+                accuracy: correct / normalizedPoints.length,
+                logloss: totalLogLoss / normalizedPoints.length,
+                iterations: iterations + 1
+            };
+            
+            modelTrained = true;
+        }
+        
+        function updateEquationDisplay() {
+            if (modelTrained) {
+                b0Span.textContent = coefficients[0].toFixed(3);
+                b1Span.textContent = coefficients[1].toFixed(3);
+                b2Span.textContent = coefficients[2].toFixed(3);
+            } else {
+                b0Span.textContent = '0.000';
+                b1Span.textContent = '0.000';
+                b2Span.textContent = '0.000';
             }
         }
         
-        // Update class counts display
-        function updateClassCounts() {
-            const class0 = points.filter(p => p[2] === 0).length;
-            const class1 = points.filter(p => p[2] === 1).length;
-            class0Count.textContent = class0;
-            class1Count.textContent = class1;
+        function updateMetricsDisplay() {
+            if (modelTrained) {
+                accuracySpan.textContent = (trainingMetrics.accuracy * 100).toFixed(1) + '%';
+                loglossSpan.textContent = trainingMetrics.logloss.toFixed(3);
+                iterationsSpan.textContent = trainingMetrics.iterations;
+            } else {
+                accuracySpan.textContent = 'N/A';
+                loglossSpan.textContent = 'N/A';
+                iterationsSpan.textContent = '0';
+            }
+        }
+        
+        function getPointAt(x, y) {
+            return points.find(p => {
+                const dist = Math.sqrt((x - p.x) ** 2 + (y - p.y) ** 2);
+                return dist < 12;
+            });
+        }
+        
+        function addPoint(x, y, cls) {
+            if (x >= 50 && x <= 550 && y >= 50 && y <= 350) {
+                points.push({x, y, class: cls});
+                updateDisplay();
+            }
+        }
+        
+        function removePoint(point) {
+            const index = points.indexOf(point);
+            if (index > -1) {
+                points.splice(index, 1);
+                updateDisplay();
+            }
+        }
+        
+        // Control functions
+        function resetPoints() {
+            points = [
+                {x: 100, y: 200, class: 0},
+                {x: 120, y: 180, class: 0},
+                {x: 150, y: 220, class: 0},
+                {x: 180, y: 200, class: 0},
+                {x: 400, y: 300, class: 1},
+                {x: 420, y: 280, class: 1},
+                {x: 450, y: 320, class: 1},
+                {x: 480, y: 300, class: 1}
+            ];
+            coefficients = [0, 0, 0];
+            modelTrained = false;
+            updateDisplay();
+        }
+        
+        function clearAll() {
+            points = [];
+            coefficients = [0, 0, 0];
+            modelTrained = false;
+            updateDisplay();
+        }
+        
+        function addRandomData() {
+            const numPoints = Math.floor(Math.random() * 10) + 8;
+            const centerX0 = Math.random() * 200 + 100;
+            const centerY0 = Math.random() * 200 + 100;
+            const centerX1 = Math.random() * 200 + 300;
+            const centerY1 = Math.random() * 200 + 150;
+            
+            for (let i = 0; i < numPoints; i++) {
+                const cls = Math.random() < 0.5 ? 0 : 1;
+                const centerX = cls === 0 ? centerX0 : centerX1;
+                const centerY = cls === 0 ? centerY0 : centerY1;
+                
+                const x = Math.max(60, Math.min(540, centerX + (Math.random() - 0.5) * 150));
+                const y = Math.max(60, Math.min(340, centerY + (Math.random() - 0.5) * 150));
+                
+                points.push({x, y, class: cls});
+            }
+            updateDisplay();
+        }
+        
+        function toggleBoundaryMode() {
+            showBoundary = !showBoundary;
+            drawChart();
+        }
+        
+        function exportData() {
+            const data = points.map(p => ({
+                x: ((p.x - 50) / 500).toFixed(3),
+                y: ((350 - p.y) / 300).toFixed(3),
+                class: p.class
+            }));
+            
+            let csvContent = "X1,X2,Class\n";
+            data.forEach(d => {
+                csvContent += `${d.x},${d.y},${d.class}\n`;
+            });
+            
+            if (modelTrained) {
+                csvContent += "\nModel Coefficients:\n";
+                csvContent += `Intercept,${coefficients[0].toFixed(6)}\n`;
+                csvContent += `X1_Coeff,${coefficients[1].toFixed(6)}\n`;
+                csvContent += `X2_Coeff,${coefficients[2].toFixed(6)}\n`;
+                csvContent += `Accuracy,${trainingMetrics.accuracy.toFixed(4)}\n`;
+                csvContent += `LogLoss,${trainingMetrics.logloss.toFixed(4)}\n`;
+            }
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'logistic_regression_data.csv';
+            a.click();
+            URL.revokeObjectURL(url);
         }
         
         // Event handlers
@@ -248,56 +554,45 @@
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             
-            // Right click toggles class
-            if (e.button === 2) {
+            if (e.button === 2) { // Right click
                 currentClass = currentClass === 0 ? 1 : 0;
+                updateClassIndicators();
                 e.preventDefault();
                 return;
             }
             
-            // Check if clicking on existing point
-            for (let i = points.length - 1; i >= 0; i--) {
-                const p = points[i];
-                const dist = Math.sqrt((x - p[0]) ** 2 + (y - p[1]) ** 2);
-                if (dist < 10) {
-                    if (e.detail === 2) { // Double click
-                        points.splice(i, 1);
-                        drawChart();
-                        updateClassCounts();
-                        return;
-                    }
-                    draggedPoint = { index: i, originalClass: p[2] };
+            const clickedPoint = getPointAt(x, y);
+            
+            if (clickedPoint) {
+                if (e.detail === 2) { // Double click
+                    removePoint(clickedPoint);
                     return;
                 }
+                draggedPoint = clickedPoint;
+            } else {
+                addPoint(x, y, currentClass);
             }
-            
-            // Add new point
-            points.push([x, y, currentClass]);
-            drawChart();
-            updateClassCounts();
         });
         
         canvas.addEventListener('mousemove', (e) => {
-            if (draggedPoint !== null) {
-                const rect = canvas.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                points[draggedPoint.index][0] = x;
-                points[draggedPoint.index][1] = y;
-                
-                // Change class if dragged across the boundary
-                if (points.length > 1) {
-                    const prob = sigmoid(
-                        coefficients[0] + 
-                        coefficients[1] * (x - 50) / 500 + 
-                        coefficients[2] * (350 - y) / 300
-                    );
-                    points[draggedPoint.index][2] = prob > 0.5 ? 1 : 0;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            if (draggedPoint) {
+                draggedPoint.x = Math.max(50, Math.min(550, x));
+                draggedPoint.y = Math.max(50, Math.min(350, y));
+                updateDisplay();
+            } else if (modelTrained) {
+                // Show prediction at cursor
+                if (x >= 50 && x <= 550 && y >= 50 && y <= 350) {
+                    const prob = predictProbability(x, y);
+                    const xNorm = ((x - 50) / 500).toFixed(2);
+                    const yNorm = ((350 - y) / 300).toFixed(2);
+                    predictionInfo.textContent = `X₁=${xNorm}, X₂=${yNorm} → P(Class=1)=${prob.toFixed(3)}`;
+                } else {
+                    predictionInfo.textContent = '';
                 }
-                
-                drawChart();
-                updateClassCounts();
             }
         });
         
@@ -305,19 +600,22 @@
             draggedPoint = null;
         });
         
-        canvas.addEventListener('contextmenu', (e) => {
-            e.preventDefault(); // Prevent context menu on right click
+        canvas.addEventListener('mouseleave', () => {
+            draggedPoint = null;
+            predictionInfo.textContent = '';
         });
         
-        document.getElementById('reset').addEventListener('click', () => {
-            points = [
-                [100, 200, 0], [120, 180, 0], [150, 220, 0], [180, 200, 0],
-                [400, 300, 1], [420, 280, 1], [450, 320, 1], [480, 300, 1]
-            ];
-            coefficients = [0, 0, 0];
-            currentClass = 0;
-            drawChart();
-            updateClassCounts();
+        canvas.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ') {
+                e.preventDefault();
+                currentClass = currentClass === 0 ? 1 : 0;
+                updateClassIndicators();
+            }
         });
     </script>
 </body>
