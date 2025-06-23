@@ -33,10 +33,10 @@ eventually engage with, whether explicitly or implicitly.
 | *Determinism*   | Affects debugging, simulation, and predictability   |
 | [*Time*](./time/) | Scheduling, clocks, profiling, causality in distributed systems |
 | *Complexity*   | Measured algorithmically, but also felt in UX and architecture |
-| *State*      | Core to both computing and modeling; managed differently across layers |
+| *State*      | Core to both computing and modelling; managed differently across layers |
 | *Energy use*   | Crucial from battery devices to datacenters      |
 | *Cost*      | Not just economic, but computational, spatial, or temporal |
-| *Errors*   | Arise from hardware faults, logic bugs, bad input, or user misunderstanding |
+| [*Errors*](./errors/) | Arise from hardware faults, logic bugs, bad input, or user misunderstanding |
 | [*Resilience*](./resilience/) | Ensures systems degrade gracefully and recover from faults, attacks, or overload |
 
 
@@ -198,8 +198,8 @@ but on graceful degradation and recovery.
 Abstraction allows us to hide complexity by defining layers of meaning or functionality, which in turn rely
 on interfaces to define the boundaries and protocols for communication between those layers. State is what
 these abstractions often manage or transform. For instance, a file system abstracts disk blocks and manages
-persistent state, while an API abstracts internal behavior and exposes a controlled interface to clients.
-State is fundamental because it anchors behavior in time, memory, and identity, which both abstraction and
+persistent state, while an API abstracts internal behaviour and exposes a controlled interface to clients.
+State is fundamental because it anchors behaviour in time, memory, and identity, which both abstraction and
 interface are mechanisms for organising and controlling.
 
 *Time*, *Latency*, and *Concurrency* are inseparable in systems where operations span time and resources are
@@ -209,7 +209,7 @@ cost that must be optimised or hidden. Concurrency is a structural response to t
 allowing systems to make progress while waiting or to exploit parallelism. These concepts directly influence
 how systems behave in real time, how responsive they are, and how well they utilise hardware.
 
-*Noise*, *Randomness*, and *Errors* all describe deviations from ideal behavior but differ in origin and function.
+*Noise*, *Randomness*, and *Errors* all describe deviations from ideal behaviour but differ in origin and function.
 Noise refers to uncontrolled variation, often physical or environmental, which can corrupt signals or data.
 Randomness can be harnessed deliberately, as in cryptography or simulation, but it also models uncertainty or
 lack of control. Errors arise when outcomes diverge from expectations, often due to noise or bugs. While noise
@@ -234,6 +234,6 @@ the unexpected.
 *Scalability* and *Resilience* are particularly relevant at the system and network level. While scalability is
 about a system's ability to grow without performance collapse, resilience ensures that the system can sustain
 functionality as conditions change. These are not just performance issues--they are design philosophies that
-emphasise system behavior under load and stress. A scalable system may still be fragile; a resilient one
+emphasise system behaviour under load and stress. A scalable system may still be fragile; a resilient one
 prioritises survival and recovery.
 
