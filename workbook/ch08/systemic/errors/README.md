@@ -7,7 +7,7 @@ discussion, we examine two broad and deeply interconnected areas: *errors* and *
 each reflects and informs the other. This perspective is not necessarily mainstream, but rather a
 conceptual reflection--one that you may agree with, challenge, or interpret differently.
 
-A deeper study can be read in [Errors and Security](./Errors%20and%20Security.docx).
+A deeper study can be read in [Errors and Security](./Errors\_and\_Security.docx).
 
 
 ### The Nature of Errors
@@ -64,6 +64,7 @@ Systems composed of many components often fail due to:
 
 These are the glue-layer errors—emergent from complexity, not code correctness.
 
+Some reflections on [errors](ERRORS.md).
 
 
 ### The Nature of Security

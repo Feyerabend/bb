@@ -21,8 +21,8 @@ eventually engage with, whether explicitly or implicitly.
 | Concept | Systemic |
 |---|---|
 | [*Noise*](./noice/) | Affects communication, sensing, and even logic gates |
-| *Randomness*   | Critical in simulation, cryptography, testing, protocols |
-| *Optimisation*  | Present in compilers, algorithms, hardware, energy use |
+| [*Randomness*](./random/) | Critical in simulation, cryptography, testing, protocols |
+| [*Optimisation*](./optimal/) | Present in compilers, algorithms, hardware, energy use |
 | *Security*    | Requires attention at every layer: physical to logical |
 | [*Interface*](./interface/) | Defines component interaction everywhere |
 | *Abstraction*   | Central to all software and hardware design      |
