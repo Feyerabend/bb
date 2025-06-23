@@ -64,6 +64,7 @@ Systems composed of many components often fail due to:
 
 These are the glue-layer errors—emergent from complexity, not code correctness.
 
+Some reflections on [errors](ERRORS.md).
 
 
 ### The Nature of Security
