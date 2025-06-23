@@ -42,7 +42,7 @@ method is called the "Ordinary Least Squares" (OLS) method.
   explain the dependent variable.
 * *Regression Line:* The straight line that best fits the data, representing the estimated relationship
   between the variables.
-* *Slope ($\beta_1$):* Indicates the direction and strength of the linear relationship between the
+* *Slope* ($\beta_1$): Indicates the direction and strength of the linear relationship between the
   independent and dependent variables. A positive slope means $y$ increases as $x$ increases, while
   a negative slope means $y$ decreases as $x$ increases.
 * *Intercept ($\beta_0$):* The point where the regression line crosses the y-axis. It's the predicted
