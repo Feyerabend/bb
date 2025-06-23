@@ -45,11 +45,11 @@ method is called the "Ordinary Least Squares" (OLS) method.
 * *Slope* ($\beta_1$): Indicates the direction and strength of the linear relationship between the
   independent and dependent variables. A positive slope means $y$ increases as $x$ increases, while
   a negative slope means $y$ decreases as $x$ increases.
-* *Intercept ($\beta_0$):* The point where the regression line crosses the y-axis. It's the predicted
+* *Intercept* ($\beta_0$): The point where the regression line crosses the y-axis. It's the predicted
   value of the dependent variable when the independent variable is zero.
 * *Residuals (Errors):* The vertical distances between the actual data points and the regression line.
   Linear regression aims to minimize these errors.
-* *Coefficient of Determination ($R^2$):* A statistical measure that represents the proportion of the
+* *Coefficient of Determination* ($R^2$): A statistical measure that represents the proportion of the
   variance in the dependent variable that can be explained by the independent variable(s). It ranges
   from 0 to 1, with higher values indicating a better fit.
 
