@@ -23,7 +23,7 @@ to a probability between 0 and 1.
 The linear combination of independent variables is similar to linear regression:
 
 ```math
-$z = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_n x_n$
+z = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_n x_n
 ```
 
 Where:
@@ -34,13 +34,13 @@ Where:
 This $z$ value is then passed through the logistic (sigmoid) function to get the predicted probability $p$:
 
 ```math
-$p = \frac{1}{1 + e^{-z}}$
+p = \frac{1}{1 + e^{-z}}
 ```
 
 or
 
 ```math
-$p = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + ... + \beta_n x_n)}}$
+p = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + ... + \beta_n x_n)}}
 ```
 
 Where:
@@ -55,7 +55,7 @@ Logistic regression fundamentally models the *log-odds* of an event. The odds of
 as $\frac{p}{1-p}$. Taking the natural logarithm of the odds gives us the log-odds:
 
 ```math
-$\text{log-odds} = \ln\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 x_1 + ... + \beta_n x_n$
+\text{log-odds} = \ln\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 x_1 + ... + \beta_n x_n
 ```
 
 This shows that the log-odds are a linear combination of the independent variables.

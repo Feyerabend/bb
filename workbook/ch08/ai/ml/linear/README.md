@@ -19,7 +19,7 @@ At its core, linear regression seeks to fit a linear equation to observed data. 
 regression (with one independent variable), the model is represented as:
 
 ```math
-$y = \beta_0 + \beta_1 x + \epsilon$
+y = \beta_0 + \beta_1 x + \epsilon
 ```
 
 Where:
