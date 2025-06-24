@@ -17,7 +17,7 @@ a financial model based on live stock market data. If you run this program twice
 historical data as input, do you expect it to produce precisely the same output?
 A truly deterministic system would.
 
-The "concept" of determinism hinges on the idea of repeatable, predictable behavior. It's about
+The "concept" of determinism hinges on the idea of repeatable, predictable behaviour. It's about
 cause and effect being tightly coupled and consistently reproducible. If we know the cause (initial
 state + inputs), we should unequivocally know the effect (final state + outputs).
 
@@ -80,7 +80,7 @@ __Why is this so important?__
   to independently verify published findings.
 * *Virtual Prototyping and Testing:* In areas like hardware design or robotics, simulations are used for
   virtual prototyping and extensive testing before physical implementation. Determinism ensures that tests
-  conducted in the simulated environment are reliable predictors of real-world behavior and that any observed
+  conducted in the simulated environment are reliable predictors of real-world behaviour and that any observed
   issues can be consistently reproduced and addressed.
 
 #### Predictability
@@ -116,7 +116,7 @@ Determinism isn't a single switch; it's a property that manifests at various lev
     * *Language Semantics:* High-level programming languages define their operations with deterministic
       semantics. For example, the `+` operator in C++ or Python will always produce the same sum for the
       same two numbers.
-    * *Compiler Optimizations:* A well-designed compiler, given the same source code and compilation flags,
+    * *Compiler Optimisations:* A well-designed compiler, given the same source code and compilation flags,
       should deterministically produce the same machine code. Variations here can lead to "compiler bugs"
       that are difficult to track.
     * *Floating-Point Arithmetic:* While often a source of subtle non-determinism across different architectures
@@ -136,7 +136,7 @@ Determinism isn't a single switch; it's a property that manifests at various lev
           (e.g., Rate Monotonic Scheduling, Earliest Deadline First) to guarantee that critical tasks meet their
           deadlines, even if it means sacrificing some overall throughput.
     * *Interrupts:* External interrupts (e.g., from hardware, network) are inherently non-deterministic in their
-      arrival time, introducing potential for non-deterministic behavior if not handled carefully.
+      arrival time, introducing potential for non-deterministic behaviour if not handled carefully.
 
 4.  *Hardware Components:*
     * *Memory Controllers:* While memory access *timing* can vary, the memory controller ensures that data

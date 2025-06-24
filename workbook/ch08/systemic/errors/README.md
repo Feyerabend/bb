@@ -91,7 +91,7 @@ Much of traditional exploit development resides here—manipulating execution vi
 These reflect a loss of trust in the physical substrate of computing.
 
 4. Human Interaction Security
-- Phishing, social engineering, and poor password hygiene exploit cognitive and behavioral traits.
+- Phishing, social engineering, and poor password hygiene exploit cognitive and behavioural traits.
 - Security fatigue (alert overload) makes users bypass important protections.
 
 Security here is a human discipline, not just a technical one.
@@ -107,11 +107,11 @@ Like with errors, many security failures arise not from bad code but bad integra
 
 | Layer                | Errors                                             | Security                                              |
 |----------------------|----------------------------------------------------|--------------------------------------------------------|
-| Mathematics & Arithmetic | Precision limits, undefined operations            | Side-channels, arithmetic-based exploits                |
-| Code and Logic       | Bugs, wrong assumptions, concurrency issues        | Vulnerabilities, injection, memory corruption          |
-| Hardware             | Bit-flips, wear, physical failure                  | Firmware attacks, electromagnetic side-channels        |
-| Human Interaction    | Mistakes, bad UI, misunderstanding system behavior | Phishing, social engineering, password reuse           |
-| System Integration   | Dependency errors, configuration mistakes          | Misconfigurations, confused deputies, policy violations |
+| Mathematics & Arithmetic | Precision limits, undefined operations | Side-channels, arithmetic-based exploits |
+| Code and Logic | Bugs, wrong assumptions, concurrency issues | Vulnerabilities, injection, memory corruption |
+| Hardware | Bit-flips, wear, physical failure | Firmware attacks, electromagnetic side-channels |
+| Human Interaction | Mistakes, bad UI, misunderstanding system behaviour | Phishing, social engineering, password reuse |
+| System Integration | Dependency errors, configuration mistakes | Misconfigurations, confused deputies, policy violations |
 
 Parallel:
 
