@@ -21,11 +21,19 @@ hold data waiting to be processed or sent, representing the state of communicati
 
 State is equally fundamental to modeling, evident in various applications. In a simulation, the system's
 state is dynamically updated at each time step, driven by predefined rules and interactions; a weather model,
-for instance, encompasses temperature, pressure, and humidity at various points as its state. Finite State
-Machines (FSMs) offer a robust modeling paradigm where a system is characterized by a finite set of states 
-and transitions between them, activated by specific events, finding utility in diverse areas from user
-interfaces to network protocols. Lastly, System Dynamics models depict the stocks—which represent accumulations
-of resources and thus state—and the flows, or rates of change, within a system.
+for instance, encompasses temperature, pressure, and humidity at various points as its state.
+[Finite State Machines](./../../../ch07/mech/state/) (FSMs) offer a robust modeling paradigm where a system
+is characterised by a finite set of states and transitions between them, activated by specific events,
+finding utility in diverse areas from user interfaces to network protocols. Lastly, System Dynamics[^sysd] models
+depict the stocks--which represent accumulations of resources and thus state--and the flows, or rates
+of change, within a system.
+
+[^sysd]: *System Dynamics* is a modeling approach that seeks to understand why complex systems behave the way
+they do over time by identifying the underlying structures that drive their behaviour, particularly through
+feedback loops and delays. It achieves this by constructing what are called "stock and flow" diagrams, which
+are quantitative models that simulate how different accumulations (stocks) and rates of change (flows) interact
+and evolve, allowing for the testing of various policies and interventions to see their long-term consequences:
+https://en.wikipedia.org/wiki/System_dynamics.
 
 
 #### Hardware Layer: Physical State
