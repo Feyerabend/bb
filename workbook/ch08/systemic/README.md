@@ -33,7 +33,7 @@ eventually engage with, whether explicitly or implicitly.
 | [*Determinism*](./determinism/) | Affects debugging, simulation, and predictability |
 | [*Time*](./time/) | Scheduling, clocks, profiling, causality in distributed systems |
 | *Complexity*   | Measured algorithmically, but also felt in UX and architecture |
-| *State*      | Core to both computing and modelling; managed differently across layers |
+| [*State*](./state/) | Core to both computing and modelling; managed differently across layers |
 | *Energy use*   | Crucial from battery devices to datacenters      |
 | *Cost*      | Not just economic, but computational, spatial, or temporal |
 | [*Errors*](./errors/) | Arise from hardware faults, logic bugs, bad input, or user misunderstanding |
