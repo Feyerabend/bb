@@ -209,10 +209,10 @@ cost that must be optimised or hidden. Concurrency is a structural response to t
 allowing systems to make progress while waiting or to exploit parallelism. These concepts directly influence
 how systems behave in real time, how responsive they are, and how well they utilise hardware.
 
-*Noise*, *Randomness*, and *Errors* all describe deviations from ideal behaviour but differ in origin and function.
-Noise refers to uncontrolled variation, often physical or environmental, which can corrupt signals or data.
-Randomness can be harnessed deliberately, as in cryptography or simulation, but it also models uncertainty or
-lack of control. Errors arise when outcomes diverge from expectations, often due to noise or bugs. While noise
+*Noise*, *Randomness*, and *Errors* all describe deviations from ideal behaviour but differ in origin and
+function. Noise refers to uncontrolled variation, often physical or environmental, which can corrupt signals
+or data. Randomness can be harnessed deliberately, as in cryptography or simulation, but it also models uncertainty
+or lack of control. Errors arise when outcomes diverge from expectations, often due to noise or bugs. While noise
 is (often regarded as) physical and randomness can be both a tool and a problem, errors are logical or semantic
 failures that require detection and recovery mechanisms. Their interplay affects reliability and trustworthiness.
 
