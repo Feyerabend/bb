@@ -10,7 +10,7 @@
 - Gamma, Erich, Richard Helm, Ralph Johnson, and John Vlissides. *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley, 1994.  
   - Often referred to as the "Gang of Four" (GoF) book, this seminal work introduced the concept
     of design patterns to the software development world. It describes 23 foundational patterns
-    for object-oriented design, grouped into creational, structural, and behavioral categories.
+    for object-oriented design, grouped into creational, structural, and behavioural categories.
     While the examples are in C++ and Smalltalk, the principles are broadly applicable and have
     deeply influenced modern software architecture and best practices.
 
@@ -24,7 +24,7 @@
     want to build a solid foundation in both logic and discrete math.
 
 - Lloyd, J.W. *Foundations of Logic Programming*. 2nd extended ed., Springer, 1987.  
-  - This foundational text offers a comprehensive exploration of logic programming, emphasizing
+  - This foundational text offers a comprehensive exploration of logic programming, emphasising
     both declarative and procedural semantics. Lloyd delves into topics such as unification,
     resolution, and the fixpoint theory of logic programs. The book provides a rigorous
     mathematical framework for understanding logic programming languages like Prolog, making
