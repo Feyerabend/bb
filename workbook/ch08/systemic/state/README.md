@@ -32,8 +32,8 @@ of change, within a system.
 they do over time by identifying the underlying structures that drive their behaviour, particularly through
 feedback loops and delays. It achieves this by constructing what are called "stock and flow" diagrams, which
 are quantitative models that simulate how different accumulations (stocks) and rates of change (flows) interact
-and evolve, allowing for the testing of various policies and interventions to see their long-term consequences:
-https://en.wikipedia.org/wiki/System_dynamics.
+and evolve, allowing for the testing of various policies and interventions to see their long-term consequences.
+Wikipedia: https://en.wikipedia.org/wiki/System_dynamics.
 
 
 #### Hardware Layer: Physical State
