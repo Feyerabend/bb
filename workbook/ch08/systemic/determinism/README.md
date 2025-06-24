@@ -154,6 +154,11 @@ Determinism isn't a single switch; it's a property that manifests at various lev
       of their operations. This is a common cause of hard-to-debug bugs.
     * *Thread Scheduling:* As mentioned under OS, the exact order in which threads are scheduled to run on CPU cores
       is often non-deterministic in general-purpose systems.
+    * *Non-Deterministic Execution Models (e.g., Logic Programming):* Beyond typical multi-threading, some programming
+      paradigms inherently embrace non-determinism as part of their design. For example, in logic programming, a goal
+      may either succeed or fail. When a goal fails, the system backtracks to the most recent choice point and explores
+      alternative execution paths. This mechanism is part of the language’s non-deterministic execution model, and
+      failure itself corresponds to refutation in logical terms.
     * *Distributed Systems:* In a distributed environment, coordinating state across multiple machines, dealing
       with network latencies, partial failures, and message reordering inherently introduces high levels of
       non-determinism. Achieving deterministic behaviour in distributed systems requires sophisticated consensus
