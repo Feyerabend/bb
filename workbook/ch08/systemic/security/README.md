@@ -12,7 +12,7 @@ To start-off, a small anecdote from years ago:
 
 > I think it was around 1981. We were teenagers, maybe 16 or 17 years old, when we got the chance to do a school internship at a mainframe computer center. It felt like a dream come true--finally, a chance to spend time around a real mainframe. The hum of technology, the blinking lights, the rows of tape drives. We were thrilled.
 
-> Of course, we were just kids, so we were only allowed to do basic tasks. Things the operators normally handled: mounting and removing magnetic tapes, installing those heavy disk packs, or sending short operator messages to users waiting for their batch jobs — things like: `*** SETUP ERROR ***` (in Swedish of course some mixture of languages: `*** FEL I SETUPEN ***`).  
+> Of course, we were just kids, so we were only allowed to do basic tasks. Things the operators normally handled: mounting and removing magnetic tapes, installing those heavy disk packs, or sending short operator messages to users waiting for their batch jobs--things like: `*** SETUP ERROR ***` (in Swedish of course some mixture of languages: `*** FEL I SETUPEN ***`).  
 
 > It was noisy--fans running constantly to cool down the machines--and the regular staff seemed to live off coffee: six, seven, even eight cups before lunch.
 
