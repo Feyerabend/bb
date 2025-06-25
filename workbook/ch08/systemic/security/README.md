@@ -12,13 +12,13 @@ To start-off, a small anecdote from years ago:
 
 > I think it was around 1981. We were teenagers, maybe 16 or 17 years old, when we got the chance to do a school internship at a mainframe computer center. It felt like a dream come true--finally, a chance to spend time around a real mainframe. The hum of technology, the blinking lights, the rows of tape drives. We were thrilled.
 
-> Of course, we were just kids, so we were only allowed to do basic tasks. Things the operators normally handled: mounting and removing magnetic tapes, installing those heavy disk packs, or sending short operator messages to users waiting for their batch jobs — things like:  
-`*** SETUP ERROR ***` (in Swedish of course som mixture: `*** FEL I SETUPEN ***`).  
-It was noisy--fans running constantly to cool down the machines--and the regular staff seemed to live off coffee: six, seven, even eight cups before lunch.
+> Of course, we were just kids, so we were only allowed to do basic tasks. Things the operators normally handled: mounting and removing magnetic tapes, installing those heavy disk packs, or sending short operator messages to users waiting for their batch jobs — things like: `*** SETUP ERROR ***` (in Swedish of course some mixture of languages: `*** FEL I SETUPEN ***`).  
 
-> But one thing stood out the most. Security. Or rather--the lack of it.
+> It was noisy--fans running constantly to cool down the machines--and the regular staff seemed to live off coffee: six, seven, even eight cups before lunch.
 
-> The IBM 3033 mainframe, which processed massive national datasets, was housed in a lower-level server room. To get there, you simply took the elevator. And what was the access code to that floor?   Yes. You guessed it: `3033`.
+> But one thing stood out the most. *Security*. Or rather--the lack of it.
+
+> The IBM 3033 mainframe, which processed massive national datasets, was housed in a lower-level server room. To get there, you simply took the elevator. And what was the access code to that floor? Yes. You guessed it: `3033`.
 
 > Now, sure, most of the staff probably recognised each other. But people came and went. The high turnover, the constant background noise, the stress--it wouldn’t have been hard for an outsider to slip in unnoticed.
 
