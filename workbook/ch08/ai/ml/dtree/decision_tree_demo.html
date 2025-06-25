@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f5f5f5;
@@ -24,6 +24,36 @@
             color: #333;
             text-align: center;
             margin-bottom: 30px;
+        }
+        
+        .unit-selector {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .unit-toggle {
+            display: inline-flex;
+            background: #e0e0e0;
+            border-radius: 25px;
+            padding: 4px;
+            margin: 0 10px;
+        }
+        
+        .unit-option {
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .unit-option.active {
+            background: #2196f3;
+            color: white;
+        }
+        
+        .unit-option:not(.active):hover {
+            background: #f0f0f0;
         }
         
         .tree-container {
@@ -45,7 +75,7 @@
             padding: 8px 12px;
             margin: 5px;
             text-align: center;
-            min-width: 120px;
+            min-width: 140px;
         }
         
         .leaf {
@@ -160,6 +190,16 @@
             overflow-x: auto;
             font-size: 13px;
         }
+        
+        .conversion-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 12px;
+            color: #856404;
+        }
     </style>
 </head>
 <body>
@@ -168,19 +208,30 @@
         
         <p>This decision tree helps predict whether you should go outside based on weather conditions. The tree was trained on sample data and uses simple rules to make predictions.</p>
         
+        <div class="unit-selector">
+            <div class="unit-toggle">
+                <div class="unit-option active" onclick="switchUnits('metric')" id="metric-btn">
+                    🇪🇺 Metric (°C, m/s)
+                </div>
+                <div class="unit-option" onclick="switchUnits('imperial')" id="imperial-btn">
+                    🇺🇸 Imperial (°F, mph)
+                </div>
+            </div>
+        </div>
+        
         <div class="tree-container">
             <div class="tree">
                 <div style="text-align: center;">
-                    <div class="node">
+                    <div class="node" id="root-node">
                         Temperature > 21°C (70°F)?
                     </div>
-                    <div style="display: flex; justify-content: space-between; width: 400px;">
+                    <div style="display: flex; justify-content: space-between; width: 500px;">
                         <div style="text-align: center;">
                             <div style="margin: 10px 0;">Yes</div>
                             <div class="node">
                                 Humidity > 80%?
                             </div>
-                            <div style="display: flex; justify-content: space-between; width: 320px;">
+                            <div style="display: flex; justify-content: space-between; width: 250px;">
                                 <div>
                                     <div style="margin: 10px 0;">Yes</div>
                                     <div class="node leaf negative">
@@ -200,7 +251,7 @@
                             <div class="node">
                                 Rain?
                             </div>
-                            <div style="display: flex; justify-content: space-between; width: 200px;">
+                            <div style="display: flex; justify-content: space-between; width: 120px;">
                                 <div>
                                     <div style="margin: 10px 0;">Yes</div>
                                     <div class="node leaf negative">
@@ -209,8 +260,8 @@
                                 </div>
                                 <div>
                                     <div style="margin: 10px 0;">No</div>
-                                    <div class="node">
-                                        Wind > 24 km/h (15 mph)?
+                                    <div class="node" id="wind-node">
+                                        Wind > 7 m/s (15 mph)?
                                     </div>
                                     <div style="display: flex; justify-content: space-between; width: 200px;">
                                         <div>
@@ -237,7 +288,7 @@
         <div class="prediction-form">
             <h3>Test the Decision Tree</h3>
             <div class="form-group">
-                <label for="temperature">Temperature (°C):</label>
+                <label for="temperature" id="temp-label">Temperature (°C):</label>
                 <input type="number" id="temperature" value="24" min="-10" max="45">
             </div>
             <div class="form-group">
@@ -252,37 +303,45 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="wind">Wind Speed (km/h):</label>
-                <input type="number" id="wind" value="16" min="0" max="80">
+                <label for="wind" id="wind-label">Wind Speed (m/s):</label>
+                <input type="number" id="wind" value="4" min="0" max="20">
             </div>
             <button onclick="makePrediction()">Make Prediction</button>
             <div id="result"></div>
         </div>
         
+        <div class="conversion-note" id="conversion-note">
+            <strong>Unit Conversions:</strong> 21°C = 70°F, 7 m/s = 15.7 mph = 25.2 km/h
+        </div>
+        
         <div class="training-data">
             <h3>Sample Training Data</h3>
             <p>This is the kind of data the decision tree learned from:</p>
-            <table>
-                <tr>
-                    <th>Temperature</th>
-                    <th>Humidity</th>
-                    <th>Rain</th>
-                    <th>Wind</th>
-                    <th>Go Outside?</th>
-                </tr>
-                <tr><td>24</td><td>60</td><td>No</td><td>8</td><td>Yes</td></tr>
-                <tr><td>29</td><td>90</td><td>No</td><td>13</td><td>No</td></tr>
-                <tr><td>18</td><td>70</td><td>Yes</td><td>19</td><td>No</td></tr>
-                <tr><td>27</td><td>50</td><td>No</td><td>16</td><td>Yes</td></tr>
-                <tr><td>16</td><td>40</td><td>No</td><td>32</td><td>No</td></tr>
-                <tr><td>26</td><td>65</td><td>No</td><td>11</td><td>Yes</td></tr>
+            <table id="training-table">
+                <thead>
+                    <tr>
+                        <th id="temp-header">Temperature (°C)</th>
+                        <th>Humidity (%)</th>
+                        <th>Rain</th>
+                        <th id="wind-header">Wind (m/s)</th>
+                        <th>Go Outside?</th>
+                    </tr>
+                </thead>
+                <tbody id="training-data-body">
+                    <tr><td>24</td><td>60</td><td>No</td><td>2</td><td>Yes</td></tr>
+                    <tr><td>29</td><td>90</td><td>No</td><td>4</td><td>No</td></tr>
+                    <tr><td>18</td><td>70</td><td>Yes</td><td>5</td><td>No</td></tr>
+                    <tr><td>27</td><td>50</td><td>No</td><td>4</td><td>Yes</td></tr>
+                    <tr><td>16</td><td>40</td><td>No</td><td>9</td><td>No</td></tr>
+                    <tr><td>26</td><td>65</td><td>No</td><td>3</td><td>Yes</td></tr>
+                </tbody>
             </table>
         </div>
         
         <div class="code-section">
             <h3>How the Decision Tree Works</h3>
             <p>The decision tree follows this simple logic:</p>
-            <pre>
+            <pre id="code-display">
 function predictOutdoorActivity(temperature, humidity, rain, wind) {
     if (temperature > 21) {  // 21°C = 70°F
         if (humidity > 80) {
@@ -294,7 +353,7 @@ function predictOutdoorActivity(temperature, humidity, rain, wind) {
         if (rain === "yes") {
             return "Stay Inside";  // It's raining
         } else {
-            if (wind > 24) {       // 24 km/h = 15 mph
+            if (wind > 7) {        // 7 m/s = 15 mph
                 return "Stay Inside";  // Too windy
             } else {
                 return "Go Outside";   // Cool but pleasant
@@ -307,34 +366,177 @@ function predictOutdoorActivity(temperature, humidity, rain, wind) {
     </div>
 
     <script>
-        // Decision tree implementation
+        let currentUnits = 'metric';
+        
+        const units = {
+            metric: {
+                tempThreshold: 21,
+                tempUnit: '°C',
+                windThreshold: 7,
+                windUnit: 'm/s',
+                tempDefault: 24,
+                windDefault: 4,
+                tempMin: -10,
+                tempMax: 45,
+                windMin: 0,
+                windMax: 20,
+                trainingData: [
+                    [24, 60, 'No', 2, 'Yes'],
+                    [29, 90, 'No', 4, 'No'],
+                    [18, 70, 'Yes', 5, 'No'],
+                    [27, 50, 'No', 4, 'Yes'],
+                    [16, 40, 'No', 9, 'No'],
+                    [26, 65, 'No', 3, 'Yes']
+                ]
+            },
+            imperial: {
+                tempThreshold: 70,
+                tempUnit: '°F',
+                windThreshold: 15,
+                windUnit: 'mph',
+                tempDefault: 75,
+                windDefault: 9,
+                tempMin: 15,
+                tempMax: 115,
+                windMin: 0,
+                windMax: 45,
+                trainingData: [
+                    [75, 60, 'No', 4, 'Yes'],
+                    [84, 90, 'No', 9, 'No'],
+                    [64, 70, 'Yes', 11, 'No'],
+                    [81, 50, 'No', 9, 'Yes'],
+                    [61, 40, 'No', 20, 'No'],
+                    [79, 65, 'No', 7, 'Yes']
+                ]
+            }
+        };
+        
+        function switchUnits(unitType) {
+            currentUnits = unitType;
+            
+            // Update button states
+            document.getElementById('metric-btn').classList.toggle('active', unitType === 'metric');
+            document.getElementById('imperial-btn').classList.toggle('active', unitType === 'imperial');
+            
+            const unit = units[unitType];
+            
+            // Update tree display
+            if (unitType === 'metric') {
+                document.getElementById('root-node').textContent = `Temperature > ${unit.tempThreshold}°C (70°F)?`;
+                document.getElementById('wind-node').textContent = `Wind > ${unit.windThreshold} m/s (15 mph)?`;
+                document.getElementById('conversion-note').innerHTML = '<strong>Unit Conversions:</strong> 21°C = 70°F, 7 m/s = 15.7 mph = 25.2 km/h';
+            } else {
+                document.getElementById('root-node').textContent = `Temperature > ${unit.tempThreshold}°F (21°C)?`;
+                document.getElementById('wind-node').textContent = `Wind > ${unit.windThreshold} mph (7 m/s)?`;
+                document.getElementById('conversion-note').innerHTML = '<strong>Unit Conversions:</strong> 70°F = 21°C, 15 mph = 6.7 m/s = 24.1 km/h';
+            }
+            
+            // Update form labels and inputs
+            document.getElementById('temp-label').textContent = `Temperature (${unit.tempUnit}):`;
+            document.getElementById('wind-label').textContent = `Wind Speed (${unit.windUnit}):`;
+            
+            const tempInput = document.getElementById('temperature');
+            const windInput = document.getElementById('wind');
+            
+            tempInput.value = unit.tempDefault;
+            tempInput.min = unit.tempMin;
+            tempInput.max = unit.tempMax;
+            
+            windInput.value = unit.windDefault;
+            windInput.min = unit.windMin;
+            windInput.max = unit.windMax;
+            
+            // Update table headers
+            document.getElementById('temp-header').textContent = `Temperature (${unit.tempUnit})`;
+            document.getElementById('wind-header').textContent = `Wind (${unit.windUnit})`;
+            
+            // Update training data table
+            const tbody = document.getElementById('training-data-body');
+            tbody.innerHTML = '';
+            unit.trainingData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td><td>${row[4]}</td>`;
+                tbody.appendChild(tr);
+            });
+            
+            // Update code display
+            const codeDisplay = document.getElementById('code-display');
+            if (unitType === 'metric') {
+                codeDisplay.textContent = `
+function predictOutdoorActivity(temperature, humidity, rain, wind) {
+    if (temperature > 21) {  // 21°C = 70°F
+        if (humidity > 80) {
+            return "Stay Inside";  // Too humid
+        } else {
+            return "Go Outside";   // Nice warm weather
+        }
+    } else {
+        if (rain === "yes") {
+            return "Stay Inside";  // It's raining
+        } else {
+            if (wind > 7) {        // 7 m/s = 15 mph
+                return "Stay Inside";  // Too windy
+            } else {
+                return "Go Outside";   // Cool but pleasant
+            }
+        }
+    }
+}`;
+            } else {
+                codeDisplay.textContent = `
+function predictOutdoorActivity(temperature, humidity, rain, wind) {
+    if (temperature > 70) {  // 70°F = 21°C
+        if (humidity > 80) {
+            return "Stay Inside";  // Too humid
+        } else {
+            return "Go Outside";   // Nice warm weather
+        }
+    } else {
+        if (rain === "yes") {
+            return "Stay Inside";  // It's raining
+        } else {
+            if (wind > 15) {       // 15 mph = 7 m/s
+                return "Stay Inside";  // Too windy
+            } else {
+                return "Go Outside";   // Cool but pleasant
+            }
+        }
+    }
+}`;
+            }
+            
+            // Update prediction
+            makePrediction();
+        }
+        
         function makePrediction() {
             const temperature = parseInt(document.getElementById('temperature').value);
             const humidity = parseInt(document.getElementById('humidity').value);
             const rain = document.getElementById('rain').value;
             const wind = parseInt(document.getElementById('wind').value);
             
+            const unit = units[currentUnits];
             let prediction, path;
             
-            if (temperature > 21) {
+            if (temperature > unit.tempThreshold) {
                 if (humidity > 80) {
                     prediction = "Stay Inside";
-                    path = "Temperature > 21°C → Humidity > 80% → Stay Inside (too humid)";
+                    path = `Temperature > ${unit.tempThreshold}${unit.tempUnit} → Humidity > 80% → Stay Inside (too humid)`;
                 } else {
                     prediction = "Go Outside";
-                    path = "Temperature > 21°C → Humidity ≤ 80% → Go Outside (nice weather)";
+                    path = `Temperature > ${unit.tempThreshold}${unit.tempUnit} → Humidity ≤ 80% → Go Outside (nice weather)`;
                 }
             } else {
                 if (rain === "yes") {
                     prediction = "Stay Inside";
-                    path = "Temperature ≤ 21°C → Rain = Yes → Stay Inside (it's raining)";
+                    path = `Temperature ≤ ${unit.tempThreshold}${unit.tempUnit} → Rain = Yes → Stay Inside (it's raining)`;
                 } else {
-                    if (wind > 24) {
+                    if (wind > unit.windThreshold) {
                         prediction = "Stay Inside";
-                        path = "Temperature ≤ 21°C → No Rain → Wind > 24km/h → Stay Inside (too windy)";
+                        path = `Temperature ≤ ${unit.tempThreshold}${unit.tempUnit} → No Rain → Wind > ${unit.windThreshold}${unit.windUnit} → Stay Inside (too windy)`;
                     } else {
                         prediction = "Go Outside";
-                        path = "Temperature ≤ 21°C → No Rain → Wind ≤ 24km/h → Go Outside (pleasant conditions)";
+                        path = `Temperature ≤ ${unit.tempThreshold}${unit.tempUnit} → No Rain → Wind ≤ ${unit.windThreshold}${unit.windUnit} → Go Outside (pleasant conditions)`;
                     }
                 }
             }
@@ -350,7 +552,7 @@ function predictOutdoorActivity(temperature, humidity, rain, wind) {
             `;
         }
         
-        // Make initial prediction
+        // Initialize with metric units
         makePrediction();
     </script>
 </body>
