@@ -92,11 +92,12 @@ data, hijack systems, or install malware.
 
 ### Security as a Systems and Human Issue
 
-Finally, security isn't just about code or compilers. It's also about the practices, assumptions,
-and incentives of the people building systems. Tools like static analyzers and memory-safe languages
-are only effective if integrated into workflows, code reviews, and cultural expectations.
+Finally, security isn't just about code or compilers. As might have been extrapolated from above it's
+also about the practices, assumptions, and incentives of the people building systems, and around.
+In more detail tools like static analysers and memory-safe languages are only effective if integrated into
+workflows, code reviews, and cultural expectations.
 
-From Shift Left philosophies in DevSecOps to threat modeling and security education, secure
+From Shift Left philosophies in DevSecOps[^shift] to threat modeling and security education, secure
 programming demands attention to people, processes, and principles, not just programming constructs.
 
 [^shift]: "Shift Left" in DevSecOps means integrating security practices early in the software development
