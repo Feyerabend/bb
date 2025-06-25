@@ -241,20 +241,20 @@ prioritises survival and recovery.
 
 ### Articifial Intelligence and Machine Learning
 
-If we only focus on machine learning and AI, the relation of some of the high impact systemic
+If we only focus on ML and AI, the relation of some of the high impact systemic
 concepts can be outlined.
 
-| Concept         | Comments                                                                 |
-|-----------------|--------------------------------------------------------------------------|
-| *Noise*         | Can be both a nuisance and a tool (e.g., regularisation, robustness).    |
-| *Randomness*    | Essential for training algorithms, exploration, generalisation.          |
-| *Optimisation*  | Core to ML; learning = optimisation (loss minimisation).                 |
-| *Abstraction*   | Learned abstractions drive model effectiveness (features, latent spaces).|
-| *Scalability*   | Performance often depends on scaling data, models, compute.              |
-| *Determinism*   | Non-determinism affects reproducibility and debugging.                   |
-| *Complexity*    | Directly impacts generalisation, overfitting, interpretability.          |
-| *State*         | Learned, often opaque; critical in temporal models, RL.                  |
-| *Errors*        | Integral to learning process (not just a fault as in classic systems).   |
+| Concept        | Comments                                                                  |
+|----------------|---------------------------------------------------------------------------|
+| *Noise*        | Can be both a nuisance and a tool (e.g., regularisation, robustness).     |
+| *Randomness*   | Essential for training algorithms, exploration, generalisation.           |
+| *Optimisation* | Core to ML; learning = optimisation (loss minimisation).                  |
+| *Abstraction*  | Learned abstractions drive model effectiveness (features, latent spaces). |
+| *Scalability*  | Performance often depends on scaling data, models, compute.               |
+| *Determinism*  | Non-determinism affects reproducibility and debugging.                    |
+| *Complexity*   | Directly impacts generalisation, overfitting, interpretability.           |
+| *State*        | Learned, often opaque; critical in temporal models, RL.                   |
+| *Errors*       | Integral to learning process (not just a fault as in classic systems).    |
 
 
 #### Noise
