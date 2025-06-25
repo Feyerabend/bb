@@ -24,6 +24,7 @@ To start off, a small anecdote from years ago:
 
 > So security hasn't always been in the focus. At this time they were more concerned about uptime, as some operators had their own pagers. Constantly accessible.
 
+> What that experience revealed--beyond the lax physical security--was a deeper issue: how easily trust in technical infrastructure can be misplaced. And today, even as systems grow more complex, the story isn’t all that different.
 
 Security in computing is often imagined in terms of firewalls, passwords, and encryption.
 But beneath these mechanisms lies a deeper foundation: the *code* itself. Most digital
