@@ -211,10 +211,10 @@
         <div class="unit-selector">
             <div class="unit-toggle">
                 <div class="unit-option active" onclick="switchUnits('metric')" id="metric-btn">
-                    🇪🇺 Metric (°C, m/s)
+                     Metric (°C, m/s)
                 </div>
                 <div class="unit-option" onclick="switchUnits('imperial')" id="imperial-btn">
-                    🇺🇸 Imperial (°F, mph)
+                     Imperial (°F, mph)
                 </div>
             </div>
         </div>
@@ -505,7 +505,7 @@ function predictOutdoorActivity(temperature, humidity, rain, wind) {
 }`;
             }
             
-            // Update prediction
+            // .. update
             makePrediction();
         }
         
@@ -552,7 +552,7 @@ function predictOutdoorActivity(temperature, humidity, rain, wind) {
             `;
         }
         
-        // Initialize with metric units
+        // init with metric units
         makePrediction();
     </script>
 </body>
