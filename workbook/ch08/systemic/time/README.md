@@ -36,9 +36,6 @@ Before we dive into specific computational contexts, it's crucial to acknowledge
 
 ### Time in Single-Threaded vs. Multi-Threaded/Multi-Core Systems
 
-You correctly identify that in a single-threaded program on a single processor, time is relatively straightforward.
-Instructions execute sequentially, creating a clear causal chain. However, even here, a deeper look reveals some complexities:
-
 - *Instruction Pipelining and Out-of-Order Execution:* Modern CPUs don't always execute instructions strictly sequentially.
   Pipelining allows multiple instructions to be in different stages of execution simultaneously, and out-of-order execution
   allows the CPU to reorder instructions for optimal performance as long as data dependencies are respected. While the
@@ -64,7 +61,7 @@ When we move to multi-threaded programs on multi-core processors, time becomes s
 
 ### The Distributed Time Conundrum: Beyond Physical Clocks
 
-This is where time truly becomes a "complex beast." The absence of a single, universally accurate clock across distributed
+The absence of a single, universally accurate clock across distributed
 nodes introduces a plethora of challenges:
 
 - *Clock Skew and Drift:* As mentioned, individual clocks naturally drift. NTP helps, but perfect synchronisation is
@@ -96,7 +93,7 @@ nodes introduces a plethora of challenges:
 ### Time as a Critical Constraint: Real-Time Systems
 
 In real-time systems, time transitions from being a background orchestrator to an active, measurable, and often unforgiving
-constraint. Missing a deadline can have severe consequences.
+constraint.
 
 - *Hard Real-Time Systems:* Strict deadlines where even a single missed deadline can lead to catastrophic failure
   (e.g., aircraft control, medical devices, nuclear power plant control). These systems require deterministic behaviour
@@ -144,6 +141,4 @@ systems), the role of time will only grow in importance.
 
 In conclusion, time is not merely a passive backdrop against which computations unfold. It is an active, often capricious,
 and always fundamental element that shapes the design, correctness, performance, and reliability of every computational
-system. Mastering its intricacies is key to building robust, scalable, and resilient software in an increasingly interconnected
-world.
-
+system.
