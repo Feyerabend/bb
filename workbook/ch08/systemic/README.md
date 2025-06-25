@@ -239,7 +239,7 @@ prioritises survival and recovery.
 
 
 
-### AI and ML
+### Articifial Intelligence and Machine Learning
 
 If we only focus on machine learning and AI, the relation of some of the high impact systemic
 concepts can be outlined.
