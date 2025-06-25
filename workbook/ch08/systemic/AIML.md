@@ -24,3 +24,69 @@
 | Resilience      | Medium              | ML robustness (e.g., to adversarial input) overlaps with traditional resilience. |
 --
 
+
+
+
+
+Noise
+Irregular, unpredictable variations in data, measurements, or signals.
+- Degrades performance (e.g., noisy labels, sensor data).- Used in training (e.g., data augmentation, denoising autoencoders) to enhance robustness.
+- Mitigating harmful noise.- Balancing beneficial noise for generalization.
+Dual role: a challenge to overcome and a tool to improve model resilience.
+
+
+Randomness
+Non-deterministic elements in processes or decision-making.
+- Drives algorithms (e.g., stochastic gradient descent, dropout).- Enables exploration in reinforcement learning and diversity in ensembles.
+- Ensuring reproducibility.- Controlling randomness for debugging.
+Foundational for exploration and learning, requiring careful balance with control.
+
+
+Optimization
+Adjusting parameters to minimize/maximize an objective function.
+- Core to learning (e.g., minimizing loss via gradient descent).- Used in hyperparameter tuning, architecture search.
+- Handling non-convex, high-dimensional problems.- Developing efficient heuristics.
+Underpins AI/ML, solving complex problems under constraints and uncertainty.
+
+
+Abstraction
+Hiding low-level details to create simplified representations.
+- Models learn abstractions (e.g., latent features in neural nets).- Enables transfer learning and generalization.
+- Ensuring interpretability.- Auditing opaque abstractions.
+Key to model power, but central to trust and understanding challenges.
+
+
+Scalability
+Ability to handle increasing data, compute, or model complexity efficiently.
+- Enables breakthroughs (e.g., transformers).- Requires distributed computing and efficient algorithms.
+- Managing cost, energy, bias, and accessibility.- Maintaining control at scale.
+Critical for advancing AI, balancing efficiency with ethical considerations.
+
+
+Determinism
+Consistent behavior for identical inputs across executions.
+- Often sacrificed for randomness in training.- Supported by tools like random seeds, deterministic modes.
+- Achieving reproducibility.- Meeting regulatory needs without stifling exploration.
+Balances reliability and flexibility, critical for debugging and compliance.
+
+
+Complexity
+Measure of intricacy in systems, models, or behavior.
+- Complex models capture patterns but risk overfitting.- Simpler models aid interpretability via regularization, compression.
+- Avoiding overfitting and opacity.- Balancing capacity and simplicity.
+Essential for robust, interpretable models that generalize well.
+
+
+State
+Information retained across time, inputs, or operations.
+- Central to sequential models (e.g., RNNs, LSTMs), reinforcement learning.- Transformers externalize state.
+- Debugging and visualizing state.- Managing resets for stability.
+Enables adaptation in dynamic systems, but complicates transparency.
+
+
+Errors
+Deviations from desired behavior or accuracy.
+- Drive learning via loss and feedback.- Can propagate bias or failure if unaddressed.
+- Mitigating harmful errors.- Interpreting errors correctly.
+Errors are learning signals; their handling impacts model fairness and reliability.
+
