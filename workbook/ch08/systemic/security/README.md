@@ -20,7 +20,7 @@ To start off, a small anecdote from years ago:
 
 > All of it.
 
-> No guards, no ID checks, no logs — just a code and a lift and the sound of cooling fans drowning out any question of security.
+> No guards, no ID checks, no logs--just a code and a lift and the sound of cooling fans drowning out any question of security.
 
 > So security hasn't always been in the focus. At this time they were more concerned about uptime, as some operators had their own pagers. Constantly accessible.
 
