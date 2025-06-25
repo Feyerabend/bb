@@ -29,7 +29,7 @@ To start-off, a small anecdote from years ago:
 
 > No guards, no ID checks, no logs — just a code and a lift and the sound of cooling fans drowning out any question of security.
 
-> So security hasn't always been in the focus. At this time they were more concerned about uptime, as some operators had their own pagers.
+> So security hasn't always been in the focus. At this time they were more concerned about uptime, as some operators had their own pagers. Constantly accessible.
 
 
 __Why Software Security Matters__
@@ -201,6 +201,5 @@ The shift from reactive to proactive strategies--embracing memory safety, formal
 innovations--will define the next era of secure software.
 
 
-- 3033
 - THe Chaos Report
 
