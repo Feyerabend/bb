@@ -1,14 +1,7 @@
 
 ## Security and Programming
 
-Security in computing is often imagined in terms of firewalls, passwords, and encryption.
-But beneath these mechanisms lies a deeper foundation: the *code* itself. Most digital
-systems--whether web apps, operating systems, IoT devices, or embedded controllers--are
-ultimately shaped by the programming languages, tools, and practices used to build them.
-This makes programming not just a technical activity, but a frontline concern in cybersecurity.
-
-
-To start-off, a small anecdote from years ago:
+To start off, a small anecdote from years ago:
 
 > I think it was around 1981. We were teenagers, maybe 16 or 17 years old, when we got the chance to do a school internship at a mainframe computer center. It felt like a dream come true--finally, a chance to spend time around a real mainframe. The hum of technology, the blinking lights, the rows of tape drives. We were thrilled.
 
@@ -30,6 +23,14 @@ To start-off, a small anecdote from years ago:
 > No guards, no ID checks, no logs — just a code and a lift and the sound of cooling fans drowning out any question of security.
 
 > So security hasn't always been in the focus. At this time they were more concerned about uptime, as some operators had their own pagers. Constantly accessible.
+
+
+Security in computing is often imagined in terms of firewalls, passwords, and encryption.
+But beneath these mechanisms lies a deeper foundation: the *code* itself. Most digital
+systems--whether web apps, operating systems, IoT devices, or embedded controllers--are
+ultimately shaped by the programming languages, tools, and practices used to build them.
+This makes programming not just a technical activity, but a frontline concern in cybersecurity.
+
 
 
 __Why Software Security Matters__
