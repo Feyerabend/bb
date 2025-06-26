@@ -42,7 +42,7 @@ typedef struct {
     int right_count;
 } SplitResult;
 
-// Enhanced dataset with more variety
+
 DataPoint dataset[] = {
     {{2.0, 3.0, 1.5}, 0},
     {{1.5, 2.5, 2.0}, 0},
@@ -57,7 +57,7 @@ DataPoint dataset[] = {
     {{8.0, 4.5, 4.5}, 2}
 };
 
-// --- Enhanced Function Declarations ---
+
 Node* create_leaf(int* class_counts, int total_samples, int num_classes);
 Node* create_decision_node(int split_feature, float split_value, Node* left, Node* right);
 float calculate_gini_impurity(int* class_counts, int total_samples, int num_classes);
@@ -72,7 +72,7 @@ void print_tree(Node* tree, int depth, TreeConfig* config);
 void free_tree(Node* tree);
 double evaluate_accuracy(Node* tree, DataPoint* test_data, int test_size);
 
-// --- Enhanced Function Implementations ---
+
 
 Node* create_leaf(int* class_counts, int total_samples, int num_classes) {
     Node* node = (Node*)malloc(sizeof(Node));
@@ -101,6 +101,11 @@ Node* create_decision_node(int split_feature, float split_value, Node* left, Nod
     node->samples_count = left->samples_count + right->samples_count;
     return node;
 }
+
+// Calculate Gini impurity or entropy based on class counts
+// Gini impurity is used by default, but entropy can be added as an option
+// Gini is calculated as 1 - sum(p_i^2) for each class i
+// Entropy is calculated as -sum(p_i * log2(p_i)) for each class
 
 float calculate_gini_impurity(int* class_counts, int total_samples, int num_classes) {
     if (total_samples == 0) return 0.0;
@@ -157,7 +162,7 @@ SplitResult find_best_split(DataPoint* data, int n, TreeConfig* config) {
     
     // Try each feature
     for (int feature = 0; feature < config->num_features; feature++) {
-        // Sort data by current feature (simplified approach)
+        // Sort data by current feature
         for (int threshold_idx = 0; threshold_idx < n; threshold_idx++) {
             float threshold = data[threshold_idx].features[feature];
             
@@ -300,7 +305,7 @@ void free_tree(Node* tree) {
 }
 
 int main() {
-    printf("Enhanced Decision Tree Classifier\n");
+    printf("Decision Tree Classifier\n");
     printf("=================================\n\n");
     
     // Configure the decision tree
@@ -315,7 +320,7 @@ int main() {
     int dataset_size = sizeof(dataset) / sizeof(dataset[0]);
     
     // Build the decision tree
-    printf("Building decision tree...\n");
+    printf("Building decision tree ..\n");
     Node* tree = build_tree_recursive(dataset, dataset_size, 0, &config);
     
     // Print the tree structure
@@ -369,3 +374,97 @@ int main() {
  * 9. More robust split finding algorithm
  * 10. Stopping criteria to prevent overfitting
  */
+
+
+ /*
+// Iris flower classification dataset
+// Features: sepal_length, sepal_width, petal_length
+// Classes: 0=Setosa, 1=Versicolor, 2=Virginica
+
+DataPoint iris_dataset[] = {
+    // Setosa (typically smaller petals)
+    {{5.1, 3.5, 1.4}, 0}, {{4.9, 3.0, 1.4}, 0}, {{4.7, 3.2, 1.3}, 0},
+    {{4.6, 3.1, 1.5}, 0}, {{5.0, 3.6, 1.4}, 0}, {{5.4, 3.9, 1.7}, 0},
+    
+    // Versicolor (medium-sized petals)
+    {{7.0, 3.2, 4.7}, 1}, {{6.4, 3.2, 4.5}, 1}, {{6.9, 3.1, 4.9}, 1},
+    {{5.5, 2.3, 4.0}, 1}, {{6.5, 2.8, 4.6}, 1}, {{5.7, 2.8, 4.5}, 1},
+    
+    // Virginica (largest petals)
+    {{6.3, 3.3, 6.0}, 2}, {{5.8, 2.7, 5.1}, 2}, {{7.1, 3.0, 5.9}, 2},
+    {{6.3, 2.9, 5.6}, 2}, {{6.5, 3.0, 5.8}, 2}, {{7.6, 3.0, 6.6}, 2}
+};
+
+DataPoint iris_test_cases[] = {
+    {{5.0, 3.4, 1.6}, -1},  // Should be Setosa (small petal)
+    {{6.2, 2.8, 4.8}, -1},  // Should be Versicolor (medium petal)
+    {{7.2, 3.2, 6.0}, -1},  // Should be Virginica (large petal)
+    {{4.8, 3.0, 1.2}, -1},  // Edge case: very small -> Setosa
+    {{6.8, 3.0, 5.5}, -1}   // Edge case: large -> Virginica
+};
+
+const char* iris_feature_names[] = {"Sepal Length", "Sepal Width", "Petal Length"};
+const char* iris_class_names[] = {"Setosa", "Versicolor", "Virginica"};
+
+
+
+// Medical risk assesment dataset
+// Features: age, systolic_bp, cholesterol
+// Classes: 0=Low Risk, 1=Medium Risk, 2=High Risk
+
+DataPoint medical_dataset[] = {
+    // Low Risk (young, good vitals)
+    {{25, 110, 170}, 0}, {{28, 115, 165}, 0}, {{32, 120, 180}, 0},
+    {{35, 118, 175}, 0}, {{30, 112, 160}, 0}, {{33, 125, 185}, 0},
+    
+    // Medium Risk (middle-aged or some elevated vitals)
+    {{45, 135, 210}, 1}, {{42, 140, 220}, 1}, {{48, 138, 215}, 1},
+    {{50, 142, 225}, 1}, {{38, 145, 200}, 1}, {{44, 148, 235}, 1},
+    
+    // High Risk (older with high vitals)
+    {{65, 160, 280}, 2}, {{62, 165, 275}, 2}, {{70, 170, 290}, 2},
+    {{68, 175, 285}, 2}, {{72, 168, 295}, 2}, {{66, 172, 300}, 2}
+};
+
+DataPoint medical_test_cases[] = {
+    {{27, 118, 172}, -1},  // Young, good vitals -> Low Risk
+    {{46, 141, 218}, -1},  // Middle-aged, elevated -> Medium Risk  
+    {{67, 167, 287}, -1},  // Older, high vitals -> High Risk
+    {{55, 128, 195}, -1},  // Borderline case
+    {{75, 180, 310}, -1}   // Very high risk case
+};
+
+const char* medical_feature_names[] = {"Age", "Systolic BP", "Cholesterol"};
+const char* medical_class_names[] = {"Low Risk", "Medium Risk", "High Risk"};
+
+
+
+// Student performance prediction dataset
+// Features: study_hours_per_week, previous_gpa, attendance_percentage
+// Classes: 0=Poor (F), 1=Average (C), 2=Good (A)
+
+DataPoint student_dataset[] = {
+    // Poor Performance (low effort)
+    {{5, 2.0, 60}, 0}, {{8, 2.2, 65}, 0}, {{6, 1.8, 55}, 0},
+    {{10, 2.4, 70}, 0}, {{7, 2.1, 62}, 0}, {{9, 2.3, 68}, 0},
+    
+    // Average Performance (moderate effort)
+    {{15, 2.8, 80}, 1}, {{18, 3.0, 85}, 1}, {{16, 2.9, 82}, 1},
+    {{20, 3.2, 88}, 1}, {{17, 3.1, 83}, 1}, {{19, 2.7, 86}, 1},
+    
+    // Good Performance (high effort)
+    {{25, 3.7, 95}, 2}, {{28, 3.8, 96}, 2}, {{30, 3.9, 98}, 2},
+    {{26, 3.6, 94}, 2}, {{32, 4.0, 97}, 2}, {{29, 3.8, 93}, 2}
+};
+
+DataPoint student_test_cases[] = {
+    {{12, 2.5, 72}, -1},   // Low-moderate effort -> likely Poor/Average
+    {{22, 3.4, 90}, -1},   // Good effort -> likely Good
+    {{6, 1.9, 58}, -1},    // Very low effort -> Poor
+    {{35, 3.9, 99}, -1},   // Exceptional effort -> Good
+    {{14, 2.6, 75}, -1}    // Borderline case
+};
+
+const char* student_feature_names[] = {"Study Hours/Week", "Previous GPA", "Attendance %"};
+const char* student_class_names[] = {"Poor (F)", "Average (C)", "Good (A)"};
+*/
