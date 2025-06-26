@@ -1,10 +1,47 @@
 
 ## What is Machine Learning (ML)?
 
-Machine Learning (ML) is a paradigm where computers learn rules or patterns directly from data rather
+The story of machine learning (ML) in AI begins as a divergence from what is often called [GOFAI](./../gofai/)
+(Good Old-Fashioned Artificial Intelligence), which dominated from the 1950s through the 1980s. GOFAI relied
+on symbolic reasoning, logic, and handcrafted rules to simulate intelligent behavior. Researchers built expert
+systems and used formal languages to model human reasoning. These systems worked well in constrained domains
+(like theorem proving or medical diagnosis) but struggled with uncertainty, noise, and learning from data.
+
+By the 1980s, limitations of GOFAI became clear. Systems required enormous manual effort and lacked adaptability.
+At the same time, researchers in statistics and pattern recognition—fields somewhat separate from mainstream
+AI—were exploring probabilistic methods and data-driven learning. Techniques like decision trees, nearest
+neighbor methods, and early neural networks were gaining traction. These methods could learn patterns from
+data without needing explicit programming of rules.
+
+The 1990s saw a growing convergence between AI and statistical learning, sometimes called the "statistical
+revolution" in AI. Developments included:
+- Bayesian networks (e.g., Judea Pearl’s work),
+- Support Vector Machines (SVMs),
+- boosting algorithms, and
+- the broader framework of probabilistic inference and optimisation.
+
+At this point, machine learning started to dominate practical AI applications—such as speech recognition,
+handwriting recognition, and web search. GOFAI faded from the center of research as its systems could not
+scale or adapt as well as ML-based approaches.
+
+The major turning point came in the 2010s, with the resurgence of neural networks under the name deep
+learning, thanks to increased computational power (GPUs), large datasets, and algorithmic innovations
+(like better training methods and architectures). Models like AlexNet (2012) showcased the power of deep
+neural networks in tasks like image recognition, kicking off an era where learning from data replaced
+rule-based reasoning as the primary method of building intelligent systems.
+
+Today, machine learning—especially deep learning—is the dominant approach in AI. However, there is a
+growing recognition that symbolic reasoning and ML might need to be integrated, leading to hybrid approaches
+that combine structured knowledge and statistical learning, aiming to recapture the generality and
+abstraction GOFAI once sought but with the adaptability of modern ML.
+
+
+### The Concepts
+
+So, Machine Learning (ML) is a paradigm where computers learn rules or patterns directly from data rather
 than being explicitly programmed with them. Instead of providing the computer with a set of rigid if/else
 statements or fixed algorithms, you supply it with *data* and *examples of the desired output for that data*.
-The machine then analyzes these examples to discover underlying patterns, forming a "model" that can be
+The machine then analyses these examples to discover underlying patterns, forming a "model" that can be
 used to make predictions or decisions on new, unseen data.
 
 Think of it this way:
