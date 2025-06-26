@@ -3,14 +3,14 @@
 
 The story of machine learning (ML) in AI begins as a divergence from what is often called [GOFAI](./../gofai/)
 (Good Old-Fashioned Artificial Intelligence), which dominated from the 1950s through the 1980s. GOFAI relied
-on symbolic reasoning, logic, and handcrafted rules to simulate intelligent behavior. Researchers built expert
+on symbolic reasoning, logic, and handcrafted rules to simulate intelligent behaviour. Researchers built expert
 systems and used formal languages to model human reasoning. These systems worked well in constrained domains
 (like theorem proving or medical diagnosis) but struggled with uncertainty, noise, and learning from data.
 
 By the 1980s, limitations of GOFAI became clear. Systems required enormous manual effort and lacked adaptability.
 At the same time, researchers in statistics and pattern recognition—fields somewhat separate from mainstream
-AI—were exploring probabilistic methods and data-driven learning. Techniques like decision trees, nearest
-neighbor methods, and early neural networks were gaining traction. These methods could learn patterns from
+AI--we're exploring probabilistic methods and data-driven learning. Techniques like decision trees, nearest
+neighbour methods, and early neural networks were gaining traction. These methods could learn patterns from
 data without needing explicit programming of rules.
 
 The 1990s saw a growing convergence between AI and statistical learning, sometimes called the "statistical
@@ -81,18 +81,18 @@ def classify_email_conventional(email_text):
 This approach is highly effective when the rules governing a problem are clear, finite, and easily expressible
 by a human. However, ML truly excels when these rules are too complex, too numerous, constantly changing, or
 even impossible for a human to articulate explicitly. For instance, how would you write if/else statements to
-reliably recognize a human face in an image, accounting for different angles, lighting, and expressions?
+reliably recognise a human face in an image, accounting for different angles, lighting, and expressions?
 
 This is where the ML mindset comes into play:
 
 * You don't tell the machine *how* to classify spam; you show it *what* spam looks like through numerous examples.
   The machine then figures out the how.  
-* You don't program the formula for recognizing faces; you provide many examples of faces and non-faces. The
+* You don't program the formula for recognising faces; you provide many examples of faces and non-faces. The
   machine then identifies the intricate patterns that define a face.
 
 This paradigm shift enables the solution of problems that are otherwise intractable with traditional programming,
 especially  those involving complex, nuanced patterns in large datasets, such as image recognition, natural language
-processing, and personalized recommendations.
+processing, and personalised recommendations.
 
 For a mathematical introduction to some core machine learning concepts from a conventional programmer's standpoint,
 see [MATH.md](./MATH.md).
