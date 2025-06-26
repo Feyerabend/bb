@@ -204,3 +204,9 @@ if __name__ == "__main__":
     train_predictions = rf.predict(X)
     accuracy = sum(1 for i in range(len(y)) if y[i] == train_predictions[i]) / len(y)
     print(f"Training accuracy: {accuracy:.2f}")
+
+# This code implements a simple Decision Tree and Random Forest classifier in Python.
+# It includes methods for fitting the model, making predictions, and calculating probabilities.
+# The example usage demonstrates training on a small dataset and making predictions.
+# The implementation uses Gini impurity for splitting and bootstrap sampling for the random forest.
+
