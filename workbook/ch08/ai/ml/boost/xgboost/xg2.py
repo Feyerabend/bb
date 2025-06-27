@@ -1,10 +1,10 @@
 import xgboost as xgb
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.datasets import make_classification
-from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import GridSearchCV
+from PIL import Image, ImageDraw, ImageFont
+import os
 
 # Generate synthetic dataset
 X, y = make_classification(n_samples=1000, n_features=20, n_informative=15, random_state=42)
@@ -42,7 +42,53 @@ y_pred = best_model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 print(f"Test accuracy: {accuracy:.2f}")
 
-# Plot feature importance
-xgb.plot_importance(best_model, max_num_features=10)
-plt.title("Feature Importance")
-plt.show()
+# Get feature importance (using 'gain')
+feature_importance = best_model.get_booster().get_score(importance_type='gain')
+feature_names = [f"f{i}" for i in range(X.shape[1])]  # Synthetic feature names
+importance_scores = [feature_importance.get(f"f{i}", 0) for i in range(len(feature_names))]
+
+# Normalize importance scores for visualization (scale to max bar length)
+max_length = 400  # Maximum bar length in pixels
+max_importance = max(importance_scores) if max(importance_scores) > 0 else 1
+normalized_scores = [score / max_importance * max_length for score in importance_scores]
+
+print("\nFeature Importance Details (Top 10):")
+print(f"{'Feature':<10} {'Raw Gain':>12} {'Normalized Score':>15} {'Image Text Value':>15}")
+print("-" * 50)
+top_features = sorted(zip(feature_names, importance_scores, normalized_scores), 
+                      key=lambda x: x[1], reverse=True)[:10]
+for feature, raw_score, norm_score in top_features:
+    image_text_value = round(raw_score, 2)  # Match image's 2-decimal formatting
+    print(f"{feature:<10} {raw_score:>12.4f} {norm_score:>15.4f} {image_text_value:>15.2f}")
+
+# Create image with Pillow (same as before)
+image_width = 600
+image_height = len(feature_names) * 50 + 100
+image = Image.new('RGB', (image_width, image_height), 'white')
+draw = ImageDraw.Draw(image)
+
+# Try to load a font
+try:
+    font = ImageFont.truetype("arial.ttf", 20)
+except:
+    font = ImageFont.load_default()
+
+# Draw title
+draw.text((10, 10), "Feature Importance (Gain)", fill='black', font=font)
+
+# Draw bars and labels for top 10 features
+bar_height = 30
+y_offset = 50
+for i, (feature, _, norm_score) in enumerate(top_features):
+    draw.rectangle(
+        [(100, y_offset + i * 50), (100 + norm_score, y_offset + i * 50 + bar_height)],
+        fill='blue'
+    )
+    draw.text((10, y_offset + i * 50 + 5), feature, fill='black', font=font)
+    draw.text((110 + norm_score, y_offset + i * 50 + 5), 
+              f"{feature_importance[feature]:.2f}", fill='black', font=font)
+
+# Save and display image
+image.save('feature_importance.png')
+image.show()
+print("\nFeature importance image saved as 'feature_importance.png'")
