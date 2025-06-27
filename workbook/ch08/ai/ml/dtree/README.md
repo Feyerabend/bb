@@ -70,7 +70,8 @@ or curved boundaries would be more natural.
 
 While simple decision trees have limitations, they remain foundational to modern machine
 learning. The most successful competition algorithms on platforms like Kaggle are often
-ensemble methods built on decision trees. Libraries like scikit-learn, XGBoost, and LightGBM
+ensemble methods built on decision trees. Libraries like scikit-learn,
+[XGBoost](./../boost/xgboost/), and [LightGBM](./../boost/lightgbm/)
 have made sophisticated tree-based methods accessible to practitioners.
 
 Recent developments include differential privacy techniques for trees, interpretable boosting

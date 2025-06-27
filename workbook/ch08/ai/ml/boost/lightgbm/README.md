@@ -25,7 +25,7 @@ offset the loss. This is where machine learning can be invaluable.
 Traditionally, loan officers manually review applications, relying on experience and
 basic rules. This often leads to *inconsistent decisions, human bias, slow processing,
 and limited ability to process complex patterns*. In contrast, a machine learning
-approach analyzes thousands of historical applications to discover complex patterns
+approach analyses thousands of historical applications to discover complex patterns
 human reviewers might miss. It can process applications in milliseconds, handling
 multiple factors simultaneously.
 
