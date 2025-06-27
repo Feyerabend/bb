@@ -26,7 +26,7 @@ ML algorithms can be broadly categorised into:
 | [Support Vector Machine](./svm/) | Supervised | High-dimensional classification | Margin maximisation, kernel trick for non-linearity |
 | [K-Nearest Neighbours](./knn/) (KNN) | Supervised | Classification, regression | Instance-based, simple, no training phase |
 | [Naive Bayes](./bayes/) | Supervised | Text classification, spam filtering | Probabilistic, strong independence assumptions |
-| [Gradient Boosting](./boost/) ([XGBoost](./boost/xgboost/), LightGBM) | Supervised | Structured data | High accuracy, can overfit, less interpretable |
+| [Gradient Boosting](./boost/) ([XGBoost](./boost/xgboost/), [LightGBM](./boost/lightgbm/)) | Supervised | Structured data | High accuracy, can overfit, less interpretable |
 | [K-Means](./kmeans/) | Unsupervised | Clustering, segmentation | Simple, assumes spherical clusters, sensitive to initialisation |
 | [DBSCAN](./dbscan/) | Unsupervised | Clustering with noise | Handles arbitrary shapes, density-based |
 | [PCA](./pca/) (Principal Component Analysis) | Unsupervised | Dimensionality reduction | Linear transformation, unsupervised, captures variance |
