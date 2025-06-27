@@ -30,7 +30,7 @@ This decorrelates the trees, making the ensemble more robust to noise.
   $Gini = 1 - \sum_{i=1}^C (p_i)^2$, where $p_i$ is the probability of class $i$.
 
 - *Entropy (Information Gain)*: Quantifies the disorder in a dataset. Splits are
-  chosen to maximize information gain, which is the reduction in entropy. Entropy
+  chosen to maximise information gain, which is the reduction in entropy. Entropy
   is calculated as:  
   $Entropy = -\sum_{i=1}^C p_i \log_2(p_i)$.  
   A split with zero entropy means all elements belong to one class.
@@ -46,13 +46,13 @@ variance without increasing bias.
 
 1. *Medical Diagnosis*: Predicting disease presence based on patient metrics
    (e.g., diabetes, cancer) by learning from historical data with multiple biomarkers.  
-2. *Finance*: Credit scoring to assess loan eligibility by analyzing income, transaction
+2. *Finance*: Credit scoring to assess loan eligibility by analysing income, transaction
    history, and other financial features.  
-3. *E-commerce*: Recommender systems to suggest products by leveraging user behavior and
+3. *E-commerce*: Recommender systems to suggest products by leveraging user behaviour and
    purchase history.  
 4. *Remote Sensing*: Land cover classification using satellite imagery data with spectral
    and spatial features.  
-5. *Industrial Quality Control*: Detecting defective products by analyzing sensor data from
+5. *Industrial Quality Control*: Detecting defective products by analysing sensor data from
    manufacturing lines.
 
 
