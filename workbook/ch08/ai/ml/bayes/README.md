@@ -141,3 +141,25 @@ and visualisation.
 - Connect a microcontroller or use time-series datasets (e.g., accelerometers).
 - Classify motion or activity using Gaussian Naive Bayes.
 - Deploy in a low-resource environment to demonstrate computational efficiency.
+
+
+
+### Bayesian Networks: Definition and Function
+
+Bayesian networks, also known as belief networks or probabilistic directed acyclic graphs (DAGs),
+are graphical models that represent a set of variables and their probabilistic dependencies.
+They combine graph theory, probability theory, and statistics to enable reasoning under uncertainty.
+
+A Bayesian network consists of:
+1. Nodes: Representing random variables.
+2. Directed Edges: Indicating conditional dependencies, with the graph being acyclic (no loops).
+3. Conditional Probability Distributions (CPDs): Associated with each node, quantifying the effect
+   of parent nodes.
+
+The key idea is to leverage conditional independence to simplify complex probability calculations.
+For instance, in a medical diagnosis system, nodes might represent symptoms, diseases, and test
+results, with edges showing how a disease influences symptoms. Given observed symptoms, the network
+can compute the probability of specific diseases, as exemplified in diagnostic applications like
+determining malaria likelihood based on fever and travel history
+
+Judea Pearl formalised Bayesian networks in his 1988 book, *Probabilistic Reasoning in Intelligent Systems*.
