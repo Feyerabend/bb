@@ -14,7 +14,7 @@ These are the most basic type of Markov model.
 Markov Chains are stochastic processes modeling sequences of events where the next
 state depends only on the current state, embodying the memoryless Markov property:
 ```math
-[P(X_{n+1} = x_{n+1} \mid X_n = x_n, \dots, X_1 = x_1) = P(X_{n+1} = x_{n+1} \mid X_n = x_n)]
+P(X_{n+1} = x_{n+1} \mid X_n = x_n, \dots, X_1 = x_1) = P(X_{n+1} = x_{n+1} \mid X_n = x_n)
 ```
 They operate in discrete-time (DTMCs) or continuous-time (CTMCs),
 with states transitioning based on probabilities.
@@ -22,44 +22,43 @@ with states transitioning based on probabilities.
 
 ### Properties
 
-Transition Matrix: An $n \times n$ matrix $P$ where $P_{ij}$ is the probability of moving from
+*Transition Matrix.* An $n \times n$ matrix $P$ where $P_{ij}$ is the probability of moving from
 state $i$ to state $j$. Each row sums to 1.
 
-Stationary Distribution: A probability vector $\pi$ where $\pi = \pi P$, representing long-term
+*Stationary Distribution.* A probability vector $\pi$ where $\pi = \pi P$, representing long-term
 state probabilities for ergodic chains.
 
-Ergodicity: Chains that are irreducible (all states reachable) and aperiodic (no fixed cycles)
+*Ergodicity.* Chains that are irreducible (all states reachable) and aperiodic (no fixed cycles)
 converge to a unique stationary distribution.
 
-Recurrence: States are recurrent if the chain returns to them with probability 1; otherwise,
+*Recurrence.* States are recurrent if the chain returns to them with probability 1; otherwise,
 they are transient.
 
-Absorbing States: States with no outgoing transitions, trapping the chain once entered.
+*Absorbing States.* States with no outgoing transitions, trapping the chain once entered.
 
 
 ### Examples
 
-Weather Model: States: Sunny, Rainy. Transition example: 70% chance of Sunny tomorrow if Sunny today.
-Random Walk: Moving left or right on a number line with equal probability, a classic memoryless process.
-PageRank: Web pages as states, transitions via hyperlinks, with ranks derived from the stationary distribution.
+- Weather Model: States: Sunny, Rainy. Transition example: 70% chance of Sunny tomorrow if Sunny today.
+- Random Walk: Moving left or right on a number line with equal probability, a classic memoryless process.
+- PageRank: Web pages as states, transitions via hyperlinks, with ranks derived from the stationary distribution.
 
 
 ### Applications
 
 Markov Chains are widely used in:
 
-Finance: Modeling stock prices or credit ratings.
-Biology: Analyzing DNA sequences.
-Computer Science: Powering algorithms like PageRank and Hidden Markov Models for speech recognition.
-Physics: Markov Chain Monte Carlo for complex simulations.
-Economics and Sports: Modeling business cycles or game strategies.
+- Finance: Modeling stock prices or credit ratings.
+- Biology: Analyzing DNA sequences.
+- Computer Science: Powering algorithms like PageRank and Hidden Markov Models for speech recognition.
+- Physics: Markov Chain Monte Carlo for complex simulations.
+- Economics and Sports: Modeling business cycles or game strategies.
 
 
 ### Mathematical Dynamics
 
 The state distribution evolves as $\pi_t = \pi_0 P^t$, where $\pi_0$ is the initial distribution and
 $P$ is the transition matrix. Ergodic chains converge to a stationary distribution as $t \to \infty$.
-
 
 
 ### Transition to Statistical Learning
@@ -90,4 +89,3 @@ underlying mechanics remain grounded in the traditional Markov framework.
 
 The transition from predefined probabilistic systems to learned, adaptive ones is the conceptual shift
 where Markov chains become part of the machine learning landscape.
-
