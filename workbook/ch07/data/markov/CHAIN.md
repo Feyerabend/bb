@@ -77,10 +77,10 @@ Markov chains also underpin Hidden Markov Models (HMMs), which are widely used i
 natural language processing, and bioinformatics. Here, hidden variables and inference algorithms such
 as the Forward-Backward or Viterbi algorithm are used--clearly statistical and ML-oriented techniques.
 
-Moreover, in reinforcement learning, Markov Decision Processes (MDPs) extend the Markov framework by
-associating states with actions and rewards, enabling agents to learn policies that maximize expected
-return. These models are often learned or optimized from data and simulations, further embedding Markov
-structures in the core of machine learning.
+Moreover, in reinforcement learning, [Markov Decision Processes](./../../../ch08/ai/ml/mdp/) (MDPs)
+extend the Markov framework by associating states with actions and rewards, enabling agents to learn
+policies that maximize expected return. These models are often learned or optimized from data and
+simulations, further embedding Markov structures in the core of machine learning.
 
 Thus, although Markov chains begin in the realm of classical, analytical modeling, their principles
 provide essential scaffolding for modern statistical AI. The moment a model starts learning its structure
