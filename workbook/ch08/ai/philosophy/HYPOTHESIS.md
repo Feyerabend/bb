@@ -1,8 +1,8 @@
 
 ## The Physical Symbol System Hypothesis
 
-The Physical Symbol System Hypothesis, proposed by Allen Newell and Herbert A. Simon in the mid-1970s,
-sis a foundational idea in artificial intelligence and cognitive science. At its core, it asserts that
+The Physical Symbol System Hypothesis, proposed by Allen Newell and Herbert A. Simon formally articulated
+in their 1976 paper, "Computer Science as Empirical Inquiry: Symbols and Search." At its core, it asserts that
 a physical symbol system has the necessary and sufficient means for general intelligent action. By this
 Newell and Simon meant that any system—biological or artificial—that manipulates symbols physically and
 structurally according to formal rules can, in principle, exhibit the same kind of intelligence that humans do.
