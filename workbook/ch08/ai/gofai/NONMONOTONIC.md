@@ -73,8 +73,10 @@ a. Logic Programming
 
 b. Belief Revision
 - The AGM theory (Alchourrón, Gärdenfors, Makinson) formalised how
-  agents should revise beliefs.
+  agents should revise beliefs.[^agm]
 - Closely related to NMR in managing belief updates.
+
+[^agm]: The central insight behind AGM theory is that real-world reasoning isn't static: agents often need to give up beliefs, modify them, or incorporate new ones in light of changing evidence. Traditional logical systems, particularly classical logic, assume that once a belief is held (i.e. derived from axioms), it remains unless a contradiction is encountered. But in practical reasoning, especially under uncertainty or incomplete knowledge, beliefs often have to be revised even in the absence of contradictions. AGM provides a formal structure for doing this in a coherent way.
 
 c. Reasoning about Actions
 - Frame problem and qualifications in AI planning required default
@@ -83,7 +85,7 @@ c. Reasoning about Actions
   calculus, event calculus).
 
 d. Modal and Epistemic Logics
-- Autoepistemic logic formalized an agent's introspection (what it
+- Autoepistemic logic formalised an agent's introspection (what it
   knows about what it knows), inherently non-monotonic.
 
 
