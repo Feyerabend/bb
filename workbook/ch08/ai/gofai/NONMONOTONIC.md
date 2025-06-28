@@ -156,8 +156,6 @@ Brachman, R. J., & Levesque, H. J. (2022). *Knowledge representation and reasoni
 
 Brewka, G. (1991). *Nonmonotonic reasoning: Logical foundations of commonsense* (Vol. 12). Cambridge University Press.
 
-Gebser, M., Kaminski, R., Kaufmann, B., & Schaub, T. (2012). Answer set solving in practice. Morgan & Claypool Publishers.
-
 For hands-on practice look into tools like:
 - clingo: https://potassco.org/clingo/
 - DLV: http://www.dlvsystem.com/
