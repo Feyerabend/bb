@@ -18,12 +18,13 @@ of defaults, exceptions, and incomplete knowledge. However it deviates from clas
 logic in a way that might rub your skin in the wrong way.
 
 In the late '80s, NMR seemed like a promising direction for AI. At the same time,
-*Situational Logic* began to gain attention. It emphasised understanding human action and
+*Situation Theory/Semantics* began to gain attention (Jon Barwise & John Perry,
+*Situations and Attitudes*, 1983). It emphasised understanding human action and
 intention within specific social and practical contexts, rather than relying on abstract
 logical formalisms alone. It proposed that reasoning is embedded in situations--structured
 by goals, roles, and constraints--and cannot be reduced to rules or formal inference.
 As I still was occationally connected to the Philosophical Institution, we had some
-discussions and seminars on this fresh topic.
+discussions and seminars on this, for us, fresh topic.
 
 This shift also challenged the AI community to think beyond symbolic manipulation.
 It suggested that intelligence isn't just about rules or facts, but also about navigating
