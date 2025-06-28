@@ -63,7 +63,7 @@ $P$ is the transition matrix. Ergodic chains converge to a stationary distributi
 
 ### Transition to Statistical Learning
 
-While Markov chains originate from traditional probabilistic modeling and are often used in explicitly
+While Markov chains originate from traditional probabilistic modelling and are often used in explicitly
 defined simulation-based or rule-based systems, they also form the foundation for data-driven models
 that learn from experience or observation. This transition into learning marks their relevance in *machine
 learning*. What we will explore in more detail in the following chapter [ch08](./../../../ch08/ai/ml/).
@@ -79,10 +79,10 @@ as the Forward-Backward or Viterbi algorithm are used--clearly statistical and M
 
 Moreover, in reinforcement learning, [Markov Decision Processes](./../../../ch08/ai/ml/mdp/) (MDPs)
 extend the Markov framework by associating states with actions and rewards, enabling agents to learn
-policies that maximize expected return. These models are often learned or optimized from data and
+policies that maximise expected return. These models are often learned or optimised from data and
 simulations, further embedding Markov structures in the core of machine learning.
 
-Thus, although Markov chains begin in the realm of classical, analytical modeling, their principles
+Thus, although Markov chains begin in the realm of classical, analytical modelling, their principles
 provide essential scaffolding for modern statistical AI. The moment a model starts learning its structure
 or estimating parameters from data, it crosses into the statistical learning regime, even when the
 underlying mechanics remain grounded in the traditional Markov framework.
