@@ -23,7 +23,7 @@ the true label and $\hat{y}_i$ be the predicted value for the $i$-th sample. The
 function at iteration $t$ is:
 
 ```math
-[\text{Obj} = \sum_{i=1}^n l(y_i, \hat{y}i^{(t)}) + \sum{k=1}^t \Omega(f_k) ]
+\text{Obj} = \sum_{i=1}^n l(y_i, \hat{y}i^{(t)}) + \sum{k=1}^t \Omega(f_k)
 ```
 
 Here, $l(y_i, \hat{y}_i^{(t)})$ is the loss function measuring the difference between the true
@@ -31,7 +31,7 @@ and predicted values, such as $(y_i - \hat{y}_i)^2$ for regression. The term $\O
 the regularization penalty for the $k$-th tree, defined as:
 
 ```math
-[ \Omega(f) = \gamma T + \frac{1}{2} \lambda \sum_{j=1}^T w_j^2 ]
+\Omega(f) = \gamma T + \frac{1}{2} \lambda \sum_{j=1}^T w_j^2
 ```
 
 where $T$ is the number of leaves in the tree, $w_j$ is the weight of the $j$-th leaf, $\gamma$
@@ -45,7 +45,7 @@ algorithm to find the optimal structure and weights for each new tree by solving
 optimisation problem. The gain for splitting a node in a tree is calculated as:
 
 ```math
-[ \text{Gain} = \frac{1}{2} \left[ \frac{(\sum_{i \in I_L} g_i)^2}{\sum_{i \in I_L} h_i + \lambda} + \frac{(\sum_{i \in I_R} g_i)^2}{\sum_{i \in I_R} h_i + \lambda} - \frac{(\sum_{i \in I} g_i)^2}{\sum_{i \in I} h_i + \lambda} \right] - \gamma ]
+\text{Gain} = \frac{1}{2} \left[ \frac{(\sum_{i \in I_L} g_i)^2}{\sum_{i \in I_L} h_i + \lambda} + \frac{(\sum_{i \in I_R} g_i)^2}{\sum_{i \in I_R} h_i + \lambda} - \frac{(\sum_{i \in I} g_i)^2}{\sum_{i \in I} h_i + \lambda} \right] - \gamma
 ```
 
 where $I_L$ and $I_R$ are the sets of instances in the left and right child nodes, $I$ is the parent
