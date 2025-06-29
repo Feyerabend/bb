@@ -95,7 +95,7 @@ if $w_{xy} < 0$.
 
 In a system with binary (0 and 1) instead of continuous activation values, units can be activated if and only
 if their total input exceeds a certain threshold:
-    * (4) $a_x(t+1)=1 \text{ if } \sum input_{xy}(t) > \theta; \text{ and } a_x(t+1)=0 \text{ otherwise.}$
+  * (4) $a_x(t+1)=1 \text{ if } \sum input_{xy}(t) > \theta; \text{ and } a_x(t+1)=0 \text{ otherwise.}$
 
 There are also networks, such as the so-called Boltzmann machines, that use probabilistic rather than deterministic
 activation functions. The activation function can, for example, specify the probability $P(a_x(t + 1) = 1)$ for a
