@@ -8,13 +8,13 @@ While its core ideas, like distributed representations and learning through weig
 foundational to modern neural networks and deep learning, the term "connectionism" has faded.
 It's been replaced by more specific terms like "deep learning" that reflect advanced architectures,
 large-scale data, and computational power. Early connectionist models were simpler, constrained by
-hardware, and often focused on biological plausibility and cognitive modeling, whereas today's AI
+hardware, and often focused on biological plausibility and cognitive modelling, whereas today's AI
 prioritises performance and practical applications, with less emphasis on mimicking the brain.
 The term is less used now, as its principles have been absorbed into broader AI research, with modern
 methods leveraging sophisticated optimisers and complex architectures far beyond the scope of early
 connectionist systems.*
 
-*It can however be beneficial to briefy look at the status of AI from a philosophical
+*It can however be beneficial to briefly look at the status of AI from a philosophical
 standpoint at that time.*
 
 *You might also notice the e.g. backprop is missing in this. "Learning Representations by Back-Propagating Errors"
@@ -60,7 +60,7 @@ theoretical understanding of the problems one studies.
 The connectionist approach is different. Here, one starts from theories about how the brain works. One attempts
 to construct computers that resemble the brain as described by neurophysiologists; so-called neural networks composed
 of relatively simple components ("neurons") that work in parallel. While classical AI primarily views intelligence
-as symbolic thinking, connectionists emphasize learning and adaptive behavior.
+as symbolic thinking, connectionists emphasise learning and adaptive behaviour.
 
 A connectionist model--also called a neural network--is a system consisting of:
 
@@ -113,7 +113,7 @@ binary unit $x$ to be activated at $t + 1$ as a function of the unit's total inp
 The function that a given system calculates is naturally dependent on the system's weights. A network capable of
 modifying its weights can thus be said to calculate a certain function only relative to a given set of weights.
 
-- (vii) Many neural networks can learn--i.e., modify their input/output behavior--by changing the weights associated
+- (vii) Many neural networks can learn--i.e., modify their input/output behaviour--by changing the weights associated
   with the incoming links. These weights are thus thought to represent the system's knowledge. An elegant learning
   rule is the one proposed by D. O. Hebb (1949). Hebb's idea was that the connection between two neurons is
   strengthened whenever they are activated similarly and simultaneously. A mathematical expression for this idea
@@ -162,7 +162,7 @@ output, and the result of the comparison is used by the system itself to modify 
 Naturally, one can also "program" a network by modifying the weights of the incoming links. The weights thus correspond
 to some extent to the program in a conventional computer.
 
-Connectionist systems that have the ability to learn can be said to be self-organizing. The network is "trained" by
+Connectionist systems that have the ability to learn can be said to be self-organising. The network is "trained" by
 receiving a certain input and having the output it produces compared with a desired output. The result of the comparison
 is given in the form of an error signal. This is sent back through the network, and then the network is trained again.
 The process continues until the network has been distributed in such a way that the desired input-output pattern
