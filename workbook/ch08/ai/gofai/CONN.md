@@ -14,10 +14,15 @@ The term is less used now, as its principles have been absorbed into broader AI 
 methods leveraging sophisticated optimisers and complex architectures far beyond the scope of early
 connectionist systems.*
 
-
-
 *It can however be beneficial to briefy look at the status of AI from a philosophical
 standpoint at that time.*
+
+*You might also notice the e.g. backprop is missing in this. "Learning Representations by Back-Propagating Errors"
+(1986) co-authored by Hinton, David Rumelhart, and Ronald Williams in 1986 (published in Nature), was a
+landmark publication. It provided a clear and practical method for training neural networks with multiple
+hidden layers using backpropagation, which computes gradients efficiently via the chain rule of calculus.*
+
+*Sometimes it takes time to establish ideas.*
 
 ---
 
