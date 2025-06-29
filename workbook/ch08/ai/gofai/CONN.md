@@ -17,6 +17,7 @@ connectionist systems.*
 *It can however be beneficial to briefy look at the status of AI from a philosophical
 standpoint at that time.*
 
+---
 
 # Philosophy and Artificial Intelligence, VI, by Sten Lindström. Spring 1992.
 
