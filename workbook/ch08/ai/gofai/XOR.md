@@ -8,6 +8,7 @@ the inputs that produce a "true" (or 1) output from those that produce a "false"
 (1,1) the XOR output is 0, while for (0,1) and (1,0) the output is 1.
 A single line cannot separate these two groups.*
 
+*Files referred to below:*
 - [minsky_papert.html](./minsky_papert.html)
 - [lindstrom.html](./lindstrom.html)
 - [backprop.html](./backprop.html)
