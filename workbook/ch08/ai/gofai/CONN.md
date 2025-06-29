@@ -35,7 +35,7 @@ constructs a model or mental representation of its environment. That it is forma
 thought to work like a computer: it manipulates symbols (mental representations) in accordance with precisely
 specified formal rules. Mental representations are conceived as semantically interpreted sentences in a formalised
 language: they have both a syntactic form and a semantic content. Each sentence can be seen as an ordered pair
-<$\phi$, l>, where $\phi$ is a closed formula (a syntactic expression) and $l$ is a semantic interpretation of the
+$<\phi, l>$, where $\phi$ is a closed formula (a syntactic expression) and $l$ is a semantic interpretation of the
 formalized language. The syntactic component $\phi$ makes it possible to manipulate representations mechanically
 in accordance with formal rules: rules that refer only to their formal properties. The semantic component $l$ relates
 the symbols in the formal language to objects, properties, and relations in the world. It is this component
