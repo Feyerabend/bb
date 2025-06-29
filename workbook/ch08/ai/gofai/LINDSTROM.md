@@ -70,7 +70,8 @@ A connectionist model--also called a neural network--is a system consisting of:
   (on) and $0$ (off). They can also take continuous values in the interval $[-1, 1]$.
 
 - (ii) An output function that specifies how each unit's output is determined by its activation level.
-  Usually, a unit's output is simply equal to its activation level, but it can also be, for example: $($output_x = a_x$)$
+  Usually, a unit's output is simply equal to its activation level, but it can also be, for example:
+  ($output_x = a_x$)
     * (1) $output_x = a_x$ if $a_x > 0$; and $output_x = 0$ if $a_x \leq 0$.
 
 - (iii) A binary relation R $\subseteq$ A x A that indicates how the system's units are connected to each other.
