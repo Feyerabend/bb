@@ -142,7 +142,7 @@ The delta rule achieves this by modifying the weight $w_{yx}$ for each link $<y,
 by the quantity:
 
 ```math
-\Delta w_{yx} = l \cdot rate(d_x - a_x)a_y,
+\Delta w_{yx} = lrate(d_x - a_x)a_y,
 ```
 i.e., we set the new weights to
 ```math
