@@ -75,16 +75,16 @@ A connectionist model--also called a neural network--is a system consisting of:
     * (1) $output_x = a_x$ if $a_x > 0$; and $output_x = 0$ if $a_x \leq 0$.
 
 - (iii) A binary relation R $\subseteq$ A x A that indicates how the system's units are connected to each other.
-  We say that <x, y> is a link from x to y if and only if <x, y> $\in$ R. Each link from one unit x to another
-  unit y is associated with a numerical value $w_{xy}$ (or $w_{xy}(t)$) called the link's weight. $W_{xy}$ is a
-  measure of the strength of the connection from x to y.
+  We say that <x, y> is a link from $x$ to $y$ if and only if $<x, y> \in R$. Each link from one unit $x$ to another
+  unit $y$ is associated with a numerical value $w_{xy}$, or $w_{xy}(t)$, called the link's weight. $W_{xy}$ is a
+  measure of the strength of the connection from $x$ to $y$.
 
-- (iv) If there is a link from x to y, then y receives an input from x that is equal to x's output multiplied
-  by the strength $w_{xy}$ of the connection between x and y, i.e.
+- (iv) If there is a link from $x$ to $y$, then $y$ receives an input from $x$ that is equal to $x$'s output multiplied
+  by the strength $w_{xy}$ of the connection between $x$ and $y$, i.e.
     * (2) $input_{yx} = w_{xy} * output_x$
 
-Thus, a unit x with positive output has a positive effect on y if $w_{xy}$ is positive, and a negative effect
-if $w_{xy}$ is negative. We therefore say that the link <x, y> is excitatory if $w_{xy} > 0$ and inhibitory
+Thus, a unit $x$ with positive output has a positive effect on $y$ if $w_{xy}$ is positive, and a negative effect
+if $w_{xy}$ is negative. We therefore say that the link $<x, y>$ is excitatory if $w_{xy} > 0$ and inhibitory
 if $w_{xy} < 0$.
 
 - (v) Each unit $x$ is associated with an activation function $f_x$ that determines how the unit's activation level
@@ -103,10 +103,10 @@ binary unit $x$ to be activated at $t + 1$ as a function of the unit's total inp
 
 - (vi) Some units $x_1,..., x_n$ in the network constitute its input layer, and some others $y_1,..., y_n$ its
   output layer. Units that belong to neither the input layer nor the output layer are called hidden units. The
-  network can be given a certain input <a($x_1$),..., a($x_n$)> by setting the activation levels a($x_i$) of the
+  network can be given a certain input $<a(x_1),..., a(x_n)>$ by setting the activation levels a($x_i$) of the
   input vector units simultaneously, while the output layer units and the hidden units are set to "rest". The
   activity from the system's input then spreads through it until an equilibrium state may be reached; in which
-  case the system produces an output vector <a($y_1$),..., a($y_m$)> . We can thus speak of the function that
+  case the system produces an output vector $<a(y_1),..., a(y_m)>$ . We can thus speak of the function that
   the network calculates. If equilibrium is not reached after a given input, then the function that the system
   calculates is undefined for that input.
 
@@ -120,7 +120,7 @@ modifying its weights can thus be said to calculate a certain function only rela
   is the following so-called Hebbian rule:
     * (4) $w_{xy}(t+1) = w_{xy}(t) + l \cdot a_x(t) \cdot a_y(t).$
 
-where l is a positive constant indicating the learning rate. Whenever the activation levels of the two units have
+where $l$ is a positive constant indicating the learning rate. Whenever the activation levels of the two units have
 the same sign (positive or negative), the connection between them is strengthened in proportion to the product of
 their activation levels.
 
@@ -129,7 +129,7 @@ A more powerful learning rule is the so-called delta rule. This rule is based on
 and letting the system modify its weights in light of this comparison. The network first receives a
 certain input. Then it produces an output pattern using the existing weights in the system.
 
-The delta rule works as follows: first, one provides an input to the system's input discrepancy ($d_x - a_x$)
+The delta rule works as follows: first, one provides an input to the system's input discrepancy $d_x - a_x$
 between the unit's intended output $d_x$ and its actual output $a_x$. The total error of the output pattern is
 calculated as:
 
