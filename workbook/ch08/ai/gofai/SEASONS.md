@@ -270,3 +270,26 @@ to be more efficient than previously known methods." Lars Svenonius review on "H
 *The Journal of Symbolic Logic*, Vol. 25, No. 3 (Sep., 1960), p. 276.
 
 [^33]: Wikipedia, "Swedish Board for Computing Machinery", https://en.wikipedia.org/wiki/Swedish_Board_for_Computing_Machinery (retrieved 2025-04-07)
+
+
+#### The Renaissance of Modern AI
+
+By the late 1980s and early 1990s, dissatisfaction with the limitations of the strictly logical, rule-based paradigm
+of traditional AI—often referred to as "Good Old-Fashioned AI" ([GOFAI](./README.md))--led researchers to explore
+alternative approaches. One such line of inquiry was [non-monotonic reasoning](./NONMONOTONIC.md), which attempted
+to better model human-like commonsense inference by allowing conclusions to be withdrawn in light of new information,
+a capability missing from classical logic.
+
+In parallel, a revival of interest occurred in [connectionism](./LINDSTROM.md), particularly in neural networks, which
+had largely been set aside after the limitations of single-layer perceptrons were highlighted in the late 1960s. Key
+to this revival was the rediscovery and popularisation of *backpropagation* as a viable method for training multi-layer
+neural networks. This work--especially the influential 1986 paper[^34] by Rumelhart, Hinton, and Williams--provided a new
+foundation for learning distributed representations and re-established neural networks as a serious approach to AI.
+
+This period marked the beginning of what would eventually grow into modern machine learning, with an emphasis on
+data-driven models, statistical inference, and learning from experience, rather than relying solely on handcrafted
+rules and logic.
+
+[^34]: Rumelhart, D. E., Hinton, G. E., & Williams, R. J. (1986). *Learning representations by back-propagating errors.*
+Nature, 323, 533–536. DOI: 10.1038/323533a0
+
