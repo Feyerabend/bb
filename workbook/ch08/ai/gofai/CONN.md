@@ -71,7 +71,7 @@ A connectionist model--also called a neural network--is a system consisting of:
 
 - (ii) An output function that specifies how each unit's output is determined by its activation level.
   Usually, a unit's output is simply equal to its activation level, but it can also be, for example: $($output_x = a_x$)$
-    * (1) $output_x = a_x$ if $a_x > 0$; and $output_x = 0$ if $a_x \leq 0$.
+    1. $output_x = a_x$ if $a_x > 0$; and $output_x = 0$ if $a_x \leq 0$.
 
 - (iii) A binary relation R $\subseteq$ A x A that indicates how the system's units are connected to each other.
   We say that <x, y> is a link from x to y if and only if <x, y> $\in$ R. Each link from one unit x to another
@@ -80,7 +80,7 @@ A connectionist model--also called a neural network--is a system consisting of:
 
 - (iv) If there is a link from x to y, then y receives an input from x that is equal to x's output multiplied
   by the strength $w_{xy}$ of the connection between x and y, i.e.
-    * (2) $input_{yx} = w_{xy} * output_x$
+    2. $input_{yx} = w_{xy} * output_x$
 
 Thus, a unit x with positive output has a positive effect on y if $w_{xy}$ is positive, and a negative effect
 if $w_{xy}$ is negative. We therefore say that the link <x, y> is excitatory if $w_{xy} > 0$ and inhibitory
