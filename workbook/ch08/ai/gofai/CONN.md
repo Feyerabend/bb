@@ -14,6 +14,8 @@ The term is less used now, as its principles have been absorbed into broader AI 
 methods leveraging sophisticated optimisers and complex architectures far beyond the scope of early
 connectionist systems.*
 
+
+
 *It can however be beneficial to briefy look at the status of AI from a philosophical
 standpoint at that time.*
 
@@ -81,7 +83,7 @@ Thus, a unit x with positive output has a positive effect on y if $w_{xy}$ is po
 if $w_{xy}$ is negative. We therefore say that the link <x, y> is excitatory if $w_{xy} > 0$ and inhibitory
 if $w_{xy} < 0$.
 
-(v) Each unit $x$ is associated with an activation function $f_x$ that determines how the unit's activation level
+- (v) Each unit $x$ is associated with an activation function $f_x$ that determines how the unit's activation level
     is determined by inputs it receives from other units. A common activation function is the so-called linear
     activation function which determines the activation level of unit $x$ at $t + 1$ as the sum of all inputs
     to $x$ at $t$:
@@ -131,30 +133,27 @@ between the unit's intended output $d_x$ and its actual output $a_x$. The total 
 calculated as:
 
 ```math
-Error = $\frac{1}{2} \sum (d_x - a_x)^2$
+Error = \frac{1}{2} \sum (d_x - a_x)^2
 ```
 
 The idea behind the delta rule is to modify the weights in such a way that Error approaches 0 with repeated training.
-The delta rule achieves this by modifying the weight $w_{yx}$ for each link <y, x> leading to an output unit $x$
+The delta rule achieves this by modifying the weight $w_{yx}$ for each link $<y, x>$ leading to an output unit $x$
 by the quantity:
 
 ```math
-$\Delta w_{yx} = l \cdot rate(d_x - a_x)a_y,$
+\Delta w_{yx} = l \cdot rate(d_x - a_x)a_y,
 ```
 i.e., we set the new weights to
 ```math
-$w'_{yx} = w_{yx}(t) + \Delta w_{yx}.$
+w'_{yx} = w_{yx}(t) + \Delta w_{yx}.
 ```
 Given that the system uses the linear activation rule, i.e.
 ```math
-$a_x = \sum_y w_{yx} \cdot a_y$
+a_x = \sum_y w_{yx} \cdot a_y
 ```
 then $a_x$ after the weights have been modified is given by:
 ```math
-$a'_x = \sum_y (w_{yx} + \Delta w_{yx}) \cdot a_y = \sum_y w_{yx} \cdot a_y + \sum_y \Delta w_{yx} \cdot a_y = $
-```
-```math
-$a_x + \sum_y \Delta w_{yx} \cdot a_y.$
+a'_x = \sum_y (w_{yx} + \Delta w_{yx}) \cdot a_y = \sum_y w_{yx} \cdot a_y + \sum_y \Delta w_{yx} \cdot a_y = a_x + \sum_y \Delta w_{yx} \cdot a_y.
 ```
 First, a specific input is given to the system, whereupon the output produced by the system is compared with a desired
 output, and the result of the comparison is used by the system itself to modify its weights.
