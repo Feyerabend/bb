@@ -71,8 +71,7 @@ A connectionist model--also called a neural network--is a system consisting of:
 
 - (ii) An output function that specifies how each unit's output is determined by its activation level.
   Usually, a unit's output is simply equal to its activation level, but it can also be, for example: $($output_x = a_x$)$
-
-    - (1) $output_x = a_x$ if $a_x > 0$; and $output_x = 0$ if $a_x \leq 0$.
+    * (1) $output_x = a_x$ if $a_x > 0$; and $output_x = 0$ if $a_x \leq 0$.
 
 - (iii) A binary relation R $\subseteq$ A x A that indicates how the system's units are connected to each other.
   We say that <x, y> is a link from x to y if and only if <x, y> $\in$ R. Each link from one unit x to another
@@ -81,8 +80,7 @@ A connectionist model--also called a neural network--is a system consisting of:
 
 - (iv) If there is a link from x to y, then y receives an input from x that is equal to x's output multiplied
   by the strength $w_{xy}$ of the connection between x and y, i.e.
-
-    - (2) $input_{yx} = w_{xy} * output_x$
+    * (2) $input_{yx} = w_{xy} * output_x$
 
 Thus, a unit x with positive output has a positive effect on y if $w_{xy}$ is positive, and a negative effect
 if $w_{xy}$ is negative. We therefore say that the link <x, y> is excitatory if $w_{xy} > 0$ and inhibitory
@@ -92,13 +90,11 @@ if $w_{xy} < 0$.
     is determined by inputs it receives from other units. A common activation function is the so-called linear
     activation function which determines the activation level of unit $x$ at $t + 1$ as the sum of all inputs
     to $x$ at $t$:
-
-    - (3) $a_x(t + 1) = \sum_{y} input_{xy}(t) = \sum_{y} w_{yx} * output_y$
+    * (3) $a_x(t + 1) = \sum_{y} input_{xy}(t) = \sum_{y} w_{yx} * output_y$
 
 In a system with binary (0 and 1) instead of continuous activation values, units can be activated if and only
 if their total input exceeds a certain threshold:
-
-    - (4) $a_x(t+1)=1 \text{ if } \sum input_{xy}(t) > \theta; \text{ and } a_x(t+1)=0 \text{ otherwise.}$
+    * (4) $a_x(t+1)=1 \text{ if } \sum input_{xy}(t) > \theta; \text{ and } a_x(t+1)=0 \text{ otherwise.}$
 
 There are also networks, such as the so-called Boltzmann machines, that use probabilistic rather than deterministic
 activation functions. The activation function can, for example, specify the probability $P(a_x(t + 1) = 1)$ for a
@@ -121,8 +117,7 @@ modifying its weights can thus be said to calculate a certain function only rela
   rule is the one proposed by D. O. Hebb (1949). Hebb's idea was that the connection between two neurons is
   strengthened whenever they are activated similarly and simultaneously. A mathematical expression for this idea
   is the following so-called Hebbian rule:
-
-    - (4) $w_{xy}(t+1) = w_{xy}(t) + l \cdot a_x(t) \cdot a_y(t).$
+    * (4) $w_{xy}(t+1) = w_{xy}(t) + l \cdot a_x(t) \cdot a_y(t).$
 
 where l is a positive constant indicating the learning rate. Whenever the activation levels of the two units have
 the same sign (positive or negative), the connection between them is strengthened in proportion to the product of
