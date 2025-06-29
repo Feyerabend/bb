@@ -1,5 +1,6 @@
 
-*These notes are a translation from a 1992 artificial intelligence course taught by Sten Lindström (1945-2022).
+*These notes are a translation from a 1992 artificial intelligence course taught by Sten Lindström (1945-2022)
+at the Philosophical Institution, Uppsala University.
 They represent my initial introduction to neural networks and what was then referred to as "connectionism."*
 
 *The connectionist viewpoint, prominent in the 1980s, modeled computation after the brain's neural structure,
