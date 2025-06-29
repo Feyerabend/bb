@@ -9,7 +9,7 @@ and observe how frequent itemsets are found.
 The Apriori algorithm is used to mine frequent itemsets (sets of items that often appear together in
 transactions) and can be extended to generate association rules. It relies on the Apriori Principle:
 
-If an itemset is frequent, all of its subsets must also be frequent.
+> If an itemset is frequent, all of its subsets must also be frequent.
 
 Conversely, if a candidate itemset is infrequent, none of its supersets can be frequent. This allows
 pruning of the search space.
