@@ -14,7 +14,9 @@ The term is less used now, as its principles have been absorbed into broader AI 
 methods leveraging sophisticated optimisers and complex architectures far beyond the scope of early
 connectionist systems.*
 
-*It can however be beneficial to briefy look at the status of AI at that time.*
+*It can however be beneficial to briefy look at the status of AI from a philosophical
+standpoint at that time.*
+
 
 # Philosophy and Artificial Intelligence, VI, by Sten Lindström. Spring 1992.
 
@@ -80,7 +82,8 @@ if $w_{xy} < 0$.
 
 (v) Each unit $x$ is associated with an activation function $f_x$ that determines how the unit's activation level
     is determined by inputs it receives from other units. A common activation function is the so-called linear
-    activation function which determines the activation level of unit $x$ at $t + 1$ as the sum of all inputs to $x$ at $t$:
+    activation function which determines the activation level of unit $x$ at $t + 1$ as the sum of all inputs
+    to $x$ at $t$:
 
 (3) $a_x(t + 1) = \sum_{y} input_{xy}(t) = \sum_{y} w_{yx} * output_y$
 
@@ -169,16 +172,3 @@ I assume here that the network in question is a deterministic system. There are 
 (e.g., probabilistic ones) whose output for a given input is not uniquely determined. For such networks, one naturally
 cannot speak of the function that the network calculates.
 
-
----
-# Connectionist Architectures
-
-[Diagram showing nodes labeled "Art", "Rick", "Lance", "Sam", "Ralph", "J.H.", "Col.", "H.S.", "20's", "30's", "40's", "Burglar", "Bookie", "Pusher", "married", "single", "divorced", "Jet", "Shark" with connections between them and central nodes]
-
-**Figure 2.2** The units and connections for five of the individuals in McClelland's (1981) Jets and Sharks network. From J. L. McClelland (1981) *Retrieving general and specific knowledge from stored knowledge of specifics, Proceedings of the Third Annual Conference of the Cognitive Science Society*. Copyright 1981 by J. L. McClelland. Reprinted with corrections by permission of author.
-
-## Components of the Model
-
-The most salient components of a connectionist architecture are: (a) simple elements called units; (b) equations that determine an activation level for each unit at each point in time; (c) weighted connections between units which permit the activity of one unit to influence the activity of other units; and (d) learning rules which change the network's behavior by changing the weights of its connections. The Jets and Sharks model exhibits components (a)–(c); we defer the important topic of learning until later.
-
-(a) The units There are 68 units in the complete model: a unit for each gang member (27 units); a unit for each gang member's name (27 units); and a unit for each of the properties members can exhibit (14 units). The units are grouped into seven clusters (the "clouds" in figure
