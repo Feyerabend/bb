@@ -290,6 +290,18 @@ This period marked the beginning of what would eventually grow into modern machi
 data-driven models, statistical inference, and learning from experience, rather than relying solely on handcrafted
 rules and logic.
 
+The limitations of early neural networks starting from 1957, particularly exposed by the [XOR](./XOR.md) problem
+in 1969, led to significant pushback in the 1970s. At the time, single-layer perceptrons were shown to be incapable
+of solving even simple non-linearly separable problems, as highlighted in Minsky and Papert’s influential 1969 book
+*Perceptrons*. This contributed to a period of disillusionment and reduced funding for connectionist approaches.
+
+At the same time, the promises of symbolic AI—based on formal logic, rule-based systems, and structured
+representations--were also overstated. While early systems showed impressive results in narrow domains, they
+struggled with scalability, brittleness, and an inability to handle ambiguity, learning, or perception in the
+way humans do. These dual disappointments led researchers to question the dominant paradigms and seek new or
+hybrid approaches to artificial intelligence.
+
+
 [^34]: Rumelhart, D. E., Hinton, G. E., & Williams, R. J. (1986). *Learning representations by back-propagating errors.*
 Nature, 323, 533–536. DOI: 10.1038/323533a0
 
