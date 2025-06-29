@@ -107,7 +107,7 @@ binary unit $x$ to be activated at $t + 1$ as a function of the unit's total inp
   input vector units simultaneously, while the output layer units and the hidden units are set to "rest". The
   activity from the system's input then spreads through it until an equilibrium state may be reached; in which
   case the system produces an output vector $<a(y_1),..., a(y_m)>$ . We can thus speak of the function that
-  the network calculates. If equilibrium is not reached after a given input, then the function that the system
+  the network calculates.[^func] If equilibrium is not reached after a given input, then the function that the system
   calculates is undefined for that input.
 
 The function that a given system calculates is naturally dependent on the system's weights. A network capable of
@@ -118,7 +118,7 @@ modifying its weights can thus be said to calculate a certain function only rela
   rule is the one proposed by D. O. Hebb (1949). Hebb's idea was that the connection between two neurons is
   strengthened whenever they are activated similarly and simultaneously. A mathematical expression for this idea
   is the following so-called Hebbian rule:
-    * (4) $w_{xy}(t+1) = w_{xy}(t) + l \cdot a_x(t) \cdot a_y(t).$
+    * (~4~5) $w_{xy}(t+1) = w_{xy}(t) + l \cdot a_x(t) \cdot a_y(t).$
 
 where $l$ is a positive constant indicating the learning rate. Whenever the activation levels of the two units have
 the same sign (positive or negative), the connection between them is strengthened in proportion to the product of
@@ -169,7 +169,7 @@ The process continues until the network has been distributed in such a way that 
 has been achieved.
 
 
-I assume here that the network in question is a deterministic system. There are also non-deterministic networks
+[^func]: I assume here that the network in question is a deterministic system. There are also non-deterministic networks
 (e.g., probabilistic ones) whose output for a given input is not uniquely determined. For such networks, one naturally
 cannot speak of the function that the network calculates.
 
