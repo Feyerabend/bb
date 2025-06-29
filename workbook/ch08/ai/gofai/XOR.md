@@ -2,10 +2,7 @@
 *A very simplified way to illustrate the early evolution of neural networks can be seen through
 the problem of solving XOR. The problem is that the XOR (exclusive OR) logical function is *not*
 linearly separable. This means you cannot draw a single straight line on a graph to separate
-the inputs that produce a "true" (or 1) output from those that produce a "false" (or 0) output.*
-
-*For example, in the `minsky_papert.html` file, it's explicitly shown that for inputs (0,0) and
-(1,1) the XOR output is 0, while for (0,1) and (1,0) the output is 1.
+the inputs that produce a "true" (or 1) output from those that produce a "false" (or 0) output.
 A single line cannot separate these two groups.*
 
 *Files referred to below:*
