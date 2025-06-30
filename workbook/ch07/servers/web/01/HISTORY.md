@@ -2,7 +2,7 @@
 ## The Development of the Web from 1989-1997
 
 *The Web spread slowly at the beginning of the 1990s. At university libraries, you could access Gopher,
-a text-based hiearchical system for navigating information hierarchies. Librarians loved hiearchy.
+a text-based hierarchical system for navigating information hierarchies. Librarians loved hierarchy.
 It let you browse library catalogues and access a range of public documents, and it felt like a revelation
 at the time. When I got my own internet connection in 1994, Gopher was still widespread. Clients
 were easy to download and install, and they ran well even on the kind of simple--read: cheap--hardware
@@ -78,9 +78,9 @@ publish and interconnect content globally. The simplicity of the design was key.
 Gopher and FTP, not erasing them, but incorporating them into a new, more flexible structure.*
 
 
-### 1994: Commercialization and Netscape
+### 1994: Commercialisation and Netscape
 
-Recognizing the potential of the Web, Marc Andreessen left NCSA and co-founded Mosaic Communications
+Recognising the potential of the Web, Marc Andreessen left NCSA and co-founded Mosaic Communications
 Corporation, later renamed *Netscape Communications*. That year, the company released *Netscape Navigator 1.0*,
 a sleek and fast browser that quickly became dominant in the emerging browser market. Navigator’s ease of
 use and platform compatibility helped drive massive adoption of the Web.
@@ -98,14 +98,14 @@ browser market, and the number of websites exploded. Microsoft, seeing the growi
 released *Internet Explorer 1.0* as part of the Windows 95 Plus! Pack. This marked the beginning of what
 would become the *browser wars*.
 
-In the same year, *HTML 2.0* was released by the IETF as the first standardized version of the language.
+In the same year, *HTML 2.0* was released by the IETF as the first standardised version of the language.
 Web content began to include forms, basic styling, and rudimentary scripting through CGI scripts. The idea
 of dynamic content—pages that changed based on user interaction—started to take shape.
 
 
 ### 1996: Browser Wars Begin
 
-With the Web’s rapid commercialization, competition intensified. Netscape released newer versions of Navigator
+With the Web’s rapid commercialisation, competition intensified. Netscape released newer versions of Navigator
 with proprietary enhancements, while Microsoft responded with aggressive development of Internet Explorer.
 *IE 3.0*, released in *1996*, introduced significant improvements, including support for
 *Cascading Style Sheets (CSS)*, plug-ins, ActiveX, and a new scripting language called JavaScript.
@@ -116,9 +116,9 @@ As a result, websites often behaved differently depending on the browser, and de
 write code with conditional logic to handle these inconsistencies.
 
 
-### 1997: Stabilization and Standards Push
+### 1997: Stabilisation and Standards Push
 
-By *1997*, the need for standardisation was widely acknowledged. The W3C finalized *HTML 3.2*, which codified
+By *1997*, the need for standardisation was widely acknowledged. The W3C finalised *HTML 3.2*, which codified
 many of the de facto features that had appeared during the rapid growth of the Web. Work also began on
 *HTML 4.0*, which was released later that year and introduced improvements in scripting support, accessibility,
 and separation of content and presentation.
