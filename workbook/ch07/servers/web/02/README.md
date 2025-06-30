@@ -112,7 +112,7 @@ and launched ambitious, often unsustainable services.
 When the crash hit around 2000–2001, the NASDAQ collapsed, and thousands of these companies
 folded almost overnight. The exuberance vanished, and what remained was a more sober and
 cautious approach to the Internet. Businesses that survived were forced to prove their
-economic viability. Simply having a website was no longer impressive—investors and users
+economic viability. Simply having a website was no longer impressive--investors and users
 began to demand performance, stability, and actual value.
 
 This sudden downturn cleared out the noise and hype, but it also led to a kind of consolidation.
@@ -131,7 +131,7 @@ resources to survive the fallout.
 Culturally, the crash marked a turning point. It ended the naive optimism that had imagined
 the web as an open utopia and replaced it with a sense of caution and commercial realism.
 The dream of a decentralised, democratic Internet gave way to the rise of platforms, data-driven
-services, and an emerging awareness of the costs—economic, political, and personal--of
+services, and an emerging awareness of the costs--economic, political, and personal--of
 living in a connected world.
 
 In retrospect, the dot-com crash can be seen as the end of the Internet’s adolescence. It
