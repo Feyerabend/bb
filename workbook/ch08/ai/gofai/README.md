@@ -69,7 +69,7 @@ the “conventional” narrative--is shaped by the victors and tends to overlook
 that didn't fit the dominant storyline, as you will notice time and time again:
 
 
-*1950s–1960s: Foundations of AI*
+__1950s–1960s: Foundations of AI__
 
 The very term "artificial intelligence" was coined in 1956 at the seminal Dartmouth Conference, an event
 where visionary researchers like John McCarthy, Marvin Minsky, Allen Newell, and Herbert Simon laid the
@@ -82,7 +82,7 @@ and Simon (1957) further exemplified this approach, aiming to mimic human proble
 breaking down complex tasks into manageable goals and subgoals—a hallmark of GOFAI’s search-based methodology.
 
 
-*1960s–1970s: Expert Systems and Knowledge Engineering*
+__1960s–1970s: Expert Systems and Knowledge Engineering__
 
 The 1960s witnessed the nascent rise of expert systems, which represented a significant advancement by
 encoding domain-specific knowledge as intricate sets of rules. *DENDRAL* (1965), developed at Stanford,
@@ -95,20 +95,20 @@ like *SHRDLU* (1970) by Terry Winograd, which could manipulate objects in a virt
 environment and engage in natural language understanding.
 
 
-*1980s: AI Boom and Commercialisation*
+__1980s: AI Boom and Commercialisation__
 
 The 1980s marked the commercial peak of GOFAI, driven by widespread enthusiasm and the successful deployment
 of expert systems in industrial applications. Companies like Symbolics emerged, developing specialised Lisp
 machines to provide dedicated hardware for AI applications. Prominent systems like *XCON* (1980) by
 Digital Equipment Corporation, which automated the complex configuration of computer systems, reportedly
 saved the company millions annually. However, despite these successes, GOFAI faced mounting challenges
- These systems were often "brittle," meaning they performed well within their narrow, defined domains but
- struggled significantly with tasks outside those boundaries. They also required extensive, costly, and
- laborious manual "knowledge engineering" to build and maintain their rule bases, and crucially, they
- struggled to incorporate common-sense reasoning, which proved far more complex than initially anticipated.
+These systems were often "brittle," meaning they performed well within their narrow, defined domains but
+struggled significantly with tasks outside those boundaries. They also required extensive, costly, and
+laborious manual "knowledge engineering" to build and maintain their rule bases, and crucially, they
+struggled to incorporate common-sense reasoning, which proved far more complex than initially anticipated.
 
 
-*Late 1980s–1990s: AI Winter and Shift to Machine Learning*
+__Late 1980s–1990s: AI Winter and Shift to Machine Learning__
 
 By the late 1980s, the inherent limitations and the high costs associated with GOFAI, coupled with its
 failure to achieve broader, general intelligence, led to widespread disillusionment. This period triggered
@@ -124,7 +124,7 @@ dominance waned, GOFAI’s influence persisted in specialised areas like automat
 and constraint satisfaction.
 
 
-*2000s–Present: Legacy and Revival*
+__2000s–Present: Legacy and Revival__
 
 While contemporary AI is predominantly dominated by machine learning paradigms, the foundational ideas and
 principles of GOFAI remain profoundly relevant, particularly in domains demanding transparency, explainability,
