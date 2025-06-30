@@ -10,7 +10,7 @@ automated search engines.
 
 Yahoo!, founded in January 1994 by Jerry Yang and David Filo, began as a simple list of
 websites curated by hand. Originally called *"Jerry and David's Guide to the World Wide Web,"*
-it was a labor of love, a way for its creators to keep track of their favorite online resources.
+it was a labor of love, a way for its creators to keep track of their favourite online resources.
 But as the web exploded in size, so did Yahoo’s ambitions. It transformed into a full-fledged
 directory, relying on human editors to sort websites into categories, offering users a
 structured way to explore the web before algorithms could do the job. For a time, Yahoo
@@ -26,7 +26,7 @@ when most search tools were rudimentary at best. For a few golden years, AltaVis
 king of search, the place where the internet seemed most navigable.  
 
 Yet the late 1990s brought a deeper transformation, one that would reshape the web from an
-open, experimental playground into a commercialized, algorithm-driven machine. Between 1998
+open, experimental playground into a commercialised, algorithm-driven machine. Between 1998
 and 2000, the web shed much of its early idealism. Community-driven projects like the Open
 Directory Project, which relied on volunteers to catalog the web, struggled to compete with
 profit-seeking portals. Yahoo, once a humble directory, became a media giant, while upstarts
@@ -41,29 +41,29 @@ question and trusting an algorithm to deliver the answer. The early web’s anar
 still lingered, but the age of automation had arrived--and there was no going back.  
 
 Meanwhile, the concept of the "free" web—where access to content and services was open and
-often community-driven—started to erode. The late 1990s saw rapid commercialization.
-Businesses recognized the web’s enormous potential and began investing heavily in online
+often community-driven—started to erode. The late 1990s saw rapid commercialisation.
+Businesses recognised the web’s enormous potential and began investing heavily in online
 presence and advertising. The dot-com boom led to an explosion of startups, many aiming
-to monetize traffic and data. Advertising models evolved, with banner ads and pay-per-click
-becoming primary revenue sources. This commercialization brought increased capital and
+to monetise traffic and data. Advertising models evolved, with banner ads and pay-per-click
+becoming primary revenue sources. This commercialisation brought increased capital and
 innovation but also introduced proprietary platforms, gated content, and concerns about
 privacy and access.
 
-Technology developments accelerated alongside this commercialization. The rise of faster
+Technology developments accelerated alongside this commercialisation. The rise of faster
 Internet connections, improved browsers (notably Internet Explorer and Netscape), and new
 standards like HTML 4.01 and CSS allowed richer, more interactive websites. Web technologies
 began to support multimedia, scripting (JavaScript), and dynamic content, laying the
 groundwork for Web 2.0’s interactivity in the following decade. Server-side technologies
-and databases grew more sophisticated, enabling personalized and transaction-based websites.
+and databases grew more sophisticated, enabling personalised and transaction-based websites.
 
 In summary, the 1998–2000 period was pivotal: it witnessed Google’s rise as the dominant
-search engine, the decline of human-curated directories like ODP, rapid commercialization
+search engine, the decline of human-curated directories like ODP, rapid commercialisation
 of the web, and significant technological advances. These changes transformed the Internet
-from a decentralized, open space into a highly commercialized, complex infrastructure that
+from a decentralised, open space into a highly commercialised, complex infrastructure that
 balanced innovation with emerging challenges around openness, privacy, and control.
 
 
-### Other Techological Developments
+### Other Technological Developments
 
 The late 1990s weren’t just about search engines--they marked a seismic shift in how the
 web functioned, monetised, and interacted with users. Pay-per-click advertising, pioneered
@@ -92,7 +92,7 @@ no longer felt like novelties but inevitabilities, as the web shed its academic 
 and embraced its role as a global marketplace.
 
 The dot-com bubble’s frenzy obscured the real legacy of this era: the web wasn’t just
-commercialised--it was industrialised, with standardized monetisation, interactivity,
+commercialised--it was industrialised, with standardised monetisation, interactivity,
 and logistics. By 2000, the scaffolding for the modern internet was firmly in place.
 
 These technological developments collectively shifted the web from a largely open,
