@@ -76,6 +76,7 @@ balanced innovation with emerging challenges around openness, privacy, and contr
       enabled more interactive web applications.
     - While not as advanced as later AJAX technologies, these developments set the
       stage for dynamic and commercial web experiences.
+    - Plug-ins like Flash, and Java applets also contributed to user experience.
 
 * Increased Bandwidth and Connectivity
     - The spread of broadband in certain markets and better dial-up speeds globally
