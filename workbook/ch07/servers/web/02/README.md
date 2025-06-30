@@ -63,24 +63,33 @@ from a decentralized, open space into a highly commercialized, complex infrastru
 balanced innovation with emerging challenges around openness, privacy, and control.
 
 
+### Other Techological Developments
 
-* Web Monetization Models
-    - Pay-per-click advertising, pioneered by services like GoTo.com (later Overture), created a new commercial model for search.
-    - Google later adapted this into AdWords (launched 2000), turning search itself into a profitable commercial infrastructure.
+* Web Monetisation Models
+    - Pay-per-click advertising, pioneered by services like GoTo.com (later Overture),
+      created a new commercial model for search.
+    - Google later adapted this into AdWords (launched 2000), turning search itself
+      into a profitable commercial infrastructure.
 
 * Client-Side and Browser Capabilities
-    - The late 1990s saw improvements in JavaScript, CSS, and DOM manipulation, which enabled more interactive web applications.
-    - While not as advanced as later AJAX technologies, these developments set the stage for dynamic and commercial web experiences.
+    - The late 1990s saw improvements in JavaScript, CSS, and DOM manipulation, which
+      enabled more interactive web applications.
+    - While not as advanced as later AJAX technologies, these developments set the
+      stage for dynamic and commercial web experiences.
 
 * Increased Bandwidth and Connectivity
-    - The spread of broadband in certain markets and better dial-up speeds globally made richer content more accessible.
-    - This encouraged media-heavy sites, advertising platforms, and e-commerce to flourish.
+    - The spread of broadband in certain markets and better dial-up speeds globally
+      made richer content more accessible.
+    - This encouraged media-heavy sites, advertising platforms, and e-commerce to
+      flourish.
 
 * E-Commerce Infrastructure
-    - Payment systems, SSL encryption, and backend technologies matured enough to support secure and scalable online transactions.
-    - This made services like Amazon, eBay, and various dot-com startups viable, further pushing the commercialization of the web.
-
+    - Payment systems, SSL encryption, and backend technologies matured enough to
+      support secure and scalable online transactions.
+    - This made services like Amazon, eBay, and various dot-com startups viable,
+      further pushing the commercialization of the web.
 
 These technological developments collectively shifted the web from a largely open,
-experimental, and academic space to a commercialized, algorithm-driven, and increasingly
-centralized ecosystem—a trend that would only intensify in the following decades.
+experimental, and academic space to a commercialised, algorithm-driven, and increasingly
+centralised ecosystem--a trend that would only intensify in the following decades.
+
