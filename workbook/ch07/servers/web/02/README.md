@@ -65,32 +65,77 @@ balanced innovation with emerging challenges around openness, privacy, and contr
 
 ### Other Techological Developments
 
-* Web Monetisation Models
-    - Pay-per-click advertising, pioneered by services like GoTo.com (later Overture),
-      created a new commercial model for search.
-    - Google later adapted this into AdWords (launched 2000), turning search itself
-      into a profitable commercial infrastructure.
+The late 1990s weren’t just about search engines--they marked a seismic shift in how the
+web functioned, monetised, and interacted with users. Pay-per-click advertising, pioneered
+by GoTo.com (later Overture), redefined online revenue by tying profits directly to user
+behaviour. This model was so effective that Google adapted it into AdWords (2000), transforming
+search engines from mere tools into economic powerhouses. Suddenly, every query became a
+potential transaction, embedding commerce into the fabric of the web itself.
 
-* Client-Side and Browser Capabilities
-    - The late 1990s saw improvements in JavaScript, CSS, and DOM manipulation, which
-      enabled more interactive web applications.
-    - While not as advanced as later AJAX technologies, these developments set the
-      stage for dynamic and commercial web experiences.
-    - Plug-ins like Flash, and Java applets also contributed to user experience.
+On the client side, browsers grew more dynamic. Advances in JavaScript, CSS, and DOM manipulation
+laid the groundwork for interactive web applications--though full AJAX-style responsiveness
+wouldn’t arrive until the 2000s. Meanwhile, plugins like Flash and Java applets filled the gaps,
+enabling animations, games, and even rudimentary web apps. These technologies made the web
+feel less like a static library and more like a space for experimentation, paving the way
+for the rich interfaces of the future.
 
-* Increased Bandwidth and Connectivity
-    - The spread of broadband in certain markets and better dial-up speeds globally
-      made richer content more accessible.
-    - This encouraged media-heavy sites, advertising platforms, and e-commerce to
-      flourish.
+Connectivity was accelerating, too. Broadband, though still limited to early adopters,
+began creeping into homes, while improved dial-up compression (like ISDN) squeezed faster
+speeds from existing infrastructure. This incremental boost allowed media--heavy
+designs--banner ads, streaming audio, even early video--to proliferate, making the web
+more visually persuasive and commercially viable.
 
-* E-Commerce Infrastructure
-    - Payment systems, SSL encryption, and backend technologies matured enough to
-      support secure and scalable online transactions.
-    - This made services like Amazon, eBay, and various dot-com startups viable,
-      further pushing the commercialization of the web.
+Behind the scenes, e-commerce infrastructure matured decisively. SSL encryption became
+standard, securing credit card transactions, while backend databases and payment gateways
+(like PayPal, founded 1998) streamlined online purchases. Platforms like Amazon and eBay
+no longer felt like novelties but inevitabilities, as the web shed its academic skin
+and embraced its role as a global marketplace.
+
+The dot-com bubble’s frenzy obscured the real legacy of this era: the web wasn’t just
+commercialised--it was industrialised, with standardized monetisation, interactivity,
+and logistics. By 2000, the scaffolding for the modern internet was firmly in place.
 
 These technological developments collectively shifted the web from a largely open,
 experimental, and academic space to a commercialised, algorithm-driven, and increasingly
 centralised ecosystem--a trend that would only intensify in the following decades.
+
+
+### After 2000?
+
+The dot-com crash fundamentally reshaped the trajectory of the Internet. In the late 1990s,
+speculative investment had fueled a wave of startups with little more than vague promises
+and flashy domain names. Many of these companies lacked working products, revenue models,
+or long-term strategies. Yet, thanks to an overheated venture capital environment and a
+media narrative that portrayed the Internet as a gold rush, they attracted massive funding
+and launched ambitious, often unsustainable services.
+
+When the crash hit around 2000–2001, the NASDAQ collapsed, and thousands of these companies
+folded almost overnight. The exuberance vanished, and what remained was a more sober and
+cautious approach to the Internet. Businesses that survived were forced to prove their
+economic viability. Simply having a website was no longer impressive—investors and users
+began to demand performance, stability, and actual value.
+
+This sudden downturn cleared out the noise and hype, but it also led to a kind of consolidation.
+Larger, more technically grounded companies like Amazon and eBay adapted and grew, while
+emerging players like Google benefited from the vacuum left behind. The collapse of many
+free, idealistic projects made room for business models that were more pragmatic: ad-driven
+services, pay-per-use systems, and eventually subscription-based models.
+
+Technologically, this period drove a shift toward scalable, robust infrastructure. Instead
+of flashy web experiments, focus turned to databases, server architecture, security, and
+performance. At the same time, the idea of the open, peer-to-peer web that had characterised
+the early 1990s began to fade. What replaced it was a more centralised Internet, increasingly
+dominated by a few powerful actors who had both the technological expertise and financial
+resources to survive the fallout.
+
+Culturally, the crash marked a turning point. It ended the naive optimism that had imagined
+the web as an open utopia and replaced it with a sense of caution and commercial realism.
+The dream of a decentralised, democratic Internet gave way to the rise of platforms, data-driven
+services, and an emerging awareness of the costs—economic, political, and personal--of
+living in a connected world.
+
+In retrospect, the dot-com crash can be seen as the end of the Internet’s adolescence. It
+forced a reckoning with reality, but also laid the groundwork for the platforms, tools, and
+services that would define the next phase of the web--less freewheeling, but far more stable
+and far-reaching.
 
