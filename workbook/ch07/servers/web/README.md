@@ -18,7 +18,7 @@ especially from a educational code-level perspective. These earlier systems, tho
 valuable pedagogically because they expose the core ideas of request handling, concurrency, and communication
 in a direct and readable way.
 
-Here in [03](./03/) very simple server, [04](./04/) threaded server, [05](./05/) a threaded service, we
+Here in [03](./03/) very simple server, [04](./04/) threaded server, and [05](./05/) a threaded service, we
 explore some simple servers, but also the evolving nature of web communication over the decades.
 The early focus was firmly on the client-server model: a browser (the client) sent a request, and the server
 responded with HTML. Each interaction was isolated—stateless and short-lived—often mediated through
@@ -30,7 +30,7 @@ emerged in the mid-2000s, enabling web pages to update data dynamically without 
 marked a subtle but important turn: the client began to take on more responsibility, and communication
 became more interactive. As we can see from [06](./06/) AJAX improved on the otherwise stateless communication.
 
-Later developments like [07](./07/) and [08](./08/) WebSockets, Server-Sent Events, and
+Later developments (like [07](./07/) and [08](./08/)) WebSockets, Server-Sent Events, and
 HTTP/2 introduced full-duplex communication, multiplexing, and event-driven interactions. These changes
 laid the groundwork for highly dynamic applications and real-time services, such as collaborative editing,
 instant messaging, and live dashboards.
