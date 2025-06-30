@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Browser & Search Engine Simulator</title>
+    <style>
+        body {
+            font-family: monospace;
+            margin: 10px;
+            background: #f0f0f0;
+        }
+        
+        .container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .browser-section {
+            flex: 2;
+        }
+        
+        .engine-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .address-bar {
+            width: 50%;
+            padding: 5px;
+            font-family: monospace;
+            border: 2px solid #333;
+        }
+        
+        .search-bar {
+            width: 70%;
+            padding: 5px;
+            font-family: monospace;
+            border: 2px solid #333;
+        }
+        
+        canvas {
+            border: 2px solid #333;
+            background: white;
+            display: block;
+            margin-top: 10px;
+        }
+        
+        textarea {
+            font-family: monospace;
+            font-size: 11px;
+            border: 2px solid #333;
+            resize: none;
+            background: #fff;
+        }
+        
+        button {
+            padding: 5px 10px;
+            font-family: monospace;
+            border: 2px solid #333;
+            background: #ddd;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #ccc;
+        }
+        
+        h3 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+        
+        .search-results {
+            background: white;
+            border: 2px solid #333;
+            padding: 10px;
+            font-size: 12px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .search-result {
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 3px;
+        }
+        
+        .search-result:hover {
+            background: #f0f0f0;
+        }
+        
+        .search-result-title {
+            color: blue;
+            font-weight: bold;
+        }
+        
+        .search-result-url {
+            color: green;
+            font-size: 10px;
+        }
+        
+        .crawler-status {
+            color: #666;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Web Browser & Search Engine Simulator</h2>
+    
+    <div class="container">
+        <div class="browser-section">
+            <div>
+                <input type="text" class="address-bar" id="addressBar" value="http://example.com" placeholder="Enter URL...">
+                <button onclick="navigate()">Go</button>
+                <button onclick="goBack()">Back</button>
+                <button onclick="goForward()">Forward</button>
+            </div>
+            <div style="margin-top: 10px;">
+                <input type="text" class="search-bar" id="searchBar" placeholder="Search the web...">
+                <button onclick="performSearch()">Search</button>
+                <button onclick="crawlWeb()">Crawl Web</button>
+            </div>
+            <canvas id="browserCanvas" width="500" height="350"></canvas>
+            <div id="searchResults" class="search-results" style="display: none;"></div>
+        </div>
+        
+        <div class="engine-section">
+            <div>
+                <h3>Search Engine Index:</h3>
+                <textarea id="searchIndex" rows="8" cols="40" readonly></textarea>
+            </div>
+            <div>
+                <h3>Crawler Activity:</h3>
+                <textarea id="crawlerLog" rows="8" cols="40" readonly></textarea>
+            </div>
+            <div>
+                <h3>HTTP Communication:</h3>
+                <textarea id="httpLog" rows="8" cols="40" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Extended web pages database
+        const webPages = {
+            'http://example.com': {
+                title: 'Example Domain',
+                content: '<h1>Welcome to Example.com!</h1><p>This is a <strong>simple</strong> web page about web technology.</p><p><a href="http://altavista.com">Click here to visit AltaVista Search</a></p><p><em>Links:</em></p><ul><li><a href="http://news.com">Visit News Site</a></li><li><a href="http://techblog.com">Tech Blog</a></li></ul>',
+                keywords: ['example', 'web', 'technology', 'simple', 'page']
+            },
+            'http://altavista.com': {
+                title: 'AltaVista Search Engine',
+                content: '<h1>AltaVista</h1><h2>Web Search Engine</h2><p><strong>[Search Box]</strong></p><p>Search the web with <em>AltaVista</em> search engine technology</p><p><a href="http://example.com">Back to Example</a></p><p>Find information across the internet.</p>',
+                keywords: ['altavista', 'search', 'engine', 'web', 'internet', 'information', 'technology']
+            },
+            'http://news.com': {
+                title: 'Daily News Site',
+                content: '<h1>Daily News</h1><h2>Latest Headlines</h2><ul><li><strong>Breaking:</strong> New web browser technology advances</li><li>Search engines improve indexing algorithms</li><li><em>Internet connectivity reaches new milestone</em></li></ul><p><a href="http://example.com">Home</a></p><p>Stay informed with the latest technology news.</p>',
+                keywords: ['news', 'headlines', 'technology', 'browser', 'search', 'internet', 'algorithms']
+            },
+            'http://techblog.com': {
+                title: 'Technology Blog',
+                content: '<h1>Tech Blog</h1><h2>Web Development Insights</h2><p>Learn about <strong>web development</strong> and <em>programming</em>.</p><p>Topics include HTML, CSS, JavaScript and search engine optimization.</p><p><a href="http://example.com">Back to Example</a></p>',
+                keywords: ['technology', 'blog', 'web', 'development', 'programming', 'html', 'css', 'javascript', 'seo']
+            }
+        };
+
+        let currentUrl = 'http://example.com';
+        let history = ['http://example.com'];
+        let historyIndex = 0;
+        let searchIndex = {};
+        let crawlerLog = [];
+        let isSearchMode = false;
+        
+        const canvas = document.getElementById('browserCanvas');
+        const ctx = canvas.getContext('2d');
+        const addressBar = document.getElementById('addressBar');
+        const searchBar = document.getElementById('searchBar');
+        const searchResults = document.getElementById('searchResults');
+        const searchIndexDisplay = document.getElementById('searchIndex');
+        const crawlerLogDisplay = document.getElementById('crawlerLog');
+        const httpLogDisplay = document.getElementById('httpLog');
+
+        // Initialize search engine
+        function initializeSearchEngine() {
+            updateIndexDisplay();
+            logCrawlerActivity('Search engine initialized');
+        }
+
+        // Web crawler simulation
+        function crawlWeb() {
+            crawlerLog = [];
+            searchIndex = {};
+            
+            logCrawlerActivity('Starting web crawl...');
+            logHTTP('CRAWLER: Starting discovery process');
+            
+            const urls = Object.keys(webPages);
+            let crawledCount = 0;
+            
+            urls.forEach((url, index) => {
+                setTimeout(() => {
+                    crawlPage(url);
+                    crawledCount++;
+                    
+                    if (crawledCount === urls.length) {
+                        logCrawlerActivity(`Crawl complete. Indexed ${crawledCount} pages.`);
+                        logHTTP('CRAWLER: Indexing complete');
+                        updateIndexDisplay();
+                    }
+                }, index * 500); // Simulate delay
+            });
+        }
+
+        function crawlPage(url) {
+            logCrawlerActivity(`Crawling: ${url}`);
+            logHTTP(`GET ${url} HTTP/1.1\nUser-Agent: SimpleBot/1.0`);
+            
+            const page = webPages[url];
+            if (page) {
+                // Extract and index content
+                const words = extractWords(page.content + ' ' + page.title);
+                searchIndex[url] = {
+                    title: page.title,
+                    keywords: page.keywords,
+                    words: words,
+                    lastCrawled: new Date().toISOString()
+                };
+                
+                logCrawlerActivity(`Indexed: ${page.title} (${words.length} words)`);
+                logHTTP(`200 OK - Content indexed`);
+            } else {
+                logHTTP(`404 Not Found`);
+            }
+        }
+
+        function extractWords(text) {
+            // Simple word extraction
+            return text.toLowerCase()
+                      .replace(/<[^>]*>/g, ' ') // Remove HTML tags
+                      .replace(/[^\w\s]/g, ' ') // Remove punctuation
+                      .split(/\s+/)
+                      .filter(word => word.length > 2);
+        }
+
+        function performSearch() {
+            const query = searchBar.value.trim().toLowerCase();
+            if (!query) return;
+            
+            logHTTP(`SEARCH QUERY: "${query}"`);
+            
+            const results = searchPages(query);
+            displaySearchResults(results, query);
+            isSearchMode = true;
+        }
+
+        function searchPages(query) {
+            const results = [];
+            const queryWords = query.toLowerCase().split(/\s+/);
+            
+            for (const [url, pageData] of Object.entries(searchIndex)) {
+                let score = 0;
+                
+                // Score based on title matches
+                queryWords.forEach(word => {
+                    if (pageData.title.toLowerCase().includes(word)) {
+                        score += 10;
+                    }
+                });
+                
+                // Score based on keyword matches
+                queryWords.forEach(word => {
+                    pageData.keywords.forEach(keyword => {
+                        if (keyword.includes(word)) {
+                            score += 5;
+                        }
+                    });
+                });
+                
+                // Score based on content matches
+                queryWords.forEach(word => {
+                    const matches = pageData.words.filter(w => w.includes(word)).length;
+                    score += matches;
+                });
+                
+                if (score > 0) {
+                    results.push({
+                        url: url,
+                        title: pageData.title,
+                        score: score
+                    });
+                }
+            }
+            
+            return results.sort((a, b) => b.score - a.score);
+        }
+
+        function displaySearchResults(results, query) {
+            searchResults.style.display = 'block';
+            canvas.style.display = 'none';
+            
+            let html = `<h3>Search results for "${query}" (${results.length} found):</h3>`;
+            
+            if (results.length === 0) {
+                html += '<p>No results found. Try crawling the web first.</p>';
+            } else {
+                results.forEach(result => {
+                    html += `<div class="search-result" onclick="navigateToResult('${result.url}')">
+                        <div class="search-result-title">${result.title}</div>
+                        <div class="search-result-url">${result.url}</div>
+                        <div>Score: ${result.score}</div>
+                    </div>`;
+                });
+            }
+            
+            searchResults.innerHTML = html;
+            logHTTP(`SEARCH RESULTS: ${results.length} pages found`);
+        }
+
+        function navigateToResult(url) {
+            addressBar.value = url;
+            searchResults.style.display = 'none';
+            canvas.style.display = 'block';
+            isSearchMode = false;
+            navigate();
+        }
+
+        function updateIndexDisplay() {
+            let indexText = 'SEARCH INDEX STATUS:\n\n';
+            
+            const indexCount = Object.keys(searchIndex).length;
+            indexText += `Indexed Pages: ${indexCount}\n\n`;
+            
+            for (const [url, data] of Object.entries(searchIndex)) {
+                indexText += `${url}\n`;
+                indexText += `Title: ${data.title}\n`;
+                indexText += `Keywords: ${data.keywords.join(', ')}\n`;
+                indexText += `Words: ${data.words.length}\n`;
+                indexText += `Last Crawled: ${data.lastCrawled.split('T')[0]}\n\n`;
+            }
+            
+            if (indexCount === 0) {
+                indexText += 'No pages indexed yet.\nClick "Crawl Web" to start.';
+            }
+            
+            searchIndexDisplay.value = indexText;
+        }
+
+        function logCrawlerActivity(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            crawlerLog.push(`[${timestamp}] ${message}`);
+            crawlerLogDisplay.value = crawlerLog.slice(-10).join('\n'); // Show last 10 entries
+        }
+
+        function logHTTP(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const lines = httpLogDisplay.value.split('\n');
+            lines.push(`[${timestamp}] ${message}`);
+            httpLogDisplay.value = lines.slice(-15).join('\n'); // Show last 15 entries
+        }
+
+        // Original browser functions (modified)
+        function parseHTML(html) {
+            const elements = [];
+            let index = 0;
+            
+            while (index < html.length) {
+                const tagStart = html.indexOf('<', index);
+                
+                if (tagStart === -1) {
+                    if (index < html.length) {
+                        const text = html.substring(index).trim();
+                        if (text) {
+                            elements.push({ type: 'text', content: text });
+                        }
+                    }
+                    break;
+                }
+                
+                if (tagStart > index) {
+                    const text = html.substring(index, tagStart).trim();
+                    if (text) {
+                        elements.push({ type: 'text', content: text });
+                    }
+                }
+                
+                const tagEnd = html.indexOf('>', tagStart);
+                if (tagEnd === -1) break;
+                
+                const tagContent = html.substring(tagStart + 1, tagEnd);
+                const isClosingTag = tagContent.startsWith('/');
+                const tagName = isClosingTag ? tagContent.substring(1) : tagContent.split(' ')[0];
+                
+                if (isClosingTag) {
+                    elements.push({ type: 'closeTag', tag: tagName });
+                } else {
+                    const isSelfClosing = tagContent.endsWith('/');
+                    
+                    if (tagName === 'a') {
+                        const hrefMatch = tagContent.match(/href="([^"]+)"/);
+                        elements.push({ type: 'openTag', tag: tagName, href: hrefMatch ? hrefMatch[1] : '' });
+                    } else {
+                        elements.push({ type: 'openTag', tag: tagName });
+                    }
+                    
+                    if (isSelfClosing) {
+                        elements.push({ type: 'closeTag', tag: tagName });
+                    }
+                }
+                
+                index = tagEnd + 1;
+            }
+            
+            return elements;
+        }
+
+        function navigate() {
+            if (isSearchMode) {
+                searchResults.style.display = 'none';
+                canvas.style.display = 'block';
+                isSearchMode = false;
+            }
+            
+            const url = addressBar.value.toLowerCase();
+            if (webPages[url]) {
+                currentUrl = url;
+                if (historyIndex === history.length - 1) {
+                    history.push(url);
+                    historyIndex = history.length - 1;
+                }
+                loadPage(url);
+            } else {
+                loadErrorPage(url);
+            }
+        }
+
+        function goBack() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                currentUrl = history[historyIndex];
+                addressBar.value = currentUrl;
+                loadPage(currentUrl);
+            }
+        }
+
+        function goForward() {
+            if (historyIndex < history.length - 1) {
+                historyIndex++;
+                currentUrl = history[historyIndex];
+                addressBar.value = currentUrl;
+                loadPage(currentUrl);
+            }
+        }
+
+        function loadPage(url) {
+            const request = `GET ${url.replace('http://', '/')} HTTP/1.1\r\nHost: ${url.replace('http://', '').split('/')[0]}\r\nUser-Agent: SimpleBrowser/2.0\r\nAccept: text/html\r\nConnection: close\r\n\r\n`;
+            
+            logHTTP(`BROWSER REQUEST:\n${request.replace(/\r\n/g, '\\n')}`);
+
+            const page = webPages[url];
+            const response = `HTTP/1.1 200 OK\r\nServer: SimpleServer/1.0\r\nContent-Type: text/html\r\nContent-Length: ${page.content.length}\r\nConnection: close\r\n\r\n<html><head><title>${page.title}</title></head><body>${page.content}</body></html>`;
+            
+            logHTTP(`SERVER RESPONSE: 200 OK\nContent-Length: ${page.content.length}`);
+
+            renderPage(page);
+        }
+
+        function loadErrorPage(url) {
+            const request = `GET ${url.replace('http://', '/')} HTTP/1.1\r\nHost: ${url.replace('http://', '').split('/')[0]}\r\nUser-Agent: SimpleBrowser/2.0\r\nAccept: text/html\r\nConnection: close\r\n\r\n`;
+            
+            logHTTP(`BROWSER REQUEST:\n${request.replace(/\r\n/g, '\\n')}`);
+
+            const response = `HTTP/1.1 404 Not Found\r\nServer: SimpleServer/1.0\r\nContent-Type: text/html\r\nContent-Length: 48\r\nConnection: close\r\n\r\n<html><body><h1>404 - Page Not Found</h1></body></html>`;
+            
+            logHTTP(`SERVER RESPONSE: 404 Not Found`);
+
+            const errorPage = {
+                title: '404 - Not Found',
+                content: '<h1>404 - Page Not Found</h1><p>The requested page could not be found.</p>'
+            };
+
+            renderPage(errorPage);
+        }
+
+        function renderPage(page) {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const elements = parseHTML(page.content);
+            
+            let y = 30;
+            let x = 20;
+            let fontSize = 14;
+            let fontWeight = 'normal';
+            let fontStyle = 'normal';
+            let color = 'black';
+            let isLink = false;
+            let currentLink = '';
+            let links = [];
+            
+            for (let i = 0; i < elements.length; i++) {
+                const element = elements[i];
+                
+                if (element.type === 'openTag') {
+                    switch (element.tag) {
+                        case 'h1':
+                            fontSize = 24;
+                            fontWeight = 'bold';
+                            y += 10;
+                            break;
+                        case 'h2':
+                            fontSize = 20;
+                            fontWeight = 'bold';
+                            y += 8;
+                            break;
+                        case 'h3':
+                            fontSize = 18;
+                            fontWeight = 'bold';
+                            y += 6;
+                            break;
+                        case 'strong':
+                            fontWeight = 'bold';
+                            break;
+                        case 'em':
+                            fontStyle = 'italic';
+                            break;
+                        case 'a':
+                            color = 'blue';
+                            isLink = true;
+                            currentLink = element.href;
+                            break;
+                        case 'ul':
+                            y += 10;
+                            break;
+                        case 'li':
+                            y += 5;
+                            x = 40;
+                            break;
+                        case 'p':
+                            y += 10;
+                            break;
+                    }
+                } else if (element.type === 'closeTag') {
+                    switch (element.tag) {
+                        case 'h1':
+                        case 'h2':
+                        case 'h3':
+                            fontSize = 14;
+                            fontWeight = 'normal';
+                            y += 15;
+                            break;
+                        case 'strong':
+                            fontWeight = 'normal';
+                            break;
+                        case 'em':
+                            fontStyle = 'normal';
+                            break;
+                        case 'a':
+                            color = 'black';
+                            isLink = false;
+                            currentLink = '';
+                            break;
+                        case 'li':
+                            y += 5;
+                            x = 20;
+                            break;
+                        case 'p':
+                            y += 10;
+                            break;
+                    }
+                } else if (element.type === 'text') {
+                    ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px monospace`;
+                    ctx.fillStyle = color;
+                    
+                    let displayText = element.content;
+                    if (x === 40) {
+                        displayText = '• ' + displayText;
+                    }
+                    
+                    ctx.fillText(displayText, x, y);
+                    
+                    if (isLink && currentLink) {
+                        const textWidth = ctx.measureText(displayText).width;
+                        ctx.fillRect(x, y + 2, textWidth, 1);
+                        links.push({
+                            x: x,
+                            y: y - fontSize,
+                            width: textWidth,
+                            height: fontSize + 5,
+                            url: currentLink
+                        });
+                    }
+                    
+                    y += fontSize + 5;
+                }
+            }
+            
+            canvas.clickableLinks = links;
+        }
+
+        // Event listeners
+        canvas.addEventListener('click', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            if (canvas.clickableLinks) {
+                for (let link of canvas.clickableLinks) {
+                    if (x >= link.x && x <= link.x + link.width &&
+                        y >= link.y && y <= link.y + link.height) {
+                        addressBar.value = link.url;
+                        navigate();
+                        break;
+                    }
+                }
+            }
+        });
+
+        addressBar.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                navigate();
+            }
+        });
+
+        searchBar.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Initialize
+        initializeSearchEngine();
+        loadPage(currentUrl);
+    </script>
+</body>
+</html>

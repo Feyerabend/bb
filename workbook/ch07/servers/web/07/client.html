@@ -1,128 +1,58 @@
+<!-- client.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Simple "Doom" with Worker</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background-color: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    canvas {
-      background-color: #000;
-      display: block;
-    }
-    .controls {
-      position: absolute;
-      bottom: 10px;
-      color: white;
-      font-family: monospace;
-      text-align: center;
-      width: 100%;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Local WebSocket Chat</title>
+    <style>
+        #log {
+            width: 100%;
+            height: 300px;
+            font-family: monospace;
+            resize: none;
+        }
+    </style>
 </head>
 <body>
-  <canvas id="gameCanvas"></canvas>
-  <div class="controls">WASD to move, Mouse or Arrow keys to turn</div>
+    <h1>WebSocket Chat</h1>
+    <input type="text" id="username" placeholder="Enter your name" />
+    <textarea id="log" readonly></textarea><br>
+    <input type="text" id="message" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
 
-  <script>
-    const canvas = document.getElementById('gameCanvas')
-    const ctx = canvas.getContext('2d')
-    canvas.width = window.innerWidth * 0.8
-    canvas.height = window.innerHeight * 0.8
+    <script>
+        let ws;
+        const logBox = document.getElementById('log');
 
-    const keys = { w: false, a: false, s: false, d: false, ArrowLeft: false, ArrowRight: false }
-
-    const worker = new Worker('worker.js')
-    let currentState = {}
-
-    document.addEventListener('keydown', e => {
-      if (e.key in keys) {
-        keys[e.key] = true
-        worker.postMessage({ type: 'keys', keys })
-      }
-    })
-
-    document.addEventListener('keyup', e => {
-      if (e.key in keys) {
-        keys[e.key] = false
-        worker.postMessage({ type: 'keys', keys })
-      }
-    })
-
-    document.addEventListener('mousemove', e => {
-      if (document.pointerLockElement === canvas) {
-        worker.postMessage({ type: 'mouse', dx: e.movementX })
-      }
-    })
-
-    canvas.addEventListener('click', () => canvas.requestPointerLock())
-
-    function drawFrame(data) {
-      const { rays, player, map, cellSize, canvasW, canvasH } = data
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.fillStyle = '#222'
-      ctx.fillRect(0, 0, canvas.width, canvas.height / 2)
-      ctx.fillStyle = '#444'
-      ctx.fillRect(0, canvas.height / 2, canvas.width, canvas.height / 2)
-
-      const numRays = rays.length
-      for (let i = 0; i < numRays; i++) {
-        const ray = rays[i]
-        const wallHeight = (cellSize * canvasH) / ray.distance
-        ctx.fillStyle = ray.side === 0 ? '#aa0000' : '#880000'
-        const colW = canvasW / numRays
-        const x = i * colW
-        const h = Math.min(wallHeight, canvasH)
-        const y = (canvasH - h) / 2
-        ctx.fillRect(x, y, colW + 1, h)
-      }
-
-      const mapSize = 100
-      const cs = mapSize / map.length
-      ctx.fillStyle = 'rgba(0,0,0,0.5)'
-      ctx.fillRect(10, 10, mapSize, mapSize)
-      for (let y = 0; y < map.length; y++) {
-        for (let x = 0; x < map[y].length; x++) {
-          if (map[y][x] === 1) {
-            ctx.fillStyle = '#FFF'
-            ctx.fillRect(10 + x * cs, 10 + y * cs, cs, cs)
-          }
+        function log(msg) {
+            logBox.value += msg + '\n';
+            logBox.scrollTop = logBox.scrollHeight;
         }
-      }
-      const px = 10 + (player.x / cellSize) * cs
-      const py = 10 + (player.y / cellSize) * cs
-      ctx.fillStyle = '#FF0'
-      ctx.beginPath()
-      ctx.arc(px, py, 2, 0, Math.PI * 2)
-      ctx.fill()
-      ctx.strokeStyle = '#FF0'
-      ctx.beginPath()
-      ctx.moveTo(px, py)
-      ctx.lineTo(px + Math.cos(player.angle) * 5, py + Math.sin(player.angle) * 5)
-      ctx.stroke()
-    }
 
-    worker.onmessage = e => {
-      currentState = e.data
-      drawFrame(currentState)
-    }
+        function setupWebSocket() {
+            ws = new WebSocket("ws://localhost:8765");
 
-    function resize() {
-      canvas.width = window.innerWidth * 0.8
-      canvas.height = window.innerHeight * 0.8
-      worker.postMessage({ type: 'resize', w: canvas.width, h: canvas.height })
-    }
+            ws.onopen = () => log("[Connected to chat server]");
+            ws.onmessage = (event) => log(event.data);
+            ws.onerror = (e) => log("[WebSocket error]");
+            ws.onclose = () => log("[Disconnected]");
+        }
 
-    window.addEventListener('resize', resize)
-    resize()
-  </script>
+        function sendMessage() {
+            const user = document.getElementById("username").value.trim();
+            const text = document.getElementById("message").value.trim();
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                log("[Error] WebSocket not connected.");
+                return;
+            }
+            if (user && text) {
+                const msg = `${user}: ${text}`;
+                ws.send(msg);
+                document.getElementById("message").value = "";
+            }
+        }
+
+        setupWebSocket();
+    </script>
 </body>
 </html>
