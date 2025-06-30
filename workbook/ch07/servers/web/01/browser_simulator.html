@@ -1,43 +1,3 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -141,7 +101,7 @@
             },
             'http://yahoo.com': {
                 title: 'Yahoo! Search',
-                content: '<h1>Yahoo!</h1><h2>Search</h2><p>Search the web with <em>Yahoo!</em></p><p><em>Explore Websites:</em></p><ul><li><a href="http://example.com">Example Domain</a></li><li><a href="http://news.com">Daily News</a></li><li><a href="http://shop.com">Online Store</a></li><li><a href="http://blog.com">Tech Blog</a></li><li><a href="http://wiki.com">Wiki Knowledge</a></li></ul>'
+                content: '<h1>Yahoo!</h1><h2>Search</h2><p>Search the web with <em>Yahoo!</em></p><p><em>Explore Websites:</em></p><ul><li><a href="http://example.com">Example Domain</a></li><li><a href="http://news.com">Daily News</a></li><li><a href="http://shop.com">Online Store</a></li><li><a href="http://blog.com">Tech Blog</a></li><li><a href="http://library.com">Knowledge in Books</a></li></ul>'
             },
             'http://news.com': {
                 title: 'News Site',
@@ -155,9 +115,9 @@
                 title: 'Tech Blog',
                 content: '<h1>Tech Blog</h1><h2>Latest Posts</h2><ul><li><strong>AI Revolution:</strong> What\'s Next?</li><li>Web Development in 2025</li><li><em>Subscribe for updates!</em></li></ul>'
             },
-            'http://wiki.com': {
-                title: 'Wiki Knowledge',
-                content: '<h1>Wiki Knowledge Base</h1><h2>Explore Topics</h2><ul><li><strong>History:</strong> Internet Evolution</li><li>Technology Concepts</li><li><em>Contribute to our wiki!</em></li></ul>'
+            'http://library.com': {
+                title: 'Knowledge in Books',
+                content: '<h1>Knowledge Base</h1><h2>Explore Topics</h2><ul><li><strong>History:</strong> Internet Evolution</li><li>Technology Concepts</li></ul>'
             }
         };
 
