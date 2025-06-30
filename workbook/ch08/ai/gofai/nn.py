@@ -349,3 +349,5 @@ if __name__ == "__main__":
     hebb_nn_neg.train_hebbian(hebb_learning_rate)
     print(f"Weight after X=-1, Y=-1: {hebb_nn_neg.weights[('X_neg', 'Y_neg')]}")
 
+# A script that illustrates a network from LINDSTROM.md
+# as early development in neural networks.

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Local WebSocket Chat</title>
+    <title>WebSocket + WebWorker Test</title>
     <style>
         #log {
             width: 100%;
@@ -14,45 +14,69 @@
     </style>
 </head>
 <body>
-    <h1>WebSocket Chat</h1>
-    <input type="text" id="username" placeholder="Enter your name" />
-    <textarea id="log" readonly></textarea><br>
-    <input type="text" id="message" placeholder="Type a message..." />
-    <button onclick="sendMessage()">Send</button>
+    <h1>WebSocket + WebWorker Demo</h1>
+    <button onclick="startWorker()">Start Worker</button>
+    <button onclick="sendMessage()">Send Message to Server</button>
+    <br><br>
+    <textarea id="log" readonly></textarea>
 
     <script>
         let ws;
-        const logBox = document.getElementById('log');
+        let worker;
 
-        function log(msg) {
-            logBox.value += msg + '\n';
+        function log(message) {
+            const logBox = document.getElementById('log');
+            logBox.value += message + '\n';
             logBox.scrollTop = logBox.scrollHeight;
         }
 
-        function setupWebSocket() {
-            ws = new WebSocket("ws://localhost:8765");
+        function startWorker() {
+            if (worker || ws) {
+                log("[System] Already started.");
+                return;
+            }
 
-            ws.onopen = () => log("[Connected to chat server]");
-            ws.onmessage = (event) => log(event.data);
-            ws.onerror = (e) => log("[WebSocket error]");
-            ws.onclose = () => log("[Disconnected]");
+            worker = new Worker(URL.createObjectURL(new Blob([`
+                self.onmessage = function(e) {
+                    self.postMessage('Worker received: ' + e.data);
+                };
+            `], { type: 'application/javascript' })));
+
+            worker.onmessage = function(e) {
+                log('[Worker] ' + e.data);
+            };
+
+            ws = new WebSocket('ws://localhost:8765');
+
+            ws.onopen = () => {
+                log("[WebSocket] Connected.");
+                ws.send("Hello from client!");
+            };
+
+            ws.onmessage = (event) => {
+                log("[WebSocket] Server says: " + event.data);
+                worker.postMessage(event.data);
+            };
+
+            ws.onerror = (err) => {
+                log("[WebSocket] Error: " + err);
+            };
+
+            ws.onclose = () => {
+                log("[WebSocket] Disconnected.");
+                ws = null;
+                worker = null;
+            };
         }
 
         function sendMessage() {
-            const user = document.getElementById("username").value.trim();
-            const text = document.getElementById("message").value.trim();
-            if (!ws || ws.readyState !== WebSocket.OPEN) {
-                log("[Error] WebSocket not connected.");
-                return;
-            }
-            if (user && text) {
-                const msg = `${user}: ${text}`;
-                ws.send(msg);
-                document.getElementById("message").value = "";
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send("Ping from client");
+                log("[Client] Sent ping.");
+            } else {
+                log("[Client] WebSocket not open.");
             }
         }
-
-        setupWebSocket();
     </script>
 </body>
 </html>
