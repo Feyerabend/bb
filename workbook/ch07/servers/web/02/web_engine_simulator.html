@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -73,17 +34,19 @@
         }
         
         .address-bar {
-            width: 50%;
+            width: 60%;
             padding: 5px;
             font-family: monospace;
             border: 2px solid #333;
         }
         
-        .search-bar {
-            width: 70%;
+        .search-input {
             padding: 5px;
             font-family: monospace;
-            border: 2px solid #333;
+            border: 2px solid #ccc;
+            border-radius: 3px;
+            width: 200px;
+            font-size: 14px;
         }
         
         canvas {
@@ -91,6 +54,7 @@
             background: white;
             display: block;
             margin-top: 10px;
+            cursor: pointer;
         }
         
         textarea {
@@ -123,7 +87,7 @@
             border: 2px solid #333;
             padding: 10px;
             font-size: 12px;
-            max-height: 150px;
+            max-height: 350px;
             overflow-y: auto;
         }
         
@@ -147,6 +111,13 @@
             font-size: 10px;
         }
         
+        .crawler-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
         .crawler-status {
             color: #666;
             font-size: 10px;
@@ -164,16 +135,16 @@
                 <button onclick="goBack()">Back</button>
                 <button onclick="goForward()">Forward</button>
             </div>
-            <div style="margin-top: 10px;">
-                <input type="text" class="search-bar" id="searchBar" placeholder="Search with Google...">
-                <button onclick="performSearch()">Search</button>
-                <button onclick="crawlWeb()">Crawl Web</button>
-            </div>
             <canvas id="browserCanvas" width="500" height="350"></canvas>
+            <input type="text" class="search-input" id="canvasSearchInput" placeholder="Enter search query..." style="display: none;">
             <div id="searchResults" class="search-results" style="display: none;"></div>
         </div>
         
         <div class="engine-section">
+            <div class="crawler-controls">
+                <button onclick="crawlWeb()">Crawl Web</button>
+                <span class="crawler-status" id="crawlerStatus">Ready to crawl</span>
+            </div>
             <div>
                 <h3>Search Engine Index:</h3>
                 <textarea id="searchIndex" rows="8" cols="40" readonly></textarea>
@@ -199,7 +170,7 @@
             },
             'http://google.com': {
                 title: 'Google Search Engine',
-                content: '<h1>Google</h1><h2>Web Search Engine</h2><p><strong>[Search Box]</strong></p><p>Search the web with <em>Google</em> search engine technology</p><p><a href="http://example.com">Back to Example</a></p><p>Find information across the internet.</p>',
+                content: '<h1>Google</h1><h2>Web Search Engine</h2><p><strong>[SEARCH_BOX]</strong></p><p>Search the web with <em>Google</em> search engine technology</p><p><a href="http://example.com">Back to Example</a></p><p>Find information across the internet.</p>',
                 keywords: ['google', 'search', 'engine', 'web', 'internet', 'information', 'technology']
             },
             'http://news.com': {
@@ -220,15 +191,17 @@
         let searchIndex = {};
         let crawlerLog = [];
         let isSearchMode = false;
+        let searchBox = null; // For tracking the search box on Google
         
         const canvas = document.getElementById('browserCanvas');
         const ctx = canvas.getContext('2d');
         const addressBar = document.getElementById('addressBar');
-        const searchBar = document.getElementById('searchBar');
+        const canvasSearchInput = document.getElementById('canvasSearchInput');
         const searchResults = document.getElementById('searchResults');
         const searchIndexDisplay = document.getElementById('searchIndex');
         const crawlerLogDisplay = document.getElementById('crawlerLog');
         const httpLogDisplay = document.getElementById('httpLog');
+        const crawlerStatus = document.getElementById('crawlerStatus');
 
         // Initialize search engine
         function initializeSearchEngine() {
@@ -240,6 +213,7 @@
         function crawlWeb() {
             crawlerLog = [];
             searchIndex = {};
+            crawlerStatus.textContent = 'Crawling...';
             
             logCrawlerActivity('Starting web crawl...');
             logHTTP('CRAWLER: Starting discovery process');
@@ -255,6 +229,7 @@
                     if (crawledCount === urls.length) {
                         logCrawlerActivity(`Crawl complete. Indexed ${crawledCount} pages.`);
                         logHTTP('CRAWLER: Indexing complete');
+                        crawlerStatus.textContent = `Crawl complete (${crawledCount} pages)`;
                         updateIndexDisplay();
                     }
                 }, index * 500); // Simulate delay
@@ -292,8 +267,7 @@
                       .filter(word => word.length > 2);
         }
 
-        function performSearch() {
-            const query = searchBar.value.trim().toLowerCase();
+        function performSearch(query) {
             if (!query) return;
             
             logHTTP(`SEARCH QUERY: "${query}"`);
@@ -347,6 +321,7 @@
         function displaySearchResults(results, query) {
             searchResults.style.display = 'block';
             canvas.style.display = 'none';
+            canvasSearchInput.style.display = 'none';
             
             let html = `<h3>Search results for "${query}" (${results.length} found):</h3>`;
             
@@ -370,6 +345,7 @@
             addressBar.value = url;
             searchResults.style.display = 'none';
             canvas.style.display = 'block';
+            canvasSearchInput.style.display = 'none';
             isSearchMode = false;
             navigate();
         }
@@ -467,6 +443,7 @@
             if (isSearchMode) {
                 searchResults.style.display = 'none';
                 canvas.style.display = 'block';
+                canvasSearchInput.style.display = 'none';
                 isSearchMode = false;
             }
             
@@ -547,6 +524,8 @@
             let currentLink = '';
             let links = [];
             
+            searchBox = null; // Reset search box
+            
             for (let i = 0; i < elements.length; i++) {
                 const element = elements[i];
                 
@@ -618,29 +597,60 @@
                             break;
                     }
                 } else if (element.type === 'text') {
-                    ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px monospace`;
-                    ctx.fillStyle = color;
-                    
-                    let displayText = element.content;
-                    if (x === 40) {
-                        displayText = '• ' + displayText;
+                    // Check if this is the search box placeholder
+                    if (element.content === '[SEARCH_BOX]' && currentUrl === 'http://google.com') {
+                        // Draw search box
+                        ctx.fillStyle = '#f0f0f0';
+                        ctx.fillRect(x, y - 20, 250, 30);
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(x, y - 20, 250, 30);
+                        
+                        // Draw search button
+                        ctx.fillStyle = '#4285f4';
+                        ctx.fillRect(x + 260, y - 20, 80, 30);
+                        ctx.fillStyle = 'white';
+                        ctx.font = 'bold 12px monospace';
+                        ctx.fillText('Search', x + 285, y - 2);
+                        
+                        // Store search box coordinates
+                        searchBox = {
+                            inputX: x,
+                            inputY: y - 20,
+                            inputWidth: 250,
+                            inputHeight: 30,
+                            buttonX: x + 260,
+                            buttonY: y - 20,
+                            buttonWidth: 80,
+                            buttonHeight: 30
+                        };
+                        
+                        y += 20;
+                    } else {
+                        ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px monospace`;
+                        ctx.fillStyle = color;
+                        
+                        let displayText = element.content;
+                        if (x === 40) {
+                            displayText = '• ' + displayText;
+                        }
+                        
+                        ctx.fillText(displayText, x, y);
+                        
+                        if (isLink && currentLink) {
+                            const textWidth = ctx.measureText(displayText).width;
+                            ctx.fillRect(x, y + 2, textWidth, 1);
+                            links.push({
+                                x: x,
+                                y: y - fontSize,
+                                width: textWidth,
+                                height: fontSize + 5,
+                                url: currentLink
+                            });
+                        }
+                        
+                        y += fontSize + 5;
                     }
-                    
-                    ctx.fillText(displayText, x, y);
-                    
-                    if (isLink && currentLink) {
-                        const textWidth = ctx.measureText(displayText).width;
-                        ctx.fillRect(x, y + 2, textWidth, 1);
-                        links.push({
-                            x: x,
-                            y: y - fontSize,
-                            width: textWidth,
-                            height: fontSize + 5,
-                            url: currentLink
-                        });
-                    }
-                    
-                    y += fontSize + 5;
                 }
             }
             
@@ -653,6 +663,34 @@
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             
+            // Check if clicked on search box (only on google.com)
+            if (searchBox && currentUrl === 'http://google.com') {
+                if (x >= searchBox.inputX && x <= searchBox.inputX + searchBox.inputWidth &&
+                    y >= searchBox.inputY && y <= searchBox.inputY + searchBox.inputHeight) {
+                    // Show search input
+                    canvasSearchInput.style.display = 'block';
+                    canvasSearchInput.style.position = 'absolute';
+                    canvasSearchInput.style.left = (rect.left + searchBox.inputX) + 'px';
+                    canvasSearchInput.style.top = (rect.top + searchBox.inputY) + 'px';
+                    canvasSearchInput.style.width = searchBox.inputWidth + 'px';
+                    canvasSearchInput.style.height = searchBox.inputHeight + 'px';
+                    canvasSearchInput.focus();
+                    return;
+                }
+                
+                // Check if clicked search button
+                if (x >= searchBox.buttonX && x <= searchBox.buttonX + searchBox.buttonWidth &&
+                    y >= searchBox.buttonY && y <= searchBox.buttonY + searchBox.buttonHeight) {
+                    const query = canvasSearchInput.value.trim();
+                    if (query) {
+                        performSearch(query);
+                        canvasSearchInput.style.display = 'none';
+                    }
+                    return;
+                }
+            }
+            
+            // Check regular links
             if (canvas.clickableLinks) {
                 for (let link of canvas.clickableLinks) {
                     if (x >= link.x && x <= link.x + link.width &&
@@ -663,6 +701,11 @@
                     }
                 }
             }
+            
+            // Hide search input if clicked elsewhere
+            if (canvasSearchInput.style.display !== 'none') {
+                canvasSearchInput.style.display = 'none';
+            }
         });
 
         addressBar.addEventListener('keypress', function(e) {
@@ -671,9 +714,20 @@
             }
         });
 
-        searchBar.addEventListener('keypress', function(e) {
+        canvasSearchInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                performSearch();
+                const query = canvasSearchInput.value.trim();
+                if (query) {
+                    performSearch(query);
+                    canvasSearchInput.style.display = 'none';
+                }
+            }
+        });
+
+        // Hide search input when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target !== canvasSearchInput && e.target !== canvas) {
+                canvasSearchInput.style.display = 'none';
             }
         });
 

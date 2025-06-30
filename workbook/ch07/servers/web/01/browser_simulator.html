@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -64,6 +65,10 @@
             margin: 0 0 5px 0;
             font-size: 14px;
         }
+        
+        .history-section {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -78,6 +83,10 @@
                 <button onclick="goForward()">Forward</button>
             </div>
             <canvas id="browserCanvas" width="500" height="400"></canvas>
+            <div class="history-section">
+                <h3>Browsing History:</h3>
+                <textarea id="historyDisplay" rows="6" cols="70" readonly></textarea>
+            </div>
         </div>
         
         <div class="protocol-section">
@@ -117,9 +126,8 @@
             },
             'http://forum.org': {
                 title: 'Community Forum',
-                content: '<h1>Forum Discussions</h1><h2>Latest Topics</h2><ul><li><strong>Web Development:</strong> Best Practices</li><li>Open Source Projects</li><li><em>Join the conversation!</em></li></ul>'
-            },
-
+                content: '<h1>Forum Discussions</h1><h2>Latest Topics</h2><p><strong>Web Development:</strong></p><ul><li>Best Practices</li><li>Open Source Projects</li><li><em>Join the conversation!</em></li></ul>'
+            }
         };
 
         let currentUrl = 'http://example.com';
@@ -131,6 +139,15 @@
         const addressBar = document.getElementById('addressBar');
         const clientRequest = document.getElementById('clientRequest');
         const serverResponse = document.getElementById('serverResponse');
+        const historyDisplay = document.getElementById('historyDisplay');
+
+        // Update history display
+        function updateHistoryDisplay() {
+            historyDisplay.value = history.map((url, index) => {
+                const marker = index === historyIndex ? ' <- CURRENT' : '';
+                return `${index + 1}. ${url}${marker}`;
+            }).join('\n');
+        }
 
         // Simple HTML parser
         function parseHTML(html) {
@@ -194,14 +211,20 @@
             const url = addressBar.value.toLowerCase();
             if (webPages[url]) {
                 currentUrl = url;
-                // Add to history if it's a new navigation (not back/forward)
-                if (historyIndex === history.length - 1) {
+                
+                // Only add to history if it's a new URL (not from back/forward)
+                if (url !== history[historyIndex]) {
+                    // Remove any forward history when navigating to a new page
+                    history = history.slice(0, historyIndex + 1);
                     history.push(url);
                     historyIndex = history.length - 1;
                 }
+                
                 loadPage(url);
+                updateHistoryDisplay();
             } else {
                 loadErrorPage(url);
+                updateHistoryDisplay();
             }
         }
 
@@ -211,6 +234,7 @@
                 currentUrl = history[historyIndex];
                 addressBar.value = currentUrl;
                 loadPage(currentUrl);
+                updateHistoryDisplay();
             }
         }
 
@@ -220,6 +244,7 @@
                 currentUrl = history[historyIndex];
                 addressBar.value = currentUrl;
                 loadPage(currentUrl);
+                updateHistoryDisplay();
             }
         }
 
@@ -406,8 +431,9 @@
             }
         });
 
-        // Load initial page
+        // Load initial page and update history display
         loadPage(currentUrl);
+        updateHistoryDisplay();
     </script>
 </body>
 </html>
