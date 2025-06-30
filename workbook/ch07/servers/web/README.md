@@ -2,11 +2,14 @@
 ## Web Servers
 
 These folders aim to provide a more comprehensible view of web servers, beginning with their relatively
-simple architecture in the early 1990s. Back then, servers were often monolithic programs--sometimes even
-hand-written in C--that handled multiple client connections through basic mechanisms like process forking
-or simple threading. While limited in scalability and features by today's standards, they were largely
-transparent in how they worked. You could often read and understand the full codebase, or at least grasp
-the flow from incoming request to outgoing response.
+simple architecture in the early 1990s. The first two parts ([01](./01/) and [02](./02/)) give some
+background of the origin and connections to its history. Back then, servers were often monolithic
+programs--sometimes even hand-written in C--that handled multiple client connections through basic
+mechanisms like process forking or simple threading. Besides static pages, more dynamic content was
+reached through CGI (Common Gateway Interface), and written in such languages as C or Perl. While
+limited in scalability and features by today's standards, they were largely transparent in how they
+worked. You could often read and understand the full codebase, or at least grasp the flow from
+incoming request to outgoing response.
 
 In contrast, modern cloud-based server environments—built on layers of containerisation, orchestration
 (like Kubernetes), service meshes, and distributed storage--offer tremendous power and scalability, but
@@ -15,7 +18,8 @@ especially from a educational code-level perspective. These earlier systems, tho
 valuable pedagogically because they expose the core ideas of request handling, concurrency, and communication
 in a direct and readable way.
 
-Here we explore some simple servers, but also the evolving nature of web communication over the decades.
+Here in [03](./03/) very simple server, [04](./04/) threaded server, [05](./05/) a threaded service, we
+explore some simple servers, but also the evolving nature of web communication over the decades.
 The early focus was firmly on the client-server model: a browser (the client) sent a request, and the server
 responded with HTML. Each interaction was isolated—stateless and short-lived—often mediated through
 protocols like HTTP/1.0, which assumed a new connection for each request.
@@ -24,16 +28,18 @@ Over time, this model began to shift. First came persistent connections and HTTP
 requests over a single connection, improving efficiency. Then, AJAX (Asynchronous JavaScript and XML)
 emerged in the mid-2000s, enabling web pages to update data dynamically without a full page reload. This
 marked a subtle but important turn: the client began to take on more responsibility, and communication
-became more interactive.
+became more interactive. As we can see from [06](./06/) AJAX improved on the otherwise stateless communication.
 
-Later developments like WebSockets, Server-Sent Events, and HTTP/2 introduced full-duplex communication,
-multiplexing, and event-driven interactions. These changes laid the groundwork for highly dynamic
-applications and real-time services, such as collaborative editing, instant messaging, and live dashboards.
+Later developments like [07](./07/) and [08](./08/) WebSockets, Server-Sent Events, and
+HTTP/2 introduced full-duplex communication, multiplexing, and event-driven interactions. These changes
+laid the groundwork for highly dynamic applications and real-time services, such as collaborative editing,
+instant messaging, and live dashboards.
 
 Meanwhile, the rise of RESTful APIs and microservices decoupled the client and server even further.
 Frontend and backend teams could now develop independently, using JSON over HTTP as a universal interchange
-format. Eventually, this culminated in architectures like Single Page Applications (SPAs) and serverless
-functions, where traditional notions of a "server" are abstracted away behind layers of infrastructure.
+format (cf. [09](./09/)). Eventually, this culminated in architectures like Single Page Applications
+(SPAs) and serverless functions, where traditional notions of a "server" are abstracted away behind
+layers of infrastructure.
 
 What was once a simple model--browser asks, server answers--has evolved into a complex and often asynchronous
 ecosystem. Understanding the older, simpler mechanisms is not just nostalgic; it's a way to build intuition

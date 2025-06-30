@@ -50,7 +50,7 @@ Thus, the main page:
 - It sends back the new frame
 - The main page then draws that frame on the canvas
 
-And the 'noworker.html' have no workers, but works without workers.
+And the 'noworker.html' have no workers, but works without workers. Go figure.
 
 | Feature               | `worker` version 'client.html'             | 'noworker.html' version         |
 |----|----|----|
