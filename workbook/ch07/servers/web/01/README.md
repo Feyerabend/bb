@@ -36,7 +36,7 @@ over abstraction. This is what made it revolutionary not just as a technology, b
 ### Misled? Personal Reflections
 
 *In a way we were led to believe that the future of Internet also could be in the philosophy of these
-properties.* *Cf. the image at https://feyerabend.github.io/ (in Swedish).*
+properties. Cf. some of my contemporary opinions in 1995 reflected in a [portrait](./PORTRAIT.md) of me.*
 
 The idea was that *decentralisation*, *openness*, and *transparency* would not just be technical features--they
 would be social principles embedded in the very structure of digital society. Protocols, not platforms, were
