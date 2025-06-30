@@ -63,6 +63,7 @@
             border: 2px solid #333;
             resize: none;
             background: #fff;
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
         }
         
         button {
@@ -75,6 +76,12 @@
         
         button:hover {
             background: #ccc;
+        }
+        
+        button:disabled {
+            background: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
         }
         
         h3 {
@@ -132,8 +139,8 @@
             <div>
                 <input type="text" class="address-bar" id="addressBar" value="http://example.com" placeholder="Enter URL...">
                 <button onclick="navigate()">Go</button>
-                <button onclick="goBack()">Back</button>
-                <button onclick="goForward()">Forward</button>
+                <button id="backButton" onclick="goBack()">Back</button>
+                <button id="forwardButton" onclick="goForward()">Forward</button>
             </div>
             <canvas id="browserCanvas" width="500" height="350"></canvas>
             <input type="text" class="search-input" id="canvasSearchInput" placeholder="Enter search query..." style="display: none;">
@@ -190,6 +197,7 @@
         let historyIndex = 0;
         let searchIndex = {};
         let crawlerLog = [];
+        let httpLog = [];
         let isSearchMode = false;
         let searchBox = null; // For tracking the search box on Google
         
@@ -202,16 +210,71 @@
         const crawlerLogDisplay = document.getElementById('crawlerLog');
         const httpLogDisplay = document.getElementById('httpLog');
         const crawlerStatus = document.getElementById('crawlerStatus');
+        const backButton = document.getElementById('backButton');
+        const forwardButton = document.getElementById('forwardButton');
 
         // Initialize search engine
         function initializeSearchEngine() {
             updateIndexDisplay();
             logCrawlerActivity('Search engine initialized');
+            updateNavigationButtons();
+        }
+
+        // Cross-browser text area update function
+        function updateTextArea(element, lines) {
+            // Use \r\n for better cross-browser compatibility
+            element.value = lines.join('\r\n');
+            // Force a repaint
+            element.scrollTop = element.scrollHeight;
+        }
+
+        // History management functions
+        function addToHistory(url) {
+            // If we're not at the end of history, remove everything after current position
+            if (historyIndex < history.length - 1) {
+                history = history.slice(0, historyIndex + 1);
+            }
+            
+            // Only add to history if it's different from the current page
+            if (history[historyIndex] !== url) {
+                history.push(url);
+                historyIndex = history.length - 1;
+            }
+            
+            updateNavigationButtons();
+        }
+
+        function updateNavigationButtons() {
+            backButton.disabled = historyIndex <= 0;
+            forwardButton.disabled = historyIndex >= history.length - 1;
+        }
+
+        function navigateToUrl(url, addToHistoryFlag = true) {
+            if (isSearchMode) {
+                searchResults.style.display = 'none';
+                canvas.style.display = 'block';
+                canvasSearchInput.style.display = 'none';
+                isSearchMode = false;
+            }
+            
+            currentUrl = url;
+            addressBar.value = url;
+            
+            if (addToHistoryFlag) {
+                addToHistory(url);
+            }
+            
+            if (webPages[url]) {
+                loadPage(url);
+            } else {
+                loadErrorPage(url);
+            }
         }
 
         // Web crawler simulation
         function crawlWeb() {
             crawlerLog = [];
+            httpLog = [];
             searchIndex = {};
             crawlerStatus.textContent = 'Crawling...';
             
@@ -238,7 +301,8 @@
 
         function crawlPage(url) {
             logCrawlerActivity(`Crawling: ${url}`);
-            logHTTP(`GET ${url} HTTP/1.1\nUser-Agent: SimpleBot/1.0`);
+            logHTTP(`GET ${url} HTTP/1.1`);
+            logHTTP(`User-Agent: SimpleBot/1.0`);
             
             const page = webPages[url];
             if (page) {
@@ -342,46 +406,42 @@
         }
 
         function navigateToResult(url) {
-            addressBar.value = url;
-            searchResults.style.display = 'none';
-            canvas.style.display = 'block';
-            canvasSearchInput.style.display = 'none';
-            isSearchMode = false;
-            navigate();
+            navigateToUrl(url, true);
         }
 
         function updateIndexDisplay() {
-            let indexText = 'SEARCH INDEX STATUS:\n\n';
+            const indexLines = ['SEARCH INDEX STATUS:', ''];
             
             const indexCount = Object.keys(searchIndex).length;
-            indexText += `Indexed Pages: ${indexCount}\n\n`;
+            indexLines.push(`Indexed Pages: ${indexCount}`, '');
             
             for (const [url, data] of Object.entries(searchIndex)) {
-                indexText += `${url}\n`;
-                indexText += `Title: ${data.title}\n`;
-                indexText += `Keywords: ${data.keywords.join(', ')}\n`;
-                indexText += `Words: ${data.words.length}\n`;
-                indexText += `Last Crawled: ${data.lastCrawled.split('T')[0]}\n\n`;
+                indexLines.push(url);
+                indexLines.push(`Title: ${data.title}`);
+                indexLines.push(`Keywords: ${data.keywords.join(', ')}`);
+                indexLines.push(`Words: ${data.words.length}`);
+                indexLines.push(`Last Crawled: ${data.lastCrawled.split('T')[0]}`);
+                indexLines.push('');
             }
             
             if (indexCount === 0) {
-                indexText += 'No pages indexed yet.\nClick "Crawl Web" to start.';
+                indexLines.push('No pages indexed yet.');
+                indexLines.push('Click "Crawl Web" to start.');
             }
             
-            searchIndexDisplay.value = indexText;
+            updateTextArea(searchIndexDisplay, indexLines);
         }
 
         function logCrawlerActivity(message) {
             const timestamp = new Date().toLocaleTimeString();
             crawlerLog.push(`[${timestamp}] ${message}`);
-            crawlerLogDisplay.value = crawlerLog.slice(-10).join('\n'); // Show last 10 entries
+            updateTextArea(crawlerLogDisplay, crawlerLog.slice(-10)); // Show last 10 entries
         }
 
         function logHTTP(message) {
             const timestamp = new Date().toLocaleTimeString();
-            const lines = httpLogDisplay.value.split('\n');
-            lines.push(`[${timestamp}] ${message}`);
-            httpLogDisplay.value = lines.slice(-15).join('\n'); // Show last 15 entries
+            httpLog.push(`[${timestamp}] ${message}`);
+            updateTextArea(httpLogDisplay, httpLog.slice(-15)); // Show last 15 entries
         }
 
         // Original browser functions (modified)
@@ -440,63 +500,51 @@
         }
 
         function navigate() {
-            if (isSearchMode) {
-                searchResults.style.display = 'none';
-                canvas.style.display = 'block';
-                canvasSearchInput.style.display = 'none';
-                isSearchMode = false;
-            }
-            
             const url = addressBar.value.toLowerCase();
-            if (webPages[url]) {
-                currentUrl = url;
-                if (historyIndex === history.length - 1) {
-                    history.push(url);
-                    historyIndex = history.length - 1;
-                }
-                loadPage(url);
-            } else {
-                loadErrorPage(url);
-            }
+            navigateToUrl(url, true);
         }
 
         function goBack() {
             if (historyIndex > 0) {
                 historyIndex--;
-                currentUrl = history[historyIndex];
-                addressBar.value = currentUrl;
-                loadPage(currentUrl);
+                const url = history[historyIndex];
+                navigateToUrl(url, false); // Don't add to history when going back
             }
         }
 
         function goForward() {
             if (historyIndex < history.length - 1) {
                 historyIndex++;
-                currentUrl = history[historyIndex];
-                addressBar.value = currentUrl;
-                loadPage(currentUrl);
+                const url = history[historyIndex];
+                navigateToUrl(url, false); // Don't add to history when going forward
             }
         }
 
         function loadPage(url) {
-            const request = `GET ${url.replace('http://', '/')} HTTP/1.1\r\nHost: ${url.replace('http://', '').split('/')[0]}\r\nUser-Agent: SimpleBrowser/2.0\r\nAccept: text/html\r\nConnection: close\r\n\r\n`;
-            
-            logHTTP(`BROWSER REQUEST:\n${request.replace(/\r\n/g, '\\n')}`);
+            logHTTP(`BROWSER REQUEST:`);
+            logHTTP(`GET ${url.replace('http://', '/')} HTTP/1.1`);
+            logHTTP(`Host: ${url.replace('http://', '').split('/')[0]}`);
+            logHTTP(`User-Agent: SimpleBrowser/2.0`);
+            logHTTP(`Accept: text/html`);
+            logHTTP(`Connection: close`);
+            logHTTP('');
 
             const page = webPages[url];
-            const response = `HTTP/1.1 200 OK\r\nServer: SimpleServer/1.0\r\nContent-Type: text/html\r\nContent-Length: ${page.content.length}\r\nConnection: close\r\n\r\n<html><head><title>${page.title}</title></head><body>${page.content}</body></html>`;
             
-            logHTTP(`SERVER RESPONSE: 200 OK\nContent-Length: ${page.content.length}`);
+            logHTTP(`SERVER RESPONSE: 200 OK`);
+            logHTTP(`Content-Length: ${page.content.length}`);
 
             renderPage(page);
         }
 
         function loadErrorPage(url) {
-            const request = `GET ${url.replace('http://', '/')} HTTP/1.1\r\nHost: ${url.replace('http://', '').split('/')[0]}\r\nUser-Agent: SimpleBrowser/2.0\r\nAccept: text/html\r\nConnection: close\r\n\r\n`;
-            
-            logHTTP(`BROWSER REQUEST:\n${request.replace(/\r\n/g, '\\n')}`);
-
-            const response = `HTTP/1.1 404 Not Found\r\nServer: SimpleServer/1.0\r\nContent-Type: text/html\r\nContent-Length: 48\r\nConnection: close\r\n\r\n<html><body><h1>404 - Page Not Found</h1></body></html>`;
+            logHTTP(`BROWSER REQUEST:`);
+            logHTTP(`GET ${url.replace('http://', '/')} HTTP/1.1`);
+            logHTTP(`Host: ${url.replace('http://', '').split('/')[0]}`);
+            logHTTP(`User-Agent: SimpleBrowser/2.0`);
+            logHTTP(`Accept: text/html`);
+            logHTTP(`Connection: close`);
+            logHTTP('');
             
             logHTTP(`SERVER RESPONSE: 404 Not Found`);
 
@@ -695,8 +743,7 @@
                 for (let link of canvas.clickableLinks) {
                     if (x >= link.x && x <= link.x + link.width &&
                         y >= link.y && y <= link.y + link.height) {
-                        addressBar.value = link.url;
-                        navigate();
+                        navigateToUrl(link.url, true); // Add to history when clicking links
                         break;
                     }
                 }
@@ -733,7 +780,7 @@
 
         // Initialize
         initializeSearchEngine();
-        loadPage(currentUrl);
+        navigateToUrl(currentUrl, false); // Don't add initial page to history twice
     </script>
 </body>
 </html>
