@@ -1,50 +1,33 @@
 
-## AJAX Demo
+## Threaded Sample
 
-This implementation consists of an HTML/JavaScript client and a Python server that
-communicate through AJAX to create an interactive collection game.
+This Python server uses `http.server.BaseHTTPRequestHandler` with `ThreadingHTTPServer`,
+which means each incoming HTTP request is handled in its *own thread*. This allows the
+server to handle multiple requests *concurrently*, instead of one at a time.
+
+The server defines three basic endpoints:
+- `/` responds with `"Root"`
+- `/hook1` responds with `"Hook 1 working"`
+- `/hook2` responds with `"Hook 2 working"`
+- Any other path returns a `404 Not Found` response
+
+It illustrates a *basic hook or API testing server*, where each path simulates a different
+handler or service.
+
+The HTML file (`client.html`) provides a very simple browser interface for testing the
+threaded server. It includes buttons that:
+- Call different paths (`/`, `/hook1`, `/hook2`, `/notfound`)
+- Display the result in a `<pre>` block using JavaScript and the Fetch API
+
+This is a minimal front-end to manually trigger and test server responses, useful for
+local development or simulating hook-style integrations.
 
 
-### Python Server
-
-This Python server uses `http.server.SimpleHTTPRequestHandler` with a custom handler
-class `AjaxHandler`, processing HTTP requests for both static files and API endpoints.
-The server maintains a *game state* that tracks player position, collectible items,
-and score.
-
-The server defines several API endpoints:
-- `/api/game-state` - Responds with the current game state
-- `/api/move-player` - Updates player position and checks for item collection
-- `/api/reset-game` - Resets the game with randomized item positions
-- Any other path without `/api/` serves static files
-
-It implements *CORS headers* for all responses, allowing cross-origin requests, which
-is essential for local development.
-
-
-### HTML/JavaScript Client
-
-The HTML file (`index.html`) provides an interactive game interface with:
-- A game area where players move using arrow keys or clicks
-- Visual representation of the player (red circle) and collectible items (green circles)
-- Score display that updates when items are collected
-- Reset button to restart the game
-- AJAX status indicator showing current connection state
-
-The JavaScript handles:
-- *Throttled AJAX calls* to prevent overwhelming the server
-- Real-time position updates and collision detection
-- DOM manipulation to render game elements
-- Event listeners for keyboard and mouse input
-
-| Feature | Python Server | HTML/JavaScript Client |
-|----|----|----| 
-| Language | Python | HTML, CSS, JavaScript |
-| Purpose | Maintain game state and handle API requests | Provide interactive game interface |
-| Key Components | Game state management, Item collection logic | Player movement, UI rendering, AJAX communication |
-| API Endpoints | `/api/game-state`, `/api/move-player`, `/api/reset-game` | N/A (consumes these endpoints) |
-| Use Case | Backend for simple collection game | Frontend game interface |
-
-This implementation demonstrates a complete client-server architecture using
-AJAX for real-time communication between browser and server, suitable for
-simple web-based games.
+| Feature                | Threaded Python Server              | HTML Client                     |
+|----|----|----|
+| Language               | Python                              | HTML + JavaScript                |
+| Purpose                | Handle HTTP requests with simple routing | Send HTTP requests to server     |
+| Concurrency            | Yes (via `ThreadingHTTPServer`)     | N/A (browser runs JavaScript)    |
+| Input/Interaction      | From browser or tools like `curl`   | Button clicks trigger requests   |
+| Routing                | `/`, `/hook1`, `/hook2`, fallback  | Calls these routes via buttons   |
+| Use Case               | Simulating backend hooks or APIs    | Testing frontend interaction or hook endpoints |

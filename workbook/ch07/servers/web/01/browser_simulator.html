@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Web Browser Simulator</title>
+    <style>
+        body {
+            font-family: monospace;
+            margin: 10px;
+            background: #f0f0f0;
+        }
+        
+        .container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .browser-section {
+            flex: 2;
+        }
+        
+        .protocol-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .address-bar {
+            width: 50%;
+            padding: 5px;
+            font-family: monospace;
+            border: 2px solid #333;
+        }
+        
+        canvas {
+            border: 2px solid #333;
+            background: white;
+            display: block;
+            margin-top: 10px;
+        }
+        
+        textarea {
+            font-family: monospace;
+            font-size: 12px;
+            border: 2px solid #333;
+            resize: none;
+            background: #fff;
+        }
+        
+        button {
+            padding: 5px 10px;
+            font-family: monospace;
+            border: 2px solid #333;
+            background: #ddd;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #ccc;
+        }
+        
+        h3 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Simple Web Browser Simulator</h2>
+    
+    <div class="container">
+        <div class="browser-section">
+            <div>
+                <input type="text" class="address-bar" id="addressBar" value="http://example.com" placeholder="Enter URL...">
+                <button onclick="navigate()">Go</button>
+                <button onclick="goBack()">Back</button>
+                <button onclick="goForward()">Forward</button>
+            </div>
+            <canvas id="browserCanvas" width="500" height="400"></canvas>
+        </div>
+        
+        <div class="protocol-section">
+            <div>
+                <h3>Client Request:</h3>
+                <textarea id="clientRequest" rows="12" cols="40" readonly></textarea>
+            </div>
+            <div>
+                <h3>Server Response:</h3>
+                <textarea id="serverResponse" rows="12" cols="40" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple web pages database with HTML content
+        const webPages = {
+            'http://example.com': {
+                title: 'Example Domain',
+                content: '<h1>Welcome to Example.com!</h1><p>This is a <strong>simple</strong> web page.</p><p><a href="http://google.com">Click here to visit Google</a></p><p><em>Links:</em></p><ul><li><a href="http://news.com">Visit News Site</a></li></ul>'
+            },
+            'http://google.com': {
+                title: 'Google Search',
+                content: '<h1>Google</h1><h2>Search</h2><p><strong>[Search Box]</strong></p><p>Search the web with <em>Google</em></p><p><a href="http://example.com">Back to Example</a></p>'
+            },
+            'http://news.com': {
+                title: 'News Site',
+                content: '<h1>Daily News</h1><h2>Headlines</h2><ul><li><strong>Breaking:</strong> New web browser created</li><li>Technology advances continue</li><li><em>Internet still working</em></li></ul><p><a href="http://example.com">Home</a></p>'
+            }
+        };
+
+        let currentUrl = 'http://example.com';
+        let history = ['http://example.com'];
+        let historyIndex = 0;
+        
+        const canvas = document.getElementById('browserCanvas');
+        const ctx = canvas.getContext('2d');
+        const addressBar = document.getElementById('addressBar');
+        const clientRequest = document.getElementById('clientRequest');
+        const serverResponse = document.getElementById('serverResponse');
+
+        // Simple HTML parser
+        function parseHTML(html) {
+            const elements = [];
+            let index = 0;
+            
+            while (index < html.length) {
+                const tagStart = html.indexOf('<', index);
+                
+                if (tagStart === -1) {
+                    // No more tags, add remaining text
+                    if (index < html.length) {
+                        const text = html.substring(index).trim();
+                        if (text) {
+                            elements.push({ type: 'text', content: text });
+                        }
+                    }
+                    break;
+                }
+                
+                // Add text before tag
+                if (tagStart > index) {
+                    const text = html.substring(index, tagStart).trim();
+                    if (text) {
+                        elements.push({ type: 'text', content: text });
+                    }
+                }
+                
+                const tagEnd = html.indexOf('>', tagStart);
+                if (tagEnd === -1) break;
+                
+                const tagContent = html.substring(tagStart + 1, tagEnd);
+                const isClosingTag = tagContent.startsWith('/');
+                const tagName = isClosingTag ? tagContent.substring(1) : tagContent.split(' ')[0];
+                
+                if (isClosingTag) {
+                    elements.push({ type: 'closeTag', tag: tagName });
+                } else {
+                    // Handle self-closing tags
+                    const isSelfClosing = tagContent.endsWith('/');
+                    
+                    if (tagName === 'a') {
+                        const hrefMatch = tagContent.match(/href="([^"]+)"/);
+                        elements.push({ type: 'openTag', tag: tagName, href: hrefMatch ? hrefMatch[1] : '' });
+                    } else {
+                        elements.push({ type: 'openTag', tag: tagName });
+                    }
+                    
+                    if (isSelfClosing) {
+                        elements.push({ type: 'closeTag', tag: tagName });
+                    }
+                }
+                
+                index = tagEnd + 1;
+            }
+            
+            return elements;
+        }
+
+        function navigate() {
+            const url = addressBar.value.toLowerCase();
+            if (webPages[url]) {
+                currentUrl = url;
+                // Add to history if it's a new navigation (not back/forward)
+                if (historyIndex === history.length - 1) {
+                    history.push(url);
+                    historyIndex = history.length - 1;
+                }
+                loadPage(url);
+            } else {
+                loadErrorPage(url);
+            }
+        }
+
+        function goBack() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                currentUrl = history[historyIndex];
+                addressBar.value = currentUrl;
+                loadPage(currentUrl);
+            }
+        }
+
+        function goForward() {
+            if (historyIndex < history.length - 1) {
+                historyIndex++;
+                currentUrl = history[historyIndex];
+                addressBar.value = currentUrl;
+                loadPage(currentUrl);
+            }
+        }
+
+        function loadPage(url) {
+            // Simulate HTTP request
+            const request = `GET ${url.replace('http://', '/')} HTTP/1.1\r\nHost: ${url.replace('http://', '').split('/')[0]}\r\nUser-Agent: SimpleBrowser/2.0\r\nAccept: text/html\r\nConnection: close\r\n\r\n`;
+            
+            clientRequest.value = request;
+
+            // Simulate server response
+            const page = webPages[url];
+            const response = `HTTP/1.1 200 OK\r\nServer: SimpleServer/1.0\r\nContent-Type: text/html\r\nContent-Length: ${page.content.length}\r\nConnection: close\r\n\r\n<html><head><title>${page.title}</title></head><body>${page.content}</body></html>`;
+            
+            serverResponse.value = response;
+
+            // Render page
+            renderPage(page);
+        }
+
+        function loadErrorPage(url) {
+            const request = `GET ${url.replace('http://', '/')} HTTP/1.1\r\nHost: ${url.replace('http://', '').split('/')[0]}\r\nUser-Agent: SimpleBrowser/2.0\r\nAccept: text/html\r\nConnection: close\r\n\r\n`;
+            
+            clientRequest.value = request;
+
+            const response = `HTTP/1.1 404 Not Found\r\nServer: SimpleServer/1.0\r\nContent-Type: text/html\r\nContent-Length: 48\r\nConnection: close\r\n\r\n<html><body><h1>404 - Page Not Found</h1></body></html>`;
+            
+            serverResponse.value = response;
+
+            const errorPage = {
+                title: '404 - Not Found',
+                content: '<h1>404 - Page Not Found</h1><p>The requested page could not be found.</p>'
+            };
+
+            renderPage(errorPage);
+        }
+
+        function renderPage(page) {
+            // Clear canvas
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Parse HTML content
+            const elements = parseHTML(page.content);
+            
+            // Rendering state
+            let y = 30;
+            let x = 20;
+            let fontSize = 14;
+            let fontWeight = 'normal';
+            let fontStyle = 'normal';
+            let color = 'black';
+            let isLink = false;
+            let currentLink = '';
+            let links = [];
+            
+            // Process elements
+            for (let i = 0; i < elements.length; i++) {
+                const element = elements[i];
+                
+                if (element.type === 'openTag') {
+                    switch (element.tag) {
+                        case 'h1':
+                            fontSize = 24;
+                            fontWeight = 'bold';
+                            y += 10;
+                            break;
+                        case 'h2':
+                            fontSize = 20;
+                            fontWeight = 'bold';
+                            y += 8;
+                            break;
+                        case 'h3':
+                            fontSize = 18;
+                            fontWeight = 'bold';
+                            y += 6;
+                            break;
+                        case 'strong':
+                            fontWeight = 'bold';
+                            break;
+                        case 'em':
+                            fontStyle = 'italic';
+                            break;
+                        case 'a':
+                            color = 'blue';
+                            isLink = true;
+                            currentLink = element.href;
+                            break;
+                        case 'ul':
+                            y += 10;
+                            break;
+                        case 'li':
+                            y += 5;
+                            x = 40; // Indent for list items
+                            break;
+                        case 'p':
+                            y += 10;
+                            break;
+                    }
+                } else if (element.type === 'closeTag') {
+                    switch (element.tag) {
+                        case 'h1':
+                        case 'h2':
+                        case 'h3':
+                            fontSize = 14;
+                            fontWeight = 'normal';
+                            y += 15;
+                            break;
+                        case 'strong':
+                            fontWeight = 'normal';
+                            break;
+                        case 'em':
+                            fontStyle = 'normal';
+                            break;
+                        case 'a':
+                            color = 'black';
+                            isLink = false;
+                            currentLink = '';
+                            break;
+                        case 'li':
+                            y += 5;
+                            x = 20; // Reset indent
+                            break;
+                        case 'p':
+                            y += 10;
+                            break;
+                    }
+                } else if (element.type === 'text') {
+                    // Set font
+                    ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px monospace`;
+                    ctx.fillStyle = color;
+                    
+                    // Handle list items
+                    let displayText = element.content;
+                    if (x === 40) { // List item
+                        displayText = '• ' + displayText;
+                    }
+                    
+                    // Draw text
+                    ctx.fillText(displayText, x, y);
+                    
+                    // Handle links
+                    if (isLink && currentLink) {
+                        const textWidth = ctx.measureText(displayText).width;
+                        ctx.fillRect(x, y + 2, textWidth, 1); // Underline
+                        links.push({
+                            x: x,
+                            y: y - fontSize,
+                            width: textWidth,
+                            height: fontSize + 5,
+                            url: currentLink
+                        });
+                    }
+                    
+                    y += fontSize + 5;
+                }
+            }
+            
+            // Store links for click handling
+            canvas.clickableLinks = links;
+        }
+
+        // Handle clicks on canvas for links
+        canvas.addEventListener('click', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            if (canvas.clickableLinks) {
+                for (let link of canvas.clickableLinks) {
+                    if (x >= link.x && x <= link.x + link.width &&
+                        y >= link.y && y <= link.y + link.height) {
+                        addressBar.value = link.url;
+                        navigate();
+                        break;
+                    }
+                }
+            }
+        });
+
+        // Handle Enter key in address bar
+        addressBar.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                navigate();
+            }
+        });
+
+        // Load initial page
+        loadPage(currentUrl);
+    </script>
+</body>
+</html>

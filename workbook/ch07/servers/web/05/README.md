@@ -1,53 +1,73 @@
 
-## WebSocket Chat Server and Client
 
-### WebSocket Server
+### WebSockets
 
-This is a simple *WebSocket chat server** implemented using Python's standard
-`socket` and `threading` libraries. It performs a WebSocket handshake manually
-and supports broadcasting messages between connected clients.
+Definition: *WebSockets provide a full-duplex, persistent communication channel over a single TCP connection between the browser (or other client) and a server.*
 
-- Listens for incoming TCP connections on port 8765.
-- Performs a WebSocket upgrade handshake (as per RFC 6455).
-- Receives messages from one client and *broadcasts* them to all others.
-- Handles multiple clients using threads.
-- Includes minimal frame decoding (only text, fixed-size).
+Key Characteristics:
+- Bidirectional: Both client and server can send messages at any time without re-establishing a connection.
+- Persistent: The connection remains open after initial handshake until explicitly closed by either side.
+- Low overhead: Once established, there’s no repeated HTTP request/response overhead.
+- Efficient for real-time: Ideal for chat, gaming, live updates, streaming, collaborative editing, etc.
 
+Lifecycle:
+1.	Browser makes HTTP request with Upgrade: websocket.
+2.	Server responds with 101 Switching Protocols and accepts.
+3.	TCP connection remains open for continuous message exchange.
+4.	Either party can close the connection.
 
-### WebSocket Client
+#### Example usage:
 
-A simple *HTML and JavaScript frontend* that connects to the chat server over WebSocket.
+```javascript
+const ws = new WebSocket("ws://localhost:8765");
 
-- Connects to `ws://localhost:8765`.
-- Lets the user enter a name and message.
-- Displays received messages in a scrollable text box.
-- Sends messages in plain text (`username: message` format).
-- Automatically logs connection, disconnection, and errors.
-
-This setup allows basic multi-user chat over WebSockets using only browser and Python sockets.
-You test this by e.g. opening up clients in different browsers and tests towards the server,
-at the same computer.
+ws.onopen = () => ws.send("Hello, server");
+ws.onmessage = (event) => console.log("From server:", event.data);
+```
 
 
-### Summary
 
-| Feature                | WebSocket Server (Python)               | WebSocket Client (HTML/JS)            |
+
+### Web Workers
+
+Definition: *Web Workers allow JavaScript code to run in a separate thread from the main UI thread, enabling parallel computation without freezing or blocking the browser interface.*
+
+Key Characteristics:
+- Concurrency: Heavy computation can be offloaded to a worker thread.
+- Isolation: No access to DOM or window objects directly.
+- Communication via messages: Data is passed back and forth via postMessage() and onmessage.
+
+Types:
+- Dedicated Workers: Used by one script (most common).
+- Shared Workers: Can be accessed by multiple scripts.
+- Service Workers: Specialized for intercepting network requests, caching, and offline support (not the same as Web Workers).
+
+#### Example usage:
+
+```javascript
+// main.js
+const worker = new Worker("worker.js");
+worker.postMessage("Start work");
+
+worker.onmessage = (e) => console.log("Worker says:", e.data);
+```
+
+```javascript
+// worker.js
+onmessage = function(e) {
+    const result = heavyComputation(e.data);
+    postMessage(result);
+};
+```
+
+
+#### WebSocket vs Web Worker
+
+|Feature	|WebSocket	|Web Worker|
 |--|--|--|
-| Language               | Python                                  | HTML + JavaScript                     |
-| Protocol               | WebSocket (RFC 6455)                    | WebSocket (via browser API)           |
-| Handles Connections    | Yes (manual threading per client)       | Yes (single connection per tab)       |
-| Message Format         | Raw WebSocket text frames               | `username: message` strings           |
-| Broadcast Support      | Yes, to all connected clients           | Receives all messages via `.onmessage` |
-| Frontend / UI          | None (console only)                     | Basic input/output UI in browser      |
-| Concurrency            | Yes (via Python threads)                | Handled by browser                    |
-| Use Case               | Educational, low-level WebSocket demo   | Local testing of chat functionality   |
+|Purpose	|Communication with a server	|Background computation in browser|
+|Connection	|Over network (TCP)	|Local thread (in-browser)|
+|Communication	|Server ↔ Client	|Main thread ↔ Worker thread|
+|Use case example	|Live chat, game server, stock feed	|Math processing, data parsing|
+|Access to DOM	|Yes (client side)	|No|
 
-This chat demonstrates a *full-duplex communication model*, where both client and server can send and receive
-data independently. Unlike traditional HTTP servers, which are *stateless* and rely on short-lived request-response
-cycles, WebSocket servers maintain *open and persistent* connections. This enables real-time interaction,
-making WebSockets ideal for use cases like chat, collaborative tools, games, and live data feeds.
-
-The server side showcases *manual handling of WebSocket frames*, providing insight into the protocol's internals.
-The client shows how to easily use WebSockets from a browser.
-
-Together, they portait a minimal but still functional *real-time chat* system.

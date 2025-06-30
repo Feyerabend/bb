@@ -1,60 +1,53 @@
 
-## Worker
+## WebSocket Chat Server and Client
 
-__1. Creating the worker__
+### WebSocket Server
 
-```javascript
-const worker = new Worker('worker.js')
-```
+This is a simple *WebSocket chat server** implemented using Python's standard
+`socket` and `threading` libraries. It performs a WebSocket handshake manually
+and supports broadcasting messages between connected clients.
 
-This creates a new worker that runs the script in 'worker.js'.
-This file contains the logic for the game's engine (like physics,
-raycasting, player movement, etc.).
-
-
-__2. Sending data to the worker__
-
-```javascript
-worker.postMessage({ type: 'keys', keys })
-worker.postMessage({ type: 'mouse', dx: e.movementX })
-worker.postMessage({ type: 'resize', w: canvas.width, h: canvas.height })
-```
-
-Messages are sent to the worker whenever:
-- a key is pressed/released (keydown, keyup)
-- the mouse moves (mousemove)
-- the window is resized (resize)
-
-Each message has a type so the worker knows how to handle it.
+- Listens for incoming TCP connections on port 8765.
+- Performs a WebSocket upgrade handshake (as per RFC 6455).
+- Receives messages from one client and *broadcasts* them to all others.
+- Handles multiple clients using threads.
+- Includes minimal frame decoding (only text, fixed-size).
 
 
-__3. Receiving data from the worker__
+### WebSocket Client
 
-```javascript
-worker.onmessage = e => {
-  currentState = e.data
-  drawFrame(currentState)
-}
-```
+A simple *HTML and JavaScript frontend* that connects to the chat server over WebSocket.
 
-The worker responds by sending updated game state (like rays, map,
-player position). This is drawn on the canvas by calling `drawFrame(..)`.
+- Connects to `ws://localhost:8765`.
+- Lets the user enter a name and message.
+- Displays received messages in a scrollable text box.
+- Sends messages in plain text (`username: message` format).
+- Automatically logs connection, disconnection, and errors.
+
+This setup allows basic multi-user chat over WebSockets using only browser and Python sockets.
+You test this by e.g. opening up clients in different browsers and tests towards the server,
+at the same computer.
 
 
 ### Summary
 
-Thus, the main page:
-- Listens for input (keyboard, mouse)
-- Sends those inputs to a background thread (the worker)
-- The worker calculates what the game should look like
-- It sends back the new frame
-- The main page then draws that frame on the canvas
+| Feature                | WebSocket Server (Python)               | WebSocket Client (HTML/JS)            |
+|--|--|--|
+| Language               | Python                                  | HTML + JavaScript                     |
+| Protocol               | WebSocket (RFC 6455)                    | WebSocket (via browser API)           |
+| Handles Connections    | Yes (manual threading per client)       | Yes (single connection per tab)       |
+| Message Format         | Raw WebSocket text frames               | `username: message` strings           |
+| Broadcast Support      | Yes, to all connected clients           | Receives all messages via `.onmessage` |
+| Frontend / UI          | None (console only)                     | Basic input/output UI in browser      |
+| Concurrency            | Yes (via Python threads)                | Handled by browser                    |
+| Use Case               | Educational, low-level WebSocket demo   | Local testing of chat functionality   |
 
-And the 'noworker.html' have no workers, but works without workers.
+This chat demonstrates a *full-duplex communication model*, where both client and server can send and receive
+data independently. Unlike traditional HTTP servers, which are *stateless* and rely on short-lived request-response
+cycles, WebSocket servers maintain *open and persistent* connections. This enables real-time interaction,
+making WebSockets ideal for use cases like chat, collaborative tools, games, and live data feeds.
 
-| Feature               | `worker` version 'client.html'             | 'noworker.html' version         |
-|----|----|----|
-| Game logic location   | `worker.js` (background)     | In main script                  |
-| Threading             | Multi-threaded (Web Worker)  | Single-threaded                 |
-| Performance impact    | Better under load            | Can lag with heavy logic        |
-| Complexity            | Higher (needs message passing) | Lower (easier to trace)        |
+The server side showcases *manual handling of WebSocket frames*, providing insight into the protocol's internals.
+The client shows how to easily use WebSockets from a browser.
+
+Together, they portait a minimal but still functional *real-time chat* system.
