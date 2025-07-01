@@ -21,7 +21,7 @@ any team of editors to keep up. Enter AltaVista, launched in December 1995 by Di
 Corporation. Unlike Yahoo, AltaVista was a true search engine, powered by automated crawlers
 that scoured the web at an unprecedented scale. It was fast, comprehensive, and shockingly
 advanced for its time. Users could type natural language queries, refine searches with Boolean
-operators, and even hunt for images and videos—features that felt revolutionary in an era
+operators, and even hunt for images and videos--features that felt revolutionary in an era
 when most search tools were rudimentary at best. For a few golden years, AltaVista was the
 king of search, the place where the internet seemed most navigable.  
 
@@ -40,8 +40,8 @@ were fading relics. Search was no longer about browsing categories but about typ
 question and trusting an algorithm to deliver the answer. The early web’s anarchic spirit
 still lingered, but the age of automation had arrived--and there was no going back.  
 
-Meanwhile, the concept of the "free" web—where access to content and services was open and
-often community-driven—started to erode. The late 1990s saw rapid commercialisation.
+Meanwhile, the concept of the "free" web--where access to content and services was open and
+often community-driven--started to erode. The late 1990s saw rapid commercialisation.
 Businesses recognised the web’s enormous potential and began investing heavily in online
 presence and advertising. The dot-com boom led to an explosion of startups, many aiming
 to monetise traffic and data. Advertising models evolved, with banner ads and pay-per-click
