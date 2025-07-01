@@ -1,6 +1,15 @@
 
 ## The Web
 
+*This section explores some emerging technologies within a broader historical and societal context,
+emphasising how technology evolves in relation to its use. In the case of the web, this relationship
+proved transformative, with the medium not only enabling new forms of communication and organisation
+but also reshaping society itself in profound and lasting ways. These entanglements between
+technology and society will be examined further in the next chapter [ch08](./../../../ch08/).
+Looking ahead, the next wave of influential technology--already beginning to take shape--is
+artificial intelligence, which may come to define a new era of probably even greater significance.*
+
+
 The early web emerged from a vision of openness, simplicity, and universal accessibility. At its core,
 it was built around the idea of linking knowledge: documents connected to other documents through hyperlinks,
 creating a vast and navigable network of information. This idea was not just technical--it was deeply
