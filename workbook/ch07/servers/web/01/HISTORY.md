@@ -1,12 +1,12 @@
 
 ## The Development of the Web from 1989-1997
 
-*The Web spread slowly at the beginning of the 1990s. At university libraries, you could access Gopher,
-a text-based hierarchical system for navigating information hierarchies. Librarians loved hierarchy.
-It let you browse library catalogues and access a range of public documents, and it felt like a revelation
-at the time. When I got my own internet connection in 1994, Gopher was still widespread. Clients
-were easy to download and install, and they ran well even on the kind of simple--read: cheap--hardware
-that a student with limited cash flow could afford.*
+*The Web spread slowly at the beginning of the 1990s. At university libraries in Sweden, you could
+access Gopher, a text-based hierarchical system for navigating information hierarchies. Librarians
+loved hierarchy. It let you browse library catalogues and access a range of public documents, and
+it felt like a revelation at the time. When I got my own internet connection in 1994, Gopher was
+still widespread. Clients were easy to download and install, and they ran well even on the kind
+of simple--read: cheap--hardware that a student with limited cash flow could afford.*
 
 *The Web was just beginning to make its presence felt. There were a few early websites, some by
 enthusiasts like myself, but many people still didn't quite know what the Web was or how it differed
