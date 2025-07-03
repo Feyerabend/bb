@@ -26,7 +26,7 @@ eventually engage with, whether explicitly or implicitly.
 | *Security*    | Requires attention at every layer: physical to logical |
 | [*Interface*](./interface/) | Defines component interaction everywhere |
 | *Abstraction*   | Central to all software and hardware design      |
-| *Scalability*   | Applies to data, computation, architecture       |
+| [*Scalability*](./scale/) | Applies to data, computation, architecture |
 | [*Latency*](./latency/) | Matters in networks, UI, hardware timing |
 | [*Concurrency*](./../../ch07/models/concurrent/) | Appears from CPU pipelines to distributed systems |
 | *Fault tolerance* | From ECC memory to retry loops in software       |

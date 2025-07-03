@@ -100,16 +100,16 @@ Technical Details:
     - Binary Heap: A tree-based structure where the parent node has higher
       (or lower) priority than its children.
     - Fibonacci Heap: A more advanced heap structure that provides better
-      amortized time complexities for certain operations.
+      amortised time complexities for certain operations.
 - Applications: Used in job scheduling, real-time systems, and systems that need
-  to prioritize tasks, such as databases and networking protocols.
+  to prioritise tasks, such as databases and networking protocols.
 
 
 ### Monitoring
 
 Monitoring is the continuous tracking of server health, performance, and resource
 usage. It involves collecting data about the server’s operation, such as CPU usage,
-memory utilization, network traffic, and disk I/O, and using this data to ensure
+memory utilisation, network traffic, and disk I/O, and using this data to ensure
 the server is functioning as expected.
 
 - Origins: Early monitoring tools were simple log-based systems that gave administrators
@@ -142,13 +142,13 @@ or server. Logs are used to capture important information, including errors, war
 operational data, to diagnose issues, monitor system health, and maintain audit trails.
 
 - Origins: Early systems simply stored logs in plain text files. In the 1990s, tools like
-  Syslog became common for managing and centralizing logs across systems.
+  Syslog became common for managing and centralising logs across systems.
 
-- Advancements: With the rise of distributed systems and microservices, centralized logging
+- Advancements: With the rise of distributed systems and microservices, centralised logging
   systems like ELK Stack (Elasticsearch, Logstash, Kibana) and Fluentd became crucial for
   aggregating logs across multiple servers.
 
-- Modern Usage: Today, logging is deeply integrated into cloud and containerized environments.
+- Modern Usage: Today, logging is deeply integrated into cloud and containerised environments.
   Tools like Loggly, Datadog, and Splunk provide real-time log aggregation and analysis.
 
 Technical Details:
@@ -157,7 +157,7 @@ Technical Details:
 - Centralised Logging: Logs are aggregated from different servers and services into a
   central location for easier management.
 - Structured Logging: Logs are written in a structured format (e.g., JSON) to make it
-  easier to analyze using automated tools.
+  easier to analyse using automated tools.
 
 
 ### Memoization (Caching)
@@ -168,7 +168,7 @@ instead of recomputing it. It helps improve performance and reduces latency in c
 expensive operations.
 
 - Origins: Memoization has been a technique in computer science for decades, first
-  formalised in the 1960s for optimizing recursive functions.
+  formalised in the 1960s for optimising recursive functions.
 
 - Advancements: In the 2000s, caching became a widespread technique in web development,
   with tools like Memcached and Redis becoming the go-to solutions for high-performance
@@ -190,6 +190,6 @@ Technical Details:
 
 Each of these server tasks--load balancing, monitoring, logging, fault tolerance, memoization,
 and priority queues--addresses a fundamental aspect of system design, from resource management
-to fault recovery, and from performance optimization to task prioritization. Understanding
+to fault recovery, and from performance optimisation to task prioritisation. Understanding
 these tasks and their underlying principles is crucial for designing robust, scalable, and
 efficient systems, whether in small-scale environments or large cloud infrastructures.
