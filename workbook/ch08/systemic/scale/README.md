@@ -27,7 +27,7 @@ The challenges of scalability are universal across domains. As systems grow, the
 increasing complexity in coordination, communication overhead, and resource allocation.
 There's often a tension between simplicity and capability, where adding scalability features
 can introduce new complexities that must be carefully managed. Additionally, different types
-of growth require different scaling strategies—expanding user capacity differs from handling
+of growth require different scaling strategies--expanding user capacity differs from handling
 more complex operations or managing larger datasets.
 
 Modern approaches to scalability emphasise automation, standardisation, and intelligent
@@ -37,7 +37,7 @@ respond to changing conditions without human intervention. This includes predict
 based on patterns, dynamic resource allocation, and self-healing capabilities that maintain
 system integrity during expansion.
 
-The economic and strategic implications of scalability are profound. Organizations and systems
+The economic and strategic implications of scalability are profound. Organisations and systems
 that can scale effectively gain competitive advantages through their ability to capture
 opportunities, adapt to market changes, and efficiently serve growing demands. Conversely,
 systems that don't scale well often face exponentially increasing costs, declining performance,
