@@ -11,10 +11,10 @@ Key Characteristics:
 - Efficient for real-time: Ideal for chat, gaming, live updates, streaming, collaborative editing, etc.
 
 Lifecycle:
-1.	Browser makes HTTP request with Upgrade: websocket.
-2.	Server responds with 101 Switching Protocols and accepts.
-3.	TCP connection remains open for continuous message exchange.
-4.	Either party can close the connection.
+1. Browser makes HTTP request with Upgrade: websocket.
+2. Server responds with 101 Switching Protocols and accepts.
+3. TCP connection remains open for continuous message exchange.
+4. Either party can close the connection.
 
 #### Example usage:
 
