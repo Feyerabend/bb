@@ -55,46 +55,46 @@ class DBSCAN:
                 
                 # Add to cluster
                 self.labels[neighbor_idx] = cluster_id
-                
+
                 # If neighbor is core point, add its neighbors
                 neighbor_neighbors = self.get_neighbors(points, neighbor_idx)
                 if len(neighbor_neighbors) >= self.min_samples:
                     seed_set.extend(neighbor_neighbors)
-                
+
                 j += 1
-            
+
             cluster_id += 1
-        
+
         return self.labels
 
 def generate_sample_data():
     random.seed(42)
     points = []
-    
+
     # Cluster 1: around (2, 2)
     for _ in range(20):
         x = random.gauss(2, 0.5)
         y = random.gauss(2, 0.5)
         points.append([x, y])
-    
+
     # Cluster 2: around (8, 8)
     for _ in range(15):
         x = random.gauss(8, 0.7)
         y = random.gauss(8, 0.7)
         points.append([x, y])
-    
+
     # Noise points
     for _ in range(5):
         x = random.uniform(0, 10)
         y = random.uniform(0, 10)
         points.append([x, y])
-    
+
     return points
 
 def print_results(points, labels):
     clusters = {}
     noise_points = []
-    
+
     for i, label in enumerate(labels):
         if label == -1:
             noise_points.append(i)
@@ -102,29 +102,28 @@ def print_results(points, labels):
             if label not in clusters:
                 clusters[label] = []
             clusters[label].append(i)
-    
+
     print(f"Found {len(clusters)} clusters and {len(noise_points)} noise points")
     print()
-    
+
     for cluster_id in sorted(clusters.keys()):
         print(f"Cluster {cluster_id}: {len(clusters[cluster_id])} points")
         for point_idx in clusters[cluster_id][:5]:  # Show first 5 points
             x, y = points[point_idx]
             print(f"  Point {point_idx}: ({x:.2f}, {y:.2f})")
         if len(clusters[cluster_id]) > 5:
-            print(f"  ... and {len(clusters[cluster_id]) - 5} more points")
+            print(f"  .. and {len(clusters[cluster_id]) - 5} more points")
         print()
-    
+
     if noise_points:
         print(f"Noise points: {len(noise_points)}")
         for point_idx in noise_points[:3]:  # Show first 3 noise points
             x, y = points[point_idx]
             print(f"  Point {point_idx}: ({x:.2f}, {y:.2f})")
         if len(noise_points) > 3:
-            print(f"  ... and {len(noise_points) - 3} more noise points")
+            print(f"  .. and {len(noise_points) - 3} more noise points")
 
 if __name__ == "__main__":
-    # Generate sample data
     points = generate_sample_data()
     print(f"Generated {len(points)} sample points")
     print()
@@ -133,5 +132,5 @@ if __name__ == "__main__":
     dbscan = DBSCAN(eps=1.5, min_samples=3)
     labels = dbscan.fit(points)
     
-    # Print results
     print_results(points, labels)
+

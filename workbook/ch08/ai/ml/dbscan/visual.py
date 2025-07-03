@@ -9,11 +9,9 @@ class DBSCAN:
         self.labels = None
         
     def euclidean_distance(self, p1, p2):
-        """Calculate Euclidean distance between two points"""
         return math.sqrt(sum((a - b) ** 2 for a, b in zip(p1, p2)))
     
     def get_neighbors(self, points, point_idx):
-        """Find all neighbors within eps distance"""
         neighbors = []
         for i, point in enumerate(points):
             if self.euclidean_distance(points[point_idx], point) <= self.eps:
@@ -72,7 +70,6 @@ class DBSCAN:
         return self.labels
 
 def generate_sample_data():
-    """Generate sample 2D points for testing"""
     random.seed(42)
     points = []
     
@@ -134,16 +131,15 @@ def visualize_clusters(points, labels, filename="dbscan_result.png", width=800, 
     noise_color = '#2C3E50'  # Dark gray
     
     def map_to_canvas(x, y):
-        """Map data coordinates to canvas coordinates"""
         canvas_x = int((x - min_x) / (max_x - min_x) * (width - 40) + 20)
         canvas_y = int((max_y - y) / (max_y - min_y) * (height - 40) + 20)  # Flip Y
         return canvas_x, canvas_y
-    
+
     # Draw points
     point_radius = 8
     for i, (point, label) in enumerate(zip(points, labels)):
         x, y = map_to_canvas(point[0], point[1])
-        
+
         if label == -1:  # Noise point
             color = noise_color
             # Draw X for noise points
@@ -190,11 +186,10 @@ def visualize_clusters(points, labels, filename="dbscan_result.png", width=800, 
     
     # Save image
     img.save(filename)
-    print(f"Visualization saved as '{filename}'")
+    print(f"Visualisation saved as '{filename}'")
     return img
 
 def print_results(points, labels):
-    """Print clustering results"""
     clusters = {}
     noise_points = []
     
@@ -215,7 +210,7 @@ def print_results(points, labels):
             x, y = points[point_idx]
             print(f"  Point {point_idx}: ({x:.2f}, {y:.2f})")
         if len(clusters[cluster_id]) > 5:
-            print(f"  ... and {len(clusters[cluster_id]) - 5} more points")
+            print(f"  .. and {len(clusters[cluster_id]) - 5} more points")
         print()
     
     if noise_points:
@@ -224,8 +219,8 @@ def print_results(points, labels):
             x, y = points[point_idx]
             print(f"  Point {point_idx}: ({x:.2f}, {y:.2f})")
         if len(noise_points) > 3:
-            print(f"  ... and {len(noise_points) - 3} more noise points")
-    """Print clustering results"""
+            print(f"  .. and {len(noise_points) - 3} more noise points")
+
     clusters = {}
     noise_points = []
     
@@ -246,7 +241,7 @@ def print_results(points, labels):
             x, y = points[point_idx]
             print(f"  Point {point_idx}: ({x:.2f}, {y:.2f})")
         if len(clusters[cluster_id]) > 5:
-            print(f"  ... and {len(clusters[cluster_id]) - 5} more points")
+            print(f"  .. and {len(clusters[cluster_id]) - 5} more points")
         print()
     
     if noise_points:
@@ -255,10 +250,10 @@ def print_results(points, labels):
             x, y = points[point_idx]
             print(f"  Point {point_idx}: ({x:.2f}, {y:.2f})")
         if len(noise_points) > 3:
-            print(f"  ... and {len(noise_points) - 3} more noise points")
+            print(f"  .. and {len(noise_points) - 3} more noise points")
 
 if __name__ == "__main__":
-    # Generate sample data
+
     points = generate_sample_data()
     print(f"Generated {len(points)} sample points")
     print()
@@ -267,9 +262,9 @@ if __name__ == "__main__":
     dbscan = DBSCAN(eps=1.5, min_samples=3)
     labels = dbscan.fit(points)
     
-    # Print results
     print_results(points, labels)
     
-    # Create visualization
-    print("\nCreating visualization...")
+    print("\nCreating visualisation ..")
     visualize_clusters(points, labels)
+
+
