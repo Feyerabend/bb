@@ -12,7 +12,7 @@ The essence of scalability lies in anticipating growth and designing flexible fr
 that can accommodate expansion without requiring complete reconstruction. Systems achieve
 scalability through various approaches, including resource augmentation, load distribution,
 process optimisation, and structural adaptation. The key insight is that truly scalable
-systems don't just grow larger—they grow smarter, maintaining or even improving their
+systems don't just grow larger--they grow smarter, maintaining or even improving their
 performance characteristics as they expand.
 
 Effective scalability requires careful consideration of bottlenecks, dependencies, and
