@@ -213,8 +213,6 @@ becomes a critical area of alignment research.
 
 ## Key Sources Discussing Technological Alignment
 
-You've provided an excellent starting point. Here are some more details on those and additional relevant sources:
-
 *Foundational Texts and Organizations:*
 
 * *Stuart Russell – *Human Compatible: Artificial Intelligence and the Problem of Control* (2019):* This book is a
