@@ -31,7 +31,7 @@ Concerns about understanding and explaining AI behaviour.
 
 
 
-__4. Scalability and Generalizations
+__4. Scalability and Generalisations__
 
 As systems grow, how do we ensure safety, performance, and understanding?
 - Scalable oversight: How to supervise increasingly capable models.
@@ -93,7 +93,7 @@ System-level behaviour that's not obvious from the parts.
 
 __10. Epistemology and Representation__
 
-What the system “knows” and how it models the world.
+What the system "knows" and how it models the world.
 - World modelling: The internal representations AI uses to predict or plan.
 - Representation learning: Learning useful internal abstractions.
 - Uncertainty quantification: Expressing and managing uncertainty.
