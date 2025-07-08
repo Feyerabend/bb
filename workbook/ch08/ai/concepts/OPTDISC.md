@@ -498,3 +498,8 @@ more data or computational power (as some suggest might have diminishing returns
 rethinking its core architectural principles and embracing the complementary strengths of both optimisation
 and discovery paradigms.
 
+
+### Reference
+
+- Stanley, K. O., & Lehman, J. (2015). *Why greatness cannot be planned: The myth of the objective.* Springer International Publishing.
+
