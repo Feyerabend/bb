@@ -10,8 +10,8 @@ RL has a wide range of applications, including:
 * *Game Playing:* RL has achieved superhuman performance in complex games like Chess, Go, and even video games.
 * *Robotics:* Training robots to perform complex tasks such as grasping, walking, and navigating.
 * *Autonomous Driving:* Developing self-driving car systems that can make real-time decisions in dynamic environments.
-* *Resource Management:* Optimizing energy consumption in data centers or managing complex supply chains.
-* *Personalized Recommendations:* Enhancing recommendation systems by learning user preferences over time.
+* *Resource Management:* Optimising energy consumption in data centers or managing complex supply chains.
+* *Personalised Recommendations:* Enhancing recommendation systems by learning user preferences over time.
 
 
 ### Concepts in Reinforcement Learning
@@ -23,7 +23,7 @@ To understand RL, several key concepts are fundamental:
 * *State (S):* A complete description of the current situation in the environment.
 * *Action (A):* A move or decision made by the agent that can change the state of the environment.
 * *Reward (R):* A numerical feedback signal from the environment indicating how good or bad the agent's last action was.
-  The agent's goal is to maximize the cumulative reward over time.
+  The agent's goal is to maximise the cumulative reward over time.
 * *Policy ($\pi$):* The strategy that the agent uses to decide what action to take in a given state. It maps states to actions.
 * *Value Function (V or Q):* Predicts the long-term desirability of a state or a state-action pair.
     * *State-Value Function $V(s)$:* The expected return (total cumulative reward) starting from state $s$ and following a policy $\pi$.
@@ -35,12 +35,12 @@ To understand RL, several key concepts are fundamental:
 
 Let's look at how different "AI" approaches can be applied to games like Pong, using the provided HTML files as examples.
 
-The `human.html` file provides a basic Pong game where the paddle is controlled directly by a human player using the arrow keys.
-This serves as a baseline to understand the game mechanics before introducing automated players.
+The `[human.html](./human.html)` file provides a basic Pong game where the paddle is controlled directly by a human player
+using the arrow keys. This serves as a baseline to understand the game mechanics before introducing automated players.
 
-The `classic.html` file demonstrates a "Classic AI" for Pong. This AI operates based on a set of pre-programmed rules and heuristics.
-While it might appear intelligent, it relies on directly knowing the game's internal state and even "cheats" by predicting the ball's
-future position.
+The `[classic.html](./classic.html)` file demonstrates a "Classic AI" for Pong. This AI operates based on a set of
+pre-programmed rules and heuristics. While it might appear intelligent, it relies on directly knowing the game's internal
+state and even "cheats" by predicting the ball's future position.
 
 The classic AI makes decisions based on the following:
 * *Reaction Delay:* It simulates human-like delays by not reacting immediately to every ball movement.
@@ -55,14 +55,18 @@ programmed by a developer.
 
 #### Q-Learning
 
-The `qlearn.html` file introduces a Reinforcement Learning agent using the Q-learning algorithm to play Pong. Unlike the Classic AI,
-this agent learns to play the game by interacting with it and optimizing its actions based on rewards. It does not reply on pixels
-(as in GYM), but information on some parameters controlling the game.
+The `[qlearn.html](./qlearn.html)` file introduces a Reinforcement Learning agent using the Q-learning algorithm to play Pong.
+Unlike the Classic AI, this agent learns to play the game by interacting with it and optimising its actions
+based on rewards. It does not reply on pixels (as in GYM or Gymnasium[^gym]), but information on some parameters
+controlling the game, which reduces complexity.
 
-The `qlearn.html` file implements a simple Reinforcement Learning (RL) agent using the Q-learning algorithm to learn how to play
-a basic Pong game (not really, but anyway bouncing a ball againt walls). The key idea is that, unlike a traditional rule-based
-or "classic" AI (e.g. one that follows the ball with some randomisation), the Q-learning agent does not start with any knowledge
-of how to play. Instead, it discovers an effective policy over time through trial and error, using rewards to guide its behavior.
+[^gym]: https://github.com/Farama-Foundation/Gymnasium.
+
+The file implements a simple Reinforcement Learning (RL) agent using the Q-learning algorithm to learn how to play
+a basic "Pong game" (not really, but anyway bouncing a ball against walls). The key idea is that, unlike a traditional
+rule-based or "classic" AI (e.g. one that follows the ball with some randomisation), the Q-learning agent does not
+start with any knowledge of how to play. Instead, it discovers an effective policy over time through trial and error,
+using rewards to guide its behaviour.
 
 
 *The Mathematics of Q-Learning*
@@ -94,7 +98,7 @@ between the estimated value of the current action and the better estimate $R + \
 
 *How Q-Learning is Applied in `qlearn.html`:*
 
-1. *State Representation:* The continuous game state (paddle and ball positions, ball velocity) is *discretized* into a finite number
+1. *State Representation:* The continuous game state (paddle and ball positions, ball velocity) is *discretised* into a finite number
    of "bins". This creates a manageable number of states for the Q-table. The state is represented as a string like
    "binnedPaddleX,binnedBallX,binnedBallY,ballVXSign,ballVYSign".
 2. *Actions:* The agent has three possible actions: move left (-2), stay still (0), or move right (2).
@@ -108,7 +112,7 @@ between the estimated value of the current action and the better estimate $R + \
     * The `epsilon` parameter (e.g., 0.1) controls the balance between exploration and exploitation.
     * With a probability of `epsilon`, the agent chooses a random action (exploration).
     * Otherwise, it chooses the action with the highest Q-value for the current state (exploitation). This allows the agent to discover
-      new strategies while also utilizing what it has already learned.
+      new strategies while also utilising what it has already learned.
 6. *Learning Loop:* The `gameStep` function is called repeatedly. In each step:
     * The current state `s` is observed.
     * An action `a` is chosen using the epsilon-greedy strategy.
@@ -121,12 +125,12 @@ between the estimated value of the current action and the better estimate $R + \
 RL's strength lies in its ability to learn optimal behaviour in complex environments without explicit programming for every scenario.
 This makes it ideal for:
 
-* *Adaptive Difficulty:* Game AI can learn from player behavior and adjust its difficulty dynamically, providing a more engaging experience.
+* *Adaptive Difficulty:* Game AI can learn from player behaviour and adjust its difficulty dynamically, providing a more engaging experience.
 * *Procedural Content Generation:* RL can be used to generate game levels, quests, or even entire game worlds that are challenging and interesting.
-* *NPC Behavior:* Creating more believable and sophisticated Non-Player Characters (NPCs) that can learn and adapt to player strategies.
+* *NPC Behaviour:* Creating more believable and sophisticated Non-Player Characters (NPCs) that can learn and adapt to player strategies.
 * *Game Testing and Balancing:* RL agents can play games repeatedly to discover exploits, balance issues, or identify areas for improvement.
 * *Real-time Strategy Games:* Training units to navigate, attack, and manage resources effectively.
-* *Player Modeling:* Understanding player preferences and predicting their actions to offer personalized content or challenges.
+* *Player Modelling:* Understanding player preferences and predicting their actions to offer personalised content or challenges.
 
 In conclusion, while a "Classic AI" might offer a strong challenge through clever programming and even "cheats," Reinforcement Learning
 provides a more fundamental approach to creating intelligent agents that can learn and adapt autonomously. This makes RL a powerful tool
