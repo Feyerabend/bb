@@ -17,13 +17,13 @@ These focus on how AI systems perform under variation or stress.
 - Robustness: Performance under distributional shifts or adversarial input.
 - Resilience: Recovery from failure or disturbance.
 - Fault tolerance: Continuation of service despite errors or faults.
-- Distributional generalization: Behavior outside training distribution.
+- Distributional generalisation: Behaviour outside training distribution.
 
 
 
 __3. Interpretability and Transparency__
 
-Concerns about understanding and explaining AI behavior.
+Concerns about understanding and explaining AI behaviour.
 - Interpretability: Can humans explain how/why the AI made a decision?
 - Transparency: How visible the internal workings of the system are.
 - Traceability: Ability to audit decisions or training data.
@@ -31,11 +31,11 @@ Concerns about understanding and explaining AI behavior.
 
 
 
-__4. Scalability and Generalization__
+__4. Scalability and Generalizations
 
 As systems grow, how do we ensure safety, performance, and understanding?
 - Scalable oversight: How to supervise increasingly capable models.
-- Generalization: The model’s ability to perform well on unseen inputs.
+- Generalisation: The model’s ability to perform well on unseen inputs.
 - Meta-learning: Learning to learn--building adaptable systems.
 - Modularity: Structuring systems to support independent evaluation/repair.
 
@@ -83,18 +83,18 @@ How AI fits into existing systems of decision and power.
 
 __9. Emergence and Complexity__
 
-System-level behavior that's not obvious from the parts.
-- Emergent behavior: Capabilities or strategies arising unexpectedly.
+System-level behaviour that's not obvious from the parts.
+- Emergent behaviour: Capabilities or strategies arising unexpectedly.
 - Phase changes: Discontinuous jumps in capability from scale.
-- Self-organization: Learning systems developing internal structure.
-- Path dependence: Historical decisions shaping future behavior.
+- Self-organisation: Learning systems developing internal structure.
+- Path dependence: Historical decisions shaping future behaviour.
 
 
 
 __10. Epistemology and Representation__
 
 What the system “knows” and how it models the world.
-- World modeling: The internal representations AI uses to predict or plan.
+- World modelling: The internal representations AI uses to predict or plan.
 - Representation learning: Learning useful internal abstractions.
 - Uncertainty quantification: Expressing and managing uncertainty.
 - Epistemic humility: Avoiding overconfidence in model predictions.

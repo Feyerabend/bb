@@ -23,7 +23,7 @@ In the late '80s, NMR seemed like a promising direction for AI. At the same time
 intention within specific social and practical contexts, rather than relying on abstract
 logical formalisms alone. It proposed that reasoning is embedded in situations--structured
 by goals, roles, and constraints--and cannot be reduced to rules or formal inference.
-As I still was occationally connected to the Philosophical Institution, we had some
+As I still was occasionally connected to the Philosophical Institution, we had some
 discussions and seminars on this, for us, fresh topic.
 
 This shift also challenged the AI community to think beyond symbolic manipulation.
@@ -112,7 +112,7 @@ c. Computational Complexity
 - This pushed focus toward tractable fragments and practical implementations.
 
 d. AI Subfields That Incorporated NMR Ideas
-- Commonsense reasoning
+- Common sense reasoning
 - Qualitative reasoning
 - Legal reasoning
 - Cognitive architectures (e.g. SOAR, ACT-R use TMS ideas)
@@ -146,7 +146,7 @@ d. Knowledge Graphs & Ontologies
 
 - DLV system (ASP solver)
 - Clingo (modern ASP system combining logic programming with control)
-- Commonsense KBs like Cyc and ConceptNet, where defaults and defeasibility are key
+- Common sense KBs like Cyc and ConceptNet, where defaults and defeasibility are key
 - AI planning tools like PDDL+, handling default effects
 
 
