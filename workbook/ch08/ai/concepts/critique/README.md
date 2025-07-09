@@ -1,15 +1,62 @@
 
 ## Critique
 
-Amid intensifying debates over artificial intelligence, where much of the public imagination is gripped by speculative risks and anthropomorphic projections, a quieter but more grounded tradition of critique continues to examine AI through the lenses of epistemology, cognitive science, and philosophy of language. Melanie Mitchell, alongside thinkers like Gary Marcus, represents a continuation and renewal of this tradition. Rather than accepting the framing of intelligence as a matter of scale—more data, larger models, longer training—Mitchell questions the conceptual coherence of claims about “understanding” and “reasoning” in current systems. Her work is deeply informed by complexity science, but it also resonates with earlier philosophical critiques of computationalism, particularly those of John Searle, Donald Davidson, and other figures who have questioned the idea that syntax alone can give rise to semantics, or that manipulation of symbols can, by itself, produce understanding.
+Amid intensifying debates over artificial intelligence, where much of the public
+imagination is gripped by speculative risks and anthropomorphic projections, a
+quieter but more grounded tradition of critique continues to examine AI through
+the lenses of epistemology, cognitive science, and philosophy of language. Melanie
+Mitchell, alongside thinkers like Gary Marcus, represents a continuation and renewal
+of this tradition. Rather than accepting the framing of intelligence as a matter
+of scale—more data, larger models, longer training—Mitchell questions the conceptual
+coherence of claims about "understanding" and "reasoning" in current systems.
+Her work is deeply informed by complexity science, but it also resonates with
+earlier philosophical critiques of computationalism, particularly those of John
+Searle, Donald Davidson, and other figures who have questioned the idea that
+syntax alone can give rise to semantics, or that manipulation of symbols can,
+by itself, produce understanding.
 
-Mitchell’s skepticism about deep learning systems echoes Searle’s famous Chinese Room argument, which proposed that symbol manipulation, no matter how intricate, does not amount to consciousness or genuine understanding. Like Davidson, who emphasized the holistic and interpretive nature of thought and language, Mitchell is attuned to the context-dependence and world-embeddedness of human cognition—dimensions that are systematically abstracted away in most contemporary AI. Current models might generate plausible outputs, but their lack of grounding in the physical and social world means that they operate without referents, without intentions, and without the capacity to revise beliefs based on genuine understanding.
+Mitchell’s skepticism about deep learning systems echoes Searle’s famous Chinese
+Room argument, which proposed that symbol manipulation, no matter how intricate,
+does not amount to consciousness or genuine understanding. Like Davidson, who
+emphasised the holistic and interpretive nature of thought and language, Mitchell
+is attuned to the context-dependence and world--embeddedness of human
+cognition--dimensions that are systematically abstracted away in most contemporary
+AI. Current models might generate plausible outputs, but their lack of grounding
+in the physical and social world means that they operate without referents, without
+intentions, and without the capacity to revise beliefs based on genuine understanding.
 
-This line of critique situates Mitchell among a growing chorus of researchers—including Emily Bender, Timnit Gebru, and Margaret Mitchell—who warn against mistaking linguistic fluency for comprehension, and benchmark performance for general intelligence. They argue that these models do not “know” things in any meaningful sense; they recombine surface patterns learned from training data without access to the kinds of structured, embodied, and causally coherent world-models that humans use to reason and act. In this way, Mitchell’s work continues a line of thought stretching back through philosophy of mind, through early AI critiques, and into the core of what it means to be an intelligent system.
+This line of critique situates Mitchell among a growing chorus of researchers--including
+Emily Bender, Timnit Gebru, and Margaret Mitchell--who warn against mistaking linguistic
+fluency for comprehension, and benchmark performance for general intelligence. They
+argue that these models do not "know" things in any meaningful sense; they recombine
+surface patterns learned from training data without access to the kinds of structured,
+embodied, and causally coherent world-models that humans use to reason and act. In this
+way, Mitchell’s work continues a line of thought stretching back through philosophy
+of mind, through early AI critiques, and into the core of what it means to be an
+intelligent system.
 
-In the same spirit, Gary Marcus has argued consistently that deep learning, while powerful, lacks the symbolic scaffolding, causal reasoning, and compositional generalisation necessary for anything approaching robust, human-like cognition. Both he and Mitchell emphasize not the danger of runaway superintelligence, but the fragility, brittleness, and misleading surface performance of current systems—problems that become increasingly pressing as these systems are deployed in high-stakes domains.
+In the same spirit, Gary Marcus has argued consistently that deep learning, while
+powerful, lacks the symbolic scaffolding, causal reasoning, and compositional
+generalisation necessary for anything approaching robust, human-like cognition.
+Both he and Mitchell emphasise not the danger of runaway superintelligence, but
+the fragility, brittleness, and misleading surface performance of current
+systems--problems that become increasingly pressing as these systems are deployed
+in high-stakes domains.
 
-Importantly, this tradition of critique diverges sharply from the more speculative narratives of figures like Elon Musk, Nick Bostrom, and Max Tegmark, whose concerns focus on hypothetical existential risks posed by omniscient AGI. Mitchell and Marcus instead focus on real, present limitations: the inability of AI to understand physical causality, social nuance, or moral norms—not in theory, but in the tangible systems we are building today. Their approach calls for epistemic humility, cognitive plausibility, and methodological pluralism, emphasizing that progress in AI must be grounded in understanding intelligence as it actually functions, not as we wish it would.
+Importantly, this tradition of critique diverges sharply from the more speculative
+narratives of figures like Elon Musk, Nick Bostrom, and Max Tegmark, whose concerns
+focus on hypothetical existential risks posed by omniscient AGI. Mitchell and Marcus
+instead focus on real, present limitations: the inability of AI to understand physical
+causality, social nuance, or moral norms—not in theory, but in the tangible systems
+we are building today. Their approach calls for epistemic humility, cognitive
+plausibility, and methodological pluralism, emphasising that progress in AI must
+be grounded in understanding intelligence as it actually functions, not as we
+wish it would.
 
-By anchoring their work in empirical science, historical critique, and cognitive realism, Mitchell and her intellectual peers offer a far more compelling and constructive framework for evaluating AI than those fixated on speculative futures. They ask not whether machines might become gods or monsters, but what it takes to build systems that can reason, adapt, and interact meaningfully in a complex world—a question that remains, at root, deeply human.
+By anchoring their work in empirical science, historical critique, and cognitive
+realism, Mitchell and her intellectual peers offer a far more compelling and constructive
+framework for evaluating AI than those fixated on speculative futures. They ask not
+whether machines might become gods or monsters, but what it takes to build systems
+that can reason, adapt, and interact meaningfully in a complex world--a question
+that remains, at root, deeply human.
 
