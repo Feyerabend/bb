@@ -126,12 +126,12 @@ The following table summarises these key optimisation techniques:
 
 *Table 1: Key Optimisation Techniques in Mainstream AI*
 
-| ML Paradigm | Primary Optimisation Objective | Key Mechanism/Function | Example Algorithms/Techniques | Supporting Reference |
-| ---- | ---- | ---- | ---- | ---- |
-| Supervised Learning | Minimise prediction error / Maximise accuracy | Loss Functions (MSE, MAE, Cross-Entropy) | Gradient Descent, Neural Networks | 1 |
-| Reinforcement Learning | Maximise cumulative reward | Reward Function, Q-function, Policy Gradient | Q-learning, DQN, AlphaGo | 1 |
-| Unsupervised Learning | Discover data patterns / Optimise cluster quality | Clustering Metrics (e.g., inter/intra-cluster distance) | K-means, EM, GANs, Self-organising Map | 1 |
-| Evolutionary Learning | Maximise solution fitness | Fitness Function, Crossover, Mutation | Genetic Algorithms, Genetic Programming | 2 |
+| ML Paradigm | Primary Optimisation Objective | Key Mechanism/Function | Example Algorithms/Techniques |
+| ---- | ---- | ---- | ---- |
+| Supervised Learning | Minimise prediction error / Maximise accuracy | Loss Functions (MSE, MAE, Cross-Entropy) | Gradient Descent, Neural Networks |
+| Reinforcement Learning | Maximise cumulative reward | Reward Function, Q-function, Policy Gradient | Q-learning, DQN, AlphaGo |
+| Unsupervised Learning | Discover data patterns / Optimise cluster quality | Clustering Metrics (e.g., inter/intra-cluster distance) | K-means, EM, GANs, Self-organising Map |
+| Evolutionary Learning | Maximise solution fitness | Fitness Function, Crossover, Mutation | Genetic Algorithms, Genetic Programming |
 
 
 ### Inherent Limitations of Optimisation-Driven AI
@@ -314,9 +314,9 @@ potential for synergistic approaches.
 | *Primary Mechanism* | Explicit objective functions (loss, reward, fitness); gradient-based methods; iterative refinement towards a target. | Mechanisms rewarding behavioural novelty and diversity; indirect search strategies. |
 | *Definition of "Success"* | Minimising error, maximising reward, high accuracy on a specific task. | Extent of exploration, diversity of valuable outcomes discovered, even if immediate utility is unclear. |
 | *Strengths* | Highly effective for well-defined, static problems; excels at achieving high performance on specific tasks; clear metrics for progress. | Potential for genuine creativity, adaptability to unforeseen circumstances, overcoming local optima; generates diverse, robust solutions. |
-| *Weaknesses* | Struggles with true understanding, genuine creativity, contextual nuance, open-ended exploration 3; highly data-dependent, susceptible to bias 3; constrained by theoretical limits 4; prone to local optima. | Less efficient for specific, well-defined tasks; harder to quantify "progress" in traditional terms; research less mature. |
-| *Typical Applications* | Image recognition, natural language processing (classification/prediction), strategic game playing (e.g., AlphaGo), automation of repetitive tasks.1 | Scientific discovery, artistic creation, designing novel robotic behaviours in unstructured environments, Artificial General Intelligence (AGI). |
-| *View on Creativity/Understanding* | Creativity is recombinatorial/interpolative; understanding is superficial (pattern recognition).3 | Creativity is emergent and genuinely novel; fosters deeper, emergent understanding through exploration. |
+| *Weaknesses* | Struggles with true understanding, genuine creativity, contextual nuance, open-ended exploration; highly data-dependent, susceptible to bias; constrained by theoretical limits; prone to local optima. | Less efficient for specific, well-defined tasks; harder to quantify "progress" in traditional terms; research less mature. |
+| *Typical Applications* | Image recognition, natural language processing (classification/prediction), strategic game playing (e.g., AlphaGo), automation of repetitive tasks. | Scientific discovery, artistic creation, designing novel robotic behaviours in unstructured environments, Artificial General Intelligence (AGI). |
+| *View on Creativity/Understanding* | Creativity is recombinatorial/interpolative; understanding is superficial (pattern recognition). | Creativity is emergent and genuinely novel; fosters deeper, emergent understanding through exploration. |
 
 
 #### Effectiveness and Synergy
@@ -365,7 +365,7 @@ Current AI systems consistently struggle with aspects that are quintessential to
 * *True Understanding/Common Sense:* AI processes data but "don't 'understand' in a way
   that humans do". Humans possess common sense, allowing robust reasoning even with incomplete
   information, a capability largely absent in AI.  
-* *Contextual Nuance:* AI "struggles with understanding nuance or context".3 Human intelligence
+* *Contextual Nuance:* AI "struggles with understanding nuance or context". Human intelligence
   excels at interpreting subtle cues and implicit meanings.  
 * *Genuine Creativity:* AI "lacks genuine creativity and cannot innovate outside the scope of
   its programming". Human creativity involves breaking existing paradigms and making leaps of
@@ -373,7 +373,7 @@ Current AI systems consistently struggle with aspects that are quintessential to
 * *Emotional Intelligence:* AI "lacks the ability to understand and respond to human emotions".
   Empathy and social awareness are hallmarks of human intelligence AI has yet to replicate.  
 * *Motivation and Multiple Inheritance:* The dependency of human concept learning on "motivation
-  and context, and the necessity of multiple inheritance" 2 points to a level of internal drive
+  and context, and the necessity of multiple inheritance" points to a level of internal drive
   and complex knowledge integration that current optimisation-driven AI, with its reliance on
   external labels and rewards, does not possess.
 
@@ -413,10 +413,10 @@ the "local optima trap" inherent in direct optimisation, leading to more robust 
 solutions that are less brittle to changes in environment or task. By rewarding novelty and divergence
 rather than just direct performance, AI systems could develop truly novel solutions, artistic expressions,
 and scientific hypotheses that transcend mere recombination of existing data, moving beyond the "cannot
-innovate outside the scope of its programming" limitation.3 Open-ended exploration can equip AI with a
+innovate outside the scope of its programming" limitation. Open-ended exploration can equip AI with a
 broader repertoire of skills and knowledge, preparing it for unforeseen challenges and dynamic, unstructured
 environments. This directly addresses AI's current struggle to "adapt to novel situations without explicit
-programming".3 While not a direct solution, continuous, unsupervised, and curiosity-driven exploration
+programming". While not a direct solution, continuous, unsupervised, and curiosity-driven exploration
 could lead to the development of more robust, flexible, and comprehensive internal models of the world,
 potentially fostering a deeper, more human-like form of understanding and common sense.
 
@@ -443,7 +443,7 @@ A core tenet of the "Discovery Perspective" is the idea that the most valuable o
 *side effects* of open-ended search, not as direct optimisation targets. If future AI adopts this paradigm,
 it implies that the most significant breakthroughs or beneficial capabilities might come from AI systems
 that were not explicitly designed to achieve those specific outcomes. This raises profound questions about
-control, interpretability (AI's black-box nature is a current limitation) 3, and the ability to steer such
+control, interpretability (AI's black-box nature is a current limitation), and the ability to steer such
 systems, as their most valuable contributions might be entirely unforeseen or even unintuitive to their
 human creators. It also suggests a more organic, less deterministic, and potentially more surprising path
 to advanced AI, where serendipity plays a greater role.
@@ -467,7 +467,7 @@ indirect search, suggesting a path to overcome these limitations. Human intellig
 benchmark, seamlessly integrating both goal-directed optimisation for efficiency and open-ended discovery for
 innovation and adaptability.
 
-If current AI's significant limitations 3 are deeply rooted in its optimisation-centric nature, and if human
+If current AI's significant limitations are deeply rooted in its optimisation-centric nature, and if human
 intelligence demonstrably integrates both efficient optimisation and open-ended discovery, then achieving
 Artificial General Intelligence (AGI) necessitates a broader, more nuanced definition of "intelligence." It
 is not sufficient for AGI to merely solve problems efficiently (the strength of optimisation); it must also
@@ -494,7 +494,7 @@ merely replicating human intelligence to potentially creating a new, qualitative
 form of intelligence.
 
 Ultimately, the journey towards advanced AI is not merely about scaling up existing algorithms with
-more data or computational power (as some suggest might have diminishing returns) 4, but about fundamentally
+more data or computational power (as some suggest might have diminishing returns), but about fundamentally
 rethinking its core architectural principles and embracing the complementary strengths of both optimisation
 and discovery paradigms.
 
