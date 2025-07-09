@@ -23,7 +23,7 @@ learning facets, may not emerge from direct optimisation towards a fixed objecti
 arise as a serendipitous side effect of a curiosity-driven, divergent search process. Current AI systems,
 despite their advancements, exhibit significant and persistent limitations, including a lack of true
 understanding, genuine creativity, and an inability to reason beyond their programming. There are also
-fundamental theoretical bounds that apply to any computational system, including AI.4 These limitations
+fundamental theoretical bounds that apply to any computational system, including AI. These limitations
 are not simply technical challenges to be overcome with more data or compute; they appear to be fundamental
 consequences, or even inherent byproducts, of the optimisation paradigm itself. The emergence of the
 "Discovery Perspective" suggests a recognition of these deep-seated limitations and a search for an
@@ -240,7 +240,7 @@ Beyond practical challenges, AI, as a computational system, is subject to fundam
   fundamentally limited.
 
 * *Church-Turing Thesis:* This thesis suggests that any effectively calculable function can be
-  computed by a Turing machine, "setting a boundary on computability".4 Consequently, "tasks that
+  computed by a Turing machine, "setting a boundary on computability". Consequently, "tasks that
   are not Turing-computable would be beyond the reach of any AI," irrespective of its architecture
   or training data.  
 
