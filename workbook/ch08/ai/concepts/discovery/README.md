@@ -453,7 +453,7 @@ hypotheses, novel architectural designs, or a wide array of potential solutions.
 be fed into optimisation pipelines for refinement, efficiency, and performance tuning. This would involve
 developing AI agents with intrinsic motivations for novelty, curiosity, or complexity, allowing them to
 drive their own continuous learning and exploration without constant external rewards or predefined
-objectives, moving beyond the limitations of fixed reward functions.8 Advanced AI systems might even
+objectives, moving beyond the limitations of fixed reward functions. Advanced AI systems might even
 learn and evolve their own objective functions, dynamically adapting what they consider "important" or
 "valuable" based on their ongoing interactions with the world, rather than being confined by static,
 human-defined goals.
