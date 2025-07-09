@@ -10,7 +10,7 @@ longer training--Mitchell and Marcus both question the conceptual coherence of c
 and "reasoning" in current systems. Their work offers a counterweight to the dominant narratives of progress
 by asking more fundamental questions about cognition, representation, and what it actually means to "know."
 
-Mitchell’s skepticism about deep learning systems echoes *John Searle’s* famous Chinese Room argument,
+Mitchell's skepticism about deep learning systems echoes *John Searle's* famous Chinese Room argument,
 which proposed that symbol manipulation, no matter how intricate, does not amount to consciousness or
 genuine understanding. Like *Donald Davidson*, who emphasised the holistic and interpretive nature of
 thought and language, Mitchell is attuned to the context-dependence and world-embeddedness of human
@@ -21,7 +21,7 @@ based on genuine understanding.
 
 *Gary Marcus*, while sharing many of these critiques, brings to the table a long-standing argument from
 cognitive science: that *symbolic representation*, *structured knowledge*, and *explicit causal reasoning*
-are essential components of intelligent behavior--components glaringly absent in today’s dominant
+are essential components of intelligent behavior--components glaringly absent in today's dominant
 paradigm. Marcus has consistently pointed out that deep learning systems, though often impressively
 fluent, are brittle, opaque, and lack the ability to generalize in the way even young children can.
 His critiques often highlight the dangers of overfitting to benchmarks, the absence of mechanisms
@@ -62,10 +62,10 @@ might become gods or monsters, but what it takes to build systems that can reaso
 interact meaningfully in a complex world--a question that remains, at root, deeply human.
 
 To ground their critiques, Mitchell and Marcus draw on concrete examples that expose the limitations
-of current AI systems. For instance, Mitchell’s work on analogy-making, exemplified in her *Copycat*
+of current AI systems. For instance, Mitchell's work on analogy-making, exemplified in her *Copycat*
 architecture, demonstrates how human-like reasoning requires flexible, context-sensitive
 representations that deep learning struggles to replicate. Similarly, Marcus has highlighted
-specific failures of large language models, such as GPT’s inability to consistently handle
+specific failures of large language models, such as GPT's inability to consistently handle
 compositional tasks--like understanding novel combinations of familiar concepts--revealing their
 reliance on statistical patterns rather than robust generalisation. These examples underscore their
 argument that intelligence demands more than scaling up data and compute.
@@ -75,7 +75,7 @@ and emergent behaviours can bridge these gaps, citing the impressive performance
 GPT-4 and PaLM on diverse benchmarks. They argue that continued scaling, combined with techniques
 like fine-tuning and reinforcement learning, may yield systems capable of broader generalisation.
 However, Mitchell and Marcus contend that these approaches still fall short of capturing the
-structured, causal, and embodied knowledge that humans rely on, as evidenced by AI’s persistent
+structured, causal, and embodied knowledge that humans rely on, as evidenced by AI's persistent
 struggles with physical causality and social nuance.
 
 The concept of *cognitive realism*, central to their critiques, refers to designing AI systems that
@@ -84,7 +84,83 @@ context-dependence--rather than relying solely on statistical correlations. By e
 Mitchell and Marcus call for a broader research agenda that integrates insights from cognitive
 science and philosophy. Their work also complements the ethical critiques of researchers like
 *Emily Bender* and *Timnit Gebru*, who highlight not only cognitive shortcomings but also issues
-like algorithmic bias and environmental costs, urging a more holistic evaluation of AI’s societal
+like algorithmic bias and environmental costs, urging a more holistic evaluation of AI's societal
 impact. Together, these perspectives reinforce the need for humility and rigour in AI development,
 ensuring that systems are not just performant but meaningfully intelligent in a complex, human world.
 
+
+### Projects
+
+1. Evaluate AI "Understanding" Through the Chinese Room Analogy
+
+Design a scenario or interactive script inspired by Searle's Chinese Room thought experiment
+and test whether a large language model can truly demonstrate understanding—or merely appear
+to. You might simulate conversation and analyze its limitations in grasping meaning, reference,
+or context.
+
+
+2. Compare Human and Machine Analogy-Making
+
+Recreate a simplified version of Mitchell's Copycat analogy system in Python, and compare its
+output to that of a large language model like GPT. Try analogy problems (e.g., "A is to B as C is to ?")
+and evaluate the strategies each system uses.
+
+
+3. Probe Generalisation Failures in Large Language Models
+
+Construct a series of tests that require compositional reasoning, such as applying familiar
+concepts in unfamiliar combinations ("red cube behind blue pyramid"). Analyze how a language
+model performs and where it fails, documenting what this reveals about its internal
+representation strategies.
+
+
+4. Build a Simple Hybrid AI Model
+
+Following Marcus's call for hybrid architectures, try to combine symbolic logic with neural
+network components. For example, create a rule-based inference engine that uses a neural
+network for visual input classification, then reasons about the result symbolically.
+
+
+5. Design a Benchmark That Tests World-Embedded Understanding
+
+Devise a set of questions or tasks that require physical or social reasoning (e.g., understanding
+cause and effect, or moral implications in simple stories). Use them to compare how a human
+and an AI system interpret the situation, and analyze the difference in grounding.
+
+
+6. Investigate Epistemic Humility in AI Output
+
+Write a program or wrapper for an existing model that tries to assess the confidence of AI
+answers--e.g., through calibration methods or self-uncertainty estimation. Then explore when
+and how the model should admit uncertainty, and how it compares to human cognitive humility.
+
+
+7. Explore Symbolic vs. Statistical Learning on a Toy Problem
+
+Implement two versions of a learning system: one using symbolic rules (e.g., a Prolog-style
+logic system), and one using pattern-matching via statistical methods. Use a small domain
+(e.g., family relations) and compare their performance and generalisation on edge cases.
+
+
+8. Conduct a Literature Review of Hybrid AI Systems
+
+Survey recent attempts to build systems that integrate symbolic and neural components.
+Summarise their architectures, goals, and results. Critically assess whether they answer
+the challenges posed by Marcus and Mitchell regarding causal reasoning, abstraction,
+and interpretability.
+
+
+9. Visualise the Lack of Causal Models in LLMs
+
+Design a set of simple physical reasoning problems (e.g., "What happens if you push the
+box off the table?") and ask a language model to explain. Compare this with basic
+simulations or diagrammatic reasoning. Highlight where causal inference is missing
+or inconsistent.
+
+
+10. Analyze the Philosophical Assumptions Behind a Modern AI System
+
+Pick an AI system or service (e.g., ChatGPT, DALL·E, self-driving software) and analyse
+what assumptions about intelligence, learning, or knowledge it encodes. Relate your
+analysis to ideas from Davidson, Searle, or Mitchell, and evaluate how well the system
+aligns with or departs from human cognition.
