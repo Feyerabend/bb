@@ -209,8 +209,8 @@
 
         <div class="pagination">
             <div>
-                <button id="prevBtn" disabled onclick="changePage(-pageSize)">Previous</button>
-                <button id="nextBtn" disabled onclick="changePage(pageSize)">Next</button>
+                <button id="prevBtn" disabled onclick="previousPage()">Previous</button>
+                <button id="nextBtn" disabled onclick="nextPage()">Next</button>
             </div>
             <div class="pagination-info" id="paginationInfo"></div>
         </div>
@@ -234,7 +234,8 @@
         // Make functions globally available
         window.searchLibris = searchLibris;
         window.resetSearch = resetSearch;
-        window.changePage = changePage;
+        window.nextPage = nextPage;
+        window.previousPage = previousPage;
 
         // Display error message
         function showError(message) {
@@ -325,6 +326,21 @@
             }
         });
 
+        // Pagination functions
+        function nextPage() {
+            if (start + pageSize <= totalRecords) {
+                start += pageSize;
+                searchLibris(false);
+            }
+        }
+
+        function previousPage() {
+            if (start > pageSize) {
+                start -= pageSize;
+                searchLibris(false);
+            }
+        }
+
         async function searchLibris(reset = false) {
             let query = document.getElementById("query").value.trim();
             let format = document.getElementById("format").value;
@@ -348,6 +364,8 @@
 
             let apiUrl = `https://libris.kb.se/xsearch?query=${encodeURIComponent(query)}&format=${format}&start=${start}&n=${pageSize}`;
 
+            console.log(`Searching with: start=${start}, pageSize=${pageSize}, query=${query}`);
+
             try {
                 const response = await fetch(apiUrl, { mode: 'cors' });
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
@@ -355,6 +373,7 @@
                 const totalCountHeader = response.headers.get("X-Total-Count");
                 if (totalCountHeader) {
                     totalRecords = parseInt(totalCountHeader);
+                    console.log(`Total records: ${totalRecords}`);
                 }
 
                 const contentType = response.headers.get("content-type");
@@ -370,6 +389,7 @@
 
                 if (data && data.xsearch && data.xsearch.records !== undefined) {
                     totalRecords = parseInt(data.xsearch.records);
+                    console.log(`Records from API: ${totalRecords}`);
                     if (useRag && transformerModel) {
                         try {
                             await processRagResults(data.xsearch.list || [], query);
@@ -750,6 +770,8 @@
             let nextBtn = document.getElementById("nextBtn");
             let paginationInfo = document.getElementById("paginationInfo");
 
+            console.log(`Updating pagination: start=${start}, pageSize=${pageSize}, totalRecords=${totalRecords}`);
+
             prevBtn.disabled = start <= 1;
             nextBtn.disabled = start + pageSize > totalRecords;
 
@@ -760,12 +782,8 @@
             } else {
                 paginationInfo.textContent = "No results";
             }
-        }
 
-        function changePage(offset) {
-            start += offset;
-            if (start < 1) start = 1;
-            searchLibris(false);
+            console.log(`Pagination updated: prev disabled=${prevBtn.disabled}, next disabled=${nextBtn.disabled}`);
         }
 
         function resetSearch() {
