@@ -266,13 +266,12 @@ intelligence) are not the result of direct optimisation towards a single, predef
 but rather emerge from a process of open-ended, divergent search and the accumulation of
 diverse capabilities.
 
-It is important to note that this report is focuses solely on the "Optimisation View" of
-mainstream AI and its inherent limitations. There is no discussion about Kenneth Stanley's work
-on such ideas as Novelty Search or Quality Diversity algorithms, or the specific mechanisms
-of the "Discovery Perspective." Therefore, while we here outlines what the Discovery Perspective,
-a detailed exploration of its empirical examples and specific algorithmic implementations would
-necessitate further research beyond the provided ideas presented here. You start to see the
-possible projects?
+This report focuses exclusively on the “Optimisation View” of mainstream AI and its inherent
+limitations. It does not address Kenneth Stanley’s work on Novelty Search, Quality Diversity
+algorithms, or the mechanisms underlying the “Discovery Perspective.” While we introduce the
+general concept of the Discovery Perspective, a thorough exploration of its empirical examples
+and specific algorithmic implementations lies beyond the scope of this report and would require
+further research. Do you begin to see the potential project directions?
 
 
 #### Core Tenets of the Discovery Perspective
