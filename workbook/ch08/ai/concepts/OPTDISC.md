@@ -79,13 +79,18 @@ Common loss functions, which define these optimisation targets, include:
 
 * *Mean Squared Error (MSE) / L2 Loss:* Used for regression, it penalises larger errors by squaring
   the differences between predicted and actual values, making it less robust to outliers.
+
 * *Mean Absolute Error (MAE) / L1 Loss:* Another regression function that measures the average absolute
   difference, making it more robust to outliers than MSE.
+
 * *Binary Cross-Entropy Loss:* Ideal for binary classification, quantifying the difference between
   predicted probabilities and actual binary labels.
+
 * *Categorical Cross-Entropy:* Applied to multi-class classification, measuring the discrepancy between
   predicted probabilities and actual labels for each class.
+
 * *Huber Loss:* A hybrid of MSE and MAE, robust to outliers while maintaining smoothness.
+
 * *Log Loss:* Evaluates classification models with probability outputs.
 
 
@@ -208,10 +213,13 @@ Other key limitations include:
 
 * *Ethical and Privacy Concerns:* The reliance on "large datasets" for training AI models
   raises significant "privacy issues" and necessitates compliance with regulations like GDPR.
+
 * *Lack of Emotional Intelligence:* AI systems are currently unable to "understand and respond
   to human emotions effectively," which limits their utility in roles requiring empathy.
+
 * *Interpretability:* Many advanced AI models operate as "black boxes," making it challenging
   for human users to understand their decision-making processes.
+
 * *Resource Intensiveness:* Training and deploying complex AI systems require "significant
   computational power," leading to high energy costs and environmental impact.
 
@@ -224,18 +232,22 @@ Beyond practical challenges, AI, as a computational system, is subject to fundam
   be contained within a finite region of space with finite energy". This implies a "fundamental
   limit on information density in any system, including AI systems," which could ultimately constrain
   their reasoning and information processing capabilities.
+
 * *Computational Complexity:* Problems are categorised by their inherent difficulty. The P vs NP
   question explores whether quickly verifiable problems can also be quickly solved. If P ≠ NP, some
   problems are "inherently hard to solve, even with significant computational resources". When AI
   encounters such NP-hard problems, its ability to find optimal solutions efficiently could be
   fundamentally limited.
+
 * *Church-Turing Thesis:* This thesis suggests that any effectively calculable function can be
   computed by a Turing machine, "setting a boundary on computability".4 Consequently, "tasks that
   are not Turing-computable would be beyond the reach of any AI," irrespective of its architecture
   or training data.  
+
 * *Algorithmic Information Theory:* Concepts like Kolmogorov complexity and logical depth provide
   insights into the inherent complexity of algorithms and data, further elucidating potential
   limits on AI's ability to reason about and compress complex information.
+
 * *General Limits of Learning from Complexity:* There is a limit to how much can be learned from
   a system. As the complexity of an information space increases, "the more difficult it becomes
   to explore the possibilities of this information space and derive useful knowledge," demanding
@@ -280,12 +292,14 @@ The central principles of this perspective include:
 * *Emphasis on Novelty:* Prioritising the exploration of new and diverse behaviours, solutions,
   or regions of a search space, even if their immediate utility or performance against a specific
   objective is not apparent or is even low. The value lies in the novelty itself, as it expands
-  the system's repertoire and potential.  
+  the system's repertoire and potential.
+
 * *Quality Diversity:* Instead of seeking to converge on a single "best" solution (as in traditional
   optimisation), the Discovery Perspective often aims to generate and maintain a wide range of
   high-performing, *diverse* solutions. This ensures robustness and adaptability, as a broad
   collection of skills might be more valuable in an unknown future than a single, highly optimised,
-  but brittle, solution.  
+  but brittle, solution.
+
 * *The "Unreasonable Effectiveness of Indirect Search":* This concept, central to Stanley's philosophy,
   posits that the most complex, robust, and truly innovative solutions often arise as side effects of a
   search process that is *not* directly optimising for those specific solutions. For instance, biological
@@ -298,6 +312,7 @@ This perspective suggests that to achieve true creativity, adaptability, and ope
 AI systems might need to abandon or significantly de-emphasise direct, fixed objective functions
 in favour of mechanisms that encourage continuous, intrinsic exploration and the accumulation of
 diverse skills and knowledge, without a predetermined end goal.
+
 
 ### Comparative Analysis: Optimisation vs. Discovery
 
@@ -365,13 +380,17 @@ Current AI systems consistently struggle with aspects that are quintessential to
 * *True Understanding/Common Sense:* AI processes data but "don't 'understand' in a way
   that humans do". Humans possess common sense, allowing robust reasoning even with incomplete
   information, a capability largely absent in AI.  
+
 * *Contextual Nuance:* AI "struggles with understanding nuance or context". Human intelligence
   excels at interpreting subtle cues and implicit meanings.  
+
 * *Genuine Creativity:* AI "lacks genuine creativity and cannot innovate outside the scope of
   its programming". Human creativity involves breaking existing paradigms and making leaps of
   intuition.  
+
 * *Emotional Intelligence:* AI "lacks the ability to understand and respond to human emotions".
   Empathy and social awareness are hallmarks of human intelligence AI has yet to replicate.  
+
 * *Motivation and Multiple Inheritance:* The dependency of human concept learning on "motivation
   and context, and the necessity of multiple inheritance" points to a level of internal drive
   and complex knowledge integration that current optimisation-driven AI, with its reliance on
@@ -501,5 +520,9 @@ and discovery paradigms.
 
 ### Reference
 
+- Lehman, J., & Stanley, K. O. (2020). Novelty search and the problem with objectives. *Artificial Intelligence*, 281, 103234.
+- Lehman, J., & Stanley, K. O. (2011, July). Abandoning objectives: Evolution through the search for novelty alone.
+  In *Evolutionary Computation (CEC), 2011 IEEE Congress on* (pp. 2002-2009). IEEE.
 - Stanley, K. O., & Lehman, J. (2015). *Why greatness cannot be planned: The myth of the objective.* Springer International Publishing.
+
 
