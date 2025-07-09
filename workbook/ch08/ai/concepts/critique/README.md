@@ -91,7 +91,7 @@ ensuring that systems are not just performant but meaningfully intelligent in a 
 
 ### Projects
 
-1. Evaluate AI "Understanding" Through the Chinese Room Analogy
+__1. Evaluate AI "Understanding" Through the Chinese Room Analogy__
 
 Design a scenario or interactive script inspired by Searle's Chinese Room thought experiment
 and test whether a large language model can truly demonstrate understanding—or merely appear
@@ -99,14 +99,14 @@ to. You might simulate conversation and analyze its limitations in grasping mean
 or context.
 
 
-2. Compare Human and Machine Analogy-Making
+__2. Compare Human and Machine Analogy-Making__
 
 Recreate a simplified version of Mitchell's Copycat analogy system in Python, and compare its
 output to that of a large language model like GPT. Try analogy problems (e.g., "A is to B as C is to ?")
 and evaluate the strategies each system uses.
 
 
-3. Probe Generalisation Failures in Large Language Models
+__3. Probe Generalisation Failures in Large Language Models__
 
 Construct a series of tests that require compositional reasoning, such as applying familiar
 concepts in unfamiliar combinations ("red cube behind blue pyramid"). Analyze how a language
@@ -114,35 +114,35 @@ model performs and where it fails, documenting what this reveals about its inter
 representation strategies.
 
 
-4. Build a Simple Hybrid AI Model
+__4. Build a Simple Hybrid AI Model__
 
 Following Marcus's call for hybrid architectures, try to combine symbolic logic with neural
 network components. For example, create a rule-based inference engine that uses a neural
 network for visual input classification, then reasons about the result symbolically.
 
 
-5. Design a Benchmark That Tests World-Embedded Understanding
+__5. Design a Benchmark That Tests World-Embedded Understanding__
 
 Devise a set of questions or tasks that require physical or social reasoning (e.g., understanding
 cause and effect, or moral implications in simple stories). Use them to compare how a human
 and an AI system interpret the situation, and analyze the difference in grounding.
 
 
-6. Investigate Epistemic Humility in AI Output
+__6. Investigate Epistemic Humility in AI Output__
 
 Write a program or wrapper for an existing model that tries to assess the confidence of AI
 answers--e.g., through calibration methods or self-uncertainty estimation. Then explore when
 and how the model should admit uncertainty, and how it compares to human cognitive humility.
 
 
-7. Explore Symbolic vs. Statistical Learning on a Toy Problem
+__7. Explore Symbolic vs. Statistical Learning on a Toy Problem__
 
 Implement two versions of a learning system: one using symbolic rules (e.g., a Prolog-style
 logic system), and one using pattern-matching via statistical methods. Use a small domain
 (e.g., family relations) and compare their performance and generalisation on edge cases.
 
 
-8. Conduct a Literature Review of Hybrid AI Systems
+__8. Conduct a Literature Review of Hybrid AI Systems__
 
 Survey recent attempts to build systems that integrate symbolic and neural components.
 Summarise their architectures, goals, and results. Critically assess whether they answer
@@ -150,7 +150,7 @@ the challenges posed by Marcus and Mitchell regarding causal reasoning, abstract
 and interpretability.
 
 
-9. Visualise the Lack of Causal Models in LLMs
+__9. Visualise the Lack of Causal Models in LLMs__
 
 Design a set of simple physical reasoning problems (e.g., "What happens if you push the
 box off the table?") and ask a language model to explain. Compare this with basic
@@ -158,7 +158,7 @@ simulations or diagrammatic reasoning. Highlight where causal inference is missi
 or inconsistent.
 
 
-10. Analyze the Philosophical Assumptions Behind a Modern AI System
+__10. Analyze the Philosophical Assumptions Behind a Modern AI System__
 
 Pick an AI system or service (e.g., ChatGPT, DALL·E, self-driving software) and analyse
 what assumptions about intelligence, learning, or knowledge it encodes. Relate your
