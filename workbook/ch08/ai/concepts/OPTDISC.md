@@ -42,8 +42,8 @@ of AI.
 
 Mainstream AI, particularly machine learning, is fundamentally characterised by its use of algorithms trained
 on data sets to create self-learning models designed to predict outcomes and classify information without
-explicit human intervention.1 The core principle across diverse learning techniques in AI is to "optimise
-an evaluation function to improve the quality of the results according to certain standard".2 At its heart,
+explicit human intervention. The core principle across diverse learning techniques in AI is to "optimise
+an evaluation function to improve the quality of the results according to certain standard". At its heart,
 mainstream AI is a process of finding the "best" configuration or parameters for a model to perform a given
 task, based on a quantifiable measure of success or failure.
 
@@ -67,7 +67,7 @@ model's predicted outputs and the actual, desired target values. The explicit ob
 
 An "optimiser" is an algorithmic component specifically designed to minimise the loss function. Its primary goal
 is to iteratively adjust the internal parameters (weights and biases) of the neural network or model in a
-direction that reduces the calculated loss, typically through methods like gradient descent.5 This design choice
+direction that reduces the calculated loss, typically through methods like gradient descent. This design choice
 carries a significant implication: mainstream AI systems, in their current form, do not "understand" the task or
 the world in a human-like, conceptual sense. Instead, they learn to correlate specific inputs with desired outputs,
 effectively optimising a proxy metric for success. The "understanding" or "meaning" of the task is externalised
@@ -113,7 +113,7 @@ algorithms, requiring them to "uncover patterns on its own without any outside g
 or clustering, the objective is "to find a partition of the dataset with minimum within-cluster distances
 and maximum between-cluster distances". Techniques include K-means clustering and Expectation-Maximisation.
 Generative models like GANs implicitly optimise for data realism. Semi-supervised learning combines small
-amounts of labeled data with larger unlabelled datasets 1, while self-supervised learning uses inherent
+amounts of labeled data with larger unlabelled datasets, while self-supervised learning uses inherent
 patterns to refine models.
 
 *Evolutionary Learning:* This paradigm frames optimisation as a process akin to "natural selection" within
@@ -143,10 +143,10 @@ intelligence.
 #### Struggles with Core Cognitive Abilities
 
 AI systems, even the most advanced, process "vast amounts of data and identify patterns, but
-they don't 'understand' in a way that humans do".3 Their comprehension is superficial, based
+they don't 'understand' in a way that humans do". Their comprehension is superficial, based
 on statistical correlations rather than deep causal models. This "lack of true understanding"
 fundamentally limits AI's ability to operate effectively in scenarios requiring common sense
-or inferential reasoning that goes beyond learned patterns.3 The core mechanism of optimisation-driven
+or inferential reasoning that goes beyond learned patterns. The core mechanism of optimisation-driven
 AI involves minimising a predefined loss function or maximising a predefined reward signal.
 This process incentivises the AI to find the most efficient path or configuration
 *within the given problem space* as defined by the objective function and the training data.
@@ -183,7 +183,7 @@ Directly related to the lack of creativity, AI's inability to "adapt to novel si
 programming" underscores its struggle with open-ended exploration. Optimisation typically converges on a
 "best" solution for a *given* problem, rather than continuously exploring and adapting to evolving problem
 definitions or entirely new environments. The "Exploitation vs. Exploration" challenge in Reinforcement
-Learning further illustrates this tension.2 While RL can explore, its exploration is often bounded by the
+Learning further illustrates this tension. While RL can explore, its exploration is often bounded by the
 reward function, which implicitly defines the "space" of desirable outcomes, potentially hindering truly
 divergent or objective-free discovery.
 
@@ -200,7 +200,7 @@ into the model's behaviour. The AI doesn't possess an independent mechanism to q
 validity, fairness, or ethical implications; it merely seeks to achieve the best possible performance
 *on that specific data*. This means that the optimisation process can inadvertently amplify and perpetuate
 societal biases or inaccuracies present in the real-world datasets it learns from, leading to "unfair
-outcomes," particularly in sensitive applications like recruitment or financial services.3 The optimisation
+outcomes," particularly in sensitive applications like recruitment or financial services. The optimisation
 objective itself, being purely mathematical, does not contain inherent mechanisms for ethical reasoning,
 bias detection, or a critical assessment of its training data's quality beyond statistical fit.
 
@@ -421,7 +421,7 @@ could lead to the development of more robust, flexible, and comprehensive intern
 potentially fostering a deeper, more human-like form of understanding and common sense.
 
 Mainstream optimisation-driven AI excels at efficiently solving problems *that are already well-defined*
-and come with clear objectives.1 However, a significant aspect of human intelligence, particularly in
+and come with clear objectives. However, a significant aspect of human intelligence, particularly in
 scientific research, innovation, and strategic thinking, is the ability to *identify, formulate, and
 prioritise new problems* or questions that lead to breakthroughs. If AI successfully integrates discovery
 principles, it could transition from being primarily a tool for optimising solutions to existing problems
@@ -459,7 +459,7 @@ becomes even more critical to ensure that its emergent behaviours align with hum
 ### Conclusion: Synthesising the Paradigms for Advanced AI
 
 Mainstream AI, fundamentally rooted in the Optimisation View, has achieved remarkable successes by minimising
-loss functions and maximising rewards across various learning paradigms.1 However, this optimisation-centric
+loss functions and maximising rewards across various learning paradigms. However, this optimisation-centric
 approach inherently limits AI's capacity for true understanding, genuine creativity, contextual nuance, and
 open-ended exploration, and is subject to fundamental theoretical constraints. The "Discovery Perspective,"
 championed by Kenneth Stanley's work, offers a crucial alternative by prioritising novelty, diversity, and
