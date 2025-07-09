@@ -61,4 +61,30 @@ framework for evaluating AI than those fixated on speculative futures. They ask 
 might become gods or monsters, but what it takes to build systems that can reason, adapt, and
 interact meaningfully in a complex world--a question that remains, at root, deeply human.
 
+To ground their critiques, Mitchell and Marcus draw on concrete examples that expose the limitations
+of current AI systems. For instance, Mitchell’s work on analogy-making, exemplified in her *Copycat*
+architecture, demonstrates how human-like reasoning requires flexible, context-sensitive
+representations that deep learning struggles to replicate. Similarly, Marcus has highlighted
+specific failures of large language models, such as GPT’s inability to consistently handle
+compositional tasks--like understanding novel combinations of familiar concepts--revealing their
+reliance on statistical patterns rather than robust generalisation. These examples underscore their
+argument that intelligence demands more than scaling up data and compute.
+
+Proponents of deep learning, such as researchers at OpenAI and Google, counter that massive scale
+and emergent behaviours can bridge these gaps, citing the impressive performance of models like
+GPT-4 and PaLM on diverse benchmarks. They argue that continued scaling, combined with techniques
+like fine-tuning and reinforcement learning, may yield systems capable of broader generalisation.
+However, Mitchell and Marcus contend that these approaches still fall short of capturing the
+structured, causal, and embodied knowledge that humans rely on, as evidenced by AI’s persistent
+struggles with physical causality and social nuance.
+
+The concept of *cognitive realism*, central to their critiques, refers to designing AI systems that
+align with the principles of human cognition--such as modularity, abstraction, and
+context-dependence--rather than relying solely on statistical correlations. By emphasising this,
+Mitchell and Marcus call for a broader research agenda that integrates insights from cognitive
+science and philosophy. Their work also complements the ethical critiques of researchers like
+*Emily Bender* and *Timnit Gebru*, who highlight not only cognitive shortcomings but also issues
+like algorithmic bias and environmental costs, urging a more holistic evaluation of AI’s societal
+impact. Together, these perspectives reinforce the need for humility and rigour in AI development,
+ensuring that systems are not just performant but meaningfully intelligent in a complex, human world.
 
