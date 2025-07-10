@@ -16,7 +16,9 @@ my non-native English--the core concepts remain strikingly relevant. The text to
 client-server dynamics, and communication models in ways that still resonate in current discussions
 around intelligent agents.
 
-- My small [paper](./agents.html) from 1997 on "Active agents and other concepts"
-- [Overview](./agents-grok-2025.pdf) of Current Developments by an LLM (Grok)
-- [Comments](./AGENTS.md) on my memorandum from 1997 by an LLM (Gemini, Flash 2.5) in 2025
+- My small [paper](./1997/agents.html) from 1997 on "Active agents and other concepts"
+- [Comments](./1997/AGENTS.md) on my memorandum from 1997 by an LLM (Gemini, Flash 2.5) in 2025
 
+Current Developments:
+- [Overview](./agents-grok-2025.pdf) of by an LLM (Grok)
+- Retrieval-Augmented Generation [RAG](./rag/) popular as a kind of start for AI agents.
