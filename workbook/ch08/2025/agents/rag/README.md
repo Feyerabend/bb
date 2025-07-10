@@ -2,8 +2,7 @@
 ## RAG
 
 This code creates a web application that searches the LIBRIS database (Sweden's national library catalog)
-with an added AI-powered ranking system. Let me break down what it does in simple terms:
-
+with an added AI-powered ranking system.
 
 *Basic Search*: The app lets you search through Sweden's library catalog for books, articles, and other
 materials. You can get results in different formats like JSON, citation formats (Harvard, Oxford), or
