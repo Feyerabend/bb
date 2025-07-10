@@ -1,5 +1,5 @@
 
-## RAG
+## RAG: Retrieval-Augmented Generation
 
 This code creates a web application that searches the LIBRIS database (Sweden's national library catalog)
 with an added AI-powered ranking system.
