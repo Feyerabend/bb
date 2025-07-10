@@ -21,12 +21,12 @@ based on genuine understanding.
 
 *Gary Marcus*, while sharing many of these critiques, brings to the table a long-standing argument from
 cognitive science: that *symbolic representation*, *structured knowledge*, and *explicit causal reasoning*
-are essential components of intelligent behavior--components glaringly absent in today's dominant
+are essential components of intelligent behaviour--components glaringly absent in today's dominant
 paradigm. Marcus has consistently pointed out that deep learning systems, though often impressively
-fluent, are brittle, opaque, and lack the ability to generalize in the way even young children can.
+fluent, are brittle, opaque, and lack the ability to generalise in the way even young children can.
 His critiques often highlight the dangers of overfitting to benchmarks, the absence of mechanisms
 for abstraction and transfer, and the failure of purely statistical methods to model reasoning about
-the real world. Where Mitchell draws from complexity theory and emergent behavior, Marcus often brings
+the real world. Where Mitchell draws from complexity theory and emergent behaviour, Marcus often brings
 the discussion back to *modularity, representation*, and *hybrid architectures* that integrate symbolic
 reasoning with statistical learning.
 

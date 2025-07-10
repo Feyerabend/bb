@@ -36,7 +36,7 @@ each search result in this numerical space.
 
 *Example*: If you search for "global warming," traditional search might miss a relevant book
 titled "Climate Crisis Solutions" because it doesn't contain those exact words. The RAG
-system would recognize these topics are related and rank that book higher.
+system would recognise these topics are related and rank that book higher.
 
 
 ### Technical Flow
@@ -66,8 +66,8 @@ toward agentic systems:
 
 #### 2. Dynamic Decision Making
 - The system chooses whether to apply RAG ranking based on model availability
-- It adapts its behavior based on the success/failure of different components
-- These conditional behaviors are stepping stones toward more autonomous decision-making
+- It adapts its behaviour based on the success/failure of different components
+- These conditional behaviours are stepping stones toward more autonomous decision-making
 
 #### 3. Multi-Modal Processing
 - Handles different output formats (JSON, XML, citations, etc.)
@@ -78,7 +78,7 @@ toward agentic systems:
 ### Path to Full AI Agents
 
 This RAG foundation could evolve into a more agentic system by adding several key capabilities.
-Query understanding and planning would allow the system to analyze complex requests and develop
+Query understanding and planning would allow the system to analyse complex requests and develop
 multi-step strategies. For instance, when a user asks to "find recent AI papers similar to
 transformers," an agent could break this down into searching for transformer-related papers,
 filtering by publication date, and then finding semantically similar work based on those initial
@@ -92,13 +92,13 @@ information networks.
 
 Conversational memory would add continuity by remembering previous searches within a session, building
 on earlier queries to refine results, and learning user preferences over time. This would create a
-more personalized experience where the system becomes increasingly attuned to individual research
+more personalised experience where the system becomes increasingly attuned to individual research
 patterns and interests.
 
 Tool integration would extend the system's utility by automatically exporting results to reference
 managers, generating summaries or research briefs, and connecting to other academic databases. This
 would create a seamless workflow where the system not only finds relevant information but also helps
-users organize and utilize it effectively, transforming from a search interface into a comprehensive
+users organise and utilise it effectively, transforming from a search interface into a comprehensive
 research companion.
 
 ### Why This Matters
