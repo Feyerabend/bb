@@ -114,7 +114,6 @@ This is foundational for AI agents because agents need to:
 - Provide contextually appropriate responses
 
 The LIBRIS application shows how RAG can transform a simple search interface into something
-more intelligent and user-friendly--a crucial step toward building systems that can truly
-assist users in complex information discovery tasks.
+more intelligent and user-friendly.
 
 
