@@ -78,38 +78,38 @@ aids: empirical, adaptive, and transformative.
 
 ### Projects
 
-1. Simulate Drug Discovery with AlphaFold Data
+__1. Simulate Drug Discovery with AlphaFold Data__
 
 Use publicly available AlphaFold-predicted protein structures to simulate a simplified drug
 screening pipeline, demonstrating how ML-derived biology accelerates previously slow research loops.
 
-2. Implement LLM-Based Teaching Assistant
+__2. Implement LLM-Based Teaching Assistant__
 
 Build a classroom assistant using GPT-4 or Claude that answers student questions, gives hints
 on programming assignments, and helps draft essays--then evaluate user satisfaction, learning
 outcomes, and instructor load.
 
-3. Compare AI-Assisted vs. Manual Coding Performance
+__3. Compare AI-Assisted vs. Manual Coding Performance__
 
 Use Copilot or similar tools to assist in solving a suite of LeetCode problems. Compare against
 unaided attempts in terms of time, correctness, and complexity.
 
-4. Build a Domain-Specific LLM Assistant
+__4. Build a Domain-Specific LLM Assistant__
 
 Fine-tune a small language model on a specific domain (e.g. environmental law, chemistry papers)
-and demonstrate how it outperforms generic LLMs on targeted questions--emphasizing practical grounding.
+and demonstrate how it outperforms generic LLMs on targeted questions--emphasising practical grounding.
 
-5. Investigate Emergent Reasoning Patterns
+__5. Investigate Emergent Reasoning Patterns__
 
 Test GPT-4 or Claude on step-by-step reasoning problems. Then use prompt engineering or
-chain-of-thought techniques to analyze emergent behaviors that approximate compositional logic.
+chain-of-thought techniques to analyse emergent behaviours that approximate compositional logic.
 
-6. Visualize Impact of AI on Scientific Publication Trends
+__6. Visualise Impact of AI on Scientific Publication Trends__
 
-Analyze publication databases before and after the release of tools like AlphaFold or Codex
+Analyse publication databases before and after the release of tools like AlphaFold or Codex
 to show shifts in research pace, topic frequency, or co-authorship networks.
 
-7. Evaluate Multi-modal Learning in Educational Contexts
+__7. Evaluate Multi-modal Learning in Educational Contexts__
 
 Use a vision-language model (like Gemini or GPT-4o) to assist in math or physics problems
 involving diagrams. Test whether multi-modal grounding helps with deeper understanding.
