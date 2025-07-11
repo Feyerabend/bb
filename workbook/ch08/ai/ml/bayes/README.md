@@ -163,3 +163,4 @@ can compute the probability of specific diseases, as exemplified in diagnostic a
 determining malaria likelihood based on fever and travel history
 
 Judea Pearl formalised Bayesian networks in his 1988 book, *Probabilistic Reasoning in Intelligent Systems*.
+Also see: Brockman, J. (red.) (2019). *Possible minds: twenty-five ways of looking at AI*. New York: Penguin Press.
