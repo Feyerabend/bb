@@ -1,10 +1,14 @@
 
 ## Reference
 
-- Brooks, Frederick P. *The Mythical Man-Month: Essays on Software Engineering*. 20th Anniversary Edition, Addison-Wesley, 1995.  
+- Brooks, F. P. (1995) *The Mythical Man-Month: Essays on Software Engineering*. 20th Anniversary Edition, Addison-Wesley.  
   A classic in software engineering, this book explores the challenges of managing large software projects and introduces the
   famous concept of the "mythical man-month." Brooks discusses the pitfalls of trying to add manpower to a late project and
   offers timeless insights on project management in software development.
+
+- Hermans, F. (2021). *The programmer’s brain: What every programmer needs to know about cognition*. Manning Publications.
+  Cognitive science applied to software development, with practical strategies for improving code comprehension, learning new
+  languages, and debugging.
 
 - Hunt, Andrew, and David Thomas. *The Pragmatic Programmer: Your Journey to Mastery*. 20th Anniversary Edition, Addison-Wesley Professional, 2019.  
   A must-read for any developer, this book provides practical advice on writing clean, maintainable, and efficient code.
@@ -25,3 +29,4 @@
   A deep dive into functional programming, this book explores the underlying principles and practices of FP, while addressing
   real-world challenges and solutions. It introduces functional programming in an accessible way, focusing on techniques for
   writing modular and reusable code.
+

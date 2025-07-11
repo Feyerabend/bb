@@ -100,6 +100,9 @@ ensuring that systems are not just performant but meaningfully intelligent in a 
   mitigating system bias and enabling better science. *Transactions of the Association for
   Computational Linguistics*, 6, 587–604. https://doi.org/10.1162/tacl_a_00041
 
+- Marcus, G., & Davis, E. (2019). *Rebooting AI: Building artificial intelligence we can trust*.
+  Pantheon Books.
+
 - Mitchell, M., Wu, S., Zaldivar, A., Barnes, P., Vasserman, L., Hutchinson, B., Spitzer, E.,
   Raji, I. D., & Gebru, T. (2019). Model cards for model reporting. In *Proceedings of the
   Conference on Fairness, Accountability, and Transparency* (pp. 220–229). *Association for
