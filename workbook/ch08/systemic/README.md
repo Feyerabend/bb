@@ -239,7 +239,7 @@ prioritises survival and recovery.
 
 
 
-### Articifial Intelligence and Machine Learning
+### Artificial Intelligence and Machine Learning
 
 If we only focus on ML and AI, the relation of some of the high impact systemic
 concepts can be outlined.
@@ -260,27 +260,27 @@ concepts can be outlined.
 #### Noise
 
 Irregular, unpredictable variations in data, measurements, or signals.
-- Degrades performance (e.g., noisy labels, sensor data).-
+ Degrades performance (e.g., noisy labels, sensor data): 
   Used in training (e.g., data augmentation, denoising autoencoders) to enhance robustness.
-- Mitigating harmful noise.- Balancing beneficial noise for generalisation.
+ Mitigating harmful noise. Balancing beneficial noise for generalisation.
 Dual role: a challenge to overcome and a tool to improve model resilience.
 
 
 #### Randomness
 
 Non-deterministic elements in processes or decision-making.
-- Drives algorithms (e.g., stochastic gradient descent, dropout).-
+ Drives algorithms (e.g., stochastic gradient descent, dropout): 
   Enables exploration in reinforcement learning and diversity in ensembles.
-- Ensuring reproducibility.- Controlling randomness for debugging.
+ Ensuring reproducibility. Controlling randomness for debugging.
 Foundational for exploration and learning, requiring careful balance with control.
 
 
 #### Optimisation
 
 Adjusting parameters to minimise/maximise an objective function.
-- Core to learning (e.g., minimising loss via gradient descent).-
+ Core to learning (e.g., minimising loss via gradient descent): 
   Used in hyperparameter tuning, architecture search.
-- Handling non-convex, high-dimensional problems.-
+ Handling non-convex, high-dimensional problems: 
   Developing efficient heuristics.
 Underpins AI/ML, solving complex problems under constraints and uncertainty.
 
@@ -288,9 +288,9 @@ Underpins AI/ML, solving complex problems under constraints and uncertainty.
 #### Abstraction
 
 Hiding low-level details to create simplified representations.
-- Models learn abstractions (e.g., latent features in neural nets).-
+ Models learn abstractions (e.g., latent features in neural nets): 
   Enables transfer learning and generalisation.
-- Ensuring interpretability.-
+ Ensuring interpretability: 
   Auditing opaque abstractions.
 Key to model power, but central to trust and understanding challenges.
 
@@ -298,9 +298,9 @@ Key to model power, but central to trust and understanding challenges.
 #### Scalability
 
 Ability to handle increasing data, compute, or model complexity efficiently.
-- Enables breakthroughs (e.g., transformers).-
+ Enables breakthroughs (e.g., transformers): 
   Requires distributed computing and efficient algorithms.
-- Managing cost, energy, bias, and accessibility.-
+ Managing cost, energy, bias, and accessibility: 
   Maintaining control at scale.
 Critical for advancing AI, balancing efficiency with ethical considerations.
 
@@ -308,9 +308,9 @@ Critical for advancing AI, balancing efficiency with ethical considerations.
 #### Determinism
 
 Consistent behaviour for identical inputs across executions.
-- Often sacrificed for randomness in training.-
+ Often sacrificed for randomness in training: 
   Supported by tools like random seeds, deterministic modes.
-- Achieving reproducibility.-
+ Achieving reproducibility: 
   Meeting regulatory needs without stifling exploration.
 Balances reliability and flexibility, critical for debugging and compliance.
 
@@ -318,9 +318,9 @@ Balances reliability and flexibility, critical for debugging and compliance.
 #### Complexity
 
 Measure of intricacy in systems, models, or behaviour.
-- Complex models capture patterns but risk overfitting.-
+ Complex models capture patterns but risk overfitting: 
   Simpler models aid interpretability via regularisation, compression.
-- Avoiding overfitting and opacity.-
+ Avoiding overfitting and opacity: 
   Balancing capacity and simplicity.
 Essential for robust, interpretable models that generalise well.
 
@@ -328,9 +328,9 @@ Essential for robust, interpretable models that generalise well.
 #### State
 
 Information retained across time, inputs, or operations.
-- Central to sequential models (e.g., RNNs, LSTMs), reinforcement learning.-
+ Central to sequential models (e.g., RNNs, LSTMs), reinforcement learning: 
   Transformers externalise state.
-- Debugging and visualising state.-
+ Debugging and visualising state: 
   Managing resets for stability.
 Enables adaptation in dynamic systems, but complicates transparency.
 
@@ -338,9 +338,9 @@ Enables adaptation in dynamic systems, but complicates transparency.
 #### Errors
 
 Deviations from desired behaviour or accuracy.
-- Drive learning via loss and feedback.-
+ Drive learning via loss and feedback: 
   Can propagate bias or failure if unaddressed.
-- Mitigating harmful errors.-
+ Mitigating harmful errors: 
   Interpreting errors correctly.
 Errors are learning signals; their handling impacts model fairness and reliability.
 
