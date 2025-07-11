@@ -103,6 +103,8 @@ ensuring that systems are not just performant but meaningfully intelligent in a 
 - Marcus, G., & Davis, E. (2019). *Rebooting AI: Building artificial intelligence we can trust*.
   Pantheon Books.
 
+- Mitchell, M. (2019). *Artificial intelligence: A guide for thinking humans*. Farrar, Straus and Giroux.
+
 - Mitchell, M., Wu, S., Zaldivar, A., Barnes, P., Vasserman, L., Hutchinson, B., Spitzer, E.,
   Raji, I. D., & Gebru, T. (2019). Model cards for model reporting. In *Proceedings of the
   Conference on Fairness, Accountability, and Transparency* (pp. 220–229). *Association for
