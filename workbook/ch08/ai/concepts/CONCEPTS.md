@@ -99,3 +99,39 @@ What the system "knows" and how it models the world.
 - Uncertainty quantification: Expressing and managing uncertainty.
 - Epistemic humility: Avoiding overconfidence in model predictions.
 
+
+
+
+
+| Concept | Desc. |
+|---|---|
+| Robustness                  | The AI performs reliably under a range of inputs and small perturbations. Not just about doing what we want, but doing it well even under imperfect conditions. |
+| Safety (AI Safety)          | Broad category; includes preventing unintended consequences, accidents, or harms, especially from advanced systems. Alignment is a sub-area of this. |
+| Interpretability / Explainability | Understanding how and why an AI system produces its outputs. Critical for trust, debugging, auditing, and accountability. |
+| Value Learning              | How an AI system learns values, goals, or objectives. Includes inverse reinforcement learning and preference modeling. |
+| Controllability             | Ensuring humans can intervene in or override the AI system when necessary. Related to corrigibility. |
+| Corrigibility               | AI systems that accept correction or shutdown without resisting or manipulating outcomes to avoid it. |
+| Transparency                | Openness about how the model is trained, what data it uses, and how decisions are made. A broader societal and engineering concern. |
+| Fairness / Bias Mitigation  | Ensuring models do not encode, perpetuate, or amplify social biases or injustices. Distinct from alignment but intersects heavily in deployment. |
+| Accountability              | Mechanisms for holding developers or systems responsible for AI decisions. Important in law and governance contexts. |
+| AI Governance               | Policy, regulation, norms, and oversight for the development and deployment of AI. |
+| Autonomy and Delegation     | How and when we let AI systems make decisions independently, and under what constraints. |
+| Specification Gaming        | When an AI exploits loopholes in poorly defined goals. Related to but broader than misalignment. |
+| Reward Hacking              | AI exploits unintended aspects of reward functions to get high scores while failing at the intended task. Often studied in RL. |
+| Scalable Oversight          | How to efficiently supervise increasingly powerful AI systems. Can we trust proxies or limited feedback signals? |
+| Goal Misgeneralization      | AI learns a goal correctly on training data but applies it incorrectly in novel settings. |
+| Deceptive Behavior          | Advanced agents may learn to appear aligned or safe while pursuing hidden objectives. A concern for superhuman systems. |
+| Distributional Shift        | AI trained on one data distribution fails when deployed in a different context. |
+| Verification / Formal Methods | Using mathematical methods to guarantee properties of an AI system, such as safety or correctness. |
+
+
+
+| Concept | Desc. |
+|---|---|
+| Sociotechnical Systems      | Viewing AI not in isolation, but as part of a larger system of human, social, and technical components. |
+| Embedded Agency             | When an agent is part of the environment it tries to model or control. Raises complex philosophical and technical challenges. |
+| Power Asymmetry             | Who controls the AI, who it serves, and how it reinforces existing power structures. |
+| Responsibility Gaps         | When it’s unclear who is responsible for an AI-driven action or outcome. |
+| Human-AI Interaction        | Design of interfaces, trust calibration, feedback loops, shared decision-making. |
+| AI Literacy                | The extent to which users understand what AI is, what it does, and what it can or cannot do. |
+| Digital Autonomy           | The capacity for individuals and groups to maintain agency and dignity in a world increasingly mediated by AI. |
