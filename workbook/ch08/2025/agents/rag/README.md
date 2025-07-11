@@ -19,8 +19,10 @@ uses AI to improve search results.
 *RAG Enhancement*: This app adds an AI layer that:
 1. *Understands Meaning*: Uses a machine learning model to understand what
    your search query actually *means*, not just the words
+
 2. *Ranks by Relevance*: Compares your query's meaning to each search result's
    meaning and gives similarity scores
+
 3. *Reorders Results*: Shows the most semantically relevant results first,
    even if they don't contain your exact keywords
 
@@ -52,6 +54,48 @@ system would recognise these topics are related and rank that book higher.
 This represents a practical application of modern AI to improve traditional information
 retrieval systems, making library searches more intelligent and contextually aware.
 
+* Semantic Understanding: Finds relevant results even when exact keywords don't match
+* Relevance Ranking: Results are ordered by meaning, not just keyword frequency
+* Real-time Processing: Runs entirely in the browser without server dependencies
+
+The application essentially transforms basic keyword search into intelligent semantic search,
+making it much more effective at finding relevant library resources.
+
+
+#### Core Functions
+
+__1. Model Loading (loadModel)__
+
+- Downloads and initializes a machine learning model that understands text meaning
+- Uses the "all-MiniLM-L6-v2" model for creating text embeddings
+- Shows loading status to the user
+
+__2. Semantic Analysis (getEmbedding, cosineSimilarity)__
+
+- Converts text into numerical vectors (embeddings) that capture meaning
+- Compares how similar two pieces of text are using cosine similarity
+- This allows ranking results by relevance rather than just keyword matching
+
+__3. API Integration (fetchLibrisResults)__
+
+- Connects to the LIBRIS API (Swedish library database)
+- Fetches bibliographic records in JSON format (limited which can be expanded)
+- Handles API errors and response parsing
+
+__4. Search and Ranking (searchLibris)__
+
+- Takes user's search query and fetches results from LIBRIS
+- Creates embeddings for both the search query and each result
+- Calculates similarity scores between query and results
+- Sorts results by semantic relevance (most similar first)
+
+__5. Display System (displayResults, pagination functions)__
+
+- Shows results with their similarity scores
+- Displays full JSON data for each record
+- Handles pagination for large result sets
+- Updates UI states (loading, errors, etc.)
+
 
 ### Connection to AI Agents
 
@@ -69,7 +113,6 @@ toward agentic systems:
 - These conditional behaviours are stepping stones toward more autonomous decision-making
 
 #### 3. Multi-Modal Processing
-- Handles different output formats (JSON, XML, citations, etc.)
 - Processes and transforms data dynamically based on context
 - This flexibility is essential for agents that need to work with diverse data sources
 
