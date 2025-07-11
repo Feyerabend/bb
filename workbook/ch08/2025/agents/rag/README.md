@@ -5,8 +5,8 @@ This code creates a web application that searches the LIBRIS database (Sweden's 
 with an added AI-powered ranking system.
 
 *Basic Search*: The app lets you search through Sweden's library catalog for books, articles, and other
-materials. You can get results in different formats like JSON, citation formats (Harvard, Oxford), or
-structured data formats.
+materials. You can get results in JSON (but can easily be expanded to citation formats like Harvard and Oxford, or
+structured data formats).
 
 *Enhanced with AI*: What makes this special is the "RAG" (Retrieval-Augmented Generation) feature that
 uses AI to improve search results.
@@ -14,7 +14,7 @@ uses AI to improve search results.
 ### How RAG Works Here
 
 *Traditional Search*: Normally, library searches work like basic keyword matching--if you search for
-"climate change," you get results that contain those exact words.
+"climate change," or "artificial intelligence," you get results that contain those exact words.
 
 *RAG Enhancement*: This app adds an AI layer that:
 1. *Understands Meaning*: Uses a machine learning model to understand what
@@ -79,7 +79,7 @@ __2. Semantic Analysis (getEmbedding, cosineSimilarity)__
 __3. API Integration (fetchLibrisResults)__
 
 - Connects to the LIBRIS API (Swedish library database)
-- Fetches bibliographic records in JSON format (limited which can be expanded)
+- Fetches bibliographic records in JSON format (limited, but can be expanded)
 - Handles API errors and response parsing
 
 __4. Search and Ranking (searchLibris)__
