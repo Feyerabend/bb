@@ -15,7 +15,7 @@
 
 - Marcus, G., & Davis, E. (2019). *Rebooting AI: Building artificial intelligence we can trust*. Pantheon.
   Note: Although often critical, Marcus proposes constructive directions, which can be
-  seen as optimistic about better AI. See [critique](./critique/).
+  seen as optimistic about better AI. See [critique](./../critique/).
 
 - Hassabis, D., Silver, D., & Kavukcuoglu, K. (2021). *AlphaFold and the AI revolution
   in biology*. Nature, 596(7871), 583–589. https://doi.org/10.1038/s41586-021-03819-2
