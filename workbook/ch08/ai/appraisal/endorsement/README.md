@@ -74,6 +74,22 @@ aids: empirical, adaptive, and transformative.
 
 ### Reference
 
+- Altman, S. (2023). *Planning for AGI and beyond*. OpenAI blog.
+  https://openai.com/blog/planning-for-agi-and-beyond
+  Outlines OpenAI’s approach to achieving AGI in a safe and beneficial way.
+
+- Hassabis, D., Silver, D., & Kavukcuoglu, K. (2021). *AlphaFold and the AI revolution
+  in biology*. Nature, 596(7871), 583–589. https://doi.org/10.1038/s41586-021-03819-2
+  Breakthrough application of AI to protein folding. Signifies AI’s power to advance science.
+
+- Hassabis, D. (2021). *Using AI to accelerate scientific discovery*. TED talk.
+  https://www.ted.com/talks/demis_hassabis_using_ai_to_accelerate_scientific_discovery
+  Describes DeepMind's work on AlphaFold and the vision for AI-assisted science.
+
+- Silver, D., et al. (2016). *Mastering the game of Go with deep neural networks and tree search*.
+  Nature, 529(7587), 484–489. https://doi.org/10.1038/nature16961
+  AlphaGo demonstrates superhuman performance in Go--a milestone in AI capabilities.
+
 
 
 ### Projects

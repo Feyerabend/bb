@@ -78,3 +78,6 @@ hopeful vision--one that revives ideas from cognitive science and symbolic reaso
 with the statistical power of machine learning. His central message is that if we want AI systems that are
 safe, robust, and aligned with human values, we must design them to be understandable, modular, and grounded
 in structured representations of the world.
+
+
+- https://en.wikipedia.org/wiki/Gary_Marcus
