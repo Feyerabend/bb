@@ -40,6 +40,9 @@ Speculative Ideas:
 - AI-executables (pseudo-code + data): A new kind of page format may blend code, natural language, and
   datasets into a directly "interpretable" experience. Think literate programming meets REST meets REPL.
 
+You might also compare current developments, to what I imagined in 1998 on what I called
+"[object browsing](./1998/)".
+
 
 #### 3. The Contamination Divide: Human vs. AI-generated Content
 
