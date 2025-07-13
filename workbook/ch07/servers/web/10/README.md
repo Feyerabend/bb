@@ -83,3 +83,12 @@ Let's indulge in some hallucinations:
   automated summaries, or algorithmic personalisation, preserving fully human-authored and human-curated knowledge.
 
 
+#### 6. Example of Reasonable Development: The Semantic Web
+
+Tim Berners-Lee originally envisioned a World Wide Web that extended beyond syntactic structure to
+incorporate semantic understanding. While the initial development of this "semantic web" was curtailed
+and never fully realized through its intended technical frameworks, certain conceptual elements endured.
+With the advent of large language models (LLMs), the [semantic web](./SEMANTICS.md) appears to be
+approaching realisation--albeit through means quite different from those Berners-Lee initially proposed.
+
+
