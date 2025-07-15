@@ -39,33 +39,33 @@ Energy in computing systems is consumed across several domains:
      static power draw.
 
 2. Memory and Storage:
- - DRAM Power: Memory is kept alive via periodic refreshes. Energy cost includes row activation,
-   precharge, and data I/O. High bandwidth memory access (e.g., in ML workloads) dramatically
-   increases power draw.
- - SSDs vs HDDs: SSDs are more energy efficient in active use but may draw more baseline power
-   when idle. HDDs consume mechanical energy for spinning platters and seek operations.
- - Storage Controllers: SSD controllers and RAID cards can introduce significant overhead for
-   encryption, compression, or error correction.
+   - DRAM Power: Memory is kept alive via periodic refreshes. Energy cost includes row activation,
+     precharge, and data I/O. High bandwidth memory access (e.g., in ML workloads) dramatically
+     increases power draw.
+   - SSDs vs HDDs: SSDs are more energy efficient in active use but may draw more baseline power
+     when idle. HDDs consume mechanical energy for spinning platters and seek operations.
+   - Storage Controllers: SSD controllers and RAID cards can introduce significant overhead for
+     encryption, compression, or error correction.
 
 3. Network and I/O Devices:
- - Network interfaces (Ethernet, WiFi, 5G) consume energy both while transmitting and while
-   listening or idling.
- - Energy cost is proportional to data volume, but also to interface state (active vs idle vs sleep).
- - Polling interfaces and frequent interrupts are energy intensive compared to event-driven
-   or DMA-based designs.
+   - Network interfaces (Ethernet, WiFi, 5G) consume energy both while transmitting and while
+     listening or idling.
+   - Energy cost is proportional to data volume, but also to interface state (active vs idle vs sleep).
+   - Polling interfaces and frequent interrupts are energy intensive compared to event-driven
+     or DMA-based designs.
 
 4. Displays and Peripherals:
- - In mobile devices, the display is often the single largest energy consumer.
- - Backlight brightness, refresh rate, and resolution directly affect power draw. OLED screens
-   allow per-pixel control, making dark UI themes potentially more energy efficient.
+   - In mobile devices, the display is often the single largest energy consumer.
+   - Backlight brightness, refresh rate, and resolution directly affect power draw. OLED screens
+     allow per-pixel control, making dark UI themes potentially more energy efficient.
 
 5. Cooling and Power Delivery:
- - In data centers, non-computational energy use includes HVAC, fans, power supply units, and
-   battery backups.
- - Power Usage Effectiveness (PUE) is a key metric: a PUE of 1.5 means only two-thirds of the
-   energy powers computation; the rest goes to overhead.
- - Poor power delivery efficiency (voltage regulators, converters) increases waste heat and
-   thermal load.
+   - In data centers, non-computational energy use includes HVAC, fans, power supply units, and
+     battery backups.
+   - Power Usage Effectiveness (PUE) is a key metric: a PUE of 1.5 means only two-thirds of the
+     energy powers computation; the rest goes to overhead.
+   - Poor power delivery efficiency (voltage regulators, converters) increases waste heat and
+     thermal load.
 
 ### From Energy Use to System Design
 
