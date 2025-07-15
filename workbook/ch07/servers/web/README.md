@@ -41,6 +41,13 @@ format (cf. [09](./09/)). Eventually, this culminated in architectures like Sing
 (SPAs) and serverless functions, where traditional notions of a "server" are abstracted away behind
 layers of infrastructure.
 
+We now have a dedicated folder exploring the future of the web ([10](./10/)). What happens when AI and
+machine learning take center stage? Could they reshape the web's core structure, replacing HTML with
+Markdown or an entirely new format? Or might we transition to something radically different, like directly
+executable content optimised for large language models (LLMs)? The web could evolve from a framework
+of markup and rendering into a dynamic medium driven by real-time inference, semantics, personalisation,
+and interaction--serving not only users but also machines.
+
 What was once a simple model--browser asks, server answers--has evolved into a complex and often asynchronous
 ecosystem. Understanding the older, simpler mechanisms is not just nostalgic; it's a way to build intuition
 about what problems these new abstractions are solving, and at what cost in terms of visibility and control.
