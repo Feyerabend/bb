@@ -41,6 +41,22 @@ In short, the [early web](./HISTORY.md) rested on the idea that knowledge should
 simple, and interoperable way. It prioritised documents over programs, links over silos, and understanding
 over abstraction. This is what made it revolutionary not just as a technology, but as a public good.
 
+Also, the early days of the web was guided largely by open standards and collaborative efforts. Key
+protocols like HTTP and formats like HTML were documented in RFCs (Requests for Comments), a system
+originally developed for the broader internet community under the IETF (not only the web). At the same time,
+the World Wide Web Consortium (W3C) was founded in 1994 to coordinate the development of web standards
+in a more structured and vendor-neutral way. Early web technologies emphasised simplicity and openness,
+focusing on interoperability and human-readable markup, with HTML 2.0 (1995) being one of the first
+formalised versions reflecting the consensus of that era.
+
+But we also had much fun--even in the standards. One of the most well-known HTTP status codes is 404
+Not Found, returned when a page is missing. However, not all codes were entirely serious. For example,
+RFC 2324, written as an April Fools' joke in 1998, defined the HTTP status code 418 I’m a teapot, to
+be returned by teapots that receive requests to brew coffee. While never intended for real-world use,
+it became a beloved easter egg in web culture. These kinds of whimsical additions reflected the playful
+and collaborative spirit of the early web community, where experimentation, humour, and openness were
+just as important as the technical progress.
+
 
 ### Misled? Personal Reflections
 
