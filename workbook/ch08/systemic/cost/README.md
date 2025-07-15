@@ -9,7 +9,7 @@ multiple resource types and their interplay.
 
 Computational cost refers to the resources consumed by a system to perform its tasks,
 often measured in terms of processor cycles or operations. This is closely tied to algorithmic
-complexity, typically expressed in Big-O notation (e.g., $O(n)$ $O(n^2)$, $O(n log n)$). However,
+complexity, typically expressed in Big-O notation (e.g., $O(n)$ $O(n^2)$, $O(\log n)$). However,
 computational cost goes beyond theoretical complexity:
 
 - *Processor Cycles*: Every operation, from simple arithmetic to complex matrix operations,
