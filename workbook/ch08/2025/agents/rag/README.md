@@ -1,162 +1,88 @@
 
-## RAG: Retrieval-Augmented Generation
+## LIBRIS Semantic Search with RAG
 
-This code creates a web application that searches the LIBRIS database (Sweden's national library catalog)
-with an added AI-powered ranking system.
+This web application searches Sweden's LIBRIS library catalog and enhances results with AI-powered
+*Retrieval-Augmented Generation* (RAG) for semantic ranking.
 
-*Basic Search*: The app lets you search through Sweden's library catalog for books, articles, and other
-materials. You can get results in JSON (but can easily be expanded to citation formats like Harvard and Oxford, or
-structured data formats).
+### Features
+- *Basic Search*: Search the LIBRIS catalog for books, articles, and more, with results returned in
+  JSON format (expandable to other formats like Harvard or Oxford citations).
+- *RAG Enhancement*: Uses AI to improve search result relevance by understanding query meaning,
+  ranking results semantically, and prioritizing contextually relevant items.
 
-*Enhanced with AI*: What makes this special is the "RAG" (Retrieval-Augmented Generation) feature that
-uses AI to improve search results.
-
-### How RAG Works Here
-
-*Traditional Search*: Normally, library searches work like basic keyword matching--if you search for
-"climate change," or "artificial intelligence," you get results that contain those exact words.
-
-*RAG Enhancement*: This app adds an AI layer that:
-1. *Understands Meaning*: Uses a machine learning model to understand what
-   your search query actually *means*, not just the words
-
-2. *Ranks by Relevance*: Compares your query's meaning to each search result's
-   meaning and gives similarity scores
-
-3. *Reorders Results*: Shows the most semantically relevant results first,
-   even if they don't contain your exact keywords
-
-
-### The AI/ML Components
-
-*Embedding Model*: Uses a pre-trained model called "all-MiniLM-L6-v2" that converts text
-into numerical vectors (embeddings) that capture semantic meaning.
-
-*Similarity Calculation*: Uses cosine similarity to measure how "close" your query is to
-each search result in this numerical space.
-
-*Example*: If you search for "global warming," traditional search might miss a relevant book
-titled "Climate Crisis Solutions" because it doesn't contain those exact words. The RAG
-system would recognise these topics are related and rank that book higher.
-
+### How RAG Works
+- *Traditional Search*: Matches keywords (e.g., "climate change") to find exact or near matches in
+  the catalog.
+- *RAG System*:
+  1. *Semantic Understanding*: Converts queries and results into numerical vectors (embeddings)
+     using the `all-MiniLM-L6-v2` model to capture meaning.
+  2. *Relevance Ranking*: Calculates cosine similarity between query and result embeddings to
+     score relevance.
+  3. *Result Reordering*: Prioritizes results based on semantic similarity, even if exact keywords
+     are absent (e.g., a search for "global warming" may rank a book titled *Climate Crisis Solutions*
+     highly).
 
 ### Technical Flow
+1. User enters a search query.
+2. App fetches results from the LIBRIS API.
+3. If RAG is enabled:
+   - Generates an embedding for the query.
+   - Generates embeddings for each result (based on title, creator, description, etc.).
+   - Computes similarity scores.
+   - Ranks results by relevance.
+4. Displays results with similarity scores and supports pagination.
 
-1. You enter a search query
-2. App searches LIBRIS database
-3. If RAG is enabled, it:
-   - Converts your query into an embedding
-   - Converts each result into an embedding
-   - Calculates similarity scores
-   - Reorders results by relevance
-4. Displays results with similarity scores
+### Search Strategies
+- *Semantic Expansion*: Expands the query with related terms (e.g., "climate change" may include
+  "global warming," "sustainability") and fetches a larger batch of results for semantic ranking.
+- *Multi-Query*: Generates multiple related queries, fetches results for each, merges and deduplicates
+  them, then ranks semantically.
+- *Original + Ranking*: Uses the original query and applies semantic ranking to the results.
 
-This represents a practical application of modern AI to improve traditional information
-retrieval systems, making library searches more intelligent and contextually aware.
+### Core Functions
+1. *Model Loading (`loadModel`)*
+   - Loads the `all-MiniLM-L6-v2` model for text embeddings.
+   - Displays loading status in the UI.
+2. *Semantic Analysis (`getEmbedding`, `cosineSimilarity`)*
+   - Converts text to embeddings and calculates similarity scores for ranking.
+3. *API Integration (`fetchLibrisResults`)*
+   - Queries the LIBRIS API for bibliographic records in JSON.
+   - Handles errors and response parsing.
+4. *Search and Ranking (`searchLibris`)*
+   - Processes the query based on the selected strategy.
+   - Fetches, embeds, and ranks results by semantic relevance.
+5. *Display System (`displayResults`, pagination)*
+   - Shows ranked results with similarity scores.
+   - Supports pagination and displays metadata (e.g., author, date, type).
+   - Updates UI for loading, errors, and analytics.
 
-* Semantic Understanding: Finds relevant results even when exact keywords don't match
-* Relevance Ranking: Results are ordered by meaning, not just keyword frequency
-* Real-time Processing: Runs entirely in the browser without server dependencies
-
-The application essentially transforms basic keyword search into intelligent semantic search,
-making it much more effective at finding relevant library resources.
-
-
-#### Core Functions
-
-__1. Model Loading (loadModel)__
-
-- Downloads and initializes a machine learning model that understands text meaning
-- Uses the "all-MiniLM-L6-v2" model for creating text embeddings
-- Shows loading status to the user
-
-__2. Semantic Analysis (getEmbedding, cosineSimilarity)__
-
-- Converts text into numerical vectors (embeddings) that capture meaning
-- Compares how similar two pieces of text are using cosine similarity
-- This allows ranking results by relevance rather than just keyword matching
-
-__3. API Integration (fetchLibrisResults)__
-
-- Connects to the LIBRIS API (Swedish library database)
-- Fetches bibliographic records in JSON format (limited, but can be expanded)
-- Handles API errors and response parsing
-
-__4. Search and Ranking (searchLibris)__
-
-- Takes user's search query and fetches results from LIBRIS
-- Creates embeddings for both the search query and each result
-- Calculates similarity scores between query and results
-- Sorts results by semantic relevance (most similar first)
-
-__5. Display System (displayResults, pagination functions)__
-
-- Shows results with their similarity scores
-- Displays full JSON data for each record
-- Handles pagination for large result sets
-- Updates UI states (loading, errors, etc.)
-
+### Analytics Display
+- *Query Expansion*: Shows the original query and any added semantic terms.
+- *Batch Info*: Displays the number of fetched results and ranking details.
+- *Strategy Info*: Indicates the selected search strategy.
+- *Merge Info*: Shows the number of results displayed per page.
 
 ### Connection to AI Agents
-
-While this isn't a full AI agent, it demonstrates several foundational concepts that bridge
-toward agentic systems:
-
-#### 1. Semantic Understanding
-- The system "understands" the meaning of queries beyond keywords
-- It can match conceptually related content even without exact word matches
-- This semantic layer is crucial for agents that need to interpret user intent
-
-#### 2. Dynamic Decision Making
-- The system chooses whether to apply RAG ranking based on model availability
-- It adapts its behaviour based on the success/failure of different components
-- These conditional behaviours are stepping stones toward more autonomous decision-making
-
-#### 3. Multi-Modal Processing
-- Processes and transforms data dynamically based on context
-- This flexibility is essential for agents that need to work with diverse data sources
-
+This application demonstrates foundational AI agent concepts:
+- *Semantic Understanding*: Interprets query meaning beyond keywords, essential for understanding
+  user intent.
+- *Dynamic Decision Making*: Adapts based on model availability and strategy selection, a step toward
+  autonomous systems.
+- *Multi-Modal Processing*: Handles diverse data (text, API responses) dynamically, a key feature for
+  versatile agents.
 
 ### Path to Full AI Agents
+To evolve into a more agentic system, the app could:
+- *Query Planning*: Break down complex queries into multi-step searches (e.g., for "recent AI papers
+  similar to transformers," filter by date and find similar papers).
+- *Autonomous Actions*: Auto-refine searches, follow citations, or integrate multiple data sources.
+- *Conversational Memory*: Retain search history to refine results and learn user preferences.
+- *Tool Integration*: Export results to reference managers, generate summaries, or connect to other
+  databases.
 
-This RAG foundation could evolve into a more agentic system by adding several key capabilities.
-Query understanding and planning would allow the system to analyse complex requests and develop
-multi-step strategies. For instance, when a user asks to "find recent AI papers similar to
-transformers," an agent could break this down into searching for transformer-related papers,
-filtering by publication date, and then finding semantically similar work based on those initial
-results.
-
-Autonomous actions would enable the system to operate more independently by auto-refining searches
-based on result quality, following citations to build comprehensive research maps, and combining
-multiple data sources beyond just LIBRIS. This would transform the system from a passive search
-tool into an active research assistant that can iteratively improve its results and explore related
-information networks.
-
-Conversational memory would add continuity by remembering previous searches within a session, building
-on earlier queries to refine results, and learning user preferences over time. This would create a
-more personalised experience where the system becomes increasingly attuned to individual research
-patterns and interests.
-
-Tool integration would extend the system's utility by automatically exporting results to reference
-managers, generating summaries or research briefs, and connecting to other academic databases. This
-would create a seamless workflow where the system not only finds relevant information but also helps
-users organise and utilise it effectively, transforming from a search interface into a comprehensive
-research companion.
-
-### Why This Matters
-
-The RAG approach here solves a key problem that traditional search engines face--the
-*semantic gap* between how users express their needs and how information is indexed.
-By adding semantic understanding, the system becomes more "intelligent" in matching
-user intent with relevant content.
-
-This is foundational for AI agents because agents need to:
-- Understand user goals (not just commands)
-- Find relevant information across large knowledge bases
-- Make connections between related concepts
-- Provide contextually appropriate responses
-
-The LIBRIS application shows how RAG can transform a simple search interface into something
-more intelligent and user-friendly.
-
+### Why It Matters
+The RAG system bridges the *semantic gap* in traditional search by aligning results with user intent,
+not just keywords. This makes the app more intelligent and user-friendly, laying the groundwork for
+advanced AI agents that can understand goals, retrieve relevant information, and provide contextually
+appropriate responses.
 
