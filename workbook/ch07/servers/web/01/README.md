@@ -52,10 +52,12 @@ formalised versions reflecting the consensus of that era.
 But we also had much fun--even in the standards. One of the most well-known HTTP status codes is 404
 Not Found, returned when a page is missing. However, not all codes were entirely serious. For example,
 RFC 2324, written as an April Fools' joke in 1998, defined the HTTP status code [418](teapot.png)
-I'm a teapot, to be returned by teapots that receive requests to brew coffee. While never intended
+I'm a teapot, to be returned by teapots that receive requests to brew coffee[^418]. While never intended
 for real-world use, it became a beloved easter egg in web culture. These kinds of whimsical additions
 reflected the playful and collaborative spirit of the early web community, where experimentation,
 humour, and openness were just as important as the technical progress.
+
+[^418]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/418
 
 
 ### Misled? Personal Reflections
