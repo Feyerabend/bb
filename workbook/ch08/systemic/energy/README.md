@@ -82,8 +82,8 @@ Energy-aware system design spans multiple layers:
      general-purpose CPUs.
 
 2. Software-Level Strategies:
-   - Algorithmic Efficiency: Reducing algorithmic complexity (e.g., O(n^2) to
-     O(n \log n)) saves cycles and thus energy.
+   - Algorithmic Efficiency: Reducing algorithmic complexity (e.g., $O(n^2)$ to $O(n \log n)$)
+     saves cycles and thus energy.
    - Energy-Proportional Computing: Programs that scale energy use with workload
      intensity avoid high baseline costs.
    - Idle Resource Management: Systems like Android aggressively suspend background
