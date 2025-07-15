@@ -34,7 +34,7 @@ eventually engage with, whether explicitly or implicitly.
 | [*Time*](./time/) | Scheduling, clocks, profiling, causality in distributed systems |
 | *Complexity*   | Measured algorithmically, but also felt in UX and architecture |
 | [*State*](./state/) | Core to both computing and modelling; managed differently across layers |
-| *Energy use*   | Crucial from battery devices to datacenters      |
+| [*Energy use*](./energy/) | Crucial from battery devices to datacenters |
 | [*Cost*](./cost/) | Not just economic, but computational, spatial, or temporal |
 | [*Errors*](./errors/) | Arise from hardware faults, logic bugs, bad input, or user misunderstanding |
 | [*Resilience*](./resilience/) | Ensures systems degrade gracefully and recover from faults, attacks, or overload |
