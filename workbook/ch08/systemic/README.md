@@ -23,7 +23,7 @@ eventually engage with, whether explicitly or implicitly.
 | [*Noise*](./noice/) | Affects communication, sensing, and even logic gates |
 | [*Randomness*](./random/) | Critical in simulation, cryptography, testing, protocols |
 | [*Optimisation*](./optimal/) | Present in compilers, algorithms, hardware, energy use |
-| *Security*    | Requires attention at every layer: physical to logical |
+| [*Security*](./security/) | Requires attention at every layer: physical to logical |
 | [*Interface*](./interface/) | Defines component interaction everywhere |
 | *Abstraction*   | Central to all software and hardware design      |
 | [*Scalability*](./scale/) | Applies to data, computation, architecture |
@@ -35,7 +35,7 @@ eventually engage with, whether explicitly or implicitly.
 | *Complexity*   | Measured algorithmically, but also felt in UX and architecture |
 | [*State*](./state/) | Core to both computing and modelling; managed differently across layers |
 | *Energy use*   | Crucial from battery devices to datacenters      |
-| *Cost*      | Not just economic, but computational, spatial, or temporal |
+| [*Cost*](./cost/) | Not just economic, but computational, spatial, or temporal |
 | [*Errors*](./errors/) | Arise from hardware faults, logic bugs, bad input, or user misunderstanding |
 | [*Resilience*](./resilience/) | Ensures systems degrade gracefully and recover from faults, attacks, or overload |
 
