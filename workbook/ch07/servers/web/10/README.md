@@ -1,97 +1,235 @@
 
-## The Future of the Web
+## Microservices
 
-If we allow ourselves to speculate about the future of the web, we might anticipate changes both in the
-near term and further ahead. You may have other thoughts, so feel free to reflect on and comment upon
-the following ideas .. or add your own!
-
-The web might bifurcate into:
-- LLM-optimised, semantically rich, dynamically interpreted knowledge substrates, and
-- Authenticity-preserving, human-authored, cryptographically signed cultural archives.
-
-Between them, dynamic agents--possibly embodied in browsers, shells, or assistants--will mediate interaction.
-The role of HTML may diminish in favor of formats designed for LLM consumption or direct interaction.
-Let's explore this in more detail.
+This example illustrates a microservices architecture through three interconnected services:
+Inventory, Pricing, and Order. Each service operates independently, showcasing fundamental
+microservices concepts such as loose coupling, independent deployment, and scalability. Below,
+we explore the architecture, the functionality of each service, and the key microservices
+patterns demonstrated, with an emphasis on the underlying principles of microservices.
 
 
-#### 1. Web Adapted to LLMs
+### Understanding Microservices
 
-The web might evolve to accommodate language models--just as it adapted to mobile and search engines.
+Microservices are an architectural style where an application is structured as a collection
+of small, autonomous services, each responsible for a specific business capability. Unlike
+monolithic architectures, where all functionality resides in a single codebase, microservices
+are independently deployable, communicate over well-defined interfaces (typically APIs),
+and are organised around business domains.
 
-Possible Trends:
-- LLM-optimised markup: Simplified, semantically rich formats like Markdown (or variants)
-  may be favored over HTML. They're easier for LLMs to parse and regenerate.
-- Structured semantification: Expect a massive rise in lightweight metadata (e.g. JSON-LD, RDFa)
-  and hybrid vector-symbolic representations to make content better understood and referenced by LLMs.
-- "LLM-ready" documents: Authors may provide parallel versions of content--one for rendering,
-  one for LLM consumption--much like alt text or aria-labels.
+- *Loose Coupling*: Services operate independently, reducing dependencies and allowing
+  changes to one service without impacting others.
+- *Independent Scalability*: Each service can be scaled based on its specific demand,
+  optimising resource usage.
+- *Resilience*: Failures in one service are isolated, preventing cascading failures
+  across the system.
+- *Decentralised Data Management*: Each service manages its own data, avoiding shared
+  databases to maintain autonomy.
+- *Technology Diversity*: Different services can use different technologies, enabling
+  teams to choose the best tools for their tasks.
+- *Continuous Delivery*: Microservices support frequent, independent deployments,
+  enabling faster updates and innovation.
 
-
-#### 2. New Forms of Dynamic Web Pages
-
-Traditional dynamic content (e.g. JavaScript + server-rendered HTML) may give way to prompt-responsive
-pages and even directly executable knowledge objects.
-
-Speculative Ideas:
-- LLM-native documents: Pages that contain embedded prompts, vector hints, or partial completions--designed
-  to be completed or tailored on access by a local/remote LLM.
-- Hyperprompting: Instead of clicking links, users engage in recursive prompt-chains--e.g. "Read this page,"
-  followed by "summarize only what's new since 2023," or "adjust for 12-year-olds."
-- AI-executables (pseudo-code + data): A new kind of page format may blend code, natural language, and
-  datasets into a directly "interpretable" experience. Think literate programming meets REST meets REPL.
-
-You might also compare current developments, to what I imagined in 1998 on what I called
-"[object browsing](./1998/)".
+These principles are reflected in the example's design, where each service handles a distinct
+function, communicates via HTTP APIs, and maintains its own data.
 
 
-#### 3. The Contamination Divide: Human vs. AI-generated Content
+### Architecture Overview
 
-A major divide is already forming and will harden. This is partly about trust, provenance, and curation.
+The system comprises three services and a web client:
 
-Likely Futures:
-- Content Provenance Tracking: With the rise of standards like C2PA (https://c2pa.org), we'll see
-  embedded cryptographic signatures tracing authorship and edit history.
-- Toxicity Filters, but for Origin: Systems will offer filters: "Show only human-written content,"
-  "Exclude AI rehashes," or conversely, "Summarise 1000 AI docs in a flash."
-- Academic/archival preservation of "pure" corpora: New libraries and institutions will maintain
-  "human-origin" corpora for scientific, linguistic, or cultural research.
+```
+┌─────────────────┐     ┌─────────────────┐      ┌─────────────────┐
+│  Inventory      │     │  Pricing        │      │  Order          │
+│  Service        │     │  Service        │      │  Service        │
+│  :7001          │     │  :7003          │      │  :7002          │
+└─────────────────┘     └─────────────────┘      └─────────────────┘
+         │                       │                       │
+         └───────────────────────┼───────────────────────┘
+                                 │
+                        ┌─────────────────┐
+                        │    Web Client   │
+                        │     Browser     │
+                        └─────────────────┘
+```
 
+- *Inventory Service* (:7001): Manages product inventory, providing stock levels and item details.
+- *Pricing Service* (:7003): Handles pricing logic, including discounts and bulk pricing queries.
+- *Order Service* (:7002): Orchestrates order creation by aggregating data from Inventory and Pricing services.
+- *Web Client*: A browser-based interface for interacting with the services, demonstrating real-world usage.
 
-#### 4. Post-Browser Interfaces: Beyond HTML
-
-As LLMs integrate more deeply into interfaces, the browser itself may become vestigial.
-
-Alternatives:
-- Conversational OS shells: Interfaces where users describe intentions ("show me trends in Scandinavian
-  languages in news articles") and the system assembles a display, drawing from APIs, text corpora,
-  and visualizations.
-- Agent-based browsers: Instead of browsing manually, you deploy an LLM-powered agent that curates,
-  interprets, and summarizes content before you even "see" it.
-- Vector-native navigation: Search and hyperlinks could evolve into multidimensional embedding
-  maps--users browse semantically instead of by URL.
-
-
-#### 5. Unsettling Possibilities and Weird Futures
-
-Let's indulge in some hallucinations:
-- Executable Markdown or Hybrid Markdown-DSLs: Markdown fused with reactive programming primitives
-  (e.g., [[reactive-code: ..]]) could create interactive documents that render, execute, and explain themselves.
-- AI-Native Web Archives: "LLM Archives" where only tokenized or vectorized form of knowledge is
-  preserved--compressing millions of texts into dense neural indices.
-- Counterfeit Webs: Entire fake internets tailored to you--a personalised hallucinated web (think:
-  simulacra of Medium, Stack Overflow, Wikipedia) trained to match your biases, comfort, and curiosity.
-  A blessing, or possible disaster?
-- Strictly Human-Only Zones: Just as the "slow food" movement emphasises unprocessed, deliberate consumption,
-  we may see "slow knowledge" spaces emerge--areas of the web (or outside it) that prohibit AI-generated content,
-  automated summaries, or algorithmic personalisation, preserving fully human-authored and human-curated knowledge.
+Each service is self-contained, with its own HTTP server, data store, and endpoints,
+embodying the microservices principle of autonomy.
 
 
-#### 6. Example of Reasonable Development: The Semantic Web
+### Service 1: Inventory Service
 
-Tim Berners-Lee originally envisioned a World Wide Web that extended beyond syntactic structure to
-incorporate semantic understanding. While the initial development of this "semantic web" was curtailed
-and never fully realized through its intended technical frameworks, certain conceptual elements endured.
-With the advent of large language models (LLMs), the [semantic web](./SEMANTICS.md) appears to be
-approaching realisation--albeit through means quite different from those Berners-Lee initially proposed.
+The Inventory Service manages product data, including stock levels and categories. It supports
+queries for individual items, filtered lists by category, and health checks. The service simulates
+real-world scenarios like occasional delays to mimic network latency or processing overhead,
+ensuring robustness in handling variable response times.
 
+*File: `inventory_service.py`*
+
+This service exemplifies microservices' single-responsibility principle, focusing solely on
+inventory management. Its endpoints are designed for flexibility, supporting both broad queries
+and specific item lookups, with health checks ensuring service reliability.
+
+
+### Service 2: Pricing Service
+
+The Pricing Service calculates prices for items, incorporating discounts and supporting bulk
+pricing requests. It simulates occasional failures to demonstrate fault tolerance, a critical
+aspect of microservices resilience. The service provides detailed pricing information, including
+currency and discount status.
+
+*File: `pricing_service.py`*
+
+The Pricing Service demonstrates microservices' ability to handle specialised tasks, with
+endpoints designed for both individual and bulk operations, enhancing efficiency for clients
+needing multiple price points.
+
+
+### Service 3: Order Service
+
+The Order Service orchestrates order creation by integrating data from the Inventory and
+Pricing services. It employs a circuit breaker pattern to manage dependencies, ensuring
+resilience against downstream failures. The service validates inventory availability and
+aggregates pricing, providing a comprehensive order summary.
+
+*File: `order_service.py`*
+
+This service highlights microservices' data composition, aggregating information from
+multiple sources to fulfill a business function, while its circuit breaker implementation
+enhances fault tolerance.
+
+
+### Web Client
+
+The web client provides an interactive interface for users to explore the services. It
+includes buttons for common operations, displays responses with feedback, and runs a demo
+sequence on page load to showcase typical interactions.
+
+*File: `client.html`*
+
+The client enhances user interaction by providing a visual interface, aligning with
+microservices' focus on enabling flexible client interactions through standardised APIs.
+
+
+### Running the System
+
+#### Terminal Setup
+
+To run the system, open four terminal windows and execute the following commands:
+
+```bash
+# Terminal 1 - Inventory Service
+python3 inventory_service.py
+
+# Terminal 2 - Pricing Service  
+python3 pricing_service.py
+
+# Terminal 3 - Order Service
+python3 order_service.py
+
+# Terminal 4 - Open client
+open client.html  # or python3 -m http.server 8000
+```
+
+These commands start each service on its designated port and serve the web client,
+either by opening it directly or hosting it via a simple HTTP server.
+
+
+#### Quick Test Commands
+
+To verify the services, use these `curl` commands:
+
+```bash
+# Test inventory
+curl http://localhost:7001/items
+curl http://localhost:7001/items/A001
+curl http://localhost:7001/health
+
+# Test pricing
+curl http://localhost:7003/price/A001
+curl http://localhost:7003/health
+
+# Test order creation
+curl -X POST http://localhost:7002/orders \
+  -H "Content-Type: application/json" \
+  -d '{"customer_id": "test", "skus": ["A001", "B001"]}'
+
+# Health checks
+curl http://localhost:7002/health
+```
+
+These commands test key functionalities, ensuring services respond correctly and
+handle errors appropriately.
+
+
+### Key Microservices Patterns Demonstrated
+
+The example incorporates several microservices design patterns, each addressing
+specific challenges in distributed systems:
+
+1. *Service Discovery*: Services use hardcoded URLs for simplicity, but include health
+   check endpoints to monitor availability, a foundation for dynamic discovery in
+   production environments using tools like Consul or Eureka.
+2. *Circuit Breaker Pattern*: The Order Service employs circuit breakers to prevent
+   cascading failures, automatically recovering after a timeout and using fallback
+   responses to maintain functionality during service outages.
+3. *Graceful Degradation*: The system continues operating despite partial failures,
+   such as the Order Service using fallback pricing when the Pricing Service is
+   unavailable, ensuring user-facing functionality remains intact.
+4. *Timeout Handling*: Network requests include configurable timeouts to prevent
+   hanging, enhancing system responsiveness and reliability.
+5. *Error Propagation*: Services return structured error responses with appropriate
+   HTTP status codes, providing clear feedback for debugging and client handling.
+6. *Data Composition*: The Order Service aggregates data from Inventory and Pricing
+   services, creating enriched responses that fulfill complex business requirements.
+7. *CORS Support*: Cross-origin resource sharing is implemented to support browser-based
+   clients, ensuring accessibility across different domains.
+
+These patterns enhance the system's resilience, scalability, and maintainability,
+core goals of microservices architecture.
+
+
+### Production Considerations
+
+While this example provides a robust foundation for understanding microservices,
+production systems require additional components:
+
+- *Load Balancing*: Deploy multiple instances of each service to distribute traffic
+  and improve availability, using tools like NGINX or cloud-based load balancers.
+- *Authentication*: Implement JWT tokens or API keys to secure service interactions,
+  ensuring only authorised clients access the APIs.
+- *Rate Limiting*: Protect services from abuse by limiting request rates, preserving
+  performance under high load.
+- *Logging*: Use structured logging with correlation IDs to trace requests across
+  services, aiding in debugging and monitoring.
+- *Metrics*: Integrate Prometheus or similar tools for real-time monitoring and
+  performance dashboards.
+- *Configuration*: Manage service configurations via environment variables or configuration
+  services for flexibility across environments.
+- *Database*: Replace in-memory data stores with persistent databases like PostgreSQL
+  or MongoDB for data durability.
+- *Message Queues*: Introduce asynchronous communication with tools like RabbitMQ or
+  Kafka for handling high-volume, non-blocking operations.
+- *API Gateway*: Use a gateway like Kong or AWS API Gateway to provide a single entry
+  point, manage routing, and enforce policies.
+- *Container Orchestration*: Deploy services using Kubernetes or Docker Swarm for
+  automated scaling, deployment, and management.
+
+These enhancements address scalability, security, and operational needs, making the system
+production-ready while maintaining the microservices principles of autonomy and loose coupling.
+
+
+### Conclusion
+
+This example demonstrates the power of microservices in creating modular, resilient, and
+scalable systems. By breaking down functionality into independent services, the architecture
+supports flexible development, deployment, and maintenance. The included patterns—service
+discovery, circuit breakers, and graceful degradation—address common challenges in distributed
+systems, while the web client illustrates practical usage. Extending this foundation with
+production-grade features can transform it into a robust, enterprise-ready solution, fully
+leveraging the benefits of microservices architecture.
 

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Microservices Demo Client</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        button { margin: 5px; padding: 10px; }
+        .output { background: #f5f5f5; padding: 10px; margin: 10px 0; }
+        .error { color: red; }
+        .success { color: green; }
+        .warning { color: orange; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Microservices Demo</h1>
+        
+        <div class="section">
+            <h2>Inventory Service</h2>
+            <button onclick="fetchInventory()">Get All Items</button>
+            <button onclick="fetchByCategory()">Get Electronics</button>
+            <button onclick="fetchItem('A001')">Get MacBook Pro</button>
+            <button onclick="checkHealth('inventory')">Health Check</button>
+        </div>
+        
+        <div class="section">
+            <h2>Pricing Service</h2>
+            <button onclick="fetchPrice('A001')">Get MacBook Price</button>
+            <button onclick="fetchBulkPricing()">Bulk Pricing</button>
+            <button onclick="checkHealth('pricing')">Health Check</button>
+        </div>
+        
+        <div class="section">
+            <h2>Order Service</h2>
+            <button onclick="createOrder()">Create Sample Order</button>
+            <button onclick="createFailingOrder()">Create Failing Order</button>
+            <button onclick="checkHealth('order')">Health Check</button>
+        </div>
+        
+        <div id="output" class="output"></div>
+    </div>
+
+    <script>
+        const services = {
+            inventory: 'http://localhost:7001',
+            pricing: 'http://localhost:7003',
+            order: 'http://localhost:7002'
+        };
+        
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : '';
+            output.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        async function apiCall(url, options = {}) {
+            try {
+                log(`Calling: ${url}`);
+                const response = await fetch(url, options);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    log(`Success: ${JSON.stringify(data, null, 2)}`, 'success');
+                } else {
+                    log(`Error ${response.status}: ${JSON.stringify(data, null, 2)}`, 'error');
+                }
+                
+                return { response, data };
+            } catch (error) {
+                log(`Network Error: ${error.message}`, 'error');
+                return { error };
+            }
+        }
+        
+        async function fetchInventory() {
+            await apiCall(`${services.inventory}/items`);
+        }
+        
+        async function fetchByCategory() {
+            await apiCall(`${services.inventory}/items?category=electronics`);
+        }
+        
+        async function fetchItem(sku) {
+            await apiCall(`${services.inventory}/items/${sku}`);
+        }
+        
+        async function fetchPrice(sku) {
+            await apiCall(`${services.pricing}/price/${sku}`);
+        }
+        
+        async function fetchBulkPricing() {
+            await apiCall(`${services.pricing}/prices`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ skus: ['A001', 'A002', 'B001'] })
+            });
+        }
+        
+        async function createOrder() {
+            await apiCall(`${services.order}/orders`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    customer_id: 'customer123',
+                    skus: ['A001', 'B001']
+                })
+            });
+        }
+        
+        async function createFailingOrder() {
+            await apiCall(`${services.order}/orders`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    customer_id: 'customer456',
+                    skus: ['INVALID', 'C002']  // Invalid SKU and out of stock
+                })
+            });
+        }
+        
+        async function checkHealth(service) {
+            await apiCall(`${services[service]}/health`);
+        }
+        
+        // Demo sequence
+        async function runDemo() {
+            log('Starting microservices demo ..');
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await fetchInventory();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await fetchBulkPricing();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await createOrder();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await createFailingOrder();
+            
+            log('Demo done.');
+        }
+        
+        // Auto-run demo on page load
+        window.addEventListener('load', () => {
+            setTimeout(runDemo, 1000);
+        });
+    </script>
+</body>
+</html>
