@@ -227,8 +227,8 @@ production-ready while maintaining the microservices principles of autonomy and 
 
 This example demonstrates the power of microservices in creating modular, resilient, and
 scalable systems. By breaking down functionality into independent services, the architecture
-supports flexible development, deployment, and maintenance. The included patterns—service
-discovery, circuit breakers, and graceful degradation—address common challenges in distributed
+supports flexible development, deployment, and maintenance. The included patterns--service
+discovery, circuit breakers, and graceful degradation--address common challenges in distributed
 systems, while the web client illustrates practical usage. Extending this foundation with
 production-grade features can transform it into a robust, enterprise-ready solution, fully
 leveraging the benefits of microservices architecture.
