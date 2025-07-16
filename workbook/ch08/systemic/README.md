@@ -25,14 +25,14 @@ eventually engage with, whether explicitly or implicitly.
 | [*Optimisation*](./optimal/) | Present in compilers, algorithms, hardware, energy use |
 | [*Security*](./security/) | Requires attention at every layer: physical to logical |
 | [*Interface*](./interface/) | Defines component interaction everywhere |
-| *Abstraction*   | Central to all software and hardware design      |
+| [*Abstraction*](./abstract/) | Central to all software and hardware design |
 | [*Scalability*](./scale/) | Applies to data, computation, architecture |
 | [*Latency*](./latency/) | Matters in networks, UI, hardware timing |
 | [*Concurrency*](./../../ch07/models/concurrent/) | Appears from CPU pipelines to distributed systems |
 | *Fault tolerance* | From ECC memory to retry loops in software       |
 | [*Determinism*](./determinism/) | Affects debugging, simulation, and predictability |
 | [*Time*](./time/) | Scheduling, clocks, profiling, causality in distributed systems |
-| *Complexity*   | Measured algorithmically, but also felt in UX and architecture |
+| [*Complexity*](./complex/) | Measured algorithmically, but also felt in UX and architecture |
 | [*State*](./state/) | Core to both computing and modelling; managed differently across layers |
 | [*Energy use*](./energy/) | Crucial from battery devices to datacenters |
 | [*Cost*](./cost/) | Not just economic, but computational, spatial, or temporal |
