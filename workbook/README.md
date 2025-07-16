@@ -9,9 +9,9 @@ rather than include it directly in the print version.
 
 ## Documents
 
-Folders may contain documents in the Microsoft ".docx" format. These are generated directly
-by Gemini Deep Research. They are heavily referenced and can serve as a starting point for
-further exploration or guidance on the topics.
+Folders may contain documents in the Microsoft ".docx" format (or PDF). These are generated
+directly by Gemini Deep Research. They are heavily referenced and can serve as a starting
+point for further exploration or guidance on the topics.
 
 
 ## Audio Discussions

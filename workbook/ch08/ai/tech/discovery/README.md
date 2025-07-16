@@ -3,8 +3,9 @@
 
 The pursuit of artificial intelligence (AI) has long been shaped by a fundamental philosophical
 and practical divergence: the prevalent "Optimisation View" and the less conventional "Discovery
-Perspective." This report delves into how these differing approaches profoundly influence AI
-capabilities, limitations, and their potential to emulate or surpass human intelligence.
+Perspective." These views are more of metaphores, than perhaps actual standpoints. But they
+reflect the different views. This text delves into how these differing approaches profoundly
+influence AI capabilities, limitations, and their potential to emulate or surpass human intelligence.
 
 The core challenge in AI lies in replicating or extending the multifaceted nature of intelligence,
 which encompasses more than just efficient problem-solving. This pursuit has largely been dominated
