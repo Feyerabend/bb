@@ -41,7 +41,13 @@ format (cf. [09](./09/)). Eventually, this culminated in architectures like Sing
 (SPAs) and serverless functions, where traditional notions of a "server" are abstracted away behind
 layers of infrastructure.
 
-We now have a dedicated folder exploring the future of the web ([10](./10/)). What happens when AI and
+Microservices [10](./10/) are an architectural style where applications are built as small, independent
+services that handle specific functions and communicate via APIs. Unlike monoliths, they allow modular
+development, independent deployment, and scaling, with each service managing its own data and logic.
+This enables flexibility and faster development but adds complexity in managing distributed systems
+and communication.
+
+We now have a dedicated folder exploring the future of the web ([11](./11/)). What happens when AI and
 machine learning take center stage? Could they reshape the web's core structure, replacing HTML with
 Markdown or an entirely new format? Or might we transition to something radically different, like directly
 executable content optimised for large language models (LLMs)? The web could evolve from a framework
