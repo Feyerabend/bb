@@ -29,7 +29,7 @@ eventually engage with, whether explicitly or implicitly.
 | [*Scalability*](./scale/) | Applies to data, computation, architecture |
 | [*Latency*](./latency/) | Matters in networks, UI, hardware timing |
 | [*Concurrency*](./../../ch07/models/concurrent/) | Appears from CPU pipelines to distributed systems |
-| *Fault tolerance* | From ECC memory to retry loops in software       |
+| [*Fault tolerance*](./fault/) | From ECC memory to retry loops in software |
 | [*Determinism*](./determinism/) | Affects debugging, simulation, and predictability |
 | [*Time*](./time/) | Scheduling, clocks, profiling, causality in distributed systems |
 | [*Complexity*](./complex/) | Measured algorithmically, but also felt in UX and architecture |
