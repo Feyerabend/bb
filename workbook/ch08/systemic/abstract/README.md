@@ -17,7 +17,7 @@ so long as they adhere to the agreed-upon abstractions.
 
 ### The Levels of Abstraction
 
-Understanding abstraction often involves recognizing the various layers at which it operates:
+Understanding abstraction often involves recognising the various layers at which it operates:
 
 * *Hardware Abstraction:* At the lowest level, the *instruction set architecture (ISA)* abstracts the complex
   internal workings of a CPU, presenting a simplified set of commands that software can execute. Device drivers
@@ -29,7 +29,7 @@ Understanding abstraction often involves recognizing the various layers at which
 * *Operating System Abstraction:* Operating systems abstract away the bare metal, providing processes with the
   illusion of dedicated resources like CPU time and memory, even though these resources are shared among many
   applications. *Virtual memory* abstracts physical memory addresses, allowing programs to use a contiguous
-  address space. The *file system* abstracts the physical organization of data on storage devices, presenting
+  address space. The *file system* abstracts the physical organisation of data on storage devices, presenting
   a hierarchical structure of files and directories.
 
 * *Programming Language Abstraction:* High-level programming languages abstract machine code, allowing developers
@@ -94,17 +94,17 @@ While indispensable, abstraction is not without its challenges and trade-offs:
 
 * *Leaky Abstractions:* As stated by Joel Spolsky, "All non-trivial abstractions, to some degree,
   are leaky." This means that occasionally, the underlying implementation details of an abstraction
-  might "leak" through, requiring the user of the abstraction to understand them to debug or optimize.
+  might "leak" through, requiring the user of the abstraction to understand them to debug or optimise.
   For instance, a network file system might abstract remote storage as local, but network latency or
   disconnections will expose the underlying distributed nature.
 
 * *Over-Abstraction:* Too many layers of abstraction, or overly complex abstractions, can lead to convoluted
-  designs that are difficult to understand, debug, or optimize. Finding the right level of abstraction
+  designs that are difficult to understand, debug, or optimise. Finding the right level of abstraction
   is a critical design skill.
 
 * *Debugging Difficulty:* While abstractions simplify development, they can complicate debugging when
   issues arise at lower levels. Tracing an error through multiple layers of abstraction can be challenging,
-  requiring specialized tools or deep system knowledge.
+  requiring specialised tools or deep system knowledge.
 
 
 
@@ -136,7 +136,7 @@ The principles of abstraction continue to drive innovation in contemporary compu
 In conclusion, abstraction is the bedrock upon which all modern computational systems are built.
 It is the art of simplifying complexity, fostering modularity, and enabling the creation of systems 
 that are both powerful and manageable. While it presents its own set of challenges, mastering the
-art of creating and utilizing effective abstractions remains paramount for any successful endeavor
+art of creating and utilising effective abstractions remains paramount for any successful endeavour
 in software and hardware engineering. It allows us to build ever more sophisticated systems without
 being overwhelmed by their intricate details, pushing the boundaries of what computing can achieve.
 

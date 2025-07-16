@@ -6,13 +6,13 @@ system's existence. While it is most formally quantified through *algorithmic an
 (e.g., Big O notation), its presence is equally palpable in the *maintainability of code*, the
 *intricacy of system architecture*, and critically, the *user experience (UX)*. At its heart,
 complexity represents the degree of difficulty in understanding, predicting, or controlling a 
-ystem's behavior. Its impact is profound and far-reaching, directly influencing *performance*,
+system's behaviour. Its impact is profound and far-reaching, directly influencing *performance*,
 *reliability*, *security*, and *usability*. Indeed, unmanaged complexity is frequently the silent
 culprit behind elusive bugs, security vulnerabilities, and ultimately, design failures.
 
 Complexity is not always inherently negative; some level of complexity is an inevitable consequence
 of addressing real-world problems. The challenge lies in managing and taming it, preventing it from
-spiraling out of control and rendering systems unmanageable or unusable. Understanding its various 
+spiralling out of control and rendering systems unmanageable or unusable. Understanding its various 
 manifestations is the first step toward effective mitigation.
 
 
@@ -50,7 +50,7 @@ Complexity manifests in several distinct, yet interconnected, forms:
       cohesion (a component having unrelated responsibilities) increase code complexity, making changes
       difficult and bug propagation more likely.
 
-* *System-Level Complexity (Architectural Complexity, Emergent Behavior):* This arises from the interactions
+* *System-Level Complexity (Architectural Complexity, Emergent Behaviour):* This arises from the interactions
   between multiple components, services, and external dependencies within a larger system.
 
     * *Distributed Systems:* Introducing multiple nodes, network communication, asynchronous operations,
@@ -63,10 +63,10 @@ Complexity manifests in several distinct, yet interconnected, forms:
       have unintended consequences elsewhere.
 
     * *Non-Determinism:* Systems with concurrent processes or external asynchronous inputs can exhibit
-      non-deterministic behavior, making it difficult to reproduce bugs or predict outcomes.
+      non-deterministic behaviour, making it difficult to reproduce bugs or predict outcomes.
 
-    * *Emergent Properties:* Behavior that arises from the interaction of individual components but is
-      not a property of any single component. While sometimes beneficial, emergent behavior can also
+    * *Emergent Properties:* Behaviour that arises from the interaction of individual components but is
+      not a property of any single component. While sometimes beneficial, emergent behaviour can also
       be unpredictable and a source of complexity.
 
     * *Operational Complexity:* The difficulty involved in deploying, monitoring, scaling, and maintaining
@@ -81,7 +81,7 @@ Complexity manifests in several distinct, yet interconnected, forms:
     * *Task Complexity:* If a system requires users to follow overly convoluted steps or understand
       intricate mental models to accomplish a goal, its UX is perceived as complex.
 
-    * *Inconsistent Mental Models:* When a system's behavior doesn't align with a user's expectations
+    * *Inconsistent Mental Models:* When a system's behaviour doesn't align with a user's expectations
       or prior experience, it introduces cognitive dissonance and perceived complexity.
 
 
@@ -91,7 +91,7 @@ Unchecked complexity has tangible negative consequences across the entire system
 
 * *Increased Development Time and Cost:* Complex systems take longer to design, implement, and test. The effort required to understand and integrate intricate components can lead to delays and budget overruns.
 
-* *Higher Bug Incidence:* More complex code paths, intricate interactions, and non-deterministic behaviors create more opportunities for defects. Debugging becomes significantly harder in complex environments.
+* *Higher Bug Incidence:* More complex code paths, intricate interactions, and non-deterministic behaviours create more opportunities for defects. Debugging becomes significantly harder in complex environments.
 
 * *Reduced Reliability and Robustness:* As complexity grows, so does the probability of failure. Identifying and isolating the root cause of issues in a highly interconnected system can be a nightmare, leading to longer downtimes.
 
@@ -116,7 +116,7 @@ While complexity cannot be entirely eliminated, it can be effectively managed th
 * *Modularity and Encapsulation:* Breaking systems into small, independent, and well-encapsulated modules
   with clear responsibilities reduces interdependencies and limits the scope of changes.
 
-* *Simplicity and Minimalism:* Favoring simpler designs, algorithms, and data structures over overly
+* *Simplicity and Minimalism:* Favouring simpler designs, algorithms, and data structures over overly
   elaborate ones. The principle of "KISS" (Keep It Simple, Stupid) is paramount.
 
 * *Cohesion and Loose Coupling:* Designing components to have high cohesion (strong internal relatedness)
@@ -130,14 +130,14 @@ While complexity cannot be entirely eliminated, it can be effectively managed th
   in one part of a complex system do not introduce regressions elsewhere, providing a safety net for
   continuous evolution.
 
-* *Design Patterns:* Utilizing established design patterns provides proven solutions to recurring design
+* *Design Patterns:* Utilising established design patterns provides proven solutions to recurring design
   problems, often promoting modularity and reducing arbitrary complexity.
 
 * *Continuous Refactoring:* Regularly reviewing and improving code and architectural designs to reduce
   accumulated technical debt and simplify overly complex sections.
 
 * *Observability and Monitoring:* Implementing robust logging, tracing, and monitoring tools to gain
-  insights into system behavior, allowing for early detection and diagnosis of issues in complex
+  insights into system behaviour, allowing for early detection and diagnosis of issues in complex
   distributed environments.
 
 * *User-Centered Design (UCD):* For UX complexity, a strong UCD approach ensures that the system's
