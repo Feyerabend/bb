@@ -41,7 +41,7 @@ format (cf. [09](./09/)). Eventually, this culminated in architectures like Sing
 (SPAs) and serverless functions, where traditional notions of a "server" are abstracted away behind
 layers of infrastructure.
 
-Microservices [10](./10/) are an architectural style where applications are built as small, independent
+Microservices ([10](./10/)) are an architectural style where applications are built as small, independent
 services that handle specific functions and communicate via APIs. Unlike monoliths, they allow modular
 development, independent deployment, and scaling, with each service managing its own data and logic.
 This enables flexibility and faster development but adds complexity in managing distributed systems
