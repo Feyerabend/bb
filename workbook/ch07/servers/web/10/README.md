@@ -222,6 +222,22 @@ production systems require additional components:
 These enhancements address scalability, security, and operational needs, making the system
 production-ready while maintaining the microservices principles of autonomy and loose coupling.
 
+### Critique
+
+Criticism of microservices often centers on the fact that while they promise modularity and
+independent deployment, in practice they can lead to significant operational complexity and
+tight coupling at the system level. As the number of services grows, so does the overhead in
+managing network communication, version compatibility, service discovery, distributed data
+consistency, and observability. Instead of simplifying architecture, microservices can introduce
+failure modes that are hard to trace, such as cascading timeouts or partial outages.
+
+Moreover, teams may unintentionally create "distributed monoliths"—systems where services are
+split physically but remain logically entangled, making changes brittle and coordination expensive.
+Poorly defined service boundaries, shared databases, or excessive inter-service communication
+can undermine the intended benefits of decoupling. For smaller teams or simpler domains, the
+additional infrastructure, deployment pipelines, and operational tooling required for
+microservices may outweigh their theoretical scalability and agility advantages.
+
 
 ### Conclusion
 
