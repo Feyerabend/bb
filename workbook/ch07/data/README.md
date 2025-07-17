@@ -55,12 +55,12 @@ have learned from Chapter 1 on fundamentals.
 A data structure is a way of organising and storing data so that it can be efficiently accessed and modified.
 Data structures define the relationships between data elements and provide methods for working with them.
 Common examples include:
-- Arrays: A fixed-size collection of elements stored in contiguous memory locations.
-- Linked Lists: A sequence of nodes, where each node points to the next.
-- Stacks: A last-in, first-out (LIFO) data structure.
-- Queues: A first-in, first-out (FIFO) data structure.
-- Trees: A hierarchical structure with nodes and edges (e.g., binary trees).
-- Graphs: A collection of nodes (vertices) and connections (edges).
+- *Arrays:* A fixed-size collection of elements stored in contiguous memory locations.
+- *Linked Lists:* A sequence of nodes, where each node points to the next.
+- *Stacks:* A last-in, first-out (LIFO) data structure.
+- *Queues:* A first-in, first-out (FIFO) data structure.
+- *Trees:* A hierarchical structure with nodes and edges (e.g., binary trees).
+- *Graphs:* A collection of nodes (vertices) and connections (edges).
 
 Data structures are fundamental for efficient problem-solving in computing.
 
@@ -72,9 +72,12 @@ its implementation details. It defines a set of operations that can be performed
 how these operations are implemented. ADTs provide a high-level abstraction over data structures.
 
 For example:
-- List ADT: Defines operations like `insert()`, `delete()`, and `find()`, but it can be implemented using arrays or linked lists.
-- Stack ADT: Defines `push()`, `pop()`, and `peek()`, but it can be implemented using arrays or linked lists.
-- Queue ADT: Defines `enqueue()` and `dequeue()`, but the implementation could be an array, a linked list, or a circular buffer.
+- *List ADT:* Defines operations like `insert()`, `delete()`, and `find()`, but it
+  can be implemented using arrays or linked lists.
+- *Stack ADT:* Defines `push()`, `pop()`, and `peek()`, but it can be implemented
+  using arrays or linked lists.
+- *Queue ADT:* Defines `enqueue()` and `dequeue()`, but the implementation could be
+  an array, a linked list, or a circular buffer.
 
 Think of ADTs as interfaces or blueprints that describe what a data structure should do, while the actual
 data structure provides the implementation.
