@@ -73,7 +73,8 @@ Complexity manifests in several distinct, yet interconnected, forms:
       a system in production. This includes aspects like logging, alerting, infrastructure management,
       and incident response.
 
-* *User Experience (UX) Complexity:* This refers to the difficulty a user encounters when interacting with a system.
+* *User Experience (UX) Complexity:* This refers to the difficulty a user encounters when interacting
+  with a system.
 
     * *Cognitive Overload:* Too many options, cluttered interfaces, or inconsistent navigation can
       overwhelm users, leading to frustration and errors.
@@ -89,25 +90,39 @@ Complexity manifests in several distinct, yet interconnected, forms:
 
 Unchecked complexity has tangible negative consequences across the entire system lifecycle:
 
-* *Increased Development Time and Cost:* Complex systems take longer to design, implement, and test. The effort required to understand and integrate intricate components can lead to delays and budget overruns.
+* *Increased Development Time and Cost:* Complex systems take longer to design, implement, and test.
+  The effort required to understand and integrate intricate components can lead to delays and budget
+  overruns.
 
-* *Higher Bug Incidence:* More complex code paths, intricate interactions, and non-deterministic behaviours create more opportunities for defects. Debugging becomes significantly harder in complex environments.
+* *Higher Bug Incidence:* More complex code paths, intricate interactions, and non-deterministic
+  behaviours create more opportunities for defects. Debugging becomes significantly harder in
+  complex environments.
 
-* *Reduced Reliability and Robustness:* As complexity grows, so does the probability of failure. Identifying and isolating the root cause of issues in a highly interconnected system can be a nightmare, leading to longer downtimes.
+* *Reduced Reliability and Robustness:* As complexity grows, so does the probability of failure.
+  Identifying and isolating the root cause of issues in a highly interconnected system can be a
+  nightmare, leading to longer downtimes.
 
-* *Poor Performance:* Algorithmic complexity directly impacts performance. Furthermore, architectural complexity (e.g., excessive network calls, unnecessary data transformations) can introduce latency and bottlenecks.
+* *Poor Performance:* Algorithmic complexity directly impacts performance. Furthermore, architectural
+  complexity (e.g., excessive network calls, unnecessary data transformations) can introduce latency
+  and bottlenecks.
 
-* *Decreased Maintainability and Evolvability:* Complex systems are rigid and fragile. Changes in one area risk breaking others, making it difficult to adapt to 
-new requirements or fix existing issues without introducing new ones. This leads to *technical debt*.
+* *Decreased Maintainability and Evolvability:* Complex systems are rigid and fragile. Changes in one
+  area risk breaking others, making it difficult to adapt to new requirements or fix existing issues
+  without introducing new ones. This leads to *technical debt*.
 
-* *Security Vulnerabilities:* Complex codebases and convoluted architectures are harder to audit for security flaws. More pathways and interactions increase the attack surface and make it easier for vulnerabilities to go unnoticed.
+* *Security Vulnerabilities:* Complex codebases and convoluted architectures are harder to audit for
+  security flaws. More pathways and interactions increase the attack surface and make it easier for
+  vulnerabilities to go unnoticed.
 
-* *Poor User Adoption and Satisfaction:* A system that is difficult to learn or use will inevitably lead to user frustration, low adoption rates, and negative perceptions, regardless of its underlying technical prowess.
+* *Poor User Adoption and Satisfaction:* A system that is difficult to learn or use will inevitably
+  lead to user frustration, low adoption rates, and negative perceptions, regardless of its underlying
+  technical prowess.
 
 
 ### Strategies for Taming Complexity
 
-While complexity cannot be entirely eliminated, it can be effectively managed through intentional design and continuous effort:
+While complexity cannot be entirely eliminated, it can be effectively managed through intentional
+design and continuous effort:
 
 * *Abstraction:* (As discussed previously) Hiding implementation details behind well-defined interfaces
   is the primary tool for managing complexity. It allows developers to reason about components at a
