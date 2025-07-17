@@ -58,6 +58,10 @@ This workbook invites you to follow those threads--to explore, test, and build w
 in mind. Take security, for example: it's not a problem you solve once and for all, but an ongoing
 effort--one that will persist as long as computers behave even remotely like they do today.
 
+*To become a good programmer, it is not enough to master syntax or tools.
+One must also recognise and internalise these systemic concepts--they appear
+across all layers of computing and shape how systems behave, succeed, or fail.*
+
 
 #### Noise
 
