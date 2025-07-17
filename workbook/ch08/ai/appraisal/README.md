@@ -30,3 +30,17 @@ making the selection. Here, I have chosen to highlight ideas that I find thought
 leaving others aside. Your perspective may differ, and you may find other voices more compelling.
 I encourage you to explore the broader landscape of opinions independently, and not regard the views
 presented here as definitive or exhaustive.*
+
+
+### Suggested Reading
+
+* Brockman, J. (Ed.). (2019). *Possible minds: Twenty-five ways of looking at AI*. Penguin Press.
+
+*The book is a curated collection of essays from leading thinkers across science, technology, and philosophy,
+each offering a distinct perspective on the promises, challenges, and implications of artificial intelligence.
+Ranging from enthusiastic to cautionary, the contributions reflect the diversity of thought in the field, with
+some authors celebrating the potential of machine learning and others warning of existential risks or
+epistemological shifts. While the collection does not aim for consensus, its strength lies in exposing readers
+to a broad intellectual landscape, making it a valuable entry point for those seeking to understand how AI
+is being interpreted, shaped, and questioned across disciplines.*
+

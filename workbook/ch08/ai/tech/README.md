@@ -4,21 +4,21 @@
 Artificial Intelligence, as a scientific field, is characterised by a diversity of technological
 approaches aimed at enabling machines to perform tasks traditionally requiring human intelligence.
 It is a patchwork of methods, historical developments, and shifting priorities, marked by competing
-strategies for engineering intelligent behavior. In this collection, we trace some distinct
+strategies for engineering intelligent behaviour. In this collection, we trace some distinct
 yet interconnected technological paths within AI: the symbolic manipulation of
 *[GOFAI](./gofai/) (Good Old-Fashioned Artificial Intelligence)*, the modern statistical
 and data-driven techniques of *[machine learning](./ml/)*, a conceptual but rigorously
 specified engineering approach embodied by the work of *John von Neumann on
 [self-replicating machines](./replicate/)*, and an example of a more philosophical or conceptual
 strand anchored by the work of David E. Stanley and others interested in [discovery](./discovery/)
-and the nature of intelligent behavior.
+and the nature of intelligent behaviour.
 
 
 Dating back to the mid-20th century, von Neumann's abstract models, particularly his universal
 constructor in the cellular automaton, explored the fundamental logical and mechanical requirements
 for a system to not only construct another entity but to reproduce itself and, crucially,
 to allow for the possibility of increasing complexity through a process analogous to evolution.
-This line of inquiry, focused on the engineering of *autonomy and self-organization* in
+This line of inquiry, focused on the engineering of *autonomy and self-organisation* in
 artificial systems, deeply influences contemporary discussions around recursive self-improvement
 (RSI) and the long-term potential for highly autonomous AI technologies.
 
@@ -31,9 +31,9 @@ persists in knowledge representation, planning, and the pursuit of explainable A
 By contrast, the contemporary field of machine learning, particularly its statistical and neural
 approaches, has reshaped AI into a discipline less concerned with internal reasoning and more
 with external performance. Here, systems learn from data rather than being explicitly programmed.
-The emphasis shifts from knowing to fitting, from designed structure to emergent behavior.
+The emphasis shifts from knowing to fitting, from designed structure to emergent behaviour.
 The second part of this material surveys a variety of learning algorithms, each with its own
-trade-offs and assumptions about the nature of generalization.
+trade-offs and assumptions about the nature of generalisation.
 
 Finally, the section on discovery returns us to a more reflective stance. Drawing on ideas from
 philosophy of science and cognitive development, it asks how novelty and structure arise--not
@@ -42,7 +42,7 @@ of Stanley and others, this material resists premature closure and invites a bro
 about what AI can be, beyond performance benchmarks or narrow definitions.
 
 
-*The themes is not meant to be exhaustive. It is a map drawn from one perspective,
+*The themes are not meant to be exhaustive. It is a map drawn from one perspective,
 and you are encouraged to redraw it as you read, challenge, and explore. AI, after all, is not
 only about building machines that learn or reason, but also about how we choose to describe,
 formalise, and imagine intelligence in the first place.*
