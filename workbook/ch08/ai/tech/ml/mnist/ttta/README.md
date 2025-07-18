@@ -191,7 +191,7 @@ deployed systems.
 
 
 
-### Observations from Results
+### Results from MNIST example
 
 __Training Performance__
 
