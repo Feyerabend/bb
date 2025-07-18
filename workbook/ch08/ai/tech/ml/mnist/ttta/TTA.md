@@ -8,7 +8,7 @@ deployments, this assumption frequently breaks down. Causes of distribution shif
 
 * *Natural variations:* Changes in lighting, weather, sensor noise, or camera angles.
 * *Domain differences:* A model trained on synthetic data deployed in a real environment.
-* *Temporal shifts:* Data characteristics evolving over time (e.g., trends in user behavior,
+* *Temporal shifts:* Data characteristics evolving over time (e.g., trends in user behaviour,
   changes in object appearance).
 * *Adversarial attacks:* Intentional manipulation of input data.
 
@@ -19,10 +19,10 @@ without the prohibitive cost and delay of full model retraining.
 
 ### Diving Deeper into "Core Idea"
 
-You mentioned "parts of the model (often normalization layers or small modules) to update or
+You mentioned "parts of the model (often normalisation layers or small modules) to update or
 reconfigure on the fly." This is a crucial point. TTA strategies aim for *minimal changes* to
 the pre-trained model. The goal is to leverage the vast knowledge already encoded in the trained
-weights while making localized adjustments for the new data.
+weights while making localised adjustments for the new data.
 
 This minimal change philosophy leads to several advantages:
 
@@ -46,10 +46,10 @@ This minimal change philosophy leads to several advantages:
   or delayed.
 
 * *Test-Time Adaptation (TTA) (Broader Category):* This umbrella term includes TTT but also encompasses
-  simpler, non-optimization-based methods. 
-  Statistical adaptations might involve re-calculating statistics for other types of normalization
+  simpler, non-optimisation-based methods. 
+  Statistical adaptations might involve re-calculating statistics for other types of normalisation
   layers or even adjusting thresholds for classification. Architectural adaptations could involve
-  adding small, learnable "adapter" modules that are optimized at test time, while the bulk of the
+  adding small, learnable "adapter" modules that are optimised at test time, while the bulk of the
   pre-trained network remains frozen.
 
 * *Online / Continual Settings:* TTA fits seamlessly into these paradigms. In online learning, data
@@ -68,7 +68,7 @@ theoretical model performance and real-world utility:
 * *Increased Robustness and Reliability:* TTA makes models more resilient to unforeseen changes
   in their operating environment, leading to more dependable AI systems.
 
-* *Reduced Operational Costs:* By minimizing the need for constant data collection, labeling,
+* *Reduced Operational Costs:* By minimising the need for constant data collection, labelling,
   and full retraining cycles, TTA significantly lowers the operational expenditure of deploying
   and maintaining ML models.
 
@@ -83,7 +83,7 @@ theoretical model performance and real-world utility:
 ### Example: BatchNorm TTA
 
 During training, BN layers compute running means and variances of activations across batches
-and use these to normalize the data, which helps in stabilizing training. These running
+and use these to normalise the data, which helps in stabilising training. These running
 statistics are then typically frozen and used at inference time.
 
 The TTA approach for BN is simple yet powerful:
@@ -93,14 +93,14 @@ The TTA approach for BN is simple yet powerful:
 
 2. *Distribution Shift:* If the test data distribution is different, these $\mu_{train}$ and
    $\sigma^2_{train}$ might no longer be representative. Applying them to the shifted data
-   can lead to incorrect normalization and degraded performance.
+   can lead to incorrect normalisation and degraded performance.
 
 3. *TTA Action:* Instead of using the stale training statistics, for each incoming test batch,
    the BN layers *recompute* the mean ($\mu_{test\_batch}$) and variance ($\sigma^2_{test\_batch}$)
-   *on that specific test batch*. These new statistics are then used to normalize the activations
+   *on that specific test batch*. These new statistics are then used to normalise the activations
    for that batch.
 
-4. *Benefits:* This dynamic re-normalization effectively "centers" and "scales" the activations
+4. *Benefits:* This dynamic re-normalisation effectively "centres" and "scales" the activations
    of the test data according to its *current* distribution, making the model less sensitive
    to domain shifts. The core weights of the convolutional or fully connected layers remain
    untouched, preserving the learned features.
@@ -110,7 +110,7 @@ The TTA approach for BN is simple yet powerful:
 
 While BN adaptation is simple, research has explored more sophisticated TTA methods:
 
-* *Entropy Minimization (Tent):* Tent (Wang et al.) proposes minimizing the prediction entropy
+* *Entropy Minimisation (Tent):* Tent (Wang et al.) proposes minimising the prediction entropy
   of the model on the test data. The idea is that for a confident model, the predictions should
   be sharp (low entropy). By backpropagating this entropy loss and updating, for example, the
   BN affine parameters ($\gamma$ and $\beta$), the model can adapt to produce more confident
@@ -123,7 +123,7 @@ While BN adaptation is simple, research has explored more sophisticated TTA meth
 
 * *Meta-Learning for TTA:* Meta-learning (or "learning to learn") approaches can train a model
   to *adapt quickly* to new domains with minimal data. This involves training the model on a
-  variety of source domains such that it learns a good initialization or a good adaptation
+  variety of source domains such that it learns a good initialisation or a good adaptation
   strategy that can be quickly fine-tuned at test time on an unseen target domain.
 
 * *Feature-Space Alignment:* Some TTA methods focus on aligning the feature distributions of
@@ -131,9 +131,9 @@ While BN adaptation is simple, research has explored more sophisticated TTA meth
   using techniques like Maximum Mean Discrepancy (MMD) or adversarial training to reduce the
   discrepancy between feature distributions.
 
-* *Gradient-Based Optimization:* Many TTA methods involve performing a few gradient descent
+* *Gradient-Based Optimisation:* Many TTA methods involve performing a few gradient descent
   steps on the test data. The challenge is defining an appropriate unsupervised loss function
-  that guides this optimization effectively without access to labels.
+  that guides this optimisation effectively without access to labels.
 
 
 ### Challenges and Limitations
@@ -170,14 +170,14 @@ TTA is a vibrant area of research. Future directions include:
 
 * *More Robust Unsupervised Losses:* Developing novel self-supervised or unsupervised
   loss functions that are more resilient to various types of distribution shifts and
-  less prone to mal-adaptation.
+  less prone to mat-adaptation.
 
 * *Adaptive Adaptation Strategies:* Creating methods that can automatically determine
   the optimal adaptation strategy (what to adapt, how much) based on the characteristics
   of the incoming test data.
 
 * *Combining TTA with Other Robustness Techniques:* Integrating TTA with adversarial
-  training, domain generalization, and uncertainty quantification to build even more
+  training, domain generalisation, and uncertainty quantification to build even more
   robust and trustworthy AI systems.
 
 * *Practical Deployment Tools:* Developing frameworks and libraries that simplify the
@@ -223,7 +223,7 @@ with the noisy data without adaptation.
 
 __Test-Time Adaptation (TTA)__
 
-- TTA uses entropy minimization to adapt the BatchNorm parameters, and the entropy loss during
+- TTA uses entropy minimisation to adapt the BatchNorm parameters, and the entropy loss during
   adaptation fluctuates (e.g., 0.5011 to 0.5956 to 0.3001).
 - After TTA, the noisy test accuracy improves dramatically to 90.18%, an improvement of 29.46%.
   This shows that adapting the BatchNorm parameters effectively mitigates the domain shift caused by noise.
