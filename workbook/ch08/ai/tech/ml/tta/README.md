@@ -1,4 +1,7 @@
 
+> [!IMPORTANT]  
+> The code requires (preferably) a virtual environment and torch installations.
+
 ## Test-Time Adaptation (TTA)
 
 Test-Time Adaptation (TTA) is a powerful technique designed to tackle the challenge of *distribution shift*
@@ -20,7 +23,7 @@ and personalisation without the need for updating the core model weights.
 
 The Python code in `lm.py` exemplifies this TTA concept through the implementation of a `CorrectionAwareTransformer`
 model, which combines corruption-aware training with TTA to handle noisy or corrupted text inputs effectively.
-This model is designed not only to generate coherent text but also to recognize and correct errors in real-time,
+This model is designed not only to generate coherent text but also to recognise and correct errors in real-time,
 making it particularly robust for real-world applications where data imperfections are common.
 
 
@@ -36,15 +39,15 @@ of corrupted words back to their correct forms, streamlining the correction proc
 The model employs embeddings to transform token indices into dense vectors, supplemented by learnable positional
 encodings that preserve the sequence's order. The Transformer Encoder, composed of multiple layers, generates
 contextualised representations of the input. Two distinct output heads enhance the model's functionality: the
-`lm_head` predicts the next token in the sequence for language modeling, while the `confidence_head` produces
+`lm_head` predicts the next token in the sequence for language modelling, while the `confidence_head` produces
 a probability score indicating the model's confidence in each token. This dual-head approach allows the model
 to balance text generation with error detection.
 
 
 ### Test-Time Adaptation in Action
 
-The TTA process is driven by a custom `TTALoss` class, which optimizes the model's behavior during inference
-through three complementary objectives. First, the `entropy_loss` minimizes prediction uncertainty, encouraging
+The TTA process is driven by a custom `TTALoss` class, which optimises the model's behaviour during inference
+through three complementary objectives. First, the `entropy_loss` minimises prediction uncertainty, encouraging
 the model to produce confident outputs. Second, the `confidence_loss` directly boosts the confidence scores
 from the `confidence_head`, typically targeting a high confidence threshold (e.g., 0.8). Finally, the
 `consistency_loss` ensures that the model's predictions remain stable across slightly altered versions of the
@@ -54,8 +57,8 @@ simulating real-world noise.
 
 The `adapt_at_test_time_enhanced` function orchestrates TTA by fine-tuning a copy of the pre-trained model on
 the specific input at inference time. It supports flexible adaptation modes, allowing updates to all model
-parameters, only the final layers, or just normalization layers, depending on the use case. Using the `AdamW`
-optimizer, the function iteratively applies the TTA loss, refines the model's parameters, and ensures
+parameters, only the final layers, or just normalisation layers, depending on the use case. Using the `AdamW`
+optimiser, the function iteratively applies the TTA loss, refines the model's parameters, and ensures
 robustness to the specific input's characteristics.
 
 
@@ -72,8 +75,8 @@ Supporting functions, such as `corrupt_word` and `correct_word`, enable controll
 of errors based on the `corruption_patterns` and `correction_map`. During training, the `generate_training_data`
 function creates a diverse dataset with a mix of clean and corrupted sentences, assigning higher confidence
 to clean words and lower confidence to corrupted ones. The `train_model` function uses this dataset, combining
-a cross-entropy loss for next-token prediction with a mean squared error loss for confidence prediction, optimized
-via the `AdamW` optimizer and a cosine annealing learning rate scheduler.
+a cross-entropy loss for next-token prediction with a mean squared error loss for confidence prediction, optimised
+via the `AdamW` optimiser and a cosine annealing learning rate scheduler.
 
 
 ### Evaluating Robustness
