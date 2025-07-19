@@ -1,4 +1,8 @@
 
+> [!IMPORTANT]  
+> Requires recommended virtual environment and torch.
+> Installment of MNIST data is done through the script.
+
 ## Test-Time Adaptation (TTA)
 
 At its core, TTA directly addresses the pervasive problem of *distribution shift*. Machine learning

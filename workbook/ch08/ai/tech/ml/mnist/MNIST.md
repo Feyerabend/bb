@@ -7,14 +7,18 @@ This script implements a basic neural network to classify images from the MNIST 
 
 > [!IMPORTANT] 
 > The program/script will not work without data!
+> If you want automatic download of MNIST data, try the torch [version](./tta/),
+> which can be used also in this example. But it requires a virtual environment
+> and obviously installation of torch.
 
-Search for the following files online:
+Otherwise, search for the following files online:
 - `train-images.idx3-ubyte`
 - `train-labels.idx1-ubyte`
 - `t10k-images.idx3-ubyte`
 - `t10k-labels.idx1-ubyte`
 
-At the time of writing: https://github.com/mbornet-hl/MNIST/tree/master/MNIST. Change the names of the files.
+At the time of writing: https://github.com/mbornet-hl/MNIST/tree/master/MNIST.
+Change the names of the files.
 
 ### Explanation
 
