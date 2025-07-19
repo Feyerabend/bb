@@ -92,3 +92,4 @@ offers a robust solution for handling noisy text inputs. By dynamically adapting
 test time, it ensures reliable performance in real-world scenarios where data imperfections are inevitable,
 making it a tool for practical machine learning applications.
 
+Another example of TTA can be seen regarding [MNIST](./../mnist/tta/).

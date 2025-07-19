@@ -234,3 +234,5 @@ The jump from 60.72% to 90.18% on the noisy test set is a strong indicator that 
 intended. While the adapted accuracy doesn’t quite reach the clean test accuracy (97.58%), it’s a
 significant recovery, suggesting the adaptation process is effective.
 
+Another example of TTA in relation to a [language model](./../../tta/) (think 2025 status of LLMs).
+ 
