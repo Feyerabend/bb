@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vertex Cover Demo</title>
+  <style>
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+      max-width: 800px; 
+      margin: 0 auto; 
+      padding: 20px; 
+      background: #f8f9fa;
+    }
+    .container {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    canvas { 
+      border: 2px solid #e9ecef; 
+      border-radius: 4px;
+      background: #fff;
+      display: block;
+      margin: 20px auto;
+    }
+    .controls {
+      text-align: center;
+      margin: 20px 0;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0 5px;
+      font-size: 14px;
+    }
+    button:hover { background: #0056b3; }
+    button:disabled { background: #6c757d; cursor: not-allowed; }
+    .info {
+      background: #e7f3ff;
+      border-left: 4px solid #007bff;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 15px 0;
+      font-weight: 500;
+    }
+    .stat { text-align: center; }
+    .stat-value { font-size: 24px; color: #007bff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Vertex Cover Approximation Algorithm</h2>
+    
+    <div class="info">
+      <strong>Problem:</strong> Find the minimum set of vertices that covers all edges in a graph.
+      <br><strong>Algorithm:</strong> 2-approximation - greedily pick both endpoints of uncovered edges.
+    </div>
+
+    <canvas id="graph" width="600" height="400"></canvas>
+    
+    <div class="controls">
+      <button onclick="runAlgorithm()">Run Algorithm</button>
+      <button onclick="reset()">Reset</button>
+      <button onclick="generateNewGraph()">New Graph</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" id="coverSize">-</div>
+        <div>Cover Size</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="totalEdges">-</div>
+        <div>Total Edges</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="approxRatio">-</div>
+        <div>Approx. Ratio</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("graph");
+    const ctx = canvas.getContext("2d");
+    
+    let currentGraph = {
+      vertices: {
+        A: { x: 150, y: 100 },
+        B: { x: 300, y: 80 },
+        C: { x: 450, y: 120 },
+        D: { x: 200, y: 220 },
+        E: { x: 350, y: 250 },
+        F: { x: 500, y: 200 }
+      },
+      edges: [
+        ["A", "B"], ["A", "D"], ["B", "C"], 
+        ["B", "D"], ["C", "E"], ["C", "F"],
+        ["D", "E"], ["E", "F"]
+      ]
+    };
+
+    let animationState = {
+      step: 0,
+      processing: false,
+      cover: new Set(),
+      processedEdges: new Set(),
+      currentEdge: null
+    };
+
+    function generateRandomGraph() {
+      const nodeCount = 5 + Math.floor(Math.random() * 3);
+      const vertices = {};
+      const edges = [];
+      
+      // Generate vertices in a circle
+      for (let i = 0; i < nodeCount; i++) {
+        const angle = (i * 2 * Math.PI) / nodeCount;
+        const x = 300 + 120 * Math.cos(angle);
+        const y = 200 + 100 * Math.sin(angle);
+        vertices[String.fromCharCode(65 + i)] = { x, y };
+      }
+      
+      // Generate random edges
+      const nodeNames = Object.keys(vertices);
+      for (let i = 0; i < nodeNames.length; i++) {
+        for (let j = i + 1; j < nodeNames.length; j++) {
+          if (Math.random() < 0.4) {
+            edges.push([nodeNames[i], nodeNames[j]]);
+          }
+        }
+      }
+      
+      // Ensure connectivity
+      for (let i = 0; i < nodeNames.length - 1; i++) {
+        if (Math.random() < 0.7) {
+          edges.push([nodeNames[i], nodeNames[i + 1]]);
+        }
+      }
+      
+      return { vertices, edges };
+    }
+
+    function computeOptimalCover(vertices, edges) {
+      // Simple brute force for small graphs (educational purpose)
+      const nodeNames = Object.keys(vertices);
+      let minCover = new Set(nodeNames);
+      
+      for (let size = 1; size <= nodeNames.length; size++) {
+        const combinations = getCombinations(nodeNames, size);
+        for (let combo of combinations) {
+          const coverSet = new Set(combo);
+          if (isValidCover(coverSet, edges)) {
+            if (combo.length < minCover.size) {
+              minCover = coverSet;
+            }
+          }
+        }
+      }
+      return minCover;
+    }
+
+    function getCombinations(arr, size) {
+      if (size === 1) return arr.map(x => [x]);
+      const result = [];
+      for (let i = 0; i < arr.length; i++) {
+        const smaller = getCombinations(arr.slice(i + 1), size - 1);
+        for (let combo of smaller) {
+          result.push([arr[i], ...combo]);
+        }
+      }
+      return result;
+    }
+
+    function isValidCover(coverSet, edges) {
+      return edges.every(([u, v]) => coverSet.has(u) || coverSet.has(v));
+    }
+
+    function drawGraph() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw edges
+      currentGraph.edges.forEach(([u, v], index) => {
+        const p1 = currentGraph.vertices[u];
+        const p2 = currentGraph.vertices[v];
+        const edgeKey = `${u}-${v}`;
+        
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        
+        if (animationState.currentEdge === index) {
+          ctx.strokeStyle = "#ff6b35";
+          ctx.lineWidth = 4;
+        } else if (animationState.processedEdges.has(edgeKey)) {
+          ctx.strokeStyle = "#28a745";
+          ctx.lineWidth = 3;
+        } else {
+          ctx.strokeStyle = "#6c757d";
+          ctx.lineWidth = 2;
+        }
+        ctx.stroke();
+      });
+      
+      // Draw vertices
+      Object.entries(currentGraph.vertices).forEach(([name, pos]) => {
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 20, 0, 2 * Math.PI);
+        
+        if (animationState.cover.has(name)) {
+          ctx.fillStyle = "#ffc107";
+          ctx.strokeStyle = "#e0a800";
+          ctx.lineWidth = 3;
+        } else {
+          ctx.fillStyle = "#ffffff";
+          ctx.strokeStyle = "#6c757d";
+          ctx.lineWidth = 2;
+        }
+        
+        ctx.fill();
+        ctx.stroke();
+        
+        // Label
+        ctx.fillStyle = "#212529";
+        ctx.font = "16px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(name, pos.x, pos.y + 5);
+      });
+      
+      updateStats();
+    }
+
+    function updateStats() {
+      document.getElementById("coverSize").textContent = animationState.cover.size || "-";
+      document.getElementById("totalEdges").textContent = currentGraph.edges.length;
+      
+      if (animationState.cover.size > 0) {
+        const optimalSize = computeOptimalCover(currentGraph.vertices, currentGraph.edges).size;
+        const ratio = (animationState.cover.size / optimalSize).toFixed(2);
+        document.getElementById("approxRatio").textContent = ratio;
+      } else {
+        document.getElementById("approxRatio").textContent = "-";
+      }
+    }
+
+    async function runAlgorithm() {
+      if (animationState.processing) return;
+      
+      reset();
+      animationState.processing = true;
+      
+      const used = new Set();
+      
+      for (let i = 0; i < currentGraph.edges.length; i++) {
+        const [u, v] = currentGraph.edges[i];
+        const edgeKey = `${u}-${v}`;
+        
+        animationState.currentEdge = i;
+        drawGraph();
+        await sleep(800);
+        
+        if (!used.has(u) && !used.has(v)) {
+          animationState.cover.add(u);
+          animationState.cover.add(v);
+          used.add(u);
+          used.add(v);
+          
+          drawGraph();
+          await sleep(600);
+        }
+        
+        animationState.processedEdges.add(edgeKey);
+        animationState.currentEdge = null;
+        drawGraph();
+        await sleep(300);
+      }
+      
+      animationState.processing = false;
+    }
+
+    function reset() {
+      animationState = {
+        step: 0,
+        processing: false,
+        cover: new Set(),
+        processedEdges: new Set(),
+        currentEdge: null
+      };
+      drawGraph();
+    }
+
+    function generateNewGraph() {
+      currentGraph = generateRandomGraph();
+      reset();
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Initialize
+    drawGraph();
+  </script>
+</body>
+</html>
