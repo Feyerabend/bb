@@ -144,3 +144,7 @@ class MQTTBroker:
 if __name__ == "__main__":
     broker = MQTTBroker()
     broker.start()
+
+
+# mosquitto_pub -h localhost -t "test/topic" -m "Hi MQTT!"
+# mosquitto_sub -h localhost -t "test/topic"
