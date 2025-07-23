@@ -19,13 +19,17 @@ Number systems vary by base and digit range. The most common are:
 
 In a positional number system, a number’s value is the *sum of each digit multiplied by a power of the base*:
 
-$$(d_n d_{n-1} \dots d_1 d_0)_{\text{base } b} = d_n \cdot b^n + d_{n-1} \cdot b^{n-1} + \dots + d_1 \cdot b^1 + d_0 \cdot b^0$$
+```math
+(d_n d_{n-1} \dots d_1 d_0)_{\text{base } b} = d_n \cdot b^n + d_{n-1} \cdot b^{n-1} + \dots + d_1 \cdot b^1 + d_0 \cdot b^0
+```
 
 #### Floating-Point Extension
 
 For fractional numbers, a radix point (like a decimal point in base 10) introduces negative powers:
 
-$$(d_n \dots d_1 d_0 . d_{-1} d_{-2} \dots)_{\text{base } b} = d_n \cdot b^n + \dots + d_0 \cdot b^0 + d_{-1} \cdot b^{-1} + d_{-2} \cdot b^{-2} + \dots$$
+```math
+(d_n \dots d_1 d_0 . d_{-1} d_{-2} \dots)_{\text{base } b} = d_n \cdot b^n + \dots + d_0 \cdot b^0 + d_{-1} \cdot b^{-1} + d_{-2} \cdot b^{-2} + \dots
+```
 
 *Example:* In base 10, $123.45$ is:
 
