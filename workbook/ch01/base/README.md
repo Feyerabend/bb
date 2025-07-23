@@ -62,7 +62,7 @@ These prefixes ensure clarity when working with different bases.
 
 ### Converting
 
-___From Any Base to Decimal__
+__From Any Base to Decimal__
 
 Multiply each digit by its corresponding power of the base and sum the results.
 
