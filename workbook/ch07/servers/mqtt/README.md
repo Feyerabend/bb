@@ -1,3 +1,4 @@
-# From Basics To Bytecode: A guide to computers and programming
-# Workbook
+
+> Requires installation
+> sudo apt install mosquitto mosquitto-clients
 

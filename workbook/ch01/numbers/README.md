@@ -1,4 +1,9 @@
 
+> “All things are number” (Πάντα ἀριθμός ἐστι) -- so held the Pythagoreans,
+> who believed that the structure of reality itself could be understood through
+> the harmonies and relationships of numbers. This idea, preserved in Aristotle’s
+> *Metaphysics* (A5, 985b), would echo through the philosophies of Plato and beyond.
+
 ## Project
 
 The focus of this project is to understand the inner workings of floating-point numbers,
