@@ -19,7 +19,7 @@ communications.
 This project leverages UDP to create a flexible client-server system with features like message handling,
 client tracking, and graceful shutdowns.
 
-Features
+### Features
 
 __UDP Server (udp_server.c)__
 
