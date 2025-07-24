@@ -42,10 +42,9 @@ Multiple Modes:
 - Graceful Shutdown: Handles SIGINT and SIGTERM signals to close the socket cleanly.
 
 
-
 ### Code Details
 
-### Common Features
+__Common Features__
 
 - Both client and server use UDP sockets (SOCK_DGRAM) for communication.
 - Signal handlers ensure graceful shutdowns by closing sockets and cleaning up resources.
