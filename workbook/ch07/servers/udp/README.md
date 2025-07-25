@@ -23,18 +23,18 @@ client tracking, and graceful shutdowns.
 
 __UDP Server (udp_server.c)__
 
-Command Processing: Supports commands like PING, TIME, STATS, and ECHO, along with generic text messages.
-Client Tracking: Maintains a list of up to 100 clients, tracking their IP, port, message count, and last activity time.
-Periodic Maintenance: Cleans up inactive clients (idle for 5 minutes) and prints server statistics every 5 minutes.
-Graceful Shutdown: Handles SIGINT and SIGTERM signals to close the socket cleanly and display final statistics.
-Configurable Port: Defaults to port 8888 but can be overridden via command-line arguments.
+- Command Processing: Supports commands like PING, TIME, STATS, and ECHO, along with generic text messages.
+- Client Tracking: Maintains a list of up to 100 clients, tracking their IP, port, message count, and last activity time.
+- Periodic Maintenance: Cleans up inactive clients (idle for 5 minutes) and prints server statistics every 5 minutes.
+- Graceful Shutdown: Handles SIGINT and SIGTERM signals to close the socket cleanly and display final statistics.
+- Configurable Port: Defaults to port 8888 but can be overridden via command-line arguments.
 
 __UDP Client (udp_client.c)__
 
 Multiple Modes:
-* Interactive Mode: Allows users to input commands/messages interactively.
-* Batch Mode: Sends multiple messages specified via command-line arguments.
-* Stress Test Mode: Sends a specified number of messages rapidly to test server performance.
+- Interactive Mode: Allows users to input commands/messages interactively.
+- Batch Mode: Sends multiple messages specified via command-line arguments.
+- Stress Test Mode: Sends a specified number of messages rapidly to test server performance.
 
 
 - Command Support: Supports PING, TIME, STATS, ECHO, and arbitrary text messages.
@@ -64,7 +64,6 @@ __Common Features__
 - Other messages: Acknowledges with an ACK containing the message, timestamp, and message count.
 
 
-
 #### Client-Specific Details
 
 Operational Modes:
@@ -88,4 +87,3 @@ __Projects__
 * Implement basic authentication for client-server interactions.
 * Add support for larger messages or message fragmentation.
 * Enhance statistics with more detailed metrics (e.g., average response time).
-
