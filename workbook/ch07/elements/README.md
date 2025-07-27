@@ -42,6 +42,8 @@ commitments, it leaves other paths unexplored.
 Yet in that act of fixing the fluid--of turning thought into architecture--lies the essence of 
 software engineering.
 
+We might start cutting up things into [modules](./MODULES.md).
+
 
 __*Principles*__
 
