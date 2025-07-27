@@ -133,8 +133,9 @@ int add(int a, int b) {
 int subtract(int a, int b) {
     return a - b;
 }
+```
 
-main.c (Usage)
+```c
 // main.c
 #include <stdio.h>
 #include "math_module.h"
@@ -175,7 +176,9 @@ def subtract(a, b):
 def _internal_helper(x, y):
     """Internal helper function (not part of public interface)."""
     return x * y
+```
 
+```python
 main.py (Usage)
 # main.py
 import math_module
