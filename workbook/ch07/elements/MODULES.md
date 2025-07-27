@@ -179,7 +179,6 @@ def _internal_helper(x, y):
 ```
 
 ```python
-main.py (Usage)
 # main.py
 import math_module
 
