@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Gap Buffer Editor with Up/Down Arrows</title>
+    <title>Gap Buffer Editor</title>
     <style>
         body { font-family: monospace; padding: 1em; }
         #editor {
@@ -36,8 +36,8 @@
     </style>
 </head>
 <body>
-<h2>Gap Buffer Editor with Up/Down Arrow Support</h2>
-<p><strong>Click in the editor box below and start typing! Now with up/down arrow support.</strong></p>
+<h2>Gap Buffer Editor</h2>
+<p><strong>Click in the editor box below and start typing!</strong></p>
 <div id="editor" contenteditable="false" tabindex="0"></div>
 <div id="info"></div>
 <div style="margin-top: 1em;">
@@ -51,7 +51,7 @@ class GapBuffer {
         this.buffer = new Array(size).fill('');
         this.gapStart = 0;
         this.gapEnd = size;
-        this.preferredColumn = 0; // For vertical navigation
+        this.preferredColumn = 0;
     }
     
     get length() {
