@@ -212,7 +212,7 @@ class GapBuffer {
     getDisplayText() {
         const beforeCursor = this.buffer.slice(0, this.gapStart).join('');
         const afterCursor = this.buffer.slice(this.gapEnd).join('');
-        return beforeCursor + '|' + afterCursor;
+        return beforeCursor + '_' + afterCursor;
     }
     
     getRawBufferView() {
@@ -326,3 +326,4 @@ updateDisplay();
 </script>
 </body>
 </html>
+
