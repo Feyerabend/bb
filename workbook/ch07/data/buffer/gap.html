@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gap Buffer Editor</title>
+    <style>
+        body { font-family: monospace; padding: 1em; }
+        #editor {
+            white-space: pre-wrap;
+            border: 2px solid #ccc;
+            padding: 10px;
+            width: 600px;
+            height: 200px;
+            overflow-y: auto;
+            outline: none;
+            word-wrap: break-word;
+            background-color: white;
+            cursor: text;
+            position: relative;
+        }
+        #editor:focus {
+            border-color: #007acc;
+            background-color: #fafafa;
+        }
+        #info {
+            margin-top: 1em;
+        }
+        .cursor {
+            background-color: black;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+<h2>Gap Buffer Editor (JS)</h2>
+<p><strong>Click in the editor box below and start typing!</strong></p>
+<div id="editor" contenteditable="false" tabindex="0"></div>
+<div id="info"></div>
+<div style="margin-top: 1em;">
+    <h3>Raw Buffer View:</h3>
+    <textarea id="rawBuffer" readonly rows="8" cols="80" style="font-family: monospace; background-color: #f5f5f5;"></textarea>
+</div>
+
+<script>
+class GapBuffer {
+    constructor(size = 1024) {
+        this.buffer = new Array(size).fill('');
+        this.gapStart = 0;
+        this.gapEnd = size;
+    }
+    
+    get length() {
+        return this.buffer.length - (this.gapEnd - this.gapStart);
+    }
+    
+    moveCursorLeft() {
+        if (this.gapStart > 0) {
+            this.gapEnd--;
+            this.buffer[this.gapEnd] = this.buffer[--this.gapStart];
+        }
+    }
+    
+    moveCursorRight() {
+        if (this.gapEnd < this.buffer.length) {
+            this.buffer[this.gapStart++] = this.buffer[this.gapEnd];
+            this.gapEnd++;
+        }
+    }
+    
+    insert(char) {
+        if (this.gapStart < this.gapEnd) {
+            this.buffer[this.gapStart++] = char;
+        } else {
+            this.expandBuffer();
+            this.buffer[this.gapStart++] = char;
+        }
+    }
+    
+    expandBuffer() {
+        const newSize = this.buffer.length * 2;
+        const newBuffer = new Array(newSize).fill('');
+        
+        // Copy text before gap
+        for (let i = 0; i < this.gapStart; i++) {
+            newBuffer[i] = this.buffer[i];
+        }
+        
+        // Copy text after gap to end of new buffer
+        const afterGapLength = this.buffer.length - this.gapEnd;
+        for (let i = 0; i < afterGapLength; i++) {
+            newBuffer[newSize - afterGapLength + i] = this.buffer[this.gapEnd + i];
+        }
+        
+        this.buffer = newBuffer;
+        this.gapEnd = newSize - afterGapLength;
+    }
+    
+    delete() {
+        if (this.gapStart > 0) {
+            this.gapStart--;
+        }
+    }
+    
+    getText() {
+        return this.buffer.slice(0, this.gapStart).join('')
+             + this.buffer.slice(this.gapEnd).join('');
+    }
+    
+    getDisplayText() {
+        const beforeCursor = this.buffer.slice(0, this.gapStart).join('');
+        const afterCursor = this.buffer.slice(this.gapEnd).join('');
+        return beforeCursor + '|' + afterCursor;
+    }
+    
+    getRawBufferView() {
+        const escapeChar = (char) => {
+            if (char === '') return '∅';
+            if (char === '\n') return '\\n';
+            if (char === '\t') return '\\t';
+            if (char === ' ') return '·';
+            return char;
+        };
+        
+        let result = 'Buffer contents (gap marked with [ ]):\n';
+        result += 'Position: ';
+        for (let i = 0; i < Math.min(this.buffer.length, 50); i++) {
+            if (i < 10) result += i + ' ';
+            else result += (i % 10) + ' ';
+        }
+        result += '\n';
+        result += 'Content:  ';
+        
+        for (let i = 0; i < Math.min(this.buffer.length, 50); i++) {
+            if (i === this.gapStart) result += '[';
+            if (i === this.gapEnd) result += ']';
+            result += escapeChar(this.buffer[i]) + ' ';
+        }
+        
+        if (this.gapEnd === this.buffer.length) result += ']';
+        
+        result += '\n\nGap: start=' + this.gapStart + ', end=' + this.gapEnd + ', size=' + (this.gapEnd - this.gapStart);
+        result += '\nText length: ' + this.length;
+        result += '\nActual text: "' + this.getText().replace(/\n/g, '\\n').replace(/\t/g, '\\t') + '"';
+        
+        return result;
+    }
+}
+
+// Setup
+const buffer = new GapBuffer(64);
+const editor = document.getElementById("editor");
+const info = document.getElementById("info");
+const rawBuffer = document.getElementById("rawBuffer");
+
+function updateDisplay() {
+    editor.textContent = buffer.getDisplayText();
+    info.textContent = "Cursor position: " + buffer.gapStart + " | Buffer length: " + buffer.length;
+    rawBuffer.value = buffer.getRawBufferView();
+}
+
+// Handle all keyboard input
+editor.addEventListener("keydown", (e) => {
+    console.log("Key pressed:", e.key); // Debug log
+    
+    if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        buffer.moveCursorLeft();
+        updateDisplay();
+    } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        buffer.moveCursorRight();
+        updateDisplay();
+    } else if (e.key === "Backspace") {
+        e.preventDefault();
+        buffer.delete();
+        updateDisplay();
+    } else if (e.key === "Enter") {
+        e.preventDefault();
+        buffer.insert('\n');
+        updateDisplay();
+    } else if (e.key === "Tab") {
+        e.preventDefault();
+        buffer.insert('\t');
+        updateDisplay();
+    } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        buffer.insert(e.key);
+        updateDisplay();
+    }
+});
+
+// Handle paste events
+editor.addEventListener("paste", (e) => {
+    e.preventDefault();
+    const pastedText = e.clipboardData.getData('text');
+    for (let char of pastedText) {
+        buffer.insert(char);
+    }
+    updateDisplay();
+});
+
+// Make sure editor can receive focus
+editor.addEventListener("click", () => {
+    editor.focus();
+});
+
+// Auto-focus the editor when page loads
+editor.focus();
+
+// Initial display
+updateDisplay();
+</script>
+</body>
+</html>
