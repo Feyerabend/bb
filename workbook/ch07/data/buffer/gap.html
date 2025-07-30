@@ -161,7 +161,7 @@ class GapBuffer {
         if (currentPos.line < totalLines - 1) {
             const targetLine = currentPos.line + 1;
             const lineLength = this.getLineLength(targetLine);
-            const targetColumn = Math.min(this.preferredColumn, lineLength);
+            const targetColumn = Math.min(this.preferredColumn, targetColumn);
             const targetPosition = this.getLineStartPosition(targetLine) + targetColumn;
             
             this.moveCursorToPosition(targetPosition);
@@ -264,7 +264,6 @@ function updateDisplay() {
     rawBuffer.value = buffer.getRawBufferView();
 }
 
-// Handle all keyboard input
 editor.addEventListener("keydown", (e) => {
     console.log("Key pressed:", e.key); // Debug log
     
@@ -303,7 +302,6 @@ editor.addEventListener("keydown", (e) => {
     }
 });
 
-// Handle paste events
 editor.addEventListener("paste", (e) => {
     e.preventDefault();
     const pastedText = e.clipboardData.getData('text');
@@ -313,17 +311,13 @@ editor.addEventListener("paste", (e) => {
     updateDisplay();
 });
 
-// Make sure editor can receive focus
 editor.addEventListener("click", () => {
     editor.focus();
 });
 
-// Auto-focus the editor when page loads
 editor.focus();
 
-// Initial display
 updateDisplay();
 </script>
 </body>
 </html>
-
