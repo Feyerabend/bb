@@ -33,6 +33,76 @@
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
         }
+        
+        /* Buffer visualization styles */
+        #bufferViz {
+            margin-top: 1em;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        
+        .buffer-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            margin: 10px 0;
+            font-size: 12px;
+        }
+        
+        .buffer-cell {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 10px;
+        }
+        
+        .buffer-cell.text {
+            background-color: #e3f2fd;
+            border-color: #1976d2;
+        }
+        
+        .buffer-cell.gap {
+            background-color: #ffebee;
+            border-color: #d32f2f;
+            color: #666;
+        }
+        
+        .buffer-cell.cursor {
+            background-color: #4caf50;
+            border-color: #2e7d32;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .buffer-legend {
+            display: flex;
+            gap: 15px;
+            margin: 10px 0;
+            font-size: 12px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .legend-box {
+            width: 15px;
+            height: 15px;
+            border: 1px solid;
+        }
+        
+        .stats {
+            margin-top: 10px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -40,14 +110,30 @@
 <p><strong>Click in the editor box below and start typing!</strong></p>
 <div id="editor" contenteditable="false" tabindex="0"></div>
 <div id="info"></div>
-<div style="margin-top: 1em;">
-    <h3>Raw Buffer View:</h3>
-    <textarea id="rawBuffer" readonly rows="8" cols="80" style="font-family: monospace; background-color: #f5f5f5;"></textarea>
+
+<div id="bufferViz">
+    <h3>Gap Buffer:</h3>
+    <div class="buffer-legend">
+        <div class="legend-item">
+            <div class="legend-box" style="background-color: #e3f2fd; border-color: #1976d2;"></div>
+            <span>Text</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-box" style="background-color: #ffebee; border-color: #d32f2f;"></div>
+            <span>Gap (unused)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-box" style="background-color: #4caf50; border-color: #2e7d32;"></div>
+            <span>Cursor position</span>
+        </div>
+    </div>
+    <div id="bufferDisplay" class="buffer-container"></div>
+    <div id="bufferStats" class="stats"></div>
 </div>
 
 <script>
 class GapBuffer {
-    constructor(size = 1024) {
+    constructor(size = 32) {
         this.buffer = new Array(size).fill('');
         this.gapStart = 0;
         this.gapEnd = size;
@@ -130,12 +216,10 @@ class GapBuffer {
         const currentPos = this.gapStart;
         
         if (targetPosition < currentPos) {
-            // Move left
             for (let i = currentPos; i > targetPosition; i--) {
                 this.moveCursorLeft();
             }
         } else if (targetPosition > currentPos) {
-            // Move right
             for (let i = currentPos; i < targetPosition; i++) {
                 this.moveCursorRight();
             }
@@ -161,7 +245,7 @@ class GapBuffer {
         if (currentPos.line < totalLines - 1) {
             const targetLine = currentPos.line + 1;
             const lineLength = this.getLineLength(targetLine);
-            const targetColumn = Math.min(this.preferredColumn, targetColumn);
+            const targetColumn = Math.min(this.preferredColumn, lineLength);
             const targetPosition = this.getLineStartPosition(targetLine) + targetColumn;
             
             this.moveCursorToPosition(targetPosition);
@@ -214,59 +298,88 @@ class GapBuffer {
         const afterCursor = this.buffer.slice(this.gapEnd).join('');
         return beforeCursor + '_' + afterCursor;
     }
-    
-    getRawBufferView() {
-        const escapeChar = (char) => {
-            if (char === '') return '∅';
-            if (char === '\n') return '\\n';
-            if (char === '\t') return '\\t';
-            if (char === ' ') return '·';
-            return char;
-        };
-        
-        let result = 'Buffer contents (gap marked with [ ]):\n';
-        result += 'Position: ';
-        for (let i = 0; i < Math.min(this.buffer.length, 50); i++) {
-            if (i < 10) result += i + ' ';
-            else result += (i % 10) + ' ';
-        }
-        result += '\n';
-        result += 'Content:  ';
-        
-        for (let i = 0; i < Math.min(this.buffer.length, 50); i++) {
-            if (i === this.gapStart) result += '[';
-            if (i === this.gapEnd) result += ']';
-            result += escapeChar(this.buffer[i]) + ' ';
-        }
-        
-        if (this.gapEnd === this.buffer.length) result += ']';
-        
-        const pos = this.getCurrentPosition();
-        result += '\n\nGap: start=' + this.gapStart + ', end=' + this.gapEnd + ', size=' + (this.gapEnd - this.gapStart);
-        result += '\nCursor: line=' + pos.line + ', column=' + pos.column + ', preferred=' + this.preferredColumn;
-        result += '\nText length: ' + this.length;
-        result += '\nActual text: "' + this.getText().replace(/\n/g, '\\n').replace(/\t/g, '\\t') + '"';
-        
-        return result;
-    }
 }
 
 // Setup
-const buffer = new GapBuffer(64);
+const buffer = new GapBuffer(32);
 const editor = document.getElementById("editor");
 const info = document.getElementById("info");
-const rawBuffer = document.getElementById("rawBuffer");
+const bufferDisplay = document.getElementById("bufferDisplay");
+const bufferStats = document.getElementById("bufferStats");
+
+function escapeChar(char) {
+    if (char === '') return '∅';
+    if (char === '\n') return '↵';
+    if (char === '\t') return '→';
+    if (char === ' ') return '·';
+    return char;
+}
+
+function updateBufferVisualization() {
+    bufferDisplay.innerHTML = '';
+    
+    // Show only first 50 positions to keep it manageable
+    const maxShow = Math.min(buffer.buffer.length, 50);
+    
+    for (let i = 0; i < maxShow; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'buffer-cell';
+        
+        if (i >= buffer.gapStart && i < buffer.gapEnd) {
+            // Gap area
+            cell.className += ' gap';
+            cell.textContent = '∅';
+            cell.title = `Gap position ${i}`;
+        } else {
+            // Text area
+            cell.className += ' text';
+            const char = buffer.buffer[i];
+            cell.textContent = escapeChar(char);
+            cell.title = `Position ${i}: "${char}"`;
+        }
+        
+        // Mark cursor position
+        if (i === buffer.gapStart) {
+            cell.className += ' cursor';
+            cell.title += ' (CURSOR)';
+        }
+        
+        bufferDisplay.appendChild(cell);
+    }
+    
+    // Add ellipsis if buffer is longer
+    if (buffer.buffer.length > maxShow) {
+        const ellipsis = document.createElement('div');
+        ellipsis.textContent = '...';
+        ellipsis.style.alignSelf = 'center';
+        ellipsis.style.margin = '0 10px';
+        bufferDisplay.appendChild(ellipsis);
+    }
+}
+
+function updateStats() {
+    const pos = buffer.getCurrentPosition();
+    const gapSize = buffer.gapEnd - buffer.gapStart;
+    const efficiency = ((buffer.length / buffer.buffer.length) * 100).toFixed(1);
+    
+    bufferStats.innerHTML = `
+        <strong>Buffer Stats:</strong><br>
+        Total buffer size: ${buffer.buffer.length} | Text length: ${buffer.length} | Gap size: ${gapSize}<br>
+        Gap range: [${buffer.gapStart}, ${buffer.gapEnd}) | Space efficiency: ${efficiency}%<br>
+        Cursor: line ${pos.line}, column ${pos.column} | Preferred column: ${buffer.preferredColumn}
+    `;
+}
 
 function updateDisplay() {
     editor.textContent = buffer.getDisplayText();
     const pos = buffer.getCurrentPosition();
     info.textContent = `Cursor: line ${pos.line}, col ${pos.column} | Buffer pos: ${buffer.gapStart} | Length: ${buffer.length}`;
-    rawBuffer.value = buffer.getRawBufferView();
+    updateBufferVisualization();
+    updateStats();
 }
 
+
 editor.addEventListener("keydown", (e) => {
-    console.log("Key pressed:", e.key); // Debug log
-    
     if (e.key === "ArrowLeft") {
         e.preventDefault();
         buffer.moveCursorLeft();
@@ -302,6 +415,7 @@ editor.addEventListener("keydown", (e) => {
     }
 });
 
+
 editor.addEventListener("paste", (e) => {
     e.preventDefault();
     const pastedText = e.clipboardData.getData('text');
@@ -311,11 +425,14 @@ editor.addEventListener("paste", (e) => {
     updateDisplay();
 });
 
+
 editor.addEventListener("click", () => {
     editor.focus();
 });
 
+
 editor.focus();
+
 
 updateDisplay();
 </script>
