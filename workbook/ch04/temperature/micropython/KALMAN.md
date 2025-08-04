@@ -12,9 +12,8 @@ $z_k = H x_k + v_k$, where $H$ is the observation matrix and $v_k$
 is the measurement noise with covariance $R$.
 
 In the prediction phase, the filter computes the predicted state
-```math
-\hat{x}_k^{-} = A \hat{x}_{k-1} + B u_k
-```
+$ $\hat{x}$_k^{-} = A $\hat{x}$_{k-1} + B u_k$
+
 and the corresponding predicted covariance
 $P_k^{-} = A P_{k-1} A^T + Q$. When a new measurement $z_k$ is received,
 the filter calculates the Kalman gain $K_k = P_k^{-} H^T (H P_k^{-} H^T + R)^{-1}$
