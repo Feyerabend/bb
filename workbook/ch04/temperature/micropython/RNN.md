@@ -8,6 +8,7 @@ Plan
 4. Output the predicted values to the console (or optionally store them).
 
 
+### Simple RNN
 
 MicroPython RNN Implementation for RPi Pico
 
@@ -28,13 +29,12 @@ sensor_temp = ADC(4)  # Onboard temperature sensor
 conversion_factor = 3.3 / 65535  # Convert ADC value to voltage
 
 def read_temperature():
-    """Reads temperature from the onboard sensor in Celsius."""
     raw_value = sensor_temp.read_u16()  # Read ADC value (0-65535)
     voltage = raw_value * conversion_factor
     temp_celsius = 27 - (voltage - 0.706) / 0.001721  # Pico's temperature formula
     return temp_celsius
 
-# Example usage:
+# use
 while True:
     temp = read_temperature()
     print("Current Temperature:", temp)
@@ -56,7 +56,7 @@ class SimpleRNN:
         self.input_size = input_size
         self.hidden_size = hidden_size
 
-        # Initialize weights with small random values
+        # Init weights with small random values
         self.Wxh = [[random.uniform(-0.5, 0.5) for _ in range(hidden_size)] for _ in range(input_size)]
         self.Whh = [[random.uniform(-0.5, 0.5) for _ in range(hidden_size)] for _ in range(hidden_size)]
         self.Why = [[random.uniform(-0.5, 0.5) for _ in range(1)] for _ in range(hidden_size)]
@@ -84,7 +84,7 @@ We'll now stream temperature readings, store the last 5 readings, and predict th
 ```python
 import utime
 
-# Initialize RNN
+# Init RNN
 input_size = 5  # Number of past temperatures to use for prediction
 hidden_size = 10
 rnn = SimpleRNN(input_size, hidden_size)
@@ -117,6 +117,8 @@ while True:
 4. Predicts the next temperature and prints it.
 
 
+### Gradient Descent
+
 Let's implement gradient descent to fine-tune the RNN weights in MicroPython.
 Since we still don't have access to NumPy, we'll manually compute gradients and
 update weights using backpropagation through time (BPTT).
@@ -146,14 +148,14 @@ class SimpleRNN:
         self.hidden_size = hidden_size
         self.learning_rate = learning_rate
 
-        # Initialize weights randomly
+        # Init weights randomly
         self.Wxh = [[random.uniform(-0.5, 0.5) for _ in range(hidden_size)] for _ in range(input_size)]
         self.Whh = [[random.uniform(-0.5, 0.5) for _ in range(hidden_size)] for _ in range(hidden_size)]
         self.Why = [[random.uniform(-0.5, 0.5) for _ in range(1)] for _ in range(hidden_size)]
         self.h = [0] * hidden_size  # Initial hidden state
 
+    # one fwd pass
     def step(self, x):
-        """Perform one forward pass of the RNN"""
         new_h = [sum(x[i] * self.Wxh[i][j] for i in range(self.input_size)) +
                  sum(self.h[i] * self.Whh[i][j] for i in range(self.hidden_size))
                  for j in range(self.hidden_size)]
@@ -165,8 +167,8 @@ class SimpleRNN:
         y = [sum(self.h[i] * self.Why[i][j] for i in range(self.hidden_size)) for j in range(1)]
         return y[0]  # Return predicted temperature
 
+    # incl. backprop
     def train(self, x, y_true):
-        """Perform one training step with backpropagation"""
         y_pred = self.step(x)
 
         # Compute loss (Mean Squared Error)
@@ -419,7 +421,7 @@ while True:
 
 
 
-Better Than an RNN:
+Better Than an ordinary RNN:
 - Better Memory Handling: LSTM can learn longer-term patterns.
 - More Accurate Predictions: As it learns, it gets better at forecasting.
 - Handles Gradual Changes: Unlike a basic RNN, it can remember slow temperature shifts.
