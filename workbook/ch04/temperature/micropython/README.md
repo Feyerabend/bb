@@ -1,5 +1,5 @@
 
-## Temperature Measurments
+## Temperature Measurements
 
 Here we introduce temperature measurements using a Raspberry Pi Pico. The goal is to not only collect sensor
 data but also explore algorithms that can be used to interpret and refine it. In particular, we examine Recurrent
