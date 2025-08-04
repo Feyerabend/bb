@@ -13,17 +13,12 @@ is the measurement noise with covariance $R$.
 
 In the prediction phase, the filter computes the predicted state
 x̂ₖ⁻ = A x̂ₖ₋₁ + B uₖ
-```math
-\hat{x}$_k^{-} = A $\hat{x}$_{k-1} + B u_k
-```
 and the corresponding predicted covariance
 $P_k^{-} = A P_{k-1} A^T + Q$. When a new measurement $z_k$ is received,
 the filter calculates the Kalman gain $K_k = P_k^{-} H^T (H P_k^{-} H^T + R)^{-1}$
 to determine how much weight should be given to the measurement compared to the prediction.
 The state estimate is then updated to
-```math
-\hat{x}_k = \hat{x}_k^{-} + K_k (z_k - H \hat{x}_k^{-})
-```
+x̂ₖ = x̂ₖ⁻ + Kₖ (zₖ − H x̂ₖ⁻)
 and the covariance is revised to $P_k = (I - K_k H) P_k^{-}$.
 
 The filter's efficiency and optimality stem from the assumption that both the process
