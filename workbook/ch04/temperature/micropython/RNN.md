@@ -200,6 +200,7 @@ class SimpleRNN:
         return loss
 ```
 
+
 ```mermaid
 %%{init: {'theme': 'neutral', 'fontFamily': 'Fira Code', 'gantt': {'barHeight': 20}}}%%
 flowchart TD
