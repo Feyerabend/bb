@@ -467,6 +467,79 @@ class LSTM:
 ```
 
 
+```mermaid
+%%{init: {'theme': 'neutral', 'fontFamily': 'Fira Code'}}%%
+flowchart TD
+    %% Inputs
+    X["x (Input)"] --> Combined
+    H_prev["h_prev (Hidden State)"] --> Combined
+    C_prev["c_prev (Memory Cell)"] --> C_update
+
+    %% Combined Input + Hidden State
+    subgraph Combined["Combined Input (x + h_prev)"]
+        direction LR
+        Concat["Concatenate(x, h_prev)"] --> Gates
+    end
+
+    %% LSTM Gates
+    subgraph Gates["LSTM Gates"]
+        direction TB
+        Wf["Forget Gate (σ)"] -->|"f_t"| C_update
+        Wi["Input Gate (σ)"] -->|"i_t"| C_update
+        Wc["Candidate (tanh)"] -->|"~C_t"| C_update
+        Wo["Output Gate (σ)"] -->|"o_t"| H_new
+    end
+
+    %% Memory Cell Update
+    subgraph C_update["Memory Cell (c_t)"]
+        direction LR
+        Forget["f_t * c_prev"] --> +
+        Input["i_t * ~C_t"] --> +
+        +["+"] --> C_new["c_t (New Memory Cell)"]
+        C_new --> Tanh_c["tanh(c_t)"] -->|"* o_t"| H_new
+    end
+
+    %% Hidden State Update
+    subgraph H_new["New Hidden State (h_t)"]
+        direction LR
+        h_t["h_t = o_t * tanh(c_t)"] --> Output
+    end
+
+    %% Output
+    Output -->|"Why (Weights)"| Y["y_pred (Output)"]
+
+    %% Recurrent Connections
+    C_new --> C_prev[["Next c_prev"]]
+    h_t --> H_prev[["Next h_prev"]]
+
+    %% Annotations
+    note1["σ = Sigmoid (Gate Activations)"] --> Gates
+    note2["tanh = Nonlinearities"] --> Wc
+    note3["Memory Cell (c_t):\nStores long-term info"] --> C_update
+```
+
+1. *Gates* (σ = Sigmoid):
+   - *Forget Gate (`f_t`)*: Decides what to discard from `c_prev`.
+   - *Input Gate (`i_t`)*: Controls what new info to store.
+   - *Candidate (`~C_t`)*: Proposed update to memory (tanh).
+   - *Output Gate (`o_t`)*: Filters what to output as `h_t`.
+
+2. *Memory Cell (`c_t`)*:
+   - Updated via `f_t * c_prev + i_t * ~C_t` (combines old and new info).
+   - Passes through `tanh` before becoming part of `h_t`.
+
+3. *Hidden State (`h_t`)*:
+   - Outputs `o_t * tanh(c_t)` → used for prediction and next step.
+
+4. *Training* (Simplified):
+   - Only `Why` (output weights) are updated here (full BPTT would include all gates).
+
+*Differences from SimpleRNN:*
+- *Explicit Memory Cell (`c_t`)*: Separates long-term storage from hidden state.
+- *Gated Mechanisms*: Sigmoid gates control information flow.
+- *More Parameters*: 4 weight matrices (`Wf, Wi, Wc, Wo`) vs. 2 in RNN.
+
+
 __Reading Live Temperature Data and Training the LSTM__
 
 Now, let's connect this LSTM model to the Raspberry Pi Pico's temperature sensor and start training it.
