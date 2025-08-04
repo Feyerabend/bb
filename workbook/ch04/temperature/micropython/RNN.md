@@ -41,6 +41,49 @@ while True:
     utime.sleep(1)
 ```
 
+```mermaid
+%%{init: {'theme': 'neutral', 'fontFamily': 'Fira Code'}}%%
+flowchart LR
+    %% Input Layer
+    X["x (Input)"] -->|"Wxh (Input→Hidden Weights)"| HiddenLayer
+
+    %% Hidden Layer (Recurrent)
+    subgraph HiddenLayer["Hidden Layer"]
+        direction TB
+        H_prev["h_prev (Previous Hidden State)"] -->|"Whh (Recurrent Weights)"| Sum
+        Sum["Sum (Wxh·x + Whh·h_prev)"] --> Tanh["tanh Activation"]
+        Tanh --> H["h (New Hidden State)"]
+    end
+
+    %% Output Layer
+    H -->|"Why (Hidden→Output Weights)"| Y["y_pred (Output)"]
+
+    %% Recurrent Connection
+    H --> H_prev[["Next Step: h → h_prev"]]
+
+    %% Annotations
+    note1["Activation: tanh\n(Introduces nonlinearity)"] --> Tanh
+    note2["Recurrence:\nHidden state feeds\ninto itself"] --> H_prev
+```
+
+1. *Input → Hidden Layer*  
+   - `x` is multiplied by weights `Wxh` to influence the hidden state.
+
+2. *Recurrent Connection*  
+   - The previous hidden state `h_prev` is multiplied by `Whh` and combined with the input.  
+   - The feedback loop (arrow from `h` to `h_prev`) shows recurrence.
+
+3. *Activation Function (`tanh`)*  
+   - Highlighted explicitly as the nonlinear transformation applied to the summed inputs.  
+   - Ensures gradients remain stable during training (unlike, e.g., `ReLU` in RNNs).
+
+4. *Output Layer*  
+   - The new hidden state `h` is multiplied by `Why` to produce the output `y_pred`.
+
+5. *Simplified Training*  
+   - Since your updated code omits explicit training logic, the diagram focuses on inference (`step()`).  
+   - For training, you’d add backpropagation through time (BPTT) with `tanh` derivatives.
+
 
 
 __2. Implement a Simple RNN in MicroPython__
@@ -169,7 +212,7 @@ class SimpleRNN:
         y_pred = self.step(x)
 
         # Compute loss (Mean Squared Error)
-        loss = (y_pred - y_true) ** 2
+        loss = (y_pred - y_true) * 2
 
         # Compute gradients
         dL_dy = 2 * (y_pred - y_true)  # Derivative of MSE
@@ -179,7 +222,7 @@ class SimpleRNN:
 
         # Gradients for hidden state
         dL_dh = [dL_dy * self.Why[i][0] for i in range(self.hidden_size)]
-        dL_dh = [(1 - self.h[i] ** 2) * dL_dh[i] for i in range(self.hidden_size)]  # tanh derivative
+        dL_dh = [(1 - self.h[i] * 2) * dL_dh[i] for i in range(self.hidden_size)]  # tanh derivative
 
         # Gradients for Wxh and Whh
         dL_dWxh = [[dL_dh[j] * x[i] for j in range(self.hidden_size)] for i in range(self.input_size)]
@@ -244,6 +287,30 @@ flowchart TD
     end
 ```
 
+1. *Network Flow*:
+   - Input `x` → Hidden Layer (via `Wxh` weights)
+   - Recurrent connection: Previous hidden state `h_prev` → Hidden Layer (via `Whh` weights)
+   - Hidden Layer → Output (via `Why` weights)
+
+2. *Activation Function*:
+   - `tanh` nonlinearity in the hidden layer (shown explicitly)
+   - No activation in output layer (linear regression-style output)
+
+3. *Training*:
+   - Mean Squared Error (MSE) loss
+   - Backpropagation through:
+     - Output weights (`Why`)
+     - Hidden state gradients (including `tanh` derivative term `1-h²`)
+     - Input/hidden weights (`Wxh`, `Whh`)
+
+4. *Recurrence*:
+   - The feedback loop where the new hidden state becomes `h_prev` for the next timestep
+   - Illustrated by the cyclic connection in the hidden layer
+
+The diagram emphasises the recurrent nature of the network and the role of the activation
+function in shaping the hidden state dynamics. The weight matrices (`Wxh`, `Whh`, `Why`)
+are shown at their respective connection points.
+
 
 __Connect RNN to Live Temperature Data__
 
@@ -257,42 +324,40 @@ sensor_temp = ADC(4)  # Onboard temperature sensor
 conversion_factor = 3.3 / 65535  # Convert ADC value to voltage
 
 def read_temperature():
-    """Reads temperature from the onboard sensor in Celsius."""
     raw_value = sensor_temp.read_u16()  # Read ADC value (0-65535)
     voltage = raw_value * conversion_factor
     temp_celsius = 27 - (voltage - 0.706) / 0.001721  # Pico's temperature formula
     return temp_celsius
 
-# Initialize RNN
+# init RNN
 input_size = 5  # Use last 5 readings for prediction
 hidden_size = 10
 learning_rate = 0.005
 rnn = SimpleRNN(input_size, hidden_size, learning_rate)
 
-# Store past temperature readings (rolling window)
+# store past temperature readings (rolling window)
 temperature_history = []
 
 while True:
     temp = read_temperature()
     print("Current Temp:", temp)
 
-    # Store temperature in history (keep only last 5)
+    # store temperature in history (keep only last 5)
     temperature_history.append(temp)
     if len(temperature_history) > input_size:
         temperature_history.pop(0)
 
-    # Only predict and train if we have enough data
+    # only predict and train if we have enough data
     if len(temperature_history) == input_size:
         predicted_temp = rnn.step(temperature_history)
         print("Predicted Next Temp:", predicted_temp)
 
-        # Train the model
+        # train the model
         loss = rnn.train(temperature_history, temp)
         print("Loss:", loss)
 
-    utime.sleep(2)  # Wait 2 seconds before next reading
+    utime.sleep(2)  # wait 2 seconds before next reading
 ```
-
 
 1. Reads live temperature data from the RPi Pico onboard sensor.
 2. Stores the last 5 readings in a list (rolling window).
@@ -309,7 +374,6 @@ Since, again, MicroPython doesn't support NumPy or TensorFlow, we'll implement a
 from scratch in a way that works on the Raspberry Pi Pico.
 
 
-
 __Why LSTM Instead of Simple RNN?__
 
 Problems with Simple RNNs:
@@ -321,7 +385,6 @@ How LSTM Solves This:
 - Has a memory cell that retains important information over many time steps.
 - Uses gates (input, forget, output) to decide what information to keep or discard.
 - Prevents vanishing gradients, making it better for seasonal temperature trends.
-
 
 
 Plan
@@ -346,7 +409,7 @@ class LSTM:
         self.hidden_size = hidden_size
         self.learning_rate = learning_rate
 
-        # Initialize weights with small random values
+        # init weights with small random values
         def init_matrix(rows, cols):
             return [[random.uniform(-0.5, 0.5) for _ in range(cols)] for _ in range(rows)]
 
@@ -356,7 +419,7 @@ class LSTM:
         self.Wo = init_matrix(input_size + hidden_size, hidden_size)  # Output gate
         self.Why = init_matrix(hidden_size, 1)  # Output weights
 
-        # Memory cell state and hidden state
+        # memory cell state and hidden state
         self.h = [0] * hidden_size
         self.c = [0] * hidden_size
 
@@ -366,28 +429,29 @@ class LSTM:
     def tanh(self, x):
         return math.tanh(x)
 
+    # fwd pass LSTM
     def step(self, x):
-        """Forward pass of LSTM: predicts next temperature"""
         combined = x + self.h  # Concatenate input and hidden state
 
-        # Compute LSTM gates
+        # compute LSTM gates
         forget_gate = [self.sigmoid(sum(combined[i] * self.Wf[i][j] for i in range(len(combined)))) for j in range(self.hidden_size)]
         input_gate = [self.sigmoid(sum(combined[i] * self.Wi[i][j] for i in range(len(combined)))) for j in range(self.hidden_size)]
         candidate = [self.tanh(sum(combined[i] * self.Wc[i][j] for i in range(len(combined)))) for j in range(self.hidden_size)]
         output_gate = [self.sigmoid(sum(combined[i] * self.Wo[i][j] for i in range(len(combined)))) for j in range(self.hidden_size)]
 
-        # Update memory cell and hidden state
+        # update memory cell and hidden state
         self.c = [forget_gate[j] * self.c[j] + input_gate[j] * candidate[j] for j in range(self.hidden_size)]
         self.h = [output_gate[j] * self.tanh(self.c[j]) for j in range(self.hidden_size)]
 
-        # Compute output (predicted temperature)
+        # compute output (predicted temperature)
         y = [sum(self.h[i] * self.Why[i][0] for i in range(self.hidden_size))]
         return y[0]  # Return predicted temperature
 
+    # update weights using gradient descent
     def train(self, x, y_true):
-        """Basic training: update weights using gradient descent"""
+
         y_pred = self.step(x)
-        loss = (y_pred - y_true) ** 2  # Mean Squared Error loss
+        loss = (y_pred - y_true) * 2  # Mean Squared Error loss
 
         # Compute gradient of loss
         dL_dy = 2 * (y_pred - y_true)
@@ -421,20 +485,20 @@ def read_temperature():
     temp_celsius = 27 - (voltage - 0.706) / 0.001721  # Pico's temperature formula
     return temp_celsius
 
-# Initialize LSTM
+# init LSTM
 input_size = 5  # Use last 5 readings for prediction
 hidden_size = 10
 learning_rate = 0.005
 lstm = LSTM(input_size, hidden_size, learning_rate)
 
-# Store past temperature readings (rolling window)
+# store past temperature readings (rolling window)
 temperature_history = []
 
 while True:
     temp = read_temperature()
     print("Current Temp:", temp)
 
-    # Store temperature in history (keep only last 5)
+    # store temperature in history (keep only last 5)
     temperature_history.append(temp)
     if len(temperature_history) > input_size:
         temperature_history.pop(0)
@@ -444,22 +508,18 @@ while True:
         predicted_temp = lstm.step(temperature_history)
         print("Predicted Next Temp:", predicted_temp)
 
-        # Train the model
+        # Train model
         loss = lstm.train(temperature_history, temp)
         print("Loss:", loss)
 
     utime.sleep(2)  # Wait 2 seconds before next reading
 ```
 
-
-
 1. Reads temperature from the Raspberry Pi Pico's onboard sensor.
 2. Stores the last 5 readings as input for the LSTM.
 3. Uses the LSTM to predict the next temperature.
 4. Trains the model using gradient descent, so it improves over time.
 5. Repeats continuously, adjusting its predictions as it learns.
-
-
 
 Better Than an ordinary RNN:
 - Better Memory Handling: LSTM can learn longer-term patterns.
