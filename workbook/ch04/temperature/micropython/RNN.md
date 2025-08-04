@@ -120,9 +120,7 @@ while True:
 ### Gradient Descent
 
 Let's implement gradient descent to fine-tune the RNN weights in MicroPython.
-Since we still don't have access to NumPy, we'll manually compute gradients and
-update weights using backpropagation through time (BPTT).
-
+We'll manually compute gradients and update weights using backpropagation through time (BPTT).
 
 
 Plan
@@ -133,8 +131,7 @@ Plan
 5. Repeat: Over time, the model improves at predicting future temperatures.
 
 
-
-Updated RNN with Gradient Descent
+__Updated RNN with Gradient Descent__
 
 We'll modify the SimpleRNN class to include weight updates using gradient descent.
 
