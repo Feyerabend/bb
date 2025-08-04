@@ -200,6 +200,48 @@ class SimpleRNN:
         return loss
 ```
 
+```mermaid
+%%{init: {'theme': 'neutral', 'fontFamily': 'Fira Code', 'gantt': {'barHeight': 20}}}%%
+flowchart TD
+    subgraph SimpleRNN["SimpleRNN Architecture"]
+        direction TB
+        
+        subgraph InputLayer["Input Layer"]
+            X["x (input)"] -->|Wxh| HiddenLayer
+        end
+        
+        subgraph HiddenLayer["Hidden Layer (Recurrent)"]
+            direction LR
+            H_prev["h_prev (hidden state)"] -->|Whh| Tanh
+            Tanh["tanh activation"] --> H["h (new hidden state)"]
+            H -->|Why| OutputLayer
+        end
+        
+        subgraph OutputLayer["Output Layer"]
+            Y["y_pred (output)"]
+        end
+        
+        H --> H_prev[["hidden state\nupdate"]]
+        
+        subgraph TrainingProcess["Training Process"]
+            Loss["Loss (MSE)"] -->|Backpropagation| Gradients
+            Gradients -->|Update| Wxh["Wxh, Whh, Why"]
+        end
+    end
+    
+    %% Connections
+    X -->|input| HiddenLayer
+    HiddenLayer -->|output| Y
+    Y -->|compare with y_true| Loss
+    
+    %% Legend
+    subgraph Legend["Key Concepts"]
+        direction TB
+        ActivationFn["Activation: tanh(nonlinearity)"]
+        Recurrent["Recurrence: Whh (hidden-to-hidden)"]
+        Training["Training: Backpropagation Through Time (BPTT)"]
+    end
+```
 
 
 __Connect RNN to Live Temperature Data__
