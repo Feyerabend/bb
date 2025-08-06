@@ -72,7 +72,6 @@ void cmd_load_sample(sap_vm_t *vm, const char *program_name) {
     print_sample_programs();
 }
 
-// FIXED: Simple and reliable Fibonacci calculation using countdown approach
 static void load_fibonacci_program(sap_vm_t *vm) {
     uint16_t addr = PROGRAM_START;
     uint16_t data_addr = DATA_MEMORY_START;
@@ -140,7 +139,7 @@ static void load_fibonacci_program(sap_vm_t *vm) {
     vm->memory[return_one_addr] = vm_encode_instruction(OP_JZ, ADDR_DIRECT, return_one_target);
 }
 
-// FIXED: Simple factorial calculation using countdown approach
+
 static void load_factorial_program(sap_vm_t *vm) {
     uint16_t addr = PROGRAM_START;
     uint16_t data_addr = DATA_MEMORY_START + 10;
@@ -190,7 +189,7 @@ static void load_factorial_program(sap_vm_t *vm) {
     vm->memory[return_one_addr2] = vm_encode_instruction(OP_JZ, ADDR_DIRECT, return_one_target);
 }
 
-// The remaining functions are unchanged from the original
+
 static void load_subroutine_demo(sap_vm_t *vm) {
     uint16_t addr = PROGRAM_START;
     uint16_t data_addr = DATA_MEMORY_START + 20;
