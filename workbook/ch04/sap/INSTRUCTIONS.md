@@ -12,6 +12,14 @@ is encoded as a 16-bit word, with the following structure:
 The VM supports four addressing modes and a variety of instructions for arithmetic,
 memory operations, logical operations, and control flow.
 
+16-bit Instruction Format:
+```
++------------------+----------------+----------------------------+
+| Opcode (4 bits)  | Addr Mode (2)  | Operand (10 bits)          |
+| Bits 15-12       | Bits 11-10     | Bits 9-0                   |
+| 15 14 13 12      | 11 10          | 9 8 7 6 5 4 3 2 1 0        |
++------------------+----------------+----------------------------+
+```
 
 ### Addressing Modes
 
