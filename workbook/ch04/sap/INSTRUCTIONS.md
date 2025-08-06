@@ -21,6 +21,25 @@ memory operations, logical operations, and control flow.
 +------------------+----------------+----------------------------+
 ```
 
+*Example*
+
+Instruction: LDA #42
+
+- Opcode: LDA (0x1)
+- Addressing Mode: Immediate (0x0)
+- Operand: 42 (0x02A in 10 bits)
+- Encoded: (0x1 << 12) | (0x0 << 10) | 0x02A = 0x102A
+
+Example: LDA #42
+```
++-------------------+-----------------+--------------------------+
+| 0 0 0 1           | 0 0             | 0 0 0 0 1 0 1 0 1 0      |
+| Opcode: LDA (0x1) | Mode: Imm (0x0) | Operand: 42 (0x02A)      |
++-------------------+-----------------+--------------------------+
+```
+
+
+
 ### Addressing Modes
 
 The SAP VM supports the following addressing modes:
