@@ -201,36 +201,37 @@ Gray code values, making it more likely to tolerate glitches.
 #### Observations from the Simulation
 
 - *Binary Failures*: Binary encoding often fails when multiple bits change between steps,
-  as a single-bit glitch can result in a completely different number (e.g., 3 (0011) misread as 1 (0001)).
+  as a single-bit glitch can result in a completely different number (e.g., 3 (0011)
+  misread as 1 (0001)).
 
-- *Gray Code Robustness*: Gray code tends to produce fewer errors because a glitch typically results in a
-  value that's either correct or off by one (e.g., reading 2 or 4 instead of 3), which is less severe than
-  binary's potential for large errors.
+- *Gray Code Robustness*: Gray code tends to produce fewer errors because a glitch typically
+  results in a value that's either correct or off by one (e.g., reading 2 or 4 instead of 3),
+  which is less severe than binary's potential for large errors.
 
 
 ### Real-World Context
 
-The simulation mimics systems like *rotary encoders*, which are used in devices like computer mice,
-motor controllers, or industrial machinery. In a rotary encoder, a disk with patterns is read by sensors
-to determine position. During fast rotation, sensors might misread bits due to timing or noise.
-Gray code ensures that even if a bit is misread, the error is minimal (e.g., off by one position)
-rather than catastrophic (e.g., jumping to a distant value).
+The simulation mimics systems like *rotary encoders*, which are used in devices like computer
+mice, motor controllers, or industrial machinery. In a rotary encoder, a disk with patterns
+is read by sensors to determine position. During fast rotation, sensors might misread bits due
+to timing or noise. Gray code ensures that even if a bit is misread, the error is minimal
+(e.g., off by one position) rather than catastrophic (e.g., jumping to a distant value).
 
-For example, in a binary-encoded encoder, transitioning from 7 (0111) to 8 (1000) changes all four
-bits. If the sensors catch an intermediate state (e.g., 0110 due to timing), it might read 6 instead
-of 8--a significant error. In Gray code, 7 (0100) to 8 (1100) changes only one bit, so a glitch is
-less likely to cause a large deviation.
+For example, in a binary-encoded encoder, transitioning from 7 (0111) to 8 (1000) changes
+all four bits. If the sensors catch an intermediate state (e.g., 0110 due to timing), it
+might read 6 instead of 8--a significant error. In Gray code, 7 (0100) to 8 (1100) changes
+only one bit, so a glitch is less likely to cause a large deviation.
 
 
 ### Summary
 
-- *Gray Code*: A binary system where consecutive values differ by one bit, reducing errors in systems
-  with frequent transitions or noise.
+- *Gray Code*: A binary system where consecutive values differ by one bit, reducing errors
+  in systems with frequent transitions or noise.
 
-- *Simulation Purpose*: The code demonstrates Gray code's robustness by simulating bit glitches in a
-  sequence of values, showing that Gray code tolerates errors better than binary.
+- *Simulation Purpose*: The code demonstrates Gray code's robustness by simulating bit
+  glitches in a sequence of values, showing that Gray code tolerates errors better than binary.
 
 - *Key Insight*: Gray code's single-bit transitions make it ideal for applications like encoders,
-  where minimizing misreads is critical.
+  where minimising misreads is critical.
 
 
