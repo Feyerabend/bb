@@ -71,11 +71,9 @@ operations.
      the VM’s assembly-like instruction set.
 
 6. *Low-Level Nature*:
-   - Unlike the VMs in your book, which likely use higher-level abstractions (e.g., dynamic memory
-     allocation, garbage collection, or object-based memory management), the SAP VM directly
-     manipulates memory addresses. For example, instructions like `LDA` and `STA` operate on
-     specific memory locations (e.g., 0x100 for data storage), and the programmer must explicitly
-     manage these addresses.
+   - The SAP VM directly manipulates memory addresses. For example, instructions like `LDA`
+     and `STA` operate on specific memory locations (e.g., 0x100 for data storage), and the
+     programmer must explicitly manage these addresses.
    - The stack is implemented as a fixed region in memory, with the stack pointer (`SP`) directly
      referencing memory addresses, similar to real hardware like the 6502 or early Intel processors.
    - Subroutines (`JSR` and `RTS`) use the stack for return addresses, and memory access is constrained
@@ -125,11 +123,11 @@ with a high-level VM that might use variables or objects.
 
 ### Conclusion
 
-The SAP VM is a powerful educational tool for understanding low-level computing concepts, including
+The SAP VM is primarily an educational tool for understanding low-level computing concepts, including
 memory addressing, instruction encoding, and CPU operations. Its design bridges the gap between high-level
 programming and hardware, making it ideal for learning about assembly programming and computer architecture.
-By directly manipulating memory addresses and using a simple ISA, it provides a stark contrast to the
-abstracted VMs in your book, offering a hands-on experience with the mechanics of a real processor.
+By directly manipulating memory addresses and using a simple ISA, it provides some contrast to the
+abstracted VMs previously, offering a hands-on experience with the mechanics of a "real" processor.
 
 To explore further, try running the debugger (`./sap_vm_debug`), loading a sample program like `fib`,
 and stepping through its execution to see how the VM processes instructions and manages memory.
