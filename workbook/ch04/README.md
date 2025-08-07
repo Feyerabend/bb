@@ -1,5 +1,5 @@
-# From Basics To Bytecode: A guide to computers and programming
-# Workbook
+
+## Building and Experimenting
 
 > Code and samples refer to the original Raspberry Pi Pico (RP2040, dual-core Cortex-M0+,
 > 133 MHz, 264 KB SRAM, 2 MB flash), unless specified otherwise.
