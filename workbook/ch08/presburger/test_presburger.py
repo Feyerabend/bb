@@ -7,10 +7,10 @@ from presburger import *
 def run_test(test_name, test_func):
     try:
         test_func()
-        print(f"✓ {test_name}")
+        print(f"ok {test_name}")
         return True
     except Exception as e:
-        print(f"✗ {test_name}: {str(e)}")
+        print(f"not ok {test_name}: {str(e)}")
         traceback.print_exc()
         return False
 
