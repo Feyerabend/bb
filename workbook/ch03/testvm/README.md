@@ -42,7 +42,7 @@ making it ideal for automated testing scenarios.
 
 ### Execution Flow
 
-1. *Parse* - Source code is tokenized and converted to instructions
+1. *Parse* - Source code is tokenised and converted to instructions
 2. *Label Collection* - Jump labels are identified and mapped
 3. *Execute* - Instructions are executed sequentially with stack operations
 4. *Assert* - Test assertions are evaluated and tracked
@@ -601,16 +601,16 @@ class TestResult:
 
 2. *Keep Tests Focused*: Each test should verify a single aspect or functionality.
 
-3. *Use Setup/Teardown*: Utilize setup and teardown for initialization and cleanup.
+3. *Use Setup/Teardown*: Utilise setup and teardown for initialisation and cleanup.
 
-4. *Tag Appropriately*: Use tags to organize tests by functionality, complexity, or execution time.
+4. *Tag Appropriately*: Use tags to organise tests by functionality, complexity, or execution time.
 
 5. *Handle Edge Cases*: Include tests for boundary conditions and error scenarios.
 
 
-#### Performance Optimization
+#### Performance Optimisation
 
-1. *Minimize Stack Operations*: Reduce unnecessary stack pushes/pops.
+1. *Minimise Stack Operations*: Reduce unnecessary stack pushes/pops.
 
 2. *Reuse Variables*: Store frequently used values in variables.
 
@@ -626,9 +626,9 @@ class TestResult:
 
 3. *Include Context*: Add logging and messages to provide context for failures.
 
-4. *Test Error Paths*: Include tests that verify error handling behavior.
+4. *Test Error Paths*: Include tests that verify error handling behaviour.
 
-#### Code Organization
+#### Code Organisation
 
 1. *Separate Test Logic*: Keep test setup, execution, and verification separate.
 
