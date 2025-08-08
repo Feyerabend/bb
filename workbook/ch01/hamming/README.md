@@ -54,7 +54,7 @@ with the appropriate number of parity bits *r*. Some common variants include:
 - *(31,26)*: 26 data bits, 5 parity bits, total length 31
   - Used in applications requiring moderate data sizes, like ECC memory
 
-- *(n,k)*: General form, where *r* is the smallest integer satisfying *2^r ≥ k + r + 1*
+- *(n,k)*: General form, where *r* is the smallest integer satisfying *2ʳ ≥ k + r + 1*
 
 For example:
 - For *k=8* data bits, solve *2ʳ ≥ 8 + r + 1*:
