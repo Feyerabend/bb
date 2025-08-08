@@ -5,6 +5,13 @@ This is a demonstration of Test-Driven Development (TDD) in action. We start wit
 test suite that defines ambitious requirements, then systematically fix implementation
 issues revealed by failing tests.
 
+The samples are from [basic](./../basic/) testing.
+
+The sequent of event in this journey are:
+- [First attempt](./01/) and failure
+- [Second attempt](./02/), and failure, but
+- [Third attempt](./03/) which is successful
+
 ### *Failure #1: Negative Number Conversion*
 ```
 FAIL: test_add_edge_cases - AssertionError: '-123' != -123
