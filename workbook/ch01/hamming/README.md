@@ -26,7 +26,7 @@ A Hamming Code is defined by two parameters:
 
 The total codeword length is *n = k + r*. The number of parity bits must satisfy:
 
-*2^r ≥ k + r + 1*
+*2ʳ ≥ k + r + 1*
 
 This ensures enough unique parity combinations to identify any single-bit error (or confirm no error).
 Each parity bit is placed at a position that is a power of 2 (1, 2, 4, 8, ...), and data bits fill the
@@ -57,8 +57,8 @@ with the appropriate number of parity bits *r*. Some common variants include:
 - *(n,k)*: General form, where *r* is the smallest integer satisfying *2^r ≥ k + r + 1*
 
 For example:
-- For *k=8* data bits, solve *2^r ≥ 8 + r + 1*:
-  - Try *r=4*: *2^4 = 16 ≥ 8 + 4 + 1 = 13* (works)
+- For *k=8* data bits, solve *2ʳ ≥ 8 + r + 1*:
+  - Try *r=4*: *2⁴ = 16 ≥ 8 + 4 + 1 = 13* (works)
   - Code: (12,8) with 8 data bits, 4 parity bits, total length 12
 
 ```plaintext
