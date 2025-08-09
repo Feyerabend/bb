@@ -2,7 +2,7 @@
 ## Model Checking
 
 Model checking is an automatic technique used to verify finite-state systems against desired properties,
-typically specified in temporal logics such as LTL or [CTL](./ctl/). It systematically explores all
+typically specified in temporal logics such as LTL or CTL. It systematically explores all
 possible states and transitions of the system to ensure correctness, such as absence of deadlocks,
 assertion violations, or safety properties. Model checking is widely used in hardware verification,
 protocol analysis, and increasingly in software verification.
@@ -154,7 +154,7 @@ int main() {
 
 Thus, *model checking* is a formal verification technique used to automatically verify whether a finite-state
 system satisfies a specified property, typically expressed in temporal logic such as *Linear Temporal Logic* (LTL)
-or *Computation Tree Logic* (CTL). It systematically explores all possible states and transitions of a system
+or *Computation Tree Logic* ([CTL](./ctl/)). It systematically explores all possible states and transitions of a system
 to ensure correctness, detecting issues like deadlocks, assertion violations, or violations of safety and liveness
 properties. Model checking is widely applied in hardware verification, protocol analysis, and software systems
 to ensure reliability and correctness.
