@@ -35,7 +35,7 @@ a Raspberry Pi Pico and MicroPython to manage hardware interactions.
   requests, processed during the STATE_RED state.
 
 
-#### State Behavior
+#### State Behaviour
 
 - Green (STATE_GREEN): Green light on for 5 seconds, walk signal off.
   Transitions to STATE_YELLOW.
@@ -54,7 +54,7 @@ a Raspberry Pi Pico and MicroPython to manage hardware interactions.
   hardware control, making the code reusable and maintainable.
 - Asynchronous Input: Using an interrupt for the button press avoids polling,
   reducing CPU usage and improving responsiveness.
-- Deterministic Behavior: The FSM ensures predictable state transitions,
+- Deterministic Behaviour: The FSM ensures predictable state transitions,
   critical for safety in traffic control systems.
 - Simplicity: The code is concise yet functional, suitable for educational
   purposes or small-scale embedded projects.
@@ -72,7 +72,7 @@ a Raspberry Pi Pico and MicroPython to manage hardware interactions.
   STATE_RED to STATE_GREEN could improve pedestrian safety.
 - Configurable Timing: Making timing constants adjustable (e.g., via a configuration
   file or external input) would allow flexibility for different traffic scenarios.
-- Error Handling: The code assumes ideal hardware behavior. Adding checks for hardware
+- Error Handling: The code assumes ideal hardware behaviour. Adding checks for hardware
   faults (e.g., LED failure detection) could make it more robust.
 
 
@@ -108,7 +108,7 @@ stateDiagram-v2
     Red --> Green
 ```
 
-This chart visualizes the duration of each state in a full cycle (13 seconds total
+This chart visualises the duration of each state in a full cycle (13 seconds total
 without pedestrian input). If the pedestrian button is pressed, the Red state duration
 extends to walk_time (5 seconds), maintaining the same total cycle time in this case.
 
@@ -121,9 +121,9 @@ interrupt handling, and hardware control. It could be extended for:
 - Multi-Directional Traffic: Coordinating multiple traffic lights for intersections.
 - Sensor Integration: Adding sensors (e.g., vehicle detection) to adjust timing dynamically.
 - Emergency Override: Introducing a priority state for emergency vehicles.
-- Networked Control: Synchronizing multiple traffic lights over a network for smarter traffic
+- Networked Control: Synchronising multiple traffic lights over a network for smarter traffic
   management.
 
 This implementation showcases the power of state machines in managing complex, event-driven
-systems with predictable behavior, making it a foundation for further exploration in your
+systems with predictable behaviour, making it a foundation for further exploration in your
 embedded programming.

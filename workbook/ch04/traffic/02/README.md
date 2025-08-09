@@ -5,7 +5,7 @@ This updated code extends the previous traffic light state machine by incorporat
 a pedestrian crossing feature, adding interactivity and real-world applicability.
 It introduces a pedestrian signal (via an onboard LED) and a button input to trigger
 a walk signal, demonstrating how state machines can handle external events while
-maintaining deterministic behavior.
+maintaining deterministic behaviour.
 
 
 ### Enhancements
@@ -16,7 +16,7 @@ maintaining deterministic behavior.
   detected via an interrupt (pedestrian_button_pressed).
 - Interrupt Handling: The button uses an interrupt request (IRQ) with a rising edge trigger
   to set a button_pressed flag, enabling asynchronous event detection.
-- State Behavior: The pedestrian crossing is integrated into the STATE_RED state, where
+- State Behaviour: The pedestrian crossing is integrated into the STATE_RED state, where
   the walk signal is activated only if the button was pressed, extending the red light
   duration to walk_time (5 seconds).
 
