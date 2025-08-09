@@ -107,7 +107,7 @@ We didn't rewrite everything at once:
 #### 4. *Tests Drive Design*
 The tests shaped our implementation:
 - Forced us to think about edge cases upfront
-- Defined clear boundaries for behavior
+- Defined clear boundaries for behaviour
 - Prevented over-engineering
 
 
@@ -139,7 +139,7 @@ if isinstance(value, str):
 1. *Tests First:* We wrote comprehensive tests before implementation
 2. *Red-Green-Refactor:* Classic TDD cycle followed naturally  
 3. *Edge Cases:* Tests covered scenarios we might miss coding-first
-4. *Clear Requirements:* Tests defined exact expected behavior
+4. *Clear Requirements:* Tests defined exact expected behaviour
 5. *Confidence:* Each fix was validated immediately
 6. *Documentation:* Tests serve as living examples of how code should work
 
@@ -154,3 +154,4 @@ more robust solutions than you would have built without them.
 The journey from red to green wasn't just about fixing code, it was about
 understanding requirements deeply and building exactly what was needed,
 no more, no less. Nonetheless.
+
