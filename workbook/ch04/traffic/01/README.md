@@ -45,3 +45,4 @@ of a finite number of states, and transitions are deterministic based on time.
 State machines are ideal for systems with well-defined modes, like traffic lights, vending machines,
 or protocol handlers, making them a powerful tool in both software and hardware design.
 
+![A sample of traffic lights switching in seconds.](./traffic-lights.png)
