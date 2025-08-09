@@ -6,13 +6,11 @@ with an integrated pedestrian crossing, building on the concepts of state-driven
 and event handling. Below is a continued exploration of its functionality, design
 considerations, and potential improvements, tailored for clarity and practical insight.
 
-
 ### Breakdown
 
 The state machine controls a traffic light system with three LEDs (red, yellow, green)
 and a pedestrian walk signal, triggered by a button press. It uses a microcontroller,
 a Raspberry Pi Pico and MicroPython to manage hardware interactions.
-
 
 ### Components and Logic
 
@@ -60,7 +58,7 @@ a Raspberry Pi Pico and MicroPython to manage hardware interactions.
   purposes or small-scale embedded projects.
 
 
-### Potential Improvements
+### Projects: Potential Improvements
 
 - Button Debouncing: The interrupt handler lacks debouncing, which could lead to
   multiple triggers from a single press. Adding a software debounce (e.g., ignoring
@@ -113,7 +111,7 @@ without pedestrian input). If the pedestrian button is pressed, the Red state du
 extends to walk_time (5 seconds), maintaining the same total cycle time in this case.
 
 
-### Applications and Extensions
+### Projects: Applications and Extensions
 
 This state machine is a practical example for embedded systems education, demonstrating FSMs,
 interrupt handling, and hardware control. It could be extended for:
@@ -127,3 +125,4 @@ interrupt handling, and hardware control. It could be extended for:
 This implementation showcases the power of state machines in managing complex, event-driven
 systems with predictable behaviour, making it a foundation for further exploration in your
 embedded programming.
+
