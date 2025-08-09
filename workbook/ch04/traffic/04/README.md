@@ -97,3 +97,4 @@ while True:
 - Run multiple intersections and coordinate them.
 
 
+![Idea on traffic light situation.](./traffic-lights-crossing.png)
