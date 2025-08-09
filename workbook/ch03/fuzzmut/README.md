@@ -11,18 +11,18 @@
 The common concepts of the C and Python code:
 - Stack machine with bytecode (each instruction is a single byte, some followed by immediate operand bytes).
 - Opcodes:
-- 0x01 PUSH <int32> — push 32-bit signed immediate
-- 0x02 ADD — pop a,b push (a+b)
-- 0x03 SUB — pop a,b push (a-b)
-- 0x04 MUL — pop a,b push (a*b)
-- 0x05 DIV — pop a,b push (a/b) with division-by-zero handled
-- 0x06 DUP — duplicate top
-- 0x07 POP — pop and discard
-- 0x08 HALT — stop and return success
-- 0x09 PRINT — pop and print value (to collect outputs)
-- 0x0A JZ <offset8> — pop top, if zero jump forward by offset
-- 0x0B JNZ <offset8> — pop top, if non-zero jump forward by offset
-- 0xFF INVALID — treated as an invalid opcode (VM will report crash)
+    - 0x01 PUSH <int32> — push 32-bit signed immediate
+    - 0x02 ADD — pop a,b push (a+b)
+    - 0x03 SUB — pop a,b push (a-b)
+    - 0x04 MUL — pop a,b push (a*b)
+    - 0x05 DIV — pop a,b push (a/b) with division-by-zero handled
+    - 0x06 DUP — duplicate top
+    - 0x07 POP — pop and discard
+    - 0x08 HALT — stop and return success
+    - 0x09 PRINT — pop and print value (to collect outputs)
+    - 0x0A JZ <offset8> — pop top, if zero jump forward by offset
+    - 0x0B JNZ <offset8> — pop top, if non-zero jump forward by offset
+    - 0xFF INVALID — treated as an invalid opcode (VM will report crash)
 - VM checks for stack underflow/overflow and invalid memory access and returns error codes instead of crashing.
   Fuzzer looks for non-success return codes and unexpected behaviours.
 
