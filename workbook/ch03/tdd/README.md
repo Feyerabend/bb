@@ -12,6 +12,7 @@ The sequent of event in this journey are:
 - [Second attempt](./02/), and failure, but
 - [Third attempt](./03/) which is successful
 
+
 ### *Failure #1: Negative Number Conversion*
 ```
 FAIL: test_add_edge_cases - AssertionError: '-123' != -123
@@ -60,7 +61,8 @@ if (value == value.strip() and  # No leading/trailing whitespace
     not ('.' in value or 'e' in value.lower() or '+' in value)):
 ```
 
-*The Learning:* Tests don't just catch bugs—they define precise business logic. The test specified exactly when conversion should happen.
+*The Learning:* Tests don't just catch bugs—they define precise business logic.
+The test specified exactly when conversion should happen.
 
 
 ### *The TDD Cycle in Action*
@@ -142,10 +144,11 @@ if isinstance(value, str):
 
 ### Summary
 
-Those "failures" weren't bugs--they were *discovery*. Each failing test revealed something
-we didn't know we needed to handle. This is TDD at its best: letting tests guide you to better,
+In this TDD reasoning, those "failures" weren't bugs--they were *discovery*.
+Each failing test revealed something we didn't know we needed to handle.
+This is TDD at its best: letting tests guide you to better,
 more robust solutions than you would have built without them.
 
-The journey from red to green wasn't just about fixing code, it was about understanding
-requirements deeply and building exactly what was needed, no more, no less.
-
+The journey from red to green wasn't just about fixing code, it was about
+understanding requirements deeply and building exactly what was needed,
+no more, no less. Nontheless.
