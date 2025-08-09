@@ -7,9 +7,8 @@ issues revealed by failing tests.
 
 The samples are from [basic](./../basic/) testing.
 
-Our point of departure is [tdd](./01/tdd.py),
-tests before code. Now testing begins ..
-The sequent of event in this journey are:
+Our point of departure is [tdd](./01/tdd.py), tests before code.
+Now testing begins .. the sequence of events in this journey are:
 - [First attempt](./01/) and failure
 - [Second attempt](./02/), and failure, but
 - [Third attempt](./03/) which is successful
