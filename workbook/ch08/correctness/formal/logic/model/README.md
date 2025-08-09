@@ -6,13 +6,13 @@ Model checking is an automatic technique used to verify finite-state systems aga
 For a virtual machine (VM), model checking can verify properties like "the VM never reaches an invalid instruction" or "a certain safety condition always holds during execution."
 
 
-	•	A program counter (PC)
-	•	A register (R)
-	•	A fixed, finite instruction set:
-	•	INC: increment R
-	•	DEC: decrement R if > 0
-	•	JNZ offset: jump if R ≠ 0
-	•	HALT: stop execution
+- A program counter (PC)
+- A register (R)
+- A fixed, finite instruction set:
+- INC: increment R
+- DEC: decrement R if > 0
+- JNZ offset: jump if R ≠ 0
+- HALT: stop execution
 
 This VM is finite-state because R and PC have bounded ranges (e.g., R in [0..2], PC in program length).
 
