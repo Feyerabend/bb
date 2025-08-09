@@ -1,12 +1,13 @@
 
 ## Fuzz and Mutate Testers
 
-> Once I remeber discussing testing approaches, and my approch was formal testing. A reply was that we could
-> always do "grobian testning" which very much was close to fuzz/mutate. The Swedish term "grobian testning"
-> translates to "rough testing" or "crude testing" in English. It implies a testing approach that is informal,
-> coarse, or not very precise—often quick and dirty tests to catch obvious issues rather than detailed,
-> rigorous testing. This was a comment in the mid 80s, when we didn't yet have any formal definitions of
-> testing frameworks .. and my reply was: "well, this would only show the presence of errors, not the absence."
+> Once I remeber discussing testing approaches, and my approch was formal verification rather than testing.
+> A reply was that we could always do "grobian testning" which very much was close to fuzz/mutate.
+> The Swedish term "grobian testning" translates to "rough testing" or "crude testing" in English.
+> It implies a testing approach that is informal, coarse, or not very precise—often quick and dirty tests
+> to catch obvious issues rather than detailed, rigorous testing. This was a comment in the mid 80s,
+> when we didn't yet have any formal definitions, or at least was aware of any, testing frameworks ..
+> and my reply was: "well, this would only show the presence of errors, not the absence."
 
 The common concepts of the C and Python code:
 - Stack machine with bytecode (each instruction is a single byte, some followed by immediate operand bytes).
@@ -27,9 +28,11 @@ The common concepts of the C and Python code:
   Fuzzer looks for non-success return codes and unexpected behaviours.
 
 Testing strategies:
-- Fuzz: generate random bytecode of varying lengths and run it; record crashes, hangs (fixed instruction limit),
+
+- *Fuzz*: generate random bytecode of varying lengths and run it; record crashes, hangs (fixed instruction limit),
   and unusual outputs.
-- Mutation: start from a small hand-written seed program, create mutations (bit flips, random opcode replacement,
+
+- *Mutation*: start from a small hand-written seed program, create mutations (bit flips, random opcode replacement,
   byte insertion/deletion), run mutated programs and compare outputs or error codes to the seed. Track whether
   mutation is detected (i.e., an invariant broken)--here the basic invariant is determinism (same program -->
   same output) and sanity (no undefined behaviour). You can extend with stronger oracles.
