@@ -151,4 +151,4 @@ more robust solutions than you would have built without them.
 
 The journey from red to green wasn't just about fixing code, it was about
 understanding requirements deeply and building exactly what was needed,
-no more, no less. Nontheless.
+no more, no less. Nonetheless.
