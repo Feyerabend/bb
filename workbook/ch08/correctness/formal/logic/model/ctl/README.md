@@ -183,7 +183,7 @@ when modal logic was undergoing a major transformation from an informal, philoso
 formal semantic theory.
 
 In the early stages, the modern modal logic was primarily axiomatic, extending propositional logic with
-operators like □ (“necessarily”) and ◇ (“possibly”). These were interpreted informally—metaphysically,
+operators like □ ("necessarily") and ◇ ("possibly"). These were interpreted informally--metaphysically,
 epistemically, or otherwise--depending on the philosopher. What was missing was a rigorous semantics
 that explained what these modal operators meant in a way that paralleled truth tables for classical logic.
 
@@ -191,14 +191,14 @@ Enter Stig Kanger, a Swedish logician, who in the late 1950s began developing wh
 relational semantics for modal logic. His idea, still quite novel at the time, was to interpret modal
 operators not in isolation, but relative to possible states of affairs and an accessibility relation
 linking them. Around the same time, Jaakko Hintikka in Finland, independently, pursued a similar project,
-especially with epistemic logic, introducing what we’d now call "possible worlds semantics" for
+especially with epistemic logic, introducing what we'd now call "possible worlds semantics" for
 knowledge and belief.
 
 Saul Kripke, then still a teenager in the United States, published a series of papers starting around
 1959–1963 that systematised this approach, giving very general and precise definitions of what a "model"
 for modal logic could be. His work was not merely a restatement of Kanger or Hintikka but provided a
 particularly elegant and general framework that allowed for the classification of modal logics
-(K, T, S4, S5, etc.) in terms of simple properties of the accessibility relation—reflexivity,
+(K, T, S4, S5, etc.) in terms of simple properties of the accessibility relation--reflexivity,
 transitivity, symmetry.
 
 The modern term "Kripke semantics" generally refers to this relational semantics framework: a set of
