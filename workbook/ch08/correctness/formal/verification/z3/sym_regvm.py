@@ -1,5 +1,3 @@
-# failing .. check more
-
 from z3 import *
 
 # Instruction opcodes
@@ -11,6 +9,16 @@ MUL = 4
 DIV = 5
 JNZ = 6  # Jump if B != 0
 HALT = 7
+
+def z3_bool_to_python(z3_bool_expr, model):
+    """Convert Z3 boolean expression to Python boolean using model evaluation"""
+    evaluated = model.evaluate(z3_bool_expr)
+    if is_true(evaluated):
+        return True
+    elif is_false(evaluated):
+        return False
+    else:
+        return None  # Unknown/symbolic
 
 class SymRegVM:
     def __init__(self, program, max_steps=50):  # Increased max_steps for factorial
@@ -193,6 +201,12 @@ class SymRegVM:
         return If(out_of_bounds, halt_case, And(instr_cases))
 
     def check_property(self, expected_A):
+        # Create a fresh solver for property checking
+        prop_solver = Solver()
+        
+        # Add all the existing constraints
+        prop_solver.add(self.s.assertions())
+        
         # Property: after execution pc is halted and A == expected
         # Check if any step reaches the halt state with correct A value
         halt_conditions = []
@@ -200,14 +214,12 @@ class SymRegVM:
             halt_conditions.append(And(self.pc[t] == -1, self.A[t] == expected_A))
         
         prop = Or(halt_conditions)
-        self.s.add(Not(prop))
-        result = self.s.check()
+        prop_solver.add(Not(prop))
+        result = prop_solver.check()
         return result == unsat  # True if property holds (no counterexample)
 
     def get_trace(self):
-        # Remove the property constraint to get execution trace
-        self.s.pop()  # Remove the Not(prop) constraint
-        
+        # Use the original solver without property constraints for trace generation
         if self.s.check() == sat:
             m = self.s.model()
             trace = []
@@ -216,8 +228,8 @@ class SymRegVM:
                     'pc': m.evaluate(self.pc[t]).as_long(),
                     'A': m.evaluate(self.A[t]).as_long(),
                     'B': m.evaluate(self.B[t]).as_long(),
-                    'Z': bool(m.evaluate(self.Z[t])),
-                    'N': bool(m.evaluate(self.N[t]))
+                    'Z': z3_bool_to_python(self.Z[t], m),
+                    'N': z3_bool_to_python(self.N[t], m)
                 }
                 trace.append(step)
                 # Stop at first halt
@@ -252,7 +264,7 @@ factorial_program_v2 = [
     (HALT, 0)         # 9: halt
 ]
 
-print("Testing factorial computation (5! = 120)..")
+print("Testing factorial computation (5! = 120)...")
 vm = SymRegVM(factorial_program_v2, max_steps=15)
 
 # First, let's get a trace to see what happens
@@ -263,9 +275,11 @@ if trace:
         print(f"Step {i}: pc={step['pc']} A={step['A']} B={step['B']} Z={step['Z']} N={step['N']}")
         if step['pc'] == -1:  # Halted
             break
+else:
+    print("Could not generate trace - program may not terminate or have no valid execution")
 
 # Now check if the property holds
-print(f"\nChecking if A = 120 at halt..")
+print(f"\nChecking if A = 120 at halt...")
 holds = vm.check_property(expected_A=120)
 
 if holds:
@@ -283,7 +297,7 @@ factorial_3_program = [
     (HALT, 0)         # 5: halt
 ]
 
-print(f"\n\nTesting 3! = 6..")
+print(f"\n\nTesting 3! = 6...")
 vm2 = SymRegVM(factorial_3_program, max_steps=10)
 
 trace2 = vm2.get_trace()
@@ -311,7 +325,7 @@ loop_factorial_program = [
 # The issue is we need to decrement B, but our VM doesn't have a good way to do this
 # Let's implement a working loop version by being more clever:
 
-print(f"\n\nTrying a loop-based approach..")
+print(f"\n\nTrying a loop-based approach...")
 # We'll compute 4! = 24 using a countdown loop
 loop_factorial_4 = [
     (LOAD_A, 4),      # 0: A = 4 (start with 4)
@@ -325,7 +339,7 @@ loop_factorial_4 = [
 ]
 
 vm3 = SymRegVM(loop_factorial_4, max_steps=10)
-print("Computing 4! = 24..")
+print("Computing 4! = 24...")
 
 trace3 = vm3.get_trace()
 if trace3:
