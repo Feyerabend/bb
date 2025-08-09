@@ -35,6 +35,9 @@ This example illustrates a finite state machine (FSM), where the system is alway
 of a finite number of states, and transitions are deterministic based on time.
 
 
+![A sample of traffic lights switching in seconds.](./traffic-lights.png)
+
+
 #### The Benefits of State Machines
 
 * Clarity: Clearly defines system behavior for each state.
@@ -44,5 +47,3 @@ of a finite number of states, and transitions are deterministic based on time.
 
 State machines are ideal for systems with well-defined modes, like traffic lights, vending machines,
 or protocol handlers, making them a powerful tool in both software and hardware design.
-
-![A sample of traffic lights switching in seconds.](./traffic-lights.png)
