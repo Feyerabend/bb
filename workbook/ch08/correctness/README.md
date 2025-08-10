@@ -24,7 +24,7 @@ They don't prove correctness but detect violations in finite cases.
 They complement formal methods by catching issues in parts of the system where full formal verification is impractical.
 
 
----
+
 
 1. Foundational Logics & Formalisms (expressive power and verifiability of programs)
 	- Dependent Types (type system guarantees, proof-carrying code)
