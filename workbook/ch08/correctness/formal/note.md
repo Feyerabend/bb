@@ -1,16 +1,16 @@
 
 ## Example of Property-Based Test
 
-Sometime in the 1980s, I taught a basic programming class, for beginners. Unfortunately, I got
-sidetracked early into logic and discussions about how logic could help in specifying functions.
-If I remeber correctly we had Commodore VIC 20, and an implementation of INSTR I thought could
-help in understanding programming. The students weren’t very happy, so we eventually switched
-to simple games, or easy examples to keep things engaging.
+*Sometime in the 1980s, I taught a basic programming class for beginners. Unfortunately, I got
+sidetracked early on into logic and discussions about how logic could aid in specifying functions.
+If I remember correctly, we used the Commodore VIC-20 and an implementation of the INSTR function
+that I thought could help with understanding programming. The students weren’t very happy,
+so we eventually switched to simple games and easy examples to keep things engaging.*
 
 Well, what I more specifically tried was a first-order specification of a function INSTR.
 
-In BASIC, INSTR(start, string1, string2) returns the position (1-based) of the first occurrence
-of string2 within string1 starting from position start. If string2 is not found, it returns 0.
+In BASIC, `INSTR(start, string1, string2)` returns the position (1-based) of the first occurrence
+of `string2` within `string1` starting from position `start`. If `string2` is not found, it returns `0`.
 
 
 #### Function: INSTR
