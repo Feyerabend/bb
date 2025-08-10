@@ -7,17 +7,13 @@ Let:
 
 The definition of $r$ is:
 
-```math
-r = 0 \iff & \neg \exists i \in \mathbb{N},\ \text{start} \leq i \leq |s| - |t| + 1 \text{ such that } \\
-& \forall j \in [0, |t|-1],\ s[i + j] = t[j + 1]
-```
+$$
+r = 0 \iff \neg \exists i \in \mathbb{N},\ \text{start} \leq i \leq |s| - |t| + 1 \text{ such that } \forall j \in [0, |t|-1],\ s[i + j] = t[j + 1]
+$$
 
-```math
-r \neq 0 \iff & \exists i \in \mathbb{N},\ \text{start} \leq i \leq |s| - |t| + 1 \text{ such that } \\
-& \forall j \in [0, |t|-1],\ s[i + j] = t[j + 1] \\
-& \wedge \\
-& \forall k \in \mathbb{N},\ (\text{start} \leq k < i) \implies \exists j \in [0, |t|-1],\ s[k + j] \neq t[j + 1]
-```
+$$
+r \neq 0 \iff \exists i \in \mathbb{N},\ \text{start} \leq i \leq |s| - |t| + 1 \text{ such that } \forall j \in [0, |t|-1],\ s[i + j] = t[j + 1] \wedge \forall k \in \mathbb{N},\ (\text{start} \leq k < i) \implies \exists j \in [0, |t|-1],\ s[k + j] \neq t[j + 1]
+$$
 
 *Explanation:*
 
