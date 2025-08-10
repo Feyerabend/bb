@@ -15,8 +15,6 @@ of `string2` within `string1` starting from position `start`. If `string2` is no
 
 #### Function: INSTR
 
-INSTR works something like this:
-
 *INSTR is used to find the position of a specific sequence of characters (the substring) within a larger string.*
 
 *Return Value:*
