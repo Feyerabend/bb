@@ -1,3 +1,39 @@
+
+## Example of Property-Based Test
+
+Sometime in the 1980s, I taught a basic programming class, for beginners. Unfortunately, I got
+sidetracked early into logic and discussions about how logic could help in specifying functions.
+If I remeber correctly we had Commodore VIC 20, and an implementation of INSTR I thought could
+help in understanding programming. The students weren’t very happy, so we eventually switched
+to simple games, or easy examples to keep things engaging.
+
+Well, what I more specifically tried was a first-order specification of a function INSTR.
+
+In BASIC, INSTR(start, string1, string2) returns the position (1-based) of the first occurrence
+of string2 within string1 starting from position start. If string2 is not found, it returns 0.
+
+
+#### Function: INSTR
+
+INSTR works something like this:
+
+*INSTR is used to find the position of a specific sequence of characters (the substring) within a larger string.*
+
+*Return Value:*
+- Positive Integer: If the substring is found, INSTR returns the index (starting from 1)
+  of the first character of the substring's first occurrence within the larger string. 
+- Zero (0): If the substring is not found in the string. 
+- Null: In some implementations, if either the string or the substring is null, the function might return null. 
+
+*Parameters:*
+- The INSTR function typically takes two or more string arguments: the string to search
+  within (the "main" string) and the substring to search for. 
+- Optionally, it may take a starting position to begin the search and a comparison type
+  (e.g., binary or text). 
+
+
+#### Specification
+
 Let:
 
 - $s$ and $t$ be strings
@@ -23,9 +59,6 @@ r ≠ 0 ⇔ ∃ i ∈ ℕ, start ≤ i ≤ |s| - |t| + 1 such that
 - If $r \neq 0$, then $r$ is the smallest index $i$ such that the substring of $s$ starting at $i$ equals $t$.
 - The indices are 1-based.
 - The notation $s[x]$ means the character at position $x$ in $s$.
-
-
-In BASIC, INSTR(start, string1, string2) returns the position (1-based) of the first occurrence of string2 within string1 starting from position start. If string2 is not found, it returns 0.
 
 
 
