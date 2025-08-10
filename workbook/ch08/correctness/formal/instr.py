@@ -1,68 +1,3 @@
-
-## Example of Property-Based Test
-
-*Sometime in the 1980s, I taught a basic programming class for beginners. Unfortunately, I got
-sidetracked early on into logic and discussions about how logic could aid in specifying functions.
-If I remember correctly, we used the Commodore VIC-20 and an implementation of the INSTR function
-that I thought could help with understanding programming. The students weren’t very happy,
-so we eventually switched to simple games and easy examples to keep things engaging.
-My specification was also very provisional, not close to what came in later discovery.*
-
-Well, what I more specifically tried was a first-order specification of a function INSTR.
-
-In BASIC, `INSTR(start, string1, string2)` returns the position (1-based) of the first occurrence
-of `string2` within `string1` starting from position `start`. If `string2` is not found, it returns `0`.
-
-
-#### Function: INSTR
-
-*INSTR is used to find the position of a specific sequence of characters (the substring) within a larger string.*
-
-*Return Value:*
-- Positive Integer: If the substring is found, INSTR returns the index (starting from 1)
-  of the first character of the substring's first occurrence within the larger string. 
-- Zero (0): If the substring is not found in the string. 
-- Null: In some implementations, if either the string or the substring is null, the function might return null. 
-
-*Parameters:*
-- The INSTR function typically takes two or more string arguments: the string to search
-  within (the "main" string) and the substring to search for. 
-- Optionally, it may take a starting position to begin the search and a comparison type
-  (e.g., binary or text). 
-
-
-#### Specification
-
-Let:
-
-- $s$ and $t$ be strings
-- \(|s|\) and \(|t|\) their lengths
-- $\text{start} \in \mathbb{N}$, $1 \leq \text{start} \leq |s| + 1$
-- $\text{instr}(\text{start}, s, t) = r \in \mathbb{N}$
-
-The definition of $r$ is:
-
-```
-r = 0 ⇔ ¬∃ i ∈ ℕ, start ≤ i ≤ |s| - |t| + 1 such that
-          ∀ j ∈ [0, |t|-1], s[i + j] = t[j + 1]
-
-r ≠ 0 ⇔ ∃ i ∈ ℕ, start ≤ i ≤ |s| - |t| + 1 such that
-          ∀ j ∈ [0, |t|-1], s[i + j] = t[j + 1]
-          ∧
-          ∀ k ∈ ℕ, (start ≤ k < i) ⇒ ∃ j ∈ [0, |t|-1], s[k + j] ≠ t[j + 1]
-```
-
-*Explanation:*
-
-- If $r = 0$, no substring of $s$ starting at or after \(\text{start}\) matches $t$.
-- If $r \neq 0$, then $r$ is the smallest index $i$ such that the substring of $s$ starting at $i$ equals $t$.
-- The indices are 1-based.
-- The notation $s[x]$ means the character at position $x$ in $s$.
-
-
-#### Property-Based Test of INSTR function
-
-```python
 def instr(start, string1, string2):
     """
     Find the position of string2 within string1, starting from position start.
@@ -170,5 +105,3 @@ if __name__ == "__main__":
     print(f'instr(8, "hello world", "world") = {instr(8, "hello world", "world")}')
     print(f'instr(5, "test", "") = {instr(5, "test", "")}')  # Should be 5
     print(f'instr(2, "", "") = {instr(2, "", "")}')  # The failing case
-```
-

@@ -1,0 +1,4 @@
+# file: /Users/setlo795/Documents/GitHub/bb/workbook/ch08/correctness/formal/instr.py
+# hypothesis_version: 6.137.1
+
+['\nExample usage:', 'Hello', '__main__', 'hello', 'hello hello', 'hello world', 'short', 'test', 'world', 'xyz']
