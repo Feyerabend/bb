@@ -15,6 +15,7 @@ $$
 r \neq 0 \iff \exists i \in \mathbb{N},\ \text{start} \leq i \leq |s| - |t| + 1 \text{ such that } \forall j \in [0, |t|-1],\ s[i + j] = t[j + 1] \wedge \forall k \in \mathbb{N},\ (\text{start} \leq k < i) \implies \exists j \in [0, |t|-1],\ s[k + j] \neq t[j + 1]
 $$
 
+
 *Explanation:*
 
 - If $r = 0$, no substring of $s$ starting at or after \(\text{start}\) matches $t$.
