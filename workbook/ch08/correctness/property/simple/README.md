@@ -37,7 +37,7 @@ of `string2` within `string1` starting from position `start`. If `string2` is no
 Let:
 
 - $s$ and $t$ be strings
-- \(|s|\) and \(|t|\) their lengths
+- $|s|$ and $|t|$ their lengths
 - $\text{start} \in \mathbb{N}$, $1 \leq \text{start} \leq |s| + 1$
 - $\text{instr}(\text{start}, s, t) = r \in \mathbb{N}$
 
@@ -55,8 +55,9 @@ r ≠ 0 ⇔ ∃ i ∈ ℕ, start ≤ i ≤ |s| - |t| + 1 such that
 
 *Explanation:*
 
-- If $r = 0$, no substring of $s$ starting at or after \(\text{start}\) matches $t$.
-- If $r \neq 0$, then $r$ is the smallest index $i$ such that the substring of $s$ starting at $i$ equals $t$.
+- If $r = 0$, no substring of $s$ starting at or after $\text{start}$ matches $t$.
+- If $r \neq 0$, then $r$ is the smallest index $i$ such that the substring of $s$
+  starting at $i$ equals $t$.
 - The indices are 1-based.
 - The notation $s[x]$ means the character at position $x$ in $s$.
 
