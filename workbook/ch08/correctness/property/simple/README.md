@@ -1,12 +1,13 @@
 
 ## Example of Property-Based Test
 
-*Sometime in the 1980s, I taught a basic programming class for beginners. Unfortunately, I got
+*Sometime in the 1980s, I taught a BASIC programming class for beginners. Unfortunately, I got
 sidetracked early on into logic and discussions about how logic could aid in specifying functions.
-If I remember correctly, we used the Commodore VIC-20 and an implementation of the INSTR function
-that I thought could help with understanding programming. The students weren’t very happy,
-so we eventually switched to simple games and easy examples to keep things engaging.
-My specification was also very provisional, not close to what came in later discovery.*
+If I remember correctly, we used the Commodore VIC-20 or it might have been ABC80, and an
+implementation of the INSTR function that I thought could help with understanding programming.
+The students weren’t very happy, so we eventually switched to simple games and easy examples
+to keep things engaging. My specification was also very provisional, not close to what came
+in later discovery.*
 
 Well, what I more specifically tried was a first-order specification of a function INSTR.
 
@@ -36,7 +37,7 @@ of `string2` within `string1` starting from position `start`. If `string2` is no
 Let:
 
 - $s$ and $t$ be strings
-- \(|s|\) and \(|t|\) their lengths
+- $|s|$ and $|t|$ their lengths
 - $\text{start} \in \mathbb{N}$, $1 \leq \text{start} \leq |s| + 1$
 - $\text{instr}(\text{start}, s, t) = r \in \mathbb{N}$
 
@@ -54,8 +55,9 @@ r ≠ 0 ⇔ ∃ i ∈ ℕ, start ≤ i ≤ |s| - |t| + 1 such that
 
 *Explanation:*
 
-- If $r = 0$, no substring of $s$ starting at or after \(\text{start}\) matches $t$.
-- If $r \neq 0$, then $r$ is the smallest index $i$ such that the substring of $s$ starting at $i$ equals $t$.
+- If $r = 0$, no substring of $s$ starting at or after $\text{start}$ matches $t$.
+- If $r \neq 0$, then $r$ is the smallest index $i$ such that the substring of $s$
+  starting at $i$ equals $t$.
 - The indices are 1-based.
 - The notation $s[x]$ means the character at position $x$ in $s$.
 
