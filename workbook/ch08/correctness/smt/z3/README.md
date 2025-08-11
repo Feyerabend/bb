@@ -5,8 +5,9 @@ The code implements a *symbolic register-based virtual machine (SymRegVM)* that
 leverages the *Z3 theorem prover* to perform *symbolic execution* and verify
 properties of programs.
 
-To be able to run this, you have to install the additional package of Z3 with
-Python.
+> [!IMPORTANT]  
+> To be able to run this, you have to install the additional
+> package of Z3 with Python.
 
 1. *Symbolic Execution*:
    - Symbolic execution is a program analysis technique where programs are executed
