@@ -1,12 +1,13 @@
 
 ## Example of Property-Based Test
 
-*Sometime in the 1980s, I taught a basic programming class for beginners. Unfortunately, I got
+*Sometime in the 1980s, I taught a BASIC programming class for beginners. Unfortunately, I got
 sidetracked early on into logic and discussions about how logic could aid in specifying functions.
-If I remember correctly, we used the Commodore VIC-20 and an implementation of the INSTR function
-that I thought could help with understanding programming. The students weren’t very happy,
-so we eventually switched to simple games and easy examples to keep things engaging.
-My specification was also very provisional, not close to what came in later discovery.*
+If I remember correctly, we used the Commodore VIC-20 or it might have been ABC80, and an
+implementation of the INSTR function that I thought could help with understanding programming.
+The students weren’t very happy, so we eventually switched to simple games and easy examples
+to keep things engaging. My specification was also very provisional, not close to what came
+in later discovery.*
 
 Well, what I more specifically tried was a first-order specification of a function INSTR.
 
