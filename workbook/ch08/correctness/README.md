@@ -82,29 +82,32 @@ that pride in workmanship still matters in the age of machine-assisted programmi
 
 
 
----
 
-
+### A Selection of Tools for Seeking Correctness
 
 1. Foundational Logics & Formalisms (expressive power and verifiability of programs)
-	- Dependent Types (type system guarantees, proof-carrying code)
-	- Presburger Arithmetic (decidable fragments of logic useful for verification)
-	- Possible additions:
+	- [Dependent Types](./logic/deptypes/) (type system guarantees, proof-carrying code)
+	- [Presburger Arithmetic](./logic/presburger/) (decidable fragments of logic useful
+    for verification)
+	- [Model Checking](./logic/model/) (automatic verification of finite-state systems)
+
+
+2. Verification in Practice (applying formal methods to code)
+	- [Proof assistants](./assist/) (Coq, Lean, Agda)
+	- SMT solvers: [Z3](./smt/)
+
+3. Empirical Assurance (less formal but widely used)
+	- Traditional unit tests mixed with formal approach: [Property-Based Tests](./property/)
+
+
+
+---
+Additions
+
+1. 	- Possible additions:
 		- Refinement Types? maybe?
 		- Hoare Logic (pre/postconditions), already, cross ref
 		- Temporal Logic (reasoning about state over time), maybe
-		- Model Checking (automatic verification of finite-state systems) should be!m ok
 
-2. Verification in Practice (applying formal methods to code)
-	- Proof assistants (Coq, Lean, Agda) -- mention!
-	- SMT solvers (Z3, CVC5) --ok
-	- Static analysis and contracts (Frama-C, Dafny, Eiffel-style contracts) -- sidelined, we already have static analyser ..
-
-
-ch03!!!!
-3. Empirical Assurance (less formal but widely used!)
-	- Traditional tests (unit, integration, property-based .. also here! complementary?)
-	- Fuzz testing
-	- Mutation testing
-
-
+2. 	- Static analysis and contracts
+    (Frama-C, Dafny, Eiffel-style contracts) -- sidelined, we already have static analyser! ..
