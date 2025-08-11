@@ -54,6 +54,32 @@ a disciplined participant in software engineering--one where creative output is 
 uncompromising verification, and correctness becomes the gateway through which all code must pass.
 
 
+### Craftmanship
+
+This approach fits naturally into the craftsmanship paradigm in programming. Craftsmanship is about
+more than producing code that "works"; it is about creating software that is reliable, maintainable,
+and elegant. The correctness barrier is the craftsperson’s measuring stick: the point where
+creativity meets discipline. As in any skilled trade, tools serve the craftsperson, not the other
+way around. The LLM becomes a powerful tool for exploration and speed, but the human developer
+remains responsible for ensuring that each piece of software meets high standards. By embedding
+correctness into the workflow, we preserve the idea that "working" is not the same as "good"--and
+that pride in workmanship still matters in the age of machine-assisted programming.
+
+- Deliberate Practice: Craftsmanship encourages constant refinement of one’s methods. Here,
+  refinement is mirrored in the feedback loop: an LLM produces code, it is tested, analysed,
+  and corrected until it meets the specification.
+
+- Tools in Service of Skill: In craftsmanship, tools do not replace the craftsman; they extend
+  skill. An LLM is a powerful tool, but correctness barriers ensure the human remains the arbiter of quality.
+
+- Respect for Standards: Craftsmen work to high standards, often encoded in tests, coding
+  styles, and best practices. Static guarantees and runtime checks serve as the formalisation
+  of those standards in the LLM workflow.
+
+- Layered Quality Assurance: Just as a master woodworker inspects joints, grain, and finish
+  at different stages, the programmer-inspector uses static analysis, formal methods, and
+  tests as successive layers of quality control.
+
 
 
 ---
