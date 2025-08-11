@@ -86,14 +86,14 @@ that pride in workmanship still matters in the age of machine-assisted programmi
 ### A Selection of Tools for Seeking Correctness
 
 1. Foundational Logics & Formalisms (expressive power and verifiability of programs)
-	- [Dependent Types](./logic/deptypes/) (type system guarantees, proof-carrying code)
-	- [Presburger Arithmetic](./logic/presburger/) (decidable fragments of logic useful
-    for verification)
-	- [Model Checking](./logic/model/) (automatic verification of finite-state systems)
+	- [Dependent Types](./logic/deptypes/) type system guarantees, proof-carrying code
+	- [Presburger Arithmetic](./logic/presburger/) decidable fragments of logic useful
+    for verification
+	- [Model Checking](./logic/model/) automatic verification of finite-state systems
 
 
 2. Verification in Practice (applying formal methods to code)
-	- [Proof assistants](./assist/) (Coq, Lean, Agda)
+	- [Proof assistants](./assist/) Coq, Lean, Agda
 	- SMT solvers: [Z3](./smt/)
 
 3. Empirical Assurance (less formal but widely used)
