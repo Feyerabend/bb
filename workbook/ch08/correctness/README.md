@@ -1,28 +1,50 @@
 # From Basics To Bytecode: A guide to computers and programming
 # Workbook
 
+From LLMs we arrive naturally at automatically generated code. Such code, however, often lacks
+rigour and may fail in subtle or obvious ways. To address this, we can introduce *correctness* as
+a deliberate barrier--a constraint that every generated solution must pass before it can be
+accepted. In this model, correctness is not merely an aspiration; it is an enforced checkpoint.
+
+This barrier can take many forms: automated unit tests, type systems, static analysis,
+property-based testing, or even formal verification techniques. Regardless of the method,
+the aim is the same--to ensure that generated code does not simply appear plausible but
+demonstrably satisfies a clearly defined specification.
+
+A typical process might look like this:
+
+1. *Define the Specification*
+Describe the expected behaviour in precise terms, using requirements, invariants, or formal contracts.
+
+2. *Generate the Code*
+Provide the LLM with the specification and let it produce an implementation.
+
+3. *Verify Against the Barrier*
+Subject the generated code to tests, linters, static analysers, or proof tools.
+
+4. *Refine Through Feedback*
+Feed any errors or failures back into the LLM, adjusting the prompt to guide it towards a correct solution.
+
+By embedding this barrier into the workflow, we shift from a "generate and hope" (like Google
+once hade the search option: "I feel lucky") approach to a closed-loop system where *correctness
+is continuously enforced*. The LLM becomes part of a disciplined development process--producing
+not just functional code, but code that can survive deliberate and systematic scrutiny.
+
+In effect, the AI's creativity is constrained by the same uncompromising standards we apply to
+human-written software, making correctness not an optional extra but the very gateway through
+which all code must pass.
+
 In the context of counteracting LLM-generated code errors:
-- Dependent types and Presburger arithmetic --> enforce constraints at *compile time*.
+- E.g. dependent types and Presburger arithmetic --> enforce constraints at *compile time*.
 - Tests --> validate behaviour at *runtime*.
 Together, they form a layered safety net: static guarantees + dynamic checks.
-
----
-EXPAND
-
-In contrast to logical, the empirical part move to ch03?
-Reasoning in general here?
-
-- RUNTIME
-	* unit -- integration -- property -- more reasoning? not so much code?
-
-- EXPLORATORY
-	* Fuzz
-	* Mutation
 
 Tests belong to the empirical layer:
 They don't prove correctness but detect violations in finite cases.
 They complement formal methods by catching issues in parts of the system where full formal verification is impractical.
+They are however often easy to implement and can often be automatically (LLM) generated.
 
+---
 
 
 
