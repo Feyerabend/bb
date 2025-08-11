@@ -1,52 +1,59 @@
-# From Basics To Bytecode: A guide to computers and programming
-# Workbook
+
+## Correctness as a Barrier
+
+Hilbert’s programme, formulated in the early 20th century, sought to place all of mathematics
+on an unshakeable formal foundation. Hilbert argued that any satisfactory formal system should
+satisfy four conditions:
+
+1. *Finiteness*: The system must be describable with a finite set of symbols, axioms,
+   and rules of inference.
+2. *Completeness*: Every well-formed statement expressible in the system must be either
+   provable or disprovable within the system.
+3. *Consistency*: No contradictions should be derivable; it must be impossible to prove
+   both a statement and its negation.
+4. *Decidability*: There must exist a mechanical procedure (an algorithm) that can,
+   in finite time, determine whether any given statement is provable.
+
+This vision was ambitious--and, for richer logics, unattainable. Gödel’s incompleteness theorems
+and Church’s proof of the *Entscheidungsproblem* showed that completeness and decidability cannot
+both be maintained beyond propositional logic. While the full programme collapsed, it left behind
+a legacy that shaped logic, computability theory, and ultimately, the design of programming
+languages and verification tools.
+
+For computer programming, we must accept weaker properties. *Correctness* can still be preserved
+as a guiding condition, provided we define it in attainable ways--typically as conformance to a
+specification, not as universal mathematical truth. This gives us several working notions:
+
+- *Partial correctness*: If the program produces a result, that result meets the specification.
+  But no guarantee is made about whether the program halts.
+- *Total correctness*: The program always halts and meets the specification.
+- *Safety properties*: Nothing "bad" ever happens during execution (e.g., no invalid memory access).
+- *Liveness properties*: Something "good" eventually happens (e.g., a request is eventually processed).
 
 From LLMs we arrive naturally at automatically generated code. Such code, however, often lacks
-rigour and may fail in subtle or obvious ways. To address this, we can introduce *correctness* as
-a deliberate barrier--a constraint that every generated solution must pass before it can be
-accepted. In this model, correctness is not merely an aspiration; it is an enforced checkpoint.
+rigour and may fail in subtle or obvious ways. To address this, we can introduce correctness as
+a deliberate barrier--a checkpoint that every generated solution must pass before acceptance.
+In this workflow:
 
-This barrier can take many forms: automated unit tests, type systems, static analysis,
-property-based testing, or even formal verification techniques. Regardless of the method,
-the aim is the same--to ensure that generated code does not simply appear plausible but
-demonstrably satisfies a clearly defined specification.
+1. Define the Specification: Clear, unambiguous requirements, invariants, or contracts.
+2. Generate the Code: Let the LLM produce an implementation from the specification.
+3. Verify Against the Barrier: Run the code through tests, static analysis, type systems,
+   or formal proofs.
+4. Refine Through Feedback: Feed any errors back into the LLM, adjusting prompts until
+   the output satisfies the barrier.
 
-A typical process might look like this:
+In the context of LLM-generated code, different correctness techniques target different stages.
+Dependent types and Presburger arithmetic can enforce constraints at compile time, giving static
+guarantees. Tests validate behaviour at runtime, forming an empirical layer that catches violations
+in finite cases. Tests do not prove correctness, but they complement formal methods where full
+proofs are impractical--and they are often simple enough to implement or even generate automatically
+with the help of the LLM itself.
 
-1. *Define the Specification*
-Describe the expected behaviour in precise terms, using requirements, invariants, or formal contracts.
+By embedding these barriers into development, we transform the LLM from a suggestion tool into
+a disciplined participant in software engineering--one where creative output is constrained by
+uncompromising verification, and correctness becomes the gateway through which all code must pass.
 
-2. *Generate the Code*
-Provide the LLM with the specification and let it produce an implementation.
 
-3. *Verify Against the Barrier*
-Subject the generated code to tests, linters, static analysers, or proof tools.
-
-4. *Refine Through Feedback*
-Feed any errors or failures back into the LLM, adjusting the prompt to guide it towards a correct solution.
-
-By embedding this barrier into the workflow, we shift from a "generate and hope" (like Google
-once hade the search option: "I feel lucky") approach to a closed-loop system where *correctness
-is continuously enforced*. The LLM becomes part of a disciplined development process--producing
-not just functional code, but code that can survive deliberate and systematic scrutiny.
-
-In effect, the AI's creativity is constrained by the same uncompromising standards we apply to
-human-written software, making correctness not an optional extra but the very gateway through
-which all code must pass.
-
-In the context of counteracting errors in LLM-generated code, different correctness techniques
-address different points in the development pipeline. For example, dependent types or Presburger
-arithmetic can enforce strict constraints at compile time, providing static guarantees that
-certain classes of errors are impossible. Tests, on the other hand, validate behaviour at runtime.
-Together, these form a layered safety net: the static layer prevents entire categories of mistakes
-from ever compiling, while the dynamic layer catches issues that only emerge in actual execution.
-
-Tests belong to what might be called the empirical layer of assurance. They do not prove correctness,
-but they can expose violations in specific, finite scenarios. They complement formal methods by
-covering parts of the system where full formal verification is either too costly or impractical.
-Importantly, tests are often straightforward to implement and, in the LLM era, can themselves be
-automatically generated, allowing for rapid iteration and continuous validation without
-sacrificing rigour.
 
 
 ---
