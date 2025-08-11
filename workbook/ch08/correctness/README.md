@@ -54,7 +54,7 @@ a disciplined participant in software engineering--one where creative output is 
 uncompromising verification, and correctness becomes the gateway through which all code must pass.
 
 
-### Craftmanship
+### Craftsmanship
 
 This approach fits naturally into the craftsmanship paradigm in programming. Craftsmanship is about
 more than producing code that "works"; it is about creating software that is reliable, maintainable,
