@@ -35,8 +35,8 @@ forms the basis for Agda and influences Coq and Lean. Martin-Löf’s work built
 earlier ideas from *Alonzo Church*’s lambda calculus and *Haskell Curry*’s combinatory
 logic, aiming to provide a unified foundation for mathematics and computation. The
 development of these systems reflects a broader trend in computer science and
-mathematics toward formalization, spurred by the need to eliminate errors in software
-and proofs, as seen in projects like the formalization of the *Four Color Theorem*
+mathematics toward formalisation, spurred by the need to eliminate errors in software
+and proofs, as seen in projects like the formalisation of the *Four Colour Theorem*
 or the *Kepler Conjecture*.
 
 
@@ -47,7 +47,7 @@ programs and proofs within a single framework. In Agda, types serve as logical
 propositions, and programs correspond to proofs of those propositions, following
 the Curry-Howard correspondence. Proof construction in Agda is akin to programming:
 users write code that must type-check against a specified proposition, ensuring
-correctness. Agda emphasizes *human-guided proof development* with minimal automation,
+correctness. Agda emphasises *human-guided proof development* with minimal automation,
 relying on explicit constructions and type-driven guidance through its interactive
 development environment (e.g., Emacs integration or VS Code with plugins).
 
@@ -162,16 +162,16 @@ Coq was initiated in 1984 at *INRIA* in France by *Thierry Coquand* and
 *Gérard Huet*, building on the Calculus of Constructions. Its name is a nod
 to both Coquand and the French word for “rooster” (a symbol of France).
 Over the decades, Coq has evolved into a robust tool for formal verification,
-with significant milestones like the formalization of the *Four Color Theorem*
+with significant milestones like the formalisation of the *Four Colour Theorem*
 (2005) and the *Feit-Thompson Theorem* (2012).
 
 #### Use Cases
 
-- *Large Formal Proofs*: Coq is used for formalizing complex mathematical theorems,
+- *Large Formal Proofs*: Coq is used for formalising complex mathematical theorems,
   such as the *Odd Order Theorem*.
 - *Verified Software*: Projects like CompCert demonstrate Coq’s ability to verify
   critical software systems.
-- *Formalized Mathematics*: Coq’s libraries support formalizing areas like algebra,
+- *Formalised Mathematics*: Coq’s libraries support formalising areas like algebra,
   number theory, and topology.
 
 
@@ -180,9 +180,9 @@ with significant milestones like the formalization of the *Four Color Theorem*
 *Lean* is an interactive theorem prover and dependently typed programming language
 designed to combine the expressiveness of Coq with modern programming language features
 and stronger automation. Like Coq, Lean is based on a variant of dependent type theory
-(similar to the Calculus of Inductive Constructions) but emphasizes usability and
+(similar to the Calculus of Inductive Constructions) but emphasises usability and
 performance. Lean is particularly known for its *mathlib* library, an extensive,
-community-driven collection of formalized mathematics covering areas from algebra
+community-driven collection of formalised mathematics covering areas from algebra
 to analysis.
 
 #### Features and Philosophy
@@ -191,12 +191,12 @@ to analysis.
   procedures, reducing manual effort compared to Agda or Coq.
 - *Modern Design*: Lean’s syntax is inspired by functional programming languages,
   making it accessible to programmers.
-- *Mathlib*: Lean’s mathlib is a rapidly growing library that formalizes a wide range
+- *Mathlib*: Lean’s mathlib is a rapidly growing library that formalises a wide range
   of mathematics, from basic number theory to advanced topics like category theory.
 
 #### Example
 
-Lean is often used to formalize mathematical theorems. Below is an example proving that
+Lean is often used to formalise mathematical theorems. Below is an example proving that
 the square of an even number is even:
 
 ```lean
@@ -219,22 +219,22 @@ simplify algebraic expressions.
 
 Lean was developed by *Leonardo de Moura* at Microsoft Research starting in 2013, with
 Lean 4 (released in 2021) introducing significant improvements in performance and usability.
-Lean’s design draws inspiration from Coq but prioritizes automation and a modern programming
+Lean’s design draws inspiration from Coq but prioritises automation and a modern programming
 experience. The *mathlib* community, led by mathematicians like *Kevin Buzzard*, has made
-Lean a leading tool for formalizing mathematics, with projects like the formalization of
+Lean a leading tool for formalising mathematics, with projects like the formalisation of
 *perfectoid spaces* (2019).
 
 #### Use Cases
 
-- *Formal Mathematics*: Lean’s mathlib supports formalizing complex mathematical structures,
+- *Formal Mathematics*: Lean’s mathlib supports formalising complex mathematical structures,
   making it popular among mathematicians.
-- *Verified Algorithms*: Lean is used to verify algorithms in areas like cryptography and optimization.
+- *Verified Algorithms*: Lean is used to verify algorithms in areas like cryptography and optimisation.
 - *Teaching*: Lean’s accessible syntax and automation make it suitable for teaching formal methods.
 
 
 ### Comparison Table
 
-Below is a comparison table summarizing the key features of Agda, Coq, and Lean:
+Below is a comparison table summarising the key features of Agda, Coq, and Lean:
 
 | *Tool* | *Type* | *Automation Level* | *Logic / Foundation* | *Typical Use Cases* | *Key Libraries/Tools* |
 |----------|----------|----------------------|-------------------------|-----------------------|-------------------------|
@@ -256,7 +256,7 @@ These tools have had a profound impact:
 - *Software Verification*: Projects like CompCert (Coq) and *seL4* (a verified microkernel,
   partially using Isabelle/HOL but inspiring Lean and Coq work) demonstrate the practical
   value of formal verification.
-- *Mathematical Formalization*: The *Flyspeck project* (formalizing the Kepler Conjecture
+- *Mathematical Formalisation*: The *Flyspeck project* (formalising the Kepler Conjecture
   in HOL Light) and Lean’s mathlib highlight the growing role of theorem provers in mathematics.
 - *Education*: All three tools are used in universities to teach logic, type theory, and
   formal methods, with Lean gaining traction for its accessibility.
@@ -267,7 +267,7 @@ These tools have had a profound impact:
 The field of dependently typed programming and theorem proving continues to evolve. Agda is
 exploring advanced type theories like *cubical type theory* for homotopy type theory. Coq is
 expanding its libraries and improving tactic automation. Lean, with its active mathlib community,
-is pushing the boundaries of formalized mathematics, aiming to formalize modern results like
+is pushing the boundaries of formalised mathematics, aiming to formalise modern results like
 *Fermat’s Last Theorem*. Integration with AI and machine learning (e.g., Lean’s use in automated
 theorem proving research) is also a promising frontier.
 
@@ -277,7 +277,7 @@ theorem proving research) is also a promising frontier.
 Agda, Coq, and Lean represent distinct but complementary approaches to dependently typed programming
 and interactive theorem proving. Agda excels in type-driven, manual proof construction, ideal for 
 teaching and research. Coq offers a robust tactic-based system for large-scale verification projects.
-Lean balances automation and usability, making it a favorite for formalizing mathematics. Together,
+Lean balances automation and usability, making it a favourite for formalising mathematics. Together,
 these tools advance the goal of error-free software and mathematics, rooted in the deep interplay of
 logic and computation.
 
