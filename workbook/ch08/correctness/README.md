@@ -34,15 +34,20 @@ In effect, the AI's creativity is constrained by the same uncompromising standar
 human-written software, making correctness not an optional extra but the very gateway through
 which all code must pass.
 
-In the context of counteracting LLM-generated code errors:
-- E.g. dependent types and Presburger arithmetic --> enforce constraints at *compile time*.
-- Tests --> validate behaviour at *runtime*.
-Together, they form a layered safety net: static guarantees + dynamic checks.
+In the context of counteracting errors in LLM-generated code, different correctness techniques
+address different points in the development pipeline. For example, dependent types or Presburger
+arithmetic can enforce strict constraints at compile time, providing static guarantees that
+certain classes of errors are impossible. Tests, on the other hand, validate behaviour at runtime.
+Together, these form a layered safety net: the static layer prevents entire categories of mistakes
+from ever compiling, while the dynamic layer catches issues that only emerge in actual execution.
 
-Tests belong to the empirical layer:
-They don't prove correctness but detect violations in finite cases.
-They complement formal methods by catching issues in parts of the system where full formal verification is impractical.
-They are however often easy to implement and can often be automatically (LLM) generated.
+Tests belong to what might be called the empirical layer of assurance. They do not prove correctness,
+but they can expose violations in specific, finite scenarios. They complement formal methods by
+covering parts of the system where full formal verification is either too costly or impractical.
+Importantly, tests are often straightforward to implement and, in the LLM era, can themselves be
+automatically generated, allowing for rapid iteration and continuous validation without
+sacrificing rigour.
+
 
 ---
 
