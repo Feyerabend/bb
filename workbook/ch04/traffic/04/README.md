@@ -89,6 +89,9 @@ while True:
     update_leds(state)
 ```
 
+![Idea on traffic light situation.](./traffic-lights-crossing.png)
+
+
 #### 6. Extensions
 
 - Add pedestrian crossings.
@@ -96,5 +99,3 @@ while True:
 - Add traffic congestion metrics and adaptive control.
 - Run multiple intersections and coordinate them.
 
-
-![Idea on traffic light situation.](./traffic-lights-crossing.png)
