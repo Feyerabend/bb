@@ -1,6 +1,6 @@
 
 > [!IMPORTANT]  
-> The examples are given in Python which requires installation of "Hypothesis"
+> Many of the examples are given in Python which requires installation of "Hypothesis"
 
 ## Property-Based Testing
 
