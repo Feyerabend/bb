@@ -97,7 +97,8 @@ that pride in workmanship still matters in the age of machine-assisted programmi
 	- SMT solvers: [Z3](./smt/)
 
 3. Empirical Assurance (less formal but widely used)
-	- Traditional unit tests mixed with formal approach: [Property-Based Tests](./property/)
+	- [Property-Based Tests](./property/) Property-based testing a hybrid position
+    between conventional software testing and fully formal verification
 
 
 
