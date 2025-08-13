@@ -16,7 +16,7 @@ The program includes:
 - *Test execution*: Loops over a sample size (default 1000), generates inputs adaptively
   (increasing complexity over iterations), runs the property function, and tracks
   successes/failures.
-- *Statistical enhancements*: Analyzes input characteristics (e.g., type, length,
+- *Statistical enhancements*: Analyses input characteristics (e.g., type, length,
   complexity via entropy), computes confidence intervals for success rates, estimates
   statistical power, and identifies patterns in failures.
 - *Example usage*: Tests a sorting property (ensuring `sorted(lst)` is ordered and
@@ -36,7 +36,7 @@ The key components are:
   composes with `IntegerStrategy` to create lists of random integers, with adaptive
   sizing (inputs get more complex as tests progress via `_adaptive_sizing`).
 - *Runner*: The `run_statistical_test` method orchestrates everything: generates
-  inputs, evaluates the property, and analyzes results statistically.
+  inputs, evaluates the property, and analyses results statistically.
 
 In the example, it tests sorting on 500 random lists, expecting 100% success since
 Python's `sorted` is reliable for integers. But in real use, this could uncover edge
@@ -145,17 +145,17 @@ This scales easily but requires manual effort for advanced features.
 
 ### Properties of Property-Based Testing in This Context
 
-In this program's context, PBT emphasizes statistical robustness and empirical validation.
+In this program's context, PBT emphasises statistical robustness and empirical validation.
 
 - *Generativity*: Tests aren't fixed; inputs are randomly generated per strategy,
   exploring vast spaces (e.g., lists up to length 50 with integers -100 to 100).
 - *Falsifiability*: Aims to disprove hypotheses (e.g., "Sorting always works") via
-  counterexamples, with failures analyzed for patterns (e.g., common types or sizes
+  counterexamples, with failures analysed for patterns (e.g., common types or sizes
   in failures).
 - *Statistical Confidence*: Not just binary pass/fail – success rates with confidence
   intervals (using normal approximation via z-score) quantify reliability. E.g., a 99%
   success rate might have interval (0.98, 1.0), indicating high confidence.
-- *Distribution Awareness*: Analyzes input characteristics (e.g., mean length 12.5,
+- *Distribution Awareness*: Analyses input characteristics (e.g., mean length 12.5,
   std dev 7.2) to ensure generation isn't biased (e.g., too many empty lists). Uses
   entropy for complexity, helping detect if tests are "diverse enough."
 - *Hypothesis-Driven*: Frames tests as experiments (e.g., "Property holds uniformly"),

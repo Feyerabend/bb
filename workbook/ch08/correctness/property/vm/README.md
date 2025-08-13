@@ -1,5 +1,5 @@
 
-## Enhanced Virtual Machone
+## Enhanced Virtual Machine
 
 If you haven’t already considered it: virtual machines are the
 "golden hammers"--for better or worse--in this book/workbook.
@@ -31,13 +31,13 @@ the Hypothesis library.
    - The VM supports debugging output and limits execution to prevent infinite loops (`max_instructions`).
 
 #### 2. *Unit Tests*
-   - A `TestEnhancedVM` class using `unittest` tests specific VM behaviors, such as:
+   - A `TestEnhancedVM` class using `unittest` tests specific VM behaviours, such as:
      - Basic push/pop operations.
      - Arithmetic operations (e.g., adding 10 and 5 to get 15).
      - Stack underflow and division-by-zero error handling.
      - Control flow (jumps) and subroutine calls (e.g., squaring a number).
      - Comparison operations (e.g., equality, less than).
-   - These tests verify expected behavior for specific, hand-crafted programs.
+   - These tests verify expected behaviour for specific, hand-crafted programs.
 
 #### 3. *Property-Based Tests*
    - Uses the Hypothesis library to generate random programs for testing.
@@ -58,7 +58,7 @@ the Hypothesis library.
      - Example 1: Computes `(10 + 5) * 2 = 30` using arithmetic operations.
      - Example 2: Implements a countdown loop from 5 to 0 using control flow (`JMP`, `JZ`).
      - Example 3: Computes `4! = 24` manually using multiplication.
-   - These examples are executed with debugging output to show the VM's behavior.
+   - These examples are executed with debugging output to show the VM's behaviour.
 
 #### 5. *Main Execution*
    - Runs the example programs and the unit test suite, with verbose output for the tests.
@@ -94,10 +94,10 @@ inputs that cause the system to fail. Key aspects include:
 - Finds unexpected bugs by testing edge cases that developers might not consider.
 - Increases confidence in the system's robustness across diverse inputs.
 - Reduces the need to write numerous specific test cases manually.
-- Encourages thinking about the system's invariants and behavior in general terms.
+- Encourages thinking about the system's invariants and behaviour in general terms.
 
 *Challenges*:
-- Defining meaningful properties requires understanding the system's behavior deeply.
+- Defining meaningful properties requires understanding the system's behaviour deeply.
 - Generated inputs can be complex, making failures harder to interpret without shrinking.
 - May miss specific edge cases if the strategy doesn't generate them.
 
