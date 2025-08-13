@@ -86,6 +86,7 @@ that pride in workmanship still matters in the age of machine-assisted programmi
 ### A Selection of Tools for Seeking Correctness
 
 1. Foundational Logics & Formalisms (expressive power and verifiability of programs)
+
 	- [Dependent Types](./logic/deptypes/) type system guarantees, proof-carrying code
 
 	- [Presburger Arithmetic](./logic/presburger/) decidable fragments of logic useful
@@ -95,17 +96,19 @@ that pride in workmanship still matters in the age of machine-assisted programmi
 
 
 2. Verification in Practice (applying formal methods to code)
-  - [Proof assistants](./assist/) like Coq, Lean, and Agda are interactive tools for
+
+	- [Proof assistants](./assist/) like Coq, Lean, and Agda are interactive tools for
     writing machine-checked formal proofs, combining programming and logic in a single
     framework. They let you specify mathematical statements, construct proofs step
     by step, and have the system verify their correctness with complete rigour.
 
-  - SMT solvers like [Z3](./smt/) automatically determine whether logical formulas
+	- SMT solvers like [Z3](./smt/) automatically determine whether logical formulas
     (often with arithmetic, bit-vectors, or data structures) are satisfiable.
     They’re widely used for program analysis, verification, and synthesis by efficiently
     combining SAT solving with specialised theory reasoning.
 
 3. Empirical Assurance (less formal but widely used)
+
 	- [Property-based testing](./property/) checks that general invariants hold for a wide range of
     automatically generated inputs, sitting between hand-written example tests and
     full formal verification. It focuses on what must always be true, not just on
