@@ -87,7 +87,10 @@ that pride in workmanship still matters in the age of machine-assisted programmi
 
 1. Foundational Logics & Formalisms (expressive power and verifiability of programs)
 
-	- [Dependent Types](./logic/deptypes/) type system guarantees, proof-carrying code
+	- [Dependent Types](./logic/deptypes/) allow types to depend on values, letting
+    you encode precise correctness properties directly in a program's type system.
+    This enables proof-carrying code, where the program's type serves as a
+    machine-checked guarantee that certain invariants or specifications hold.
 
 	- [Presburger Arithmetic](./logic/presburger/) decidable fragments of logic useful
     for verification
