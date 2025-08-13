@@ -1,7 +1,7 @@
 
 ## Example of Property-Based Test
 
-> *Sometime in the 1980s, I taught a BASIC programming class for beginners. Unfortunately, I got
+> *Sometime in the mid 1980s, I taught a BASIC programming class for beginners. Unfortunately, I got
 > sidetracked early on into logic and discussions about how logic could aid in specifying functions.
 > If I remember correctly, we used the Commodore VIC-20 or it might have been ABC80, and an
 > implementation of the INSTR function that I thought could help with understanding programming.
