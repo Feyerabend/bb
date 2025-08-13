@@ -93,8 +93,14 @@ that pride in workmanship still matters in the age of machine-assisted programmi
 
 
 2. Verification in Practice (applying formal methods to code)
-	- [Proof assistants](./assist/) Coq, Lean, Agda
-	- SMT solvers: [Z3](./smt/)
+  - [Proof assistants](./assist/) like Coq, Lean, and Agda are interactive tools for
+    writing machine-checked formal proofs, combining programming and logic in a single
+    framework. They let you specify mathematical statements, construct proofs step
+    by step, and have the system verify their correctness with complete rigour.
+  - SMT solvers like [Z3](./smt/) automatically determine whether logical formulas
+    (often with arithmetic, bit-vectors, or data structures) are satisfiable.
+    They’re widely used for program analysis, verification, and synthesis by efficiently
+    combining SAT solving with specialised theory reasoning.
 
 3. Empirical Assurance (less formal but widely used)
 	- [Property-based testing](./property/) checks that general invariants hold for a wide range of
