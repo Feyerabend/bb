@@ -87,8 +87,10 @@ that pride in workmanship still matters in the age of machine-assisted programmi
 
 1. Foundational Logics & Formalisms (expressive power and verifiability of programs)
 	- [Dependent Types](./logic/deptypes/) type system guarantees, proof-carrying code
+
 	- [Presburger Arithmetic](./logic/presburger/) decidable fragments of logic useful
     for verification
+
 	- [Model Checking](./logic/model/) automatic verification of finite-state systems
 
 
@@ -97,6 +99,7 @@ that pride in workmanship still matters in the age of machine-assisted programmi
     writing machine-checked formal proofs, combining programming and logic in a single
     framework. They let you specify mathematical statements, construct proofs step
     by step, and have the system verify their correctness with complete rigour.
+
   - SMT solvers like [Z3](./smt/) automatically determine whether logical formulas
     (often with arithmetic, bit-vectors, or data structures) are satisfiable.
     They’re widely used for program analysis, verification, and synthesis by efficiently
