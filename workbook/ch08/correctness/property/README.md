@@ -30,3 +30,12 @@ pragmatic immediacy of testing--quick execution and direct feedback--while nudgi
 toward the formal methods mindset of reasoning about entire domains of inputs. This hybrid
 nature explains why it is equally at home in robust traditional QA pipelines and in
 verification-oriented development processes.
+
+Property-Based Tests (PBTs) introductions:
+- [simple](./simple/) -- Where you could start exploring the difference between a traditional
+  approach, and the property-based approach to testing. The examples are highly transparent,
+  but the PBT requires installing Hypothesis.
+
+- [instr](./instr/) -- An example of testing a (custom) function with PBT. Also some logics
+  for background.
+
