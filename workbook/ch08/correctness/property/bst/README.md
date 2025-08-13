@@ -1,6 +1,9 @@
 
 ## Property-Based Testing on BST
 
+To start with cf. a more traditional implementation of BST,
+[Binary Search Tree](./../../../../ch07/data/bst.py) in Python.
+
 Property-based testing (PBT) is a testing methodology that focuses on defining
 and verifying general properties or invariants that a system must satisfy,
 rather than testing specific input-output pairs as in traditional unit testing.
