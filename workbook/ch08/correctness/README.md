@@ -97,8 +97,7 @@ that pride in workmanship still matters in the age of machine-assisted programmi
 	- SMT solvers: [Z3](./smt/)
 
 3. Empirical Assurance (less formal but widely used)
-	- [Property-Based Tests](./property/)
-    Property-based testing checks that general invariants hold for a wide range of
+	- [Property-based testing](./property/) checks that general invariants hold for a wide range of
     automatically generated inputs, sitting between hand-written example tests and
     full formal verification. It focuses on what must always be true, not just on
     specific input–output pairs (cf. "assert").
