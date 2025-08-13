@@ -48,9 +48,24 @@ Property-Based Tests (PBTs) introductions:
   specific scenarios and property-based tests using Hypothesis to verify general properties
   such as substring matching and position constraints.
 
-- [bst](./bst/) -- Some more properties tested for a BST implementation. Some ideas on
-  illustrating the underlying testing scheme for PBT are added.
+- [bst](./bst/) -- A Python implementation of a simplified Binary Search Tree (BST) uses
+  a set to store values and is tested with property-based testing via Hypothesis to ensure
+  invariants like sorted in-order traversal, correct size, membership, and completeness
+  across diverse random inputs. Logging in JSON Lines format captures test inputs and
+  BST states for debugging, with integration demonstrated for pytest, though the BST
+  implementation avoids traditional tree structure complexity. An incomplete (think project)
+  HTML file suggests potential for visualising test results, highlighting the automation,
+  robustness, and debugging benefits of property-based testing for data structures.
 
-- [stats](./stats/) -- Dig deeper into implementation, as it avoids Hypothesis. Also how
-  more customisation can be added for PBT.
+- [stats](./stats/) -- The `stats.py` and `shrink.py` programs implement a custom
+  property-based testing framework in Python, using `StatisticalTestRunner` to evaluate
+  code invariants with random inputs, enhanced by statistical analysis like success rates,
+  confidence intervals, and failure patterns. They include strategies for generating
+  integers and lists, with `shrink.py` adding sophisticated shrinking mechanisms to
+  minimise failing test cases, demonstrated through testing a buggy sorting property
+  that fails on duplicates and a correct one that handles them properly. We further
+  explain the framework’s statistical approach, its educational purpose abstaining from
+  using Hypothesis, and provides guidance on implementing PBT manually, emphasising
+  falsifiability, adaptivity, and detailed reporting for robust testing.
+
 
