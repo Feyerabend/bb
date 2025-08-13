@@ -32,10 +32,17 @@ nature explains why it is equally at home in robust traditional QA pipelines and
 verification-oriented development processes.
 
 Property-Based Tests (PBTs) introductions:
+
 - [simple](./simple/) -- Where you could start exploring the difference between a traditional
   approach, and the property-based approach to testing. The examples are highly transparent,
   but the PBT requires installing Hypothesis.
 
 - [instr](./instr/) -- An example of testing a (custom) function with PBT. Also some logics
   for background.
+
+- [bst](./bst/) -- Some more properties tested for a BST implementation. Some ideas on
+  illustrating the underlying testing scheme for PBT are added.
+
+- [stats](./stats/) -- Dig deeper into implementation, as it avoids Hypothesis. Also how
+  more customisation can be added for PBT.
 
