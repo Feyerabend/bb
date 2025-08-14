@@ -1,7 +1,7 @@
 
 ### Metamorphic Testing
 
-The provided Python script (`mmorf.py`) implements a *Metamorphic Testing Framework* in Python.
+The provided Python script (`mmorph.py`) implements a *Metamorphic Testing Framework* in Python.
 Metamorphic testing is an advanced software testing technique that *doesn't* rely on predefined
 "oracle" outputs (i.e., exact expected results for every input). Instead, it defines
 *metamorphic relations*—properties or relationships that should hold true between multiple

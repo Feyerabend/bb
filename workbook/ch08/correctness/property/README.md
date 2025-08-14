@@ -73,4 +73,10 @@ Property-Based Tests (PBTs) introductions:
   using Hypothesis, and provides guidance on implementing PBT manually, emphasising
   falsifiability, adaptivity, and detailed reporting for robust testing.
 
-
+- [mmorph](./mmorph/) -- A framework for metamorphic testing, which verifies software
+  by checking relational properties between transformed inputs and outputs without
+  needing exact oracles. It includes strategies for generating random test data
+  (integers, floats, lists, etc.), defines metamorphic relations for domains like
+  sorting, math, and strings, and runs automated test suites to detect bugs. Demonstrates
+  usage with examples on correct/buggy sorters, mathematical functions, and string
+  processors, emphasising extensibility for complex algorithms.
