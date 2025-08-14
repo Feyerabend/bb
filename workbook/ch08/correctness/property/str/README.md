@@ -1,4 +1,7 @@
 
+> [!WARNING]
+> The scripts requires besides Hypothesis, also installation of pytest.
+
 ## PBT: Comparations
 
 These scripts showcase the difference between traditional example-based testing and
