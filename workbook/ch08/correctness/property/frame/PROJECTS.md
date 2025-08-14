@@ -1,8 +1,7 @@
 
+NEED REVIEW
+
 ## Project Ideas
-
-__dict_strat.py__
-
 
 #### 1. *Extend the Framework with a List Strategy*
 
