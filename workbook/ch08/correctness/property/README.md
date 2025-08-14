@@ -36,10 +36,15 @@ Property-Based Tests (PBTs) introductions:
 - [simple](./simple/) -- Where you could start exploring the difference between a traditional
   approach, and the property-based approach to testing. The examples are highly transparent,
   but the PBT requires installing Hypothesis.
-    - trad_sort.py: Tests a sorting function with specific unit tests for basic functionality,
+    - `trad_sort.py`: Tests a sorting function with specific unit tests for basic functionality,
       edge cases, duplicates, and negative numbers using Python's `sorted` function.
-    - hyp_sort.py: Uses Hypothesis for property-based testing, verifying general sorting properties
+    - `hyp_sort.py`: Uses Hypothesis for property-based testing, verifying general sorting properties
       (ordering, permutation, length, idempotence) across random integer lists.
+
+- [str](./str/) -- These scripts use Hypothesis for PBT on Python strings, checking
+  associativity, identity, length additivity, reversal involution, and substring preservation
+  with random inputs. Aim: Demonstrate PBT's superiority for robust, property-driven validation
+  vs. manual examples. Also requires installation of pytest.
 
 - [instr](./instr/) -- An example of testing a (custom) function with PBT. Also some logics
   for background. The `instr.py` program implements the `INSTR` function, which finds the 1-based
