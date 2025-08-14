@@ -1,14 +1,14 @@
-# From Basics To Bytecode: A guide to computers and programming
-# Workbook
+
+## Perspectives and Frontiers
 
 general concepts 
 * systemics
 * limits
 
-basics (existing)
+basics
 * ai/ml
-* deptypes
+* correctness
 
-today
+current
 * 2025
-
+* possible 2026 ..
