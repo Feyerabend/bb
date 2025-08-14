@@ -83,5 +83,7 @@ Property-Based Tests (PBTs) introductions:
 
 - [vm](./vm/) --
 
-- [frame](./frame/) --
-
+- [frame](./frame/) -- A custom built basic framework for property-based testing system.
+  Incorporates features like automatic test case generation and shrinking, comprehensive
+  result reporting, decorator-based test definition, context managers for configuration,
+  and detailed failure analysis with minimal counterexamples.
