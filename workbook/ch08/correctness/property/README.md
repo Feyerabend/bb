@@ -80,3 +80,8 @@ Property-Based Tests (PBTs) introductions:
   sorting, math, and strings, and runs automated test suites to detect bugs. Demonstrates
   usage with examples on correct/buggy sorters, mathematical functions, and string
   processors, emphasising extensibility for complex algorithms.
+
+- [vm](./vm/) --
+
+- [frame](./frame/) --
+
