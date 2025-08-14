@@ -14,7 +14,7 @@ property-based testing:
 
 ### Properties Being Tested
 
-### 1. *Associativity* (`test_string_concatenation_associativity`)
+#### 1. *Associativity* (`test_string_concatenation_associativity`)
 ```python
 (a + b) + c == a + (b + c)
 ```
@@ -22,28 +22,28 @@ This tests that string concatenation is *associative*--the grouping of operation
 Whether you concatenate "hello" + "world" first, then add "!", or concatenate "world" + "!"
 first, then prepend "hello", you get the same result.
 
-### 2. *Identity Element* (`test_string_concatenation_identity`)
+#### 2. *Identity Element* (`test_string_concatenation_identity`)
 ```python
 s + "" == s  and  "" + s == s
 ```
 This verifies that the empty string acts as an *identity* element--adding nothing to a string
 leaves it unchanged, regardless of whether you add the empty string on the left or right.
 
-### 3. *Length Additivity* (`test_string_concatenation_length`)
+#### 3. *Length Additivity* (`test_string_concatenation_length`)
 ```python
 len(a + b) == len(a) + len(b)
 ```
 This ensures that when you *concatenate* two strings, the resulting length equals the sum of
 the individual lengths--no characters are lost or mysteriously added.
 
-### 4. *Involution Property* (`test_string_reverse_twice`)
+#### 4. *Involution Property* (`test_string_reverse_twice`)
 ```python
 s[::-1][::-1] == s
 ```
 This tests that *reversing* a string twice returns the original string--reverse is its
 own *inverse* operation.
 
-### 5. *Substring Preservation* (`test_string_substring_property`)
+#### 5. *Substring Preservation* (`test_string_substring_property`)
 ```python
 a in (a + b)  and  b in (a + b)
 ```
