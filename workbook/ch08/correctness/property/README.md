@@ -81,7 +81,11 @@ Property-Based Tests (PBTs) introductions:
   usage with examples on correct/buggy sorters, mathematical functions, and string
   processors, emphasising extensibility for complex algorithms.
 
-- [vm](./vm/) --
+- [vm](./vm/) -- This is an Enhanced Virtual Machine (EVM) that uses a stack-based
+  architecture to execute a program defined by a set of opcodes, uses arithmetic,
+  stack manipulation, logical operations, and control flow like jumps and subroutines.
+  The code is supported by both unit tests and property-based tests to ensure its
+  robust and correct operation.
 
 - [frame](./frame/) -- A custom built basic framework for property-based testing system.
   Incorporates features like automatic test case generation and shrinking, comprehensive
