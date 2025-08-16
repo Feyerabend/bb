@@ -63,6 +63,8 @@ VM abstracts away these details, providing a higher-level, more user-friendly ex
 is further removed from the physical machine's core logic.
 
 
+### Higher Functions (Opcodes) in the VM
+
 | Opcode   | Description |
 |----------|-------------|
 | OP_NOP   | No operation |
@@ -88,6 +90,8 @@ is further removed from the physical machine's core logic.
 | OP_HALT  | Stops execution |
 
 
+### States in the VM
+
 | State VM      | Description |
 |---------------|-------------|
 | VM_UNINIT     | The VM is uninitialised |
@@ -98,6 +102,8 @@ is further removed from the physical machine's core logic.
 | VM_HALTED     | The program has completed normally |
 | VM_ERROR      | The VM is in an error state |
 
+
+### Lower-Level States in a State Machine
 
 | State SM      | Description |
 |---------------|-------------|
@@ -195,3 +201,28 @@ a single VM instruction into a series of smaller, more granular steps, much like
 uses microcode to execute a CPU instruction. The key difference is that this is all implemented in C code
 and runs on a real machine, while microcode is embedded directly into a processor's hardware.
 
+
+### Summary
+
+The virtual machine (`new_vm.c`, `vm_sm.c`) is designed with a layered state machine architecture that
+closely resembles the low-level operation of a physical CPU. This design makes the VM more transparent
+and conceptually closer to hardware than a typical high-level VM for a programming language, as we have
+gone through earlier.
+
+* *The VM as a State Machine*: At the highest level, the VM itself is a state machine that cycles through
+  the classic *fetch-decode-execute* loop. Its states (`VM_READY`, `VM_FETCHING`, `VM_DECODING`, `VM_EXECUTING`)
+  represent the major phases of instruction processing. This top-level machine orchestrates the entire program
+  flow.
+
+* *Instructions as State Machines*: At a lower level, each individual instruction (opcode), such as `OP_ADD`
+  or `OP_LOAD`, is implemented as its own distinct state machine (`InstructionSM`). These instruction-level
+  state machines handle the granular steps required to complete a single operation. For example, a `LOAD`
+  instruction is broken down into states like `INST_OPERAND` and `INST_EXECUTE`, each performing a simple,
+  atomic task.
+
+* *A Conceptual Bridge to Microcode*: This layered design is a direct conceptual parallel to *microcode*
+  in a real CPU. The high-level VM instruction (`OP_ADD`) is analogous to a machine code instruction, while
+  the sequence of states within the `InstructionSM` (`INST_INIT` -> `INST_EXECUTE` -> `INST_COMPLETE`) is
+  the software equivalent of a microcode routine. This allows a complex operation to be built from simpler,
+  well-defined state transitions, making the VM's internal workings transparent and deterministic, much
+  like the logic gates and control signals of a physical processor.
