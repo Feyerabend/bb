@@ -1,7 +1,7 @@
 
 ## Two Different Approaches
 
-We start with a more conceptual approach to the "machine",
+We start with a more conceptual approach to the "machine,"
 rather than actual hardware.
 
 

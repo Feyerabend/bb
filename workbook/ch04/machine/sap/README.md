@@ -2,7 +2,7 @@
 ## Introduction to the SAP Virtual Machine (SAP VM)
 
 The SAP Virtual Machine (SAP VM) is a low-level, educational virtual machine designed to emulate
-the behavior of a simple processor with a focus on direct memory manipulation, explicit addressing
+the behaviour of a simple processor with a focus on direct memory manipulation, explicit addressing
 modes, and a minimal instruction set architecture (ISA). Unlike higher-level virtual machines that
 abstract away memory management (e.g., through memory allocation functions like `malloc` or
 object-oriented constructs), the SAP VM operates closer to the hardware, directly addressing memory
@@ -48,7 +48,7 @@ operations.
      - *X* (Index Register): Used for indexed addressing.
      - *IR* (Instruction Register): Holds the current instruction.
      - *Flags*: Zero, negative, carry, and overflow flags for conditional operations.
-   - This structure closely resembles a simple microprocessor, emphasizing low-level control
+   - This structure closely resembles a simple microprocessor, emphasising low-level control
      over hardware resources.
 
 4. *Execution Model*:
@@ -89,7 +89,7 @@ The SAP VM is significantly closer to the machine than the VMs described in your
   registers and memory, unlike higher-level VMs that might use interpreted bytecode or high-level
   constructs (e.g., method calls, garbage-collected objects).
 - *Proximity to Hardware*: The SAP VM’s explicit handling of registers, flags, and a stack pointer
-  mimics real CPU behavior, while your book’s VMs likely abstract these details, focusing on
+  mimics real CPU behaviour, while your book’s VMs likely abstract these details, focusing on
   portability or ease of use.
 - *Debugging*: The SAP VM’s debugger provides low-level insights (e.g., inspecting memory,
   registers, and disassembled instructions), whereas higher-level VMs might offer debugging at
