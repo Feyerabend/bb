@@ -62,3 +62,50 @@ with the low-level, sequential nature of hardware operation. In contrast, a simp
 VM abstracts away these details, providing a higher-level, more user-friendly execution environment that
 is further removed from the physical machine's core logic.
 
+
+| Opcode   | Description |
+|----------|-------------|
+| OP_NOP   | No operation |
+| OP_LOAD  | Loads an immediate value to the stack |
+| OP_STORE | Stores the top of the stack to memory at a specific address |
+| OP_FETCH | Loads a value from a memory address to the stack |
+| OP_ADD   | Pops two values, pushes their sum |
+| OP_SUB   | Pops two values, pushes their difference (`b - a`) |
+| OP_MUL   | Pops two values, pushes their product |
+| OP_DIV   | Pops two values, pushes their quotient (`b / a`) |
+| OP_MOD   | Pops two values, pushes their remainder (`b % a`) |
+| OP_DUP   | Duplicates the top of the stack |
+| OP_SWAP  | Swaps the top two stack elements |
+| OP_POP   | Pops and discards the top element |
+| OP_JMP   | Unconditional jump to an address |
+| OP_BEZ   | Branches if the top of the stack is zero |
+| OP_BNZ   | Branches if the top of the stack is non-zero |
+| OP_BLT   | Branches if the second value is less than the top value (pops both) |
+| OP_BGT   | Branches if the second value is greater than the top value (pops both) |
+| OP_CALL  | Calls a subroutine by pushing the return address to a call stack and jumping |
+| OP_RET   | Returns from a subroutine by popping the address from the call stack |
+| OP_PRINT | Prints the value on the top of the stack |
+| OP_HALT  | Stops execution |
+
+
+| State VM      | Description |
+|---------------|-------------|
+| VM_UNINIT     | The VM is uninitialised |
+| VM_READY      | The VM is ready to fetch the next instruction |
+| VM_FETCHING   | The VM is fetching an instruction from memory |
+| VM_DECODING   | The VM is decoding the fetched instruction |
+| VM_EXECUTING  | The VM is executing an instruction via its dedicated state machine |
+| VM_HALTED     | The program has completed normally |
+| VM_ERROR      | The VM is in an error state |
+
+
+| State SM      | Description |
+|---------------|-------------|
+| INST_UNINIT   | The instruction state machine is uninitialised |
+| INST_INIT     | The instruction is initialised |
+| INST_OPERAND  | The instruction is fetching its operand from memory |
+| INST_EXECUTE  | The instruction is performing its core operation |
+| INST_COMPLETE | The instruction has finished executing successfully |
+| INST_ERROR    | An error occurred during the instruction's execution |
+
+
