@@ -156,11 +156,42 @@ To explain the "add" operation, we can follow the same upward translation model.
 
 | VM State Machine | Instruction State Machine | Description |
 | :--- | :--- | :--- |
-| **`VM_READY`** | `INST_UNINIT` | The VM is ready for the next instruction. |
-| **`VM_FETCHING`** | `INST_UNINIT` | The VM fetches `OP_ADD` from memory. |
-| **`VM_DECODING`** | `INST_UNINIT` | The VM initializes the `InstructionSM` with `OP_ADD`. The `InstructionSM` transitions to `INST_INIT` and determines that it **does not** need an operand. |
-| **`VM_EXECUTING`** | `INST_INIT` | The VM steps the `InstructionSM`. Since no operand is needed, the instruction SM immediately transitions to `INST_EXECUTE`. |
-| **`VM_EXECUTING`** | `INST_EXECUTE` | The `InstructionSM` performs the core addition operation: it calls `vm_pop` twice to get the two top values from the stack, adds them, and then calls `vm_push` to place the sum back on the stack. If either pop or the push fails, the instruction SM transitions to `INST_ERROR`. The instruction SM then transitions to `INST_COMPLETE`. |
-| **`VM_EXECUTING`** | `INST_COMPLETE` | The VM detects that the instruction is complete. It then increments the program counter (`vm->pc`) and transitions back to `VM_READY` for the next instruction. The `InstructionSM` is reset to `INST_UNINIT`. |
+| *`VM_READY`* | `INST_UNINIT` | The VM is ready for the next instruction. |
+| *`VM_FETCHING`* | `INST_UNINIT` | The VM fetches `OP_ADD` from memory. |
+| *`VM_DECODING`* | `INST_UNINIT` | The VM initializes the `InstructionSM` with `OP_ADD`. The `InstructionSM` transitions to `INST_INIT` and determines that it *does not* need an operand. |
+| *`VM_EXECUTING`* | `INST_INIT` | The VM steps the `InstructionSM`. Since no operand is needed, the instruction SM immediately transitions to `INST_EXECUTE`. |
+| *`VM_EXECUTING`* | `INST_EXECUTE` | The `InstructionSM` performs the core addition operation: it calls `vm_pop` twice to get the two top values from the stack, adds them, and then calls `vm_push` to place the sum back on the stack. If either pop or the push fails, the instruction SM transitions to `INST_ERROR`. The instruction SM then transitions to `INST_COMPLETE`. |
+| *`VM_EXECUTING`* | `INST_COMPLETE` | The VM detects that the instruction is complete. It then increments the program counter (`vm->pc`) and transitions back to `VM_READY` for the next instruction. The `InstructionSM` is reset to `INST_UNINIT`. |
 
+
+
+### What is Microcode?
+
+The architecture described in `new_vm.c` and `vm_sm.c` is very close to the conceptual model of *microcode*,
+but it's an abstract software implementation rather than a direct hardware one.
+
+Microcode is a layer of instructions below the instruction set architecture (ISA) of a CPU. It's a low-level
+program stored in a special control memory inside the processor. A single machine language instruction, like
+`ADD` or `LOAD`, is typically executed by a sequence of these simpler micro-instructions. Each micro-instruction
+controls specific hardware components, such as opening a data bus, enabling a register, or activating an
+arithmetic logic unit (ALU) operation.
+
+
+### Similarities to the State Machine VMs
+
+The state machine VMs from the files mirror this concept precisely.
+
+* *Decomposition*: The VM instruction (`OP_ADD`, `OP_LOAD`) corresponds to a high-level machine language
+  instruction.
+* *Micro-operations*: The individual states within the `InstructionSM` (`INST_INIT`, `INST_OPERAND`,
+  `INST_EXECUTE`) are analogous to micro-instructions. Each state transition performs a small, atomic task.
+  For example, the `INST_OPERAND` state in `OP_LOAD` is a step to fetch a single value, and the `INST_EXECUTE`
+  state is a step to perform the push operation.
+* *Orchestration*: The main VM state machine (`VM_FETCHING`, `VM_DECODING`, `VM_EXECUTING`) acts like the
+  control unit in a real CPU. It reads the high-level instruction, then triggers the appropriate sequenceof micro-operations (state transitions) to execute it.
+
+In essence, the `InstructionSM` functions as the software equivalent of a microcode sequencer, breaking down
+a single VM instruction into a series of smaller, more granular steps, much like how a hardware control unit
+uses microcode to execute a CPU instruction. The key difference is that this is all implemented in C code
+and runs on a real machine, while microcode is embedded directly into a processor's hardware.
 
