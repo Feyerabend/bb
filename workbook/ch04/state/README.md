@@ -140,7 +140,7 @@ is cleanly separated. The VM doesn't really need to know the internal steps of a
 it just knows to "run" the instruction's state machine until it's done.
 
 
-### Sample Translation: `OP_LOAD`
+### Sample Translation: OP_LOAD
 
 Let's examine how the low-level `InstructionSM` for `OP_LOAD` supports the high-level VM.
 
@@ -156,9 +156,11 @@ Let's examine how the low-level `InstructionSM` for `OP_LOAD` supports the high-
 
 
 
-### Sample Translation: `OP_ADD`
+### Sample Translation: OP_ADD
 
-To explain the "add" operation, we can follow the same upward translation model. The low-level `InstructionSM` for `OP_ADD` is a simple state machine that encapsulates the logic for adding two numbers, while the high-level VM's state machine orchestrates the entire process.
+To explain the "add" operation, we can follow the same upward translation model. The low-level `InstructionSM`
+for `OP_ADD` is a simple state machine that encapsulates the logic for adding two numbers, while the high-level
+VM's state machine orchestrates the entire process.
 
 | VM State Machine | Instruction State Machine | Description |
 | :--- | :--- | :--- |
