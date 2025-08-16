@@ -109,3 +109,58 @@ is further removed from the physical machine's core logic.
 | INST_ERROR    | An error occurred during the instruction's execution |
 
 
+
+### Conceptual Translation: How does it Work?
+
+The core idea is *decomposition and hierarchy*. Instead of a single, monolithic state machine
+that manages the entire VM and every instruction, the design breaks the problem into two distinct layers:
+
+1. *Low-Level: Instruction State Machines*: Each instruction, like `OP_LOAD` or `OP_ADD`, is implemented
+   as its own state machine (`InstructionSM`). These are simple, single-purpose machines that handle a
+   specific task and its sub-steps. For example, a `LOAD` instruction must first fetch its operand from
+   memory before performing the stack push. The `InstructionSM` handles this by transitioning from
+   `INST_INIT` to `INST_OPERAND`, and then to `INST_EXECUTE`. This state-by-state execution is a
+   low-level, atomic process.
+
+2. *High-Level: VM State Machine*: The VM's state machine (`VirtualMachine`) acts as the conductor.
+   Its states (`VM_READY`, `VM_FETCHING`, `VM_DECODING`, `VM_EXECUTING`) represent the major phases
+   of the classic fetch-decode-execute cycle. Crucially, when the VM enters the `VM_EXECUTING` state,
+   it delegates the work to the lower-level `InstructionSM`. The VM simply calls the `instruction_step`
+   function, effectively handing control to the instruction's state machine until that machine reaches
+   the `INST_COMPLETE` state.
+
+This hierarchy allows the VM to be general and reusable, while the specific logic for each instruction
+is cleanly separated. The VM doesn't really need to know the internal steps of an `OP_ADD` or `OP_JMP`;
+it just knows to "run" the instruction's state machine until it's done.
+
+
+### Sample Translation: `OP_LOAD`
+
+Let's examine how the low-level `InstructionSM` for `OP_LOAD` supports the high-level VM.
+
+| VM State Machine | Instruction State Machine | Description |
+| :--- | :--- | :--- |
+| *`VM_READY`* | `INST_UNINIT` | The VM is ready for the next instruction. |
+| *`VM_FETCHING`* | `INST_UNINIT` | The VM fetches `OP_LOAD` from memory. |
+| *`VM_DECODING`* | `INST_UNINIT` | The VM initializes the `InstructionSM` with `OP_LOAD`. The `InstructionSM` transitions to `INST_INIT` and determines that it needs an operand. |
+| *`VM_EXECUTING`* | `INST_INIT` | The VM steps the `InstructionSM`. The instruction SM transitions to `INST_OPERAND` to get the value to be loaded. |
+| *`VM_EXECUTING`* | `INST_OPERAND` | The `InstructionSM` fetches the operand from `memory[vm->pc + 1]`. It then transitions to `INST_EXECUTE`. |
+| *`VM_EXECUTING`* | `INST_EXECUTE` | The `InstructionSM` pushes the fetched operand onto the VM's stack (`vm_push`). It then transitions to `INST_COMPLETE`. |
+| *`VM_EXECUTING`* | `INST_COMPLETE` | The VM detects that the instruction is complete. It then increments the program counter (`vm->pc`) and transitions back to `VM_READY` for the next instruction. The `InstructionSM` is reset to `INST_UNINIT`. |
+
+
+
+### Sample Translation: `OP_ADD`
+
+To explain the "add" operation, we can follow the same upward translation model. The low-level `InstructionSM` for `OP_ADD` is a simple state machine that encapsulates the logic for adding two numbers, while the high-level VM's state machine orchestrates the entire process.
+
+| VM State Machine | Instruction State Machine | Description |
+| :--- | :--- | :--- |
+| **`VM_READY`** | `INST_UNINIT` | The VM is ready for the next instruction. |
+| **`VM_FETCHING`** | `INST_UNINIT` | The VM fetches `OP_ADD` from memory. |
+| **`VM_DECODING`** | `INST_UNINIT` | The VM initializes the `InstructionSM` with `OP_ADD`. The `InstructionSM` transitions to `INST_INIT` and determines that it **does not** need an operand. |
+| **`VM_EXECUTING`** | `INST_INIT` | The VM steps the `InstructionSM`. Since no operand is needed, the instruction SM immediately transitions to `INST_EXECUTE`. |
+| **`VM_EXECUTING`** | `INST_EXECUTE` | The `InstructionSM` performs the core addition operation: it calls `vm_pop` twice to get the two top values from the stack, adds them, and then calls `vm_push` to place the sum back on the stack. If either pop or the push fails, the instruction SM transitions to `INST_ERROR`. The instruction SM then transitions to `INST_COMPLETE`. |
+| **`VM_EXECUTING`** | `INST_COMPLETE` | The VM detects that the instruction is complete. It then increments the program counter (`vm->pc`) and transitions back to `VM_READY` for the next instruction. The `InstructionSM` is reset to `INST_UNINIT`. |
+
+
