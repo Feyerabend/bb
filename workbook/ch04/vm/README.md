@@ -1,11 +1,29 @@
 
-## Two Different Approaches
+## Simulation of Hardware through Software
+
+The study of computer hardware can be approached from multiple directions. Here, the perspective
+is primarily through software. By employing programming, simulation, emulation, and virtual machines,
+we obtain an accessible framework for investigating the fundamental mechanisms that underlie computer systems.
+
+This software-centred approach allows us to model and experiment with core ideas such as instruction
+execution, memory organisation, and control flow without the immediate need for physical hardware.
+A central concept in this exploration is the *state machine*. Understanding how a state machine
+functions provides valuable insight into the organisation of hardware, as it captures the structured,
+stepwise nature of computation.
+
+From this vantage point, the study can then progress to increasingly detailed levels of abstraction.
+Beginning with virtual machines, one can move towards microcode and eventually to the logic gates that
+constitute the physical realisation of computation. This progression reveals the layered architecture
+of computing systems and clarifies the relationships between software abstractions and hardware implementation.
+
+
+### Two Different Approaches
 
 We start with a more conceptual approach to the "machine,"
 rather than actual hardware.
 
 
-### The State Machine VM: An Illustration of Microcoding Principles
+#### The State Machine VM: An Illustration of Microcoding Principles
 
 This [State Machine VM](./state/) provides a high-level, clear example
 of the logic that underlies the execution of instructions within a CPU,
@@ -32,7 +50,7 @@ a concept often implemented through *microcode*.
   This makes the VM's internal workings highly transparent and easy to trace.
 
 
-### The SAP VM: An Illustration of CPU-like Architecture and Addressing
+#### The SAP VM: An Illustration of CPU-like Architecture and Addressing
 
 This [SAP VM](./sap/) virtual machine illustrates the foundational design
 of a classic Central Processing Unit (CPU), complete with registers and
@@ -55,4 +73,37 @@ various memory addressing modes.
   and the flexibility provided by different addressing modes to efficiently access data
   from various locations in memory (immediate values, direct locations, or calculated
   addresses via an index register).
+
+
+
+### CPU Simulation through Microcode and Logic Gates
+
+The provided code in [cpu](./cpu/) implements a software-based 8-bit CPU emulator,
+simulating a virtual machine (VM) with a microcode-driven architecture. It includes
+fundamental logic gates (AND, OR, XOR, NOT, NAND, NOR) that form the basis for half
+adders, full adders, and an 8-bit ripple carry adder, enabling arithmetic and bitwise
+operations. The Arithmetic Logic Unit (ALU) supports operations like ADD, SUB, AND,
+OR, XOR, NOT, SHL, and SHR, with flag support for zero, carry, overflow, and negative
+results. Microcode in a ROM defines control signals for each instruction, orchestrating
+ALU operations, register updates, and memory accesses. The VM executes instructions by
+fetching and processing micro-instructions, fully emulating the CPU's behavior.
+The microcode relies on logic gate-based operations, though implemented in software,
+not hardware. Comprehensive tests verify the functionality of gates, adders, ALU,
+microcode, and VM, including edge cases and performance scenarios.
+
+
+### PIO
+
+The `emu2040pio.py` script in [pio](./pio/) implements a Python-based emulator for
+the Raspberry Pi Pico's Programmable I/O (PIO) system, simulating state machines
+that execute low-level instructions for hardware control. It defines a set of
+instruction types (e.g., JMP, WAIT, IN, OUT, PUSH, PULL, MOV, IRQ, SET, NOP)
+with support for delays, side-set pins, and conditional execution. The emulator
+includes a `PIOBlock` managing up to four state machines, each with registers
+(X, Y, ISR, OSR), FIFOs, and GPIO/IRQ interactions. Instructions are parsed from
+a text-based program format, supporting features like conditional jumps and bit
+manipulation. The code provides demo programs for LED blinking, WS2812 RGB LED control,
+UART transmission, and a counter with conditional jumps. Comprehensive error handling
+and state tracking ensure accurate emulation of PIO behavior. The script can run
+specific demos (blink, ws2812, uart, counter) or all demos via command-line arguments.
 
