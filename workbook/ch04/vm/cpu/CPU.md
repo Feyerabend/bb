@@ -35,7 +35,7 @@ This cycle repeats continuously, forming the basis of all computation.
 
 
 
-### How This Maps to Code
+### How This Maps to *This* Code
 
 #### Program Counter
 
@@ -66,7 +66,7 @@ like `ADD r1, r2`.
 #### ALU
 
 Not a separate function, but *embedded* in `cpu_execute()`, typically as a 
-witch statement handling arithmetic and logic instructions (ADD, SUB, CMP, etc.).
+witch statement handling arithmetic and logic instructions (`ADD`, `SUB`, `CMP`, etc.).
 
 
 #### Control Unit
@@ -110,7 +110,7 @@ flowchart TD
 ```
 
 
-#### Subtle Points You might have to change .. Read: Project!
+### Subtle Points on What You Might Have to Change .. Read: Projects!
 
 - *PC update is automatic*: In the code, after fetching, `cpu->pc` is incremented.
   Branches or jumps overwrite it with a new address.
@@ -121,5 +121,4 @@ flowchart TD
 - Control flow is simplified: Real hardware has microcoded or pipelined
   control units; your code uses structured C logic (switch),
   which is easier to follow but conceptually the same.
-
 
