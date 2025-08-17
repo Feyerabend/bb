@@ -5,7 +5,6 @@
 
 #include "cpu.h"
 
-// BASIC LOGIC GATES (a.k.a B. GATES?)
 // Implements fundamental logic gates used in higher-level circuits
 
 bool and_gate(bool a, bool b) {
@@ -32,7 +31,7 @@ bool nor_gate(bool a, bool b) {
     return not_gate(or_gate(a, b));
 }
 
-// COMPOUND LOGIC CIRCUITS 
+
 // Implements adders for binary arithmetic
 
 HalfAdderResult half_adder(bool a, bool b) {
@@ -77,7 +76,6 @@ AdderResult ripple_carry_adder_8bit(uint8_t a, uint8_t b, bool carry_in) {
     return result;
 }
 
-// BITWISE OPERATIONS 
 // Implements 8-bit bitwise operations using logic gates
 
 uint8_t bitwise_and_8bit(uint8_t a, uint8_t b) {
@@ -127,7 +125,6 @@ uint8_t bitwise_not_8bit(uint8_t a) {
     return result;
 }
 
-// ALU IMPLEMENTATION 
 // Arithmetic Logic Unit with flag support
 
 ALUResult enhanced_alu(uint8_t a, uint8_t b, uint8_t opcode) {
@@ -180,8 +177,7 @@ ALUResult enhanced_alu(uint8_t a, uint8_t b, uint8_t opcode) {
     return alu_result;
 }
 
-// MICROCODE IMPLEMENTATION 
-// Microcode ROM and initialization
+// Microcode ROM and init
 
 #define MAX_MICRO_STEPS 8
 #define NUM_OPCODES 16
@@ -299,7 +295,7 @@ void init_microcode(void) {
     microcode_initialized = true;
 }
 
-// VM IMPLEMENTATION 
+
 // Virtual Machine with microcode execution
 
 void init_vm(VM *vm) {
