@@ -6,7 +6,7 @@
 #include <inttypes.h>
 
 typedef enum {
-    FIB_UNINIT = 0,    // Uninitialized state
+    FIB_UNINIT = 0,    // Uninitialised state
     FIB_INIT,          // Ready to start, n=0 case
     FIB_FIRST,         // Computing F(1) = 1
     FIB_COMPUTING,     // Computing F(n) where n >= 2
@@ -16,7 +16,7 @@ typedef enum {
 } FibState;
 
 typedef enum {
-    FEV_INIT = 0,      // Initialize for F(n), param_in = target n
+    FEV_INIT = 0,      // Init for F(n), param_in = target n
     FEV_STEP,          // Advance one step in computation
     FEV_GET_RESULT,    // Get current result, writes to *param_out
     FEV_GET_N,         // Get current n being computed, writes to *param_out
@@ -172,13 +172,13 @@ bool fib_step(FibSM *sm, FibEvent ev, int param_in, uint64_t *param_out) {
     }
 }
 
-// Helper function to compute F(n) completely using the state machine
+// Helper to compute F(n) completely using the state machine
 bool compute_fibonacci(int n, uint64_t *result) {
     if (!result) return false;
     
     FibSM sm = {0};
     
-    // Initialize for F(n)
+    // Init for F(n)
     if (!fib_step(&sm, FEV_INIT, n, NULL)) return false;
     
     // Step until complete or error

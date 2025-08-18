@@ -1,14 +1,13 @@
 #ifndef CPU_H
 #define CPU_H
 
-// Include necessary standard libraries
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
 
-// Instruction set constants
+// instruction set constants
 #define OP_ADD   0x00  // ADD R1, R2 -> R1 = R1 + R2
 #define OP_SUB   0x01  // SUB R1, R2 -> R1 = R1 - R2
 #define OP_AND   0x02  // AND R1, R2 -> R1 = R1 & R2
@@ -24,7 +23,7 @@
 #define OP_JC    0x0C  // JC addr    -> if carry flag set, PC = addr
 #define OP_HALT  0xFF  // HALT       -> Stop execution
 
-// Struct and typedef declarations
+// struct and typedef declarations
 typedef struct {
     bool sum;
     bool carry;
@@ -74,7 +73,7 @@ typedef struct {
     bool fetch_next_byte;
     bool end_instruction;
     bool halt_cpu;
-    bool use_alu_result; // Added flag to control ALU result vs. memory data
+    bool use_alu_result;
 } ControlSignals;
 
 typedef struct {
