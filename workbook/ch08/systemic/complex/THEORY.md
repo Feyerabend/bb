@@ -43,16 +43,16 @@ performance as the input size approaches infinity. *Big O notation* is the most 
 tool for this. It describes the upper bound on the growth rate of a function.
 For example:
 
-* *$O(n)$ (Linear)*: The time or space requirement grows in direct proportion to the input
+* * $O(n)$ (Linear)*: The time or space requirement grows in direct proportion to the input
   size. Searching for a single item in an unsorted list is an example.
 
-* *$O(n^2)$ (Quadratic)*: The resource use grows proportional to the square of the input
+* * $O(n^2)$ (Quadratic)*: The resource use grows proportional to the square of the input
   size. A naive nested loop, like in bubble sort, often results in this complexity.
 
-* *$O(\log n)$ (Logarithmic)*: The resource use grows very slowly. Algorithms that
+* * $O(\log n)$ (Logarithmic)*: The resource use grows very slowly. Algorithms that
   repeatedly divide the problem in half, like binary search, exhibit this behaviour.
 
-* *$O(n \log n)$ (Log-linear)*: A very common and efficient complexity for many sorting
+* * $O(n \log n)$ (Log-linear)*: A very common and efficient complexity for many sorting
   algorithms, such as merge sort and quicksort.
 
 
