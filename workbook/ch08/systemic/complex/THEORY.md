@@ -1,8 +1,8 @@
 
-## Complexity Thyeory
+## Complexity Theory
 
 Complexity theory is the study of how difficult computational problems are and the resources
-(like time and memory) needed to solve them. It provides a formal framework for analyzing and
+(like time and memory) needed to solve them. It provides a formal framework for analysing and
 classifying problems, guiding programmers in making informed decisions about algorithms, data
 structures, and overall program design.
 
@@ -38,7 +38,7 @@ The two most central resources in complexity theory are time and space.
 
 ### Asymptotic Analysis
 
-Asymptotic analysis is a method for describing the limiting behavior of an algorithm's
+Asymptotic analysis is a method for describing the limiting behaviour of an algorithm's
 performance as the input size approaches infinity. *Big O notation* is the most common
 tool for this. It describes the upper bound on the growth rate of a function.
 For example:
@@ -50,7 +50,7 @@ For example:
   size. A naive nested loop, like in bubble sort, often results in this complexity.
 
 * *$O(\log n)$ (Logarithmic)*: The resource use grows very slowly. Algorithms that
-  repeatedly divide the problem in half, like binary search, exhibit this behavior.
+  repeatedly divide the problem in half, like binary search, exhibit this behaviour.
 
 * *$O(n \log n)$ (Log-linear)*: A very common and efficient complexity for many sorting
   algorithms, such as merge sort and quicksort.
@@ -60,7 +60,7 @@ For example:
 ### Complexity Classes
 
 Complexity classes are sets of problems that can be solved with a similar amount of resources.
-They organize problems based on their intrinsic difficulty.
+They organise problems based on their intrinsic difficulty.
 
 * *P (Polynomial Time)*: This class includes problems that can be solved by a deterministic
   Turing machine (a standard computer) in polynomial time. These problems are considered
@@ -115,7 +115,7 @@ algorithms and data structures.
 
 ### Programmer's Intuition
 
-While Big O notation focuses on the asymptotic behavior for large inputs, real-world
+While Big O notation focuses on the asymptotic behaviour for large inputs, real-world
 programming often involves a balance.
 
 * *Constant Factors*: For small input sizes, the "constant factors" and overheads of an
