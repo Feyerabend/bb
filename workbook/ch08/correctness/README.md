@@ -92,10 +92,14 @@ that pride in workmanship still matters in the age of machine-assisted programmi
     This enables proof-carrying code, where the program's type serves as a
     machine-checked guarantee that certain invariants or specifications hold.
 
-	- [Presburger Arithmetic](./logic/presburger/) decidable fragments of logic useful
-    for verification
+	- [Presburger Arithmetic](./logic/presburger/), a decidable first-order theory
+    of natural numbers with addition, enables automated verification of linear
+    constraints in systems like program analysis and model checking.
 
-	- [Model Checking](./logic/model/) automatic verification of finite-state systems
+	- [Model Checking](./logic/model/) automatic verification of finite-state systems.
+    Model checking is a formal verification technique that exhaustively analyses a
+    system's state space to ensure it satisfies properties specified in temporal logics
+    like CTL or LTL.
 
 
 2. Verification in Practice (applying formal methods to code)
