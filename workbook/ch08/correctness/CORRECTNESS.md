@@ -227,7 +227,7 @@ Correctness is supported by specialised tools:
 - *Dependent Types*: While not in the documents, Lean and Agda could encode the
   elevator's or VM's specifications as types, ensuring correctness at compile-time.
 
-## Conclusion
+### Conclusion
 Correctness in programming ensures conformance to a specification, using properties like
 partial/total correctness, safety, liveness, and dependent type guarantees, necessitated
 by undecidability and complexity constraints. It is achieved through testing, model checking,
@@ -236,3 +236,78 @@ enhancing automation and rigor, as exemplified by the provided elevator, VM, and
 Presburger arithmetic implementations.
 
 
+
+
+### Correctness, Specification, and Architecture
+
+Correctness is naturally one of the overraching concepts that have influence on others,
+which can be fruitful to explore further. Let's see how is relates to specifications,
+and architecture.
+
+We know that correctness in computing is the assurance that a system behaves as intended,
+producing the results expected both in what it outputs and in how it manages its internal states.
+This notion is always relative to a *specification*. Without a specification, judgments
+about correctness tend to rest on assumptions, which can easily lead to misunderstandings
+or errors. Correctness itself can be thought of in two dimensions. Functional correctness
+ensures that the system delivers accurate results for all valid inputs, much like a sorting
+algorithm that must always return a properly ordered list. Non-functional correctness,
+sometimes called conformance, looks beyond outputs to concerns such as performance,
+security, safety, and efficiency. Together, these aspects link correctness to broader
+qualities such as reliability—the ability to remain correct over time—and robustness, the ability
+to remain correct even in the face of unexpected inputs or faults.
+
+The foundation for judging correctness is the specification. A specification describes, often with
+great precision, what a system must do, the inputs it accepts, the outputs it should produce, and
+the constraints it must operate under. These specifications can be expressed at different levels.
+At the highest level are abstract requirements, which capture broad goals such as "the system must
+authenticate users securely." These can then be refined into formal specifications, often expressed
+in logical frameworks such as temporal logic or model-based languages like TLA+, which allow for
+systematic verification. At the most concrete level, implementation contracts define the fine details
+of APIs, error codes, and invariants—linking to approaches like Design by Contract, where behaviour
+is constrained by preconditions and postconditions. Correctness, in practice, is always assessed
+against these specifications, and the process of refining and linking them back to user needs is
+central to requirements engineering.
+
+*Architecture* forms the bridge between specifications and implementations. It provides the system's
+blueprint—its components, their interfaces, the ways they interact, and the overarching principles
+guiding their structure. A sound architecture makes correctness more attainable. By enforcing
+modularity and separation of concerns, it allows parts of the system to be reasoned about and
+tested independently. Well-structured architectures also promote scalability and maintainability,
+adapting gracefully to change without undermining established requirements. Hierarchical or layered
+designs support verification at multiple levels, whether through unit testing, system simulation,
+or even formal proofs. In this way, architecture is not merely about structure but also about enabling
+effective reasoning and analysis.
+
+These three concepts--*correctness*, *specification*, and *architecture*--are deeply
+interconnected. Specifications drive architectural choices; a requirement for high
+availability, for example, may lead to an architecture with redundant components.
+Architecture in turn shapes the ease with which correctness can be demonstrated,
+with cleanly modular systems being far easier to verify than tangled ones that accumulate
+technical debt. Verification, meanwhile, often feeds back into specifications by uncovering
+ambiguities or missing cases, prompting refinement. This cyclical relationship underpins
+both formal approaches, such as theorem proving, and iterative ones, such as Agile development,
+where evolving requirements continually reshape architecture and validation efforts.
+
+The relationship between these concepts can be illustrated by analogy with bridge-building.
+A specification defines the bridge's load-bearing capacity, its resilience against environmental
+stress, and its usability for travellers. Architecture determines whether it will be a suspension
+bridge or a truss bridge, and what materials will be used. Correctness is then validated through
+stress tests, simulations, and inspections--ensuring the bridge does not collapse under load.
+Software follows a similar pattern: specifications lay out requirements, architecture organises
+their realisation, and correctness validates the result. Failures, such as the collapse of the
+Tacoma Narrows Bridge, show the consequences of mismatches between specification and design,
+much as bugs or system failures in computing reflect similar disconnects.
+
+In practice, the balance between these ideas varies by domain. In everyday software development,
+specifications are often partial or informal—captured in user stories, for instance--so architecture
+becomes the implicit guide to correctness. Mismatches frequently produce bugs, which methods like
+test-driven or behaviour-driven development seek to mitigate by embedding specifications into the
+testing process. In hardware design, specifications are frequently anchored in industry standards,
+such as the ARM instruction set, with correctness verified through simulations and silicon testing.
+In safety-critical domains, such as aviation, specifications are rigorously traceable, architectures
+are designed with redundancy, and formal proofs are often required to meet certification standards.
+
+Taken together, these perspectives form a coherent framework. Correctness ensures that a system does
+what it should; specifications define precisely what that means; and architecture provides the means
+of organising and verifying that behaviour in practice. It is through the interaction of all three
+that reliable and trustworthy systems are built.
