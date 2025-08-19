@@ -121,15 +121,3 @@ that pride in workmanship still matters in the age of machine-assisted programmi
     full formal verification. It focuses on what must always be true, not just on
     specific input–output pairs (cf. "assert").
 
-
-
----
-Additions
-
-1. 	- Possible additions:
-		- Refinement Types? maybe?
-		- Hoare Logic (pre/postconditions), already, cross ref
-		- Temporal Logic (reasoning about state over time), maybe
-
-2. 	- Static analysis and contracts
-    (Frama-C, Dafny, Eiffel-style contracts) -- sidelined, we already have static analyser! ..
