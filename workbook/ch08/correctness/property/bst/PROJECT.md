@@ -1,17 +1,19 @@
 
 ## Project Ideas for Extending Binary Search Tree (BST) Implementation
 
-Below are several project ideas to extend or enhance the provided Binary Search Tree (BST) codebase.
-Each project builds on the  files, offering opportunities to improve functionality, visualisation,
-or performance. The projects range from beginner to advanced, and each includes a description, objectives,
-relation to the files, steps, and relevant visualisations.
+Below are several project ideas to extend or enhance the provided Binary
+Search Tree (BST) codebase. Each project builds on the  files, offering
+opportunities to improve functionality, visualisation, or performance.
+The projects range from beginner to advanced, and each includes a description,
+objectives, relation to the files, steps, and relevant visualisations.
 
 
 ### Project 1: Visualise BST Test Results in the HTML Dashboard
 
-*Description*: Enhance the `bst_log.html` file to create an interactive dashboard that visualises
-test results from `bst_test_log.jsonl`. Display statistics like the number of test cases, average
-list size, or value distribution, and include charts for better insights.
+*Description*: Enhance the `bst_log.html` file to create an interactive
+dashboard that visualises test results from `bst_test_log.jsonl`. Display
+statistics like the number of test cases, average list size, or value
+distribution, and include charts for better insights.
 
 *Objectives*:
 - Parse `bst_test_log.jsonl` to extract test data (e.g., `generated_values` and `states`).
@@ -19,7 +21,7 @@ list size, or value distribution, and include charts for better insights.
   - A table summarising test cases (e.g., number of values, inserted values, final traversal).
   - A chart showing list size or value range distribution.
 - Add interactivity (e.g., filter by size or sort by metrics).
-- Use Chart.js for visualisations.
+- Use chart.html (Chart.js) for visualisations.
 
 *Relation to Files*:
 - `bst_test_log.jsonl`: Provides raw test data.
@@ -29,42 +31,14 @@ list size, or value distribution, and include charts for better insights.
 *Steps*:
 1. Read and parse the JSONL file using JavaScript (`fetch` API).
 2. Create a table to display test case details (e.g., number of values, min/max values).
-3. Generate a chart (e.g., histogram of list sizes) using Chart.js.
+3. Generate a chart (e.g., histogram of list sizes) using chart.html (Chart.js).
 
 *Example Chart*:
 Visualise the number of values in each test case:
 
-```chartjs
-{
-  "type": "bar",
-  "data": {
-    "labels": ["Test 1", "Test 2", "Test 3", "Test 4", "Test 5", "Test 6", "Test 7", "Test 8", "Test 9", "Test 10"],
-    "datasets": [{
-      "label": "Number of Values",
-      "data": [0, 1, 4, 13, 6, 2, 2, 11, 4, 9],
-      "backgroundColor": ["#36A2EB", "#FF6384", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40", "#66BB6A", "#FF5722", "#3F51B5", "#009688"],
-      "borderColor": ["#2A8ABF", "#D81B60", "#F4B400", "#3AA8A8", "#7E57C2", "#EF6C00", "#4CAF50", "#D84315", "#283593", "#00796B"],
-      "borderWidth": 1
-    }]
-  },
-  "options": {
-    "scales": {
-      "y": {
-        "beginAtZero": true,
-        "title": { "display": true, "text": "Number of Values" }
-      },
-      "x": {
-        "title": { "display": true, "text": "Test Case" }
-      }
-    },
-    "plugins": {
-      "title": { "display": true, "text": "Test Case Value Counts" }
-    }
-  }
-}
-```
+Open *chart.html*, and upload 'test-case.json'.
 
-*Data Flow Diagram* (Mermaid):
+*Data Flow Diagram*:
 ```mermaid
 graph TD
     A[bst_test_log.jsonl] -->|Parse| B[JavaScript]
@@ -76,22 +50,24 @@ graph TD
 
 *Skills Gained*:
 - JavaScript for data parsing and DOM manipulation.
-- Data visualisation with Chart.js.
+- Data visualisation with chart.html (Chart.js).
 - Working with JSONL files and front-end development.
 
 
 
 ### Project 2: Implement a Proper BST with Node-Based Structure
 
-*Description*: The current `BinarySearchTree` uses a set, which simplifies the implementation
-but isn’t a true BST. Rewrite it to use a node-based structure with left and right child pointers,
-and update the test suite to verify BST properties.
+*Description*: The current `BinarySearchTree` uses a set, which simplifies
+the implementation but isn’t a true BST. Rewrite it to use a node-based
+structure with left and right child pointers, and update the test suite
+to verify BST properties.
 
 *Objectives*:
 - Implement a `Node` class with `value`, `left`, and `right` attributes.
 - Rewrite `BinarySearchTree` to use nodes.
 - Update `insert`, `inorder_traversal`, `contains`, and `size` for node-based structure.
-- Modify `bst_log.py` and `bst_log_pytest.py` to log tree structure (e.g., parent-child relationships).
+- Modify `bst_log.py` and `bst_log_pytest.py` to log tree structure
+  (e.g., parent-child relationships).
 - Ensure tests in `bst.py` pass with the new implementation.
 
 *Relation to Files*:
@@ -144,38 +120,10 @@ or traversal time, and visualise results.
 3. Parse the log to compute average times per input size.
 4. Generate a line chart for performance trends.
 
-*Example Chart* (Placeholder for insertion times):
-```chartjs
-{
-  "type": "line",
-  "data": {
-    "labels": ["0 values", "1 value", "4 values", "13 values", "6 values", "2 values", "11 values", "4 values", "9 values"],
-    "datasets": [{
-      "label": "Insertion Time (ms)",
-      "data": [0.1, 0.2, 0.5, 1.2, 0.7, 0.3, 1.0, 0.4, 0.9],
-      "borderColor": "#36A2EB",
-      "backgroundColor": "rgba(54, 162, 235, 0.2)",
-      "fill": true
-    }]
-  },
-  "options": {
-    "scales": {
-      "y": {
-        "beginAtZero": true,
-        "title": { "display": true, "text": "Time (ms)" }
-      },
-      "x": {
-        "title": { "display": true, "text": "Input Size" }
-      }
-    },
-    "plugins": {
-      "title": { "display": true, "text": "BST Insertion Performance" }
-    }
-  }
-}
-```
+Open *chart.html*, and upload 'example-chart.json'.
 
-*Performance Analysis Flow* (Mermaid):
+
+*Performance Analysis Flow*:
 ```mermaid
 graph TD
     A[bst_log.py] -->|Run Tests| B[bst_test_log.jsonl]
@@ -214,7 +162,7 @@ results in `bst_test_log.jsonl`.
 3. Log deletion events and tree height in `bst_log.py`.
 4. Add Hypothesis tests for deletion and balance.
 
-*AVL Tree After Insertion and Deletion* (Mermaid, simplified example):
+*AVL Tree After Insertion and Deletion*:
 ```mermaid
 graph TD
     A[1725] --> B[-3450]
@@ -237,8 +185,10 @@ analyse logs from `bst_test_log.jsonl`. Support commands for inserting values,
 performing traversals, or generating reports.
 
 *Objectives*:
-- Create a CLI with `argparse` or `click` for commands like `insert`, `traverse`, `contains`, and `analyze`.
-- Add an `analyze` command to summarise log data (e.g., number of tests, average list size).
+- Create a CLI with `argparse` or `click` for commands like `insert`,
+  `traverse`, `contains`, and `analyze`.
+- Add an `analyze` command to summarise log data (e.g., number of tests,
+  average list size).
 - Allow running new test cases and appending to `bst_test_log.jsonl`.
 - Integrate with `BinarySearchTree` from `bst.py`.
 
@@ -314,36 +264,7 @@ visualise comparisons.
 3. Parse the log to compute performance metrics.
 4. Generate a chart comparing insertion times.
 
-*Example Chart* (Placeholder for insertion times):
-```chartjs
-{
-  "type": "bar",
-  "data": {
-    "labels": ["Set-Based", "Node-Based", "Array-Based"],
-    "datasets": [{
-      "label": "Insertion Time (ms)",
-      "data": [0.5, 0.7, 0.6],
-      "backgroundColor": ["#36A2EB", "#FF6384", "#FFCE56"],
-      "borderColor": ["#2A8ABF", "#D81B60", "#F4B400"],
-      "borderWidth": 1
-    }]
-  },
-  "options": {
-    "scales": {
-      "y": {
-        "beginAtZero": true,
-        "title": { "display": true, "text": "Time (ms)" }
-      },
-      "x": {
-        "title": { "display": true, "text": "Implementation" }
-      }
-    },
-    "plugins": {
-      "title": { "display": true, "text": "BST Implementation Comparison" }
-    }
-  }
-}
-```
+Open *chart.html*, and upload 'example-insert.json'.
 
 *Implementation Comparison Flow* (Mermaid):
 ```mermaid
