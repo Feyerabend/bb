@@ -232,7 +232,7 @@ Correctness in programming ensures conformance to a specification, using propert
 partial/total correctness, safety, liveness, and dependent type guarantees, necessitated
 by undecidability and complexity constraints. It is achieved through testing, model checking,
 theorem proving, static analysis, and dependent types, with tools like Z3, Lean, and Agda
-enhancing automation and rigor, as exemplified by the provided elevator, VM, and
+enhancing automation and rigour, as exemplified by the provided elevator, VM, and
 Presburger arithmetic implementations.
 
 
@@ -240,7 +240,7 @@ Presburger arithmetic implementations.
 
 ### Correctness, Specification, and Architecture
 
-Correctness is naturally one of the overraching concepts that have influence on others,
+Correctness is naturally one of the overarching concepts that have influence on others,
 which can be fruitful to explore further. Let's see how is relates to specifications,
 and architecture.
 
@@ -253,7 +253,7 @@ ensures that the system delivers accurate results for all valid inputs, much lik
 algorithm that must always return a properly ordered list. Non-functional correctness,
 sometimes called conformance, looks beyond outputs to concerns such as performance,
 security, safety, and efficiency. Together, these aspects link correctness to broader
-qualities such as reliability—the ability to remain correct over time—and robustness, the ability
+qualities such as reliability--the ability to remain correct over time--and robustness, the ability
 to remain correct even in the face of unexpected inputs or faults.
 
 The foundation for judging correctness is the specification. A specification describes, often with
@@ -263,13 +263,13 @@ At the highest level are abstract requirements, which capture broad goals such a
 authenticate users securely." These can then be refined into formal specifications, often expressed
 in logical frameworks such as temporal logic or model-based languages like TLA+, which allow for
 systematic verification. At the most concrete level, implementation contracts define the fine details
-of APIs, error codes, and invariants—linking to approaches like Design by Contract, where behaviour
+of APIs, error codes, and invariants--linking to approaches like Design by Contract, where behaviour
 is constrained by preconditions and postconditions. Correctness, in practice, is always assessed
 against these specifications, and the process of refining and linking them back to user needs is
 central to requirements engineering.
 
 *Architecture* forms the bridge between specifications and implementations. It provides the system's
-blueprint—its components, their interfaces, the ways they interact, and the overarching principles
+blueprint--its components, their interfaces, the ways they interact, and the overarching principles
 guiding their structure. A sound architecture makes correctness more attainable. By enforcing
 modularity and separation of concerns, it allows parts of the system to be reasoned about and
 tested independently. Well-structured architectures also promote scalability and maintainability,
@@ -299,7 +299,7 @@ Tacoma Narrows Bridge, show the consequences of mismatches between specification
 much as bugs or system failures in computing reflect similar disconnects.
 
 In practice, the balance between these ideas varies by domain. In everyday software development,
-specifications are often partial or informal—captured in user stories, for instance--so architecture
+specifications are often partial or informal--captured in user stories, for instance--so architecture
 becomes the implicit guide to correctness. Mismatches frequently produce bugs, which methods like
 test-driven or behaviour-driven development seek to mitigate by embedding specifications into the
 testing process. In hardware design, specifications are frequently anchored in industry standards,
