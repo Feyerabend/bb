@@ -16,9 +16,11 @@ statistics like the number of test cases, average list size, or value
 distribution, and include charts for better insights.
 
 *Objectives*:
-- Parse `bst_test_log.jsonl` to extract test data (e.g., `generated_values` and `states`).
+- Parse `bst_test_log.jsonl` to extract test data (e.g.,
+  `generated_values` and `states`).
 - Create a dynamic HTML page with JavaScript to show:
-  - A table summarising test cases (e.g., number of values, inserted values, final traversal).
+  - A table summarising test cases (e.g., number of values,
+    inserted values, final traversal).
   - A chart showing list size or value range distribution.
 - Add interactivity (e.g., filter by size or sort by metrics).
 - Use chart.html (Chart.js) for visualisations.
@@ -30,12 +32,12 @@ distribution, and include charts for better insights.
 
 *Steps*:
 1. Read and parse the JSONL file using JavaScript (`fetch` API).
-2. Create a table to display test case details (e.g., number of values, min/max values).
+2. Create a table to display test case details (e.g., number of
+   values, min/max values).
 3. Generate a chart (e.g., histogram of list sizes) using chart.html (Chart.js).
 
 *Example Chart*:
 Visualise the number of values in each test case:
-
 Open *chart.html*, and upload 'test-case.json'.
 
 *Data Flow Diagram*:
@@ -65,7 +67,8 @@ to verify BST properties.
 *Objectives*:
 - Implement a `Node` class with `value`, `left`, and `right` attributes.
 - Rewrite `BinarySearchTree` to use nodes.
-- Update `insert`, `inorder_traversal`, `contains`, and `size` for node-based structure.
+- Update `insert`, `inorder_traversal`, `contains`, and `size` for
+  node-based structure.
 - Modify `bst_log.py` and `bst_log_pytest.py` to log tree structure
   (e.g., parent-child relationships).
 - Ensure tests in `bst.py` pass with the new implementation.
@@ -81,8 +84,7 @@ to verify BST properties.
 3. Log tree structure (e.g., parent-child pairs) in `bst_log.py`.
 4. Run Hypothesis tests to verify the implementation.
 
-*Example BST Structure* (Mermaid, for a small test case from `bst_test_log.jsonl`,
-e.g., values `[-5980, -32, 5098, 32667]`):
+*Example BST Structure*
 ```mermaid
 graph TD
     A[-5980] --> B[-32]
@@ -99,14 +101,18 @@ graph TD
 
 ### Project 3: Analyse BST Performance with Large Inputs
 
-*Description*: Extend the test suite to analyse BST performance for different input
-sizes and value ranges. Use `bst_test_log.jsonl` to measure metrics like insertion
-or traversal time, and visualise results.
+*Description*: Extend the test suite to analyse BST performance
+for different input sizes and value ranges. Use `bst_test_log.jsonl`
+to measure metrics like insertion or traversal time, and visualise
+results.
 
 *Objectives*:
-- Modify `bst_log.py` to record execution times for `insert` and `inorder_traversal`.
-- Analyse `bst_test_log.jsonl` for average insertion or traversal times.
-- Create a script to generate a chart of performance across test cases.
+- Modify `bst_log.py` to record execution times for `insert`
+  and `inorder_traversal`.
+- Analyse `bst_test_log.jsonl` for average insertion or
+  traversal times.
+- Create a script to generate a chart of performance across
+  test cases.
 - Adjust Hypothesis’s `max_size` in `bst.py` for larger inputs.
 
 *Relation to Files*:
@@ -140,12 +146,13 @@ graph TD
 
 ### Project 4: Add Deletion and Balancing to the BST
 
-*Description*: Extend `BinarySearchTree` to support deletion and self-balancing
-(e.g., AVL or Red-Black tree). Update tests to verify these features and log
-results in `bst_test_log.jsonl`.
+*Description*: Extend `BinarySearchTree` to support deletion
+and self-balancing (e.g., AVL or Red-Black tree). Update tests
+to verify these features and log results in `bst_test_log.jsonl`.
 
 *Objectives*:
-- Implement a `delete` method to remove values while maintaining BST properties.
+- Implement a `delete` method to remove values while maintaining
+  BST properties.
 - Add self-balancing (e.g., AVL rotations) for O(log n) performance.
 - Update `bst_log.py` to log deletion operations and tree height.
 - Extend Hypothesis tests in `bst.py` for deletion scenarios.
@@ -158,7 +165,8 @@ results in `bst_test_log.jsonl`.
 
 *Steps*:
 1. Implement `delete` using standard BST deletion logic.
-2. Add AVL balancing (compute balance factors, perform rotations).
+2. Add AVL balancing (compute balance factors, perform
+   rotations).
 3. Log deletion events and tree height in `bst_log.py`.
 4. Add Hypothesis tests for deletion and balance.
 
@@ -180,9 +188,10 @@ graph TD
 
 ### Project 5: Create a Command-Line BST Testing Tool
 
-*Description*: Build a CLI tool to interact with the BST, run tests, and
-analyse logs from `bst_test_log.jsonl`. Support commands for inserting values,
-performing traversals, or generating reports.
+*Description*: Build a CLI tool to interact with the BST, run
+tests, and analyse logs from `bst_test_log.jsonl`. Support
+commands for inserting values, performing traversals, or
+generating reports.
 
 *Objectives*:
 - Create a CLI with `argparse` or `click` for commands like `insert`,
@@ -242,15 +251,18 @@ graph TD
 
 ### Project 6: Compare BST Implementations
 
-*Description*: Implement alternative BST representations (e.g., array-based
-or linked-list-based) and compare their performance against the set-based
-implementation in `bst.py`. Use `bst_test_log.jsonl` to log results and
-visualise comparisons.
+*Description*: Implement alternative BST representations
+(e.g., array-based or linked-list-based) and compare their
+performance against the set-based implementation in `bst.py`.
+Use `bst_test_log.jsonl` to log results and visualise
+comparisons.
 
 *Objectives*:
 - Implement two new BST classes (e.g., array-based, node-based).
-- Update `bst_log.py` to test all implementations and log performance.
-- Create a script to compare metrics like insertion time or memory usage.
+- Update `bst_log.py` to test all implementations and log
+  performance.
+- Create a script to compare metrics like insertion time
+  or memory usage.
 - Generate a chart for performance differences.
 
 *Relation to Files*:
@@ -260,13 +272,14 @@ visualise comparisons.
 
 *Steps*:
 1. Create new BST classes with different structures.
-2. Modify `bst_log.py` to test all implementations and log results.
+2. Modify `bst_log.py` to test all implementations
+   and log results.
 3. Parse the log to compute performance metrics.
 4. Generate a chart comparing insertion times.
 
 Open *chart.html*, and upload 'example-insert.json'.
 
-*Implementation Comparison Flow* (Mermaid):
+*Implementation Comparison Flow*:
 ```mermaid
 graph TD
     A[bst_log.py] -->|Test| B[Set-Based BST]
@@ -299,7 +312,8 @@ Modify logging to capture type information.
 
 *Relation to Files*:
 - `bst.py`: Modify to support new types.
-- `bst_log.py`, `bst_log_pytest.py`: Use Hypothesis strategies for strings/floats.
+- `bst_log.py`, `bst_log_pytest.py`: Use Hypothesis strategies for
+   strings/floats.
 - `bst_test_log.jsonl`: Log type metadata.
 
 *Steps*:
@@ -308,7 +322,7 @@ Modify logging to capture type information.
 3. Add type information to `bst_test_log.jsonl`.
 4. Verify sorted traversals for all types.
 
-*Type Handling Flow* (Mermaid):
+*Type Handling Flow*:
 ```mermaid
 graph TD
     A[Hypothesis Input] -->|Integers, Floats, Strings| B[BinarySearchTree]
