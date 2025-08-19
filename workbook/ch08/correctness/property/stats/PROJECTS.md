@@ -151,8 +151,8 @@ simulating a real-world testing dashboard.
    - Load the JSON results and display:
      - A bar chart for `type_distribution` (e.g., how many sequences vs. other types).
      - A line chart for success rate with confidence interval bounds.
-     - A table summarizing `shrinking_analysis` (e.g., average shrink steps, success rate).
-   - Use a library like Chart.js (via CDN) for visualizations. Example HTML:
+     - A table summarising `shrinking_analysis` (e.g., average shrink steps, success rate).
+   - Use a library like Chart.js (via CDN) for visualisations. Example HTML:
      ```html
      <!DOCTYPE html>
      <html>
@@ -216,6 +216,6 @@ simulating a real-world testing dashboard.
 - *Document Your Work*: Add comments or a README section explaining your changes
   and what you learned.
 
-Each project builds on the framework’s strengths--randomized testing, statistical analysis,
+Each project builds on the framework’s strengths--randomised testing, statistical analysis,
 and shrinking--while letting you explore Python, testing, and data visualisation.
 
