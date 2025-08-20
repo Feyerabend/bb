@@ -143,3 +143,44 @@ applications, jump tables provide a powerful tool for efficient code organizatio
 execution. The technique demonstrates how careful data structure design can dramatically
 improve both code clarity and runtime performance.
 
+
+```mermaid
+flowchart TD
+    A[Program Start] --> B[Operation Code 0-3]
+    B --> C{Bounds Check}
+    C -->|Invalid| D[Error Handler]
+    C -->|Valid| E[Calculate Table Index]
+    
+    E --> F[Jump Table Array]
+    F --> G[Index 0 add_func]
+    F --> H[Index 1 sub_func] 
+    F --> I[Index 2 mul_func]
+    F --> J[Index 3 div_func]
+    
+    G --> K[ADD Operation]
+    H --> L[SUB Operation]
+    I --> M[MUL Operation]
+    J --> N[DIV Operation]
+    
+    K --> O[Return Result]
+    L --> O
+    M --> O
+    N --> O
+    
+    O --> P[Program End]
+    D --> P
+    
+    subgraph Memory["Memory Layout"]
+        Q[jump_table]
+        Q --> R[addr1 add_func]
+        Q --> S[addr2 sub_func]
+        Q --> T[addr3 mul_func]
+        Q --> U[addr4 div_func]
+    end
+    
+    subgraph Assembly["ARM Assembly"]
+        V[Load table address]
+        V --> W[Calculate offset]
+        W --> X[Jump to function]
+    end
+```
