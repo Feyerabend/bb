@@ -78,7 +78,7 @@ various memory addressing modes.
 
 ### CPU Simulation through Microcode and Logic Gates
 
-The provided code in [cpu](./cpu/scpu/) implements a software-based 8-bit CPU emulator,
+The provided code in [scpu](./cpu/scpu/) implements a software-based 8-bit CPU emulator,
 simulating a virtual machine (VM) with a microcode-driven architecture. It includes
 fundamental logic gates (AND, OR, XOR, NOT, NAND, NOR) that form the basis for half
 adders, full adders, and an 8-bit ripple carry adder, enabling arithmetic and bitwise
@@ -90,6 +90,11 @@ fetching and processing micro-instructions, fully emulating the CPU's behavior.
 The microcode relies on logic gate-based operations, though implemented in software,
 not hardware. Comprehensive tests verify the functionality of gates, adders, ALU,
 microcode, and VM, including edge cases and performance scenarios.
+
+Another enhanced version of a CPU in [ecpu](./cpu/ecpu/) illustrates even closer to 
+the machine (taking some points from the previous more rudimentary), microcode,
+instructions and logical gates. The "evolution" also reimagine the
+[parallels](./cpu/README.md) to the x86 line of processors.
 
 
 ### PIO
