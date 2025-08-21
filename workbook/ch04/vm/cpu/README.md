@@ -1,9 +1,10 @@
 
 ## Comparison of Simple CPU (scpu) and Enhanced CPU (ecpu)
 
-The Simple CPU (scpu) and Enhanced CPU (ecpu) represent two distinct approaches to CPU emulation,
-reflecting different stages in processor design evolution, with parallels somewhat the x86
-architecture’s progression from the 8086 to modern processors, or at least the idea of progression.
+The Simple CPU ([scpu](./scpu/)) and Enhanced CPU ([ecpu](./ecpu/)) represent
+two distinct approaches to CPU emulation, reflecting different stages in processor
+design evolution, with parallels somewhat the x86 architecture’s progression from
+the 8086 to modern processors, or at least the idea of progression.
 
 
 ### Simple CPU (scpu)
