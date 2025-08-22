@@ -1,13 +1,16 @@
 
 ## Fuzz and Mutate Testers
 
-> Once I remeber discussing testing approaches, and my approch was formal verification rather than testing.
-> A reply was that we could always do "grobian testning" which very much was close to fuzz/mutate.
-> The Swedish term "grobian testning" translates to "rough testing" or "crude testing" in English.
-> It implies a testing approach that is informal, coarse, or not very precise—often quick and dirty tests
-> to catch obvious issues rather than detailed, rigorous testing. This was a comment in the mid 80s,
-> when we didn't yet have any formal definitions, or at least was aware of any, testing frameworks ..
-> and my reply was: "well, this would only show the presence of errors, not the absence."
+> Once I remember discussing testing approaches, and my preference was formal verification
+> rather than conventional testing. The reply was that we could always do "grobian testning",
+> which was very much akin to what we would now call fuzzing or mutation testing. The Swedish
+> term "grobian testning" translates to "rough testing" or "crude testing" in English. It
+> implies an informal, coarse, and imprecise approach--essentially quick-and-dirty tests
+> to catch obvious issues rather than detailed, rigorous testing.
+
+> This exchange took place in the mid-1980s, when we did not yet have formal definitions of,
+> or at least were not aware of, established testing frameworks. My reply at the time was:
+> "Well, that would only show the presence of errors, not their absence."
 
 The common concepts of the C and Python code:
 - Stack machine with bytecode (each instruction is a single byte, some followed by immediate operand bytes).
