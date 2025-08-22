@@ -8,9 +8,7 @@
 > implies an informal, coarse, and imprecise approach--essentially quick-and-dirty tests
 > to catch obvious issues rather than detailed, rigorous testing.
 
-> This exchange took place in the mid-1980s, when we did not yet have formal definitions of,
-> or at least were not aware of, established testing frameworks. My reply at the time was:
-> "Well, that would only show the presence of errors, not their absence."
+> This exchange took place in the mid-1980s, when we did not yet have formal definitions of, or at least were not aware of, established testing frameworks. My reply at the time was: "Well, that would only show the presence of errors, not their absence."
 
 The common concepts of the C and Python code:
 - Stack machine with bytecode (each instruction is a single byte, some followed by immediate operand bytes).
