@@ -12,10 +12,10 @@ and interact with processing units.
     system is limited by the rate at which the processor can fetch data and instructions.
 
 2. Harvard
-	- Separate memories: The Harvard architecture uses *separate* memory spaces for program instructions and data.
-	- Parallel fetching: With distinct buses for instructions and data, the processor can fetch instructions and
-      access data simultaneously, leading to potential performance improvements.
-	- Modern usage: This architecture is commonly found in embedded systems and DSPs (Digital Signal Processors).
+  - Separate memories: The Harvard architecture uses *separate* memory spaces for program instructions and data.
+  - Parallel fetching: With distinct buses for instructions and data, the processor can fetch instructions and
+    access data simultaneously, leading to potential performance improvements.
+  - Modern usage: This architecture is commonly found in embedded systems and DSPs (Digital Signal Processors).
 
 
 ### Conceptual example
@@ -94,10 +94,10 @@ vm.run()
 In this example, instructions and data are stored in separate memory arrays.
 The LOAD instruction fetches data from the data array based on an index.
 
-* In the von Neumann example, both instructions and data occupy the same memory,
+* In the *von Neumann* example, both instructions and data occupy the same memory,
   leading to simpler implementation but potential contention.
 
-* In the Harvard example, the separation allows parallel access to instructions
+* In the *Harvard* example, the separation allows parallel access to instructions
   and data, showcasing the core difference in memory handling.
 
 
@@ -114,33 +114,34 @@ and coding skills.
 #### Steps
 
 1. You will start with research and discussions on the key characteristics of Harvard architecture.
-    - Separate memory for instructions and data.
-	- Parallel access and reduced memory bottleneck.
+  - Separate memory for instructions and data.
+  - Parallel access and reduced memory bottleneck.
 
 2. Define a basic architecture with:
-	- Two memory arrays: one for instructions, one for data.
-	- A program counter (PC) to keep track of the current instruction.
-	- Registers for temporary data storage (e.g., R0 for the accumulator).
-	- A small instruction set (e.g., LOAD, STORE, ADD, SUB, PRINT, HALT).
+  - Two memory arrays: one for instructions, one for data.
+  - A program counter (PC) to keep track of the current instruction.
+  - Registers for temporary data storage (e.g., R0 for the accumulator).
+  - A small instruction set (e.g., LOAD, STORE, ADD, SUB, PRINT, HALT).
 
 3. Implement the VM in Python:
-	- Init memory arrays.
-	- Implement a simple instruction decoder.
-    - Write the main loop to execute instructions step by step.
+  - Init memory arrays.
+  - Implement a simple instruction decoder.
+  - Write the main loop to execute instructions step by step.
 
 4. Build examples: write small 'programs' using the VM’s instruction set:
-	- Arithmetic operations (e.g., adding and printing numbers).
-	- Simulating control flow (loops, conditionals).
-	- A basic calculator program.
+  - Arithmetic operations (e.g., adding and printing numbers).
+  - Simulating control flow (loops, conditionals).
+  - A basic calculator program.
 
 5. Extend the VM (optional):
-	- Stack-based operations. How would a stack operate in this machine?
-	- Conditional jumps (JMP_IF, JMP).
-	- A basic assembler to convert human-readable instructions to the VM’s format.
+  - Stack-based operations. How would a stack operate in this machine?
+  - Conditional jumps (JMP_IF, JMP).
+  - A basic assembler to convert human-readable instructions to the VM’s format.
+
 
 #### Tasks
 
-Task 1: Define the Instruction Set
+*Task 1: Define the Instruction Set*
 
 Decide on a minimal instruction set. For example:
 - LOAD: Load data from memory into a register.
@@ -150,24 +151,24 @@ Decide on a minimal instruction set. For example:
 - PRINT: Print the value of a register.
 - HALT: Stop execution.
 
-Task 2: Implement the VM Skeleton
+*Task 2: Implement the VM Skeleton*
 
 Write a Python class representing the Harvard VM. The class should include:
 - Memory arrays for instructions and data.
 - Registers and program counter.
 - A method to execute instructions.
 
-Task 3: Develop and Test Programs
+*Task 3: Develop and Test Programs*
 
 Write small programs to test their VM. For example:
 - Adding Two Numbers:
-    - Data: [5, 10]
-    - Instructions: [LOAD, 0, ADD, 1, PRINT, HALT]
+  - Data: [5, 10]
+  - Instructions: [LOAD, 0, ADD, 1, PRINT, HALT]
 - Simple Loop:
-    - Data: [10]
-    - Instructions: [LOAD, 0, PRINT, JMP, 1, HALT]
+  - Data: [10]
+  - Instructions: [LOAD, 0, PRINT, JMP, 1, HALT]
 
-Task 4: Debug and Optimise
+*Task 4: Debug and Optimise*
 
 Run programs on the VM, identify bugs, and optimise execution (e.g. avoid hardcoded limits on memory).
 
@@ -175,16 +176,16 @@ Run programs on the VM, identify bugs, and optimise execution (e.g. avoid hardco
 #### Learning
 
 1. Architecture Principles:
-	- Understand the separation of instruction and data memory in Harvard architecture.
-	- Compare the performance issues and complexity differences with von Neumann architecture.
+  - Understand the separation of instruction and data memory in Harvard architecture.
+  - Compare the performance issues and complexity differences with von Neumann architecture.
 
 2. Programming Skills:
-	- Translate high-level logic into machine-level operations.
-	- Implement and debug a processor-like system in Python.
+  - Translate high-level logic into machine-level operations.
+  - Implement and debug a processor-like system in Python.
 
 3. Discovery and Insight:
-	- Realize the constraints of early computing systems (e.g. limited instructions, memory management).
-	- Explore the challenges of memory and instruction handling (e.g. bounds checking, program counter management).
+  - Realize the constraints of early computing systems (e.g. limited instructions, memory management).
+  - Explore the challenges of memory and instruction handling (e.g. bounds checking, program counter management).
 
 
 #### Example Program
@@ -244,19 +245,19 @@ interpreter, these approaches are sufficient to *illustrate* the concept.
 #### Internals to Simulate
 
 1. Parallel Fetching and Execution:
-	- One thread or coroutine can simulate the instruction fetch unit (reading instructions).
-	- Another can handle the data access unit (fetching/storing data for the current instruction).
+  - One thread or coroutine can simulate the instruction fetch unit (reading instructions).
+  - Another can handle the data access unit (fetching/storing data for the current instruction).
 
 2. Instruction Pipeline:
-	- Implement a basic pipeline with stages such as fetch, decode, and execute, where different
-      parts of the pipeline execute in parallel.
+  - Implement a basic pipeline with stages such as fetch, decode, and execute, where different
+    parts of the pipeline execute in parallel.
 	
 3. Memory Access Contention:
-	- Simulate contention between instruction and data buses (optional for advanced scenarios).
+  - Simulate contention between instruction and data buses (optional for advanced scenarios).
 
 4. Registers and ALU:
-	- Design a simple arithmetic logic unit (ALU) for execution of instructions.
-	- Use separate "registers" for instruction decoding and data handling.
+  - Design a simple arithmetic logic unit (ALU) for execution of instructions.
+  - Use separate "registers" for instruction decoding and data handling.
 
 
 #### Example: Simulating Parallel Fetch and Execute
@@ -423,14 +424,14 @@ vm.run()
 #### Extensions
 
 1. Hazards:
-	- Explore data hazards, such as instructions that depend on the results of others.
-	- Simulate pipeline stalls and hazard detection.
+  - Explore data hazards, such as instructions that depend on the results of others.
+  - Simulate pipeline stalls and hazard detection.
 
 2. Out-of-Order Execution:
-	- Simulate how modern processors execute independent instructions in parallel.
+  - Simulate how modern processors execute independent instructions in parallel.
 
 3. Cache Simulation:
-	- Add caching for data memory and simulate how cache misses affect performance.
+  - Add caching for data memory and simulate how cache misses affect performance.
 
 By simulating these advanced features, you can deepen your understanding of parallel processing and how it is implemented
 in modern computing systems.
