@@ -6,10 +6,10 @@ foundational paradigms in computer architecture, primarily differing in how they
 and interact with processing units.
 
 1. von Neumann
-	- Unified memory: In a von Neumann architecture, the program instructions and data *share* the same memory space.
-	- Single data path: This means the processor fetches both instructions and data from the same memory using a single bus.
-	- Bottleneck: The shared memory and bus often lead to the so-called 'von Neumann bottleneck,' where the speed of the
-      system is limited by the rate at which the processor can fetch data and instructions.
+  - Unified memory: In a von Neumann architecture, the program instructions and data *share* the same memory space.
+  - Single data path: This means the processor fetches both instructions and data from the same memory using a single bus.
+  - Bottleneck: The shared memory and bus often lead to the so-called 'von Neumann bottleneck,' where the speed of the
+    system is limited by the rate at which the processor can fetch data and instructions.
 
 2. Harvard
 	- Separate memories: The Harvard architecture uses *separate* memory spaces for program instructions and data.
