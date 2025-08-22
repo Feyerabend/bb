@@ -1,12 +1,7 @@
 
 ## Fuzz and Mutate Testers
 
-> Once I remember discussing testing approaches, and my preference was formal verification
-> rather than conventional testing. The reply was that we could always do "grobian testning",
-> which was very much akin to what we would now call fuzzing or mutation testing. The Swedish
-> term "grobian testning" translates to "rough testing" or "crude testing" in English. It
-> implies an informal, coarse, and imprecise approach--essentially quick-and-dirty tests
-> to catch obvious issues rather than detailed, rigorous testing.
+> Once I remember discussing testing approaches, and my preference was formal verification rather than conventional testing. The reply was that we could always do "grobian testning", which was very much akin to what we would now call fuzzing or mutation testing. The Swedish term "grobian testning" translates to "rough testing" or "crude testing" in English. It implies an informal, coarse, and imprecise approach--essentially quick-and-dirty tests to catch obvious issues rather than detailed, rigorous testing.
 
 > This exchange took place in the mid-1980s, when we did not yet have formal definitions of, or at least were not aware of, established testing frameworks. My reply at the time was: "Well, that would only show the presence of errors, not their absence."
 
