@@ -1,10 +1,10 @@
 
 ## JIT Compilation in HotspotVM
 
-Just-In-Time (JIT) compilation is a runtime optimization technique that enhances the
+Just-In-Time (JIT) compilation is a runtime optimisation technique that enhances the
 performance of interpreted code by compiling it to native machine code during program
 execution. Unlike traditional ahead-of-time compilers, JIT compilers translate code
-dynamically, leveraging runtime data to optimize frequently executed code paths, known
+dynamically, leveraging runtime data to optimise frequently executed code paths, known
 as "hotspots." This approach combines the flexibility of interpreters with the speed
 of compiled code, making it effective for scenarios with repetitive code execution,
 such as loops or frequently called functions.
@@ -12,25 +12,25 @@ such as loops or frequently called functions.
 1. *Dynamic Compilation*:
    - JIT compilation occurs while the program runs, translating high-level code (e.g.,
      bytecode or intermediate representations) into native machine code.
-   - Optimizations are tailored based on runtime behavior, such as variable types or
+   - Optimisations are tailored based on runtime behaviour, such as variable types or
      branch frequencies.
 
 2. *Hotspot Detection*:
    - The virtual machine (VM) monitors program execution to identify frequently executed
      code segments (hotspots).
-   - These hotspots are prioritized for compilation, as optimizing them yields significant
+   - These hotspots are prioritised for compilation, as optimising them yields significant
      performance gains.
 
-3. *Optimization Techniques*:
+3. *Optimisation Techniques*:
    - *Inlining*: Replaces function calls with the function's body to reduce call overhead.
-   - *Loop Unrolling*: Expands loops to minimize iteration overhead.
+   - *Loop Unrolling*: Expands loops to minimise iteration overhead.
    - *Dead Code Elimination*: Removes code that does not affect the program's outcome.
    - *Constant Folding*: Evaluates constant expressions at compile time.
 
 4. *Trade-offs*:
    - *Advantages*:
      - Faster execution compared to pure interpretation.
-     - Optimizations based on runtime data, improving efficiency.
+     - Optimisations based on runtime data, improving efficiency.
      - Portable code, as the same bytecode can be compiled for different
        architectures at runtime.
    - *Disadvantages*:
@@ -50,7 +50,7 @@ such as loops or frequently called functions.
 
 ### HotspotVM Implementation
 
-HotspotVM is a stack-based virtual machine that implements JIT compilation to optimize
+HotspotVM is a stack-based virtual machine that implements JIT compilation to optimise
 frequently executed code. It executes instructions defined by the `OpCode` enum (e.g.,
 `PUSH`, `POP`, `ADD`, `JUMP`), processing them in a stack-based manner with operands
 stored in a stack, memory, or local variables.
@@ -90,7 +90,7 @@ provides `execute` and `compile` methods, ensuring modularity and extensibility.
 The `VMProfiler` class tracks execution time, instruction counts, and hotspot frequency,
 providing insights into JIT performance. Debug and trace modes (`self.debug`, `self.trace`)
 print execution details, such as compiled code and stack state, aiding development
-and optimization.
+and optimisation.
 
 
 #### Limitations
@@ -104,4 +104,9 @@ and optimization.
 
 ### Summary
 
-HotspotVM implements a lightweight, region-based JIT compiler within a stack-based VM, focusing on optimizing frequently executed instruction sequences. It dynamically generates Python code for hot regions, caching it for faster execution while falling back to interpretation for complex operations. This balances performance improvement with implementation simplicity, making it suitable for educational or experimental purposes.
+HotspotVM implements a lightweight, region-based JIT compiler within a stack-based VM,
+focusing on optimising frequently executed instruction sequences. It dynamically generates
+Python code for hot regions, caching it for faster execution while falling back to interpretation
+for complex operations. This balances performance improvement with implementation simplicity,
+making it suitable for educational or experimental purposes.
+
