@@ -121,16 +121,6 @@ while (x # 0) do x := x - 1;
 - Produces readable three-address code format
 
 
-### Usage
-
-The system is invoked with 7 parameters:
-```bash
-./compiler source.txt tokens.txt tokens.json ast.json symbols.txt tac_structured.txt tac_simple.txt
-```
-
-This creates a complete toolchain suitable for mostly educational purposes,
-but also self-study in compiler research, or perhaps as a foundation for a
-more complex language implementation.
 
 
 ```mermaid
