@@ -129,7 +129,7 @@ class Lexer:
 
 class ASTNode(ABC):
     def __init__(self):
-        self.metadata = {}  # For storing additional analysis data
+        self.metadata = {}
         self.source_position = None
 
     @abstractmethod
@@ -612,8 +612,8 @@ class CompilerContext:
         self.current_procedure = None
         self.procedures = {}
         self.block_counter = 0
-        self.plugin_results = {}  # Store plugin results
-        self.generated_outputs = {}  # Store generated code from plugins
+        self.plugin_results = {}
+        self.generated_outputs = {}
 
     def enter_scope(self):
         self.scopes.append({})
@@ -655,45 +655,28 @@ class CompilerContext:
         self.procedures[name] = node
 
 
-# SIMPLIFIED PLUGIN SYSTEM
-class Plugin:
-    """Simple base class for all plugins"""
-    
+class Plugin:    
     def __init__(self, name: str, description: str = ""):
         self.name = name
         self.description = description
         self.enabled = True
-    
+
+    # the main useful thing in this is the AST, so that we can analyze and transform it
     def run(self, ast: ASTNode, context: CompilerContext, messages: MessageCollector) -> dict:
-        """
-        Process the AST and return results.
-        
-        Args:
-            ast: The AST to process
-            context: Shared context for plugins
-            messages: Message collector for logging
-            
-        Returns:
-            dict: Results from this plugin (can be empty)
-        """
         return {}
 
 
 class PluginRegistry:
-    """Simple plugin registry and executor"""
-    
     def __init__(self):
         self.plugins = {}
         self.execution_order = []
     
     def register(self, plugin: Plugin):
-        """Register a plugin"""
         self.plugins[plugin.name] = plugin
         if plugin.name not in self.execution_order:
             self.execution_order.append(plugin.name)
     
     def register_function(self, name: str, func: Callable, description: str = ""):
-        """Register a simple function as a plugin"""
         class FunctionPlugin(Plugin):
             def __init__(self, name, func, description):
                 super().__init__(name, description)
@@ -705,15 +688,12 @@ class PluginRegistry:
         self.register(FunctionPlugin(name, func, description))
     
     def set_order(self, order: List[str]):
-        """Set execution order for plugins"""
         for name in order:
             if name not in self.plugins:
                 raise ValueError(f"Plugin '{name}' not found")
         self.execution_order = order
     
     def run_all(self, ast: ASTNode, context: CompilerContext, messages: MessageCollector) -> CompilerContext:
-        """Run all registered plugins in order"""
-        
         for plugin_name in self.execution_order:
             plugin = self.plugins[plugin_name]
             if not plugin.enabled:
@@ -730,7 +710,6 @@ class PluginRegistry:
         return context
     
     def load_from_file(self, filepath: str):
-        """Load plugins from a Python file"""
         if not os.path.exists(filepath):
             return
         
@@ -738,28 +717,22 @@ class PluginRegistry:
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         
-        # Look for plugins in the module
         for attr_name in dir(module):
             attr = getattr(module, attr_name)
             if isinstance(attr, type) and issubclass(attr, Plugin) and attr != Plugin:
-                # Instantiate and register the plugin class
                 plugin_instance = attr()
                 self.register(plugin_instance)
             elif callable(attr) and hasattr(attr, '_is_plugin'):
-                # Register functions marked as plugins
                 self.register_function(attr.__name__, attr, getattr(attr, '__doc__', ''))
 
 
 def plugin(func):
-    """Decorator to mark a function as a plugin"""
     func._is_plugin = True
     return func
 
 
-# BUILT-IN PLUGINS
+# built in plugins
 class StaticAnalysisPlugin(Plugin):
-    """Analyzes variable usage and scope"""
-    
     def __init__(self):
         super().__init__("static_analysis", "Analyzes variable usage and declarations")
     
@@ -771,7 +744,7 @@ class StaticAnalysisPlugin(Plugin):
 class StaticAnalyzer(Visitor):
     def __init__(self, messages):
         self.messages = messages
-        self.scopes = [set()]  # Stack of variable scopes
+        self.scopes = [set()]
         self.declared_vars = set()
         self.used_vars = set()
         self.undefined_vars = set()
@@ -799,7 +772,6 @@ class StaticAnalyzer(Visitor):
     
     def use_variable(self, name: str):
         self.used_vars.add(name)
-        # Check if variable is declared in any scope
         for scope in reversed(self.scopes):
             if name in scope:
                 return
@@ -862,8 +834,6 @@ class StaticAnalyzer(Visitor):
 
 
 class TACGeneratorPlugin(Plugin):
-    """Plugin for Three-Address Code generation"""
-    
     def __init__(self):
         super().__init__("tac_generator", "Generates Three-Address Code")
     
@@ -963,8 +933,6 @@ class TACGenerator(Visitor):
 
 
 class CCodeGeneratorPlugin(Plugin):
-    """Plugin for C code generation"""
-    
     def __init__(self):
         super().__init__("c_generator", "Generates C code")
     
@@ -984,11 +952,9 @@ class CCompiler(Visitor):
     def compile(self, ast: ASTNode) -> str:
         self.collect_procedures(ast)
         self.context.add_code("#include <stdio.h>\n")
-        # Generate function prototypes
         for proc in sorted(self.procedures):
             self.context.add_code(f"void {proc}();")
         self.context.add_code("")
-        # Process the AST to generate global variables and functions
         ast.accept(self)
         return self.context.get_code()
 
@@ -1017,7 +983,6 @@ class CCompiler(Visitor):
 
     def visit_block(self, node: BlockNode) -> Any:
         if self.context.current_procedure is None:
-            # Global (main) block
             for var in node.variables:
                 self.context.add_code(f"int {var};")
             for proc_name, proc_body in node.procedures:
@@ -1037,8 +1002,7 @@ class CCompiler(Visitor):
             self.context.add_code("\treturn 0;")
             self.context.exit_scope()
             self.context.add_code("}")
-        else:
-            # Procedure's local block
+        else: # local
             for var in node.variables:
                 self.context.add_code(f"int {var};")
             node.statement.accept(self)
@@ -1062,13 +1026,10 @@ class CCompiler(Visitor):
             stmt.accept(self)
 
     def visit_nested_block(self, node: NestedBlockNode) -> Any:
-        # Create a C block scope for nested variables
         self.context.add_code("{")
         self.context.enter_scope()
-        # Declare local variables
         for var in node.variables:
             self.context.add_code(f"int {var};")
-        # Execute statements
         for stmt in node.statements:
             stmt.accept(self)
         self.context.exit_scope()
@@ -1108,30 +1069,26 @@ class CCompiler(Visitor):
 
 # MAIN COMPILER CLASS
 class PL0Compiler:
-    """Main compiler with plugin support"""
-    
     def __init__(self):
         self.messages = MessageCollector()
         self.registry = PluginRegistry()
         
-        # Register built-in plugins
+        # register built-in plugins
         self.registry.register(StaticAnalysisPlugin())
         self.registry.register(TACGeneratorPlugin())
         self.registry.register(CCodeGeneratorPlugin())
         
-        # Set default execution order
+        # default execution order
         self.registry.set_order(["static_analysis", "tac_generator", "c_generator"])
-    
+
+    # custom
     def add_plugin(self, plugin: Plugin):
-        """Add a custom plugin"""
         self.registry.register(plugin)
     
     def add_plugin_function(self, name: str, func: Callable, description: str = ""):
-        """Add a simple function as a plugin"""
         self.registry.register_function(name, func, description)
     
     def load_plugins(self, directory: str):
-        """Load all plugin files from a directory"""
         if not os.path.exists(directory):
             return
         
@@ -1145,11 +1102,9 @@ class PL0Compiler:
                     self.messages.warning(f"Failed to load {filename}: {e}")
     
     def enable_debug(self):
-        """Enable debug output"""
         self.messages.enable_debug(True)
     
     def compile_string(self, code: str) -> Dict[str, Any]:
-        """Compile PL/0 code string and return results"""
         self.messages.clear()
         
         try:
@@ -1186,13 +1141,11 @@ class PL0Compiler:
     
     @staticmethod
     def compile_file(input_filename: str, output_filename: str = None, debug: bool = False, plugins_dir: str = None):
-        """Compile a PL/0 file"""
         compiler = PL0Compiler()
         
         if debug:
             compiler.enable_debug()
         
-        # Load plugins if directory specified
         if plugins_dir:
             compiler.load_plugins(plugins_dir)
         
@@ -1248,7 +1201,7 @@ def main():
         elif arg == "--plugins":
             if i + 1 < len(sys.argv):
                 plugins_dir = sys.argv[i + 1]
-                i += 1  # Skip next argument as it's the plugins directory
+                i += 1  # skip next argument as it's the plugins directory
             else:
                 print("Error: --plugins requires a directory argument", file=sys.stderr)
                 sys.exit(1)
@@ -1261,3 +1214,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
