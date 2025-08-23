@@ -13,7 +13,7 @@ Here we will use the introduced different concepts such as design patterns frequ
 object-oriented design, using Packrat as the parser (in contrast to e.g. recursive decent),
 and a plugin architecture to make flexible and dynamic modules possible, without altering
 the main program. It might not be the ultimate solution to compiler design, but illustrate
-clearly how programming have changed during the decades.
+clearly how programming in general but also theory have changed during the decades.
 
 
 ```mermaid
