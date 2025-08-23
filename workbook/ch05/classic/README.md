@@ -1,11 +1,14 @@
 
 ## A Classic Approch to Compilers
 
-This will have a followup in ch07 [modern](./../../ch07/modern/) where we look at
-compilers with a different approach than we will follow here.
+This is the first part in a series of two. In [ch07](./../../ch07/)
+[modern](./../../ch07/modern/) we will look at compilers with a
+different--more modern--approach. To be quite frank: It is more an application
+of programming concepts that will be introduced, than a reflection of
+actual current compiler designs.
 
-The approach here incorporates elements such as a handcrafted recursive descent parser,
-an imperative programming style, and a linear pipeline in which each tool is applied
+The approach in this folder incorporates elements such as a handcrafted recursive descent
+parser, an imperative programming style, and a linear pipeline in which each tool is applied
 sequentially to transform the source code. It serves as a clear illustration of how
 compiler code evolves from high-level specifications toward a working implementation.
 
