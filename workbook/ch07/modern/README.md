@@ -48,14 +48,14 @@ add (int a, int b)
 ```
 
 From there, the back end maps it to machine-specific assembly:
-	•	On x86:
-``àsm
+- On x86:
+```asm
 add:
     mov eax, edi
     add eax, esi
     ret
 ```
-	•	On ARM:
+- On ARM:
 ```asm
 add:
     add r0, r0, r1
