@@ -1,13 +1,16 @@
 
 ## A Modern Approach to Compilers
 
-Examplify code evolution .. but also theory .. programming .. languages ..
+It is notoriously difficult to convey the scale and structure of large software systems--whether
+complex servers, operating systems, or even compilers themselves. These programs often involve
+millions of lines of code, intricate interactions between components, and layers of abstraction
+that are hard to visualise. Yet, among these, compilers provide a particularly clear lens through
+which to observe the growth of software complexity over time. 
 
-This is a continuation from ch05 [classic](./../../ch05/classic/) compiler design
-in a more traditional way.
+We have already explored an attempt at constructing a simple compiler using
+[classical](./../../ch05/classic/) techniques.
 
 This illustrates such things as design patterns, plugin architecture ..
-
 Packrat as parser .. object orientation .. and so.
 
 
