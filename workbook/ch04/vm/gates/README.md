@@ -187,3 +187,93 @@ with a focus on fetch-decode-execute cycles and gate-level memory.
       }
   </script>
   ```
+
+
+```mermaid
+graph TD
+    subgraph Basic_Gates
+        NOT[NOT Gate]
+        AND[AND Gate]
+        OR[OR Gate]
+        XOR[XOR Gate]
+    end
+
+    subgraph ALU
+        HA[Half Adder: XOR for sum, AND for carry]
+        FA[Full Adder: 2x Half Adder + OR]
+        Adder[Adder: 4-bit ripple-carry]
+        BitwiseOps[Bitwise AND/OR: gate per bit]
+        ALU_Out[ALU Output: ADD/AND/OR/LOAD]
+        HA --> FA --> Adder
+        BitwiseOps --> ALU_Out
+        Adder --> ALU_Out
+        ALU_Out --> ZeroFlag[Zero Flag]
+        Adder --> OvfFlag[Overflow Flag]
+    end
+
+    subgraph Registers
+        PC[PC: 4-bit DFF Register]
+        ACC[ACC: 4-bit DFF Register]
+        IR[IR: 4-bit DFF Register]
+        MAR[MAR: 4-bit DFF Register]
+        MDR[MDR: 4-bit DFF Register]
+        DFF[D Flip-Flop: Clocked Bit Storage]
+        PC --> DFF
+        ACC --> DFF
+        IR --> DFF
+        MAR --> DFF
+        MDR --> DFF
+    end
+
+    subgraph RAM
+        RAM_Regs[16x 4-bit Registers]
+        Decoder[Address Decoder: AND gates]
+        RAM_Regs --> Decoder
+    end
+
+    subgraph Control_Unit
+        CU[Control Unit: Gates decode opcode]
+        CU --> ALU_Op0[ALU OP0]
+        CU --> ALU_Op1[ALU OP1]
+        CU --> RegLoad[Reg Load]
+        CU --> MemRead[Mem Read]
+        CU --> MemWrite[Mem Write]
+        CU --> Halt[Halt]
+        CU --> ALUSrc[ALU Src]
+    end
+
+    subgraph CPU_Cycle
+        Fetch[Fetch: PC->MAR, RAM->IR, PC++]
+        Decode_Execute[Decode/Execute: Opcode->CU, ALU Op, Update ACC/Flags]
+        Fetch --> Decode_Execute
+    end
+
+    PC -->|Address| MAR
+    MAR -->|Address| RAM
+    RAM -->|Instruction| IR
+    IR -->|Opcode| CU
+    IR -->|Operand| ALU_Src_Mux[MUX: Imm or RAM]
+    RAM -->|Data| ALU_Src_Mux
+    ALU_Src_Mux -->|Operand B| ALU
+    ACC -->|Operand A| ALU
+    ALU -->|Result| ACC
+    ALU -->|Result| RAM
+    CU -->|Control Signals| ALU
+    CU -->|Reg Load| ACC
+    CU -->|Mem Read/Write| RAM
+    CU -->|Halt| CPU_Cycle
+    PC -->|Increment| Adder
+    Adder -->|PC + 1| PC
+    Clock[Clock] -->|Rising Edge| DFF
+    Clock -->|Rising Edge| RAM_Regs
+    NOT --> HA
+    AND --> HA
+    XOR --> HA
+    AND --> BitwiseOps
+    OR --> BitwiseOps
+    AND --> Decoder
+    AND --> CU
+    OR --> CU
+    NOT --> CU
+```
+
