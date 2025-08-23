@@ -174,7 +174,7 @@ them as reusable ecosystems. GCC showed the power of modularity; LLVM demonstrat
 built around a universal IR.
 
 
-### Complexity and Size
+### Complexity and Size[^LOC]
 
 ```mermaid
 classDiagram
@@ -191,6 +191,9 @@ classDiagram
     }
     style Software_Projects fill:#f9f9f9,stroke:#333,stroke-width:1px
 ```
+
+[^LOC]: Lines of Code (LOC) can be misleading and potentially inaccurate. LOC is a notoriously unreliable metric for software size, as it can vary widely based on counting methodology and what is included (e.g., comments, tests, third-party libraries).
+Here the inclusion of LOCs is only to *indicate* the size of compilers can be huge in relation to other programs.
 
 Today, compilers like GCC and LLVM are no longer mere tools but sprawling platforms that underpin vast swaths
 of the software world. GCC remains the bedrock of the GNU/Linux ecosystem, while as we learned above that LLVM
