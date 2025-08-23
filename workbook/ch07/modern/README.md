@@ -151,26 +151,36 @@ The transition from GCC to LLVM marks a shift from thinking of compilers as mono
 
 ```mermaid
 graph TD
-    A[Software Project] --> B{LOC Scale}
-    B -->|Small| C[FORTRAN Compiler 1957\n25,000 LOC]
-    B -->|Medium| D[Apache HTTP Server\n1.65 million LOC]
-    B -->|Medium| E[MySQL Database\n2.38 million LOC]
-    B -->|Large| F[Firefox Browser\n~33 million LOC]
-    B -->|Large| G[Chromium Browser\n~36 million LOC]
-    B -->|Large| H[GCC 13 Compiler\n~15 million LOC]
-    B -->|Large| I[LLVM/Clang\n~20 million LOC\nestimated 2021 growth]
-    B -->|Very Large| J[Windows OS\n50+ million LOC]
-    B -->|Very Large| K[Linux Kernel 2025\n~40 million LOC]
-    
-    style C fill:#e1f5fe
-    style D fill:#f3e5f5
+    subgraph Bar_Chart
+        A[FORTRAN Compiler 1957\n0.025M LOC] -->|0.025| B[ ]
+        C[Apache HTTP Server\n1.65M LOC] -->|1.65| D[ ]
+        E[MySQL Database\n2.38M LOC] -->|2.38| F[ ]
+        G[GCC 13 Compiler\n15M LOC] -->|15| H[ ]
+        I[LLVM/Clang\n20M LOC] -->|20| J[ ]
+        K[Firefox Browser\n33M LOC] -->|33| L[ ]
+        M[Chromium Browser\n36M LOC] -->|36| N[ ]
+        O[Linux Kernel 2025\n40M LOC] -->|40| P[ ]
+        Q[Windows OS\n50M LOC] -->|50| R[ ]
+    end
+
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
     style E fill:#f3e5f5
-    style F fill:#fff3e0
-    style G fill:#fff3e0
-    style H fill:#e8f5e8
+    style G fill:#e8f5e8
     style I fill:#e8f5e8
-    style J fill:#ffebee
-    style K fill:#ffebee
+    style K fill:#fff3e0
+    style M fill:#fff3e0
+    style Q fill:#ffebee
+    style O fill:#ffebee
+    style B fill:none, stroke:none
+    style D fill:none, stroke:none
+    style F fill:none, stroke:none
+    style H fill:none, stroke:none
+    style J fill:none, stroke:none
+    style L fill:none, stroke:none
+    style N fill:none, stroke:none
+    style P fill:none, stroke:none
+    style R fill:none, stroke:none
 ```
 
 Today, compilers like GCC and LLVM are no longer mere tools but sprawling platforms that underpin vast swaths of the software world. GCC remains the bedrock of the GNU/Linux ecosystem, while LLVM powers languages like Swift, Rust, and Julia, as well as GPU toolchains and MLIR for machine learning frameworks. Yet, for most programmers, compilers operate invisibly, quietly transforming every line of code into machine instructions. They are the unsung engines of software development, enabling performance portability through frameworks like OpenMP, OpenCL, and CUDA, enhancing security with tools like AddressSanitizer, and driving AI/ML innovation through projects like MLIR, XLA for TensorFlow, and TVM. Compilers even power the web, with WebAssembly compilers embedded in browsers, enabling high-performance applications in JavaScript environments.
