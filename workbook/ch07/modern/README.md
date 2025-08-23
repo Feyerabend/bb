@@ -7,12 +7,13 @@ millions of lines of code, intricate interactions between components, and layers
 that are hard to visualise. Yet, among these, compilers provide a particularly clear lens through
 which to observe the growth of software complexity over time. 
 
-This is the second part in a series of two. We have already explored an attempt at constructing
-a simple compiler using [classical](./../../ch05/classic/) techniques. Here we will use the introduced
-different concepts such as design patterns frequent in object-oriented design, using Packrat as
-the parser (in contrast to e.g. recursive decent), and a plugin architecture to make flexible and
-dynamic modules possible, without altering the main program. It might not be the ultimate solution
-to compiler design, but illustrate clearly how programming have changed during the decades.
+This is the second part in a series of two. We have already explored in [ch05](./../../ch05/)
+an attempt at constructing a simple compiler using [classical](./../../ch05/classic/) techniques.
+Here we will use the introduced different concepts such as design patterns frequent in
+object-oriented design, using Packrat as the parser (in contrast to e.g. recursive decent),
+and a plugin architecture to make flexible and dynamic modules possible, without altering
+the main program. It might not be the ultimate solution to compiler design, but illustrate
+clearly how programming have changed during the decades.
 
 
 ```mermaid
