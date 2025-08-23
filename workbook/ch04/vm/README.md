@@ -96,6 +96,9 @@ the machine (taking some points from the previous more rudimentary), microcode,
 instructions and logical gates. The "evolution" also reimagine the
 [parallels](./cpu/README.md) to the x86 line of processors.
 
+A simulation in C at the gate-level of some simple CPU functions can also be found
+in [gates](./gates/).
+
 
 ### PIO
 
