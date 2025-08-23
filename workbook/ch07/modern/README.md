@@ -7,8 +7,8 @@ millions of lines of code, intricate interactions between components, and layers
 that are hard to visualise. Yet, among these, compilers provide a particularly clear lens through
 which to observe the growth of software complexity over time. 
 
-We have already explored an attempt at constructing a simple compiler using
-[classical](./../../ch05/classic/) techniques.
+This is the second part in a series of two. We have already explored an attempt at constructing
+a simple compiler using [classical](./../../ch05/classic/) techniques.
 
 This illustrates such things as design patterns, plugin architecture ..
 Packrat as parser .. object orientation .. and so.
