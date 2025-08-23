@@ -7,3 +7,4 @@ other structures such as design patterns, and so on ..
 
 Here we will go through compilers in a more traditional sense on how to compile ..
 
+Handcrafted recursive decent parser .. and so on. History of compilers. COBOL as reflection of the computer originally on ..
