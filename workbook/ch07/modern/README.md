@@ -158,7 +158,7 @@ graph TD
     B -->|Large| F[Firefox Browser\n~33 million LOC]
     B -->|Large| G[Chromium Browser\n~36 million LOC]
     B -->|Large| H[GCC 13 Compiler\n~15 million LOC]
-    B -->|Large| I[LLVM/Clang\n~20 million LOC\n(estimated growth from 2021)]
+    B -->|Large| I[LLVM/Clang\n~20 million LOC\nestimated 2021 growth]
     B -->|Very Large| J[Windows OS\n50+ million LOC]
     B -->|Very Large| K[Linux Kernel 2025\n~40 million LOC]
     
