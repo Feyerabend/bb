@@ -34,6 +34,34 @@ timeline
 ```
 
 
+```mermaid
+gantt
+    dateFormat  YYYY
+    axisFormat  %Y
+    title GCC and LLVM: Key Breakthroughs
+
+    section GCC
+    GCC 1.0 (GNU C Compiler, retargetable)       :a1, 1987, 1y
+    GCC becomes "Collection" (C++, Fortran)      :a2, 1988, 1y
+    Ports enable Linux on SPARC, MIPS, ARM       :a3, 1992, 1y
+    EGCS fork, later merged back                 :a4, 1997, 1y
+    GCC 3.0 (new optimisers, C++98 support)      :a5, 2001, 1y
+    GCC 4.0 (SSA GIMPLE IR, redesigned middle)   :a6, 2004, 1y
+    Graphite loop optimisation framework         :a7, 2007, 1y
+
+    section LLVM
+    LLVM project begins (Lattner, PhD)           :b1, 2000, 1y
+    LLVM 1.0 released (SSA IR, modular passes)   :b2, 2003, 1y
+    Clang front end starts                       :b3, 2005, 1y
+    Apple adopts LLVM/Clang                      :b4, 2007, 1y
+    LLVM JIT support matures                     :b5, 2010, 1y
+    Rust adopts LLVM backend                     :b6, 2012, 1y
+    LLVM 3.7 (SPIR-V, OpenCL support)            :b7, 2015, 1y
+    MLIR project begins (AI/ML workloads)        :b8, 2019, 1y
+    LLVM expands to WebAssembly, RISC-V, GPUs    :b9, 2020, 2y
+```
+
+
 ### From GCC to LLVM: The Evolution of Compiler Modularity
 
 The late 1980s marked a turning point in compiler history. Until then, most compilers were monolithic creatures: each new language for each new machine required almost an entirely new compiler. What Richard Stallman and his collaborators achieved with the GNU Compiler Collection (GCC) was to break this rigid pattern by introducing retargetability. Twenty years later, Chris Lattner’s LLVM would take this idea even further, transforming the compiler from a mere tool into a reusable infrastructure.
