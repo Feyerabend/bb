@@ -42,7 +42,6 @@ with a focus on fetch-decode-execute cycles and gate-level memory.
   }
   ```
 
-
 ```mermaid
 graph TD
     subgraph Basic_Gates
@@ -118,15 +117,23 @@ graph TD
         FA3 --> FA_OR
     end
 
-    subgraph Multiplexer
-        MUX[MUX 2-to-1: Selects Input]
-        AND --> MUX
-        OR --> MUX
-        NOT --> MUX
-        MUX_In0[Input 0] --> MUX
-        MUX_In1[Input 1] --> MUX
-        MUX_Sel[Select] --> MUX
-        MUX --> MUX_Out[Output]
+    subgraph Multiplexer_2to1
+        MUX_NOT[NOT: Invert Select]
+        MUX_AND1[AND: Input 0 & ~Select]
+        MUX_AND2[AND: Input 1 & Select]
+        MUX_OR[OR: Combine ANDs]
+        NOT --> MUX_NOT
+        AND --> MUX_AND1
+        AND --> MUX_AND2
+        OR --> MUX_OR
+        MUX_In0[Input 0] --> MUX_AND1
+        MUX_In1[Input 1] --> MUX_AND2
+        MUX_Sel[Select] --> MUX_NOT
+        MUX_Sel --> MUX_AND2
+        MUX_NOT --> MUX_AND1
+        MUX_AND1 --> MUX_OR
+        MUX_AND2 --> MUX_OR
+        MUX_OR --> MUX_Out[Output]
     end
 ```
 
