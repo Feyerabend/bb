@@ -146,3 +146,31 @@ Broader Impact
 
 The transition from GCC to LLVM marks a shift from thinking of compilers as monolithic programs to viewing them as reusable ecosystems. GCC showed the power of modularity; LLVM demonstrated the power of infrastructure built around a universal IR.
 
+
+### Complexity and Size
+
+```mermaid
+graph TD
+    A[Software Project] --> B{LOC Scale}
+    B -->|Small| C[FORTRAN Compiler 1957<br/>25,000 LOC]
+    B -->|Medium| D[Apache HTTP Server<br/>1.65 million LOC]
+    B -->|Medium| E[MySQL Database<br/>2.38 million LOC]
+    B -->|Large| F[Firefox Browser<br/>~33 million LOC<br/>Code Lines]
+    B -->|Large| G[Chromium Browser<br/>~36 million LOC<br/>Code Lines]
+    B -->|Large| H[GCC 13 Compiler<br/>~15 million LOC]
+    B -->|Large| I[LLVM/Clang<br/>~20 million LOC<br/>(estimated growth from 2021)]
+    B -->|Very Large| J[Windows OS<br/>50+ million LOC]
+    B -->|Very Large| K[Linux Kernel 2025<br/>~40 million LOC]
+    
+    style C fill:#e1f5fe
+    style D fill:#f3e5f5
+    style E fill:#f3e5f5
+    style F fill:#fff3e0
+    style G fill:#fff3e0
+    style H fill:#e8f5e8
+    style I fill:#e8f5e8
+    style J fill:#ffebee
+    style K fill:#ffebee
+```
+
+
