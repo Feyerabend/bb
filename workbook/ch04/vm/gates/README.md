@@ -191,7 +191,7 @@ with a focus on fetch-decode-execute cycles and gate-level memory.
 
 ```mermaid
 graph TD
-    subgraph Basic_Gates
+    subgraph Gates
         NOT[NOT Gate]
         AND[AND Gate]
         OR[OR Gate]
@@ -199,81 +199,90 @@ graph TD
     end
 
     subgraph ALU
-        HA[Half Adder: XOR for sum, AND for carry]
-        FA[Full Adder: 2x Half Adder + OR]
-        Adder[Adder: 4-bit ripple-carry]
-        BitwiseOps[Bitwise AND/OR: gate per bit]
-        ALU_Out[ALU Output: ADD/AND/OR/LOAD]
-        HA --> FA --> Adder
-        BitwiseOps --> ALU_Out
-        Adder --> ALU_Out
+        subgraph Adder_Circuit
+            HA[Half Adder: <br>XOR for sum, AND for carry]
+            FA[Full Adder: <br>2x Half Adder + OR]
+            Adder[4-bit Adder]
+            AND --> HA
+            XOR --> HA
+            HA --> FA
+            OR --> FA
+            FA --> Adder
+        end
+        subgraph Bitwise_Ops
+            BitwiseAND[Bitwise AND: AND per bit]
+            BitwiseOR[Bitwise OR: OR per bit]
+            AND --> BitwiseAND
+            OR --> BitwiseOR
+        end
+        MUX_ALU[MUX: Select ADD/AND/OR/LOAD]
+        Adder --> MUX_ALU
+        BitwiseAND --> MUX_ALU
+        BitwiseOR --> MUX_ALU
+        MUX_ALU --> ALU_Out[ALU Output]
         ALU_Out --> ZeroFlag[Zero Flag]
         Adder --> OvfFlag[Overflow Flag]
     end
 
-    subgraph Registers
-        PC[PC: 4-bit DFF Register]
-        ACC[ACC: 4-bit DFF Register]
-        IR[IR: 4-bit DFF Register]
-        MAR[MAR: 4-bit DFF Register]
-        MDR[MDR: 4-bit DFF Register]
-        DFF[D Flip-Flop: Clocked Bit Storage]
-        PC --> DFF
-        ACC --> DFF
-        IR --> DFF
-        MAR --> DFF
-        MDR --> DFF
-    end
-
-    subgraph RAM
-        RAM_Regs[16x 4-bit Registers]
-        Decoder[Address Decoder: AND gates]
-        RAM_Regs --> Decoder
+    subgraph Storage
+        subgraph Registers
+            DFF[D Flip-Flop: Clocked Bit]
+            PC[PC: 4-bit]
+            ACC[ACC: 4-bit]
+            IR[IR: 4-bit]
+            MAR[MAR: 4-bit]
+            MDR[MDR: 4-bit]
+            DFF --> PC
+            DFF --> ACC
+            DFF --> IR
+            DFF --> MAR
+            DFF --> MDR
+        end
+        subgraph RAM
+            RAM_Regs[16x 4-bit Registers]
+            Decoder[Address Decoder: AND gates]
+            AND --> Decoder
+            DFF --> RAM_Regs
+            Decoder --> RAM_Regs
+        end
     end
 
     subgraph Control_Unit
-        CU[Control Unit: Gates decode opcode]
-        CU --> ALU_Op0[ALU OP0]
-        CU --> ALU_Op1[ALU OP1]
-        CU --> RegLoad[Reg Load]
-        CU --> MemRead[Mem Read]
-        CU --> MemWrite[Mem Write]
-        CU --> Halt[Halt]
-        CU --> ALUSrc[ALU Src]
+        CU_Decode[Decode: AND, OR, NOT gates]
+        NOT --> CU_Decode
+        AND --> CU_Decode
+        OR --> CU_Decode
+        CU_Decode --> ALU_Op0[ALU OP0]
+        CU_Decode --> ALU_Op1[ALU OP1]
+        CU_Decode --> RegLoad[Reg Load]
+        CU_Decode --> MemRead[Mem Read]
+        CU_Decode --> MemWrite[Mem Write]
+        CU_Decode --> Halt[Halt]
+        CU_Decode --> ALUSrc[ALU Src]
     end
 
     subgraph CPU_Cycle
         Fetch[Fetch: PC->MAR, RAM->IR, PC++]
-        Decode_Execute[Decode/Execute: Opcode->CU, ALU Op, Update ACC/Flags]
+        Decode_Execute[Decode/Execute: IR->CU, ALU, Update]
         Fetch --> Decode_Execute
     end
 
     PC -->|Address| MAR
     MAR -->|Address| RAM
     RAM -->|Instruction| IR
-    IR -->|Opcode| CU
+    IR -->|Opcode| Control_Unit
     IR -->|Operand| ALU_Src_Mux[MUX: Imm or RAM]
     RAM -->|Data| ALU_Src_Mux
     ALU_Src_Mux -->|Operand B| ALU
     ACC -->|Operand A| ALU
     ALU -->|Result| ACC
     ALU -->|Result| RAM
-    CU -->|Control Signals| ALU
-    CU -->|Reg Load| ACC
-    CU -->|Mem Read/Write| RAM
-    CU -->|Halt| CPU_Cycle
-    PC -->|Increment| Adder
+    Control_Unit -->|ALU Op| ALU
+    Control_Unit -->|Reg Load| ACC
+    Control_Unit -->|Mem Read/Write| RAM
+    Control_Unit -->|Halt| CPU_Cycle
+    PC -->|Input| Adder
     Adder -->|PC + 1| PC
     Clock[Clock] -->|Rising Edge| DFF
     Clock -->|Rising Edge| RAM_Regs
-    NOT --> HA
-    AND --> HA
-    XOR --> HA
-    AND --> BitwiseOps
-    OR --> BitwiseOps
-    AND --> Decoder
-    AND --> CU
-    OR --> CU
-    NOT --> CU
 ```
-
