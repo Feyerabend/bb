@@ -212,6 +212,72 @@ graph TD
   }
   ```
 
+```mermaid
+graph TD
+    subgraph ALU
+        ALU_Unit[ALU: ADD, AND, OR, LOAD]
+        ALU_Unit --> ALU_Out[Output]
+        ALU_Unit --> ZeroFlag[Zero Flag]
+        ALU_Unit --> OvfFlag[Overflow Flag]
+        OpA[Operand A: ACC] --> ALU_Unit
+        OpB[Operand B: Imm/RAM] --> ALU_Unit
+        ALU_Op[ALU Op0, Op1] --> ALU_Unit
+    end
+
+    subgraph Storage
+        subgraph Registers
+            PC[PC: 4-bit]
+            ACC[ACC: 4-bit]
+            IR[IR: 4-bit]
+            MAR[MAR: 4-bit]
+            MDR[MDR: 4-bit]
+        end
+        subgraph RAM
+            RAM_Unit[RAM: 16x 4-bit]
+        end
+    end
+
+    subgraph Control_Unit
+        CU[Control Unit]
+        CU --> ALU_Op0[ALU Op0]
+        CU --> ALU_Op1[ALU Op1]
+        CU --> RegLoad[Reg Load]
+        CU --> MemRead[Mem Read]
+        CU --> MemWrite[Mem Write]
+        CU --> Halt[Halt]
+        CU --> ALUSrc[ALU Src]
+    end
+
+    subgraph CPU_Cycle
+        Fetch[Fetch: PC->MAR, RAM->IR, PC++]
+        Decode_Execute[Decode/Execute: IR->CU, ALU, Update]
+        Fetch --> Decode_Execute
+    end
+
+    PC -->|Address| MAR
+    MAR -->|Address| RAM_Unit
+    RAM_Unit -->|Instruction| IR
+    IR -->|Opcode| CU
+    IR -->|Operand| ALU_Src_Mux[MUX: Imm or RAM]
+    RAM_Unit -->|Data| ALU_Src_Mux
+    ALU_Src_Mux -->|Operand B| ALU_Unit
+    ACC -->|Operand A| ALU_Unit
+    ALU_Out --> ACC
+    ALU_Out --> RAM_Unit
+    CU -->|ALU Op0, Op1| ALU_Op
+    CU -->|Reg Load| ACC
+    CU -->|Mem Read/Write| RAM_Unit
+    CU -->|Halt| CPU_Cycle
+    PC -->|Input| ALU_Unit
+    ALU_Unit -->|PC + 1| PC
+    Clock[Clock] -->|Rising Edge| PC
+    Clock -->|Rising Edge| ACC
+    Clock -->|Rising Edge| IR
+    Clock -->|Rising Edge| MAR
+    Clock -->|Rising Edge| MDR
+    Clock -->|Rising Edge| RAM_Unit
+```
+
 - *CPU Cycle*: Each cycle fetches (PC to MAR, RAM to IR, PC++), then decodes and executes (ALU operation,
   update ACC/flags, possible memory write). HALT stops the cycle.
   ```c
