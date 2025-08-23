@@ -212,6 +212,36 @@ graph TD
   }
   ```
 
+- *CPU Cycle*: Each cycle fetches (PC to MAR, RAM to IR, PC++), then decodes and executes (ALU operation,
+  update ACC/flags, possible memory write). HALT stops the cycle.
+  ```c
+  void fetch() {
+      uint8_t pc_val = reg_read(&pc);
+      reg_load(&mar, pc_val, 1, clk);
+      uint8_t instr = ram_read(&ram, reg_read(&mar));
+      reg_load(&ir, instr, 1, clk);
+      uint8_t pc_inc, ovf;
+      adder(pc_val, 1, &pc_inc, &ovf);
+      reg_load(&pc, pc_inc, 1, clk);
+  }
+  int decode_execute() {
+      uint8_t instr = reg_read(&ir);
+      uint8_t opcode = (instr >> 2) & 3;
+      uint8_t operand = instr & 3;
+      ControlSignals sig = control_unit(opcode);
+      if (sig.halt) return 1;
+      uint8_t alu_b = sig.alu_src ? ram_read(&ram, operand) : operand;
+      ALUResult alu_res = alu(reg_read(&acc), alu_b, sig.alu_op0, sig.alu_op1);
+      if (sig.mem_write) ram_write(&ram, operand, reg_read(&acc), 1, clk);
+      if (sig.reg_load) {
+          reg_load(&acc, alu_res.result, 1, clk);
+          zero_flag = alu_res.zero;
+          ovf_flag = alu_res.ovf;
+      }
+      return 0;
+  }
+  ```
+
 ```mermaid
 graph TD
     subgraph ALU
@@ -278,35 +308,6 @@ graph TD
     Clock -->|Rising Edge| RAM_Unit
 ```
 
-- *CPU Cycle*: Each cycle fetches (PC to MAR, RAM to IR, PC++), then decodes and executes (ALU operation,
-  update ACC/flags, possible memory write). HALT stops the cycle.
-  ```c
-  void fetch() {
-      uint8_t pc_val = reg_read(&pc);
-      reg_load(&mar, pc_val, 1, clk);
-      uint8_t instr = ram_read(&ram, reg_read(&mar));
-      reg_load(&ir, instr, 1, clk);
-      uint8_t pc_inc, ovf;
-      adder(pc_val, 1, &pc_inc, &ovf);
-      reg_load(&pc, pc_inc, 1, clk);
-  }
-  int decode_execute() {
-      uint8_t instr = reg_read(&ir);
-      uint8_t opcode = (instr >> 2) & 3;
-      uint8_t operand = instr & 3;
-      ControlSignals sig = control_unit(opcode);
-      if (sig.halt) return 1;
-      uint8_t alu_b = sig.alu_src ? ram_read(&ram, operand) : operand;
-      ALUResult alu_res = alu(reg_read(&acc), alu_b, sig.alu_op0, sig.alu_op1);
-      if (sig.mem_write) ram_write(&ram, operand, reg_read(&acc), 1, clk);
-      if (sig.reg_load) {
-          reg_load(&acc, alu_res.result, 1, clk);
-          zero_flag = alu_res.zero;
-          ovf_flag = alu_res.ovf;
-      }
-      return 0;
-  }
-  ```
 
 - *Program Execution*: The sample program (ADD 1, AND 3, OR 2, HALT) runs in three cycles, producing
   ACC=1, 1, 3, with JSON output capturing all states for emulator visualization.
