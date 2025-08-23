@@ -8,11 +8,11 @@ that are hard to visualise. Yet, among these, compilers provide a particularly c
 which to observe the growth of software complexity over time. 
 
 This is the second part in a series of two. We have already explored an attempt at constructing
-a simple compiler using [classical](./../../ch05/classic/) techniques.
-
-This illustrates such things as design patterns, plugin architecture ..
-Packrat as parser .. object orientation .. and so.
-
+a simple compiler using [classical](./../../ch05/classic/) techniques. Here we will use the introduced
+different concepts such as design patterns frequent in object-oriented design, using Packrat as
+the parser (in contrast to e.g. recursive decent), and a plugin architecture to make flexible and
+dynamic modules possible, without altering the main program. It might not be the ultimate solution
+to compiler design, but illustrate clearly how programming have changed during the decades.
 
 
 ```mermaid
@@ -45,18 +45,24 @@ gantt
 
 ### From GCC to LLVM: The Evolution of Compiler Modularity
 
-The late 1980s marked a turning point in compiler history. Until then, most compilers were monolithic creatures: each new language for each new machine required almost an entirely new compiler. What Richard Stallman and his collaborators achieved with the GNU Compiler Collection (GCC) was to break this rigid pattern by introducing retargetability. Twenty years later, Chris Lattner’s LLVM would take this idea even further, transforming the compiler from a mere tool into a reusable infrastructure.
-
+The late 1980s marked a turning point in compiler history. Until then, most compilers were monolithic creatures:
+each new language for each new machine required almost an entirely new compiler. What Richard Stallman and his
+collaborators achieved with the GNU Compiler Collection (GCC) was to break this rigid pattern by introducing
+retargetability. Twenty years later, Chris Lattner’s LLVM would take this idea even further, transforming the
+compiler from a mere tool into a reusable infrastructure.
 
 
 #### GCC: Retargetability through Separation
 
-When Stallman released the first version of GCC in 1987, it was called the GNU C Compiler. Its defining innovation was separating front ends from back ends. Instead of writing “a compiler for C on VAX” and another for “C on MIPS,” GCC provided:
+When Stallman released the first version of GCC in 1987, it was called the GNU C Compiler. Its defining innovation
+was separating front ends from back ends. Instead of writing “a compiler for C on VAX” and another for "C on MIPS,"
+GCC provided:
 1. Front ends: parse and analyse source code for a particular language (C, later C++, Fortran, Ada, etc.).
 2. Middle end: apply machine-independent optimisations.
 3. Back ends: generate code for specific target architectures (x86, ARM, MIPS, SPARC), described by machine definition files.
 
-The central trick was to use an internal representation, first RTL (Register Transfer Language) and later GIMPLE, so that front ends and back ends could meet in the middle.
+The central trick was to use an internal representation, first RTL (Register Transfer Language) and later GIMPLE,
+so that front ends and back ends could meet in the middle.
 
 For example, compiling a trivial function in C:
 
@@ -93,20 +99,26 @@ add:
     bx lr
 ```
 
-The same high-level program, once passed through GCC’s middle end, could be retargeted to any supported architecture by providing only the back-end descriptions.
+The same high-level program, once passed through GCC’s middle end, could be retargeted to any supported
+architecture by providing only the back-end descriptions.
 
-This modularity made GCC the universal toolchain of the free software world. It powered Linux distributions across architectures from Intel servers to tiny embedded controllers. Yet GCC’s design, written in C and developed incrementally over decades, became hard to extend. Its internal representations were not originally meant for external use, and experimenting with GCC internals required wading through a large, complex codebase.
+This modularity made GCC the universal toolchain of the free software world. It powered Linux distributions
+across architectures from Intel servers to tiny embedded controllers. Yet GCC’s design, written in C and
+developed incrementally over decades, became hard to extend. Its internal representations were not originally
+meant for external use, and experimenting with GCC internals required wading through a large, complex codebase.
 
 
 
 #### LLVM: Infrastructure, Not Just a Compiler
 
-Chris Lattner’s LLVM (Low Level Virtual Machine), begun in 2000 as a research project, reimagined modularity. Where GCC separated front ends and back ends, LLVM introduced an intermediate representation (LLVM IR) that was:
+Chris Lattner's LLVM (Low Level Virtual Machine), begun in 2000 as a research project, reimagined modularity.
+Where GCC separated front ends and back ends, LLVM introduced an intermediate representation (LLVM IR) that was:
 - Typed (with explicit integer, floating, and pointer types),
 - In SSA form (Static Single Assignment, making optimisation cleaner),
 - Stable and documented (meant to be read, written, and stored).
 
-Unlike GCC’s internal GIMPLE/RTL, LLVM IR was first-class: you could write it to disk, inspect it, reload it, and even hand-edit it.
+Unlike GCC’s internal GIMPLE/RTL, LLVM IR was first-class: you could write it to disk, inspect it, reload it,
+and even hand-edit it.
 
 The same C function from above, compiled with Clang (LLVM’s C front end), becomes:
 
@@ -119,7 +131,9 @@ entry:
 }
 ```
 
-This intermediate code is machine-independent, yet precise enough to lower efficiently to many targets. The LLVM toolchain allows you to transform and optimise this IR using the opt command, and finally emit native code with llc.
+This intermediate code is machine-independent, yet precise enough to lower efficiently to many targets.
+The LLVM toolchain allows you to transform and optimise this IR using the opt command, and finally emit
+native code with llc.
 
 For example:
 
@@ -129,25 +143,34 @@ opt -O2 add.ll -o add_opt.ll
 llc add_opt.ll -o add.s
 ```
 
-The design philosophy is clear: LLVM is not just a compiler, but a framework. Languages as diverse as Swift, Rust, Julia, and Haskell all use LLVM as their back end. Hardware vendors (e.g., Apple for ARM64, NVIDIA for GPUs, WebAssembly groups) also adopt it to avoid reinventing optimisation and codegen pipelines.
+The design philosophy is clear: LLVM is not just a compiler, but a framework. Languages as diverse as Swift,
+Rust, Julia, and Haskell all use LLVM as their back end. Hardware vendors (e.g., Apple for ARM64, NVIDIA
+for GPUs, WebAssembly groups) also adopt it to avoid reinventing optimisation and codegen pipelines.
 
 
 
 #### GCC vs LLVM: Philosophical Differences
 
-- GCC pioneered separation. Its retargetable structure made it possible to support many languages and architectures in one collection. But GCC’s IRs were internal tools, not external artefacts.
-- LLVM made IR central. LLVM IR is human-readable, language-agnostic, and usable across compile-time and runtime. It is the “lingua franca” of modern compiler design.
+- GCC pioneered separation. Its retargetable structure made it possible to support many languages and
+  architectures in one collection. But GCC’s IRs were internal tools, not external artefacts.
+- LLVM made IR central. LLVM IR is human-readable, language-agnostic, and usable across compile-time
+  and runtime. It is the “lingua franca” of modern compiler design.
 - GCC is a compiler collection. Each language plugs into a shared, but historically monolithic, middle/back end.
-- LLVM is compiler infrastructure. It provides libraries, APIs, and tools that let anyone build a compiler, JIT engine, or analysis tool.
+- LLVM is compiler infrastructure. It provides libraries, APIs, and tools that let anyone build a compiler,
+  JIT engine, or analysis tool.
 
 
 
 Broader Impact
 
-- GCC’s modularity enabled UNIX and Linux portability in the 1990s. Without it, Linux would not have spread across dozens of architectures so quickly.
-- LLVM’s infrastructure enabled new languages and tooling in the 2000s and 2010s. Without it, languages like Rust, Swift, and Julia might never have gained high-performance back ends so quickly.
+- GCC’s modularity enabled UNIX and Linux portability in the 1990s. Without it, Linux would not have spread
+  across dozens of architectures so quickly.
+- LLVM’s infrastructure enabled new languages and tooling in the 2000s and 2010s. Without it, languages
+  like Rust, Swift, and Julia might never have gained high-performance back ends so quickly.
 
-The transition from GCC to LLVM marks a shift from thinking of compilers as monolithic programs to viewing them as reusable ecosystems. GCC showed the power of modularity; LLVM demonstrated the power of infrastructure built around a universal IR.
+The transition from GCC to LLVM marks a shift from thinking of compilers as monolithic programs to viewing
+them as reusable ecosystems. GCC showed the power of modularity; LLVM demonstrated the power of infrastructure
+built around a universal IR.
 
 
 ### Complexity and Size
@@ -168,9 +191,27 @@ classDiagram
     style Software_Projects fill:#f9f9f9,stroke:#333,stroke-width:1px
 ```
 
-Today, compilers like GCC and LLVM are no longer mere tools but sprawling platforms that underpin vast swaths of the software world. GCC remains the bedrock of the GNU/Linux ecosystem, while LLVM powers languages like Swift, Rust, and Julia, as well as GPU toolchains and MLIR for machine learning frameworks. Yet, for most programmers, compilers operate invisibly, quietly transforming every line of code into machine instructions. They are the unsung engines of software development, enabling performance portability through frameworks like OpenMP, OpenCL, and CUDA, enhancing security with tools like AddressSanitizer, and driving AI/ML innovation through projects like MLIR, XLA for TensorFlow, and TVM. Compilers even power the web, with WebAssembly compilers embedded in browsers, enabling high-performance applications in JavaScript environments.
+Today, compilers like GCC and LLVM are no longer mere tools but sprawling platforms that underpin vast swaths
+of the software world. GCC remains the bedrock of the GNU/Linux ecosystem, while as we learned above that LLVM
+powers languages like Swift, Rust, and Julia, as well as GPU toolchains and MLIR for machine learning frameworks.
+Yet, for most programmers, compilers operate invisibly, quietly transforming every line of code into machine
+instructions. They are the unsung engines of software development, enabling performance portability through
+frameworks like OpenMP, OpenCL, and CUDA, enhancing security with tools like AddressSanitizer, and driving AI/ML
+innovation through projects like MLIR, XLA for TensorFlow, and TVM. Compilers even power the web, with WebAssembly
+compilers embedded in browsers, enabling high-performance applications in JavaScript environments.
 
-The story of compilers is, at its core, a narrative of abstraction and scalability. In the 1950s, they made programming accessible to humans beyond the elite few who could wrestle with assembly. By the 1970s, they enabled structured programming, laying the foundation for modern software engineering. In the 1990s, retargetable compilers like GCC made portability across architectures practical. From the 2000s to today, infrastructure compilers like LLVM have managed the complexity of language innovation and hardware heterogeneity, enabling developers to write code in high-level languages like Python or Rust while achieving efficient execution on CPUs, GPUs, or cloud clusters. Compilers are not just tools; they are the guardians of abstraction, the quiet architects that make the diversity and dynamism of modern programming possible.
+The story of compilers is, at its core, a narrative of abstraction and scalability. In the 1950s, they made
+programming accessible to humans beyond the elite few who could wrestle with assembly. By the 1970s, they
+enabled structured programming, laying the foundation for modern software engineering. In the 1990s, retargetable
+compilers like GCC made portability across architectures practical. From the 2000s to today, infrastructure
+compilers like LLVM have managed the complexity of language innovation and hardware heterogeneity, enabling
+developers to write code in high-level languages like Python or Rust while achieving efficient execution on
+CPUs, GPUs, or cloud clusters. Compilers are not just tools; they are the guardians of abstraction, the quiet
+architects that make the diversity and dynamism of modern programming possible.
 
-In essence, compilers have grown from modest 20,000-line experiments into multi-million-line ecosystems that stand at the heart of both computer science and computing itself. They bridge the theoretical and the practical, the language and the machine, enabling the software and hardware innovations that define our digital age. Invisible yet indispensable, compilers continue to shape the future of technology, quietly empowering every line of code that drives our world.
+In essence, compilers have grown from modest 20,000-line experiments into multi-million-line ecosystems that
+stand at the heart of both computer science and computing itself. They bridge the theoretical and the practical,
+the language and the machine, enabling the software and hardware innovations that define our digital age.
+Invisible yet indispensable, compilers continue to shape the future of technology, quietly empowering every
+line of code that drives our world.
 
