@@ -11,28 +11,6 @@ This illustrates such things as design patterns, plugin architecture ..
 Packrat as parser .. object orientation .. and so.
 
 
-```mermaid
-timeline
-    title Breakthroughs in GCC and LLVM
-    1987 : GCC 1.0 released as "GNU C Compiler" (C only, retargetable design)
-    1988 : GCC becomes "GNU Compiler Collection" (front ends for C++, Fortran, etc.)
-    1992 : GCC ports enable Linux on non-x86 (SPARC, MIPS, ARM)
-    1997 : EGCS fork improves modularity and optimisation (later merges back into GCC)
-    2001 : GCC 3 introduces new optimisers, C++98 support
-    2004 : GCC 4 introduces SSA-based GIMPLE IR, major middle-end redesign
-    2007 : GCC adopts Graphite framework for loop optimisation
-
-    2000 : LLVM project begins (Chris Lattner, PhD work at UIUC)
-    2003 : LLVM 1.0 released (first modular pass framework with SSA IR)
-    2005 : Clang C front end starts, faster and more modular than GCC’s C front end
-    2007 : Apple adopts LLVM/Clang for macOS and iOS toolchains
-    2010 : LLVM 2.7 adds full support for JIT compilation
-    2012 : Rust adopts LLVM as backend; other languages follow (Swift, Julia)
-    2015 : LLVM 3.7 adds SPIR-V and OpenCL support
-    2019 : MLIR (Multi-Level IR) project begins, targeting AI/ML workloads
-    2020s : LLVM becomes standard infrastructure for new languages and hardware (WebAssembly, GPUs, RISC-V)
-```
-
 
 ```mermaid
 gantt
