@@ -646,7 +646,7 @@ class PL0Compiler:
 
 def main():
     if len(sys.argv) < 2 or len(sys.argv) > 3:
-        print("Usage: pl0_compiler.py <input_filename> [output_filename]", file=sys.stderr)
+        print("Usage: compiler.py <input_filename> [output_filename]", file=sys.stderr)
         sys.exit(1)
     input_filename = sys.argv[1]
     output_filename = sys.argv[2] if len(sys.argv) == 3 else None
@@ -655,3 +655,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
