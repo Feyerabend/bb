@@ -1182,22 +1182,191 @@ class PL0Compiler:
                     print(f"  {msg}", file=sys.stderr)
             sys.exit(1)
 
+    @staticmethod
+    def compile_file_with_optimization(input_filename: str, output_filename: str = None, 
+                                    debug: bool = False, plugins_dir: str = None, 
+                                    save_optimized: bool = False):
+        compiler = PL0Compiler()
+        
+        if debug:
+            compiler.enable_debug()
+        
+        if plugins_dir:
+            compiler.load_plugins(plugins_dir)
+        
+        try:
+            with open(input_filename, 'r') as file:
+                code = file.read()
+        except IOError as e:
+            print(f"Error reading file: {e}", file=sys.stderr)
+            sys.exit(1)
+        
+        if output_filename is None:
+            output_filename = input_filename.rsplit('.', 1)[0] + ".c"
+        
+        result = compiler.compile_string(code)
+        
+        if result["success"]:
+            # Write C code output
+            if "c_code" in result["outputs"]:
+                with open(output_filename, 'w') as file:
+                    file.write(result["outputs"]["c_code"])
+                print(f"Compiled {input_filename} to {output_filename}")
+            
+            # Save optimized source code if requested
+            if save_optimized and hasattr(result["context"], "optimized_ast"):
+                optimized_filename = input_filename.rsplit('.', 1)[0] + "_optimized.pl0"
+                reconstructor = CodeReconstructor()
+                optimized_code = reconstructor.reconstruct(result["context"].optimized_ast)
+                with open(optimized_filename, 'w') as file:
+                    file.write(optimized_code)
+                print(f"Optimized source saved to {optimized_filename}")
+            
+            # Show optimization stats
+            if "optimizer" in result["plugin_results"]:
+                opt_result = result["plugin_results"]["optimizer"]
+                optimizations = opt_result.get('optimizations_applied', 0)
+                if optimizations > 0:
+                    print(f"Applied {optimizations} optimizations")
+        else:
+            print("Compilation failed with errors:", file=sys.stderr)
+            for msg in result["messages"]:
+                if msg.level == MessageLevel.ERROR:
+                    print(f"  {msg}", file=sys.stderr)
+            sys.exit(1)
 
+
+
+class CodeReconstructor(Visitor):
+    """Reconstructs PL0 source code from AST"""
+    
+    def __init__(self):
+        self.output = []
+        self.indent_level = 0
+        self.indent_str = "    "
+    
+    def reconstruct(self, node: ASTNode) -> str:
+        self.output = []
+        self.indent_level = 0
+        node.accept(self)
+        return "".join(self.output)
+    
+    def _add(self, text: str):
+        self.output.append(text)
+    
+    def visit_block(self, node: BlockNode):
+        if node.variables:
+            self._add("var ")
+            self._add(", ".join(node.variables))
+            self._add(";\n\n")
+        
+        for proc_name, proc_body in node.procedures:
+            self._add(f"procedure {proc_name};\n")
+            proc_body.accept(self)
+            self._add(";\n\n")
+        
+        node.statement.accept(self)
+        if not self.output[-1].endswith(".\n"):
+            self._add(".")
+    
+    def visit_assign(self, node: AssignNode):
+        self._add(f"{node.var_name} := ")
+        node.expression.accept(self)
+    
+    def visit_call(self, node: CallNode):
+        self._add(f"call {node.proc_name}")
+    
+    def visit_read(self, node: ReadNode):
+        self._add(f"? {node.var_name}")
+    
+    def visit_write(self, node: WriteNode):
+        self._add("! ")
+        node.expression.accept(self)
+    
+    def visit_compound(self, node: CompoundNode):
+        if not node.statements:
+            return
+        if len(node.statements) == 1:
+            node.statements[0].accept(self)
+        else:
+            self._add("begin\n")
+            self.indent_level += 1
+            for i, stmt in enumerate(node.statements):
+                if i > 0:
+                    self._add(";\n")
+                self._add(self.indent_str * self.indent_level)
+                stmt.accept(self)
+            self._add("\n")
+            self.indent_level -= 1
+            self._add(self.indent_str * self.indent_level + "end")
+    
+    def visit_nested_block(self, node: NestedBlockNode):
+        self._add("begin\n")
+        self.indent_level += 1
+        if node.variables:
+            self._add(self.indent_str * self.indent_level + "var ")
+            self._add(", ".join(node.variables))
+            self._add(";\n")
+        for i, stmt in enumerate(node.statements):
+            if i > 0 or node.variables:
+                self._add(";\n")
+            self._add(self.indent_str * self.indent_level)
+            stmt.accept(self)
+        self._add("\n")
+        self.indent_level -= 1
+        self._add(self.indent_str * self.indent_level + "end")
+    
+    def visit_if(self, node: IfNode):
+        self._add("if ")
+        node.condition.accept(self)
+        self._add(" then\n")
+        self.indent_level += 1
+        self._add(self.indent_str * self.indent_level)
+        node.then_statement.accept(self)
+        self.indent_level -= 1
+    
+    def visit_while(self, node: WhileNode):
+        self._add("while ")
+        node.condition.accept(self)
+        self._add(" do\n")
+        self.indent_level += 1
+        self._add(self.indent_str * self.indent_level)
+        node.body.accept(self)
+        self.indent_level -= 1
+    
+    def visit_operation(self, node: OperationNode):
+        self._add("(")
+        node.left.accept(self)
+        self._add(f" {node.operator} ")
+        node.right.accept(self)
+        self._add(")")
+    
+    def visit_variable(self, node: VariableNode):
+        self._add(node.name)
+    
+    def visit_number(self, node: NumberNode):
+        self._add(str(node.value))
+
+
+# Update the main() function to support saving optimized source
 def main():
     if len(sys.argv) < 2:
-        print("Usage: compiler.py <input_filename> [output_filename] [--debug] [--plugins <directory>]", file=sys.stderr)
+        print("Usage: compiler.py <input_filename> [output_filename] [--debug] [--plugins <directory>] [--save-optimized]", file=sys.stderr)
         sys.exit(1)
     
     input_filename = sys.argv[1]
     output_filename = None
     debug = False
     plugins_dir = None
+    save_optimized = False
     
     i = 2
     while i < len(sys.argv):
         arg = sys.argv[i]
         if arg == "--debug":
             debug = True
+        elif arg == "--save-optimized":
+            save_optimized = True
         elif arg == "--plugins":
             if i + 1 < len(sys.argv):
                 plugins_dir = sys.argv[i + 1]
@@ -1209,9 +1378,74 @@ def main():
             output_filename = arg
         i += 1
     
-    PL0Compiler.compile_file(input_filename, output_filename, debug, plugins_dir)
+    # Use the enhanced compile_file function
+    compile_file_enhanced(input_filename, output_filename, debug, plugins_dir, save_optimized)
 
 
+def compile_file_enhanced(input_filename: str, output_filename: str = None, 
+                         debug: bool = False, plugins_dir: str = None, 
+                         save_optimized: bool = False):
+    """Enhanced version of compile_file that can save optimized source"""
+    
+    compiler = PL0Compiler()
+    
+    if debug:
+        compiler.enable_debug()
+    
+    if plugins_dir:
+        compiler.load_plugins(plugins_dir)
+    
+    try:
+        with open(input_filename, 'r') as file:
+            code = file.read()
+    except IOError as e:
+        print(f"Error reading file: {e}", file=sys.stderr)
+        sys.exit(1)
+    
+    if output_filename is None:
+        output_filename = input_filename.rsplit('.', 1)[0] + ".c"
+    
+    result = compiler.compile_string(code)
+    
+    if result["success"]:
+        # Write C code output (from optimized AST if available)
+        if "c_code" in result["outputs"]:
+            with open(output_filename, 'w') as file:
+                file.write(result["outputs"]["c_code"])
+            print(f"Compiled {input_filename} to {output_filename}")
+        
+        # Save optimized source code if requested
+        if save_optimized and hasattr(result["context"], "optimized_ast"):
+            optimized_filename = input_filename.rsplit('.', 1)[0] + "_optimized.pl0"
+            reconstructor = CodeReconstructor()
+            optimized_code = reconstructor.reconstruct(result["context"].optimized_ast)
+            with open(optimized_filename, 'w') as file:
+                file.write(optimized_code)
+            print(f"Optimized source saved to {optimized_filename}")
+        
+        # Show optimization statistics
+        if "optimizer" in result["plugin_results"]:
+            opt_result = result["plugin_results"]["optimizer"]
+            optimizations = opt_result.get('optimizations_applied', 0)
+            passes = opt_result.get('passes', 0)
+            if optimizations > 0:
+                print(f"Applied {optimizations} optimizations in {passes} passes")
+        
+        # Write TAC output if requested
+        tac_filename = input_filename.rsplit('.', 1)[0] + ".tac"
+        if "tac_code" in result["outputs"]:
+            with open(tac_filename, 'w') as file:
+                file.write(result["outputs"]["tac_code"])
+            print(f"Generated TAC: {tac_filename}")
+                
+    else:
+        print("Compilation failed with errors:", file=sys.stderr)
+        for msg in result["messages"]:
+            if msg.level == MessageLevel.ERROR:
+                print(f"  {msg}", file=sys.stderr)
+        sys.exit(1)
+
+
+# Replace the old main call
 if __name__ == "__main__":
-    main()
-
+    main()  # This now uses the enhanced version
