@@ -1,5 +1,5 @@
 
-### Compiling
+### A Modernised Compiler
 
 The `compiler.py` is a compiler for a simplified programming language inspired by PL/0
 (designed by Niklaus Wirth). This compiler translates the source code into C code, which
