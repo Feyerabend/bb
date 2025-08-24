@@ -30,7 +30,7 @@ output management and analysis capabilities:
 
 ### Extended Components
 
-#### 1. *Enhanced Output Organization in `PL0Compiler.compile_file`*
+#### 1. *Enhanced Output Organisation in `PL0Compiler.compile_file`*
 
 The `compile_file` method now organises all outputs in a dedicated directory
 named `<basename>_compilation/`, improving file management.
@@ -61,7 +61,7 @@ named `<basename>_compilation/`, improving file management.
 #### 2. *ComplexityAnalyzerPlugin (`complex_plugin.py`)*
 
 This plugin introduces code complexity analysis, calculating metrics like *cyclomatic
-complexity*, lines of code, and nesting depth.
+complexity*[^cyc], lines of code, and nesting depth.
 
 - *Key Features*:
   - Uses a `ComplexityAnalyzer` visitor to traverse the AST.
@@ -75,6 +75,8 @@ complexity*, lines of code, and nesting depth.
   - Example: For a program with one `if` and one `while`, complexity is 3.
 - *Improvement*: The second version lacked complexity analysis. This plugin helps
   developers assess code maintainability and identify complex code that may need refactoring.
+
+[^cyc]: Cyclomatic complexity is a software metric that measures the complexity of a program by counting the number of linearly independent paths through its control flow graph. Introduced by Thomas J. McCabe, it’s calculated as `M = E - N + 2P`, where E is the number of edges, N is the number of nodes, and P is the number of connected components in the graph. In practice, it’s often simplified to counting decision points (e.g., if, while, for) plus one for the program’s entry point. For example, a program with one if and one while statement has a complexity of 3. High cyclomatic complexity indicates more complex code, which may be harder to maintain or test, often suggesting refactoring to reduce risk of errors. In `compiler.py` the` ComplexityAnalyzerPlugin` computes this by incrementing a counter for each `if` or `while` node in the AST.
 
 
 #### 3. *ASTPrinter Plugin (`complex_plugin.py`)*
