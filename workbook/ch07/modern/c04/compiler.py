@@ -69,6 +69,7 @@ class MessageCollector:
         self.messages.clear()
 
 
+# [Lexer, ASTNode classes, and Parser remain the same as in original]
 class Lexer:
     def __init__(self, code: str, messages: MessageCollector):
         self.code = code.strip()
@@ -195,7 +196,6 @@ class CompoundNode(ASTNode):
 
 
 class NestedBlockNode(ASTNode):
-    """Node for nested blocks with local variables"""
     def __init__(self, variables: List[str], statements: List[ASTNode]):
         super().__init__()
         self.variables = variables
@@ -251,7 +251,7 @@ class NumberNode(ASTNode):
 class PackratParser:
     def __init__(self, tokens: List[Tuple[str, str]], messages: MessageCollector):
         self.tokens = tokens
-        self.cache = {}  # (rule, pos) -> (result, new_pos)
+        self.cache = {}
         self.messages = messages
 
     def parse(self):
@@ -398,7 +398,6 @@ class PackratParser:
                 return WriteNode(expr), p
             elif token == "begin" and kind == "kw":
                 p += 1
-                # Check if this is a nested block with variables
                 variables = []
                 if p < len(self.tokens) and self.tokens[p] == ("var", "kw"):
                     self.messages.debug(f"Found 'var' in nested block", p, "Parser")
@@ -444,7 +443,6 @@ class PackratParser:
                 self.messages.debug(f"Consumed end", p, "Parser")
                 p += 1
                 
-                # Return NestedBlockNode if variables were declared, else CompoundNode
                 if variables:
                     self.messages.debug(f"Parsed nested block with variables", p, "Parser")
                     return NestedBlockNode(variables, statements), p
@@ -655,48 +653,152 @@ class CompilerContext:
         self.procedures[name] = node
 
 
-class Plugin:    
-    def __init__(self, name: str, description: str = ""):
+# IMPROVED PLUGIN SYSTEM
+class Plugin:
+    """Base class for all plugins"""
+    
+    def __init__(self, name: str, description: str = "", version: str = "1.0"):
         self.name = name
         self.description = description
+        self.version = version
         self.enabled = True
-
-    # the main useful thing in this is the AST, so that we can analyze and transform it
+        self.dependencies = []  # List of plugin names this plugin depends on
+    
     def run(self, ast: ASTNode, context: CompilerContext, messages: MessageCollector) -> dict:
+        """
+        Process the AST and return results.
+        
+        Args:
+            ast: The AST to process
+            context: Shared context for plugins
+            messages: Message collector for logging
+            
+        Returns:
+            dict: Results from this plugin (can be empty)
+        """
         return {}
+    
+    def get_info(self) -> dict:
+        """Return plugin information"""
+        return {
+            "name": self.name,
+            "description": self.description,
+            "version": self.version,
+            "enabled": self.enabled,
+            "dependencies": self.dependencies
+        }
+
+
+def plugin_function(name: str = None, description: str = "", version: str = "1.0", dependencies: List[str] = None):
+    """Decorator to mark a function as a plugin"""
+    def decorator(func):
+        func._is_plugin = True
+        func._plugin_name = name or func.__name__
+        func._plugin_description = description or func.__doc__ or ""
+        func._plugin_version = version
+        func._plugin_dependencies = dependencies or []
+        return func
+    return decorator
 
 
 class PluginRegistry:
+    """Enhanced plugin registry with dependency resolution"""
+    
     def __init__(self):
         self.plugins = {}
         self.execution_order = []
+        self._dependency_resolved = False
     
     def register(self, plugin: Plugin):
+        """Register a plugin"""
         self.plugins[plugin.name] = plugin
+        self._dependency_resolved = False
         if plugin.name not in self.execution_order:
             self.execution_order.append(plugin.name)
     
-    def register_function(self, name: str, func: Callable, description: str = ""):
+    def register_function(self, name: str, func: Callable, description: str = "", 
+                         version: str = "1.0", dependencies: List[str] = None):
+        """Register a simple function as a plugin"""
         class FunctionPlugin(Plugin):
-            def __init__(self, name, func, description):
-                super().__init__(name, description)
+            def __init__(self, name, func, description, version, dependencies):
+                super().__init__(name, description, version)
                 self.func = func
+                self.dependencies = dependencies or []
             
             def run(self, ast, context, messages):
                 return self.func(ast, context, messages)
         
-        self.register(FunctionPlugin(name, func, description))
+        self.register(FunctionPlugin(name, func, description, version, dependencies or []))
+    
+    def resolve_dependencies(self) -> List[str]:
+        """Resolve plugin dependencies and return execution order"""
+        if self._dependency_resolved:
+            return self.execution_order
+        
+        # Simple topological sort for dependency resolution
+        visited = set()
+        temp_visited = set()
+        result = []
+        
+        def visit(plugin_name: str):
+            if plugin_name in temp_visited:
+                raise ValueError(f"Circular dependency detected involving plugin '{plugin_name}'")
+            if plugin_name in visited:
+                return
+            
+            if plugin_name not in self.plugins:
+                raise ValueError(f"Plugin '{plugin_name}' not found (required by dependencies)")
+            
+            temp_visited.add(plugin_name)
+            plugin = self.plugins[plugin_name]
+            
+            # Visit dependencies first
+            for dep in plugin.dependencies:
+                visit(dep)
+            
+            temp_visited.remove(plugin_name)
+            visited.add(plugin_name)
+            result.append(plugin_name)
+        
+        # Visit all plugins
+        for plugin_name in list(self.plugins.keys()):
+            if plugin_name not in visited:
+                visit(plugin_name)
+        
+        self.execution_order = result
+        self._dependency_resolved = True
+        return result
     
     def set_order(self, order: List[str]):
+        """Manually set execution order for plugins"""
         for name in order:
             if name not in self.plugins:
                 raise ValueError(f"Plugin '{name}' not found")
         self.execution_order = order
+        self._dependency_resolved = True
+    
+    def enable_plugin(self, name: str, enabled: bool = True):
+        """Enable or disable a plugin"""
+        if name in self.plugins:
+            self.plugins[name].enabled = enabled
+    
+    def list_plugins(self) -> List[dict]:
+        """List all registered plugins with their info"""
+        return [plugin.get_info() for plugin in self.plugins.values()]
     
     def run_all(self, ast: ASTNode, context: CompilerContext, messages: MessageCollector) -> CompilerContext:
-        for plugin_name in self.execution_order:
+        """Run all registered plugins in dependency-resolved order"""
+        
+        try:
+            execution_order = self.resolve_dependencies()
+        except ValueError as e:
+            messages.error(f"Plugin dependency error: {e}", source="PluginRegistry")
+            return context
+        
+        for plugin_name in execution_order:
             plugin = self.plugins[plugin_name]
             if not plugin.enabled:
+                messages.debug(f"Skipping disabled plugin: {plugin_name}")
                 continue
                 
             messages.info(f"Running plugin: {plugin_name}")
@@ -704,37 +806,104 @@ class PluginRegistry:
                 result = plugin.run(ast, context, messages)
                 if result:
                     context.plugin_results[plugin_name] = result
+                    messages.debug(f"Plugin '{plugin_name}' completed successfully")
             except Exception as e:
-                messages.error(f"Plugin '{plugin_name}' failed: {e}")
+                messages.error(f"Plugin '{plugin_name}' failed: {e}", source="PluginRegistry")
+                # Continue with other plugins even if one fails
         
         return context
     
-    def load_from_file(self, filepath: str):
+    def load_from_file(self, filepath: str, messages: MessageCollector = None):
+        """Load plugins from a Python file with improved error handling"""
         if not os.path.exists(filepath):
+            if messages:
+                messages.warning(f"Plugin file not found: {filepath}")
             return
         
-        spec = importlib.util.spec_from_file_location("plugin_module", filepath)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        
-        for attr_name in dir(module):
-            attr = getattr(module, attr_name)
-            if isinstance(attr, type) and issubclass(attr, Plugin) and attr != Plugin:
-                plugin_instance = attr()
-                self.register(plugin_instance)
-            elif callable(attr) and hasattr(attr, '_is_plugin'):
-                self.register_function(attr.__name__, attr, getattr(attr, '__doc__', ''))
+        try:
+            # Create a module spec
+            spec = importlib.util.spec_from_file_location("plugin_module", filepath)
+            if spec is None or spec.loader is None:
+                if messages:
+                    messages.error(f"Could not load plugin file: {filepath}")
+                return
+            
+            # Create and execute the module
+            module = importlib.util.module_from_spec(spec)
+            
+            # Make our plugin system available to the module
+            module.Plugin = Plugin
+            module.plugin_function = plugin_function
+            module.ASTNode = ASTNode
+            module.CompilerContext = CompilerContext
+            module.MessageCollector = MessageCollector
+            module.Visitor = Visitor
+            
+            # Import all AST node types for plugin use
+            module.BlockNode = BlockNode
+            module.AssignNode = AssignNode
+            module.CallNode = CallNode
+            module.ReadNode = ReadNode
+            module.WriteNode = WriteNode
+            module.CompoundNode = CompoundNode
+            module.NestedBlockNode = NestedBlockNode
+            module.IfNode = IfNode
+            module.WhileNode = WhileNode
+            module.OperationNode = OperationNode
+            module.VariableNode = VariableNode
+            module.NumberNode = NumberNode
+            
+            spec.loader.exec_module(module)
+            
+            # Look for plugins in the module
+            loaded_count = 0
+            for attr_name in dir(module):
+                attr = getattr(module, attr_name)
+                if isinstance(attr, type) and issubclass(attr, Plugin) and attr != Plugin:
+                    # Instantiate and register the plugin class
+                    try:
+                        plugin_instance = attr()
+                        self.register(plugin_instance)
+                        loaded_count += 1
+                        if messages:
+                            messages.debug(f"Loaded plugin class: {plugin_instance.name}")
+                    except Exception as e:
+                        if messages:
+                            messages.warning(f"Failed to instantiate plugin class {attr_name}: {e}")
+                
+                elif callable(attr) and hasattr(attr, '_is_plugin'):
+                    # Register functions marked as plugins
+                    try:
+                        self.register_function(
+                            attr._plugin_name,
+                            attr, 
+                            attr._plugin_description,
+                            attr._plugin_version,
+                            attr._plugin_dependencies
+                        )
+                        loaded_count += 1
+                        if messages:
+                            messages.debug(f"Loaded plugin function: {attr._plugin_name}")
+                    except Exception as e:
+                        if messages:
+                            messages.warning(f"Failed to register plugin function {attr_name}: {e}")
+            
+            if messages and loaded_count > 0:
+                messages.info(f"Loaded {loaded_count} plugin(s) from {os.path.basename(filepath)}")
+            elif messages and loaded_count == 0:
+                messages.warning(f"No plugins found in {os.path.basename(filepath)}")
+                
+        except Exception as e:
+            if messages:
+                messages.error(f"Failed to load plugin file {filepath}: {e}")
 
 
-def plugin(func):
-    func._is_plugin = True
-    return func
-
-
-# built in plugins
+# BUILT-IN PLUGINS
 class StaticAnalysisPlugin(Plugin):
+    """Analyzes variable usage and scope"""
+    
     def __init__(self):
-        super().__init__("static_analysis", "Analyzes variable usage and declarations")
+        super().__init__("static_analysis", "Analyzes variable usage and declarations", "1.0")
     
     def run(self, ast, context, messages):
         analyzer = StaticAnalyzer(messages)
@@ -834,14 +1003,17 @@ class StaticAnalyzer(Visitor):
 
 
 class TACGeneratorPlugin(Plugin):
+    """Plugin for Three-Address Code generation"""
+    
     def __init__(self):
-        super().__init__("tac_generator", "Generates Three-Address Code")
+        super().__init__("tac_generator", "Generates Three-Address Code", "1.0")
+        self.dependencies = ["static_analysis"]  # Depends on static analysis
     
     def run(self, ast, context, messages):
         generator = TACGenerator(messages)
         tac_code = generator.generate(ast)
         context.generated_outputs["tac_code"] = "\n".join(tac_code)
-        return {"generated": True}
+        return {"generated": True, "instructions": len(tac_code)}
 
 
 class TACGenerator(Visitor):
@@ -933,14 +1105,17 @@ class TACGenerator(Visitor):
 
 
 class CCodeGeneratorPlugin(Plugin):
+    """Plugin for C code generation"""
+    
     def __init__(self):
-        super().__init__("c_generator", "Generates C code")
+        super().__init__("c_generator", "Generates C code", "1.0")
+        self.dependencies = ["static_analysis"]  # Depends on static analysis
     
     def run(self, ast, context, messages):
         compiler = CCompiler(messages)
         c_code = compiler.compile(ast)
         context.generated_outputs["c_code"] = c_code
-        return {"generated": True}
+        return {"generated": True, "lines": len(c_code.split('\n'))}
 
 
 class CCompiler(Visitor):
@@ -1002,7 +1177,7 @@ class CCompiler(Visitor):
             self.context.add_code("\treturn 0;")
             self.context.exit_scope()
             self.context.add_code("}")
-        else: # local
+        else:
             for var in node.variables:
                 self.context.add_code(f"int {var};")
             node.statement.accept(self)
@@ -1069,42 +1244,62 @@ class CCompiler(Visitor):
 
 # MAIN COMPILER CLASS
 class PL0Compiler:
+    """Main compiler with enhanced plugin support"""
+    
     def __init__(self):
         self.messages = MessageCollector()
         self.registry = PluginRegistry()
         
-        # register built-in plugins
+        # Register built-in plugins
         self.registry.register(StaticAnalysisPlugin())
         self.registry.register(TACGeneratorPlugin())
         self.registry.register(CCodeGeneratorPlugin())
-        
-        # default execution order
-        self.registry.set_order(["static_analysis", "tac_generator", "c_generator"])
-
-    # custom
+    
     def add_plugin(self, plugin: Plugin):
+        """Add a custom plugin"""
         self.registry.register(plugin)
     
-    def add_plugin_function(self, name: str, func: Callable, description: str = ""):
-        self.registry.register_function(name, func, description)
+    def add_plugin_function(self, name: str, func: Callable, description: str = "", 
+                           version: str = "1.0", dependencies: List[str] = None):
+        """Add a simple function as a plugin"""
+        self.registry.register_function(name, func, description, version, dependencies)
     
     def load_plugins(self, directory: str):
+        """Load all plugin files from a directory"""
         if not os.path.exists(directory):
+            self.messages.warning(f"Plugin directory not found: {directory}")
             return
         
         for filename in os.listdir(directory):
             if filename.endswith('.py') and not filename.startswith('__'):
                 filepath = os.path.join(directory, filename)
-                try:
-                    self.registry.load_from_file(filepath)
-                    self.messages.info(f"Loaded plugins from {filename}")
-                except Exception as e:
-                    self.messages.warning(f"Failed to load {filename}: {e}")
+                self.registry.load_from_file(filepath, self.messages)
     
     def enable_debug(self):
+        """Enable debug output"""
         self.messages.enable_debug(True)
     
+    def list_plugins(self):
+        """List all registered plugins"""
+        plugins = self.registry.list_plugins()
+        print("\nRegistered Plugins:")
+        print("-" * 60)
+        for plugin in plugins:
+            status = "ENABLED" if plugin["enabled"] else "DISABLED"
+            deps = ", ".join(plugin["dependencies"]) if plugin["dependencies"] else "None"
+            print(f"Name: {plugin['name']}")
+            print(f"  Description: {plugin['description']}")
+            print(f"  Version: {plugin['version']}")
+            print(f"  Status: {status}")
+            print(f"  Dependencies: {deps}")
+            print()
+    
+    def enable_plugin(self, name: str, enabled: bool = True):
+        """Enable or disable a plugin"""
+        self.registry.enable_plugin(name, enabled)
+    
     def compile_string(self, code: str) -> Dict[str, Any]:
+        """Compile PL/0 code string and return results"""
         self.messages.clear()
         
         try:
@@ -1140,14 +1335,21 @@ class PL0Compiler:
             }
     
     @staticmethod
-    def compile_file(input_filename: str, output_filename: str = None, debug: bool = False, plugins_dir: str = None):
+    def compile_file(input_filename: str, output_filename: str = None, debug: bool = False, 
+                     plugins_dir: str = None, list_plugins: bool = False):
+        """Compile a PL/0 file"""
         compiler = PL0Compiler()
         
         if debug:
             compiler.enable_debug()
         
+        # Load plugins if directory specified
         if plugins_dir:
             compiler.load_plugins(plugins_dir)
+        
+        if list_plugins:
+            compiler.list_plugins()
+            return
         
         try:
             with open(input_filename, 'r') as file:
@@ -1162,18 +1364,102 @@ class PL0Compiler:
         result = compiler.compile_string(code)
         
         if result["success"]:
+            # Create output directory based on input filename
+            base_name = os.path.splitext(os.path.basename(input_filename))[0]
+            output_dir = f"{base_name}_compilation"
+            
+            # Create the directory if it doesn't exist
+            os.makedirs(output_dir, exist_ok=True)
+            print(f"Created compilation directory: {output_dir}/")
+            
             # Write C code output
             if "c_code" in result["outputs"]:
+                c_output_path = os.path.join(output_dir, f"{base_name}.c")
+                with open(c_output_path, 'w') as file:
+                    file.write(result["outputs"]["c_code"])
+                print(f"Generated C code: {c_output_path}")
+            
+            # Write TAC output
+            if "tac_code" in result["outputs"]:
+                tac_output_path = os.path.join(output_dir, f"{base_name}.tac")
+                with open(tac_output_path, 'w') as file:
+                    file.write(result["outputs"]["tac_code"])
+                print(f"Generated TAC code: {tac_output_path}")
+            
+            # Write all other plugin outputs with organized filenames
+            file_extensions = {
+                "documentation": ".md",
+                "ast_structure": "_ast.txt",
+                "optimization_hints": "_optimizations.txt",
+                "optimization_analysis": "_opt_analysis.txt", 
+                "peephole_analysis": "_peephole.txt",
+                "variable_report": "_variables.txt",
+                "statement_report": "_statements.txt"
+            }
+            
+            for output_name, content in result["outputs"].items():
+                if output_name not in ["c_code", "tac_code"]:
+                    # Use custom extension if available, otherwise default to .txt
+                    extension = file_extensions.get(output_name, f"_{output_name}.txt")
+                    output_file = os.path.join(output_dir, f"{base_name}{extension}")
+                    
+                    with open(output_file, 'w') as file:
+                        file.write(content)
+                    print(f"Generated {output_name.replace('_', ' ')}: {output_file}")
+            
+            # Also write the original source for reference
+            source_copy_path = os.path.join(output_dir, f"{base_name}_source.p")
+            try:
+                with open(input_filename, 'r') as source:
+                    with open(source_copy_path, 'w') as copy:
+                        copy.write(source.read())
+                print(f"Copied source: {source_copy_path}")
+            except IOError:
+                pass  # Don't fail if we can't copy source
+            
+            # Create a summary file
+            summary_path = os.path.join(output_dir, f"{base_name}_summary.txt")
+            with open(summary_path, 'w') as summary:
+                summary.write(f"PL/0 Compilation Summary for {input_filename}\n")
+                summary.write("=" * 50 + "\n\n")
+                summary.write(f"Input file: {input_filename}\n")
+                summary.write(f"Compilation date: {__import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                summary.write(f"Output directory: {output_dir}\n\n")
+                
+                summary.write("Generated Files:\n")
+                for output_name in result["outputs"]:
+                    if output_name == "c_code":
+                        summary.write(f"  • {base_name}.c - Compiled C code\n")
+                    elif output_name == "tac_code":
+                        summary.write(f"  • {base_name}.tac - Three-Address Code\n")
+                    else:
+                        extension = file_extensions.get(output_name, f"_{output_name}.txt")
+                        summary.write(f"  • {base_name}{extension} - {output_name.replace('_', ' ').title()}\n")
+                
+                if result["plugin_results"]:
+                    summary.write("\nPlugin Analysis Results:\n")
+                    for plugin_name, plugin_data in result["plugin_results"].items():
+                        summary.write(f"  • {plugin_name}:\n")
+                        if isinstance(plugin_data, dict):
+                            for key, value in plugin_data.items():
+                                summary.write(f"    - {key}: {value}\n")
+                        else:
+                            summary.write(f"    - {plugin_data}\n")
+            
+            print(f"Generated summary: {summary_path}")
+            print(f"\nCompilation complete! All files saved to: {output_dir}/")
+            
+            # Also keep the main C file in the current directory for compatibility
+            if output_filename and "c_code" in result["outputs"]:
                 with open(output_filename, 'w') as file:
                     file.write(result["outputs"]["c_code"])
-                print(f"Compiled {input_filename} to {output_filename}")
-            
-            # Write TAC output if requested
-            tac_filename = input_filename.rsplit('.', 1)[0] + ".tac"
-            if "tac_code" in result["outputs"]:
-                with open(tac_filename, 'w') as file:
-                    file.write(result["outputs"]["tac_code"])
-                print(f"Generated TAC: {tac_filename}")
+                print(f"Main C file also saved as: {output_filename}")
+                
+            # Show plugin results if debug enabled
+            if debug and result["plugin_results"]:
+                print("\nPlugin Results:")
+                for name, results in result["plugin_results"].items():
+                    print(f"  {name}: {results}")
                 
         else:
             print("Compilation failed with errors:", file=sys.stderr)
@@ -1182,195 +1468,29 @@ class PL0Compiler:
                     print(f"  {msg}", file=sys.stderr)
             sys.exit(1)
 
-    @staticmethod
-    def compile_file_with_optimization(input_filename: str, output_filename: str = None, 
-                                    debug: bool = False, plugins_dir: str = None, 
-                                    save_optimized: bool = False):
-        compiler = PL0Compiler()
-        
-        if debug:
-            compiler.enable_debug()
-        
-        if plugins_dir:
-            compiler.load_plugins(plugins_dir)
-        
-        try:
-            with open(input_filename, 'r') as file:
-                code = file.read()
-        except IOError as e:
-            print(f"Error reading file: {e}", file=sys.stderr)
-            sys.exit(1)
-        
-        if output_filename is None:
-            output_filename = input_filename.rsplit('.', 1)[0] + ".c"
-        
-        result = compiler.compile_string(code)
-        
-        if result["success"]:
-            # Write C code output
-            if "c_code" in result["outputs"]:
-                with open(output_filename, 'w') as file:
-                    file.write(result["outputs"]["c_code"])
-                print(f"Compiled {input_filename} to {output_filename}")
-            
-            # Save optimized source code if requested
-            if save_optimized and hasattr(result["context"], "optimized_ast"):
-                optimized_filename = input_filename.rsplit('.', 1)[0] + "_optimized.pl0"
-                reconstructor = CodeReconstructor()
-                optimized_code = reconstructor.reconstruct(result["context"].optimized_ast)
-                with open(optimized_filename, 'w') as file:
-                    file.write(optimized_code)
-                print(f"Optimized source saved to {optimized_filename}")
-            
-            # Show optimization stats
-            if "optimizer" in result["plugin_results"]:
-                opt_result = result["plugin_results"]["optimizer"]
-                optimizations = opt_result.get('optimizations_applied', 0)
-                if optimizations > 0:
-                    print(f"Applied {optimizations} optimizations")
-        else:
-            print("Compilation failed with errors:", file=sys.stderr)
-            for msg in result["messages"]:
-                if msg.level == MessageLevel.ERROR:
-                    print(f"  {msg}", file=sys.stderr)
-            sys.exit(1)
 
-
-
-class CodeReconstructor(Visitor):
-    """Reconstructs PL0 source code from AST"""
-    
-    def __init__(self):
-        self.output = []
-        self.indent_level = 0
-        self.indent_str = "    "
-    
-    def reconstruct(self, node: ASTNode) -> str:
-        self.output = []
-        self.indent_level = 0
-        node.accept(self)
-        return "".join(self.output)
-    
-    def _add(self, text: str):
-        self.output.append(text)
-    
-    def visit_block(self, node: BlockNode):
-        if node.variables:
-            self._add("var ")
-            self._add(", ".join(node.variables))
-            self._add(";\n\n")
-        
-        for proc_name, proc_body in node.procedures:
-            self._add(f"procedure {proc_name};\n")
-            proc_body.accept(self)
-            self._add(";\n\n")
-        
-        node.statement.accept(self)
-        if not self.output[-1].endswith(".\n"):
-            self._add(".")
-    
-    def visit_assign(self, node: AssignNode):
-        self._add(f"{node.var_name} := ")
-        node.expression.accept(self)
-    
-    def visit_call(self, node: CallNode):
-        self._add(f"call {node.proc_name}")
-    
-    def visit_read(self, node: ReadNode):
-        self._add(f"? {node.var_name}")
-    
-    def visit_write(self, node: WriteNode):
-        self._add("! ")
-        node.expression.accept(self)
-    
-    def visit_compound(self, node: CompoundNode):
-        if not node.statements:
-            return
-        if len(node.statements) == 1:
-            node.statements[0].accept(self)
-        else:
-            self._add("begin\n")
-            self.indent_level += 1
-            for i, stmt in enumerate(node.statements):
-                if i > 0:
-                    self._add(";\n")
-                self._add(self.indent_str * self.indent_level)
-                stmt.accept(self)
-            self._add("\n")
-            self.indent_level -= 1
-            self._add(self.indent_str * self.indent_level + "end")
-    
-    def visit_nested_block(self, node: NestedBlockNode):
-        self._add("begin\n")
-        self.indent_level += 1
-        if node.variables:
-            self._add(self.indent_str * self.indent_level + "var ")
-            self._add(", ".join(node.variables))
-            self._add(";\n")
-        for i, stmt in enumerate(node.statements):
-            if i > 0 or node.variables:
-                self._add(";\n")
-            self._add(self.indent_str * self.indent_level)
-            stmt.accept(self)
-        self._add("\n")
-        self.indent_level -= 1
-        self._add(self.indent_str * self.indent_level + "end")
-    
-    def visit_if(self, node: IfNode):
-        self._add("if ")
-        node.condition.accept(self)
-        self._add(" then\n")
-        self.indent_level += 1
-        self._add(self.indent_str * self.indent_level)
-        node.then_statement.accept(self)
-        self.indent_level -= 1
-    
-    def visit_while(self, node: WhileNode):
-        self._add("while ")
-        node.condition.accept(self)
-        self._add(" do\n")
-        self.indent_level += 1
-        self._add(self.indent_str * self.indent_level)
-        node.body.accept(self)
-        self.indent_level -= 1
-    
-    def visit_operation(self, node: OperationNode):
-        self._add("(")
-        node.left.accept(self)
-        self._add(f" {node.operator} ")
-        node.right.accept(self)
-        self._add(")")
-    
-    def visit_variable(self, node: VariableNode):
-        self._add(node.name)
-    
-    def visit_number(self, node: NumberNode):
-        self._add(str(node.value))
-
-
-# Update the main() function to support saving optimized source
 def main():
     if len(sys.argv) < 2:
-        print("Usage: compiler.py <input_filename> [output_filename] [--debug] [--plugins <directory>] [--save-optimized]", file=sys.stderr)
+        print("Usage: compiler.py <input_filename> [output_filename] [--debug] [--plugins <directory>] [--list-plugins]", file=sys.stderr)
         sys.exit(1)
     
     input_filename = sys.argv[1]
     output_filename = None
     debug = False
     plugins_dir = None
-    save_optimized = False
+    list_plugins = False
     
     i = 2
     while i < len(sys.argv):
         arg = sys.argv[i]
         if arg == "--debug":
             debug = True
-        elif arg == "--save-optimized":
-            save_optimized = True
+        elif arg == "--list-plugins":
+            list_plugins = True
         elif arg == "--plugins":
             if i + 1 < len(sys.argv):
                 plugins_dir = sys.argv[i + 1]
-                i += 1  # skip next argument as it's the plugins directory
+                i += 1
             else:
                 print("Error: --plugins requires a directory argument", file=sys.stderr)
                 sys.exit(1)
@@ -1378,74 +1498,8 @@ def main():
             output_filename = arg
         i += 1
     
-    # Use the enhanced compile_file function
-    compile_file_enhanced(input_filename, output_filename, debug, plugins_dir, save_optimized)
+    PL0Compiler.compile_file(input_filename, output_filename, debug, plugins_dir, list_plugins)
 
 
-def compile_file_enhanced(input_filename: str, output_filename: str = None, 
-                         debug: bool = False, plugins_dir: str = None, 
-                         save_optimized: bool = False):
-    """Enhanced version of compile_file that can save optimized source"""
-    
-    compiler = PL0Compiler()
-    
-    if debug:
-        compiler.enable_debug()
-    
-    if plugins_dir:
-        compiler.load_plugins(plugins_dir)
-    
-    try:
-        with open(input_filename, 'r') as file:
-            code = file.read()
-    except IOError as e:
-        print(f"Error reading file: {e}", file=sys.stderr)
-        sys.exit(1)
-    
-    if output_filename is None:
-        output_filename = input_filename.rsplit('.', 1)[0] + ".c"
-    
-    result = compiler.compile_string(code)
-    
-    if result["success"]:
-        # Write C code output (from optimized AST if available)
-        if "c_code" in result["outputs"]:
-            with open(output_filename, 'w') as file:
-                file.write(result["outputs"]["c_code"])
-            print(f"Compiled {input_filename} to {output_filename}")
-        
-        # Save optimized source code if requested
-        if save_optimized and hasattr(result["context"], "optimized_ast"):
-            optimized_filename = input_filename.rsplit('.', 1)[0] + "_optimized.pl0"
-            reconstructor = CodeReconstructor()
-            optimized_code = reconstructor.reconstruct(result["context"].optimized_ast)
-            with open(optimized_filename, 'w') as file:
-                file.write(optimized_code)
-            print(f"Optimized source saved to {optimized_filename}")
-        
-        # Show optimization statistics
-        if "optimizer" in result["plugin_results"]:
-            opt_result = result["plugin_results"]["optimizer"]
-            optimizations = opt_result.get('optimizations_applied', 0)
-            passes = opt_result.get('passes', 0)
-            if optimizations > 0:
-                print(f"Applied {optimizations} optimizations in {passes} passes")
-        
-        # Write TAC output if requested
-        tac_filename = input_filename.rsplit('.', 1)[0] + ".tac"
-        if "tac_code" in result["outputs"]:
-            with open(tac_filename, 'w') as file:
-                file.write(result["outputs"]["tac_code"])
-            print(f"Generated TAC: {tac_filename}")
-                
-    else:
-        print("Compilation failed with errors:", file=sys.stderr)
-        for msg in result["messages"]:
-            if msg.level == MessageLevel.ERROR:
-                print(f"  {msg}", file=sys.stderr)
-        sys.exit(1)
-
-
-# Replace the old main call
 if __name__ == "__main__":
-    main()  # This now uses the enhanced version
+    main()
