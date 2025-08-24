@@ -1,4 +1,4 @@
-# Example plugin file: my_plugin.py
+# Example plugin file: complex_plugin.py
 # This demonstrates both class-based and function-based plugins
 
 # Class-based plugin example

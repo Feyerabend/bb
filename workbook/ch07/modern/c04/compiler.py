@@ -653,33 +653,20 @@ class CompilerContext:
         self.procedures[name] = node
 
 
-# IMPROVED PLUGIN SYSTEM
-class Plugin:
-    """Base class for all plugins"""
-    
+
+class Plugin:    
     def __init__(self, name: str, description: str = "", version: str = "1.0"):
         self.name = name
         self.description = description
         self.version = version
         self.enabled = True
-        self.dependencies = []  # List of plugin names this plugin depends on
-    
+        self.dependencies = []  # list of plugin names this plugin depends on
+
+    # AST nodes!    
     def run(self, ast: ASTNode, context: CompilerContext, messages: MessageCollector) -> dict:
-        """
-        Process the AST and return results.
-        
-        Args:
-            ast: The AST to process
-            context: Shared context for plugins
-            messages: Message collector for logging
-            
-        Returns:
-            dict: Results from this plugin (can be empty)
-        """
         return {}
     
     def get_info(self) -> dict:
-        """Return plugin information"""
         return {
             "name": self.name,
             "description": self.description,
@@ -688,9 +675,8 @@ class Plugin:
             "dependencies": self.dependencies
         }
 
-
+# decorator to mark a function as a plugin
 def plugin_function(name: str = None, description: str = "", version: str = "1.0", dependencies: List[str] = None):
-    """Decorator to mark a function as a plugin"""
     def decorator(func):
         func._is_plugin = True
         func._plugin_name = name or func.__name__
@@ -702,15 +688,12 @@ def plugin_function(name: str = None, description: str = "", version: str = "1.0
 
 
 class PluginRegistry:
-    """Enhanced plugin registry with dependency resolution"""
-    
     def __init__(self):
         self.plugins = {}
         self.execution_order = []
         self._dependency_resolved = False
     
     def register(self, plugin: Plugin):
-        """Register a plugin"""
         self.plugins[plugin.name] = plugin
         self._dependency_resolved = False
         if plugin.name not in self.execution_order:
@@ -718,7 +701,6 @@ class PluginRegistry:
     
     def register_function(self, name: str, func: Callable, description: str = "", 
                          version: str = "1.0", dependencies: List[str] = None):
-        """Register a simple function as a plugin"""
         class FunctionPlugin(Plugin):
             def __init__(self, name, func, description, version, dependencies):
                 super().__init__(name, description, version)
@@ -729,9 +711,9 @@ class PluginRegistry:
                 return self.func(ast, context, messages)
         
         self.register(FunctionPlugin(name, func, description, version, dependencies or []))
-    
+
+    # Resolve plugin dependencies
     def resolve_dependencies(self) -> List[str]:
-        """Resolve plugin dependencies and return execution order"""
         if self._dependency_resolved:
             return self.execution_order
         
@@ -770,7 +752,6 @@ class PluginRegistry:
         return result
     
     def set_order(self, order: List[str]):
-        """Manually set execution order for plugins"""
         for name in order:
             if name not in self.plugins:
                 raise ValueError(f"Plugin '{name}' not found")
@@ -778,17 +759,13 @@ class PluginRegistry:
         self._dependency_resolved = True
     
     def enable_plugin(self, name: str, enabled: bool = True):
-        """Enable or disable a plugin"""
         if name in self.plugins:
             self.plugins[name].enabled = enabled
     
     def list_plugins(self) -> List[dict]:
-        """List all registered plugins with their info"""
         return [plugin.get_info() for plugin in self.plugins.values()]
     
-    def run_all(self, ast: ASTNode, context: CompilerContext, messages: MessageCollector) -> CompilerContext:
-        """Run all registered plugins in dependency-resolved order"""
-        
+    def run_all(self, ast: ASTNode, context: CompilerContext, messages: MessageCollector) -> CompilerContext:        
         try:
             execution_order = self.resolve_dependencies()
         except ValueError as e:
@@ -814,7 +791,6 @@ class PluginRegistry:
         return context
     
     def load_from_file(self, filepath: str, messages: MessageCollector = None):
-        """Load plugins from a Python file with improved error handling"""
         if not os.path.exists(filepath):
             if messages:
                 messages.warning(f"Plugin file not found: {filepath}")
@@ -897,11 +873,8 @@ class PluginRegistry:
             if messages:
                 messages.error(f"Failed to load plugin file {filepath}: {e}")
 
-
-# BUILT-IN PLUGINS
+# built-in plugins
 class StaticAnalysisPlugin(Plugin):
-    """Analyzes variable usage and scope"""
-    
     def __init__(self):
         super().__init__("static_analysis", "Analyzes variable usage and declarations", "1.0")
     
@@ -1003,8 +976,6 @@ class StaticAnalyzer(Visitor):
 
 
 class TACGeneratorPlugin(Plugin):
-    """Plugin for Three-Address Code generation"""
-    
     def __init__(self):
         super().__init__("tac_generator", "Generates Three-Address Code", "1.0")
         self.dependencies = ["static_analysis"]  # Depends on static analysis
@@ -1105,8 +1076,6 @@ class TACGenerator(Visitor):
 
 
 class CCodeGeneratorPlugin(Plugin):
-    """Plugin for C code generation"""
-    
     def __init__(self):
         super().__init__("c_generator", "Generates C code", "1.0")
         self.dependencies = ["static_analysis"]  # Depends on static analysis
@@ -1242,10 +1211,8 @@ class CCompiler(Visitor):
         return str(node.value)
 
 
-# MAIN COMPILER CLASS
+
 class PL0Compiler:
-    """Main compiler with enhanced plugin support"""
-    
     def __init__(self):
         self.messages = MessageCollector()
         self.registry = PluginRegistry()
@@ -1256,16 +1223,13 @@ class PL0Compiler:
         self.registry.register(CCodeGeneratorPlugin())
     
     def add_plugin(self, plugin: Plugin):
-        """Add a custom plugin"""
         self.registry.register(plugin)
     
     def add_plugin_function(self, name: str, func: Callable, description: str = "", 
                            version: str = "1.0", dependencies: List[str] = None):
-        """Add a simple function as a plugin"""
         self.registry.register_function(name, func, description, version, dependencies)
     
     def load_plugins(self, directory: str):
-        """Load all plugin files from a directory"""
         if not os.path.exists(directory):
             self.messages.warning(f"Plugin directory not found: {directory}")
             return
@@ -1276,11 +1240,9 @@ class PL0Compiler:
                 self.registry.load_from_file(filepath, self.messages)
     
     def enable_debug(self):
-        """Enable debug output"""
         self.messages.enable_debug(True)
     
     def list_plugins(self):
-        """List all registered plugins"""
         plugins = self.registry.list_plugins()
         print("\nRegistered Plugins:")
         print("-" * 60)
@@ -1295,11 +1257,9 @@ class PL0Compiler:
             print()
     
     def enable_plugin(self, name: str, enabled: bool = True):
-        """Enable or disable a plugin"""
         self.registry.enable_plugin(name, enabled)
     
     def compile_string(self, code: str) -> Dict[str, Any]:
-        """Compile PL/0 code string and return results"""
         self.messages.clear()
         
         try:
@@ -1337,7 +1297,6 @@ class PL0Compiler:
     @staticmethod
     def compile_file(input_filename: str, output_filename: str = None, debug: bool = False, 
                      plugins_dir: str = None, list_plugins: bool = False):
-        """Compile a PL/0 file"""
         compiler = PL0Compiler()
         
         if debug:
@@ -1450,6 +1409,7 @@ class PL0Compiler:
             print(f"\nCompilation complete! All files saved to: {output_dir}/")
             
             # Also keep the main C file in the current directory for compatibility
+            # can be omitted
             if output_filename and "c_code" in result["outputs"]:
                 with open(output_filename, 'w') as file:
                     file.write(result["outputs"]["c_code"])

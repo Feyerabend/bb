@@ -1,5 +1,4 @@
-# optimization_plugin.py
-# Fixed version of the optimization plugin
+# optimal_plugin.py
 
 class OptimizationPlugin(Plugin):
     """Performs constant folding and algebraic optimizations"""
