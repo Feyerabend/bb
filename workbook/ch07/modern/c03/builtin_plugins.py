@@ -7,8 +7,8 @@ from compiler_core import *
 def register_builtin_plugins(registry):
     """Register all built-in plugins with the registry"""
     registry.register(StaticAnalysisPlugin())
-#   registry.register(TACGeneratorPlugin()) # not here yet
-#   registry.register(CCodeGeneratorPlugin())
+    registry.register(TACGeneratorPlugin())
+    registry.register(CCodeGeneratorPlugin())
 
 
 class StaticAnalysisPlugin(Plugin):
@@ -116,7 +116,6 @@ class StaticAnalyzer(Visitor):
         pass
 
 
-# REWRITE!
 class TACGeneratorPlugin(Plugin):
     def __init__(self):
         super().__init__(
@@ -190,20 +189,128 @@ class TACGenerator(Visitor):
     def visit_if(self, node: IfNode):
         cond_result = node.condition.accept(self)
         else_label = self.new_label()
-        self.code.append(f"IF {cond_result} GOTO {else_label}")
+        self.code.append(f"IF NOT {cond_result} GOTO {else_label}")
         node.then_statement.accept(self)
         self.code.append(f"LABEL {else_label}")
-        # nothing else ..
-
-    def visit_while(self, node):
-        return super().visit_while(node)
     
+    def visit_while(self, node: WhileNode):
+        start_label = self.new_label()
+        end_label = self.new_label()
+        self.code.append(f"LABEL {start_label}")
+        cond_result = node.condition.accept(self)
+        self.code.append(f"IF NOT {cond_result} GOTO {end_label}")
+        node.body.accept(self)
+        self.code.append(f"GOTO {start_label}")
+        self.code.append(f"LABEL {end_label}")
+    
+    def visit_operation(self, node: OperationNode):
+        left_result = node.left.accept(self)
+        right_result = node.right.accept(self)
+        temp = self.new_temp()
+        self.code.append(f"{temp} := {left_result} {node.operator} {right_result}")
+        return temp
+    
+    def visit_variable(self, node: VariableNode):
+        return node.name
+    
+    def visit_number(self, node: NumberNode):
+        return str(node.value)
 
 
-#        node.else_statement.accept(self)
-#        self.code.append(f"LABEL {else_label}")
+class CCodeGeneratorPlugin(Plugin):
+    def __init__(self):
+        super().__init__(
+            "c_code_generator",
+            "Generates C code from the AST",
+            "1.0"
+        )
+        self.dependencies = ["static_analysis"]  # Depends on static analysis
+    
+    def run(self, ast, context, messages):
+        generator = CCodeGenerator(messages)
+        c_code = generator.generate(ast)
+        context.generated_outputs["c_code"] = c_code
+        return {"generated": True, "lines": len(c_code.split('\n'))}
 
-#    def visit_else(self, node: ElseNode):
-#        self.code.append(f"LABEL {else_label}")
-#        node.body.accept(self)
 
+class CCodeGenerator(Visitor):
+    def __init__(self, messages: MessageCollector):
+        self.messages = messages
+        self.code = []
+        self.indent_level = 0
+    
+    def generate(self, ast: ASTNode) -> str:
+        self.code.append("#include <stdio.h>")
+        self.code.append("")
+        self.code.append("int main() {")
+        self.indent_level += 1
+        ast.accept(self)
+        self.indent_level -= 1
+        self.code.append("    return 0;")
+        self.code.append("}")
+        return "\n".join(self.code)
+    
+    def add_line(self, line: str):
+        self.code.append("    " * self.indent_level + line)
+    
+    def visit_block(self, node: BlockNode):
+        for var in node.variables:
+            self.add_line(f"int {var};")
+        for proc_name, proc_body in node.procedures:
+            self.add_line(f"void {proc_name}() {{")
+            self.indent_level += 1
+            proc_body.accept(self)
+            self.indent_level -= 1
+            self.add_line("}")
+        node.statement.accept(self)
+    
+    def visit_assign(self, node: AssignNode):
+        expr_code = node.expression.accept(self)
+        self.add_line(f"{node.var_name} = {expr_code};")
+    
+    def visit_call(self, node: CallNode):
+        self.add_line(f"{node.proc_name}();")
+    
+    def visit_read(self, node: ReadNode):
+        self.add_line(f"scanf(\"%d\", &{node.var_name});")
+    
+    def visit_write(self, node: WriteNode):
+        expr_code = node.expression.accept(self)
+        self.add_line(f"printf(\"%d\\n\", {expr_code});")
+    
+    def visit_compound(self, node: CompoundNode):
+        for stmt in node.statements:
+            stmt.accept(self)
+    
+    def visit_nested_block(self, node: NestedBlockNode):
+        for var in node.variables:
+            self.add_line(f"int {var};")
+        for stmt in node.statements:
+            stmt.accept(self)
+    
+    def visit_if(self, node: IfNode):
+        cond_code = node.condition.accept(self)
+        self.add_line(f"if ({cond_code}) {{")
+        self.indent_level += 1
+        node.then_statement.accept(self)
+        self.indent_level -= 1
+        self.add_line("}")
+    
+    def visit_while(self, node: WhileNode):
+        cond_code = node.condition.accept(self)
+        self.add_line(f"while ({cond_code}) {{")
+        self.indent_level += 1
+        node.body.accept(self)
+        self.indent_level -= 1
+        self.add_line("}")
+    
+    def visit_operation(self, node: OperationNode):
+        left_code = node.left.accept(self)
+        right_code = node.right.accept(self)
+        return f"({left_code} {node.operator} {right_code})"
+    
+    def visit_variable(self, node: VariableNode):
+        return node.name
+    
+    def visit_number(self, node: NumberNode):
+        return str(node.value)
