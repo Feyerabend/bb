@@ -1,301 +1,247 @@
 
-## Compiler with External Plugins
+## PL/0 Compiler with Advanced Plugin System
 
-This version of `compiler.py`, along with the plugin files `complex_plugin.py` and
-`optimal_plugin.py`, further enhances the PL/0-like compiler by introducing advanced
-output organisation, new plugin-based analyses for code complexity and optimisation
-opportunities, and improved integration of plugin results. Building on the second
-version’s plugin architecture, nested block support, and TAC generation, this version
-focuses on improving the output structure and adding analysis plugins.
-
-
-### Enhanced Compilation
-
-The compilation process retains the core pipeline—lexing, parsing, plugin-based
-processing, and output generation—but introduces significant improvements in
-output management and analysis capabilities:
-
-1. *Lexing and Parsing*: Unchanged from the second version, using `Lexer` with
-   `MessageCollector` and `PackratParser` with support for `NestedBlockNode`.
-2. *Plugin-Based Processing*: The `PluginRegistry` now supports new plugins from
-   `complex_plugin.py` (complexity analysis, AST printing, optimisation hints,
-   documentation) and `optimal_plugin.py` (optimisation analysis, peephole
-   optimisation), enhancing code analysis.
-3. *Output Organisation*: Outputs are now written to a dedicated directory
-   (`<basename>_compilation/`), including C code, TAC, plugin-generated files
-   (e.g., documentation, AST structure), and a summary file.
-4. *New Analyses*: Plugins provide detailed metrics (e.g., *cyclomatic complexity*[^cyc],
-   optimisation opportunities) and generate reports for debugging and optimisation.
-
-[^cyc]: Cyclomatic complexity is a software metric that measures the complexity of a program by counting the number of linearly independent paths through its control flow graph. Introduced by Thomas J. McCabe, it’s calculated as `M = E - N + 2P`, where E is the number of edges, N is the number of nodes, and P is the number of connected components in the graph. In practice, it’s often simplified to counting decision points (e.g., if, while, for) plus one for the program’s entry point. For example, a program with one if and one while statement has a complexity of 3. High cyclomatic complexity indicates more complex code, which may be harder to maintain or test, often suggesting refactoring to reduce risk of errors. In `compiler.py` the` ComplexityAnalyzerPlugin` computes this by incrementing a counter for each `if` or `while` node in the AST.
+This version of the PL/0-like compiler, implemented in `compiler_main.py` and supported
+by multiple plugin files, enhances the previous iterations by introducing advanced code
+generation, performance profiling, and detailed analysis capabilities. Building on a
+robust plugin architecture, nested block support, and Three-Address Code (TAC) generation,
+this version adds Python code generation, optimised C code generation, performance profiling,
+and (test plugin) statement counting, all organised in a structured output directory.
 
 
-### Extended Components
+### Compilation Pipeline
 
-#### 1. *Enhanced Output Organisation in `PL0Compiler.compile_file`*
+The compilation process follows a structured pipeline:
 
-The `compile_file` method now organises all outputs in a dedicated directory
-named `<basename>_compilation/`, improving file management.
+1. *Lexing and Parsing*: The `Lexer` and `PackratParser` (from `compiler_core.py`) tokenise
+   and parse PL/0 source code into an Abstract Syntax Tree (AST), supporting nested blocks
+   via `NestedBlockNode`.
+2. *Plugin-Based Processing*: The `PluginRegistry` (from `plugin_system.py`) orchestrates
+   plugins for static analysis, code generation, optimisation, and performance profiling,
+   ensuring proper dependency resolution.
+3. *Output Organisation*: Outputs are written to a `<basename>_compilation/` directory,
+   including generated C code, Python code, TAC, performance reports, and a summary file.
+4. *New Analyses and Code Generation*: Plugins provide cyclomatic complexity, statement
+   counting, constant propagation, dead code elimination, and performance profiling,
+   alongside generating both standard and optimised C code, Python code, and instrumented C
+   code for runtime profiling.
 
-- *Key Features*:
-  - Creates a directory based on the input filename (e.g., `program_compilation/` for `program.p`).
-  - Writes outputs like C code (`program.c`), TAC (`program.tac`), and plugin-generated
-    files (e.g., `program.md` for documentation) to this directory.
-  - Copies the original source to `<basename>_source.p` for reference.
-  - Generates a `summary.txt` file with compilation details, generated files, and plugin results.
-  - Optionally writes the main C file to the specified `output_filename` for backward compatibility.
-  - Example for `program.p`:
+
+### Components
+
+#### 1. *Core Compiler (`compiler_main.py`)*
+
+The `PL0Compiler` class manages the compilation process, integrating plugins and handling
+output organisation.
+
+- *Features*:
+  - Reads PL/0 source code and produces an AST.
+  - Supports command-line arguments for input/output files, debug mode, plugin directory,
+    and plugin listing.
+  - Creates a `<basename>_compilation/` directory for outputs (e.g., `program.c`, `program.py`,
+    `program.tac`, `program_summary.txt`).
+  - Generates a summary file with compilation details and plugin results.
+  - Example directory structure for `program.p`:
     ```
     program_compilation/
     ├── program.c
+    ├── program.py
     ├── program.tac
-    ├── program.md
+    ├── program_optimized.c
+    ├── program_instrumented.c
     ├── program_ast.txt
     ├── program_optimizations.txt
+    ├── program_opt_c_analysis.txt
+    ├── program_py_opt_analysis.txt
+    ├── program_perf.txt
+    ├── program_statements.txt
     ├── program_source.p
     └── program_summary.txt
     ```
-- *Improvement*: The second version wrote C and TAC files to the current directory,
-  which could clutter the workspace. The new organised structure improves usability,
-  especially for projects with multiple outputs.
 
 
-#### 2. *ComplexityAnalyzerPlugin (`complex_plugin.py`)*
+#### 2. *Plugin System (`plugin_system.py`)*
 
-This plugin introduces code complexity analysis, calculating metrics like cyclomatic
-complexity, lines of code, and nesting depth.
+The `PluginRegistry` supports dynamic plugin loading and dependency resolution.
 
-- *Key Features*:
-  - Uses a `ComplexityAnalyzer` visitor to traverse the AST.
-  - *Cyclomatic Complexity*: Starts at 1, increments for each `if` or `while` node
-    (control flow branches).
-  - *Lines of Code*: Counts `AssignNode`, `CallNode`, `ReadNode`, and `WriteNode`
-    as executable lines.
-  - *Nesting Depth*: Tracks the maximum depth of nested `if`/`while` constructs.
-  - *Number of Procedures*: Counts procedures in `BlockNode`.
-  - Outputs metrics to `plugin_results` and logs via `messages.info`.
-  - Example: For a program with one `if` and one `while`, complexity is 3.
-- *Improvement*: The second version lacked complexity analysis. This plugin helps
-  developers assess code maintainability and identify complex code that may need refactoring.
+- *Features*:
+  - Loads plugins from a specified directory, supporting both class-based and function-based plugins.
+  - Resolves dependencies using topological sorting to prevent circular dependencies.
+  - Allows enabling/disabling plugins and manual execution order specification.
+  - Integrates plugins seamlessly with the compiler pipeline.
 
 
+#### 3. *Built-in Plugins (`builtin_plugins.py`)*
 
-#### 3. *ASTPrinter Plugin (`complex_plugin.py`)*
+Provides foundational plugins for static analysis, TAC generation, and standard C code generation.
 
-The `ast_printer` function-based plugin generates a human-readable representation
-of the AST, stored in `<basename>_ast.txt`.
-
-- *Key Features*:
-  - Uses an `ASTPrinter` visitor to traverse the AST, producing an indented string
-    representation (e.g., `Block:`, `Assignment: x :=`, `Variable: x`).
-  - Supports all node types, including `NestedBlockNode`.
-  - Stores output in `context.generated_outputs["ast_structure"]`.
-  - Example output for `var x; x := 5;`:
-    ```
-    Block:
-      Variables: x
-      Statement:
-        Assignment: x :=
-          Number: 5
-    ```
-- *Improvement*: The second version had no AST visualization. This plugin aids
-  debugging and understanding of the program’s structure.
+- *StaticAnalysisPlugin*:
+  - Analyses variable declarations and usage, reporting undefined variables and procedures.
+  - Outputs: List of declared/used/undefined variables and procedures.
+- *TACGeneratorPlugin*:
+  - Generates Three-Address Code (TAC) for intermediate representation.
+  - Outputs: `program.tac`.
+- *CCodeGeneratorPlugin*:
+  - Generates standard C code from the AST.
+  - Outputs: `program.c`.
 
 
-#### 4. *OptimizationHints Plugin (`complex_plugin.py`)*
+#### 4. *Statement Counter Plugin (`test_plugin.py`)*
 
-The `optimization_hints` function-based plugin analyzes the code for optimisation
-opportunities, leveraging results from `static_analysis` and `complexity_analyzer`.
+The `StatementCounterPlugin` counts executable statements in the AST.
 
-- *Key Features*:
-  - Identifies unused variables by comparing `declared_variables` and
-    `used_variables` from `static_analysis`.
-  - Flags high cyclomatic complexity (>10) and deep nesting (>3 levels)
-    from `complexity_analyzer`.
-  - Generates a report in `<basename>_optimizations.txt` with suggestions
-    (e.g., “Unused variables detected: x, y”).
-  - Stores results in `context.generated_outputs["optimization_hints"]` and metrics
-    (e.g., `hints_count`) in `plugin_results`.
-- *Improvement*: The second version lacked actionable optimization suggestions.
-  This plugin guides developers toward improving code efficiency.
+- *Features*:
+  - Counts `AssignNode`, `CallNode`, `ReadNode`, `WriteNode`, `IfNode`, and `WhileNode` as statements.
+  - Outputs a report in `program_statements.txt` (e.g., "Total statements: 5").
+  - Depends on `static_analysis` to ensure variable checks are performed first.
 
 
-#### 5. *DocumentationGenerator Plugin (`complex_plugin.py`)*
+#### 5. *Optimised C Code Generator Plugin (`opt_c_generator.py`)*
 
-The `documentation_generator` function-based plugin creates Markdown documentation
-for the program, stored in `<basename>.md`.
+The `OptimizationCGeneratorPlugin` performs optimisation analysis and generates optimised C code.
 
-- *Key Features*:
-  - Uses `static_analysis` results to list variables and procedures.
-  - Includes complexity metrics if `complexity_analyzer` ran.
-  - Example output:
-    ```markdown
-    # PL/0 Program Documentation
-
-    ## Variables
-    - `x`: Integer variable
-
-    ## Procedures
-    - `proc()`: User-defined procedure
-
-    ## Statistics
-    - Variables declared: 1
-    - Procedures defined: 1
-    - Lines of code: 5
-    - Cyclomatic complexity: 2
-    - Maximum nesting depth: 1
-    ```
-- *Improvement*: The second version had no documentation generation. This
-  plugin improves maintainability by providing a structured program overview.
+- *Features*:
+  - Applies constant propagation and dead code elimination via `ASTOptimizer`.
+  - Generates optimised C code using `OptimizedCCodeGenerator`.
+  - Outputs:
+    - `program_optimized.c`: Optimised C code.
+    - `program_opt_c_analysis.txt`: Optimisation report detailing constant propagation and dead code elimination.
+  - Depends on `static_analysis`.
 
 
-#### 6. *OptimizationPlugin (`optimal_plugin.py`)*
+#### 6. *Python Code Generator Plugin (`python_generator.py`)*
 
-The `OptimizationPlugin` analyzes the AST for optimisation opportunities like
-constant folding, algebraic simplification, dead code elimination, and strength reduction.
+The `PythonGeneratorPlugin` performs optimisation analysis and generates Python code.
 
-- *Key Features*:
-  - Uses an `OptimizationAnalyzer` visitor to identify:
-    - *Constant Folding*: Operations like `5 + 3` that can be computed at compile time.
-    - *Algebraic Simplification*: Operations like `x + 0`, `x * 1`, or `x * 0`.
-    - *Dead Code*: `if` or `while` statements with constant conditions (e.g., `if 1 = 1`).
-    - *Strength Reduction*: Operations like `x * 2` that can become `x + x`.
-  - Generates a report in `<basename>_opt_analysis.txt` (e.g., “Constant folding opportunities: 2”).
-  - Stores metrics in `plugin_results` (e.g., `{"constant_folding": 2, "algebraic_simplification": 1}`).
-- *Improvement*: The second version referenced an `optimized_ast` but lacked actual optimisation
-  analysis. This plugin identifies specific optimisation opportunities, though it doesn’t apply them!
+- *Features*:
+  - Similar optimisation passes as `opt_c_generator.py` (constant propagation, dead code elimination).
+  - Generates Python code with proper operator mapping (e.g., PL/0 `=` becomes `==`).
+  - Outputs:
+    - `program.py`: Executable Python code.
+    - `program_py_opt_analysis.txt`: Optimisation report.
+  - Depends on `static_analysis`.
 
 
-#### 7. *PeepholeOptimizer Plugin (`optimal_plugin.py`)*
+#### 7. *Performance Profiler Plugin (`perf_plugin.py`)*
 
-The `peephole_optimizer` function-based plugin identifies peephole optimisation patterns,
-such as redundant assignments.
+The `PerformanceProfilerPlugin` analyses performance characteristics and generates instrumented C code.
 
-- *Key Features*:
-  - Uses a `PeepholeAnalyzer` visitor to detect:
-    - *Redundant Assignments*: Variables assigned multiple times without intervening use (e.g., `x := 1; x := 2;`).
-    - *Unnecessary Operations*: Not fully implemented but reserved for patterns like redundant operations.
-  - Tracks assignments per scope, resetting for procedure calls, `if`, or `while` nodes to account for control flow.
-  - Generates a report in `<basename>_peephole.txt`.
-- *Improvement*: The second version of the compiler had no peephole optimisation analysis. This plugin
-  enhances optimisation by focusing on local patterns, complementing the broader `OptimizationPlugin`.
+- *Features*:
+  - Estimates time complexity (e.g., O(n), O(n²)) based on loop nesting.
+  - Tracks space complexity, operation count, stack depth, memory operations, I/O operations, and procedure calls.
+  - Identifies performance hotspots (e.g., heavy procedures, nested loops).
+  - Generates recommendations (e.g., batch I/O, reduce loop nesting).
+  - Produces instrumented C code with profiling macros for runtime metrics (execution time, operations per second).
+  - Outputs:
+    - `program_perf.txt`: Performance analysis report.
+    - `program_instrumented.c`: Instrumented C code.
+  - Depends on `static_analysis`.
 
 
 #### 8. *Summary File Generation*
 
-The `compile_file` method generates a `<basename>_summary.txt` file with compilation details and plugin results.
+The `compile_file` method generates a `program_summary.txt` file summarising the compilation.
 
-- *Key Features*:
-  - Includes input filename, compilation date, output directory, and list of generated files.
-  - Summarizes plugin results (e.g., complexity metrics, optimization counts).
+- *Features*:
+  - Lists input file, compilation date, output directory, and generated files.
+  - Includes plugin results (e.g., statement counts, optimisation metrics, performance complexity).
   - Example:
     ```
     PL/0 Compilation Summary for program.p
     ==================================================
     Input file: program.p
-    Compilation date: 2025-08-24 08:34:00
+    Compilation date: 2025-08-25 17:28:00
     Output directory: program_compilation/
 
     Generated Files:
       • program.c - Compiled C code
+      • program.py - Compiled Python code
       • program.tac - Three-Address Code
-      • program.md - Documentation
-      • program_ast.txt - Ast Structure
-      • program_optimizations.txt - Optimization Hints
-      • program_opt_analysis.txt - Optimization Analysis
-      • program_peephole.txt - Peephole Analysis
+      • program_optimized.c - Optimised C code
+      • program_instrumented.c - Instrumented C code
+      • program_ast.txt - AST Structure
+      • program_optimizations.txt - Optimisation Hints
+      • program_opt_c_analysis.txt - C Optimisation Analysis
+      • program_py_opt_analysis.txt - Python Optimisation Analysis
+      • program_perf.txt - Performance Profile
+      • program_statements.txt - Statement Count
+      • program_source.p - Original Source
 
     Plugin Analysis Results:
       • static_analysis:
         - declared_variables: ['x', 'y']
-      • complexity_analyzer:
-        - cyclomatic_complexity: 2
+        - used_variables: ['x']
+      • statement_counter:
+        - total_statements: 3
+      • optimization_c_generator:
+        - optimizations_applied: {'constant_propagation': 2, 'dead_code_elimination': 1}
+      • python_generator:
+        - optimizations_applied: {'constant_propagation': 2, 'dead_code_elimination': 1}
+      • performance_profiler:
+        - time_complexity: 'n'
+        - space_complexity: '2'
     ```
-- *Improvement*: The second version only printed results to the console. The summary
-  file provides a persistent, structured record of the compilation.
 
 
 #### 9. *Visitor Pattern Enhancements*
 
-The Visitor pattern is extended to support the new plugins’ visitors (`ComplexityAnalyzer`,
-`ASTPrinter`, `OptimizationAnalyzer`, `PeepholeAnalyzer`).
-
-- *New Visitor Methods*:
-  - Each visitor implements `visit_*` methods for all AST nodes, focusing on their
-    specific analysis (e.g., complexity, optimisation patterns).
-  - `visit_nested_block` ensures proper handling of local scopes in nested blocks.
-- *Improvement*: The second version’s Visitor pattern supported static analysis,
-  TAC, and code generation. The new plugins expand its use for complexity analysis,
-  AST visualization, and optimization detection.
+The Visitor pattern in `compiler_core.py` supports all plugins by defining methods for each
+AST node type (`BlockNode`, `NestedBlockNode`, `AssignNode`, etc.), enabling flexible analysis
+and code generation.
 
 
-### Example Workflow with New Features
+### Example
 
 For an input file `program.p`:
 ```
 var x, y;
 x := 5 + 3;
 if 1 = 1 then y := x * 2;
+while x < 10 do x := x + 1;
 end.
 ```
 
-1. *Lexing and Parsing*: Produces an AST with a `BlockNode` containing `x`, `y`,
-   an `AssignNode` (`x := 5 + 3`), and an `IfNode` with a constant condition.
+1. *Lexing and Parsing*: Produces an AST with a `BlockNode` containing variables `x`, `y`,
+   an `AssignNode`, an `IfNode`, and a `WhileNode`.
 2. *Plugin Execution*:
-   - *Static Analysis*: Reports `x`, `y` as declared; warns if any are unused.
-   - *Complexity Analysis*: Cyclomatic complexity = 2 (base + `if`); lines of
-     code = 2; max nesting depth = 1.
-   - *AST Printer*: Generates `program_ast.txt` with the AST structure.
-   - *Optimisation Hints*: Suggests removing unused variables and refactoring
-     if complexity is high.
-   - *Documentation*: Creates `program.md` with variables, procedures, and stats.
-   - *Optimisation Analysis*: Detects constant folding (`5 + 3`), strength
-     reduction (`x * 2`), and dead code (`if 1 = 1`).
-   - *Peephole Analysis*: Checks for redundant assignments.
-   - *TAC and C Code*: Generates `program.tac` and `program.c`.
+   - *Static Analysis*: Reports declared (`x`, `y`) and used variables (`x`, `y`).
+   - *Statement Counter*: Counts 3 statements (assignment, if, while).
+   - *Optimisation (C and Python)*: Applies constant folding (`5 + 3` → `8`), eliminates dead
+     code (`if 1 = 1`), and generates optimised C/Python code.
+   - *Performance Profiler*: Estimates O(n) time complexity due to the while loop, tracks
+     stack depth, and generates instrumented C code.
+   - *TAC and Standard C Code*: Generates `program.tac` and `program.c`.
 3. *Output*:
-   - Directory `program_compilation/` contains:
-     - `program.c`, `program.tac`, `program.md`, `program_ast.txt`,
-       `program_optimizations.txt`, `program_opt_analysis.txt`,
-       `program_peephole.txt`, `program_source.p`, `program_summary.txt`.
-   - Console output lists all generated files and plugin results if `--debug` is enabled.
+   - Directory `program_compilation/` contains all generated files.
+   - Console output lists files and debug results (if `--debug` is enabled).
 
 
-### Why Extend with These Features?
+### Why These Enhancements?
 
-- *Organised Outputs*: The compilation directory and summary file improve usability
-  by centralising and documenting outputs.
-- *Complexity Analysis*: Helps developers identify complex code, improving maintainability.
-- *Optimisation Insights*: The `OptimizationPlugin` and `PeepholeOptimizer` provide
-  actionable suggestions, paving the way for actual optimisations.
-- *Documentation and AST Visualization*: Enhances program understanding and debugging.
-- *Extensibility*: The new plugins demonstrate how the plugin system supports diverse
-  analyses without modifying the core compiler.
+- *Organised Outputs*: The `<basename>_compilation/` directory and summary file centralise outputs,
+  improving usability.
+- *Multi-Language Support*: Python code generation broadens the compiler’s applicability.
+- *Optimisation*: Constant propagation and dead code elimination improve generated code efficiency.
+- *Performance Insights*: The profiler identifies bottlenecks and provides actionable recommendations.
+- *Extensibility*: The plugin system supports adding new analyses or code generators without
+  modifying the core compiler. (You might though have to change the file extensions.)
 
 
 ### Limitations and Potential Improvements
 
-- *Optimisation Application*: The `OptimizationPlugin` identifies opportunities but
-  doesn’t! apply them (no `optimized_ast` is generated). Adding an `Optimizer` visitor
-  to transform the AST would complete this feature.
-- *Peephole Limitations*: The `PeepholeAnalyzer` only detects redundant assignments;
-  expanding to other patterns (e.g., redundant loads) would be valuable.
-- *Plugin Dependencies*: Dependency management could be improved with version checking
-  or conflict resolution.
-- *Error Recovery*: The parser still halts on errors; adding recovery could improve
-  usability.
-- *Performance Metrics*: The summary could include compilation time or memory usage
-  for profiling.
-
+- *Optimisation Application*: While optimisations are detected, applying them to transform the
+  AST is incomplete in some plugins.
+- *Performance Profiling*: Static analysis could be enhanced with dynamic profiling data integration.
+- *Plugin Dependencies*: Adding version checking or conflict resolution would improve robustness.
+- *Error Recovery*: The parser halts on errors; adding recovery could enhance usability.
+- *Metrics*: Including compilation time or memory usage in the summary could aid performance analysis.
 
 ### Conclusion
 
-The third version of `compiler.py`, with `complex_plugin.py` and `optimal_plugin.py`,
-enhances the compiler by introducing organized output management, complexity analysis,
-AST visualisation, optimisation suggestions, and documentation generation.
-These features make the compiler more developer-friendly and suitable for real-world use,
-while the plugin system continues to ensure extensibility. The new plugins leverage
-the Visitor pattern effectively, providing detailed insights into code quality and
-optimisation potential, making this version a robust tool for both learning and practical
-compiler development.
+This PL/0 compiler, with its advanced plugin system, offers a robust platform for code analysis,
+optimisation, and multi-language code generation. The addition of Python code generation, optimised
+C code, performance profiling, and statement counting, alongside organised output management, makes
+it a powerful tool for developers and educators. The extensible plugin architecture ensures it
+can evolve with new features, maintaining its relevance for compiler development and learning.
+
 
