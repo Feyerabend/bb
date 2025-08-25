@@ -12,8 +12,9 @@ an attempt at constructing a simple compiler using [classical](./../../ch05/clas
 Here we will use the introduced different concepts such as design patterns frequent in
 object-oriented design, using Packrat as the parser (in contrast to e.g. recursive decent),
 and a plugin architecture to make flexible and dynamic modules possible, without altering
-the main program. It might not be the ultimate solution to compiler design, but illustrate
-clearly how programming in general but also theory have changed during the decades.
+the main program. It might not be the ultimate solution to compiler design (which it is not),
+but still illustrate clearly how *programming in general but also theory have changed during
+the decades*.
 
 
 ```mermaid
