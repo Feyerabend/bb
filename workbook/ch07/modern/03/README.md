@@ -194,23 +194,35 @@ and code generation.
 
 For an input file `program.p`:
 ```
-var x, y;
-x := 5 + 3;
-if 1 = 1 then y := x * 2;
-while x < 10 do x := x + 1;
+var x, fact, i;
+begin
+    ? x;
+    fact := 1;
+    i := 1;
+    while i <= x do
+    begin
+        fact := fact * i;
+        i := i + 1
+    end;
+    if fact > 100 then
+        ! fact
 end.
 ```
 
-1. *Lexing and Parsing*: Produces an AST with a `BlockNode` containing variables `x`, `y`,
-   an `AssignNode`, an `IfNode`, and a `WhileNode`.
+1. *Lexing and Parsing*: Produces an AST with a `BlockNode` containing variables `x`,
+   `fact`, `i`, a `CompoundNode` with a `ReadNode`, two `AssignNodes`, a `WhileNode`
+   with a `NestedBlockNode` (containing two `AssignNodes`), and an `IfNode` with a `WriteNode`.
+
 2. *Plugin Execution*:
-   - *Static Analysis*: Reports declared (`x`, `y`) and used variables (`x`, `y`).
-   - *Statement Counter*: Counts 3 statements (assignment, if, while).
-   - *Optimisation (C and Python)*: Applies constant folding (`5 + 3` → `8`), eliminates dead
-     code (`if 1 = 1`), and generates optimised C/Python code.
-   - *Performance Profiler*: Estimates O(n) time complexity due to the while loop, tracks
-     stack depth, and generates instrumented C code.
+   - *Static Analysis*: Reports declared (`x`, `fact`, `i`) and used variables (`x`, `fact`, `i`),
+     with no undefined variables.
+   - *Statement Counter*: Counts 5 statements (`ReadNode`, two `AssignNodes`, `WhileNode`, `IfNode`)
+   - *Optimisation (C and Python)*: No constant folding or dead code elimination is applied,
+     as the expressions (e.g., `fact * i`, `i <= x`) are not constant.
+   - *Performance Profiler*: Estimates O(n) time complexity due to single `WhileNode`,
+     tracks stack depth of 2 (due to nested block), and generates instrumented C code with profiling macros.
    - *TAC and Standard C Code*: Generates `program.tac` and `program.c`.
+
 3. *Output*:
    - Directory `program_compilation/` contains all generated files.
    - Console output lists files and debug results (if `--debug` is enabled).
@@ -227,7 +239,7 @@ end.
   modifying the core compiler. (You might though have to change the file extensions.)
 
 
-### Limitations and Potential Improvements
+### Limitations and Potential Improvements (Read: Projects!)
 
 - *Optimisation Application*: While optimisations are detected, applying them to transform the
   AST is incomplete in some plugins.
@@ -235,6 +247,7 @@ end.
 - *Plugin Dependencies*: Adding version checking or conflict resolution would improve robustness.
 - *Error Recovery*: The parser halts on errors; adding recovery could enhance usability.
 - *Metrics*: Including compilation time or memory usage in the summary could aid performance analysis.
+
 
 ### Conclusion
 
