@@ -1,7 +1,9 @@
-# performance_profiler.py
-# Performance analysis and profiling plugin
+#!/usr/bin/env python3
 
-import math
+from compiler_core import Plugin, ASTNode, CompilerContext, MessageCollector, Visitor
+from compiler_core import BlockNode, NestedBlockNode, AssignNode, CallNode, ReadNode, WriteNode
+from compiler_core import CompoundNode, IfNode, WhileNode, OperationNode, VariableNode, NumberNode
+from typing import Dict, Any, List, Optional
 
 class PerformanceProfilerPlugin(Plugin):
     """Analyzes performance characteristics and generates profiling reports"""
@@ -9,39 +11,43 @@ class PerformanceProfilerPlugin(Plugin):
     def __init__(self):
         super().__init__(
             "performance_profiler", 
-            "Analyzes execution time complexity and performance bottlenecks", 
+            "Analyzes execution time complexity and generates instrumented C code", 
             "1.0"
         )
-        self.dependencies = ["static_analysis", "complexity_analyzer"]
+        self.dependencies = ["static_analysis"]
+        self.enabled = True  # Explicitly enable plugin
     
-    def run(self, ast, context, messages):
+    def run(self, ast: ASTNode, context: CompilerContext, messages: MessageCollector) -> Dict[str, Any]:
+        messages.debug("Starting performance_profiler plugin", source="PerformanceProfiler")
         profiler = PerformanceProfiler(messages)
-        profile_data = profiler.analyze(ast, context)
+        profile_data = profiler.analyze(ast)
         
         # Generate performance report
         report = self._generate_performance_report(profile_data)
-        context.generated_outputs["performance_profile"] = report
+        context.generated_outputs["perf_profile"] = report
         
         # Generate instrumented C code for runtime profiling
-        instrumented_c = self._generate_instrumented_c(ast, profile_data)
-        context.generated_outputs["instrumented_c_code"] = instrumented_c
+        instrumenter = CInstrumenter(messages)
+        instrumented_c = instrumenter.generate_instrumented_code(ast, profile_data)
+        context.generated_outputs["instr_c_code"] = instrumented_c
         
         messages.info(f"Performance analysis complete - estimated complexity: O({profile_data['time_complexity']})")
         
+        messages.debug("Completed performance_profiler plugin", source="PerformanceProfiler")
         return profile_data
     
-    def _generate_performance_report(self, profile_data):
+    def _generate_performance_report(self, profile_data: Dict[str, Any]) -> str:
         """Generate detailed performance report"""
         lines = [
             "Performance Analysis Report",
             "=" * 26,
             "",
-            f"Time Complexity Analysis:",
+            "Time Complexity Analysis:",
             f"  • Overall complexity: O({profile_data['time_complexity']})",
             f"  • Space complexity: O({profile_data['space_complexity']})",
             f"  • Estimated operations: {profile_data['operation_count']}",
             "",
-            f"Performance Hotspots:",
+            "Performance Hotspots:",
         ]
         
         for hotspot in profile_data['hotspots']:
@@ -49,7 +55,7 @@ class PerformanceProfilerPlugin(Plugin):
         
         lines.extend([
             "",
-            f"Optimization Recommendations:",
+            "Optimization Recommendations:",
         ])
         
         for rec in profile_data['recommendations']:
@@ -57,7 +63,7 @@ class PerformanceProfilerPlugin(Plugin):
         
         lines.extend([
             "",
-            f"Resource Usage:",
+            "Resource Usage:",
             f"  • Stack depth: {profile_data['max_stack_depth']}",
             f"  • Memory allocations: {profile_data['memory_operations']}",
             f"  • I/O operations: {profile_data['io_operations']}",
@@ -65,20 +71,12 @@ class PerformanceProfilerPlugin(Plugin):
         ])
         
         return "\n".join(lines)
-    
-    def _generate_instrumented_c(self, ast, profile_data):
-        """Generate C code with performance instrumentation"""
-        instrumenter = CInstrumenter()
-        return instrumenter.generate_instrumented_code(ast, profile_data)
-
 
 class PerformanceProfiler(Visitor):
     """Analyzes performance characteristics of PL/0 programs"""
     
     def __init__(self, messages: MessageCollector):
         self.messages = messages
-        
-        # Performance metrics
         self.time_complexity = "1"  # Best case: constant time
         self.space_complexity = "1"
         self.operation_count = 0
@@ -87,26 +85,18 @@ class PerformanceProfiler(Visitor):
         self.memory_operations = 0
         self.io_operations = 0
         self.procedure_calls = 0
-        
-        # Loop analysis
         self.loop_nesting = 0
         self.max_loop_nesting = 0
         self.loop_complexities = []
-        
-        # Hotspot detection
         self.hotspots = []
         self.recommendations = []
-        
-        # Context tracking
-        self.in_loop = False
         self.current_procedure = None
         self.procedure_complexities = {}
+        self.in_loop = False
     
-    def analyze(self, ast, context):
+    def analyze(self, ast: ASTNode) -> Dict[str, Any]:
         """Perform performance analysis"""
         ast.accept(self)
-        
-        # Calculate final complexity
         self._calculate_final_complexity()
         self._generate_recommendations()
         
@@ -127,77 +117,64 @@ class PerformanceProfiler(Visitor):
         }
     
     def visit_block(self, node: BlockNode):
-        """Analyze block performance"""
         self.current_stack_depth += 1
         self.max_stack_depth = max(self.max_stack_depth, self.current_stack_depth)
-        
-        # Memory for variables
         self.memory_operations += len(node.variables)
         
-        # Analyze procedures
         for proc_name, proc_body in node.procedures:
             old_procedure = self.current_procedure
             self.current_procedure = proc_name
-            
             old_ops = self.operation_count
             proc_body.accept(self)
-            
-            # Calculate procedure complexity
             proc_ops = self.operation_count - old_ops
             self.procedure_complexities[proc_name] = proc_ops
-            
-            if proc_ops > 100:  # Arbitrary threshold
+            if proc_ops > 100:
                 self.hotspots.append({
                     "type": "Heavy Procedure",
                     "description": f"Procedure '{proc_name}' has {proc_ops} operations",
                     "weight": proc_ops
                 })
-            
             self.current_procedure = old_procedure
         
         node.statement.accept(self)
         self.current_stack_depth -= 1
     
+    def visit_nested_block(self, node: NestedBlockNode):
+        self.current_stack_depth += 1
+        self.max_stack_depth = max(self.max_stack_depth, self.current_stack_depth)
+        self.memory_operations += len(node.variables)
+        for stmt in node.statements:
+            stmt.accept(self)
+        self.current_stack_depth -= 1
+    
     def visit_assign(self, node: AssignNode):
-        """Analyze assignment performance"""
         self.operation_count += 1
-        
-        # Analyze expression complexity
         expr_ops = self._count_expression_operations(node.expression)
         self.operation_count += expr_ops
-        
         if self.in_loop and expr_ops > 5:
             self.hotspots.append({
                 "type": "Complex Loop Assignment",
                 "description": f"Assignment to '{node.var_name}' has {expr_ops} operations in loop",
-                "weight": expr_ops * 10  # Multiplied by loop factor
+                "weight": expr_ops * 10
             })
-        
         node.expression.accept(self)
     
     def visit_call(self, node: CallNode):
-        """Analyze procedure call performance"""
         self.procedure_calls += 1
-        self.operation_count += 10  # Overhead for call
-        
-        # Stack overhead
+        self.operation_count += 10
         self.current_stack_depth += 1
         self.max_stack_depth = max(self.max_stack_depth, self.current_stack_depth)
-        
         if self.in_loop:
             self.hotspots.append({
                 "type": "Procedure Call in Loop",
                 "description": f"Call to '{node.proc_name}' inside loop",
                 "weight": 50
             })
-        
         self.current_stack_depth -= 1
     
     def visit_read(self, node: ReadNode):
-        """Analyze input performance"""
         self.io_operations += 1
-        self.operation_count += 100  # I/O is expensive
-        
+        self.operation_count += 100
         if self.in_loop:
             self.hotspots.append({
                 "type": "I/O in Loop",
@@ -206,186 +183,125 @@ class PerformanceProfiler(Visitor):
             })
     
     def visit_write(self, node: WriteNode):
-        """Analyze output performance"""
         self.io_operations += 1
-        self.operation_count += 50  # Output is less expensive than input
-        
+        self.operation_count += 50
         expr_ops = self._count_expression_operations(node.expression)
         self.operation_count += expr_ops
-        
         if self.in_loop:
             self.hotspots.append({
                 "type": "I/O in Loop",
                 "description": f"Output operation in loop",
                 "weight": 100
             })
-        
         node.expression.accept(self)
     
     def visit_compound(self, node: CompoundNode):
-        """Analyze compound statement performance"""
         for stmt in node.statements:
             stmt.accept(self)
-    
-    def visit_nested_block(self, node: NestedBlockNode):
-        """Analyze nested block performance"""
-        self.current_stack_depth += 1
-        self.max_stack_depth = max(self.max_stack_depth, self.current_stack_depth)
-        self.memory_operations += len(node.variables)
-        
-        for stmt in node.statements:
-            stmt.accept(self)
-        
-        self.current_stack_depth -= 1
     
     def visit_if(self, node: IfNode):
-        """Analyze conditional performance"""
-        self.operation_count += 1  # Condition evaluation
-        
+        self.operation_count += 1
         cond_ops = self._count_expression_operations(node.condition)
         self.operation_count += cond_ops
-        
         node.condition.accept(self)
-        
-        # Analyze then branch
         old_ops = self.operation_count
         node.then_statement.accept(self)
         branch_ops = self.operation_count - old_ops
-        
-        # Average case: assume 50% branch taken
         self.operation_count = old_ops + (branch_ops // 2)
     
     def visit_while(self, node: WhileNode):
-        """Analyze loop performance"""
         self.loop_nesting += 1
         self.max_loop_nesting = max(self.max_loop_nesting, self.loop_nesting)
-        
         old_in_loop = self.in_loop
         self.in_loop = True
-        
-        # Estimate loop iterations (simplified)
         estimated_iterations = self._estimate_loop_iterations(node.condition)
-        
-        self.operation_count += 1  # Initial condition check
+        self.operation_count += 1
         cond_ops = self._count_expression_operations(node.condition)
-        
-        # Analyze body
         old_ops = self.operation_count
         node.condition.accept(self)
         node.body.accept(self)
-        
         body_ops = self.operation_count - old_ops - cond_ops
-        
-        # Total loop cost
         total_loop_ops = (cond_ops + body_ops) * estimated_iterations
         self.operation_count = old_ops + total_loop_ops
-        
-        # Update complexity based on loop nesting
-        current_complexity = f"n^{self.loop_nesting}"
         self.loop_complexities.append({
             "nesting_level": self.loop_nesting,
             "estimated_iterations": estimated_iterations,
             "body_operations": body_ops,
-            "complexity": current_complexity
+            "complexity": f"n^{self.loop_nesting}"
         })
-        
         if estimated_iterations > 1000:
             self.hotspots.append({
                 "type": "High Iteration Loop",
                 "description": f"Loop with ~{estimated_iterations} iterations",
                 "weight": estimated_iterations
             })
-        
         self.in_loop = old_in_loop
         self.loop_nesting -= 1
     
     def visit_operation(self, node: OperationNode):
-        """Analyze operation performance"""
         self.operation_count += 1
-        
-        # Some operations are more expensive
         if node.operator == "/":
-            self.operation_count += 4  # Division is expensive
+            self.operation_count += 4
         elif node.operator == "*":
-            self.operation_count += 2  # Multiplication is moderately expensive
-        
+            self.operation_count += 2
         node.left.accept(self)
         node.right.accept(self)
     
     def visit_variable(self, node: VariableNode):
-        """Analyze variable access performance"""
-        # Variable access is essentially free
         pass
     
     def visit_number(self, node: NumberNode):
-        """Analyze number literal performance"""
-        # Literal access is free
         pass
     
-    def _count_expression_operations(self, expr):
-        """Count operations in an expression"""
-        if isinstance(expr, NumberNode) or isinstance(expr, VariableNode):
+    def _count_expression_operations(self, expr: ASTNode) -> int:
+        if isinstance(expr, (NumberNode, VariableNode)):
             return 0
         elif isinstance(expr, OperationNode):
-            return 1 + self._count_expression_operations(expr.left) + self._count_expression_operations(expr.right)
+            ops = 1
+            if expr.operator == "/":
+                ops += 4
+            elif expr.operator == "*":
+                ops += 2
+            return ops + self._count_expression_operations(expr.left) + self._count_expression_operations(expr.right)
         return 0
     
-    def _estimate_loop_iterations(self, condition):
-        """Estimate number of loop iterations"""
-        # Simplified heuristic based on condition
-        if isinstance(condition, OperationNode):
-            if isinstance(condition.right, NumberNode):
-                # Assume simple counter loop
-                return min(condition.right.value, 1000)  # Cap at 1000
-        
-        # Default assumption for unknown loops
+    def _estimate_loop_iterations(self, condition: ASTNode) -> int:
+        if isinstance(condition, OperationNode) and isinstance(condition.right, NumberNode):
+            return min(condition.right.value, 1000)
         return 10
     
     def _calculate_final_complexity(self):
-        """Calculate overall time complexity"""
         if self.max_loop_nesting == 0:
-            self.time_complexity = "1"  # Constant time
+            self.time_complexity = "1"
         elif self.max_loop_nesting == 1:
-            self.time_complexity = "n"  # Linear time
+            self.time_complexity = "n"
         else:
             self.time_complexity = f"n^{self.max_loop_nesting}"
-        
-        # Space complexity based on stack depth and variables
-        if self.max_stack_depth > 1:
-            self.space_complexity = str(self.max_stack_depth)
-        else:
-            self.space_complexity = "1"
+        self.space_complexity = str(max(self.max_stack_depth, 1))
     
     def _generate_recommendations(self):
-        """Generate performance recommendations"""
         if self.io_operations > 0:
             self.recommendations.append("Consider batching I/O operations to reduce system call overhead")
-        
         if self.max_loop_nesting > 2:
             self.recommendations.append("Consider algorithm redesign to reduce nested loop complexity")
-        
         if any(h["type"] == "Procedure Call in Loop" for h in self.hotspots):
             self.recommendations.append("Consider inlining procedures called within loops")
-        
         if self.max_stack_depth > 10:
             self.recommendations.append("High stack usage detected - consider iterative algorithms")
-        
         if self.operation_count > 10000:
             self.recommendations.append("High operation count - consider algorithmic optimizations")
-
 
 class CInstrumenter(Visitor):
     """Generates instrumented C code for runtime profiling"""
     
-    def __init__(self):
-        self.code_lines = []
+    def __init__(self, messages: MessageCollector):
+        self.messages = messages
+        self.code = []
         self.indent_level = 0
         self.profile_points = 0
     
-    def generate_instrumented_code(self, ast, profile_data):
-        """Generate C code with performance instrumentation"""
-        # Header with profiling includes
-        self.code_lines = [
+    def generate_instrumented_code(self, ast: ASTNode, profile_data: Dict[str, Any]) -> str:
+        self.code = [
             "#include <stdio.h>",
             "#include <time.h>",
             "#include <sys/time.h>",
@@ -405,7 +321,7 @@ class CInstrumenter(Visitor):
             "",
             "void print_profile_results() {",
             "    double elapsed = (end_time.tv_sec - start_time.tv_sec) + ",
-            "                    (end_time.tv_usec - start_time.tv_usec) / 1000000.0;",
+            "                     (end_time.tv_usec - start_time.tv_usec) / 1000000.0;",
             '    printf("\\n--- Performance Profile ---\\n");',
             '    printf("Execution time: %.6f seconds\\n", elapsed);',
             '    printf("Operations: %lu\\n", operation_count);',
@@ -415,64 +331,87 @@ class CInstrumenter(Visitor):
             "}",
             ""
         ]
-        
-        # Generate the instrumented program
         ast.accept(self)
-        
-        return "\n".join(self.code_lines)
+        return "\n".join(self.code)
     
-    def _add_line(self, line: str = ""):
-        """Add a line with proper indentation"""
-        if line.strip():
-            self.code_lines.append("\t" * self.indent_level + line)
-        else:
-            self.code_lines.append("")
+    def add_line(self, line: str):
+        self.code.append("    " * self.indent_level + line)
+        if line.strip() and "PROFILE_" in line:
+            self.profile_points += 1
     
     def visit_block(self, node: BlockNode):
-        """Generate instrumented block code"""
-        # This is a simplified version - would need the full C compiler logic
-        # with instrumentation added at key points
-        
-        if not hasattr(self, '_main_generated'):
-            # Generate main function with profiling
-            for var in node.variables:
-                self._add_line(f"int {var} = 0;")
-            
-            # Generate procedures with profiling
-            for proc_name, proc_body in node.procedures:
-                self._add_line(f"void {proc_name}() {{")
-                self.indent_level += 1
-                self._add_line("PROFILE_CALL();")
-                # Would generate full procedure body here
-                self.indent_level -= 1
-                self._add_line("}")
-                self._add_line()
-            
-            self._add_line("int main() {")
+        for var in node.variables:
+            self.add_line(f"int {var};")
+        for proc_name, proc_body in node.procedures:
+            self.add_line(f"void {proc_name}() {{")
             self.indent_level += 1
-            self._add_line("PROFILE_START();")
-            
-            # Generate main body with instrumentation
-            self._add_line("// Main program body would go here")
-            self._add_line("// Each operation would include PROFILE_OP()")
-            
-            self._add_line("PROFILE_END();")
-            self._add_line("print_profile_results();")
-            self._add_line("return 0;")
+            self.add_line("PROFILE_CALL();")
+            proc_body.accept(self)
             self.indent_level -= 1
-            self._add_line("}")
-            
-            self._main_generated = True
+            self.add_line("}")
+        self.add_line("int main() {")
+        self.indent_level += 1
+        self.add_line("PROFILE_START();")
+        node.statement.accept(self)
+        self.add_line("PROFILE_END();")
+        self.add_line("print_profile_results();")
+        self.add_line("return 0;")
+        self.indent_level -= 1
+        self.add_line("}")
     
-    # Simplified visitor methods for instrumentation
-    def visit_assign(self, node): self._add_line("PROFILE_OP();")
-    def visit_call(self, node): self._add_line("PROFILE_CALL();")
-    def visit_read(self, node): self._add_line("PROFILE_IO();")
-    def visit_write(self, node): self._add_line("PROFILE_IO();")
-    def visit_compound(self, node): pass
-    def visit_nested_block(self, node): pass
-    def visit_if(self, node): self._add_line("PROFILE_OP();")
-    def visit_while(self, node): self._add_line("PROFILE_OP();")
-    def visit_operation(self, node): self._add_line("PROFILE_OP();")
-    def visit_variable(self, node): pass
-    def visit_number(self, node): pass
+    def visit_nested_block(self, node: NestedBlockNode):
+        for var in node.variables:
+            self.add_line(f"int {var};")
+        for stmt in node.statements:
+            stmt.accept(self)
+    
+    def visit_assign(self, node: AssignNode):
+        self.add_line("PROFILE_OP();")
+        expr_code = node.expression.accept(self)
+        self.add_line(f"{node.var_name} = {expr_code};")
+    
+    def visit_call(self, node: CallNode):
+        self.add_line("PROFILE_CALL();")
+        self.add_line(f"{node.proc_name}();")
+    
+    def visit_read(self, node: ReadNode):
+        self.add_line("PROFILE_IO();")
+        self.add_line(f"scanf(\"%d\", &{node.var_name});")
+    
+    def visit_write(self, node: WriteNode):
+        self.add_line("PROFILE_IO();")
+        expr_code = node.expression.accept(self)
+        self.add_line(f"printf(\"%d\\n\", {expr_code});")
+    
+    def visit_compound(self, node: CompoundNode):
+        for stmt in node.statements:
+            stmt.accept(self)
+    
+    def visit_if(self, node: IfNode):
+        self.add_line("PROFILE_OP();")
+        cond_code = node.condition.accept(self)
+        self.add_line(f"if ({cond_code}) {{")
+        self.indent_level += 1
+        node.then_statement.accept(self)
+        self.indent_level -= 1
+        self.add_line("}")
+    
+    def visit_while(self, node: WhileNode):
+        self.add_line("PROFILE_OP();")
+        cond_code = node.condition.accept(self)
+        self.add_line(f"while ({cond_code}) {{")
+        self.indent_level += 1
+        node.body.accept(self)
+        self.indent_level -= 1
+        self.add_line("}")
+    
+    def visit_operation(self, node: OperationNode):
+        left_code = node.left.accept(self)
+        right_code = node.right.accept(self)
+        return f"({left_code} {node.operator} {right_code})"
+    
+    def visit_variable(self, node: VariableNode):
+        return node.name
+    
+    def visit_number(self, node: NumberNode):
+        return str(node.value)

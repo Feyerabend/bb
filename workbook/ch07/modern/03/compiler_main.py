@@ -147,12 +147,18 @@ class PL0Compiler:
             "documentation": ".md",
             "ast_structure": "_ast.txt",
             "optimization_hints": "_optimizations.txt",
-            "optimization_analysis": "_opt_analysis.txt", 
+            "optimization_analysis": "_opt_analysis.txt",
             "peephole_analysis": "_peephole.txt",
             "variable_report": "_variables.txt",
-            "statement_report": "_statements.txt"
+            "statement_report": "_statements.txt",
+            "opt_c_code": "_optimized.c",  # For optimization_c_generator
+            "opt_c_analysis": "_opt_c_analysis.txt",  # For optimization_c_generator
+            "py_code": ".py",  # For python_generator
+            "py_opt_analysis": "_py_opt_analysis.txt",  # For python_generator
+            "perf_profile": "_perf.txt",  # For performance_profiler
+            "instr_c_code": "_instrumented.c"  # For performance_profiler
         }
-        
+
         # Write main outputs
         if "c_code" in result["outputs"]:
             c_output_path = os.path.join(output_dir, f"{base_name}.c")
