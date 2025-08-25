@@ -1,0 +1,15 @@
+PL/0 Compilation Summary for fact.p
+==================================================
+
+Input file: fact.p
+Compilation date: 2025-08-25 14:38:16
+Output directory: fact_compilation
+
+Generated Files:
+
+Plugin Analysis Results:
+  • static_analysis:
+    - declared_variables: ['n', 'fact', 'i']
+    - used_variables: ['n', 'fact', 'i']
+    - undefined_variables: []
+    - procedures: ['factorial']

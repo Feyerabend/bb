@@ -7,7 +7,7 @@ from compiler_core import *
 def register_builtin_plugins(registry):
     """Register all built-in plugins with the registry"""
     registry.register(StaticAnalysisPlugin())
-    registry.register(TACGeneratorPlugin()) # not here yet
+#   registry.register(TACGeneratorPlugin()) # not here yet
 #   registry.register(CCodeGeneratorPlugin())
 
 
@@ -198,7 +198,7 @@ class TACGenerator(Visitor):
     def visit_while(self, node):
         return super().visit_while(node)
     
-    
+
 
 #        node.else_statement.accept(self)
 #        self.code.append(f"LABEL {else_label}")
