@@ -1,35 +1,108 @@
-# Compiler to use
-CC = gcc
+# Makefile for the compiler system
 
-# Compiler flags
-CFLAGS = -Wall -O2
+# Python interpreter
+PYTHON := python3
 
-# Source directory for generated C files
-SRC_DIR = .
+# Compiler script
+COMPILER := compiler_main.py
 
-# Output directory for executables
-OUT_DIR = bin
+# Source directory
+SRC_DIR := src
 
-# Find all .c files in the source directory
-SOURCES = $(wildcard $(SRC_DIR)/*.c)
+# Output directory for all compilation results
+OUTPUT_BASE_DIR := output
 
-# Generate executable names (e.g., program1 from program1.c)
-EXECS = $(patsubst $(SRC_DIR)/%.c,$(OUT_DIR)/%,$(SOURCES))
+# Plugins directory
+PLUGINS_DIR := plugins
+
+# Compiler flags (can be overridden)
+COMPILER_FLAGS := --plugins $(PLUGINS_DIR)
+
+# Debug mode (set DEBUG=1 to enable)
+ifdef DEBUG
+    COMPILER_FLAGS += --debug
+endif
+
+# Find all .p files in the src directory
+P_FILES := $(wildcard $(SRC_DIR)/*.p)
+
+# Extract base names (without path and extension)
+BASE_NAMES := $(basename $(notdir $(P_FILES)))
+
+# Generate output directory names (under output/)
+OUTPUT_DIRS := $(addprefix $(OUTPUT_BASE_DIR)/, $(addsuffix _compilation, $(BASE_NAMES)))
 
 # Default target
-all: $(OUT_DIR) $(EXECS)
+.PHONY: all
+all: $(OUTPUT_DIRS)
 
-# Create output directory if it doesn't exist
-$(OUT_DIR):
-	mkdir -p $(OUT_DIR)
+# Pattern rule for building individual files
+$(OUTPUT_BASE_DIR)/%_compilation: $(SRC_DIR)/%.p $(COMPILER) builtin_plugins.py compiler_core.py plugin_system.py $(PLUGINS_DIR)/*.py
+	@echo "Compiling $< with plugins from $(PLUGINS_DIR)..."
+	@mkdir -p $(OUTPUT_BASE_DIR)
+	@cd $(OUTPUT_BASE_DIR) && $(PYTHON) ../$(COMPILER) ../$< $(COMPILER_FLAGS)
 
-# Rule to compile each .c file into an executable
-$(OUT_DIR)/%: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) $< -o $@
+# Individual targets for each source file (for convenience)
+.PHONY: $(BASE_NAMES)
+$(BASE_NAMES): %: $(OUTPUT_BASE_DIR)/%_compilation
 
-# Clean up generated files
+# Clean target - remove all output directories and Python cache
+.PHONY: clean
 clean:
-	rm -rf $(OUT_DIR)/*.o $(OUT_DIR)/*
+	@echo "Cleaning up compilation directories..."
+	@if [ -d "$(OUTPUT_BASE_DIR)" ]; then \
+		echo "Removing $(OUTPUT_BASE_DIR)/"; \
+		rm -rf "$(OUTPUT_BASE_DIR)"; \
+	fi
+	@echo "Cleaning up Python cache files..."
+	@find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+	@find . -name "*.pyc" -delete 2>/dev/null || true
+	@find . -name "*.pyo" -delete 2>/dev/null || true
+	@find . -name "*.pyd" -delete 2>/dev/null || true
+	@find . -name ".pytest_cache" -exec rm -rf {} + 2>/dev/null || true
 
-# Phony targets
-.PHONY: all clean
+# List available plugins
+.PHONY: list-plugins
+list-plugins:
+	@echo "Listing available plugins..."
+	$(PYTHON) $(COMPILER) dummy --plugins $(PLUGINS_DIR) --list-plugins 2>/dev/null || true
+
+# Debug compilation targets
+.PHONY: debug-all $(addsuffix -debug, $(BASE_NAMES))
+debug-all:
+	$(MAKE) all DEBUG=1
+
+$(addsuffix -debug, $(BASE_NAMES)): %-debug: %
+	$(MAKE) $* DEBUG=1
+
+# Help target
+.PHONY: help
+help:
+	@echo "Available targets:"
+	@echo "  all          - Compile all .p files in $(SRC_DIR)/"
+	@echo "  clean        - Remove all compilation output directories"
+	@echo "  debug-all    - Compile all files with debug output"
+	@echo "  list-plugins - Show available plugins"
+	@echo "  help         - Show this help message"
+	@echo ""
+	@echo "Individual file targets:"
+	@for name in $(BASE_NAMES); do \
+		echo "  $$name       - Compile $(SRC_DIR)/$$name.p"; \
+		echo "  $$name-debug - Compile $(SRC_DIR)/$$name.p with debug output"; \
+	done
+	@echo ""
+	@echo "Variables:"
+	@echo "  DEBUG=1      - Enable debug mode (make all DEBUG=1)"
+	@echo "  PLUGINS_DIR  - Override plugins directory (default: $(PLUGINS_DIR))"
+
+# Debug target to show discovered files
+.PHONY: debug
+debug:
+	@echo "Source files found: $(P_FILES)"
+	@echo "Base names: $(BASE_NAMES)"
+	@echo "Output directories: $(OUTPUT_DIRS)"
+	@echo "Compiler flags: $(COMPILER_FLAGS)"
+
+# Force rebuild target
+.PHONY: rebuild
+rebuild: clean all

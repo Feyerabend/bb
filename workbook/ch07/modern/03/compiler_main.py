@@ -190,11 +190,12 @@ class PL0Compiler:
         self._create_summary(result, input_filename, output_dir, base_name, file_extensions)
         
         # Also keep main C file in current directory for compatibility - skip?
-        if output_filename and "c_code" in result["outputs"]:
-            with open(output_filename, 'w') as file:
-                file.write(result["outputs"]["c_code"])
-            print(f"Main C file also saved as: {output_filename}")
-    
+        #if output_filename and "c_code" in result["outputs"]:
+        #    with open(output_filename, 'w') as file:
+        #        file.write(result["outputs"]["c_code"])
+        #    print(f"Main C file also saved as: {output_filename}")
+
+
     # needed?
     def _copy_source(self, input_filename, output_dir, base_name):
         source_copy_path = os.path.join(output_dir, f"{base_name}_source.p")
@@ -240,7 +241,7 @@ class PL0Compiler:
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: compiler.py <input_filename> [output_filename] [--debug] [--plugins <directory>] [--list-plugins]", file=sys.stderr)
+        print("Usage: compiler_main.py <input_filename> [output_filename] [--debug] [--plugins <directory>] [--list-plugins]", file=sys.stderr)
         sys.exit(1)
     
     input_filename = sys.argv[1]
