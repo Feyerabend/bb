@@ -833,23 +833,35 @@ class PluginRegistry:
             
             # Look for plugins in the module
             loaded_count = 0
-            for attr_name in dir(module):
-                attr = getattr(module, attr_name)
-                if isinstance(attr, type) and issubclass(attr, Plugin) and attr != Plugin:
-                    # Instantiate and register the plugin class
-                    try:
+            
+            # Get module dictionary to avoid issues with dir()
+            module_dict = module.__dict__
+            
+            for attr_name, attr in module_dict.items():
+                # Skip private attributes
+                if attr_name.startswith('_'):
+                    continue
+                    
+                try:
+                    # Check for plugin classes
+                    if (isinstance(attr, type) and 
+                        issubclass(attr, Plugin) and 
+                        attr != Plugin and
+                        not attr_name.startswith('_')):
+                        
+                        # Instantiate and register the plugin class
                         plugin_instance = attr()
                         self.register(plugin_instance)
                         loaded_count += 1
                         if messages:
-                            messages.debug(f"Loaded plugin class: {plugin_instance.name}")
-                    except Exception as e:
-                        if messages:
-                            messages.warning(f"Failed to instantiate plugin class {attr_name}: {e}")
-                
-                elif callable(attr) and hasattr(attr, '_is_plugin'):
-                    # Register functions marked as plugins
-                    try:
+                            messages.info(f"Loaded plugin class: {plugin_instance.name}")
+                    
+                    # Check for plugin functions
+                    elif (callable(attr) and 
+                        hasattr(attr, '_is_plugin') and
+                        not attr_name.startswith('_')):
+                        
+                        # Register functions marked as plugins
                         self.register_function(
                             attr._plugin_name,
                             attr, 
@@ -859,19 +871,28 @@ class PluginRegistry:
                         )
                         loaded_count += 1
                         if messages:
-                            messages.debug(f"Loaded plugin function: {attr._plugin_name}")
-                    except Exception as e:
-                        if messages:
-                            messages.warning(f"Failed to register plugin function {attr_name}: {e}")
+                            messages.info(f"Loaded plugin function: {attr._plugin_name}")
+                            
+                except Exception as e:
+                    if messages:
+                        messages.warning(f"Failed to load plugin '{attr_name}': {e}")
+                    # Print the full error for debugging
+                    if messages and messages.debug_enabled:
+                        import traceback
+                        messages.debug(f"Full error trace: {traceback.format_exc()}")
             
             if messages and loaded_count > 0:
-                messages.info(f"Loaded {loaded_count} plugin(s) from {os.path.basename(filepath)}")
+                messages.info(f"Successfully loaded {loaded_count} plugin(s) from {os.path.basename(filepath)}")
             elif messages and loaded_count == 0:
-                messages.warning(f"No plugins found in {os.path.basename(filepath)}")
+                messages.warning(f"No valid plugins found in {os.path.basename(filepath)}")
                 
         except Exception as e:
             if messages:
                 messages.error(f"Failed to load plugin file {filepath}: {e}")
+            # Print full error for debugging
+            if messages and messages.debug_enabled:
+                import traceback
+                messages.debug(f"Full error trace: {traceback.format_exc()}")
 
 # built-in plugins
 class StaticAnalysisPlugin(Plugin):
