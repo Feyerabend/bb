@@ -21,4 +21,6 @@
 
 * Stevens, W. R., Fenner, B., & Rudoff, A. M. (2004). *Unix Network Programming, Volume 1: The Sockets Networking API* (3rd ed.). Addison-Wesley.
 
+* Friedman, Daniel P. & Christiansen, David Thrane (2018[2018]). *The little typer*. Cambridge, Massachusetts: The MIT Press
+
 
