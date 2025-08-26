@@ -7,6 +7,7 @@ from typing import Dict, Any, List, Optional
 
 
 # do not work out of the box!
+# should maybe roll from TAC instead of AST
 class LLVMGeneratorPlugin(Plugin):
     def __init__(self):
         super().__init__(
