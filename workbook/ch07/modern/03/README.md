@@ -248,6 +248,8 @@ end.
 - *Error Recovery*: The parser halts on errors; adding recovery could enhance usability.
 - *Metrics*: Including compilation time or memory usage in the summary could aid performance analysis.
 
+In general the progams could benefit from more dynamic approach to loading plugins: [project](./eplugins/).
+
 
 ### Conclusion
 
