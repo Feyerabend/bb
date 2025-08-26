@@ -267,7 +267,8 @@ def main():
         else:
             output_filename = arg
         i += 1
-    
+    # normalise plugins_dir, so Makefile can do whatever it wants
+    plugins_dir = os.path.join(os.path.dirname(__file__), plugins_dir)
     PL0Compiler.compile_file(input_filename, output_filename, debug, plugins_dir, list_plugins)
 
 
