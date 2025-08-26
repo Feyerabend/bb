@@ -151,12 +151,12 @@ class PL0Compiler:
             "peephole_analysis": "_peephole.txt",
             "variable_report": "_variables.txt",
             "statement_report": "_statements.txt",
-            "opt_c_code": "_optimized.c",  # For optimization_c_generator
-            "opt_c_analysis": "_opt_c_analysis.txt",  # For optimization_c_generator
-            "py_code": ".py",  # For python_generator
-            "py_opt_analysis": "_py_opt_analysis.txt",  # For python_generator
-            "perf_profile": "_perf.txt",  # For performance_profiler
-            "instr_c_code": "_instrumented.c"  # For performance_profiler
+            "opt_c_code": "_optimized.c",
+            "opt_c_analysis": "_opt_c_analysis.txt",
+            "py_code": ".py",
+            "py_opt_analysis": "_py_opt_analysis.txt",
+            "perf_profile": "_perf.txt",
+            "instr_c_code": "_instrumented.c"
         }
 
         # Write main outputs
@@ -166,7 +166,7 @@ class PL0Compiler:
                 file.write(result["outputs"]["c_code"])
             print(f"Generated C code: {c_output_path}")
 
-        # Rewrite!
+        # Rewrite!?
         if "tac_code" in result["outputs"]:
             tac_output_path = os.path.join(output_dir, f"{base_name}.tac")
             with open(tac_output_path, 'w') as file:
@@ -196,7 +196,7 @@ class PL0Compiler:
         #    print(f"Main C file also saved as: {output_filename}")
 
 
-    # needed?
+    # ? do we need more source
     def _copy_source(self, input_filename, output_dir, base_name):
         source_copy_path = os.path.join(output_dir, f"{base_name}_source.p")
         try:
