@@ -4,7 +4,6 @@
 * Aho, A. V., Lam, M. S., Sethi, R., & Ullman, J. D. (2006). *Compilers: Principles, Techniques, and Tools* (2nd ed.). Pearson.
 
 * Wirth, N. (1976). *Algorithms + Data Structures = Programs*. Prentice Hall.
-(Concise and influential on variables, control structures, and data types.)
 
 * Knuth, D. E. (1997). *The Art of Computer Programming, Volume 1: Fundamental Algorithms* (3rd ed.). Addison-Wesley.
 
@@ -12,7 +11,7 @@
 
 * Scott, M. L. (2015). *Programming Language Pragmatics* (4th ed.). Morgan Kaufmann.
 
-* Tanenbaum, A. S., & Austin, T. (2013). Structured Computer Organization (6th ed.). Pearson.
+* Tanenbaum, A. S., & Austin, T. (2013). *Structured Computer Organization* (6th ed.). Pearson.
 
 * Patterson, D. A., & Hennessy, J. L. (2017). *Computer Organization and Design: The Hardware/Software Interface* (5th ed.). Morgan Kaufmann.
 
