@@ -350,3 +350,39 @@ logging, or any application requiring persistent storage on the Pico. By underst
 modifying these scripts, you can build robust applications tailored to your needs, such as
 logging sensor data or managing device configurations.
 
+
+
+### NOTE: Secondary Pico Storage
+
+On the Pico, the internal flash is the same chip that stores both the firmware (MicroPython
+itself) and the Python scripts you upload. The Pico port of MicroPython does not ship with
+a built-in filesystem on the internal flash. Technically it is non-volatile secondary memory
+(NOR flash, mapped into the RP2040’s address space).
+
+- The flash is managed by the firmware and normally reserved for storing the MicroPython
+  binary and your main.py / boot.py files.
+- Writing directly to flash while the firmware is running risks corrupting MicroPython itself.
+- The Pico’s RP2040 flash interface requires erasing in 4 KB sectors before rewriting,
+  which complicates direct use.
+
+Options if you really want to use internal flash:
+
+1. Frozen modules: you can embed Python code into the firmware image itself when you
+   build MicroPython from source. This is read-only storage.
+
+2. flashbdev low-level driver: the MicroPython source tree contains a rp2 port driver
+   (rp2_flash.c) that exposes the flash as a block device. You can, with some hacking,
+   mount it as a filesystem (uos.VfsFat), but this isn’t enabled in the default builds.
+
+3. Custom C code or SDK: if you are working in C with the Pico SDK, you can write to
+   flash directly using pico/stdlib.h and the flash API, but you must handle erases
+   and alignment carefully.
+
+4. MicroPython alternatives: on ESP8266/ESP32 boards, MicroPython exposes the internal
+   flash as a filesystem (/flash), but on Pico the maintainers chose not to, precisely
+   because of the corruption risk.
+
+So there is no safe high-level library call in standard MicroPython on the Pico to store arbitrary
+files on the internal flash. That’s why SD cards are the recommended path if you want persistent
+storage beyond your program itself.
+
