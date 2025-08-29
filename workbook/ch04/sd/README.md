@@ -386,3 +386,7 @@ So there is no safe high-level library call in standard MicroPython on the Pico 
 files on the internal flash. That’s why SD cards are the recommended path if you want persistent
 storage beyond your program itself.
 
+
+If you want to travel deeper into small databases and storages, see:
+the https://github.com/littlefs-project.
+
