@@ -1,5 +1,6 @@
 
-__Source code referenced in the book:__
+__Printed book reference: see explanations and examples in [BOOK].__
+
 * [blink](./blink/)     - Simple samples of blinking LEDs in MicroPython and C
 * ..
 

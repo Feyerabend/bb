@@ -1,5 +1,6 @@
 
-__Source code referenced in the book:__
+__Printed book reference: see explanations and examples in [BOOK].__
+
 * [VM1](./vm1/)     - Simple stack.based machine
 * [REGVM](./regvm/) - Simple register-based machine
 * [VM2](./vm2/)     - "Forth" inspired machine
