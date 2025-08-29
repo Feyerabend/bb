@@ -2,7 +2,7 @@
 __Printed book reference: see explanations and examples in [BOOK].__
 
 * [blink](./blink/)     - Simple samples of blinking LEDs in MicroPython and C
-* [traffic](./traffic/) - Traffic lights simulations
+* [traffic](./traffic/) - Traffic light simulations
 * ..
 
 ## Building and Experimenting
