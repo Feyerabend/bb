@@ -3,7 +3,7 @@
 
 This simulator represents a simplified, yet detailed, model of a central processing unit (CPU) and
 its arithmetic logic unit (ALU), constructed entirely from basic logic gates and derived circuits,
-all implemented in C code to mimic hardware behavior at a low level. The design draws inspiration
+all implemented in C code to mimic hardware behaviour at a low level. The design draws inspiration
 from classic computer architecture principles, such as those found in von Neumann machines, but
 scaled down to a 4-bit word size for manageability while still capturing the essence of gate-level
 operations. By building everything from fundamental gates like NOT, AND, OR, and XOR, the simulator
@@ -45,7 +45,7 @@ instructions, with all internal workings traceable back to gate operations.
 
 Registers form the next layer, providing storage for data and state. Each register is an array of
 D flip-flops (DFFs), one per bit, where a DFF captures its input on the rising clock edge if enabled,
-simulating edge-triggered behavior. The DFF itself is modeled behaviorally but could be expanded to
+simulating edge-triggered behaviour. The DFF itself is modelled behaviourally but could be expanded to
 full NAND-based master-slave latches for even deeper gate purity. Reading a register aggregates the
 bits from each DFF into a 4-bit value, while loading writes new data by clocking each bit individually.
 Key registers include the program counter (PC) for tracking the current instruction address, the
@@ -65,14 +65,14 @@ The control unit orchestrates the entire system using hardwired combinational lo
 It decodes the 2-bit opcode from the IR, generating signals like ALU operation selects, register load
 enables, memory read/write, ALU source (immediate or memory), and halt. For example, an ADD instruction
 (opcode 00) sets ALU ops to 00, enables ACC load, and selects immediate operand, all computed via AND,
-OR, and NOT gates on the opcode bits. This microarchitecture ensures deterministic behavior without
+OR, and NOT gates on the opcode bits. This microarchitecture ensures deterministic behaviour without
 microcode, keeping the design straightforward yet illustrative of how control paths drive data flow.
 
 The CPU operates in cycles, each simulating a clock tick to advance the state. In the fetch phase,
 the PC's value loads into the MAR, the instruction at that address reads from RAM into the IR, and
 the PC increments using the adder. The decode-execute phase interprets the opcode to produce control
 signals, selects the ALU operand (immediate from IR or data from RAM), performs the ALU operation,
-updates flags, and loads the result into the ACC if enabled. Memory writes, if signaled, store the
+updates flags, and loads the result into the ACC if enabled. Memory writes, if singled, store the
 ACC back to RAM at the operand address. The cycle repeats until a HALT instruction (opcode 11) is
 encountered, which sets the halt signal to stop execution. This multi-phase approach, while simplified
 to one function call per cycle in code, mirrors real pipelined or non-pipelined CPUs, with all

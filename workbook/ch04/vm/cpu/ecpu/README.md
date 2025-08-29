@@ -226,10 +226,12 @@ construct proper bit patterns:
 ```
 
 #### Memory Interface Abstraction
-The CPU accesses memory through helper functions rather than directly accessing arrays. This abstraction allows for future enhancements like memory mapping, caching, or protection mechanisms.
+The CPU accesses memory through helper functions rather than directly accessing arrays. This abstraction
+allows for future enhancements like memory mapping, caching, or protection mechanisms.
 
 #### Gate-Level Arithmetic
-Arithmetic operations are implemented using actual logic gate functions rather than C operators, demonstrating how hardware performs these operations at the transistor level.
+Arithmetic operations are implemented using actual logic gate functions rather than C operators, demonstrating
+how hardware performs these operations at the transistor level.
 
 
 

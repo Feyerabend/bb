@@ -15,16 +15,16 @@ values), and executes them via a switch-case structure in `cpu_decode_and_execut
 arithmetic (ADD, SUB), logical (AND, OR, XOR, NOT), and shift (SHL, SHR) operations, updating flags
 for zero, carry, overflow, and negative results. Memory access is handled through basic read/write
 functions, with no complex addressing modes. Control flow instructions include jumps (JMP, JZ, JC)
-and HALT. A microcode ROM stub exists but is underutilized, suggesting a transitional design. This
+and HALT. A microcode ROM stub exists but is underutilised, suggesting a transitional design. This
 mirrors early x86 processors like the 8086, which used hardwired logic for direct instruction execution,
-prioritizing simplicity but limiting extensibility.
+prioritising simplicity but limiting extensibility.
 
 
 ### Enhanced CPU (ecpu)
 
 The ecpu adopts a clearer microcode-based architecture, *breaking instructions* into microinstructions stored
 in a `microcode_rom`. Each instruction is executed over multiple micro-steps via `execute_microinstruction`,
-with control signals (e.g., `alu_enable`, `reg_write_enable`) defining hardware behavior. The VM includes
+with control signals (e.g., `alu_enable`, `reg_write_enable`) defining hardware behaviour. The VM includes
 additional state variables (`current_instruction`, `micro_step`, `fetched_byte`) for microcode management.
 The `init_microcode` function defines sequences for operations like ADD, SUB, LOAD, and HALT, enabling easy
 expansion. The ecpu retains the scpu’s instruction set and `fetch` function for *compatibility* but uses

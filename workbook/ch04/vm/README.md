@@ -86,7 +86,7 @@ operations. The Arithmetic Logic Unit (ALU) supports operations like ADD, SUB, A
 OR, XOR, NOT, SHL, and SHR, with flag support for zero, carry, overflow, and negative
 results. Microcode in a ROM defines control signals for each instruction, orchestrating
 ALU operations, register updates, and memory accesses. The VM executes instructions by
-fetching and processing micro-instructions, fully emulating the CPU's behavior.
+fetching and processing micro-instructions, fully emulating the CPU's behaviour.
 The microcode relies on logic gate-based operations, though implemented in software,
 not hardware. Comprehensive tests verify the functionality of gates, adders, ALU,
 microcode, and VM, including edge cases and performance scenarios.
@@ -112,6 +112,6 @@ includes a `PIOBlock` managing up to four state machines, each with registers
 a text-based program format, supporting features like conditional jumps and bit
 manipulation. The code provides demo programs for LED blinking, WS2812 RGB LED control,
 UART transmission, and a counter with conditional jumps. Comprehensive error handling
-and state tracking ensure accurate emulation of PIO behavior. The script can run
+and state tracking ensure accurate emulation of PIO behaviour. The script can run
 specific demos (blink, ws2812, uart, counter) or all demos via command-line arguments.
 

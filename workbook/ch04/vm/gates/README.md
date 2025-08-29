@@ -1,9 +1,9 @@
 
 ## Gate-Level CPU and ALU Simulator Components
 
-The following points summarize the key components of the gate-level CPU and ALU simulator,
+The following points summarise the key components of the gate-level CPU and ALU simulator,
 with corresponding code snippets to illustrate their implementation. Each component is built
-from basic logic gates (NOT, AND, OR, XOR) to emulate hardware behavior in a 4-bit architecture,
+from basic logic gates (NOT, AND, OR, XOR) to emulate hardware behaviour in a 4-bit architecture,
 with a focus on fetch-decode-execute cycles and gate-level memory.
 
 - *Logic Gates*: The foundation of the simulator, these functions perform single-bit operations.
@@ -158,7 +158,7 @@ graph TD
   ```
 
 - *Registers*: Each register is an array of D flip-flops (DFFs), storing 4 bits. DFFs capture input
-  on a clock edge if enabled, simulated behaviorally but gate-compatible. Registers include PC, ACC, IR, MAR, and MDR.
+  on a clock edge if enabled, simulated behaviourally but gate-compatible. Registers include PC, ACC, IR, MAR, and MDR.
   ```c
   typedef struct { uint8_t q; } DFF;
   void dff_clock(DFF* ff, uint8_t d, uint8_t clk, uint8_t enable) {
@@ -317,7 +317,7 @@ graph TD
 
 
 - *Program Execution*: The sample program (ADD 1, AND 3, OR 2, HALT) runs in three cycles, producing
-  ACC=1, 1, 3, with JSON output capturing all states for emulator visualization.
+  ACC=1, 1, 3, with JSON output capturing all states for emulator visualisation.
   ```c
   void load_program() {
       ram_write(&ram, 0, 0b0001, 1, 1);  // ADD 1
@@ -336,7 +336,7 @@ graph TD
 
 - *HTML/JS Emulator*: A secondary component, the emulator loads the JSON to display cycle states in a
   browser table, with buttons to step through cycles, showing decimal/binary values and instructions.
-  It’s a visualization tool, not core to the gate-level design.
+  It’s a visualisation tool, not core to the gate-level design.
   ```html
   <table id="stateTable">
       <tr><th>Register/Flag</th><th>Value</th><th>Binary</th></tr>

@@ -85,7 +85,7 @@ manage CPU components (e.g., ALU, registers, memory).
   ```
 
 - File: `cpu.c`
-  - Function: `init_microcode` initializes the `microcode_rom` array with microinstructions
+  - Function: `init_microcode` initialises the `microcode_rom` array with microinstructions
     for each opcode.
   - Example for ADD (opcode 0x00):
     ```c
@@ -137,7 +137,7 @@ manage CPU components (e.g., ALU, registers, memory).
    or division) by defining new microcode sequences in `microcode_rom`.
 2. *Microcode Debugger*: Build a tool that prints the control signals and state changes for
    each microinstruction during execution, enhancing the debugging output in `execute_microinstruction`.
-3. *Microcode Optimiser*: Analyze the microcode sequences and propose optimizations
+3. *Microcode Optimiser*: Analyse the microcode sequences and propose optimisations
    (e.g., combining steps to reduce cycles for certain instructions).
 
 
@@ -170,7 +170,7 @@ and executing the corresponding microinstructions. The VM supports operations li
     ```
 
 - File: `cpu.c`
-  - Function: `init_vm` initializes the VM with zeroed registers, memory, and flags.
+  - Function: `init_vm` initialises the VM with zeroed registers, memory, and flags.
     ```c
     void init_vm(VM *vm) {
         memset(vm->registers, 0, sizeof(vm->registers));
@@ -225,7 +225,7 @@ and executing the corresponding microinstructions. The VM supports operations li
 
 *Example*:
 - ADD Instruction Execution:
-  - Initialize VM: `R0 = 15`, `R1 = 7`, `memory[0] = OP_ADD`, `memory[1] = OP_HALT`.
+  - Initialise VM: `R0 = 15`, `R1 = 7`, `memory[0] = OP_ADD`, `memory[1] = OP_HALT`.
   - Run VM: Fetches `OP_ADD`, executes microcode (ALU computes 15 + 7 = 22, stores in `R0`), then halts.
   - Result: `R0 = 22`, flags updated (e.g., zero = false, carry = false).
 
@@ -250,8 +250,8 @@ and executing the corresponding microinstructions. The VM supports operations li
   (`half_adder`, `full_adder`, `ripple_carry_adder_8bit`), which are used in the
   ALU (`enhanced_alu`), which is controlled by microcode to execute VM instructions
   (`run_vm`).
-- *Testing Rigor*: The `test_cpu.c` file provides comprehensive tests for each layer
-  (gates, adders, ALU, VM), ensuring correctness. Students can study the `TEST_ASSERT`
+- *Testing Rigour*: The `test_cpu.c` file provides comprehensive tests for each layer
+  (gates, adders, ALU, VM), ensuring correctness. Students (you) can study the `TEST_ASSERT`
   macro and test functions to learn unit testing.
 - *Cycle Limit*: The VM includes a cycle limit (`cycle < 1000`) to prevent infinite
   loops, tested in `test_edge_cases`.
@@ -321,8 +321,8 @@ simulates a simple 8-bit virtual machine (VM) with a microcode-driven architectu
 
 7. *Testing*:
    - The `test_cpu.c` file contains comprehensive unit tests for logic gates, adders, bitwise
-     operations, ALU, VM initialization, fetch operations, microcode execution, and edge cases.
-   - Tests verify correct behavior, flag propagation, and performance under various conditions.
+     operations, ALU, VM initialisation, fetch operations, microcode execution, and edge cases.
+   - Tests verify correct behaviour, flag propagation, and performance under various conditions.
 
 
 #### Is the Microcode Emulated at Full in Logic Gates?
@@ -347,7 +347,7 @@ is not at the transistor level.
   of gate-based logic.
 
 - *Caveat*: The gates are emulated in software (C functions!) rather than as hardware circuits.
-  The code simulates the logical behavior of gates, not their physical timing or electrical
+  The code simulates the logical behaviour of gates, not their physical timing or electrical
   properties. Thus, it fully emulates the *logical functionality* of gates, not their hardware
   implementation.
 
@@ -369,7 +369,7 @@ Yes, the VM is fully emulated using microcode.
   - `OP_HALT` (opcode 0xFF) stops the VM in one micro-step.
 - *Control Signals*: The `execute_microinstruction` function interprets microcode signals
   to perform ALU operations, register updates, memory accesses, and PC modifications,
-  fully controlling the VM's behavior.
+  fully controlling the VM's behaviour.
 - *Testing*: The `test_cpu.c` file verifies that instructions like ADD, SUB, LOAD, and HALT
   execute correctly via microcode, with correct register updates and flag settings.
 
