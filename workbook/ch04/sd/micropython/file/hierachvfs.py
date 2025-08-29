@@ -1,3 +1,5 @@
+# Important note: This will overwrite any existing FAT filesystem on your SD card when it formats!
+
 import struct
 import utime
 
