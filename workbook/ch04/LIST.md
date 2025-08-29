@@ -268,7 +268,8 @@ The Pico’s flexibility inspires quirky, experimental projects.
 
 
 ### Getting Started
-For your own projects, start with the Raspberry Pi Pico Getting Started guide (raspberrypi.com)
-or Thonny IDE for MicroPython. Flash UF2 files via BOOTSEL mode for prebuilt projects (e.g., Doom).
-For hardware, check Adafruit, Pimoroni, or Seeed Studio for compatible sensors and displays.
+For your own projects, start with the Raspberry Pi Pico Getting Started guide
+(raspberrypi.com) or Thonny IDE for MicroPython. Flash UF2 files via BOOTSEL
+mode for prebuilt projects (e.g., Doom). For hardware, check Adafruit, Pimoroni,
+or Seeed Studio for compatible sensors and displays.
 
