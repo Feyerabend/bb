@@ -389,9 +389,9 @@ storage beyond your program itself.
 
 #### Go further ..
 
-The RPI Pico has a limited number of write cycles (around 100,000), so it's not at all
-suitable for high-frequency data logging, but is good for storing persistent data like
-user preferences or calibration data. 
+The RPI Pico has a limited number of write cycles (around 100,000) for its original 2MB
+of built-in flash memory , so it's not at all suitable for high-frequency data logging,
+but it is good for storing persistent data like user preferences or calibration data. 
 
 If you want to travel deeper into small databases and storages, see:
 the https://github.com/littlefs-project.
