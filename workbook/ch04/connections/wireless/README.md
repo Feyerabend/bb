@@ -196,7 +196,9 @@ You could do something like this:
 
 ### Three Way Scenario
 
-Once connected, the clients broadcast a UDP “HELLO” message, and the AP replies so everyone knows who’s on the network. From there you can build your own role negotiation logic (e.g. one acts as master, the rest as workers).
+Once connected, the clients broadcast a UDP “HELLO” message, and the AP replies so everyone
+knows who’s on the network. From there you can build your own role negotiation logic
+(e.g. one acts as master, the rest as workers).
 
 
 SIMPLE
@@ -360,7 +362,9 @@ while True:
 
 ### The Wireless Bus
 
-Here’s a way to extend the AP + discovery approach so clients can talk directly to each other once they know each other’s IPs. The AP still exists as a discovery server, but after that clients can communicate peer-to-peer.
+Here’s a way to extend the AP + discovery approach so clients can talk directly to each
+other once they know each other’s IPs. The AP still exists as a discovery server, but after
+that clients can communicate peer-to-peer.
 
 
 1. AP (Discovery Server)
@@ -673,7 +677,7 @@ while True:
 - Supports dynamic joining: new clients discover the AP and are assigned a WORKER role automatically.
 - Clients leaving is handled automatically: after a failed send/timeout or re-discovery, the peer list updates.
 
-If MASTER fails though ..
+If MASTER fails though .. all collapse!
 
 
 
