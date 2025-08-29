@@ -1,4 +1,14 @@
 
+__Source code referenced in the book:__
+* [VM1](./vm1/)     - Simple stack.based machine
+* [REGVM](./regvm/) - Simple register-based machine
+* [VM2](./vm2/)     - "Forth" inspired machine
+* [VM3](./vm3/)     - Enchanced with jump instructions, comparison
+                      operators, memory storage, loops, conditionals,
+                      and function calls (activation records, frame pointers)
+* [MEM](./mem/)     - Memory management in blocks
+* [VM4](./vm4/)     - Data stack and frame stack, call/return
+
 ## Exploring the virtual machine landscape
 
 This chapter emphasises the concept of 'machines' as a foundation for abstract reasoning, particularly
