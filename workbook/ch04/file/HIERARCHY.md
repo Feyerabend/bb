@@ -171,6 +171,19 @@ Entries (32 bytes): type, name (padded), block ptr.
 ```
 - Content: "This is a test file".
 
+```
++----------------------------+
+| File: readme.txt (Block 3) |
+| 54 68 69 73 ..             | "This is a test file"
+| 00                         | Null terminator
+| (Padding: 493 zeros)       |
++----------------------------+
+[Write Process]
+1. Allocate block (e.g., 3)
+2. Write data (truncate to 512 bytes)
+3. Pad with zeros
+4. Add dir entry (type 1, name, ptr)
+```
 
 #### Block 4: documents Directory
 
