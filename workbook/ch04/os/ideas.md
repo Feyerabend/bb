@@ -9,19 +9,6 @@ scheduling, isolation, I/O, and interface — the key OS ideas in miniature
 
 
 
-A Tiny Multitasking OS (Cooperative Scheduler)
-- Principle: Process scheduling, context switching, system calls.
-
-- Implement a simple process table where each process is a Python function with its own state.
-- Write a round-robin scheduler that calls each process in turn.
-- Add simple yield() system call.
-
-- Students see how multitasking is not magic — just structured switching.
-- Stretch: Show how you can prioritise tasks, or add blocking on I/O.
-
-
-
-
 Message-Passing Microkernel
 - Principle: Isolation, IPC (inter-process communication).
 
