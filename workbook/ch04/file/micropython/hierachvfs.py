@@ -5,7 +5,7 @@ import utime
 
 class HierarchicalVFS:
     BLOCK_SIZE = 512
-    MAGIC_NUMBER = 0x48565653  # "HVFS"
+    MAGIC_NUMBER = 0x53465648  # "HVFS" in little-endian (corrected from 0x48565653)
     
     # Entry types
     FILE_TYPE = 1
@@ -67,6 +67,14 @@ class HierarchicalVFS:
                         block_num = byte_idx * 8 + bit_idx
                         bitmap_data[byte_idx] |= (1 << bit_idx)
                         self.sd.write_block(1, bitmap_data)
+                        # Update free_blocks in superblock
+                        self.superblock['free_blocks'] -= 1
+                        # Rewrite superblock to disk
+                        superblock = struct.pack('<IIII', self.MAGIC_NUMBER, 
+                                               self.superblock['total_blocks'],
+                                               self.superblock['free_blocks'],
+                                               self.superblock['root_dir_block'])
+                        self.sd.write_block(0, superblock + b'\x00' * (self.BLOCK_SIZE - 16))
                         return block_num
         return None
     
