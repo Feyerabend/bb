@@ -1,4 +1,7 @@
 
+> [!WARNING]  
+> *Formatting overwrites any existing FAT filesystem on the SD card.*
+
 ## HierarchicalVFS: A Simple Custom File System for SD Cards
 
 The `HierarchicalVFS` replaces the standard FAT filesystem with a simple hierarchical
@@ -19,7 +22,6 @@ listing directories, and navigating (with limited `..` support; parent).
   - `cd ..` resets to root (no parent pointers).
   - Directory limited to 16 entries (512/32).
 
-*Warning:* Formatting overwrites any existing FAT filesystem on the SD card.
 
 The simulation below runs the example usage:
 ```python
@@ -138,6 +140,27 @@ Entries (32 bytes): type, name (padded), block ptr.
 - Entry 3: Type 2 (dir), "images", Block 5.
 - Max 16 entries/dir.
 
+```
++--------------------+
+| Root Dir (Block 2) |
+| Entry 0 (32 bytes) |
+| 01                 | Type: File (1)
+| 72 65 61 64 ..     | Name: "readme.txt" (27 bytes, padded)
+| 03 00 00 00        | Block Ptr: 3
++--------------------+
+| Entry 1 (32 bytes) |
+| 02                 | Type: Dir (2)
+| 64 6f 63 75 ..     | Name: "documents" (27 bytes, padded)
+| 04 00 00 00        | Block Ptr: 4
++--------------------+
+| Entry 2 (32 bytes) |
+| 02                 | Type: Dir (2)
+| 69 6d 61 67 ..     | Name: "images" (27 bytes, padded)
+| 05 00 00 00        | Block Ptr: 5
++--------------------+
+|  (13 empty slots)  |
+|  ..                |
+```
 
 #### Block 3: readme.txt (File Data)
 
