@@ -4,7 +4,7 @@ __Printed book reference: see explanations and examples in [BOOK].__
 * [blink](./blink/)               - Simple samples of blinking LEDs in MicroPython and C
 * [traffic](./traffic/)           - Traffic light simulations
 * [temperature](./temperature/)   - Builtin sensor used as example for series of measurements  
-* [sd](./sd/)                     - Connect to external SD card as secondary memory (database)
+* [db](./db/)                     - Connect to external SD card as secondary memory (database)
 * ..
 
 
