@@ -39,22 +39,10 @@ Interactive Shell
 - Principle: User interface, command interpretation.
 
 - One Pico runs a shell process on the display pack.
-- Students type commands (via Wi-Fi "keyboard" from rodinary comp).
+- Students type commands (via Wi-Fi "keyboard" from ordinary comp).
 - Commands can be "apps" (processes) managed by the kernel.
 
 - Shows interaction between kernel, filesystem, user space.
 - Stretch: Add scripting, or combine with scheduler so commands run in background.
-
-
-
-Tiny Distributed OS (Two Picos) -- W?
-- Principle: Networking, resource distribution.
-
-- One Pico runs "kernel + display".
-- Another Pico runs "sensor drivers" (temp for simplicity?).
-- They communicate over Wi-Fi with a simple RPC or message system.
-
-- Introduces distributed systems, shows that "one OS can span many nodes".
-- Stretch: Add fault detection if one Pico goes offline.
 
 
