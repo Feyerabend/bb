@@ -97,6 +97,16 @@ Metadata: magic, total blocks (1000), free blocks (992), root dir block (2).
 - Free: `0x000003e0` (992, updated after 5 allocations).
 - Root: `0x00000002`.
 
+```
++----------------------+
+| Superblock (Block 0) |
+| Magic: 0x53465648    | 48 56 46 53 ("HVFS")
+| Total Blocks:        | 00 00 03 e8 (1000)
+| Free Blocks:         | 00 00 03 e0 (992)
+| Root Dir Block:      | 00 00 00 02 (2)
+| (Padding: 496 zeros) |
++----------------------+
+```
 
 #### Block 1: Bitmap
 
