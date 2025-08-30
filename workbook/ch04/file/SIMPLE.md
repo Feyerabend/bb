@@ -1,6 +1,6 @@
 
 > [!IMPORTANT]
-> *The SD card you use for this example have to be formatted with FAT in order to work.*
+> *The SD card you use for this example will have to be formatted with FAT in order to work.*
 
 ## SimpleVFS: A Metadata-Based Virtual File System Wrapper
 
