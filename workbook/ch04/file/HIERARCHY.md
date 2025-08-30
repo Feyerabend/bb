@@ -204,6 +204,22 @@ Empty (all zeros).
 - `_allocate_block`: Finds free bit in bitmap, sets it, decrements `free_blocks`,
   updates superblock on disk, returns block number.
 
+```
++--------------------+
+| Bitmap (Block 1)   |
+| Byte 0: 11111111   | Blocks 0-7 used (0xFF)
+| Byte 1: 00000000   | Blocks 8-15 free
+| ..                 |
+| Byte 511: 00000000 | Blocks 4088-4095 free
++--------------------+
+[Allocation Process]
+1. Scan bitmap for 0 bit
+2. Set bit to 1 (e.g., block 3 for readme.txt)
+3. Update byte in block 1
+4. Decrement free_blocks (superblock)
+5. Write superblock back
+```
+
 ### Directory Operations
 - `_find_entry`: Scans dir block for name match (32-byte entries).
 - `_add_dir_entry`: Writes entry to empty slot.
