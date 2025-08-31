@@ -7,29 +7,29 @@
 
 ## Optimisation on Embedded Computers and Microprocessors
 
-Optimization in the context of embedded computers and microprocessors refers to the
+Optimisation in the context of embedded computers and microprocessors refers to the
 process of improving software (and sometimes hardware) to make it run more efficiently,
 using fewer resources while maintaining or enhancing functionality. Embedded systems
-are specialized computing devices integrated into larger products, like sensors, IoT 
-evices, wearables, or microcontrollers (e.g., in cars, appliances, or hobby projects).
+are specialised computing devices integrated into larger products, like sensors, IoT 
+devices, wearables, or microcontrollers (e.g., in cars, appliances, or hobby projects).
 They typically have constrained hardware: limited CPU power, small amounts of RAM
 (often kilobytes), flash storage, and battery life concerns. Microprocessors, like the
 RP2040 in the Raspberry Pi Pico, are the core computing units in these systems.
 
 
 
-#### 1. What is Optimization in Embedded Systems?
+#### 1. What is Optimisation in Embedded Systems?
 
-Optimization involves techniques to reduce:
+Optimisation involves techniques to reduce:
 - *Execution time (speed/performance)*: Making code run faster to handle real-time
   tasks, like updating a display at 50 FPS.
-- *Memory usage*: Minimizing RAM (for runtime data) and flash (for code/storage)
+- *Memory usage*: Minimising RAM (for runtime data) and flash (for code/storage)
   consumption, as embedded devices often have only 264KB RAM (like the RP2040).
 - *Power consumption*: Extending battery life by reducing CPU cycles, I/O operations,
   or peripheral usage.
 - *Code size*: Smaller binaries fit into limited storage and load faster.
 
-Types of optimization:
+Types of optimisation:
 - *Algorithmic*: Choosing efficient algorithms (e.g., O(n) over O(n²) for loops).
 - *Code-level*: Refactoring for fewer operations, like precomputing values or using
   bitwise operations instead of arithmetic.
@@ -40,11 +40,11 @@ Types of optimization:
 - *Language choice*: Switching from interpreted languages (e.g., Python) to compiled
   ones (e.g., C) for better performance.
 
-In embedded systems, optimization is often a trade-off: faster code might use more
+In embedded systems, optimisation is often a trade-off: faster code might use more
 memory, or vice versa.
 
 
-#### 2. Why is Optimization Important?
+#### 2. Why is Optimisation Important?
 
 Embedded systems operate under tight constraints, unlike desktops or servers with
 abundant resources.
@@ -55,7 +55,7 @@ abundant resources.
   missing data).
   
 - *Real-Time Performance*: Many applications require predictable timing, such as
-  controlling motors, processing sensor data, or rendering graphics. Poor optimization
+  controlling motors, processing sensor data, or rendering graphics. Poor optimisation
   leads to jitter, delays, or missed deadlines, which could be critical (e.g., in
   medical devices or autonomous drones).
 
@@ -64,20 +64,20 @@ abundant resources.
   unnecessarily might keep the CPU at full throttle, shortening battery life from hours
   to minutes.
 
-- *Cost and Scalability*: Optimized code allows cheaper hardware (e.g., a $4 Pico
+- *Cost and Scalability*: Optimised code allows cheaper hardware (e.g., a $4 Pico
   instead of a $35 Raspberry Pi). It also enables scaling to production, where thousands
   of units must work reliably without excess power or heat issues.
 
-- *Reliability and Safety*: In safety-critical systems (e.g., automotive ECUs), unoptimized
-  code could lead to overflows, race conditions, or failures. Optimization ensures stability.
+- *Reliability and Safety*: In safety-critical systems (e.g., automotive ECUs), unoptimised
+  code could lead to overflows, race conditions, or failures. Optimisation ensures stability.
 
-Without optimization, software might not even run: e.g., a memory-intensive Python script
+Without optimisation, software might not even run: e.g., a memory-intensive Python script
 could exceed the Pico's RAM, causing a hard fault.
 
 
-#### 3. How is Optimization Done?
+#### 3. How is Optimisation Done?
 
-Optimization is iterative: profile (measure bottlenecks), refactor, test. Tools include
+Optimisation is iterative: profile (measure bottlenecks), refactor, test. Tools include
 profilers (e.g., MicroPython's `micropython.mem_info()`), oscilloscopes for timing, or
 power meters.
 
@@ -87,39 +87,39 @@ General techniques:
 - *Reduce Loops and Conditionals*: Use lookup tables, unroll loops, or batch operations.
 - *Memory Management*: Use fixed-size arrays over dynamic lists; avoid recursion (stack
   overflow risk).
-- *I/O Optimization*: Batch display updates or use hardware acceleration (e.g., SPI
+- *I/O Optimisation*: Batch display updates or use hardware acceleration (e.g., SPI
   for displays).
 - *Power-Saving Modes*: Put the CPU to sleep when idle; use interrupts over polling.
 - *Multithreading*: On multi-core chips like RP2040, offload tasks to the second core.
 
 For microprocessors:
-- *Instruction Efficiency*: ARM Cortex-M (in RP2040) favors thumb instructions (16-bit)
+- *Instruction Efficiency*: ARM Cortex-M (in RP2040) favours thumb instructions (16-bit)
   for smaller code.
-- *Caching and Pipelining*: Avoid branch mispredictions by linearizing code.
+- *Caching and Pipelining*: Avoid branch mispredictions by linearising code.
 - *Peripherals*: Use PIO (Programmable I/O) on RP2040 for custom protocols without
   CPU overhead.
 
 
-#### 4. Optimization Specifically for the Raspberry Pi Pico (RP2040)
+#### 4. Optimisation Specifically for the Raspberry Pi Pico (RP2040)
 
 The RPi Pico is a low-cost microcontroller board based on the RP2040 chip. It's great for
 embedded projects but has limitations: no floating-point unit (FPU) in hardware (emulated
-in software, slowing floats), limited RAM, and a modest clock speed. Optimization here
+in software, slowing floats), limited RAM, and a modest clock speed. Optimisation here
 focuses on making the most of its strengths (e.g., dual cores, PIO for flexible I/O, USB
 support) while mitigating weaknesses.
 
 Why important for Pico:
 - *Performance Bottlenecks*: Running interpreted languages like MicroPython (used in the
   .py files) is slower than native C due to overhead. Games or graphics (like the Pico Display
-  pack) need smooth FPS, but unoptimized code can drop below 30 FPS.
+  pack) need smooth FPS, but unoptimised code can drop below 30 FPS.
 - *Memory Constraints*: With only 264KB RAM, large data structures (e.g., lists of game
   objects) can fragment memory. Flash is 2MB, but code bloat reduces space for assets.
 - *Power*: Pico draws ~100mA at 5V; inefficient loops spike this, heating the board or draining
   batteries in portable projects.
-- *Real-World Use*: Pico is popular for robotics, displays, and sensors. Optimization ensures
+- *Real-World Use*: Pico is popular for robotics, displays, and sensors. Optimisation ensures
   responsiveness (e.g., button inputs without lag).
 
-How to optimize on Pico:
+How to optimise on Pico:
 - *Use Fixed-Point Math*: Avoid floats; use integers or scaled integers (e.g., multiply
   positions by 10 for sub-pixel precision).
 - *Overclocking*: Safely boost to 250+ MHz via SDK functions, but monitor heat.
@@ -130,7 +130,7 @@ How to optimize on Pico:
 - *Firmware Size*: Strip unnecessary libraries; use Thumb mode in C.
 
 Examples from the provided code (Space Invaders game for Pico Display):
-These show progressive optimization from naive Python to optimized Python to C.
+These show progressive optimisation from naive Python to optimised Python to C.
 
 - *Original Python (inv.py)*: Basic implementation. Issues:
   - Repeated calculations (e.g., `pixel_size_x = bunker['width'] / len(bunker['type']['pixels'][0])`
@@ -140,7 +140,7 @@ These show progressive optimization from naive Python to optimized Python to C.
   - Collision checks use full conditionals without early exits, slowing on many objects.
   - Result: Likely ~20-30 FPS on Pico, with potential stuttering as invaders increase.
 
-- *Optimized Python (inv_opt.py)*: Applies embedded optimizations:
+- *Optimised Python (inv_opt.py)*: Applies embedded optimisations:
   - *Precomputing*: Constants like `SPACING_X = int(20 * SCALE)`, invader types with
     cached 'pixel_size_x/y', player triangle points.
   - *Efficient Data Structures*: Stores 'type_idx' instead of full type dicts;
@@ -161,12 +161,12 @@ These show progressive optimization from naive Python to optimized Python to C.
   - *Efficient Loops*: Manual counting (`bullet_count`), no list comprehensions.
   - *Time_us_32()*: Microsecond-precision timing for debouncing.
   - Result: 5-10x faster than Python, stable 50+ FPS, smaller binary. Shows
-    language/compiler optimization—critical for Pico where MicroPython's interpreter
+    language/compiler optimisation—critical for Pico where MicroPython's interpreter
     uses ~100KB RAM alone.
 
 
-In summary, optimization turns "working" code into "efficient" code on embedded systems like
+In summary, optimisation turns "working" code into "efficient" code on embedded systems like
 the Pico. Start with profiling (e.g., time functions), apply techniques iteratively, and test
-on hardware. For Pico projects, begin in MicroPython for prototyping, then optimize or port
+on hardware. For Pico projects, begin in MicroPython for prototyping, then optimise or port
 to C for production. If you're working on similar games, tools like Thonny IDE (for Python)
 or VS Code with Pico SDK (for C) make this easier.
