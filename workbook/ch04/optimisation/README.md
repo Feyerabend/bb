@@ -5,6 +5,7 @@
 > The displays also requires a custom installation of MicroPython which can
 > be found on GitHub for Pimironi accessories.
 
+
 ## Optimisation on Embedded Computers and Microprocessors
 
 Optimisation in the context of embedded computers and microprocessors refers to the
