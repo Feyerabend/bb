@@ -16,10 +16,6 @@ They typically have constrained hardware: limited CPU power, small amounts of RA
 (often kilobytes), flash storage, and battery life concerns. Microprocessors, like the
 RP2040 in the Raspberry Pi Pico, are the core computing units in these systems.
 
-I'll break this down step by step, explain why and how optimization is important,
-and focus on the Raspberry Pi Pico as requested. I'll also draw examples from the
-provided code snippets (variations of a Space Invaders game), which demonstrate
-practical optimizations in Python and C for a resource-limited device like the Pico.
 
 
 #### 1. What is Optimization in Embedded Systems?
