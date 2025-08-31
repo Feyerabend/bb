@@ -1,5 +1,5 @@
 
-> [!WARNING]  
+> [!CAUTION]
 > *Formatting overwrites any existing FAT filesystem on the SD card.*
 
 ## HierarchicalVFS: A Simple Custom File System for SD Cards
