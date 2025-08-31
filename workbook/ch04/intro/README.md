@@ -58,7 +58,7 @@ To perform these tasks, microcontrollers rely on various
 [sensors](./SENSORS.md).
 
 * Temperature & Humidity: For weather stations and smart home devices.  
-* Light & Colour: For automatic brightness and color recognition.  
+* Light & Colour: For automatic brightness and colour recognition.  
 * Motion & Position: For robotics and navigation.  
 * Proximity & Distance: For object detection and collision avoidance.  
 * Pressure & Gas: For air quality and altitude measurement.
@@ -70,7 +70,7 @@ beginners to more advanced applications. Examples include:
 * Gaming and Emulation: Building a retro game console.  
 * Robotics: Creating a self-balancing robot.  
 * IoT: Building a smart thermostat or an air quality monitor.  
-* Audio and Music: Creating a simple synthesizer or a MIDI controller.  
+* Audio and Music: Creating a simple synthesiser or a MIDI controller.  
 * Wearables: Designing a fitness tracker.
 
 
