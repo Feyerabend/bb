@@ -1,3 +1,5 @@
+# this version has no display of its own,
+# it only connects to the SD card setup
 import network
 import socket
 import time
