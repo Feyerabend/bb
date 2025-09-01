@@ -6,7 +6,7 @@ from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY_2
 
 # Access Point Configuration
 AP_SSID = "PicoDisplay"
-AP_PASSWORD = None  # Set to None for open network - more reliable
+AP_PASSWORD = None  # open network - simplicity
 
 # Initialize display
 display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_2)
@@ -98,7 +98,6 @@ def create_access_point():
     return ip
 
 def simple_web_page(message="Hello"):
-    """Simple HTML page without any fancy styling"""
     html = f"""<html>
 <head><title>Pico Display</title></head>
 <body>
@@ -133,7 +132,6 @@ def simple_web_page(message="Hello"):
     return html
 
 def handle_request(request):
-    """Simple request parser"""
     try:
         lines = request.split('\n')
         if lines:
