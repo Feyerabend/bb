@@ -9,36 +9,34 @@ import machine
 import sdcard
 import uos
 
-
+# Access Point Configuration
 AP_SSID = "PicoDatabase"
 AP_PASSWORD = None  # Open network for simplicity
 
-
+# Global state
 log_buffer = []
 max_log_lines = 20  # Store more logs since we'll show them in web interface
 connection_count = 0
 last_request_time = 0
 
-
 def log(message, level="INFO"):
-    # GET /api/status - System status
-#    if method == "GET" and path == "/api/status":
-#        global log_buffer, max_log_lines
+    global log_buffer, max_log_lines
     timestamp = time.ticks_ms() // 1000
-    log_entry = f"{timestamp:>6} {level[:4]} {message}"
+    log_entry = {"timestamp": timestamp, "level": level, "message": message}
     print(f"[{level}] {message}")
     
-    log_buffer.append({"timestamp": timestamp, "level": level, "message": message})
+    log_buffer.append(log_entry)
     if len(log_buffer) > max_log_lines:
         log_buffer.pop(0)
 
-
+# SD Card Database Class
 class MiniDB:
     def __init__(self, base="/sd", flush_every=1):
         self.base = base if base.endswith("/") else base + "/"
         self.flush_every = max(1, flush_every)
         self.buffers = {}
 
+        # Initialize SD card
         try:
             # SD Card SPI setup
             cs = machine.Pin(1, machine.Pin.OUT)
@@ -59,7 +57,7 @@ class MiniDB:
         except Exception as e:
             raise RuntimeError(f"SD card init failed: {e}")
 
-
+        # Check base directory
         try:
             os.listdir(self.base)
         except OSError:
@@ -69,8 +67,8 @@ class MiniDB:
     def _path(self, name):
         return self.base + name + ".csv"
 
-    # overwritten!
     def create_table(self, name, fields):
+        """Create a new table. Overwrites if exists."""
         try:
             with open(self._path(name), "w") as f:
                 f.write(",".join(fields) + "\n")
@@ -83,6 +81,7 @@ class MiniDB:
             return False
 
     def insert(self, name, row):
+        """Insert a row into buffer."""
         if not isinstance(row, (list, tuple)):
             return False
         if name not in self.buffers:
@@ -93,6 +92,7 @@ class MiniDB:
         return True
 
     def commit(self, name):
+        """Flush buffer for a table."""
         if name not in self.buffers or not self.buffers[name]:
             return False
         try:
@@ -109,6 +109,7 @@ class MiniDB:
             return False
 
     def all_rows(self, name):
+        """Get all rows as list of dicts."""
         rows = []
         try:
             with open(self._path(name), "r") as f:
@@ -125,6 +126,7 @@ class MiniDB:
         return rows
 
     def select(self, name, where=None):
+        """Select rows matching conditions."""
         results = []
         for row in self.all_rows(name):
             if where:
@@ -135,6 +137,7 @@ class MiniDB:
         return results
 
     def delete_rows(self, name, where=None):
+        """Delete rows matching condition."""
         path = self._path(name)
         try:
             with open(path, "r") as f:
@@ -175,6 +178,7 @@ class MiniDB:
             return False
 
     def list_tables(self):
+        """List all available tables."""
         tables = []
         try:
             for file in os.listdir(self.base):
@@ -185,6 +189,7 @@ class MiniDB:
         return tables
 
     def table_info(self, name):
+        """Get table schema and row count."""
         try:
             with open(self._path(name), "r") as f:
                 header = f.readline().strip().split(",")
@@ -193,8 +198,7 @@ class MiniDB:
         except OSError:
             return None
 
-
-# Init database
+# Initialize database
 db = None
 
 def create_access_point():
@@ -348,292 +352,78 @@ def handle_rest_request(method, path, params, json_body):
             "connections": connection_count,
             "uptime": time.ticks_ms() // 1000
         })
-#        return create_response(200, {
-#            "uptime": time.ticks_ms(),
-#            "connections": connection_count,
-#            "ap_ssid": AP_SSID,
-#            "tables": len(db.list_tables()),
-#            "sd_mounted": True
-#        })
+    
+    # GET /api/status - System status
+    elif method == "GET" and path == "/api/status":
+        return create_response(200, {
+            "uptime": time.ticks_ms(),
+            "connections": connection_count,
+            "ap_ssid": AP_SSID,
+            "tables": len(db.list_tables()),
+            "sd_mounted": True
+        })
     
     # Simple web interface
     elif method == "GET" and path == "/":
         html = """<!DOCTYPE html>
-<html>
-<head>
-    <title>Pico Database REST API</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; background: white; border-radius: 5px; }
-        .status-section { background: #e8f5e8; }
-        button { padding: 8px 15px; margin: 5px; cursor: pointer; background: #007cba; color: white; border: none; border-radius: 3px; }
-        button:hover { background: #005a87; }
-        input, select, textarea { padding: 5px; margin: 5px; border: 1px solid #ccc; border-radius: 3px; }
-        pre { background: #f0f0f0; padding: 10px; overflow-x: auto; border-radius: 3px; }
-        .result { margin: 10px 0; padding: 10px; background: #e8f5e8; border-radius: 3px; }
-        .error { background: #ffe8e8; }
-        .logs { height: 300px; overflow-y: scroll; background: #000; color: #0f0; padding: 10px; font-family: monospace; }
-        .log-entry { margin: 2px 0; }
-        .log-INFO { color: #0f0; }
-        .log-WARN { color: #ff0; }
-        .log-ERROR { color: #f00; }
-        .log-SUCCESS { color: #0af; }
-        h1 { color: #333; text-align: center; }
-        h3 { color: #007cba; border-bottom: 2px solid #007cba; padding-bottom: 5px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Pico Database REST API</h1>
-        
-        <div class="section status-section">
-            <h3>System Status & Logs</h3>
-            <button onclick="refreshStatus()">Refresh Status</button>
-            <button onclick="refreshLogs()">Refresh Logs</button>
-            <div id="status" style="margin: 10px 0;"></div>
-            <div class="logs" id="logs">Loading logs...</div>
-        </div>
-        
-        <div class="grid">
-            <div class="section">
-                <h3>Table Management</h3>
-                <input type="text" id="tableName" placeholder="Table name" value="test_table">
-                <br>
-                <button onclick="createTable()">Create Table</button>
-                <button onclick="listTables()">List Tables</button>
-                <button onclick="getTable()">View Table</button>
-                <button onclick="deleteTable()">Delete Table</button>
-                <div id="tableResult" class="result" style="display:none;"></div>
-            </div>
-            
-            <div class="section">
-                <h3>Data Operations</h3>
-                <input type="text" id="insertTable" placeholder="Table name" value="test_table">
-                <br>
-                <textarea id="insertData" placeholder='Row data: ["value1","value2","value3"]' rows="3" style="width: 90%;">["test","123","' + new Date().toISOString() + '"]</textarea>
-                <br>
-                <button onclick="insertRow()">Insert Row</button>
-                <button onclick="commitTable()">Commit Buffer</button>
-                <div id="dataResult" class="result" style="display:none;"></div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h3>Query & Filter</h3>
-            <input type="text" id="queryTable" placeholder="Table name" value="test_table">
-            <input type="text" id="queryField" placeholder="Field name (optional)">
-            <input type="text" id="queryValue" placeholder="Field value (optional)">
-            <button onclick="queryTable()">Query</button>
-            <div id="queryResult" class="result" style="display:none;"></div>
-        </div>
-        
-        <div class="section">
-            <h3>Delete Operations</h3>
-            <input type="text" id="deleteTable" placeholder="Table name" value="test_table">
-            <input type="text" id="deleteField" placeholder="Field name (optional)">
-            <input type="text" id="deleteValue" placeholder="Field value (optional)">
-            <button onclick="deleteRows()">Delete Rows</button>
-            <small>Leave field/value empty to delete ALL rows</small>
-            <div id="deleteResult" class="result" style="display:none;"></div>
-        </div>
-        
-        <div class="section">
-            <h3>API Documentation</h3>
-            <pre>
-🔗 REST Endpoints:
-GET    /api/tables              - List all tables
-POST   /api/tables/{name}       - Create table (body: {"fields": ["col1","col2"]})
-GET    /api/tables/{name}       - Get table data & info
-POST   /api/tables/{name}/rows  - Insert row (body: {"row": ["val1","val2"]})
-DELETE /api/tables/{name}/rows  - Delete rows (body: {"where": {"col":"val"}})
-POST   /api/tables/{name}/commit- Force commit buffered data
-GET    /api/status              - Get system status
-GET    /api/logs                - Get system logs
-            </pre>
-        </div>
-    </div>
-    
-    <script>
-        function showResult(elementId, data, isError = false) {
-            const element = document.getElementById(elementId);
-            element.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
-            element.className = 'result ' + (isError ? 'error' : '');
-            element.style.display = 'block';
-            
-            // Auto-hide after 10 seconds if not an error
-            if (!isError) {
-                setTimeout(() => {
-                    element.style.display = 'none';
-                }, 10000);
-            }
-        }
-        
-        function refreshStatus() {
-            fetch('/api/status')
-            .then(r => r.json())
-            .then(data => {
-                const uptime = Math.floor(data.data.uptime / 1000);
-                document.getElementById('status').innerHTML = `
-                    <strong>Uptime:</strong> ${uptime}s | 
-                    <strong>Connections:</strong> ${data.data.connections} | 
-                    <strong>Tables:</strong> ${data.data.tables} | 
-                    <strong>AP SSID:</strong> ${data.data.ap_ssid}
-                `;
-            })
-            .catch(e => console.error('Status error:', e));
-        }
-        
-        function refreshLogs() {
-            fetch('/api/logs')
-            .then(r => r.json())
-            .then(data => {
-                const logsDiv = document.getElementById('logs');
-                logsDiv.innerHTML = '';
-                data.data.logs.forEach(log => {
-                    const div = document.createElement('div');
-                    div.className = 'log-entry log-' + log.level;
-                    div.textContent = `${log.timestamp.toString().padStart(6)} ${log.level.padEnd(4)} ${log.message}`;
-                    logsDiv.appendChild(div);
-                });
-                logsDiv.scrollTop = logsDiv.scrollHeight;
-            })
-            .catch(e => console.error('Logs error:', e));
-        }
-        
-        function createTable() {
-            const name = document.getElementById('tableName').value;
-            if (!name) { alert('Please enter table name'); return; }
-            
-            fetch(`/api/tables/${name}`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({fields: ['name', 'value', 'timestamp']})
-            })
-            .then(r => r.json())
-            .then(data => showResult('tableResult', data))
-            .catch(e => showResult('tableResult', {error: e.message}, true));
-        }
-        
-        function listTables() {
-            fetch('/api/tables')
-            .then(r => r.json())
-            .then(data => showResult('tableResult', data))
-            .catch(e => showResult('tableResult', {error: e.message}, true));
-        }
-        
-        function getTable() {
-            const name = document.getElementById('tableName').value;
-            if (!name) { alert('Please enter table name'); return; }
-            
-            fetch(`/api/tables/${name}`)
-            .then(r => r.json())
-            .then(data => showResult('tableResult', data))
-            .catch(e => showResult('tableResult', {error: e.message}, true));
-        }
-        
-        function deleteTable() {
-            const name = document.getElementById('tableName').value;
-            if (!name) { alert('Please enter table name'); return; }
-            if (!confirm(`Are you sure you want to delete table '${name}'?`)) return;
-            
-            // Note: This would require a DELETE /api/tables/{name} endpoint
-            alert('Table deletion not implemented in this demo! Delete manually from SD card.');
-        }
-        
-        function insertRow() {
-            const table = document.getElementById('insertTable').value;
-            const data = document.getElementById('insertData').value;
-            
-            if (!table) { alert('Please enter table name'); return; }
-            
-            try {
-                const rowData = JSON.parse(data);
-                fetch(`/api/tables/${table}/rows`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({row: rowData})
-                })
-                .then(r => r.json())
-                .then(data => showResult('dataResult', data))
-                .catch(e => showResult('dataResult', {error: e.message}, true));
-            } catch (e) {
-                showResult('dataResult', {error: 'Invalid JSON format'}, true);
-            }
-        }
-        
-        function commitTable() {
-            const table = document.getElementById('insertTable').value;
-            if (!table) { alert('Please enter table name'); return; }
-            
-            fetch(`/api/tables/${table}/commit`, {method: 'POST'})
-            .then(r => r.json())
-            .then(data => showResult('dataResult', data))
-            .catch(e => showResult('dataResult', {error: e.message}, true));
-        }
-        
-        function queryTable() {
-            const table = document.getElementById('queryTable').value;
-            const field = document.getElementById('queryField').value;
-            const value = document.getElementById('queryValue').value;
-            
-            if (!table) { alert('Please enter table name'); return; }
-            
-            let url = `/api/tables/${table}`;
-            if (field && value) {
-                url += `?where_${field}=${encodeURIComponent(value)}`;
-            }
-            
-            fetch(url)
-            .then(r => r.json())
-            .then(data => showResult('queryResult', data))
-            .catch(e => showResult('queryResult', {error: e.message}, true));
-        }
-        
-        function deleteRows() {
-            const table = document.getElementById('deleteTable').value;
-            const field = document.getElementById('deleteField').value;
-            const value = document.getElementById('deleteValue').value;
-            
-            if (!table) { alert('Please enter table name'); return; }
-            
-            let confirmMsg = `Delete rows from table '${table}'`;
-            if (field && value) {
-                confirmMsg += ` where ${field}='${value}'`;
-            } else {
-                confirmMsg += ' (ALL ROWS)';
-            }
-            
-            if (!confirm(confirmMsg + '?')) return;
-            
-            const body = {};
-            if (field && value) {
-                body.where = {};
-                body.where[field] = value;
-            }
-            
-            fetch(`/api/tables/${table}/rows`, {
-                method: 'DELETE',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(body)
-            })
-            .then(r => r.json())
-            .then(data => showResult('deleteResult', data))
-            .catch(e => showResult('deleteResult', {error: e.message}, true));
-        }
-        
-        // Auto-refresh status and logs
-        setInterval(refreshStatus, 5000);
-        setInterval(refreshLogs, 3000);
-        
-        // Initial load
-        refreshStatus();
-        refreshLogs();
-    </script>
-</body>
-</html>"""
+<html><head><title>Pico Database</title></head><body>
+<h2>Pico Database</h2>
+<div>
+<h3>Status</h3>
+<button onclick="refreshStatus()">Refresh</button>
+<div id="status"></div>
+<textarea id="logs" rows="10" cols="80" readonly></textarea>
+</div>
+<div>
+<h3>Tables</h3>
+<input id="tableName" placeholder="table name" value="test">
+<button onclick="createTable()">Create</button>
+<button onclick="listTables()">List</button>
+<button onclick="getTable()">View</button>
+<div id="result"></div>
+</div>
+<div>
+<h3>Data</h3>
+<input id="insertTable" placeholder="table" value="test">
+<input id="insertData" placeholder='["val1","val2"]' value='["test","123"]'>
+<button onclick="insertRow()">Insert</button>
+<button onclick="commit()">Commit</button>
+</div>
+<script>
+function refreshStatus() {
+    fetch('/api/status').then(r=>r.json()).then(d=>{
+        document.getElementById('status').innerHTML = 'Up:'+Math.floor(d.data.uptime/1000)+'s Conn:'+d.data.connections+' Tables:'+d.data.tables;
+    });
+    fetch('/api/logs').then(r=>r.json()).then(d=>{
+        document.getElementById('logs').value = d.data.logs.map(l=>l.timestamp+' '+l.level+' '+l.message).join('\\n');
+    });
+}
+function createTable() {
+    fetch('/api/tables/'+document.getElementById('tableName').value, {
+        method:'POST', headers:{'Content-Type':'application/json'}, 
+        body:JSON.stringify({fields:['name','value','time']})
+    }).then(r=>r.json()).then(d=>document.getElementById('result').innerHTML=JSON.stringify(d));
+}
+function listTables() {
+    fetch('/api/tables').then(r=>r.json()).then(d=>document.getElementById('result').innerHTML=JSON.stringify(d,null,2));
+}
+function getTable() {
+    fetch('/api/tables/'+document.getElementById('tableName').value).then(r=>r.json()).then(d=>document.getElementById('result').innerHTML=JSON.stringify(d,null,2));
+}
+function insertRow() {
+    const table = document.getElementById('insertTable').value;
+    const data = JSON.parse(document.getElementById('insertData').value);
+    fetch('/api/tables/'+table+'/rows', {
+        method:'POST', headers:{'Content-Type':'application/json'}, 
+        body:JSON.stringify({row:data})
+    }).then(r=>r.json()).then(d=>document.getElementById('result').innerHTML=JSON.stringify(d));
+}
+function commit() {
+    fetch('/api/tables/'+document.getElementById('insertTable').value+'/commit', {method:'POST'}).then(r=>r.json()).then(d=>document.getElementById('result').innerHTML=JSON.stringify(d));
+}
+setInterval(refreshStatus, 5000);
+refreshStatus();
+</script></body></html>"""
         
         headers = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n"
         headers += f"Content-Length: {len(html)}\r\n\r\n"
@@ -688,7 +478,7 @@ def main():
     
     log("Starting Pico Database Server")
     
-    # Init database
+    # Initialize database
     try:
         db = MiniDB("/sd", flush_every=2)
         log("Database initialized")
