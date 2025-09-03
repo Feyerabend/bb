@@ -10,7 +10,7 @@ import uos
 import uselect
 import gc
 
-# Access Point Configuration
+# Access Point Config
 AP_SSID = "PicoDatabase"
 AP_PASSWORD = None
 
@@ -19,6 +19,14 @@ log_buffer = []
 max_log_lines = 50
 connection_count = 0
 active_connections = []
+
+# LED for database access indication
+led = machine.Pin(25, machine.Pin.OUT)  # Onboard LED (regular RPI Pico)
+
+def blink_led():
+    led.on()
+    time.sleep_ms(100)
+    led.off()
 
 def log(message, level="INFO"):
     global log_buffer, max_log_lines
@@ -38,7 +46,7 @@ class AsyncMiniDB: # non-blocking
         self.last_commit = time.ticks_ms()
         self.auto_commit_interval = auto_commit_ms
         
-        # Initialize SD card (same as your version)
+        # Init SD card
         try:
             cs = machine.Pin(1, machine.Pin.OUT)
             spi = machine.SPI(0,
@@ -80,12 +88,14 @@ class AsyncMiniDB: # non-blocking
         
         if committed_tables:
             log(f"Auto-committed: {', '.join(committed_tables)}")
+            blink_led()
         
         self.last_commit = time.ticks_ms()
         return len(committed_tables)
 
     # Rest of the database methods remain the same..
     def create_table(self, name, fields):
+        blink_led()
         try:
             with open(self._path(name), "w") as f:
                 f.write(",".join(fields) + "\n")
@@ -98,6 +108,7 @@ class AsyncMiniDB: # non-blocking
             return False
 
     def insert(self, name, row):
+        blink_led()
         if not isinstance(row, (list, tuple)):
             return False
         if name not in self.buffers:
@@ -111,6 +122,7 @@ class AsyncMiniDB: # non-blocking
         return True
 
     def commit(self, name):
+        blink_led()
         if name not in self.buffers or not self.buffers[name]:
             return False
         try:
@@ -127,6 +139,7 @@ class AsyncMiniDB: # non-blocking
             return False
 
     def all_rows(self, name):
+        blink_led()
         rows = []
         try:
             with open(self._path(name), "r") as f:
@@ -143,6 +156,7 @@ class AsyncMiniDB: # non-blocking
         return rows
 
     def select(self, name, where=None):
+        blink_led()
         results = []
         for row in self.all_rows(name):
             if where:
@@ -153,6 +167,7 @@ class AsyncMiniDB: # non-blocking
         return results
 
     def list_tables(self):
+        blink_led()
         tables = []
         try:
             for file in os.listdir(self.base):
@@ -163,6 +178,7 @@ class AsyncMiniDB: # non-blocking
         return tables
 
     def table_info(self, name):
+        blink_led()
         try:
             with open(self._path(name), "r") as f:
                 header = f.readline().strip().split(",")
@@ -246,7 +262,7 @@ def create_access_point():
     while not ap.active() and timeout > 0:
         time.sleep(1)
         timeout -= 1
-        log(f"AP starting... {timeout}s")
+        log(f"AP starting .. {timeout}s")
     
     if not ap.active():
         log("AP activation FAILED", "ERROR")
@@ -374,7 +390,7 @@ def handle_rest_request(method, path, params, json_body, db):
             "buffered_rows": sum(len(buf) for buf in db.buffers.values())
         })
     
-    # Simple web interface (same as yours)
+    # Simple web interface
     elif method == "GET" and path == "/":
         html = """<!DOCTYPE html>
 <html><head><title>Pico Async Database</title></head><body>
@@ -506,7 +522,7 @@ def main():
     
     log("Starting Async Pico Database Server")
     
-    # Init database
+    # Init db
     try:
         db = AsyncMiniDB("/sd", flush_every=3, auto_commit_ms=20000)
         log("Async Database initialized")
@@ -603,7 +619,7 @@ def main():
             time.sleep_ms(10)
             
         except KeyboardInterrupt:
-            log("Server shutting down...")
+            log("Server shutting down ..")
             break
         except Exception as e:
             log(f"Main loop error: {e}", "ERROR")
