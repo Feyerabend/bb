@@ -1,5 +1,7 @@
 
-* [intro](./intro/)               - Read some introduction to Raspberry Pi Pico and this repository
+__This repository__
+
+* [intro](./intro/)               - Read some introduction to the Raspberry Pi Pico and this repository
 
 __Printed book reference: see explanations and examples in [BOOK].__
 
