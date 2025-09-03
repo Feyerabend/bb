@@ -1,10 +1,6 @@
 
 > [!IMPORTANT]  
-> This example require a small LCD display, in this case *Pimironi Pico Display Pack 2.0*
-> (or youm might confuigure it for *Pimironi Pico Display Pack 2.0*) and a *Raspberry Pi Pico W*
-> wireless Pico.
-> The displays also requires a custom installation of MicroPython which can
-> be found on GitHub for Pimironi accessories, or in Thonny as installaton option.
+> This example requires a small LCD display, specifically the Pimoroni Pico Display Pack 2.0 (though it can also be configured for the original Pimoroni Pico Display Pack). It also requires a Raspberry Pi Pico W (the wireless version of the Pico). The display needs a custom build of MicroPython, available either on GitHub from Pimoroni’s accessory repositories or directly as an installation option within Thonny.
 
 ## Building a web server and fancy stuff here ..
 
