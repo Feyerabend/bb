@@ -1,4 +1,6 @@
 
+* [intro](./intro/)               - Read some introduction to Raspberry Pi Pico and this repository
+
 __Printed book reference: see explanations and examples in [BOOK].__
 
 * [blink](./blink/)               - Simple samples of blinking LEDs in MicroPython and C
