@@ -10,6 +10,7 @@ __Printed book reference: see explanations and examples in [BOOK].__
 * [traffic](./traffic/)           - Traffic light simulations
 * [temperature](./temperature/)   - Builtin sensor used as example for series of measurements  
 * [db](./storage/db/)             - Connect to external SD card as secondary memory (database)
+* [wire](./wire/)                 - Connect two Picos to each other for UART communication
 * ..
 
 
