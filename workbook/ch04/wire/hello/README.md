@@ -1,5 +1,5 @@
 
-## Raspberry Pi Pico
+## Raspberry Pi Pico: Communicating through UART
 
 The code implements a simple UART (Universal Asynchronous Receiver/Transmitter) communication system
 for sending and receiving messages between two devices, such as Raspberry Pi Pico microcontrollers.
