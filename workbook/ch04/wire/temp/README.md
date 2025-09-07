@@ -1,5 +1,5 @@
 
-## Raspberry Pi Pico: Sending temparatures over wire
+## Raspberry Pi Pico: Sending Temperatures Over Wire
 
 The scripts (`receiver.py` and `main.py`) implement a UART-based communication system
 for a Raspberry Pi Pico. The `receiver.py` script listens for incoming UART messages,
