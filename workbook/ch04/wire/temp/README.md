@@ -7,7 +7,7 @@ extracts content between `#` and `*` delimiters, and prints them. The `main.py` 
 reads temperature data from an onboard sensor, converts it to Celsius and Fahrenheit,
 and sends it over UART with a counter, blinking an LED to indicate transmission.
 
-For more on its base see [hello](./hello/).
+For more on its base see [hello](./../hello/).
 
 
 __receiver.py__
