@@ -85,6 +85,7 @@ static const uint8_t font5x8[][5] = {
     {0x43, 0x45, 0x49, 0x51, 0x61}, // Z
 };
 
+// https://github.com/libdriver/st7789/tree/main/doc
 // Display low-level functions
 static void display_write_command(uint8_t cmd) {
     gpio_put(DISPLAY_DC_PIN, 0);
