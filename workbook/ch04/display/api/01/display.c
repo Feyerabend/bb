@@ -108,19 +108,19 @@ static void display_write_data_buf(uint8_t *data, size_t len) {
 }
 
 static void display_set_window(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
-    display_write_command(0x2A); // CASET
+    display_write_command(0x2A); // CASET (Column Address Set)
     display_write_data((x0 + 53) >> 8);
     display_write_data((x0 + 53) & 0xFF);
     display_write_data((x1 + 53) >> 8);
     display_write_data((x1 + 53) & 0xFF);
-    
-    display_write_command(0x2B); // RASET
+
+    display_write_command(0x2B); // RASET (Row Address Set)
     display_write_data((y0 + 40) >> 8);
     display_write_data((y0 + 40) & 0xFF);
     display_write_data((y1 + 40) >> 8);
     display_write_data((y1 + 40) & 0xFF);
     
-    display_write_command(0x2C); // RAMWR
+    display_write_command(0x2C); // RAMWR - Write to RAM
 }
 
 // Public display functions
@@ -155,35 +155,35 @@ bool display_pack_init(void) {
     sleep_ms(120);
     
     // ST7789 initialisation sequence
-    display_write_command(0x01); // SWRESET
+    display_write_command(0x01); // SWRESET - Software reset
     sleep_ms(150);
     
-    display_write_command(0x11); // SLPOUT
+    display_write_command(0x11); // SLPOUT - Sleep out
     sleep_ms(10);
     
-    display_write_command(0x3A); // COLMOD
+    display_write_command(0x3A); // COLMOD - Interface Pixel Format
     display_write_data(0x55);    // 16-bit RGB565
     
-    display_write_command(0x36); // MADCTL
+    display_write_command(0x36); // MADCTL - Memory Data Access Control
     display_write_data(0x60);    //
     
     // Set display area to 240x135 (rotated)
-    display_write_command(0x2A); // CASET
+    display_write_command(0x2A); // CASET (Column Address Set)
     display_write_data(0x00);
     display_write_data(0x35);    // Start at column 53
     display_write_data(0x00);
     display_write_data(0xBB);    // End at column 187
-    
-    display_write_command(0x2B); // RASET  
+
+    display_write_command(0x2B); // RASET (Row Address Set)
     display_write_data(0x00);
     display_write_data(0x28);    // Start at row 40
     display_write_data(0x01);
     display_write_data(0x17);    // End at row 279
     
     display_write_command(0x21); // INVON - Invert colors
-    display_write_command(0x13); // NORON
+    display_write_command(0x13); // NORON - Normal display mode on
     sleep_ms(10);
-    display_write_command(0x29); // DISPON
+    display_write_command(0x29); // DISPON - Display on
     sleep_ms(10);
     
     // Turn on backlight
@@ -240,7 +240,7 @@ void display_draw_string(uint16_t x, uint16_t y, const char* str, uint16_t color
     int offset_x = 0;
     while (*str && x + offset_x < DISPLAY_WIDTH) {
         display_draw_char(x + offset_x, y, *str, color, bg_color);
-        offset_x += 6; // 5 pixel font + 1 pixel spacing
+        offset_x += 6; // 5 pixel font + 1 pixel spacing ~ change to 6 pixel wide char
         str++;
     }
 }
@@ -301,5 +301,13 @@ void button_set_callback(button_t button, button_callback_t callback) {
     if (button <= BUTTON_Y) {
         button_callbacks[button] = callback;
     }
+}
+
+// add LED ..
+void led_init(void) {
+    // Not yet implemented in Display Pack
+}
+void led_set(bool on) {
+    // Not yet implemented in Display Pack
 }
 
