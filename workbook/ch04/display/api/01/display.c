@@ -22,7 +22,7 @@ static bool button_state[4] = {false};
 static bool button_last_state[4] = {false};
 static uint32_t last_button_check = 0;
 
-// Fixed 5x8 font
+// Fixed 5x8 font ~ https://fontstruct.com/gallery/tag/7045/5x8
 static const uint8_t font5x8[][5] = {
     {0x00, 0x00, 0x00, 0x00, 0x00}, // Space
     {0x00, 0x00, 0x5F, 0x00, 0x00}, // !
