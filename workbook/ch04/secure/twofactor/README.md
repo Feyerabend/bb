@@ -477,11 +477,11 @@ production use:
   like AES to secure credentials and communication.
 - *TOTP Implementation*: The simplified TOTP function should be replaced with a proper
   HMAC-SHA1-based TOTP as per RFC 6238 for secure token generation.
-- *Time Synchronization*: Accurate time synchronization via Network Time Protocol (NTP)
+- *Time Synchronisation*: Accurate time synchronisation via Network Time Protocol (NTP)
   is critical for TOTP to function correctly.
 - *Secure Storage*: Store user secrets and credentials in a hardware security module or
   secure enclave, not in plaintext arrays.
-- *Session Management*: Implement proper session tokens with timeouts to prevent unauthorized
+- *Session Management*: Implement proper session tokens with timeouts to prevent unauthorised
   access after authentication.
 - *HTTPS*: Use Transport Layer Security (TLS) for encrypted communication between the client
   and server.
