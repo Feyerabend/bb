@@ -12,7 +12,9 @@ __Printed book reference: see explanations and examples in [BOOK].__
 * [db](./storage/db/)             - Connect to external SD card as secondary memory (database)
 * [wire](./wire/)                 - Connect two Picos to each other for UART communication
 * [mail](./wire/mail/)            - Connect two Picos with "mail" exchange
-
+* ..
+* [rsa](./secure/)                - RSA for encryption/decryption
+* ..
 
 ## Building and Experimenting
 
