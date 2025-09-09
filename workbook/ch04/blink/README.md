@@ -100,7 +100,108 @@ export PICO_SDK_PATH=/path/to/pico-sdk
 
 
 
-### Key Differences
+#### Alternative Setup
+
+Installing the Raspberry Pi Pico C/C++ SDK Workflow in VS Code
+
+__1. Install prerequisites__
+
+You’ll need:
+- VS Code (latest release).
+- CMake (≥ 3.13).
+- Ninja build system (optional, but recommended).
+- ARM GCC Toolchain (arm-none-eabi-gcc).
+- Git (to fetch SDK and examples).
+
+On Linux/macOS you can install from package managers. On Windows, use the official installers.
+
+
+
+__2. Install VS Code Extensions__
+
+From the VS Code Marketplace, install:
+- CMake Tools (by Microsoft).
+- C/C++ Extension Pack (IntelliSense + debugging).
+- Raspberry Pi Pico Project (official helper extension from Raspberry Pi Ltd).
+
+The Pico extension gives you:
+- "Create New Project" wizard.
+- Auto-setup for the SDK.
+- Build + flash buttons.
+- Debug integration.
+
+
+
+__3. Clone the SDK and Examples__
+
+You need the SDK available on your system.
+
+```
+git clone -b master https://github.com/raspberrypi/pico-sdk.git
+git clone -b master https://github.com/raspberrypi/pico-examples.git
+```
+
+Set an environment variable to tell CMake where the SDK is.
+On Linux/macOS, in ~/.bashrc:
+
+```
+export PICO_SDK_PATH=$HOME/pico-sdk
+```
+
+On Windows (PowerShell):
+
+```
+setx PICO_SDK_PATH "C:\Users\YourName\pico-sdk"
+```
+
+Restart VS Code afterwards so it picks this up.
+
+
+__4. Open a Project in VS Code__
+- Open the pico-examples folder in VS Code.
+- The Pico extension will detect it’s a Pico project.
+- It'll generate a CMake build folder (e.g. build).
+
+You’ll see build options appear in the CMake Tools status bar at the bottom.
+
+
+
+__5. Build a UF2 firmware__
+- From the VS Code command palette (Ctrl+Shift+P), choose CMake: Configure.
+- Then CMake: Build.
+
+This produces a .uf2 file in the build folder.
+
+
+__6. Flash onto the Pico__
+- Hold BOOTSEL button while plugging in the Pico to your computer.
+- It will appear as a USB drive.
+- Copy the .uf2 file to it (or use the VS Code flash command if the extension supports direct upload).
+- The Pico will reboot and run your program.
+
+
+
+__7. (Optional) Debugging__
+
+If you have a Raspberry Pi Debug Probe (or a Pico acting as a SWD probe), you can use VS Code’s built-in debugger:
+- Install OpenOCD.
+- Connect via SWD.
+- Use the Pico VS Code extension’s debug configuration.
+
+
+
+#### Summary
+- Install toolchain (CMake + GCC ARM).
+- Install VS Code + Pico + CMake extensions.
+- Set PICO_SDK_PATH.
+- Clone pico-examples.
+- Build .uf2 inside VS Code.
+- Copy to Pico over USB.
+
+
+
+
+### Key Differences C vs MicroPython
 
 *MicroPython:*
 - Easier to get started
