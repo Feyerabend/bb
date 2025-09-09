@@ -13,6 +13,7 @@ and time-based one-time passwords (TOTPs). By combining "something you know" (pa
 with "something you have" (hardware token), the system enhances security for user
 authentication .. in a cost-effective and educational manner.
 
+
 The __2FA__ system comprises three main components:
 
 - *Authentication Server (Pico W #1)*: Hosts an HTTP web server that validates user
@@ -224,7 +225,7 @@ int main() {
     printf("WiFi connected! Starting HTTP server..\n");
     printf("Authentication Server ready at: http://%s/\n", ip4addr_ntoa(netif_ip4_addr(netif_list)));
     
-    // Initialize HTTP server
+    // Init HTTP server
     httpd_init();
     
     // Register HTTP handlers
@@ -475,36 +476,48 @@ if __name__ == "__main__":
 
 ### Security Considerations
 
-This implementation is designed for educational purposes and requires enhancements for
+This implementation is designed for *educational purposes* and requires enhancements for
 production use:
 
 - *Encryption*: The XOR encryption used here is weak. Replace it with a robust algorithm
   like AES to secure credentials and communication.
+
 - *TOTP Implementation*: The simplified TOTP function should be replaced with a proper
   HMAC-SHA1-based TOTP as per RFC 6238 for secure token generation.
+
 - *Time Synchronisation*: Accurate time synchronisation via Network Time Protocol (NTP)
   is critical for TOTP to function correctly.
+
 - *Secure Storage*: Store user secrets and credentials in a hardware security module or
   secure enclave, not in plaintext arrays.
+
 - *Session Management*: Implement proper session tokens with timeouts to prevent unauthorised
   access after authentication.
+
 - *HTTPS*: Use Transport Layer Security (TLS) for encrypted communication between the client
   and server.
+
 - *Rate Limiting*: Add mechanisms to prevent brute-force attacks on the authentication endpoints.
+
 
 
 This Raspberry Pi Pico W-based 2FA system offers several advantages:
 
 - *Hardware Security*: The physical token (Pico W #2) cannot be remotely compromised, enhancing
   the "something you have" factor.
+
 - *Offline Operation*: The token generator functions without network connectivity, making it
   resilient to network-based attacks.
+
 - *Cost-Effective*: The system uses affordable Raspberry Pi Pico W boards, providing a low-cost
   alternative to commercial 2FA tokens.
+
 - *Customizable*: The open-source nature allows organisations to tailor the system to specific
   requirements.
+
 - *Educational Value*: The implementation demonstrates cryptographic principles like TOTP and
   secure communication in an accessible way.
+
 
 This system illustrates how embedded devices can implement robust security protocols, making
 it a learning tool and a foundation for developing secure authentication solutions.
