@@ -100,7 +100,7 @@ export PICO_SDK_PATH=/path/to/pico-sdk
 
 
 
-#### Alternative Setup
+### Alternative Setup C/C++ SDK
 
 Installing the Raspberry Pi Pico C/C++ SDK Workflow in VS Code
 
