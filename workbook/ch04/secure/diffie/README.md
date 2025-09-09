@@ -1,4 +1,9 @@
 
+> [!IMPORTANT] 
+> Requires Python libraries `ucryptolib` and `uhashlib`.
+> https://docs.micropython.org/en/v1.15/library/ucryptolib.html
+
+
 ## Diffie–Hellman Key Exchange
 
 The Diffie–Hellman (DH) key exchange, introduced in 1976 by Whitfield Diffie and Martin Hellman,
