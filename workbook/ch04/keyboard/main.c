@@ -1,3 +1,12 @@
+/*
+Connects to WiFi using CYW43 (Pico W's WiFi chip).
+Sets up a TCP server on port 80 using lwIP.
+Handles incoming HTTP connections, parses POST requests to /keystrokes.
+Extracts the JSON body with the hex-encoded encrypted data.
+Decrypts using mbedtls AES-GCM (key must match client's; hardcoded here for demo—use secure storage in production).
+Processes the keystrokes: For demo, prints to UART. To simulate USB keyboard, it uses TinyUSB to send HID reports (mapping chars to keycodes).
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>  // For tolower, isupper
