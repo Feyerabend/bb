@@ -1,4 +1,9 @@
 
+> [!IMPORTANT]
+> This examples requires out of the box two Raspberry Pi Pico W and a Pimironi Display
+> Pack, or equivalent (you might wire your preferable LCD/OLED display). 
+
+
 ## Two-Factor Authentication with Raspberry Pi Pico W
 
 This section outlines a practical two-factor authentication (2FA) system implemented
