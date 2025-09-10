@@ -16,9 +16,11 @@ add_executable(display_pack_example
 
 # Pull in our pico_stdlib which aggregates commonly used features
 target_link_libraries(display_pack_example
-    pico_stdlib
+    pico_stdlib # already included?
     hardware_spi
     hardware_gpio
+    hardware_dma
+    hardware_irq
 )
 
 # Enable USB output, disable UART output
