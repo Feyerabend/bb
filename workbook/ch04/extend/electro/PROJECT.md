@@ -3,7 +3,7 @@
 
 This is a continuation from the project in the book ..
 
-For inspiration, se e.g.
+For inspiration, see e.g.
 * https://eater.net/
 
 
