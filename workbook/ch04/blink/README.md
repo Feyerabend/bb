@@ -8,6 +8,8 @@
 
 ### MicroPython Setup
 
+There are many tutorials on how to get started with the Raspberry Pi Pico.
+One such is: https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico.
 
 #### 1. Install Thonny IDE
 Thonny IDE provides a very convenient way for you to install it with one click, making
@@ -47,6 +49,7 @@ it the recommended editor for MicroPython development on the Pico/Pico W.
 ### C/C++ SDK Setup
 
 The C/C++ SDK provides more control and better performance but requires more setup.
+The tools can be tricky, and versions of software confusing.
 
 
 #### 1. Install Required Tools
@@ -55,11 +58,13 @@ The C/C++ SDK provides more control and better performance but requires more set
 - Download and install the official Pico SDK installer from the Raspberry Pi website
 - This includes CMake, Build Tools for Visual Studio, Git, and the ARM GCC compiler
 - Alternatively, install manually: Visual Studio Code, CMake, Git, and ARM GCC toolchain
+  (See below.)
 
 *macOS:*
 - Install Xcode command line tools: `xcode-select --install`
 - Install CMake: `brew install cmake` (requires Homebrew)
 - Install ARM GCC toolchain: `brew install --cask gcc-arm-embedded`
+- Alternatively, see below on installing Visual Studio Code.
 
 *Linux (Ubuntu/Debian):*
 ```bash
@@ -102,7 +107,7 @@ export PICO_SDK_PATH=/path/to/pico-sdk
 
 ### Alternative Setup C/C++ SDK
 
-Installing the Raspberry Pi Pico C/C++ SDK Workflow in VS Code
+Installing the Raspberry Pi Pico C/C++ SDK Workflow in VS Code.
 
 __1. Install prerequisites__
 
@@ -220,9 +225,9 @@ If you have a Raspberry Pi Debug Probe (or a Pico acting as a SWD probe), you ca
 
 ### Official Resources
 - MicroPython is optimised to run on microcontrollers and in constrained environments
-- Official Raspberry Pi documentation at raspberrypi.com/documentation/microcontrollers/
-- Pico SDK on GitHub: github.com/raspberrypi/pico-sdk
-- Getting Started PDF guide available from datasheets.raspberrypi.com
+- Official Raspberry Pi documentation at https://raspberrypi.com/documentation/microcontrollers/
+- Pico SDK on GitHub: https://github.com/raspberrypi/pico-sdk
+- Getting Started PDF guide available from https://datasheets.raspberrypi.com
 
 Both development paths are well-supported, and your choice depends on your project requirements,
 performance needs, and personal preferences. MicroPython is excellent for beginners and rapid
