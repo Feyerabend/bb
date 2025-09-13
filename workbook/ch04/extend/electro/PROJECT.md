@@ -3,6 +3,9 @@
 
 This is a continuation from the project in the book ..
 
+For inspiration, see e.g.
+* https://eater.net/
+
 
 ### Part 1: Course Plan (Syllabus-Style)
 
