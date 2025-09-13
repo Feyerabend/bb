@@ -106,3 +106,6 @@ Milestone 12: Self-Contained Computer
 - Run first “program” (e.g., load constant → add → output).
 - Debug with single-step clock.
 - Celebrate — you’ve built a working blinkenlights computer!
+
+
+![PDP-8/1](PDP81.png)
