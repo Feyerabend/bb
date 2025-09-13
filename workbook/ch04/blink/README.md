@@ -265,11 +265,14 @@ you can use VS Code’s built-in debugger:
 
 
 ### Official Resources
-- MicroPython is optimised to run on microcontrollers
-  and in constrained environments
+
 - Official Raspberry Pi documentation at https://raspberrypi.com/documentation/microcontrollers/
 - Pico SDK on GitHub: https://github.com/raspberrypi/pico-sdk
-- Getting Started PDF guide available from https://datasheets.raspberrypi.com
+- Datasheets available from https://datasheets.raspberrypi.com
+
+- [Raspberry Pi Pico SDK Documentation](https://raspberrypi.github.io/pico-sdk-doxygen/)
+- [RP2040 Datasheet](https://datasheets.raspberrypi.org/rp2040/rp2040-datasheet.pdf)
+- [Pico W Datasheet](https://datasheets.raspberrypi.org/picow/pico-w-datasheet.pdf)
 
 Both development paths are well-supported, and your choice depends
 on your project requirements, performance needs, and personal preferences.
