@@ -4,6 +4,7 @@
 #include <math.h>
 
 // THE IDEA: NOT using dynamic memory allocation (malloc/free) for core engine structures
+// PICO_PLATFORM=rp2350, RPI Pico 2, Pimironi Display Pack 2.0, C17 standard
 
 #include "graphics_engine.h"
 #include "pico/stdlib.h"
@@ -74,6 +75,7 @@ void* memory_pool_alloc(memory_pool_t* pool, size_t size, size_t alignment) {
 void memory_pool_free(memory_pool_t* pool, void* ptr, size_t size) {
     // Simple pool allocator doesn't support individual free operations
     // Memory is reclaimed when the pool is reset or defragmented
+    // The idea at least
     (void)pool;
     (void)ptr;
     (void)size;
