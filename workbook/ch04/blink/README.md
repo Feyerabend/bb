@@ -5,9 +5,6 @@
 - A micro USB cable
 - A computer running Windows, macOS, or Linux
 
-
-### MicroPython Setup
-
 The first reason the Raspberry Pi Pico was chosen as a starting point is its accessibility. 
 Unlike many other development boards, you almost never—if ever—need to solder anything. 
 This lowers the entry barrier considerably, since you can begin experimenting with 
@@ -35,11 +32,14 @@ guides, and example projects. This means you are rarely left on your own when tr
 to figure out how to connect a sensor, control a display, or configure an input/output pin. 
 The official Raspberry Pi Foundation provides a solid starting point with their 
 "Getting Started with the Pico" guide:
-https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico  
+https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico.
 
 By combining ease of entry, a software-friendly orientation, and abundant resources, 
 the Pico is an ideal foundation for a journey that starts with blinking LEDs 
 and gradually builds up toward a full blinkenlights computer.
+
+
+### MicroPython Setup
 
 
 #### 1. Install Thonny IDE
