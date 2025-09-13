@@ -17,6 +17,7 @@ __Printed book reference: see explanations and examples in [BOOK].__
 * [rsa](./secure/rsa/)            - RSA for encryption/decryption
 * ..
 
+
 ## Building and Experimenting
 
 > [!NOTE]
@@ -24,4 +25,7 @@ __Printed book reference: see explanations and examples in [BOOK].__
 
 > [!IMPORTANT]
 > To seperate running C and Python (MicroPython to be exact) on the Raspberry Pi Pico, from that on your main computer (Windows, Macintosh or Linux, type), the repositories here are marked with names "c" or "micropython" for inteded use on the RPI Pico.
+
+
+
 
