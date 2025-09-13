@@ -39,7 +39,7 @@ https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico
 
 By combining ease of entry, a software-friendly orientation, and abundant resources, 
 the Pico is an ideal foundation for a journey that starts with blinking LEDs 
-and gradually builds up toward a full blinkenlights computer--if you are up to it.
+and gradually builds up toward a full blinkenlights computer.
 
 
 #### 1. Install Thonny IDE
@@ -55,10 +55,12 @@ it the recommended editor for MicroPython development on the Pico/Pico W.
 #### 2. Install MicroPython Firmware
 *Method 1: Using Thonny (Recommended)*
 1. Connect your Pico/Pico W while holding the BOOTSEL button
-2. Release the BOOTSEL button after your Pico is mount as a Mass Storage Device called RPI-RP2
+2. Release the BOOTSEL button after your Pico is mount as a
+   Mass Storage Device called RPI-RP2
 3. Open Thonny IDE
 4. Go to Tools -> Options -> Interpreter
-5. Select "MicroPython (Raspberry Pi Pico)" as the interpreter, or "MicroPython (Raspberry Pi Pico W)" as the interpreter
+5. Select "MicroPython (Raspberry Pi Pico)" as the interpreter, or
+   "MicroPython (Raspberry Pi Pico W)" as the interpreter
 6. Click "Install or update MicroPython" and follow the prompts
 
 *Method 2: Manual Installation*
@@ -124,14 +126,16 @@ export PICO_SDK_PATH=/path/to/pico-sdk
 
 #### 5. Create Your First Project
 1. Create a new directory for your project
-2. Include the pico_sdk_import.cmake file and set up your CMakeLists.txt
+2. Include the pico_sdk_import.cmake file and
+   set up your CMakeLists.txt
 3. Use the basic project template structure
 
 #### 6. Building and Flashing
 1. Create a build directory: `mkdir build && cd build`
 2. Configure: `cmake ..`
 3. Build: `make` (or `cmake --build .`)
-4. Hold down the BOOTSEL on the Pico W as you plug it in, and it will show as an external drive
+4. Hold down the BOOTSEL on the Pico W as you plug it in,
+   and it will show as an external drive
 5. Copy the generated UF2 file to the RPI-RP2 drive
 
 
@@ -149,7 +153,8 @@ You’ll need:
 - ARM GCC Toolchain (arm-none-eabi-gcc).
 - Git (to fetch SDK and examples).
 
-On Linux/macOS you can install from package managers. On Windows, use the official installers.
+On Linux/macOS you can install from package managers.
+On Windows, use the official installers.
 
 
 
@@ -158,7 +163,8 @@ __2. Install VS Code Extensions__
 From the VS Code Marketplace, install:
 - CMake Tools (by Microsoft).
 - C/C++ Extension Pack (IntelliSense + debugging).
-- Raspberry Pi Pico Project (official helper extension from Raspberry Pi Ltd).
+- Raspberry Pi Pico Project (official helper extension
+  from Raspberry Pi Ltd).
 
 The Pico extension gives you:
 - "Create New Project" wizard.
@@ -198,12 +204,14 @@ __4. Open a Project in VS Code__
 - The Pico extension will detect it’s a Pico project.
 - It'll generate a CMake build folder (e.g. build).
 
-You’ll see build options appear in the CMake Tools status bar at the bottom.
+You’ll see build options appear in the CMake Tools
+status bar at the bottom.
 
 
 
 __5. Build a UF2 firmware__
-- From the VS Code command palette (Ctrl+Shift+P), choose CMake: Configure.
+- From the VS Code command palette (Ctrl+Shift+P),
+  choose CMake: Configure.
 - Then CMake: Build.
 
 This produces a .uf2 file in the build folder.
@@ -212,14 +220,16 @@ This produces a .uf2 file in the build folder.
 __6. Flash onto the Pico__
 - Hold BOOTSEL button while plugging in the Pico to your computer.
 - It will appear as a USB drive.
-- Copy the .uf2 file to it (or use the VS Code flash command if the extension supports direct upload).
+- Copy the .uf2 file to it (or use the VS Code flash command if
+  the extension supports direct upload).
 - The Pico will reboot and run your program.
 
 
 
 __7. (Optional) Debugging__
 
-If you have a Raspberry Pi Debug Probe (or a Pico acting as a SWD probe), you can use VS Code’s built-in debugger:
+If you have a Raspberry Pi Debug Probe (or a Pico acting as a SWD probe),
+you can use VS Code’s built-in debugger:
 - Install OpenOCD.
 - Connect via SWD.
 - Use the Pico VS Code extension’s debug configuration.
@@ -255,11 +265,13 @@ If you have a Raspberry Pi Debug Probe (or a Pico acting as a SWD probe), you ca
 
 
 ### Official Resources
-- MicroPython is optimised to run on microcontrollers and in constrained environments
+- MicroPython is optimised to run on microcontrollers
+  and in constrained environments
 - Official Raspberry Pi documentation at https://raspberrypi.com/documentation/microcontrollers/
 - Pico SDK on GitHub: https://github.com/raspberrypi/pico-sdk
 - Getting Started PDF guide available from https://datasheets.raspberrypi.com
 
-Both development paths are well-supported, and your choice depends on your project requirements,
-performance needs, and personal preferences. MicroPython is excellent for beginners and rapid
-prototyping, while C/C++ offers maximum control and performance for production applications.
+Both development paths are well-supported, and your choice depends
+on your project requirements, performance needs, and personal preferences.
+MicroPython is excellent for beginners and rapid prototyping, while C/C++
+offers maximum control and performance for production applications.
