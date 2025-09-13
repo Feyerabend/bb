@@ -5,6 +5,8 @@ This is a continuation from the project in the book ..
 
 For inspiration, see e.g.
 * https://eater.net/
+* https://www.youtube.com/@DrMattRegan
+* and the many numerous people building simpler computers .. search!
 
 
 ### Part 1: Course Plan (Syllabus-Style)
