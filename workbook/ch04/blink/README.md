@@ -34,7 +34,7 @@ Finally, the Pico benefits from an enormous community and a wealth of tutorials,
 guides, and example projects. This means you are rarely left on your own when trying 
 to figure out how to connect a sensor, control a display, or configure an input/output pin. 
 The official Raspberry Pi Foundation provides a solid starting point with their 
-"Getting Started with the Pico" guide:  
+"Getting Started with the Pico" guide:
 https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico  
 
 By combining ease of entry, a software-friendly orientation, and abundant resources, 
