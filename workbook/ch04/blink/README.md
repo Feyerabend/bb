@@ -8,6 +8,11 @@
 
 ### MicroPython Setup
 
+The first reason the Pico was chosen is that you almost never, or at least very seldom,
+need to solder anything. You don’t have to understand electronics in detail to get started.
+In the long run, however, you will need to get your hands dirty with electronics
+if you want to make real progress.
+
 There are many tutorials on how to get started with the Raspberry Pi Pico.
 One such is: https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico.
 
