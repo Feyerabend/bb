@@ -1,4 +1,11 @@
 
+> [!WARNING]
+> As these scripts may corrupt your SD card, please use a card which you can spoil in worst case.
+> Usually reformatting the card after use of these scripts will be enough.
+> Format the SD card for MS-DOS FAT32 before attempting to use the scripts. 
+
+
+
 ## SD Card and Raspberry Pi Pico Integration
 
 An *SD card* (Secure Digital card) is a non-volatile flash memory card widely used

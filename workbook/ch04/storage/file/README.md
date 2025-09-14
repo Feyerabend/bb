@@ -1,4 +1,16 @@
 
+
+> [!WARNING]
+> *As these scripts may corrupt your SD card, please use a card which you can __spoil__ in worst case.*
+> Usually reformatting the card after use of these scripts will be enough.
+> Format the SD card for *MS-DOS FAT32* before attempting to use the script in the case of `SimpleVFS`.
+> In the case of the file system which does not use FAT32 but writes directly its own,
+> you might have to low-level format the card to be usefulm, the Hierarchical Virtual File System
+> (`HierarchicalVFS`). One such low-level formatting which is usually good enough: "dd" on a Mac or Linux.
+> Another tool can be found at the official SD Association website:
+> [SD Memory Card Formatter](https://www.sdcard.org/downloads/formatter/).
+
+
 ## Custom File Systems on the Raspberry Pi Pico using SD card
 
 
