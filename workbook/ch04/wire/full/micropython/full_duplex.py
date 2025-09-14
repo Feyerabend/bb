@@ -214,7 +214,20 @@ class FullDuplexUART:
                 self.led.off()
             except:
                 pass
+
+    @staticmethod
+    def cleanup_threads():
+        """Force cleanup any existing threads - call before creating new instance"""
+        try:
+            print("Running garbage collection...")
+            gc.collect()
+            time.sleep(1.0)  # Give more time for cleanup
+            gc.collect()  # Second pass
+            print("Cleanup complete.")
+        except Exception as e:
+            print(f"Cleanup error: {e}")
     
+
     def handle_command_direct(self, command):
         """Direct command handling for single-threaded mode"""
         print(f"Processing command: {command}")
@@ -264,52 +277,6 @@ class FullDuplexUART:
         except Exception as e:
             self.log(f"Direct request handling error: {e}")
 
-# Usage with error handling
-if __name__ == "__main__":
-    print("Full Duplex UART System")
-    print("======================")
-    
-    # Clean up any existing threads
-    FullDuplexUART.cleanup_threads()
-    
-    comm = FullDuplexUART()
-    
-    print("\nSelect mode:")
-    print("1. Multi-threaded mode (recommended)")
-    print("2. Single-threaded mode (fallback)")
-    print("3. Status check only")
-    
-    try:
-        choice = input("Enter choice (1, 2, or 3): ").strip()
-        
-        if choice == "1":
-            # Try threaded mode first
-            success = comm.start()
-            if not success:
-                print("\nMulti-threaded mode failed.")
-                print("Would you like to try single-threaded mode? (y/n): ", end="")
-                fallback = input().strip().lower()
-                if fallback == 'y':
-                    comm.start_single_threaded()
-                    
-        elif choice == "2":
-            # Single-threaded mode
-            comm.start_single_threaded()
-            
-        elif choice == "3":
-            # Just show status
-            comm.get_status()
-            
-        else:
-            print("Invalid choice")
-            
-    except KeyboardInterrupt:
-        print("\nProgram interrupted by user.")
-    except Exception as e:
-        print(f"Error: {e}")
-    finally:
-        comm.stop()
-        print("System shutdown complete.")
     
     def blink_led(self, duration=0.1):
         try:
@@ -520,17 +487,6 @@ if __name__ == "__main__":
             self.log(f"Request handling error: {e}")
             self.send_message(f"ERROR:REQ_FAILED:{request}")
     
-    @staticmethod
-    def cleanup_threads():
-        """Force cleanup any existing threads - call before creating new instance"""
-        try:
-            print("Running garbage collection...")
-            gc.collect()
-            time.sleep(1.0)  # Give more time for cleanup
-            gc.collect()  # Second pass
-        except Exception as e:
-            print(f"Cleanup error: {e}")
-    
     def start_threads(self):
         """Start threads with better error detection"""
         if self.threads_started:
@@ -592,6 +548,7 @@ if __name__ == "__main__":
             else:
                 print(f"Thread start OSError: {e}")
                 return False
+    
         except Exception as e:
             self.log(f"Unexpected error starting threads: {e}")
             self.running = False  # Stop any partially started threads
@@ -599,3 +556,50 @@ if __name__ == "__main__":
             self.tx_thread_running = False
             self.threads_started = False
             return False
+
+# Usage with error handling
+if __name__ == "__main__":
+    print("Full Duplex UART System")
+    print("======================")
+    
+    # Clean up any existing threads
+    FullDuplexUART.cleanup_threads()
+    
+    comm = FullDuplexUART()
+    
+    print("\nSelect mode:")
+    print("1. Multi-threaded mode (recommended)")
+    print("2. Single-threaded mode (fallback)")
+    print("3. Status check only")
+    
+    try:
+        choice = input("Enter choice (1, 2, or 3): ").strip()
+        
+        if choice == "1":
+            # Try threaded mode first
+            success = comm.start()
+            if not success:
+                print("\nMulti-threaded mode failed.")
+                print("Would you like to try single-threaded mode? (y/n): ", end="")
+                fallback = input().strip().lower()
+                if fallback == 'y':
+                    comm.start_single_threaded()
+                    
+        elif choice == "2":
+            # Single-threaded mode
+            comm.start_single_threaded()
+            
+        elif choice == "3":
+            # Just show status
+            comm.get_status()
+            
+        else:
+            print("Invalid choice")
+            
+    except KeyboardInterrupt:
+        print("\nProgram interrupted by user.")
+    except Exception as e:
+        print(f"Error: {e}")
+    finally:
+        comm.stop()
+        print("System shutdown complete.")

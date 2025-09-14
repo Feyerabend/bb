@@ -1,5 +1,8 @@
+import machine
+import sdcard
 import uos
 import ujson
+import utime
 
 class SimpleVFS:
     
@@ -43,7 +46,7 @@ class SimpleVFS:
             raise FileNotFoundError(f"File '{filename}' not found in VFS")
         
         if 'r' not in self.metadata[filename]["permissions"]:
-            raise PermissionError(f"No read permission for '{filename}'")
+            raise OSError(f"No read permission for '{filename}'")
         
         full_path = f"{self.mount_point}/{filename}"
         with open(full_path, "rb") as f:
@@ -54,7 +57,7 @@ class SimpleVFS:
             raise FileNotFoundError(f"File '{filename}' not found in VFS")
         
         if 'w' not in self.metadata[filename]["permissions"]:
-            raise PermissionError(f"No write permission for '{filename}'")
+            raise OSError(f"No write permission for '{filename}'")
         
         full_path = f"{self.mount_point}/{filename}"
         with open(full_path, "wb") as f:
@@ -121,30 +124,38 @@ class SimpleVFS:
         }
 
 # Use with existing setup:
-"""
-# init stays same
-cs = machine.Pin(1, machine.Pin.OUT)
-spi = machine.SPI(0, baudrate=1000000, ...)
-sd = sdcard.SDCard(spi, cs)
-vfs = uos.VfsFat(sd)
-uos.mount(vfs, "/sd")
+try:
+    cs = machine.Pin(1, machine.Pin.OUT)
+    spi = machine.SPI(0,
+                      baudrate=1000000,
+                      polarity=0,
+                      phase=0,
+                      bits=8,
+                      firstbit=machine.SPI.MSB,
+                      sck=machine.Pin(2),
+                      mosi=machine.Pin(3),
+                      miso=machine.Pin(4))
+    sd = sdcard.SDCard(spi, cs)
+    vfs = uos.VfsFat(sd)
+    uos.mount(vfs, "/sd")
+except OSError as e:
+    print(f"Failed to initialize or mount SD card: {e}")
+    raise  # Re-raise to stop execution if SD card fails
 
-# educational VFS wrapper
+# Educational VFS wrapper
 simple_vfs = SimpleVFS("/sd")
 
-# abstracted interface
-simple_vfs.create_file("hello.txt", "Hello World!", "rw")
-simple_vfs.create_file("secret.txt", "Top Secret", "r")  # Read-only
+# Abstracted interface
+simple_vfs.create_file("hello.txt", "Hello World!", permissions="rw")
+simple_vfs.create_file("secret.txt", "Top Secret", permissions="r")  # Read-only
 
 print("Files:", simple_vfs.list_files())
-print("Content:", simple_vfs.read_file("hello.txt"))
+print("Content:", simple_vfs.read_file("hello.txt").decode())
 
-# write to read-only file (will fail)
+# Write to read-only file (will fail)
 try:
     simple_vfs.write_file("secret.txt", "Modified")
-except PermissionError as e:
+except OSError as e:
     print("Permission denied:", e)
 
 print("Stats:", simple_vfs.get_stats())
-"""
-

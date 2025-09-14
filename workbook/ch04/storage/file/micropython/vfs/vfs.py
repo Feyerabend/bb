@@ -1,11 +1,10 @@
-# Important note: This will overwrite any existing FAT filesystem on your SD card when it formats!
-
 import struct
 import utime
 
+
 class HierarchicalVFS:
     BLOCK_SIZE = 512
-    MAGIC_NUMBER = 0x53465648  # "HVFS" in little-endian (corrected from 0x48565653)
+    MAGIC_NUMBER = 0x53465648  # "HVFS" in little-endian
     
     # Entry types
     FILE_TYPE = 1
@@ -21,7 +20,9 @@ class HierarchicalVFS:
     
     def _read_superblock(self):
         try:
-            data = self.sd.read_block(0)
+            # Create a buffer for one block
+            data = bytearray(self.BLOCK_SIZE)
+            self.sd.readblocks(0, data)
             magic, total_blocks, free_blocks, root_dir = struct.unpack('<IIII', data[:16])
             if magic == self.MAGIC_NUMBER:
                 return {
@@ -30,8 +31,8 @@ class HierarchicalVFS:
                     'root_dir_block': root_dir,
                     'block_bitmap_start': 1
                 }
-        except:
-            pass
+        except Exception as e:
+            print(f"Error reading superblock: {e}")
         return None
     
     def _format_disk(self):
@@ -40,15 +41,17 @@ class HierarchicalVFS:
         
         # Superblock
         superblock = struct.pack('<IIII', self.MAGIC_NUMBER, total_blocks, total_blocks-3, 2)
-        self.sd.write_block(0, superblock + b'\x00' * (self.BLOCK_SIZE - 16))
+        superblock_data = bytearray(superblock + b'\x00' * (self.BLOCK_SIZE - 16))
+        self.sd.writeblocks(0, superblock_data)
         
         # Block bitmap
         bitmap = bytearray(self.BLOCK_SIZE)
         bitmap[0] = 0x07  # Blocks 0,1,2 used
-        self.sd.write_block(1, bitmap)
+        self.sd.writeblocks(1, bitmap)
         
         # Root directory
-        self.sd.write_block(2, b'\x00' * self.BLOCK_SIZE)
+        root_dir_data = bytearray(b'\x00' * self.BLOCK_SIZE)
+        self.sd.writeblocks(2, root_dir_data)
         
         self.superblock = {
             'total_blocks': total_blocks,
@@ -58,7 +61,8 @@ class HierarchicalVFS:
         }
     
     def _allocate_block(self):
-        bitmap_data = bytearray(self.sd.read_block(1))
+        bitmap_data = bytearray(self.BLOCK_SIZE)
+        self.sd.readblocks(1, bitmap_data)
         
         for byte_idx, byte_val in enumerate(bitmap_data):
             if byte_val != 0xFF:
@@ -66,7 +70,7 @@ class HierarchicalVFS:
                     if not (byte_val & (1 << bit_idx)):
                         block_num = byte_idx * 8 + bit_idx
                         bitmap_data[byte_idx] |= (1 << bit_idx)
-                        self.sd.write_block(1, bitmap_data)
+                        self.sd.writeblocks(1, bitmap_data)
                         # Update free_blocks in superblock
                         self.superblock['free_blocks'] -= 1
                         # Rewrite superblock to disk
@@ -74,7 +78,8 @@ class HierarchicalVFS:
                                                self.superblock['total_blocks'],
                                                self.superblock['free_blocks'],
                                                self.superblock['root_dir_block'])
-                        self.sd.write_block(0, superblock + b'\x00' * (self.BLOCK_SIZE - 16))
+                        superblock_data = bytearray(superblock + b'\x00' * (self.BLOCK_SIZE - 16))
+                        self.sd.writeblocks(0, superblock_data)
                         return block_num
         return None
     
@@ -82,7 +87,8 @@ class HierarchicalVFS:
         if dir_block is None:
             dir_block = self.current_dir
             
-        dir_data = self.sd.read_block(dir_block)
+        dir_data = bytearray(self.BLOCK_SIZE)
+        self.sd.readblocks(dir_block, dir_data)
         
         # Each entry: type(1) + name(27) + block_ptr(4) = 32 bytes
         for i in range(0, self.BLOCK_SIZE, 32):
@@ -104,28 +110,37 @@ class HierarchicalVFS:
         if dir_block is None:
             dir_block = self.current_dir
             
-        dir_data = bytearray(self.sd.read_block(dir_block))
+        dir_data = bytearray(self.BLOCK_SIZE)
+        self.sd.readblocks(dir_block, dir_data)
+        
+        # Ensure name is a string and truncate to fit within 27 bytes
+        if not isinstance(name, str):
+            name = str(name)
+        # Truncate name to 27 characters to avoid encoding issues
+        name = name[:27]
+        # Pad the name to exactly 27 characters with null bytes
+        padded_name = (name + '\x00' * (27 - len(name))).encode('utf-8')[:27]
         
         # Find empty slot
         for i in range(0, self.BLOCK_SIZE, 32):
             if dir_data[i] == 0:
-                entry = struct.pack('<B', entry_type) + name.encode('utf-8').ljust(27, b'\x00') + struct.pack('<I', data_block)
+                entry = struct.pack('<B', entry_type) + padded_name + struct.pack('<I', data_block)
                 dir_data[i:i+32] = entry
-                self.sd.write_block(dir_block, dir_data)
+                self.sd.writeblocks(dir_block, dir_data)
                 return True
         return False  # Directory full
     
     def create_file(self, filename, data):
         if self._find_entry(filename):
-            raise FileExistsError(f"File '{filename}' already exists")
+            raise OSError(f"File '{filename}' already exists")
         
         data_block = self._allocate_block()
         if data_block is None:
             raise RuntimeError("Disk full")
         
         # Write file data
-        file_data = data[:self.BLOCK_SIZE] + b'\x00' * max(0, self.BLOCK_SIZE - len(data))
-        self.sd.write_block(data_block, file_data)
+        file_data = bytearray(data[:self.BLOCK_SIZE] + b'\x00' * max(0, self.BLOCK_SIZE - len(data)))
+        self.sd.writeblocks(data_block, file_data)
         
         # Add to directory
         if not self._add_dir_entry(filename, self.FILE_TYPE, data_block):
@@ -133,14 +148,14 @@ class HierarchicalVFS:
     
     def create_dir(self, dirname):
         if self._find_entry(dirname):
-            raise FileExistsError(f"Directory '{dirname}' already exists")
+            raise OSError(f"Directory '{dirname}' already exists")
         
         dir_block = self._allocate_block()
         if dir_block is None:
             raise RuntimeError("Disk full")
         
         # Init empty directory
-        self.sd.write_block(dir_block, b'\x00' * self.BLOCK_SIZE)
+        self.sd.writeblocks(dir_block, bytearray(b'\x00' * self.BLOCK_SIZE))
         
         # Add to current directory
         if not self._add_dir_entry(dirname, self.DIR_TYPE, dir_block):
@@ -153,7 +168,8 @@ class HierarchicalVFS:
         if entry['type'] != self.FILE_TYPE:
             raise IsADirectoryError(f"'{filename}' is a directory")
         
-        data = self.sd.read_block(entry['block'])
+        data = bytearray(self.BLOCK_SIZE)
+        self.sd.readblocks(entry['block'], data)
         return data.split(b'\x00')[0]
     
     def list_dir(self, path=None):
@@ -165,7 +181,8 @@ class HierarchicalVFS:
             dir_block = entry['block']
         
         items = []
-        dir_data = self.sd.read_block(dir_block)
+        dir_data = bytearray(self.BLOCK_SIZE)
+        self.sd.readblocks(dir_block, dir_data)
         
         for i in range(0, self.BLOCK_SIZE, 32):
             if dir_data[i] != 0:
@@ -195,10 +212,10 @@ class HierarchicalVFS:
         return "/unknown"  # Would need parent tracking for full paths
 
 # Use with existing setup:
-"""
-# existing init - NO CHANGES!
-import machine, sdcard
-import utime, uos
+import machine
+import sdcard
+import utime
+import uos
 
 cs = machine.Pin(1, machine.Pin.OUT)
 spi = machine.SPI(0,
@@ -214,27 +231,57 @@ spi = machine.SPI(0,
 sd = sdcard.SDCard(spi, cs)
 
 # DON'T mount with uos - we're creating our own filesystem!
-# Just pass the sd object directly to our VFS:
-
 vfs = HierarchicalVFS(sd)
 
 # Now use it:
-vfs.create_file("readme.txt", b"This is a test file")
-vfs.create_dir("documents") 
-vfs.create_dir("images")
+try:
+    vfs.create_file("readme.txt", b"This is a test file")
+    print("Created file: readme.txt")
+except OSError as e:
+    print(f"Skipped creating file 'readme.txt': {e}")
+
+try:
+    vfs.create_dir("documents")
+    print("Created directory: documents")
+except OSError as e:
+    print(f"Skipped creating directory 'documents': {e}")
+
+try:
+    vfs.create_dir("images")
+    print("Created directory: images")
+except OSError as e:
+    print(f"Skipped creating directory 'images': {e}")
 
 print("Root contents:", vfs.list_dir())
 
 # Navigate and create files
-vfs.change_dir("documents")
-vfs.create_file("note.txt", b"A note in documents folder")
-vfs.create_file("todo.txt", b"1. Learn VFS\n2. Build filesystem\n3. Expand!")
+try:
+    vfs.change_dir("documents")
+    print("Changed to directory: documents")
+except FileNotFoundError as e:
+    print(f"Failed to change directory: {e}")
+    raise  # Re-raise to stop execution if directory is missing
+
+try:
+    vfs.create_file("note.txt", b"A note in documents folder")
+    print("Created file: note.txt")
+except OSError as e:
+    print(f"Skipped creating file 'note.txt': {e}")
+
+try:
+    vfs.create_file("todo.txt", b"1. Learn VFS\n2. Build filesystem\n3. Expand!")
+    print("Created file: todo.txt")
+except OSError as e:
+    print(f"Skipped creating file 'todo.txt': {e}")
 
 print("Documents contents:", vfs.list_dir())
-print("Note content:", vfs.read_file("note.txt").decode())
 
-# Go back to root  
+try:
+    print("Note content:", vfs.read_file("note.txt").decode())
+except FileNotFoundError as e:
+    print(f"Failed to read file: {e}")
+    raise  # Re-raise to stop execution if file is missing
+
+# Go back to root
 vfs.change_dir("..")
 print("Back to root:", vfs.list_dir())
-"""
-
