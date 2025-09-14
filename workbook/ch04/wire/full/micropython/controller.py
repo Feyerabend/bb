@@ -1,23 +1,46 @@
-from machine import Pin, UART
+from machine import Pin, UART, ADC
 import time
 import _thread
 from collections import deque
 
-class UARTController:
+class FullDuplexUART:
     def __init__(self, uart_id=1, baudrate=9600, tx_pin=4, rx_pin=5):
         self.uart = UART(uart_id, baudrate=baudrate, tx=Pin(tx_pin), rx=Pin(rx_pin))
+        self.temp_sensor = ADC(4)
+        self.led = Pin(25, Pin.OUT)
         
-        # Buffers
-        self.rx_buffer = deque((), 50)
+        # Buffers for incoming and outgoing messages
+        self.rx_buffer = deque((), 50)  # max 50 messages
         self.tx_buffer = deque((), 50)
         
         # Control flags
         self.running = True
+        self.counter = 0
+        
+        # Thread management
+        self.rx_thread_id = None
+        self.tx_thread_id = None
+        
+        # Locks for thread safety (simple flags since MicroPython threading is limited)
         self.rx_lock = False
         self.tx_lock = False
-        
-        # Command history
-        self.command_history = []
+    
+    def read_temperature(self):
+        try:
+            reading = self.temp_sensor.read_u16()
+            voltage = reading * 3.3 / 65535
+            temperature = 27 - (voltage - 0.706) / 0.001721
+            return round(temperature, 1)
+        except:
+            return 25.0  # fallback temperature
+    
+    def blink_led(self, duration=0.1):
+        try:
+            self.led.on()
+            time.sleep(duration)
+            self.led.off()
+        except:
+            pass
     
     def format_message(self, message):
         return f"#{message}*"
@@ -28,7 +51,7 @@ class UARTController:
         return None
     
     def rx_thread(self):
-        print("Controller RX Thread started")
+        print("RX Thread started")
         buffer = ""
         
         while self.running:
@@ -36,9 +59,12 @@ class UARTController:
                 if self.uart.any():
                     data = self.uart.read()
                     if data:
-                        buffer += data.decode('utf-8')
+                        try:
+                            buffer += data.decode('utf-8', 'ignore')
+                        except:
+                            continue
                         
-                        # Process complete messages
+                        # Look for complete messages
                         while '#' in buffer and '*' in buffer:
                             start_idx = buffer.find('#')
                             end_idx = buffer.find('*', start_idx)
@@ -48,206 +74,258 @@ class UARTController:
                                 message = self.parse_message(raw_message)
                                 
                                 if message:
-                                    while self.rx_lock:
+                                    # Thread-safe buffer access
+                                    retry_count = 0
+                                    while self.rx_lock and retry_count < 100:
                                         time.sleep(0.001)
-                                    self.rx_lock = True
+                                        retry_count += 1
                                     
-                                    if len(self.rx_buffer) >= 50:
-                                        self.rx_buffer.popleft()
-                                    self.rx_buffer.append((message, time.time()))
-                                    
-                                    self.rx_lock = False
+                                    if retry_count < 100:
+                                        self.rx_lock = True
+                                        
+                                        if len(self.rx_buffer) >= 50:
+                                            self.rx_buffer.popleft()  # remove oldest
+                                        self.rx_buffer.append(message)
+                                        
+                                        self.rx_lock = False
                                 
-                                buffer = buffer[end_idx+1:]
+                                buffer = buffer[end_idx+1:]  # remove processed part
                             else:
                                 break
                 
-                time.sleep(0.01)
+                time.sleep(0.01)  # small delay to prevent busy waiting
                 
             except Exception as e:
-                print(f"Controller RX error: {e}")
+                print(f"RX Thread error: {e}")
                 time.sleep(0.1)
+        
+        print("RX Thread stopped")
     
     def tx_thread(self):
-        print("Controller TX Thread started")
+        print("TX Thread started")
         
         while self.running:
             try:
+                # Check if there are messages to send
                 message_to_send = None
                 
-                while self.tx_lock:
+                retry_count = 0
+                while self.tx_lock and retry_count < 100:
                     time.sleep(0.001)
-                self.tx_lock = True
+                    retry_count += 1
                 
-                if self.tx_buffer:
-                    message_to_send = self.tx_buffer.popleft()
-                
-                self.tx_lock = False
+                if retry_count < 100:
+                    self.tx_lock = True
+                    
+                    if self.tx_buffer:
+                        message_to_send = self.tx_buffer.popleft()
+                    
+                    self.tx_lock = False
                 
                 if message_to_send:
-                    formatted = self.format_message(message_to_send)
-                    self.uart.write(formatted.encode('utf-8'))
-                    print(f"Sent: {message_to_send}")
-                    
-                    # Add to history
-                    self.command_history.append((message_to_send, time.time()))
-                    if len(self.command_history) > 20:
-                        self.command_history.pop(0)
+                    try:
+                        formatted_message = self.format_message(message_to_send)
+                        self.uart.write(formatted_message.encode('utf-8'))
+                        self.blink_led(0.05)  # quick blink for TX
+                        print(f"Transmitted: {message_to_send}")
+                    except Exception as e:
+                        print(f"TX error: {e}")
                 
-                time.sleep(0.01)
+                time.sleep(0.01)  # small delay
                 
             except Exception as e:
-                print(f"Controller TX error: {e}")
+                print(f"TX Thread error: {e}")
                 time.sleep(0.1)
-    
-    def send_command(self, command):
-        message = f"CMD:{command}"
         
-        while self.tx_lock:
+        print("TX Thread stopped")
+    
+    def send_message(self, message):
+        retry_count = 0
+        while self.tx_lock and retry_count < 100:
             time.sleep(0.001)
-        self.tx_lock = True
+            retry_count += 1
         
-        if len(self.tx_buffer) >= 50:
-            self.tx_buffer.popleft()
-        self.tx_buffer.append(message)
-        
-        self.tx_lock = False
+        if retry_count < 100:
+            self.tx_lock = True
+            
+            if len(self.tx_buffer) >= 50:
+                self.tx_buffer.popleft()  # remove oldest
+            self.tx_buffer.append(message)
+            
+            self.tx_lock = False
     
-    def send_request(self, request):
-        message = f"REQ:{request}"
-        
-        while self.tx_lock:
+    def get_received_message(self):
+        retry_count = 0
+        while self.rx_lock and retry_count < 100:
             time.sleep(0.001)
-        self.tx_lock = True
+            retry_count += 1
         
-        if len(self.tx_buffer) >= 50:
-            self.tx_buffer.popleft()
-        self.tx_buffer.append(message)
+        message = None
+        if retry_count < 100:
+            self.rx_lock = True
+            
+            if self.rx_buffer:
+                message = self.rx_buffer.popleft()
+            
+            self.rx_lock = False
         
-        self.tx_lock = False
+        return message
     
-    def get_received_messages(self):
-        messages = []
-        
-        while self.rx_lock:
-            time.sleep(0.001)
-        self.rx_lock = True
-        
-        while self.rx_buffer:
-            messages.append(self.rx_buffer.popleft())
-        
-        self.rx_lock = False
-        return messages
+    def process_received_messages(self):
+        message = self.get_received_message()
+        while message:
+            print(f"Received: {message}")
+            
+            # Process different message types
+            if message.startswith("CMD:"):
+                self.handle_command(message[4:])
+            elif message.startswith("REQ:"):
+                self.handle_request(message[4:])
+            
+            message = self.get_received_message()
     
-    def display_messages(self):
-        messages = self.get_received_messages()
-        for message, timestamp in messages:
-            print(f"[{time.localtime(timestamp)[3]:02d}:{time.localtime(timestamp)[4]:02d}:{time.localtime(timestamp)[5]:02d}] Received: {message}")
+    def handle_command(self, command):
+        print(f"Processing command: {command}")
+        
+        if command == "STATUS":
+            temp_c = self.read_temperature()
+            status_msg = f"STATUS:TEMP={temp_c}C,COUNT={self.counter}"
+            self.send_message(status_msg)
+        elif command == "PING":
+            self.send_message("PONG")
+        elif command == "LED_ON":
+            self.led.on()
+            self.send_message("ACK:LED_ON")
+        elif command == "LED_OFF":
+            self.led.off()
+            self.send_message("ACK:LED_OFF")
     
-    def interactive_mode(self):
-        print("\n-- UART Controller --")
-        print("Commands:")
-        print("  STATUS    - Get device status")
-        print("  PING      - Ping device")
-        print("  LED_ON    - Turn LED on")
-        print("  LED_OFF   - Turn LED off")
-        print("  TEMP      - Request temperature")
-        print("  HISTORY   - Show command history")
-        print("  MESSAGES  - Show recent messages")
-        print("  QUIT      - Exit")
-        print("------------------------")
+    def handle_request(self, request):
+        print(f"Processing request: {request}")
         
-        while self.running:
-            try:
-                # Display any new messages
-                self.display_messages()
-                
-                # Get user input
-                cmd = input("Enter command: ").strip().upper()
-                
-                if cmd == "QUIT":
-                    break
-                elif cmd == "STATUS":
-                    self.send_command("STATUS")
-                elif cmd == "PING":
-                    self.send_command("PING")
-                elif cmd == "LED_ON":
-                    self.send_command("LED_ON")
-                elif cmd == "LED_OFF":
-                    self.send_command("LED_OFF")
-                elif cmd == "TEMP":
-                    self.send_request("TEMP")
-                elif cmd == "HISTORY":
-                    print("\nCommand History:")
-                    for i, (command, timestamp) in enumerate(self.command_history[-10:]):
-                        print(f"  {i+1}. [{time.localtime(timestamp)[3]:02d}:{time.localtime(timestamp)[4]:02d}:{time.localtime(timestamp)[5]:02d}] {command}")
-                elif cmd == "MESSAGES":
-                    print("Recent messages displayed above")
-                elif cmd == "":
-                    continue
-                else:
-                    print(f"Unknown command: {cmd}")
-                
-                time.sleep(0.1)
-                
-            except KeyboardInterrupt:
-                break
-            except Exception as e:
-                print(f"Error: {e}")
+        if request == "TEMP":
+            temp_c = self.read_temperature()
+            temp_f = (temp_c * 9/5) + 32
+            self.send_message(f"TEMP:{temp_c}C,{temp_f:.1f}F")
     
-    def start(self):
-        print("UART Controller Starting..")
-        print("TX=GP4, RX=GP5")
-        
-        # Start threads
-        _thread.start_new_thread(self.rx_thread, ())
-        _thread.start_new_thread(self.tx_thread, ())
-        
-        time.sleep(1)  # Let threads start
-        
+    @staticmethod
+    def cleanup_threads():
+        """Force cleanup any existing threads - call before creating new instance"""
         try:
-            self.interactive_mode()
-        finally:
-            self.stop()
-    
-    def monitor_mode(self):
-        print("Monitor Mode - Press Ctrl+C to exit")
-        
-        try:
-            while self.running:
-                self.display_messages()
-                time.sleep(0.5)
-        except KeyboardInterrupt:
+            # This is a workaround - there's no direct way to kill threads in MicroPython
+            # We'll rely on the running flag and proper stopping
+            import gc
+            gc.collect()
+            time.sleep(0.5)  # Give time for threads to finish
+        except:
             pass
     
-    def stop(self):
-        print("\nStopping controller..")
-        self.running = False
-
-# Usage
-if __name__ == "__main__":
-    controller = UARTController()
-    
-    # Choose mode
-    print("Select mode:")
-    print("1. Interactive mode (send commands)")
-    print("2. Monitor mode (just listen)")
-    
-    try:
-        choice = input("Enter choice (1 or 2): ").strip()
+    def start(self):
+        print("Full-Duplex UART Communication Starting..")
+        print("TX=GP4, RX=GP5")
+        print("Commands: STATUS, PING, LED_ON, LED_OFF")
+        print("Requests: TEMP")
         
-        if choice == "1":
-            controller.start()  # Interactive mode
-        elif choice == "2":
-            # Start threads for monitor mode
-            _thread.start_new_thread(controller.rx_thread, ())
-            _thread.start_new_thread(controller.tx_thread, ())
-            controller.monitor_mode()
-        else:
-            print("Invalid choice")
+        # Try to start threads with error handling
+        try:
+            print("Starting RX thread...")
+            self.rx_thread_id = _thread.start_new_thread(self.rx_thread, ())
+            time.sleep(0.1)  # Small delay between thread starts
             
-    except Exception as e:
-        print(f"Error: {e}")
-    finally:
-        controller.stop()
+            print("Starting TX thread...")
+            self.tx_thread_id = _thread.start_new_thread(self.tx_thread, ())
+            time.sleep(0.1)
+            
+        except OSError as e:
+            if "core1 in use" in str(e):
+                print("Error: Core1 is already in use!")
+                print("Solutions:")
+                print("1. Reset the device (Ctrl+D)")
+                print("2. Or call machine.reset()")
+                print("3. Or use single-threaded mode")
+                return False
+            else:
+                print(f"Thread start error: {e}")
+                return False
+        
+        print("Threads started successfully!")
+        
+        # Main loop - sends periodic temperature data and processes received messages
+        try:
+            while self.running:
+                # Send periodic temperature data
+                temp_c = self.read_temperature()
+                temp_f = (temp_c * 9/5) + 32
+                temp_message = f"TEMP:{temp_c}C,{temp_f:.1f}F,COUNT:{self.counter}"
+                self.send_message(temp_message)
+                
+                # Process any received messages
+                self.process_received_messages()
+                
+                self.counter += 1
+                
+                # Wait before next cycle
+                for _ in range(20):  # 2 seconds total, checking for messages every 0.1s
+                    if not self.running:
+                        break
+                    self.process_received_messages()
+                    time.sleep(0.1)
+                
+        except KeyboardInterrupt:
+            print("\nStopping communication..")
+            self.stop()
+    
+    def stop(self):
+        print("Stopping threads...")
+        self.running = False
+        time.sleep(1)  # Allow threads to finish
+        print("Stopped.")
+    
+    def start_single_threaded(self):
+        """Alternative single-threaded mode if threading fails"""
+        print("Starting in single-threaded mode...")
+        print("TX=GP4, RX=GP5")
+        
+        try:
+            while True:
+                # Check for received data
+                if self.uart.any():
+                    data = self.uart.read()
+                    if data:
+                        try:
+                            message = data.decode('utf-8', 'ignore').strip()
+                            if message:
+                                print(f"Received: {message}")
+                        except:
+                            pass
+                
+                # Send periodic temperature
+                temp_c = self.read_temperature()
+                temp_f = (temp_c * 9/5) + 32
+                temp_message = f"TEMP:{temp_c}C,{temp_f:.1f}F,COUNT:{self.counter}"
+                formatted = self.format_message(temp_message)
+                
+                try:
+                    self.uart.write(formatted.encode('utf-8'))
+                    self.blink_led(0.05)
+                    print(f"Sent: {temp_message}")
+                except:
+                    pass
+                
+                self.counter += 1
+                time.sleep(2)
+                
+        except KeyboardInterrupt:
+            print("\nStopped.")
 
+# Usage with error handling
+if __name__ == "__main__":
+    # Clean up any existing threads
+    FullDuplexUART.cleanup_threads()
+    
+    comm = FullDuplexUART()
+    
+    # Try threaded mode first, fall back to single-threaded
+    if not comm.start():
+        print("Falling back to single-threaded mode...")
+        comm.start_single_threaded()
