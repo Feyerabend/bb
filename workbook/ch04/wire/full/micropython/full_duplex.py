@@ -17,20 +17,30 @@ class FullDuplexUART:
         self.running = True
         self.counter = 0
         
+        # Thread management
+        self.rx_thread_id = None
+        self.tx_thread_id = None
+        
         # Locks for thread safety (simple flags since MicroPython threading is limited)
         self.rx_lock = False
         self.tx_lock = False
     
     def read_temperature(self):
-        reading = self.temp_sensor.read_u16()
-        voltage = reading * 3.3 / 65535
-        temperature = 27 - (voltage - 0.706) / 0.001721
-        return round(temperature, 1)
+        try:
+            reading = self.temp_sensor.read_u16()
+            voltage = reading * 3.3 / 65535
+            temperature = 27 - (voltage - 0.706) / 0.001721
+            return round(temperature, 1)
+        except:
+            return 25.0  # fallback temperature
     
     def blink_led(self, duration=0.1):
-        self.led.on()
-        time.sleep(duration)
-        self.led.off()
+        try:
+            self.led.on()
+            time.sleep(duration)
+            self.led.off()
+        except:
+            pass
     
     def format_message(self, message):
         return f"#{message}*"
@@ -49,7 +59,10 @@ class FullDuplexUART:
                 if self.uart.any():
                     data = self.uart.read()
                     if data:
-                        buffer += data.decode('utf-8')
+                        try:
+                            buffer += data.decode('utf-8', 'ignore')
+                        except:
+                            continue
                         
                         # Look for complete messages
                         while '#' in buffer and '*' in buffer:
@@ -62,15 +75,19 @@ class FullDuplexUART:
                                 
                                 if message:
                                     # Thread-safe buffer access
-                                    while self.rx_lock:
+                                    retry_count = 0
+                                    while self.rx_lock and retry_count < 100:
                                         time.sleep(0.001)
-                                    self.rx_lock = True
+                                        retry_count += 1
                                     
-                                    if len(self.rx_buffer) >= 50:
-                                        self.rx_buffer.popleft()  # remove oldest
-                                    self.rx_buffer.append(message)
-                                    
-                                    self.rx_lock = False
+                                    if retry_count < 100:
+                                        self.rx_lock = True
+                                        
+                                        if len(self.rx_buffer) >= 50:
+                                            self.rx_buffer.popleft()  # remove oldest
+                                        self.rx_buffer.append(message)
+                                        
+                                        self.rx_lock = False
                                 
                                 buffer = buffer[end_idx+1:]  # remove processed part
                             else:
@@ -81,6 +98,8 @@ class FullDuplexUART:
             except Exception as e:
                 print(f"RX Thread error: {e}")
                 time.sleep(0.1)
+        
+        print("RX Thread stopped")
     
     def tx_thread(self):
         print("TX Thread started")
@@ -90,48 +109,66 @@ class FullDuplexUART:
                 # Check if there are messages to send
                 message_to_send = None
                 
-                while self.tx_lock:
+                retry_count = 0
+                while self.tx_lock and retry_count < 100:
                     time.sleep(0.001)
-                self.tx_lock = True
+                    retry_count += 1
                 
-                if self.tx_buffer:
-                    message_to_send = self.tx_buffer.popleft()
-                
-                self.tx_lock = False
+                if retry_count < 100:
+                    self.tx_lock = True
+                    
+                    if self.tx_buffer:
+                        message_to_send = self.tx_buffer.popleft()
+                    
+                    self.tx_lock = False
                 
                 if message_to_send:
-                    formatted_message = self.format_message(message_to_send)
-                    self.uart.write(formatted_message.encode('utf-8'))
-                    self.blink_led(0.05)  # quick blink for TX
-                    print(f"Transmitted: {message_to_send}")
+                    try:
+                        formatted_message = self.format_message(message_to_send)
+                        self.uart.write(formatted_message.encode('utf-8'))
+                        self.blink_led(0.05)  # quick blink for TX
+                        print(f"Transmitted: {message_to_send}")
+                    except Exception as e:
+                        print(f"TX error: {e}")
                 
                 time.sleep(0.01)  # small delay
                 
             except Exception as e:
                 print(f"TX Thread error: {e}")
                 time.sleep(0.1)
+        
+        print("TX Thread stopped")
     
     def send_message(self, message):
-        while self.tx_lock:
+        retry_count = 0
+        while self.tx_lock and retry_count < 100:
             time.sleep(0.001)
-        self.tx_lock = True
+            retry_count += 1
         
-        if len(self.tx_buffer) >= 50:
-            self.tx_buffer.popleft()  # remove oldest
-        self.tx_buffer.append(message)
-        
-        self.tx_lock = False
+        if retry_count < 100:
+            self.tx_lock = True
+            
+            if len(self.tx_buffer) >= 50:
+                self.tx_buffer.popleft()  # remove oldest
+            self.tx_buffer.append(message)
+            
+            self.tx_lock = False
     
     def get_received_message(self):
-        while self.rx_lock:
+        retry_count = 0
+        while self.rx_lock and retry_count < 100:
             time.sleep(0.001)
-        self.rx_lock = True
+            retry_count += 1
         
         message = None
-        if self.rx_buffer:
-            message = self.rx_buffer.popleft()
+        if retry_count < 100:
+            self.rx_lock = True
+            
+            if self.rx_buffer:
+                message = self.rx_buffer.popleft()
+            
+            self.rx_lock = False
         
-        self.rx_lock = False
         return message
     
     def process_received_messages(self):
@@ -152,7 +189,6 @@ class FullDuplexUART:
         
         if command == "STATUS":
             temp_c = self.read_temperature()
-            temp_f = (temp_c * 9/5) + 32
             status_msg = f"STATUS:TEMP={temp_c}C,COUNT={self.counter}"
             self.send_message(status_msg)
         elif command == "PING":
@@ -172,15 +208,47 @@ class FullDuplexUART:
             temp_f = (temp_c * 9/5) + 32
             self.send_message(f"TEMP:{temp_c}C,{temp_f:.1f}F")
     
+    @staticmethod
+    def cleanup_threads():
+        """Force cleanup any existing threads - call before creating new instance"""
+        try:
+            # This is a workaround - there's no direct way to kill threads in MicroPython
+            # We'll rely on the running flag and proper stopping
+            import gc
+            gc.collect()
+            time.sleep(0.5)  # Give time for threads to finish
+        except:
+            pass
+    
     def start(self):
         print("Full-Duplex UART Communication Starting..")
         print("TX=GP4, RX=GP5")
         print("Commands: STATUS, PING, LED_ON, LED_OFF")
         print("Requests: TEMP")
         
-        # Start RX and TX threads
-        _thread.start_new_thread(self.rx_thread, ())
-        _thread.start_new_thread(self.tx_thread, ())
+        # Try to start threads with error handling
+        try:
+            print("Starting RX thread...")
+            self.rx_thread_id = _thread.start_new_thread(self.rx_thread, ())
+            time.sleep(0.1)  # Small delay between thread starts
+            
+            print("Starting TX thread...")
+            self.tx_thread_id = _thread.start_new_thread(self.tx_thread, ())
+            time.sleep(0.1)
+            
+        except OSError as e:
+            if "core1 in use" in str(e):
+                print("Error: Core1 is already in use!")
+                print("Solutions:")
+                print("1. Reset the device (Ctrl+D)")
+                print("2. Or call machine.reset()")
+                print("3. Or use single-threaded mode")
+                return False
+            else:
+                print(f"Thread start error: {e}")
+                return False
+        
+        print("Threads started successfully!")
         
         # Main loop - sends periodic temperature data and processes received messages
         try:
@@ -198,19 +266,66 @@ class FullDuplexUART:
                 
                 # Wait before next cycle
                 for _ in range(20):  # 2 seconds total, checking for messages every 0.1s
+                    if not self.running:
+                        break
                     self.process_received_messages()
                     time.sleep(0.1)
                 
         except KeyboardInterrupt:
             print("\nStopping communication..")
-            self.running = False
-            time.sleep(0.5)  # Allow threads to finish
+            self.stop()
     
     def stop(self):
+        print("Stopping threads...")
         self.running = False
+        time.sleep(1)  # Allow threads to finish
+        print("Stopped.")
+    
+    def start_single_threaded(self):
+        """Alternative single-threaded mode if threading fails"""
+        print("Starting in single-threaded mode...")
+        print("TX=GP4, RX=GP5")
+        
+        try:
+            while True:
+                # Check for received data
+                if self.uart.any():
+                    data = self.uart.read()
+                    if data:
+                        try:
+                            message = data.decode('utf-8', 'ignore').strip()
+                            if message:
+                                print(f"Received: {message}")
+                        except:
+                            pass
+                
+                # Send periodic temperature
+                temp_c = self.read_temperature()
+                temp_f = (temp_c * 9/5) + 32
+                temp_message = f"TEMP:{temp_c}C,{temp_f:.1f}F,COUNT:{self.counter}"
+                formatted = self.format_message(temp_message)
+                
+                try:
+                    self.uart.write(formatted.encode('utf-8'))
+                    self.blink_led(0.05)
+                    print(f"Sent: {temp_message}")
+                except:
+                    pass
+                
+                self.counter += 1
+                time.sleep(2)
+                
+        except KeyboardInterrupt:
+            print("\nStopped.")
 
-# Usage
+# Usage with error handling
 if __name__ == "__main__":
+    # Clean up any existing threads
+    FullDuplexUART.cleanup_threads()
+    
     comm = FullDuplexUART()
-    comm.start()
-
+    
+    # Try threaded mode first, fall back to single-threaded
+    if not comm.start():
+        print("Falling back to single-threaded mode...")
+        comm.start_single_threaded()
