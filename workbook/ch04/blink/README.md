@@ -266,13 +266,13 @@ you can use VS Code’s built-in debugger:
 
 ### Official Resources
 
-- Official Raspberry Pi documentation at https://raspberrypi.com/documentation/microcontrollers/
-- Pico SDK on GitHub: https://github.com/raspberrypi/pico-sdk
-- Datasheets available from https://datasheets.raspberrypi.com
-
-- [Raspberry Pi Pico SDK Documentation](https://raspberrypi.github.io/pico-sdk-doxygen/)
+- [Raspberry Pi documentation](https://raspberrypi.com/documentation/microcontrollers/)
+- [Pico SDK](https://github.com/raspberrypi/pico-sdk)
 - [RP2040 Datasheet](https://datasheets.raspberrypi.org/rp2040/rp2040-datasheet.pdf)
+- [Pico Datasheet](https://datasheets.raspberrypi.org/pico/pico-datasheet.pdf)
 - [Pico W Datasheet](https://datasheets.raspberrypi.org/picow/pico-w-datasheet.pdf)
+- [Raspberry Pi Pico SDK Documentation](https://raspberrypi.github.io/pico-sdk-doxygen/)
+- [Datasheets](https://datasheets.raspberrypi.com)
 
 Both development paths are well-supported, and your choice depends
 on your project requirements, performance needs, and personal preferences.
