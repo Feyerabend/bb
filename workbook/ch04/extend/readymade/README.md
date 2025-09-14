@@ -10,6 +10,8 @@ like PicoVision, PicoCalc, PicoDemo, and PicoDV demonstrate just how far this li
 can take you.
 
 
+![PicoVision](./picovision.png)
+
 
 #### PicoVision
 
@@ -53,6 +55,8 @@ Key features include:
  IDE for MicroPython or the Pico SDK for C++.
 
 
+![PicoCalc](./picocalc.png)
+
 #### PicoCalc
 
 Ever wanted a gadget that’s part calculator, part computer, and all awesome? PicoCalc,
@@ -92,6 +96,8 @@ IoT, or portable coding. It's compact for on-the-go use but relies on community 
 advanced features, as ClockworkPi's software support can be limited.
 
 
+![PicoDemo](./demo_board.png)
+
 #### PicoDemo
 
 PicoDemo, often tied to the Pimoroni Pico VGA Demo Base, is all about showing off what the
@@ -125,6 +131,8 @@ video demos, it ties into PicoDVI (see below). Broader "pico demo" contexts incl
 raspberrypi/pico-examples (covering USB, PIO, and more) or community projects like boot demos in
 ReileyB/picoDemo. Use it to prototype displays, sound, or I/O without needing full development setups.
 
+
+![PicoDV](./picodv.png)
 
 #### PicoDV
 
