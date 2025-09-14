@@ -1,6 +1,8 @@
 
 ## Temperature from BMP280
 
+External sensor for temperature measurements.
+
 __1. What the BMP280 actually does__
 - The BMP280 is a pressure and temperature sensor.
 - Inside, it has an ADC (analog-to-digital converter) that measures raw sensor data (called uncompensated values).
@@ -28,8 +30,6 @@ __3. Raw temperature measurement__
   temperature in registers 0xFA (MSB), 0xFB (LSB), and 0xFC (XLSB).
 - Together, these 3 bytes form a 20-bit integer (adc_T).
 - Example: adc_T = 519888 (again, datasheet example).
-
-
 
 __4. Bosch’s compensation formula__
 
@@ -128,7 +128,6 @@ while True:
     print("Temperature:", temp, "°C")
     time.sleep(1)
 ```
-
 
 
 ### C (Raspberry Pi Pico SDK, no external libs)
