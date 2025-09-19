@@ -1,13 +1,13 @@
-#ifndef DISPLAY_PACK_H
-#define DISPLAY_PACK_H
+#ifndef DISPLAY_H
+#define DISPLAY_H
 
 #include <stdint.h>
 #include <stdbool.h>
 #include "pico/stdlib.h"
 
-// Display dimensions
-#define DISPLAY_WIDTH 240
-#define DISPLAY_HEIGHT 135
+// Display Pack 2.0 specifications: 320x240 pixels
+#define DISPLAY_WIDTH 320
+#define DISPLAY_HEIGHT 240
 
 // Colors (RGB565 format)
 #define COLOR_BLACK     0x0000
@@ -47,4 +47,4 @@ bool button_just_pressed(button_t button);
 bool button_just_released(button_t button);
 void button_set_callback(button_t button, button_callback_t callback);
 
-#endif // DISPLAY_PACK_H
+#endif // DISPLAY_H

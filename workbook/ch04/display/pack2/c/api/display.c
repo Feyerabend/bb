@@ -1,4 +1,4 @@
-#include "display_pack.h"
+#include "display.h"
 #include "hardware/spi.h"
 #include "hardware/gpio.h"
 #include "hardware/dma.h"
@@ -227,16 +227,16 @@ static void display_write_data_buf(uint8_t *data, size_t len) {
 
 static void display_set_window(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
     display_write_command(0x2A); // CASET (Column Address Set)
-    display_write_data((x0 + 53) >> 8);
-    display_write_data((x0 + 53) & 0xFF);
-    display_write_data((x1 + 53) >> 8);
-    display_write_data((x1 + 53) & 0xFF);
+    display_write_data(x0 >> 8);
+    display_write_data(x0 & 0xFF);
+    display_write_data(x1 >> 8);
+    display_write_data(x1 & 0xFF);
 
     display_write_command(0x2B); // RASET (Row Address Set)
-    display_write_data((y0 + 40) >> 8);
-    display_write_data((y0 + 40) & 0xFF);
-    display_write_data((y1 + 40) >> 8);
-    display_write_data((y1 + 40) & 0xFF);
+    display_write_data(y0 >> 8);
+    display_write_data(y0 & 0xFF);
+    display_write_data(y1 >> 8);
+    display_write_data(y1 & 0xFF);
     
     display_write_command(0x2C); // RAMWR - Write to RAM
 }
@@ -244,7 +244,7 @@ static void display_set_window(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y
 // Public display functions
 bool display_pack_init(void) {
     // Init SPI
-    spi_init(spi0, 20000000); // Increased to 20MHz for better performance
+    spi_init(spi0, 62500000); // Increased to 62.5MHz for better performance with 320x240
     gpio_set_function(DISPLAY_CLK_PIN, GPIO_FUNC_SPI);
     gpio_set_function(DISPLAY_MOSI_PIN, GPIO_FUNC_SPI);
     
@@ -272,40 +272,107 @@ bool display_pack_init(void) {
     gpio_put(DISPLAY_RESET_PIN, 1);
     sleep_ms(120);
     
-    // Initialize DMA
+    // Init DMA
     dma_init();
     
-    // ST7789 initialisation sequence
+    // ST7789V2 initialisation sequence for Display Pack 2.0 (320x240)
     display_write_command(0x01); // SWRESET - Software reset
     sleep_ms(150);
     
     display_write_command(0x11); // SLPOUT - Sleep out
-    sleep_ms(10);
+    sleep_ms(120);
     
     display_write_command(0x3A); // COLMOD - Interface Pixel Format
     display_write_data(0x55);    // 16-bit RGB565
     
     display_write_command(0x36); // MADCTL - Memory Data Access Control
-    display_write_data(0x60);    //
+    display_write_data(0x70);    // Row/Column exchange, RGB order
     
-    // Set display area to 240x135 (rotated)
+    // Set display area to full 320x240 (no offset needed for Display Pack 2.0)
     display_write_command(0x2A); // CASET (Column Address Set)
-    display_write_data(0x00);
-    display_write_data(0x35);    // Start at column 53
-    display_write_data(0x00);
-    display_write_data(0xBB);    // End at column 187
+    display_write_data(0x00);    // Start column high byte
+    display_write_data(0x00);    // Start column low byte (0)
+    display_write_data(0x01);    // End column high byte  
+    display_write_data(0x3F);    // End column low byte (319)
 
     display_write_command(0x2B); // RASET (Row Address Set)
+    display_write_data(0x00);    // Start row high byte
+    display_write_data(0x00);    // Start row low byte (0)
+    display_write_data(0x00);    // End row high byte
+    display_write_data(0xEF);    // End row low byte (239)
+    
+    // Additional ST7789V2 specific settings for better performance
+    display_write_command(0xB2); // PORCTRL (Porch control)
+    display_write_data(0x0C);
+    display_write_data(0x0C);
     display_write_data(0x00);
-    display_write_data(0x28);    // Start at row 40
+    display_write_data(0x33);
+    display_write_data(0x33);
+    
+    display_write_command(0xB7); // GCTRL (Gate control)
+    display_write_data(0x35);
+    
+    display_write_command(0xBB); // VCOMS (VCOM setting)
+    display_write_data(0x19);
+    
+    display_write_command(0xC0); // LCMCTRL (LCM control)
+    display_write_data(0x2C);
+    
+    display_write_command(0xC2); // VDVVRHEN (VDV and VRH command enable)
     display_write_data(0x01);
-    display_write_data(0x17);    // End at row 279
+    
+    display_write_command(0xC3); // VRHS (VRH set)
+    display_write_data(0x12);
+    
+    display_write_command(0xC4); // VDVS (VDV set)
+    display_write_data(0x20);
+    
+    display_write_command(0xC6); // FRCTRL2 (Frame rate control in normal mode)
+    display_write_data(0x0F);
+    
+    display_write_command(0xD0); // PWCTRL1 (Power control 1)
+    display_write_data(0xA4);
+    display_write_data(0xA1);
+    
+    // Positive Voltage Gamma Control
+    display_write_command(0xE0);
+    display_write_data(0xD0);
+    display_write_data(0x04);
+    display_write_data(0x0D);
+    display_write_data(0x11);
+    display_write_data(0x13);
+    display_write_data(0x2B);
+    display_write_data(0x3F);
+    display_write_data(0x54);
+    display_write_data(0x4C);
+    display_write_data(0x18);
+    display_write_data(0x0D);
+    display_write_data(0x0B);
+    display_write_data(0x1F);
+    display_write_data(0x23);
+    
+    // Negative Voltage Gamma Control
+    display_write_command(0xE1);
+    display_write_data(0xD0);
+    display_write_data(0x04);
+    display_write_data(0x0C);
+    display_write_data(0x11);
+    display_write_data(0x13);
+    display_write_data(0x2C);
+    display_write_data(0x3F);
+    display_write_data(0x44);
+    display_write_data(0x51);
+    display_write_data(0x2F);
+    display_write_data(0x1F);
+    display_write_data(0x1F);
+    display_write_data(0x20);
+    display_write_data(0x23);
     
     display_write_command(0x21); // INVON - Invert colors
     display_write_command(0x13); // NORON - Normal display mode on
     sleep_ms(10);
     display_write_command(0x29); // DISPON - Display on
-    sleep_ms(10);
+    sleep_ms(100);
     
     // Turn on backlight
     gpio_put(DISPLAY_BL_PIN, 1);

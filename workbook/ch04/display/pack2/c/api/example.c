@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "display_pack.h"
+#include "display.h"
 
 // Callback functions
 void on_button_a(button_t button) {
@@ -47,10 +47,11 @@ int main() {
     
     // Clear screen and check
     display_clear(COLOR_BLACK);
-    display_draw_string(10, 10, "Display Pack Library", COLOR_WHITE, COLOR_BLACK);
-    display_draw_string(10, 25, "Text should not be mirrored?", COLOR_CYAN, COLOR_BLACK);
-    display_draw_string(10, 45, "Press any button to test", COLOR_YELLOW, COLOR_BLACK);
-    display_draw_string(10, 70, "A=Red B=Green X=Blue Y=Yellow", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(10, 10, "DISPLAY PACK LIBRARY", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(10, 25, "TEXT SHOULD NOT BE MIRRORED?", COLOR_CYAN, COLOR_BLACK);
+    display_draw_string(10, 40, "01234567890123456789012345678901234567890123456789", COLOR_CYAN, COLOR_BLACK);
+    display_draw_string(10, 55, "PRESS ANY BUTTON TO TEST", COLOR_YELLOW, COLOR_BLACK);
+    display_draw_string(10, 70, "A=RED B=GREEN X=BLUE Y=YELLOW", COLOR_WHITE, COLOR_BLACK);
     
     // Draw some graphics
     display_fill_rect(10, 90, 50, 20, COLOR_MAGENTA);
