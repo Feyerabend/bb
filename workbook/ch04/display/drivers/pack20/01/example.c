@@ -109,7 +109,7 @@ static bool draw_initial_screen(void) {
     // Draw test strings with bounds checking
     const char* test_lines[] = {
         "TEXT SHOULD NOT BE MIRRORED?",
-        "0123456789ABCDEFGHIJKLMNOPQRS", // ? works
+        "01234567890123456789012345678901234567890123456789", // ? works
         "PRESS ANY BUTTON TO TEST",
         "A=RED B=GREEN X=BLUE Y=YELLOW"
     };
