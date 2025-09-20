@@ -1,9 +1,12 @@
 #include "display.h"
 #include "hardware/spi.h"
+#include "hardware/sync.h"
 #include "hardware/gpio.h"
 #include "hardware/dma.h"
 #include "hardware/irq.h"
-#include "hardware/pwm.h"
+#include "pico/time.h"
+#include "hardware/timer.h"
+
 #include <string.h>
 
 // Display Pack pin defs
@@ -20,24 +23,11 @@
 #define BUTTON_X_PIN 14
 #define BUTTON_Y_PIN 15
 
-// LED pins
-#define LED_R_PIN 6
-#define LED_G_PIN 7
-#define LED_B_PIN 8
-
 // DMA configuration
 static int dma_channel = -1;
 static bool dma_initialized = false;
 static volatile bool dma_busy = false;
 static bool display_initialized = false;
-
-// LED configuration
-static uint pwm_slice_r_g = 0;
-static uint pwm_chan_r = 0;
-static uint pwm_chan_g = 0;
-static uint pwm_slice_b = 0;
-static uint pwm_chan_b = 0;
-static bool led_initialized = false;
 
 // Internal state with proper bounds checking
 static button_callback_t button_callbacks[BUTTON_COUNT] = {NULL};
@@ -127,6 +117,11 @@ static const char* error_strings[] = {
     "Display not initialised"
 };
 
+// Get current time in milliseconds
+static inline uint32_t get_time_ms(void) {
+    return to_ms_since_boot(get_absolute_time());
+}
+
 // DMA interrupt handler with safety checks
 void __isr dma_handler() {
     // Check if this is our channel and clear the interrupt
@@ -153,11 +148,10 @@ static display_error_t dma_init(void) {
     return DISPLAY_OK;
 }
 
-// Wait for DMA to complete with timeout
 static bool dma_wait_for_finish_timeout(uint32_t timeout_ms) {
-    uint32_t start = to_ms_since_boot(get_absolute_time());
+    uint32_t start = get_time_ms();
     while (dma_busy) {
-        if (to_ms_since_boot(get_absolute_time()) - start > timeout_ms) {
+        if (get_time_ms() - start > timeout_ms) {
             return false; // Timeout
         }
         tight_loop_contents();
@@ -171,6 +165,7 @@ static void dma_wait_for_finish(void) {
         // Force stop the DMA channel if timeout occurs
         if (dma_channel >= 0) {
             dma_channel_abort(dma_channel);
+            dma_hw->ints0 = 1u << dma_channel; // Clear pending interrupt to prevent ghost IRQs
         }
         dma_busy = false;
     }
@@ -275,11 +270,11 @@ static display_error_t display_set_window(uint16_t x0, uint16_t y0, uint16_t x1,
 }
 
 // Public display functions with robust error handling
-display_error_t display_init(void) {
+display_error_t display_pack_init(void) {
     if (display_initialized) return DISPLAY_OK;
     
-    // Init SPI
-    if (spi_init(spi0, 62500000) == 0) return DISPLAY_ERROR_INIT_FAILED;
+    // Init SPI (reduced speed for stability)
+    if (spi_init(spi0, 31250000) == 0) return DISPLAY_ERROR_INIT_FAILED;
     gpio_set_function(DISPLAY_CLK_PIN, GPIO_FUNC_SPI);
     gpio_set_function(DISPLAY_MOSI_PIN, GPIO_FUNC_SPI);
     
@@ -512,40 +507,6 @@ display_error_t display_set_backlight(bool on) {
     return DISPLAY_OK;
 }
 
-display_error_t led_init(void) {
-    if (led_initialized) return DISPLAY_OK;
-
-    // Setup red and green (same slice)
-    pwm_slice_r_g = pwm_gpio_to_slice_num(LED_R_PIN);
-    pwm_chan_r = pwm_gpio_to_channel(LED_R_PIN);
-    pwm_chan_g = pwm_gpio_to_channel(LED_G_PIN);
-    gpio_set_function(LED_R_PIN, GPIO_FUNC_PWM);
-    gpio_set_function(LED_G_PIN, GPIO_FUNC_PWM);
-    pwm_set_wrap(pwm_slice_r_g, 255);
-    pwm_set_chan_level(pwm_slice_r_g, pwm_chan_r, 255); // off
-    pwm_set_chan_level(pwm_slice_r_g, pwm_chan_g, 255); // off
-    pwm_set_enabled(pwm_slice_r_g, true);
-
-    // Blue
-    pwm_slice_b = pwm_gpio_to_slice_num(LED_B_PIN);
-    pwm_chan_b = pwm_gpio_to_channel(LED_B_PIN);
-    gpio_set_function(LED_B_PIN, GPIO_FUNC_PWM);
-    pwm_set_wrap(pwm_slice_b, 255);
-    pwm_set_chan_level(pwm_slice_b, pwm_chan_b, 255); // off
-    pwm_set_enabled(pwm_slice_b, true);
-
-    led_initialized = true;
-    return DISPLAY_OK;
-}
-
-display_error_t led_set_rgb(uint8_t r, uint8_t g, uint8_t b) {
-    if (!led_initialized) return DISPLAY_ERROR_NOT_INITIALIZED;
-    pwm_set_chan_level(pwm_slice_r_g, pwm_chan_r, 255 - r);
-    pwm_set_chan_level(pwm_slice_r_g, pwm_chan_g, 255 - g);
-    pwm_set_chan_level(pwm_slice_b, pwm_chan_b, 255 - b);
-    return DISPLAY_OK;
-}
-
 // Button functions with robust error handling
 display_error_t buttons_init(void) {
     if (buttons_initialized) return DISPLAY_OK;
@@ -566,7 +527,7 @@ display_error_t buttons_init(void) {
 void buttons_update(void) {
     if (!buttons_initialized) return;
     
-    uint32_t now = to_ms_since_boot(get_absolute_time());
+    uint32_t now = get_time_ms();
     
     // Debounce - only check buttons every 50ms
     if (now - last_button_check < 50) return;
@@ -651,21 +612,6 @@ static void display_dma_deinit(void) {
     }
 }
 
-// Function to deinit LED safely
-static void led_deinit(void) {
-    if (led_initialized) {
-        pwm_set_enabled(pwm_slice_r_g, false);
-        pwm_set_enabled(pwm_slice_b, false);
-        gpio_set_function(LED_R_PIN, GPIO_FUNC_SIO);
-        gpio_set_function(LED_G_PIN, GPIO_FUNC_SIO);
-        gpio_set_function(LED_B_PIN, GPIO_FUNC_SIO);
-        gpio_put(LED_R_PIN, 1); // Off
-        gpio_put(LED_G_PIN, 1); // Off
-        gpio_put(LED_B_PIN, 1); // Off
-        led_initialized = false;
-    }
-}
-
 // Cleanup function to be called at program end
 void display_cleanup(void) {
     // Wait for any pending DMA operations
@@ -673,9 +619,6 @@ void display_cleanup(void) {
     
     // Clean up DMA
     display_dma_deinit();
-    
-    // Clean up LED
-    led_deinit();
     
     // Clean up SPI
     if (display_initialized) {
