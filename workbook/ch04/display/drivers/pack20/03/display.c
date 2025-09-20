@@ -653,3 +653,4 @@ void display_cleanup(void) {
         button_callbacks[i] = NULL;
     }
 }
+
