@@ -18,14 +18,14 @@
 ### What Are Drivers?
 
 #### Definition
-A *driver* is a software component that provides a standardized interface
+A *driver* is a software component that provides a standardised interface
 between higher-level application code and hardware peripherals. It abstracts
 the low-level hardware details and provides a clean, easy-to-use API.
 
 #### Why Do We Need Drivers?
 - *Hardware Abstraction*: Hide complex register manipulation
 - *Reusability*: Write once, use everywhere
-- *Maintainability*: Centralize hardware-specific code
+- *Maintainability*: Centralise hardware-specific code
 - *Portability*: Switch hardware with minimal code changes
 - *Safety*: Prevent incorrect hardware usage
 
@@ -57,7 +57,7 @@ the low-level hardware details and provides a clean, easy-to-use API.
 1. *Hardware Abstraction Layer (HAL)*: Direct hardware access
 2. *Driver Core*: Business logic and state management
 3. *API Layer*: Public interface for applications
-4. *Configuration*: Settings and initialization
+4. *Configuration*: Settings and initialisation
 
 
 
