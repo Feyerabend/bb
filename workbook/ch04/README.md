@@ -25,8 +25,6 @@ __Printed book reference: see explanations and examples in [BOOK].__
 
 > [!IMPORTANT]
 > To seperate running C and Python (MicroPython to be exact) on the Raspberry Pi Pico, from that on your main computer (Windows, Macintosh or Linux, type), the repositories here are marked with names "c" or "micropython" for inteded use on the RPI Pico.
-
-> [!TIP]
 > Certain areas, such as "drivers," are more appropriately addressed in C, whereas topics like "wireless" are more effectively illustrated using MicroPython. Consequently, not all concepts are presented in both languages, and the corresponding language annotations have been applied selectively.
 
 
