@@ -466,6 +466,24 @@ display_error_t display_draw_pixel(uint16_t x, uint16_t y, uint16_t color) {
     return display_fill_rect(x, y, 1, 1, color);
 }
 
+display_error_t display_blit_full(const uint16_t *pixels) {
+    if (!display_initialized) return DISPLAY_ERROR_NOT_INITIALIZED;
+    if (!pixels) return DISPLAY_ERROR_INVALID_PARAM;
+
+    display_error_t result = display_set_window(0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1);
+    if (result != DISPLAY_OK) return result;
+
+    dma_wait_for_finish();
+    gpio_put(DISPLAY_DC_PIN, 1);
+    gpio_put(DISPLAY_CS_PIN, 0);
+
+    result = dma_spi_write_buffer((uint8_t *)pixels, DISPLAY_WIDTH * DISPLAY_HEIGHT * 2);
+    dma_wait_for_finish();
+
+    gpio_put(DISPLAY_CS_PIN, 1);
+    return result;
+}
+
 display_error_t display_draw_char(uint16_t x, uint16_t y, char c, uint16_t color, uint16_t bg_color) {
     if (!display_initialized) return DISPLAY_ERROR_NOT_INITIALIZED;
     if (x >= DISPLAY_WIDTH || y >= DISPLAY_HEIGHT) return DISPLAY_ERROR_INVALID_PARAM;

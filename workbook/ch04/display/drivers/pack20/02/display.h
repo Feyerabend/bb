@@ -45,6 +45,7 @@ display_error_t display_pack_init(void);
 display_error_t display_clear(uint16_t color);
 display_error_t display_fill_rect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
 display_error_t display_draw_pixel(uint16_t x, uint16_t y, uint16_t color);
+display_error_t display_blit_full(const uint16_t *pixels);
 display_error_t display_draw_char(uint16_t x, uint16_t y, char c, uint16_t color, uint16_t bg_color);
 display_error_t display_draw_string(uint16_t x, uint16_t y, const char* str, uint16_t color, uint16_t bg_color);
 display_error_t display_set_backlight(bool on);
