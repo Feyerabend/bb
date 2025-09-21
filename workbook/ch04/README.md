@@ -16,6 +16,7 @@ __Printed book reference: see explanations and examples in [BOOK].__
 * ..
 * [rsa](./secure/rsa/)            - RSA for encryption/decryption
 * ..
+* [practice](./practice/)         - Build your own computer
 
 
 ## Building and Experimenting
