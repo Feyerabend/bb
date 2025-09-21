@@ -1,8 +1,8 @@
 
 ## Three Projects
 
-These projects presuppose a larger memory as in *Raspberry Pi Pico 2 W*.
-We also ue the *Pimironi Disaply Pack 2.0*.
+These projects presupposes a larger memory as you can find in *Raspberry Pi Pico 2 W*.
+We also use the larger *Pimironi Display Pack 2.0*.
 
 
 ### Project 1: Enhancing the Display Driver API for Buffered Rendering Efficiency
