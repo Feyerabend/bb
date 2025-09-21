@@ -8,16 +8,16 @@ project(uart_communication C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
-# Initialize the SDK
+# Init the SDK
 pico_sdk_init()
 
 # Full duplex UART program (main device)
-add_executable(full_duplex
-    full_duplex.c
+add_executable(device
+    device.c
 )
 
-target_link_libraries(full_duplex 
-    pico_stdlib 
+target_link_libraries(device
+    pico_stdlib
     pico_multicore
     hardware_uart
     hardware_gpio
@@ -26,11 +26,11 @@ target_link_libraries(full_duplex
 )
 
 # Enable USB output and UART output
-pico_enable_stdio_usb(full_duplex 1)
-pico_enable_stdio_uart(full_duplex 0)
+pico_enable_stdio_usb(device 1)
+pico_enable_stdio_uart(device 0)
 
 # Create map/bin/hex/uf2 files
-pico_add_extra_outputs(full_duplex)
+pico_add_extra_outputs(device)
 
 # Controller program
 add_executable(controller

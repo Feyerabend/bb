@@ -1,10 +1,65 @@
 
 ## Temperature from BMP280
 
-Here are examples how to handle e.g. temperature measurements with BMP280, without
-resorting to using external libraires. Only proceed with the "raw metal":
-- Manually read calibration registers.
-- Apply Bosch’s compensation formula from the datasheet.
+External sensor for temperature measurements.
+
+__1. What the BMP280 actually does__
+- The BMP280 is a pressure and temperature sensor.
+- Inside, it has an ADC (analog-to-digital converter) that measures raw sensor data (called uncompensated values).
+- These raw values are not directly usable (they look like big integers with no relation to °C or hPa).
+- Bosch provides calibration constants stored in the sensor’s internal registers.
+- To get a real temperature (°C), you must:
+    1. Read the calibration constants.
+	2. Read the raw temperature data.
+	3. Apply Bosch’s compensation formula (from the datasheet).
+
+__2. Calibration registers__
+- At power-up, the BMP280 has a block of registers (0x88 to 0x9F) that store factory calibration values.
+- These constants are unique per chip (set during manufacturing).
+- Examples: dig_T1, dig_T2, dig_T3 (for temperature).
+
+For example, you might read:
+- dig_T1 = 27504
+- dig_T2 = 26435
+- dig_T3 = -1000
+
+(These are just example values from Bosch’s datasheet.)
+
+__3. Raw temperature measurement__
+- The sensor continuously measures and stores the uncompensated
+  temperature in registers 0xFA (MSB), 0xFB (LSB), and 0xFC (XLSB).
+- Together, these 3 bytes form a 20-bit integer (adc_T).
+- Example: adc_T = 519888 (again, datasheet example).
+
+__4. Bosch’s compensation formula__
+
+The datasheet gives this algorithm (integer-based to save resources on microcontrollers):
+```
+var1 = ((((adc_T >> 3) - ((int32_t)dig_T1 << 1))) *
+        ((int32_t)dig_T2)) >> 11;
+
+var2 = (((((adc_T >> 4) - ((int32_t)dig_T1)) *
+          ((adc_T >> 4) - ((int32_t)dig_T1))) >> 12) *
+        ((int32_t)dig_T3)) >> 14;
+
+t_fine = var1 + var2;
+
+T = (t_fine * 5 + 128) >> 8;
+```
+- T is the actual temperature in 0.01 °C (so T = 5190 means 51.90 °C).
+- t_fine is an intermediate value also used for pressure compensation.
+
+
+__5. Putting it together__
+Here’s the sequence in plain terms:
+1. Read calibration registers 0x88–0x9F → get dig_T1, dig_T2, dig_T3.
+2. Read raw temperature registers 0xFA–0xFC → get adc_T.
+3. Apply Bosch’s formula → calculate real °C.
+4. Convert result: T / 100.0 = degrees Celsius.
+
+
+__6. Why this could be done manually__
+Bosch designed the chip to be very precise, but not waste silicon area on calculations. By giving you the calibration constants and formula, they let the host microcontroller do the math. This makes the sensor smaller, cheaper, and lower power, at the cost of some code complexity. So when you see libraries (like Adafruit’s), they’re just wrapping exactly this procedure: read constants, read raw data, apply formula, return C (degrees Celsius). Doing it "raw metal" here means following the datasheet and writing the math yourself.
 
 
 ### MicroPython (no external libs)
@@ -75,7 +130,6 @@ while True:
 ```
 
 
-
 ### C (Raspberry Pi Pico SDK, no external libs)
 
 ```c
@@ -138,22 +192,9 @@ int main() {
 ```
 
 
-```
-Raspberry Pi Pico (Top View, USB on Left)        BMP280 Breakout Board
-+---------------------------+                   +------------------+
-| [ ] 1   [ ] 2   [ ] 3 GND | ---- GND ---------| GND              |
-| ...                       |  3.3v             | VIN -------------+
-| [ ] 11 GP8  [ ] 12 ...    | ---- CS ----------| CS               |
-| [ ] 14 GP10 [ ] 15 GP11   | ---- SCK ---------| SCK              |
-| [ ] 16 GP12 [ ] 17 ...    | ---- SDO ---------| SDO (MISO)       |
-| ...                       | ---- SDI ---------| SDI (MOSI)       |
-| [ ] 36 3V3_OUT [ ] 37 ... |                   | 3Vo (NC)         |
-| [ ] 38 GND [ ] 39 VSYS    |                   +------------------+
-| [ ] 40 VBUS               |
-+---------------------------+
-```
+![BMP280](./bmp280.png)
 
-Notes:
+Connection Notes:
 - VIN to Physical Pin 36 (3V3_OUT, 3.3V). Alt: Pin 40 (VBUS, 5V).
 - GND to Physical Pin 3 (or any GND: 8, 13, 18, 23, 28, 33, 38).
 - CS to Physical Pin 11 (GPIO 8, SPI1 CS).

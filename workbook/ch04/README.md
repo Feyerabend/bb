@@ -11,11 +11,12 @@ __Printed book reference: see explanations and examples in [BOOK].__
 * [traffic](./traffic/)           - Traffic light simulations
 * [temperature](./temperature/)   - Builtin sensor used as example for series of measurements  
 * [db](./storage/db/)             - Connect to external SD card as secondary memory (database)
-* [wire](./wire/)                 - Connect two Picos to each other for UART communication
-* [mail](./wire/mail/)            - Connect two Picos with "mail" exchange
+* [wire](./wire/)                 - Connect two wired Picos to each other for UART communication
+* [mail](./wire/mail/)            - Connect two wired Picos with "mail" exchange
 * ..
 * [rsa](./secure/rsa/)            - RSA for encryption/decryption
 * ..
+* [practice](./practice/)         - Build your own computer
 
 
 ## Building and Experimenting
@@ -25,7 +26,7 @@ __Printed book reference: see explanations and examples in [BOOK].__
 
 > [!IMPORTANT]
 > To seperate running C and Python (MicroPython to be exact) on the Raspberry Pi Pico, from that on your main computer (Windows, Macintosh or Linux, type), the repositories here are marked with names "c" or "micropython" for inteded use on the RPI Pico.
-
+> Certain areas, such as "drivers," are more appropriately addressed in C, whereas topics like "wireless" are more effectively illustrated using MicroPython. Consequently, not all concepts are presented in both languages, and the corresponding language annotations have been applied selectively.
 
 
 
