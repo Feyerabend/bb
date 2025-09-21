@@ -4,10 +4,10 @@
 If you want to get your hands dirty in electronics, read e.g. [electro](./electro/) for some
 inspiration. I have really no experience, so in this case you are on your own.
 
-But if you want to keep your hands clean then? Consider a middle path .. [ready-made](./readymade/)
+But if you want to keep your hands clean then? Consider a middle path: [ready-made](./readymade/).
 Building your own computer from scratch can be an immensely rewarding and highly educational
 experience, offering hands-on insight into hardware design, assembly, and
-troubleshooting. However, this endeavor will inevitably lead you into the broader territory of
+troubleshooting. However, this endeavour will inevitably lead you into the broader territory of
 electronics fundamentals--such as understanding circuits, voltages, and soldering techniques--which
 may feel overwhelming if that's not your primary interest. If you prefer *not* to dive that deeply
 into electronics, a balanced middle path exists: leveraging ready-made development kits and modules.
@@ -15,12 +15,12 @@ These tools provide modular components that simplify the build process while sti
 customise and learn at your own pace, without requiring extensive electrical engineering knowledge.
 
 A prime example is the Raspberry Pi Foundation's versatile lineup of single-board computers and
-accessories, particularly those centered around the Raspberry Pi Pico microcontroller. The "Demo Board"
+accessories, particularly those centred around the Raspberry Pi Pico microcontroller. The "Demo Board"
 specifically refers to the VGA, SD Card & Audio Demo Board for Raspberry Pi Pico, detailed in
 Chapter 3 of the official Hardware Design with RP2040 document. This open-source reference design
 showcases the capabilities of the low-cost RP2040 chip, enabling features like VGA video output
 (up to QVGA resolution at 30 fps), SD card storage for media playback, and digital I2S audio
-output--all without overburdening the microcontroller's resources, but overclocing might come in to play.
+output--all without overburdening the microcontroller's resources, but overclocking might come in to play.
 It includes onboard components such as resistors for analog RGB video generation, user buttons
 (multiplexed with video signals for I/O efficiency), an SD card slot, and headers for easy integration
 with a Raspberry Pi Pico. The board's schematics, PCB layouts, and KiCad files are publicly available
