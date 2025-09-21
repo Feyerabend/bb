@@ -56,3 +56,6 @@ A database is a structured repository for data, allowing efficient storage, retr
 
 Databases build on file storage—most use underlying files—but add layers for integrity (ACID properties) and performance.
 
+
+![Pico W / SD Card](store.png)
+
