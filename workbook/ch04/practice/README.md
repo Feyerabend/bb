@@ -1,5 +1,5 @@
 
-## Practice: Your Own Homebrewed Computer
+## Practice: Your Own Homebrew Computer
 
 If you want to get your hands dirty in electronics, read e.g. [electro](./electro/) for some
 inspiration. I have really no experience, so in this case you are on your own.
