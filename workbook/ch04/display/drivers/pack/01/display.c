@@ -23,7 +23,7 @@
 #define BUTTON_X_PIN 14
 #define BUTTON_Y_PIN 15
 
-// DMA configuration with safety checks
+// DMA configuration
 static int dma_channel = -1;
 static bool dma_initialized = false;
 static volatile bool dma_busy = false;
@@ -37,8 +37,8 @@ static volatile uint32_t last_button_check = 0;
 static bool buttons_initialized = false;
 
 // DMA buffer for repeated pixel data (for solid fills)
-static uint8_t dma_fill_buffer[512] __attribute__((aligned(4))); // Aligned for better performance
-static uint8_t dma_single_pixel[2] __attribute__((aligned(4)));  // Single pixel buffer for DMA
+static uint8_t dma_fill_buffer[512]; // Buffer for repeated color data
+static uint8_t dma_single_pixel[2];  // Single pixel buffer for DMA
 
 // Button pin mapping
 static const uint8_t button_pins[BUTTON_COUNT] = {
@@ -117,10 +117,6 @@ static const char* error_strings[] = {
     "Display not initialised"
 };
 
-// Watchdog counter to detect stuck DMA
-static volatile uint32_t dma_watchdog_counter = 0;
-#define DMA_WATCHDOG_LIMIT 1000  // Max iterations before forcing reset
-
 // Get current time in milliseconds
 static inline uint32_t get_time_ms(void) {
     return to_ms_since_boot(get_absolute_time());
@@ -132,7 +128,6 @@ void __isr dma_handler() {
     if (dma_channel >= 0 && (dma_hw->ints0 & (1u << dma_channel))) {
         dma_hw->ints0 = 1u << dma_channel;
         dma_busy = false;
-        dma_watchdog_counter = 0;  // Reset watchdog
     }
 }
 
@@ -150,103 +145,35 @@ static display_error_t dma_init(void) {
     irq_set_enabled(DMA_IRQ_0, true);
     
     dma_initialized = true;
-    dma_watchdog_counter = 0;
     return DISPLAY_OK;
 }
 
 static bool dma_wait_for_finish_timeout(uint32_t timeout_ms) {
     uint32_t start = get_time_ms();
-    dma_watchdog_counter = 0;
-    
-    while (dma_busy && dma_watchdog_counter < DMA_WATCHDOG_LIMIT) {
+    while (dma_busy) {
         if (get_time_ms() - start > timeout_ms) {
             return false; // Timeout
         }
-        dma_watchdog_counter++;
         tight_loop_contents();
     }
-    
-    // If watchdog triggered, force reset
-    if (dma_watchdog_counter >= DMA_WATCHDOG_LIMIT) {
-        return false;
-    }
-    
     return true;
 }
 
-/*
-// Safe DMA wait with proper recovery
+// Safe DMA wait
 static void dma_wait_for_finish(void) {
     if (!dma_wait_for_finish_timeout(1000)) { // 1 second timeout
         // Force stop the DMA channel if timeout occurs
         if (dma_channel >= 0) {
-            // Disable DMA channel
-            dma_channel_set_enable(dma_channel, false);
-            
-            // Wait for channel to actually stop
-            while (dma_channel_is_busy(dma_channel)) {
-                tight_loop_contents();
-            }
-            
-            // Clear any pending interrupts
-            dma_hw->ints0 = 1u << dma_channel;
-            
-            // Reset channel configuration
             dma_channel_abort(dma_channel);
+            dma_hw->ints0 = 1u << dma_channel; // Clear pending interrupt to prevent ghost IRQs
         }
         dma_busy = false;
-        dma_watchdog_counter = 0;
-    }
-}*/
-
-// NEWNEW
-static void dma_channel_disable(int channel) {
-    if (channel < 0 || channel >= NUM_DMA_CHANNELS) {
-        return; // Invalid channel
-    }
-    
-    // Disable the specific DMA channel
-    dma_hw->ch[channel].ctrl_trig &= ~(1u << 0);  // Clear the enable bit
-    
-    // Wait for channel to actually stop
-    while (dma_hw->ch[channel].ctrl_trig & (1u << 0)) {
-        tight_loop_contents();
     }
 }
 
-//NEWNEW
-// Safe DMA wait with proper recovery
-static void dma_wait_for_finish(void) {
-    if (!dma_wait_for_finish_timeout(1000)) { // 1 second timeout
-        // Force stop the DMA channel if timeout occurs
-        if (dma_channel >= 0) {
-            // Disable DMA channel using the proper function
-            dma_channel_disable(dma_channel);
-            
-            // Wait for channel to actually stop
-            while (dma_channel_is_busy(dma_channel)) {
-                tight_loop_contents();
-            }
-            
-            // Clear any pending interrupts
-            dma_hw->ints0 = 1u << dma_channel;
-            
-            // Reset channel configuration
-            dma_channel_abort(dma_channel);
-        }
-        dma_busy = false;
-        dma_watchdog_counter = 0;
-    }
-}
-
-// DMA-based SPI write for buffer data with better error handling
+// DMA-based SPI write for buffer data with error checking
 static display_error_t dma_spi_write_buffer(uint8_t* data, size_t len) {
     if (!data || len == 0) return DISPLAY_ERROR_INVALID_PARAM;
-    
-    // Sanity check on data size
-    if (len > 65536) {  // Reasonable upper limit
-        return DISPLAY_ERROR_INVALID_PARAM;
-    }
     
     if (!dma_initialized && dma_init() != DISPLAY_OK) {
         // Fallback to regular SPI if DMA init fails
@@ -255,24 +182,14 @@ static display_error_t dma_spi_write_buffer(uint8_t* data, size_t len) {
     }
     
     dma_wait_for_finish();
-    
-    // Ensure SPI is ready
-    while (spi_is_busy(spi0)) {
-        tight_loop_contents();
-    }
-    
     dma_busy = true;
-    dma_watchdog_counter = 0;
     
-    // Configure DMA channel with safety checks
+    // Configure DMA channel
     dma_channel_config c = dma_channel_get_default_config(dma_channel);
     channel_config_set_transfer_data_size(&c, DMA_SIZE_8);
     channel_config_set_dreq(&c, spi_get_dreq(spi0, true));
     channel_config_set_read_increment(&c, true);
     channel_config_set_write_increment(&c, false);
-    
-    // Ensure data is properly aligned and accessible
-    __compiler_memory_barrier();
     
     // Set up the transfer
     dma_channel_configure(
@@ -289,28 +206,15 @@ static display_error_t dma_spi_write_buffer(uint8_t* data, size_t len) {
     return DISPLAY_OK;
 }
 
-// Display low-level functions with enhanced error checking
+// Display low-level functions with error checking
 static display_error_t display_write_command(uint8_t cmd) {
     if (!display_initialized) return DISPLAY_ERROR_NOT_INITIALIZED;
     
     dma_wait_for_finish();
-    
-    // Ensure pins are in correct state
     gpio_put(DISPLAY_DC_PIN, 0);
     gpio_put(DISPLAY_CS_PIN, 0);
-    
-    // Small delay to ensure signal stability
-    sleep_us(1);
-    
     spi_write_blocking(spi0, &cmd, 1);
-    
-    // Ensure write completes
-    while (spi_is_busy(spi0)) {
-        tight_loop_contents();
-    }
-    
     gpio_put(DISPLAY_CS_PIN, 1);
-    sleep_us(1);  // Recovery time
     return DISPLAY_OK;
 }
 
@@ -318,19 +222,10 @@ static display_error_t display_write_data(uint8_t data) {
     if (!display_initialized) return DISPLAY_ERROR_NOT_INITIALIZED;
     
     dma_wait_for_finish();
-    
     gpio_put(DISPLAY_DC_PIN, 1);
     gpio_put(DISPLAY_CS_PIN, 0);
-    sleep_us(1);
-    
     spi_write_blocking(spi0, &data, 1);
-    
-    while (spi_is_busy(spi0)) {
-        tight_loop_contents();
-    }
-    
     gpio_put(DISPLAY_CS_PIN, 1);
-    sleep_us(1);
     return DISPLAY_OK;
 }
 
@@ -339,35 +234,22 @@ static display_error_t display_write_data_buf(uint8_t *data, size_t len) {
     if (!data || len == 0) return DISPLAY_ERROR_INVALID_PARAM;
     
     dma_wait_for_finish();
-    
     gpio_put(DISPLAY_DC_PIN, 1);
     gpio_put(DISPLAY_CS_PIN, 0);
-    sleep_us(1);
     
     display_error_t result = DISPLAY_OK;
-    if (len > 64 && dma_initialized) { // Use DMA for larger transfers
+    if (len > 64) { // Use DMA for larger transfers
         result = dma_spi_write_buffer(data, len);
         dma_wait_for_finish();
     } else {
         spi_write_blocking(spi0, data, len);
-        while (spi_is_busy(spi0)) {
-            tight_loop_contents();
-        }
     }
     
     gpio_put(DISPLAY_CS_PIN, 1);
-    sleep_us(1);
     return result;
 }
 
 static display_error_t display_set_window(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
-    // Bounds checking
-    if (x0 >= DISPLAY_WIDTH || y0 >= DISPLAY_HEIGHT || 
-        x1 >= DISPLAY_WIDTH || y1 >= DISPLAY_HEIGHT ||
-        x1 < x0 || y1 < y0) {
-        return DISPLAY_ERROR_INVALID_PARAM;
-    }
-    
     x0 += COLUMN_OFFSET;
     x1 += COLUMN_OFFSET;
     y0 += ROW_OFFSET;
@@ -392,7 +274,7 @@ static display_error_t display_set_window(uint16_t x0, uint16_t y0, uint16_t x1,
     return DISPLAY_OK;
 }
 
-// Rest of the functions remain the same but with added safety checks
+// Public display functions with robust error handling
 display_error_t display_pack_init(void) {
     if (display_initialized) return DISPLAY_OK;
     
@@ -417,7 +299,7 @@ display_error_t display_pack_init(void) {
     gpio_put(DISPLAY_DC_PIN, 1);
     gpio_put(DISPLAY_BL_PIN, 0);
     
-    // Hardware reset with proper timing
+    // Hardware reset
     gpio_put(DISPLAY_RESET_PIN, 1);
     sleep_ms(10);
     gpio_put(DISPLAY_RESET_PIN, 0);
@@ -425,14 +307,15 @@ display_error_t display_pack_init(void) {
     gpio_put(DISPLAY_RESET_PIN, 1);
     sleep_ms(120);
     
-    display_initialized = true;
+    display_initialized = true; // Set before using display commands
     
-    // Init DMA (non-critical)
-    dma_init();
+    // Init DMA
+    if (dma_init() != DISPLAY_OK) {
+        // Continue without DMA - not critical
+    }
     
-    // ST7789V2 init sequence with better error handling
+    // ST7789V2 init sequence
     display_error_t result;
-    
     if ((result = display_write_command(0x01)) != DISPLAY_OK) goto init_error; // SWRESET
     sleep_ms(150);
     
@@ -445,7 +328,7 @@ display_error_t display_pack_init(void) {
     if ((result = display_write_command(0x36)) != DISPLAY_OK) goto init_error; // MADCTL
     if ((result = display_write_data(0x70)) != DISPLAY_OK) goto init_error;    // Row/Column exchange, RGB order
     
-    // Continue with initialization (other commands remain the same...)
+    // Additional settings (continue even if some fail)
     display_write_command(0xB2); // PORCTRL
     display_write_data(0x0C);
     display_write_data(0x0C);
@@ -478,7 +361,7 @@ display_error_t display_pack_init(void) {
     display_write_data(0xA4);
     display_write_data(0xA1);
     
-    // Gamma correction
+    // Gamma correction (continue even if fails)
     display_write_command(0xE0);
     display_write_data(0xD0); display_write_data(0x04); display_write_data(0x0D);
     display_write_data(0x11); display_write_data(0x13); display_write_data(0x2B);
@@ -522,7 +405,7 @@ display_error_t display_fill_rect(uint16_t x, uint16_t y, uint16_t width, uint16
     if (y + height > DISPLAY_HEIGHT) height = DISPLAY_HEIGHT - y;
     if (width == 0 || height == 0) return DISPLAY_OK;
     
-    uint32_t pixel_count = (uint32_t)width * height;
+    uint32_t pixel_count = width * height;
     
     display_error_t result = display_set_window(x, y, x + width - 1, y + height - 1);
     if (result != DISPLAY_OK) return result;
@@ -538,8 +421,6 @@ display_error_t display_fill_rect(uint16_t x, uint16_t y, uint16_t width, uint16
     if (pixel_count > 32 && dma_initialized) {
         // Use DMA for large fills
         size_t buffer_pixels = sizeof(dma_fill_buffer) / 2;
-        
-        // Fill buffer once
         for (size_t i = 0; i < buffer_pixels; i++) {
             dma_fill_buffer[i * 2] = color_bytes[0];
             dma_fill_buffer[i * 2 + 1] = color_bytes[1];
@@ -621,8 +502,7 @@ display_error_t display_draw_string(uint16_t x, uint16_t y, const char* str, uin
     if (x >= DISPLAY_WIDTH || y >= DISPLAY_HEIGHT) return DISPLAY_ERROR_INVALID_PARAM;
     
     int offset_x = 0;
-    size_t len = strlen(str);
-    for (size_t i = 0; i < len && *str && (x + offset_x) < DISPLAY_WIDTH; i++) {
+    while (*str && (x + offset_x) < DISPLAY_WIDTH) {
         display_error_t result = display_draw_char(x + offset_x, y, *str, color, bg_color);
         if (result != DISPLAY_OK) return result;
         offset_x += 6; // 5 pixel font + 1 pixel spacing
@@ -651,7 +531,6 @@ display_error_t buttons_init(void) {
     }
     
     buttons_initialized = true;
-    last_button_check = get_time_ms();
     return DISPLAY_OK;
 }
 
@@ -725,17 +604,6 @@ const char* display_error_string(display_error_t error) {
     return error_strings[error];
 }
 
-//NEWNEW
-// DMA channel enable/disable functions for better control
-static void dma_channel_enable(int channel) {
-    if (channel < 0 || channel >= NUM_DMA_CHANNELS) {
-        return; // Invalid channel
-    }
-    
-    // Enable the specific DMA channel
-    dma_hw->ch[channel].ctrl_trig |= 1u << 0;  // Set the enable bit
-}
-
 // Function to deinit DMA safely
 static void display_dma_deinit(void) {
     if (dma_initialized) {
@@ -745,25 +613,16 @@ static void display_dma_deinit(void) {
         // Disable interrupt and unclaim channel
         if (dma_channel >= 0) {
             dma_channel_set_irq0_enabled(dma_channel, false);
-            dma_channel_enable(dma_channel);
-            
-            // Wait for channel to stop
-            while (dma_channel_is_busy(dma_channel)) {
-                tight_loop_contents();
-            }
-            
             dma_channel_unclaim(dma_channel);
         }
         
         irq_set_enabled(DMA_IRQ_0, false);
         dma_initialized = false;
         dma_channel = -1;
-        dma_busy = false;
-        dma_watchdog_counter = 0;
     }
 }
 
-// Enhanced cleanup function
+// Cleanup function to be called at program end
 void display_cleanup(void) {
     // Wait for any pending DMA operations
     display_wait_for_dma();
@@ -773,28 +632,16 @@ void display_cleanup(void) {
     
     // Clean up SPI
     if (display_initialized) {
-        // Turn off backlight first
-        gpio_put(DISPLAY_BL_PIN, 0);
-        
-        // Put display to sleep
-        display_write_command(0x10); // SLPIN
-        sleep_ms(120);
-        
-        // Reset display
-        gpio_put(DISPLAY_RESET_PIN, 0);
-        sleep_ms(10);
-        
         spi_deinit(spi0);
+        gpio_put(DISPLAY_BL_PIN, 0); // Turn off backlight
     }
     
     // Reset init flags
     display_initialized = false;
     buttons_initialized = false;
     
-    // Clear button callbacks safely
-    uint32_t interrupts = save_and_disable_interrupts();
+    // Clear button callbacks
     for (int i = 0; i < BUTTON_COUNT; i++) {
         button_callbacks[i] = NULL;
     }
-    restore_interrupts(interrupts);
 }
