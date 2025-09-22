@@ -5,9 +5,13 @@
 #include <stdbool.h>
 #include "pico/stdlib.h"
 
-// Original Display Pack specifications: 135x240 pixels
-#define DISPLAY_WIDTH 135
-#define DISPLAY_HEIGHT 240
+// Display Pack specifications: 240x135 pixels
+#define DISPLAY_WIDTH 240
+#define DISPLAY_HEIGHT 135
+
+// Display offsets for original Display Pack
+#define COLUMN_OFFSET 40
+#define ROW_OFFSET 53
 
 // Colors (RGB565 format)
 #define COLOR_BLACK     0x0000
@@ -25,7 +29,7 @@ typedef enum {
     BUTTON_B = 1,
     BUTTON_X = 2,
     BUTTON_Y = 3,
-    BUTTON_COUNT = 4  // Added for bounds checking
+    BUTTON_COUNT = 4  // Added for bounds checking ..
 } button_t;
 
 // Button callback function type

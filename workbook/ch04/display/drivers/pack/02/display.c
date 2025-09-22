@@ -250,6 +250,11 @@ static display_error_t display_write_data_buf(uint8_t *data, size_t len) {
 }
 
 static display_error_t display_set_window(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
+    x0 += COLUMN_OFFSET;
+    x1 += COLUMN_OFFSET;
+    y0 += ROW_OFFSET;
+    y1 += ROW_OFFSET;
+
     display_error_t result;
     
     if ((result = display_write_command(0x2A)) != DISPLAY_OK) return result; // CASET
@@ -309,7 +314,7 @@ display_error_t display_pack_init(void) {
         // Continue without DMA - not critical
     }
     
-    // ST7789V2 init sequence for 135x240 display
+    // ST7789V2 init sequence
     display_error_t result;
     if ((result = display_write_command(0x01)) != DISPLAY_OK) goto init_error; // SWRESET
     sleep_ms(150);
@@ -321,20 +326,7 @@ display_error_t display_pack_init(void) {
     if ((result = display_write_data(0x55)) != DISPLAY_OK) goto init_error;    // 16-bit RGB565
     
     if ((result = display_write_command(0x36)) != DISPLAY_OK) goto init_error; // MADCTL
-    if ((result = display_write_data(0x00)) != DISPLAY_OK) goto init_error;    // Default orientation for 135x240
-    
-    // Set display area to 135x240 (original Display Pack dimensions)
-    if ((result = display_write_command(0x2A)) != DISPLAY_OK) goto init_error; // CASET
-    if ((result = display_write_data(0x00)) != DISPLAY_OK) goto init_error;
-    if ((result = display_write_data(0x34)) != DISPLAY_OK) goto init_error;    // Start at column 52
-    if ((result = display_write_data(0x00)) != DISPLAY_OK) goto init_error;
-    if ((result = display_write_data(0xBA)) != DISPLAY_OK) goto init_error;    // End at column 186 (52+135-1)
-
-    if ((result = display_write_command(0x2B)) != DISPLAY_OK) goto init_error; // RASET
-    if ((result = display_write_data(0x00)) != DISPLAY_OK) goto init_error;
-    if ((result = display_write_data(0x28)) != DISPLAY_OK) goto init_error;    // Start at row 40
-    if ((result = display_write_data(0x01)) != DISPLAY_OK) goto init_error;
-    if ((result = display_write_data(0x17)) != DISPLAY_OK) goto init_error;    // End at row 279 (40+240-1)
+    if ((result = display_write_data(0x70)) != DISPLAY_OK) goto init_error;    // Row/Column exchange, RGB order
     
     // Additional settings (continue even if some fail)
     display_write_command(0xB2); // PORCTRL
