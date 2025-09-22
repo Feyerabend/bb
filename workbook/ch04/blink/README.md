@@ -1,5 +1,5 @@
 
-## Raspberry Pi Pico W Development Environment Setup
+## Raspberry Pi Pico (W) Development Environment Setup
 
 - A Raspberry Pi Pico/Pico W board (or if you so wish also: RPi 2/RPi 2 W)
 - A micro USB cable
