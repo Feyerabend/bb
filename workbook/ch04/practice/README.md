@@ -1,8 +1,33 @@
 
 ## Practice: Your Own Homebrew Computer
 
-If you want to get your hands dirty in electronics, read e.g. [electro](./electro/) for some
-inspiration. I have really no experience, so in this case you are on your own.
+
+### 1.
+
+If you are curious about exploring electronics more directly, you might want to start by
+reading a little about the basics--for example, see [electronics](./electro/) for some
+inspiration. This will give you a sense of how components like resistors, capacitors, and
+sensors fit together, and how they can be combined into working circuits.
+
+I should note that I do not have much personal experience with practical electronics myself,
+so in this area you will largely be experimenting on your own. That being said, there are many
+excellent resources, tutorials, and communities available online to help you get started.
+
+When you move into hands-on projects, you might decide to work with a microcontroller. Some
+platforms are especially well-suited for beginners who want to bridge the gap between software
+and hardware. Popular choices include:
+* Arduino boards, which are widely used in education and hobbyist projects thanks to their
+  simplicity and vast ecosystem of tutorials and add-on modules.
+* The ESP32 family, which combines microcontroller capabilities with built-in Wi-Fi and
+  Bluetooth, making it ideal if you want to experiment with connected devices
+  (the "Internet of Things").
+
+Both of these platforms bring you closer to the "electronics" side of computing, since
+you are not only writing code but also wiring components together, powering circuits,
+and dealing with the physical reality of signals and sensors.
+
+
+### 2.
 
 But if you want to keep your hands clean then? Consider a middle path: [ready-made](./readymade/).
 Building your own computer from scratch can be an immensely rewarding and highly educational
