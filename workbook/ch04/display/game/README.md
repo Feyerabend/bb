@@ -1,7 +1,7 @@
 
 
 
-## NOTES: Roadmap
+## IDEAD & NOTES: Roadmap
 
 1. Hardware + driver: get the ST7789 talking to the Raspberry Pi Pico (SPI / DC / RST / BL).
    Verify wiring and a minimal init sequence; be able to draw pixels and filled rectangles.
