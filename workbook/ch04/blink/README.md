@@ -6,7 +6,7 @@
 - A computer running Windows, macOS, or Linux
 
 The first reason the Raspberry Pi Pico was chosen as a starting point is its accessibility. 
-Unlike many other development boards, you almost never—if ever—need to solder anything. 
+Unlike many other development boards, you almost never--if ever--need to solder anything. 
 This lowers the entry barrier considerably, since you can begin experimenting with 
 breadboards, jumper wires, and simple components without needing to master soldering 
 techniques first. In fact, you don’t even need to understand electronics in any great 
