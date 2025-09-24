@@ -95,7 +95,7 @@ int cos_table[256];
 
 // Button states
 bool btn_a = false, btn_b = false, btn_x = false, btn_y = false;
-bool prev_btn_x = false; // For reset detection
+bool prev_btn_a = false; // For reset detection (changed to A button)
 
 // ST7789 Functions
 void st7789_write_cmd(uint8_t cmd) {
@@ -290,14 +290,14 @@ void reset_game() {
 void update_led() {
     int total_speed = abs(speed_x) + abs(speed_y);
     
-    if (btn_a && btn_b) { // Accelerating
+    if (btn_x && btn_y) { // Accelerating (both X and Y pressed)
         int intensity = (total_speed > 255) ? 255 : total_speed;
         set_led(0, intensity, 0); // Green with intensity based on speed
-    } else if (btn_y) { // Braking
+    } else if (!btn_x && !btn_y) { // Decelerating (no buttons pressed)
         int intensity = (total_speed > 255) ? 255 : total_speed;
         set_led(intensity, 0, 0); // Red with intensity based on speed
     } else {
-        // Gradually fade based on current speed
+        // Gradually fade based on current speed (when turning)
         int intensity = (total_speed > 255) ? 255 : total_speed;
         intensity = intensity / 4; // Dimmer when coasting
         set_led(0, intensity / 2, 0); // Dim green when coasting
@@ -499,11 +499,11 @@ void draw_track() {
 }
 
 void game_loop() {
-    // Handle reset button
-    if (btn_x && !prev_btn_x) {
+    // Handle reset button (changed to A button)
+    if (btn_a && !prev_btn_a) {
         reset_game();
     }
-    prev_btn_x = btn_x;
+    prev_btn_a = btn_a;
     
     // Clear screen only when needed
     if (full_screen_clear_needed) {
@@ -518,21 +518,21 @@ void game_loop() {
         track_dirty = false;
     }
     
-    // Update player rotation - A=left, B=right
-    if (btn_a && !btn_b) {
+    // Update player rotation - Y=left, X=right
+    if (btn_y && !btn_x) {
         theta = (theta - 2 + 256) % 256;
-    } else if (btn_b && !btn_a) {
+    } else if (btn_x && !btn_y) {
         theta = (theta + 2) % 256;
     }
     
-    // Acceleration - both A and B pressed
-    if (btn_a && btn_b) {
+    // Acceleration - both X and Y pressed
+    if (btn_x && btn_y) {
         speed_x += my_cos(theta) / 8;
         speed_y += my_sin(theta) / 8;
     }
     
-    // Braking with Y
-    if (btn_y) {
+    // Automatic deceleration when no buttons are pressed
+    if (!btn_x && !btn_y) {
         apply_friction();
     }
     
@@ -625,7 +625,7 @@ int main() {
     st7789_init();
     
     printf("Racing game started!\n");
-    printf("Controls: A=Left, B=Right, A+B=Accelerate, Y=Brake, X=Reset\n");
+    printf("Controls: Y=Left, X=Right, Y+X=Accelerate, Release=Brake, A=Reset\n");
     
     while (true) {
         read_buttons();
