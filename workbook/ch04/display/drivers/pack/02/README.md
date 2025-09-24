@@ -1,6 +1,8 @@
 
-> Using Raspberry Pi Pico 2/2W as it has much more memory for a hungry display.
-> But still having the older Pimironi Display Pack.
+> [!TIP]
+> Use Raspberry Pi Pico 2/2W as it has much more memory for a hungry display, if you intend
+> to develop this further. For this example we've used a RPI Pico and the older Pimironi Display Pack.
+
 
 ## Graphics Engine Code
 
@@ -117,7 +119,7 @@ flowchart TD
 ```
 
 
-#### 2.3 Sequence Diagram: Initialization and Frame Cycle
+#### 2.3 Sequence Diagram: Initialisation and Frame Cycle
 This illustrates the sequence for init, update, and shutdown.
 
 ```mermaid
