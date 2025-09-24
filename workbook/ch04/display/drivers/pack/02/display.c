@@ -9,6 +9,11 @@
 
 #include <string.h>
 
+// Missing constant definition
+#ifndef NUM_DMA_CHANNELS
+#define NUM_DMA_CHANNELS 12
+#endif
+
 // Display Pack pin defs
 #define DISPLAY_CS_PIN 17
 #define DISPLAY_CLK_PIN 18
@@ -174,32 +179,16 @@ static bool dma_wait_for_finish_timeout(uint32_t timeout_ms) {
     return true;
 }
 
-/*
-// Safe DMA wait with proper recovery
-static void dma_wait_for_finish(void) {
-    if (!dma_wait_for_finish_timeout(1000)) { // 1 second timeout
-        // Force stop the DMA channel if timeout occurs
-        if (dma_channel >= 0) {
-            // Disable DMA channel
-            dma_channel_set_enable(dma_channel, false);
-            
-            // Wait for channel to actually stop
-            while (dma_channel_is_busy(dma_channel)) {
-                tight_loop_contents();
-            }
-            
-            // Clear any pending interrupts
-            dma_hw->ints0 = 1u << dma_channel;
-            
-            // Reset channel configuration
-            dma_channel_abort(dma_channel);
-        }
-        dma_busy = false;
-        dma_watchdog_counter = 0;
+// DMA channel enable/disable functions for better control
+static void dma_channel_enable(int channel) {
+    if (channel < 0 || channel >= NUM_DMA_CHANNELS) {
+        return; // Invalid channel
     }
-}*/
+    
+    // Enable the specific DMA channel
+    dma_hw->ch[channel].ctrl_trig |= 1u << 0;  // Set the enable bit
+}
 
-// NEWNEW
 static void dma_channel_disable(int channel) {
     if (channel < 0 || channel >= NUM_DMA_CHANNELS) {
         return; // Invalid channel
@@ -214,7 +203,6 @@ static void dma_channel_disable(int channel) {
     }
 }
 
-//NEWNEW
 // Safe DMA wait with proper recovery
 static void dma_wait_for_finish(void) {
     if (!dma_wait_for_finish_timeout(1000)) { // 1 second timeout
@@ -397,7 +385,8 @@ display_error_t display_pack_init(void) {
     if (display_initialized) return DISPLAY_OK;
     
     // Init SPI (reduced speed for stability)
-    if (spi_init(spi0, 31250000) == 0) return DISPLAY_ERROR_INIT_FAILED;
+    if (spi_init(spi0, (30 * 1000 * 1000)) == 0) return DISPLAY_ERROR_INIT_FAILED;
+    //if (spi_init(spi0, 31250000) == 0) return DISPLAY_ERROR_INIT_FAILED;
     gpio_set_function(DISPLAY_CLK_PIN, GPIO_FUNC_SPI);
     gpio_set_function(DISPLAY_MOSI_PIN, GPIO_FUNC_SPI);
     
@@ -725,17 +714,6 @@ const char* display_error_string(display_error_t error) {
     return error_strings[error];
 }
 
-//NEWNEW
-// DMA channel enable/disable functions for better control
-static void dma_channel_enable(int channel) {
-    if (channel < 0 || channel >= NUM_DMA_CHANNELS) {
-        return; // Invalid channel
-    }
-    
-    // Enable the specific DMA channel
-    dma_hw->ch[channel].ctrl_trig |= 1u << 0;  // Set the enable bit
-}
-
 // Function to deinit DMA safely
 static void display_dma_deinit(void) {
     if (dma_initialized) {
@@ -745,7 +723,7 @@ static void display_dma_deinit(void) {
         // Disable interrupt and unclaim channel
         if (dma_channel >= 0) {
             dma_channel_set_irq0_enabled(dma_channel, false);
-            dma_channel_enable(dma_channel);
+            dma_channel_disable(dma_channel);
             
             // Wait for channel to stop
             while (dma_channel_is_busy(dma_channel)) {

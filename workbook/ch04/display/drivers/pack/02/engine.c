@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <math.h>  // Added for abs()
 #include "pico/time.h"
 
 
@@ -1061,4 +1062,3 @@ uint16_t color_lerp(uint16_t color1, uint16_t color2, float t) {
     uint8_t alpha = (uint8_t)(t * 255);
     return color_blend(color2, color1, alpha);
 }
-

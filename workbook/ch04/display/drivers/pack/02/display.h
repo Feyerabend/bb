@@ -13,6 +13,13 @@
 #define COLUMN_OFFSET 40
 #define ROW_OFFSET 53
 
+// Display offsets for original Display Pack
+//#define COLUMN_OFFSET 0
+//#define ROW_OFFSET 0
+
+//#define COLUMN_OFFSET 0
+//#define ROW_OFFSET 80  // Rows 80–214 (214 - 80 + 1 = 135)
+
 // Colors (RGB565 format)
 #define COLOR_BLACK     0x0000
 #define COLOR_WHITE     0xFFFF
