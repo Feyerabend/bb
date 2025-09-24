@@ -48,10 +48,10 @@
 #define WHITE       0xFFFF
 
 // Game constants
-#define SCREEN_SIZE      240
-#define MAP_SCALE        40
-#define OFFSET_X         10  // Back to original position
-#define OFFSET_Y         30
+#define SCREEN_SIZE 240
+#define MAP_SCALE 40
+#define OFFSET_X 10  // Back to original position
+#define OFFSET_Y 30
 #define GAME_AREA_WIDTH  240  // Game area boundaries
 #define GAME_AREA_HEIGHT 200
 
@@ -85,10 +85,9 @@ int steering_counter = 0;
 int accel_counter = 0;
 int brake_counter = 0;
 
-// smart?
-#define STEERING_RATE 8  // Frames between steering changes (increased from 3)
-#define ACCEL_RATE 6     // Frames between acceleration increments (increased from 2)
-#define BRAKE_RATE 4     // Frames between brake applications (increased from 1)
+#define STEERING_RATE 8    // Frames between steering changes (increased from 3)
+#define ACCEL_RATE 6       // Frames between acceleration increments (increased from 2)
+#define BRAKE_RATE 3       // Frames between brake applications (increased from 1)
 
 // Map data (same as JavaScript)
 int map[5][6] = {
@@ -158,14 +157,12 @@ void st7789_fill_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t c
     gpio_put(LCD_CS, 1);
 }
 
-
 void st7789_clear_screen() {
     // Clear the entire 320x240 screen to black using proper window setting
     st7789_set_window(0, 0, ST7789_WIDTH - 1, ST7789_HEIGHT - 1);
     st7789_write_cmd(ST7789_RAMWR);
     
     // Use DMA-style approach for faster clearing
-    // rewrite to proper DMA Pico style? using blocking SPI for simplicity here
     uint8_t black_bytes[2] = {BLACK >> 8, BLACK & 0xFF};
     gpio_put(LCD_DC, 1);
     gpio_put(LCD_CS, 0);
@@ -213,7 +210,7 @@ void st7789_init() {
     gpio_put(LCD_RST, 1);
     sleep_ms(100);
     
-    // Init ST7789
+    // Initialize ST7789
     st7789_write_cmd(ST7789_SWRESET);
     sleep_ms(150);
     
@@ -235,10 +232,10 @@ void st7789_init() {
     gpio_set_function(LCD_BL, GPIO_FUNC_PWM);
     uint slice_num = pwm_gpio_to_slice_num(LCD_BL);
     pwm_set_wrap(slice_num, 255);
-    pwm_set_chan_level(slice_num, PWM_CHAN_A, 128); // 50% brightness, higher?
+    pwm_set_chan_level(slice_num, PWM_CHAN_A, 128); // 50% brightness
     pwm_set_enabled(slice_num, true);
     
-    // Clear the entire screen to black immediately after initialization
+    // IMMEDIATELY clear the entire physical screen to black
     st7789_clear_screen();
 }
 
@@ -578,13 +575,14 @@ void game_loop() {
     
     // Clear screen only when needed
     if (full_screen_clear_needed) {
-        // Clear the entire 320x240 screen to black
+        // Clear the entire 320x240 screen to black - this should fix the noise on the right
         st7789_clear_screen();
         full_screen_clear_needed = false;
         track_dirty = true;  // Force track redraw after full clear
     }
     
     if (track_dirty) {
+        // Also ensure the game area background is properly drawn
         draw_track();
         track_dirty = false;
     }
@@ -598,16 +596,16 @@ void game_loop() {
     
     // Acceleration - both X and Y pressed
     if (btn_x && btn_y) {
-        // Smooth acceleration using fixed-point
+        // Much more realistic acceleration using fixed-point
         int32_t cos_val = INT_TO_FIXED(my_cos(theta)) / 127;  // Normalize to fixed-point
         int32_t sin_val = INT_TO_FIXED(my_sin(theta)) / 127;
         
-        int32_t accel = FLOAT_TO_FIXED(0.3f);  // Gradual acceleration
+        int32_t accel = FLOAT_TO_FIXED(0.08f);  // Much more gradual acceleration (was 0.3f)
         speed_x += FIXED_MUL(cos_val, accel);
         speed_y += FIXED_MUL(sin_val, accel);
         
-        // Limit maximum speed
-        int32_t max_speed = INT_TO_FIXED(8);
+        // Limit maximum speed to be more reasonable
+        int32_t max_speed = INT_TO_FIXED(4);  // Reduced from 8 for more realistic speed
         int32_t speed_sq = FIXED_MUL(speed_x, speed_x) + FIXED_MUL(speed_y, speed_y);
         int32_t current_speed = fixed_sqrt(speed_sq);
         
@@ -682,19 +680,19 @@ void game_loop() {
     // Update LED based on current state
     update_led();
     
-    // Draw car (with dirty region)
+    // Draw car (with dirty region optimization)
     draw_car();
 }
 
 int main() {
     stdio_init_all();
     
-    // Init SPI for display
+    // Initialize SPI for display
     spi_init(spi0, 32000000); // 32MHz
     gpio_set_function(LCD_SCK, GPIO_FUNC_SPI);
     gpio_set_function(LCD_MOSI, GPIO_FUNC_SPI);
     
-    // Init GPIO pins
+    // Initialize GPIO pins
     gpio_init(LCD_DC);
     gpio_init(LCD_CS);
     gpio_init(LCD_RST);
@@ -702,7 +700,7 @@ int main() {
     gpio_set_dir(LCD_CS, GPIO_OUT);
     gpio_set_dir(LCD_RST, GPIO_OUT);
     
-    // Init button pins
+    // Initialize button pins
     gpio_init(BTN_A);
     gpio_init(BTN_B);
     gpio_init(BTN_X);
@@ -718,11 +716,11 @@ int main() {
     
     gpio_put(LCD_CS, 1);
     
-    // Init lookup tables and LED
+    // Initialize lookup tables and LED
     init_trig_tables();
     init_led();
     
-    // Init display (this will clear the screen to black)
+    // Initialize display (this will clear the screen to black)
     st7789_init();
     
     printf("Racing game started!\n");
@@ -736,3 +734,4 @@ int main() {
     
     return 0;
 }
+
