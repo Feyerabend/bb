@@ -69,6 +69,7 @@ int prev_theta = 0;
 
 // Track dirty flag
 bool track_dirty = true;
+bool full_screen_clear_needed = true;
 
 // Button sensitivity controls
 int steering_counter = 0;
@@ -147,6 +148,11 @@ void st7789_fill_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t c
     gpio_put(LCD_CS, 1);
 }
 
+void st7789_clear_screen() {
+    // Clear the entire 320x240 screen to black
+    st7789_fill_rect(0, 0, ST7789_WIDTH, ST7789_HEIGHT, BLACK);
+}
+
 void st7789_draw_pixel(uint16_t x, uint16_t y, uint16_t color) {
     if (x >= ST7789_WIDTH || y >= ST7789_HEIGHT) return;
     st7789_fill_rect(x, y, 1, 1, color);
@@ -206,6 +212,9 @@ void st7789_init() {
     pwm_set_wrap(slice_num, 255);
     pwm_set_chan_level(slice_num, PWM_CHAN_A, 128); // 50% brightness
     pwm_set_enabled(slice_num, true);
+    
+    // Clear the entire screen to black immediately after initialization
+    st7789_clear_screen();
 }
 
 // LED Control Functions
@@ -268,6 +277,7 @@ void reset_game() {
     speed_x = 0;
     speed_y = 0;
     track_dirty = true;
+    full_screen_clear_needed = true;
     
     // Reset counters
     steering_counter = 0;
@@ -496,8 +506,14 @@ void game_loop() {
     prev_btn_x = btn_x;
     
     // Clear screen only when needed
+    if (full_screen_clear_needed) {
+        // Clear the entire 320x240 screen to black
+        st7789_clear_screen();
+        full_screen_clear_needed = false;
+        track_dirty = true;  // Force track redraw after full clear
+    }
+    
     if (track_dirty) {
-        st7789_fill_rect(0, 0, ST7789_WIDTH, ST7789_HEIGHT, BLACK);
         draw_track();
         track_dirty = false;
     }
@@ -601,13 +617,12 @@ int main() {
     
     gpio_put(LCD_CS, 1);
     
-    // Initialize lookup tables, LED, and display
+    // Initialize lookup tables and LED
     init_trig_tables();
     init_led();
-    st7789_init();
     
-    // Clear entire screen to remove any noise
-    st7789_fill_rect(0, 0, ST7789_WIDTH, ST7789_HEIGHT, BLACK);
+    // Initialize display (this will clear the screen to black)
+    st7789_init();
     
     printf("Racing game started!\n");
     printf("Controls: A=Left, B=Right, A+B=Accelerate, Y=Brake, X=Reset\n");
