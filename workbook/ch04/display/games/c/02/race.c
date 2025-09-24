@@ -55,12 +55,21 @@
 #define GAME_AREA_WIDTH  240  // Game area boundaries
 #define GAME_AREA_HEIGHT 200
 
-// Game state
+// Fixed-point arithmetic (16.16 format)
+#define FIXED_SHIFT 16
+#define FIXED_ONE (1 << FIXED_SHIFT)  // 65536
+#define INT_TO_FIXED(x) ((x) << FIXED_SHIFT)
+#define FIXED_TO_INT(x) ((x) >> FIXED_SHIFT)
+#define FLOAT_TO_FIXED(x) ((int32_t)((x) * FIXED_ONE))
+#define FIXED_MUL(a, b) (((int64_t)(a) * (b)) >> FIXED_SHIFT)
+#define FIXED_DIV(a, b) (((int64_t)(a) << FIXED_SHIFT) / (b))
+
+// Game state using fixed-point
 int theta = 0;
-int x = 70;
-int y = 70;
-int speed_x = 0;
-int speed_y = 0;
+int32_t x = INT_TO_FIXED(70);     // 70.0 in fixed-point
+int32_t y = INT_TO_FIXED(70);     // 70.0 in fixed-point
+int32_t speed_x = 0;              // 0.0 in fixed-point
+int32_t speed_y = 0;              // 0.0 in fixed-point
 
 // Previous car position for dirty region tracking
 int prev_car_x = 70;
@@ -246,7 +255,21 @@ void set_led(uint8_t r, uint8_t g, uint8_t b) {
     pwm_set_chan_level(slice_b, pwm_gpio_to_channel(LED_B), 255 - b);
 }
 
-// Math functions
+// Fixed-point square root approximation
+int32_t fixed_sqrt(int32_t x) {
+    if (x <= 0) return 0;
+    
+    int32_t result = x;
+    int32_t temp;
+    
+    // Newton's method for square root (a few iterations)
+    for (int i = 0; i < 8; i++) {
+        temp = FIXED_DIV(x, result);
+        result = (result + temp) >> 1;
+    }
+    
+    return result;
+}
 int my_sin(int angle) {
     return sin_table[angle & 0xFF];
 }
@@ -271,8 +294,8 @@ void read_buttons() {
 }
 
 void reset_game() {
-    x = 70;
-    y = 70;
+    x = INT_TO_FIXED(70);
+    y = INT_TO_FIXED(70);
     theta = 0;
     speed_x = 0;
     speed_y = 0;
@@ -305,61 +328,93 @@ void update_led() {
 }
 
 void apply_friction() {
-    speed_x -= (speed_x >> 4);
-    speed_y -= (speed_y >> 4);
+    // Smooth deceleration using fixed-point (retain ~92% of speed each frame)
+    // 0.92 in fixed-point is approximately 60293
+    int32_t friction_factor = 60293; // 0.92 * 65536
+    
+    speed_x = FIXED_MUL(speed_x, friction_factor);
+    speed_y = FIXED_MUL(speed_y, friction_factor);
+    
+    // Stop very small movements to avoid jittering
+    int32_t min_speed = FLOAT_TO_FIXED(0.01f);
+    if (speed_x < min_speed && speed_x > -min_speed) speed_x = 0;
+    if (speed_y < min_speed && speed_y > -min_speed) speed_y = 0;
 }
 
 void collide_corner(int x1, int y1) {
-    // Calculate distance to corner point
-    int dx = x - x1;
-    int dy = y - y1;
-    int dist_sq = dx * dx + dy * dy;
+    // Calculate distance to corner point using fixed-point
+    int32_t dx = x - INT_TO_FIXED(x1);
+    int32_t dy = y - INT_TO_FIXED(y1);
+    int32_t dist_sq = FIXED_MUL(dx, dx) + FIXED_MUL(dy, dy);
+    
+    int32_t inner_radius_sq = INT_TO_FIXED(64);  // 8*8 = 64
+    int32_t outer_radius_sq = INT_TO_FIXED(1024); // 32*32 = 1024
     
     // If too close to corner (inside inner radius)
-    if (dist_sq < 64) { // 8*8 = 64
+    if (dist_sq < inner_radius_sq) {
         if (dist_sq > 0) { // Avoid division by zero
-            int dist = sqrt(dist_sq);
+            int32_t dist = fixed_sqrt(dist_sq);
+            int32_t min_dist = INT_TO_FIXED(10);
             // Push car away from corner to minimum distance
-            x = x1 + (dx * 10) / dist;
-            y = y1 + (dy * 10) / dist;
-            // Reduce speed
-            speed_x = speed_x / 2;
-            speed_y = speed_y / 2;
+            x = INT_TO_FIXED(x1) + FIXED_DIV(FIXED_MUL(dx, min_dist), dist);
+            y = INT_TO_FIXED(y1) + FIXED_DIV(FIXED_MUL(dy, min_dist), dist);
+            // Reduce speed smoothly
+            speed_x = speed_x >> 1; // Divide by 2
+            speed_y = speed_y >> 1;
         }
     }
     // If too far from corner (outside outer radius) 
-    else if (dist_sq > 1024) { // 32*32 = 1024
-        int dist = sqrt(dist_sq);
+    else if (dist_sq > outer_radius_sq) {
+        int32_t dist = fixed_sqrt(dist_sq);
+        int32_t max_dist = INT_TO_FIXED(30);
         // Pull car towards corner to maximum distance
-        x = x1 + (dx * 30) / dist;
-        y = y1 + (dy * 30) / dist;
-        // Reduce speed
-        speed_x = speed_x / 2;
-        speed_y = speed_y / 2;
+        x = INT_TO_FIXED(x1) + FIXED_DIV(FIXED_MUL(dx, max_dist), dist);
+        y = INT_TO_FIXED(y1) + FIXED_DIV(FIXED_MUL(dy, max_dist), dist);
+        // Reduce speed smoothly
+        speed_x = speed_x >> 1; // Divide by 2
+        speed_y = speed_y >> 1;
     }
 }
 
 void collide_vert(int x1, int y1, int s) {
     // Check collision with vertical walls (left and right edges)
-    if (x < x1 + 10) {
-        x = x1 + 10;
-        if (speed_x < 0) speed_x = -speed_x / 3; // Bounce back with reduced speed
+    int32_t left_wall = INT_TO_FIXED(x1 + 10);
+    int32_t right_wall = INT_TO_FIXED(x1 + s - 10);
+    
+    if (x < left_wall) {
+        x = left_wall;
+        if (speed_x < 0) {
+            speed_x = -speed_x;
+            speed_x = FIXED_MUL(speed_x, FLOAT_TO_FIXED(0.3f)); // Reduce speed
+        }
     }
-    if (x > x1 + s - 10) {
-        x = x1 + s - 10;
-        if (speed_x > 0) speed_x = -speed_x / 3; // Bounce back with reduced speed
+    if (x > right_wall) {
+        x = right_wall;
+        if (speed_x > 0) {
+            speed_x = -speed_x;
+            speed_x = FIXED_MUL(speed_x, FLOAT_TO_FIXED(0.3f)); // Reduce speed
+        }
     }
 }
 
 void collide_horiz(int x1, int y1, int s) {
     // Check collision with horizontal walls (top and bottom edges)
-    if (y < y1 + 10) {
-        y = y1 + 10;
-        if (speed_y < 0) speed_y = -speed_y / 3; // Bounce back with reduced speed
+    int32_t top_wall = INT_TO_FIXED(y1 + 10);
+    int32_t bottom_wall = INT_TO_FIXED(y1 + s - 10);
+    
+    if (y < top_wall) {
+        y = top_wall;
+        if (speed_y < 0) {
+            speed_y = -speed_y;
+            speed_y = FIXED_MUL(speed_y, FLOAT_TO_FIXED(0.3f)); // Reduce speed
+        }
     }
-    if (y > y1 + s - 10) {
-        y = y1 + s - 10;
-        if (speed_y > 0) speed_y = -speed_y / 3; // Bounce back with reduced speed
+    if (y > bottom_wall) {
+        y = bottom_wall;
+        if (speed_y > 0) {
+            speed_y = -speed_y;
+            speed_y = FIXED_MUL(speed_y, FLOAT_TO_FIXED(0.3f)); // Reduce speed
+        }
     }
 }
 
@@ -456,8 +511,8 @@ void draw_car() {
     int halfcos = costheta / 2;
     int halfsin = sintheta / 2;
     
-    int car_x = x + OFFSET_X;
-    int car_y = y + OFFSET_Y;
+    int car_x = FIXED_TO_INT(x) + OFFSET_X;
+    int car_y = FIXED_TO_INT(y) + OFFSET_Y;
     
     int x1 = car_x + halfcos + halfsin;
     int y1 = car_y + halfsin - halfcos;
@@ -474,8 +529,8 @@ void draw_car() {
     st7789_draw_line(x4, y4, x1, y1, WHITE);
     
     // Store current position for next frame
-    prev_car_x = x;
-    prev_car_y = y;
+    prev_car_x = FIXED_TO_INT(x);
+    prev_car_y = FIXED_TO_INT(y);
     prev_theta = theta;
 }
 
@@ -527,8 +582,23 @@ void game_loop() {
     
     // Acceleration - both X and Y pressed
     if (btn_x && btn_y) {
-        speed_x += my_cos(theta) / 8;
-        speed_y += my_sin(theta) / 8;
+        // Smooth acceleration using fixed-point
+        int32_t cos_val = INT_TO_FIXED(my_cos(theta)) / 127;  // Normalize to fixed-point
+        int32_t sin_val = INT_TO_FIXED(my_sin(theta)) / 127;
+        
+        int32_t accel = FLOAT_TO_FIXED(0.3f);  // Gradual acceleration
+        speed_x += FIXED_MUL(cos_val, accel);
+        speed_y += FIXED_MUL(sin_val, accel);
+        
+        // Limit maximum speed
+        int32_t max_speed = INT_TO_FIXED(8);
+        int32_t speed_sq = FIXED_MUL(speed_x, speed_x) + FIXED_MUL(speed_y, speed_y);
+        int32_t current_speed = fixed_sqrt(speed_sq);
+        
+        if (current_speed > max_speed) {
+            speed_x = FIXED_DIV(FIXED_MUL(speed_x, max_speed), current_speed);
+            speed_y = FIXED_DIV(FIXED_MUL(speed_y, max_speed), current_speed);
+        }
     }
     
     // Automatic deceleration when no buttons are pressed
@@ -536,24 +606,29 @@ void game_loop() {
         apply_friction();
     }
     
-    // Update position with boundary checking (no more wrapping)
-    int new_x = x + speed_x / 256;
-    int new_y = y + speed_y / 256;
+    // Update position with smooth movement
+    int32_t new_x = x + speed_x;
+    int32_t new_y = y + speed_y;
     
     // Keep car within game boundaries
-    if (new_x < 0) {
-        new_x = 0;
+    int32_t min_x = 0;
+    int32_t max_x = INT_TO_FIXED(GAME_AREA_WIDTH - OFFSET_X);
+    int32_t min_y = 0;
+    int32_t max_y = INT_TO_FIXED(GAME_AREA_HEIGHT - OFFSET_Y);
+    
+    if (new_x < min_x) {
+        new_x = min_x;
         speed_x = 0;
-    } else if (new_x > GAME_AREA_WIDTH - OFFSET_X) {
-        new_x = GAME_AREA_WIDTH - OFFSET_X;
+    } else if (new_x > max_x) {
+        new_x = max_x;
         speed_x = 0;
     }
     
-    if (new_y < 0) {
-        new_y = 0;
+    if (new_y < min_y) {
+        new_y = min_y;
         speed_y = 0;
-    } else if (new_y > GAME_AREA_HEIGHT - OFFSET_Y) {
-        new_y = GAME_AREA_HEIGHT - OFFSET_Y;
+    } else if (new_y > max_y) {
+        new_y = max_y;
         speed_y = 0;
     }
     
@@ -561,10 +636,13 @@ void game_loop() {
     y = new_y;
     
     // Collision detection
+    int int_x = FIXED_TO_INT(x);
+    int int_y = FIXED_TO_INT(y);
+    
     for (int j = 0; j < 5; j++) {
         for (int i = 0; i < 6; i++) {
-            if (x >= i * MAP_SCALE && y >= j * MAP_SCALE && 
-                x < (i + 1) * MAP_SCALE && y < (j + 1) * MAP_SCALE) {
+            if (int_x >= i * MAP_SCALE && int_y >= j * MAP_SCALE && 
+                int_x < (i + 1) * MAP_SCALE && int_y < (j + 1) * MAP_SCALE) {
                 
                 switch (map[j][i]) {
                     case 1: collide_corner(i * MAP_SCALE, (j + 1) * MAP_SCALE); break;
