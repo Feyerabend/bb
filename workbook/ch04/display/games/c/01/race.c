@@ -66,10 +66,10 @@
 
 // Game state using fixed-point
 int theta = 0;
-int32_t x = INT_TO_FIXED(70);   // 70.0 in fixed-point
-int32_t y = INT_TO_FIXED(70);   // 70.0 in fixed-point
-int32_t speed_x = 0;            // 0.0 in fixed-point
-int32_t speed_y = 0;            // 0.0 in fixed-point
+int32_t x = INT_TO_FIXED(70);     // 70.0 in fixed-point
+int32_t y = INT_TO_FIXED(70);     // 70.0 in fixed-point
+int32_t speed_x = 0;              // 0.0 in fixed-point
+int32_t speed_y = 0;              // 0.0 in fixed-point
 
 // Previous car position for dirty region tracking
 int prev_car_x = 70;
@@ -158,7 +158,6 @@ void st7789_fill_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t c
 }
 
 void st7789_clear_screen() {
-<<<<<<< HEAD
     // Clear the entire 320x240 screen to black using proper window setting
     st7789_set_window(0, 0, ST7789_WIDTH - 1, ST7789_HEIGHT - 1);
     st7789_write_cmd(ST7789_RAMWR);
@@ -174,10 +173,6 @@ void st7789_clear_screen() {
     }
     
     gpio_put(LCD_CS, 1);
-=======
-    // Clear the entire 320x240 screen to black? check doc. some offset bad?
-    st7789_fill_rect(0, 0, ST7789_WIDTH, ST7789_HEIGHT, BLACK);
->>>>>>> 8bbb3a16ecf078a04db0b04a8b6d8579666ddff3
 }
 
 void st7789_draw_pixel(uint16_t x, uint16_t y, uint16_t color) {
@@ -346,26 +341,15 @@ void update_led() {
 }
 
 void apply_friction() {
-<<<<<<< HEAD
-    // Much more gradual deceleration - like sliding on a smooth surface?
+    // Much more gradual deceleration - like sliding on a smooth surface
     // 0.98 in fixed-point is approximately 64225 (retains 98% of speed each frame)
     int32_t friction_factor = 64225; // 0.98 * 65536 - very gradual friction
-=======
-    // Smooth deceleration using fixed-point (retain ~50% of speed each frame)
-    // 0.92 in fixed-point is approximately 60293
-    int32_t friction_factor = 32768; // 60293; // 0.50 * 65536
->>>>>>> 8bbb3a16ecf078a04db0b04a8b6d8579666ddff3
     
     speed_x = FIXED_MUL(speed_x, friction_factor);
     speed_y = FIXED_MUL(speed_y, friction_factor);
     
-<<<<<<< HEAD
     // Only stop extremely small movements to avoid infinite sliding
     int32_t min_speed = FLOAT_TO_FIXED(0.005f); // Much smaller threshold
-=======
-    // Stop very small movements to avoid jittering
-    int32_t min_speed = FLOAT_TO_FIXED(0.15f);
->>>>>>> 8bbb3a16ecf078a04db0b04a8b6d8579666ddff3
     if (speed_x < min_speed && speed_x > -min_speed) speed_x = 0;
     if (speed_y < min_speed && speed_y > -min_speed) speed_y = 0;
 }
@@ -630,12 +614,7 @@ void game_loop() {
         }
     }
     
-<<<<<<< HEAD
     // Automatic deceleration when no buttons are pressed (but steering still works!)
-=======
-    // Automatic deceleration when no buttons are pressed
-    // no hard breaks, please!!
->>>>>>> 8bbb3a16ecf078a04db0b04a8b6d8579666ddff3
     if (!btn_x && !btn_y) {
         apply_friction();
     }
@@ -754,4 +733,3 @@ int main() {
     
     return 0;
 }
-
