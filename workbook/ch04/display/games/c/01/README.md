@@ -1,14 +1,15 @@
 
 ##
 
-Mitxela, do some very interesting projects.
-Here is a direct translation from his racer game:
-https://mitxela.com/projects/console/retroracer
-to the Pico 2 with Pimoroni Display Pack 2 in C.
+Mitxela creates very interesting projects.
+This code began as a direct translation of his racer game
+(https://mitxela.com/projects/console/retroracer)
+to the Pico 2 with the Pimoroni Display Pack 2 in C.
+However, I have changed many parts, though I remain indebted to his original design.
 
-Well there is actually an addition:
-dirty regions are redrawn, instead of everything.
+There are some additions:
+- Only dirty regions are redrawn, rather than the entire screen.
+- DMA support.
+- And so on ..
 
-Next, some image might be interesting to have .. fill in the
-noisy area ..
-
+Next, some images might be interesting to include… for example, filling in the noisy areas.
