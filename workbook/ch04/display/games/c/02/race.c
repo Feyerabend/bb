@@ -66,10 +66,10 @@
 
 // Game state using fixed-point
 int theta = 0;
-int32_t x = INT_TO_FIXED(70);     // 70.0 in fixed-point
-int32_t y = INT_TO_FIXED(70);     // 70.0 in fixed-point
-int32_t speed_x = 0;              // 0.0 in fixed-point
-int32_t speed_y = 0;              // 0.0 in fixed-point
+int32_t x = INT_TO_FIXED(70);   // 70.0 in fixed-point
+int32_t y = INT_TO_FIXED(70);   // 70.0 in fixed-point
+int32_t speed_x = 0;            // 0.0 in fixed-point
+int32_t speed_y = 0;            // 0.0 in fixed-point
 
 // Previous car position for dirty region tracking
 int prev_car_x = 70;
@@ -158,8 +158,21 @@ void st7789_fill_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t c
 }
 
 void st7789_clear_screen() {
-    // Clear the entire 320x240 screen to black
-    st7789_fill_rect(0, 0, ST7789_WIDTH, ST7789_HEIGHT, BLACK);
+    // Clear the entire 320x240 screen to black using proper window setting
+    st7789_set_window(0, 0, ST7789_WIDTH - 1, ST7789_HEIGHT - 1);
+    st7789_write_cmd(ST7789_RAMWR);
+    
+    // Use DMA-style approach for faster clearing
+    uint8_t black_bytes[2] = {BLACK >> 8, BLACK & 0xFF};
+    gpio_put(LCD_DC, 1);
+    gpio_put(LCD_CS, 0);
+    
+    // Send black pixels for entire screen (320 * 240 = 76800 pixels)
+    for (uint32_t i = 0; i < (uint32_t)ST7789_WIDTH * ST7789_HEIGHT; i++) {
+        spi_write_blocking(spi0, black_bytes, 2);
+    }
+    
+    gpio_put(LCD_CS, 1);
 }
 
 void st7789_draw_pixel(uint16_t x, uint16_t y, uint16_t color) {
@@ -328,15 +341,15 @@ void update_led() {
 }
 
 void apply_friction() {
-    // Smooth deceleration using fixed-point (retain ~92% of speed each frame)
-    // 0.92 in fixed-point is approximately 60293
-    int32_t friction_factor = 60293; // 0.92 * 65536
+    // Much more gradual deceleration - like sliding on a smooth surface?
+    // 0.98 in fixed-point is approximately 64225 (retains 98% of speed each frame)
+    int32_t friction_factor = 64225; // 0.98 * 65536 - very gradual friction
     
     speed_x = FIXED_MUL(speed_x, friction_factor);
     speed_y = FIXED_MUL(speed_y, friction_factor);
     
-    // Stop very small movements to avoid jittering
-    int32_t min_speed = FLOAT_TO_FIXED(0.01f);
+    // Only stop extremely small movements to avoid infinite sliding
+    int32_t min_speed = FLOAT_TO_FIXED(0.005f); // Much smaller threshold
     if (speed_x < min_speed && speed_x > -min_speed) speed_x = 0;
     if (speed_y < min_speed && speed_y > -min_speed) speed_y = 0;
 }
@@ -573,7 +586,7 @@ void game_loop() {
         track_dirty = false;
     }
     
-    // Update player rotation - Y=left, X=right
+    // Update player rotation - Y=left, X=right (works anytime, not just when accelerating)
     if (btn_y && !btn_x) {
         theta = (theta - 2 + 256) % 256;
     } else if (btn_x && !btn_y) {
@@ -601,9 +614,16 @@ void game_loop() {
         }
     }
     
-    // Automatic deceleration when no buttons are pressed
+    // Automatic deceleration when no buttons are pressed (but steering still works!)
     if (!btn_x && !btn_y) {
         apply_friction();
+    }
+    // When only one button is pressed (steering while coasting), apply light friction
+    else if (btn_x != btn_y) { // XOR - only one button pressed
+        // Light friction when steering while coasting (but not as much as full braking)
+        int32_t light_friction_factor = 65208; // 0.996 * 65536 - very light friction
+        speed_x = FIXED_MUL(speed_x, light_friction_factor);
+        speed_y = FIXED_MUL(speed_y, light_friction_factor);
     }
     
     // Update position with smooth movement
@@ -713,3 +733,4 @@ int main() {
     
     return 0;
 }
+
