@@ -158,7 +158,7 @@ void st7789_fill_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t c
 }
 
 void st7789_clear_screen() {
-    // Clear the entire 320x240 screen to black
+    // Clear the entire 320x240 screen to black? check doc. some offset bad?
     st7789_fill_rect(0, 0, ST7789_WIDTH, ST7789_HEIGHT, BLACK);
 }
 
@@ -328,15 +328,15 @@ void update_led() {
 }
 
 void apply_friction() {
-    // Smooth deceleration using fixed-point (retain ~92% of speed each frame)
+    // Smooth deceleration using fixed-point (retain ~50% of speed each frame)
     // 0.92 in fixed-point is approximately 60293
-    int32_t friction_factor = 60293; // 0.92 * 65536
+    int32_t friction_factor = 32768; // 60293; // 0.50 * 65536
     
     speed_x = FIXED_MUL(speed_x, friction_factor);
     speed_y = FIXED_MUL(speed_y, friction_factor);
     
     // Stop very small movements to avoid jittering
-    int32_t min_speed = FLOAT_TO_FIXED(0.01f);
+    int32_t min_speed = FLOAT_TO_FIXED(0.15f);
     if (speed_x < min_speed && speed_x > -min_speed) speed_x = 0;
     if (speed_y < min_speed && speed_y > -min_speed) speed_y = 0;
 }
@@ -602,6 +602,7 @@ void game_loop() {
     }
     
     // Automatic deceleration when no buttons are pressed
+    // no hard breaks, please!!
     if (!btn_x && !btn_y) {
         apply_friction();
     }
