@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "graphics_engine.h"
+#include "engine.h"
 
 
 // Global engine state (now with static allocation)
