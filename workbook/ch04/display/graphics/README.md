@@ -59,7 +59,7 @@ lies a complex interplay of mathematics, engineering, and design.
 
 
 
-### Graphics
+### Images
 
 Alongside text, graphics have always been central to how computers communicate with their
 users. In the earliest systems, screens were limited to showing characters, but as technology
