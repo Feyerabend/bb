@@ -28,3 +28,4 @@ Since then, Tetris has become one of the most iconic and widely played games in
 history, ported to nearly every platform imaginable and celebrated as both a
 cultural and design milestone in video gaming.
 
+![PDP 11](pdp11.png)
