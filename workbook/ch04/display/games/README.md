@@ -1,174 +1,428 @@
 
-> *The Pimoroni display packs chosen here are used primarily for convenience and simplicity, and
-we do not endorse any particular display over another. The same applies to the choice of the
-Raspberry Pi Pico, which is used here for practical reasons rather than as a recommendation
-over other microcontrollers.*
 
 
-## Displays for the Raspberry Pi Pico
+## IDEAS & NOTES: Roadmap to ..
 
-There are many options for displays even for such very simple microcontrollers as the
-Raspberry Pi Pico. From tiny monochrome screens for basic readouts to vibrant colour
-panels for games and GUIs, these add-ons connect via simple interfaces like SPI, I2C,
-or GPIO, making them a breeze to integrate with MicroPython or C/C++. Whether you're
-building a retro game like our Atari-inspired tank combat or a weather station, there's
-a display to fit your power budget, size needs, and style. Below, we will break down the
-main types (LCD, OLED, TFT, and ePaper) with pros/cons, followed by a table of popular
-picks as of 2025.
-
-
-#### Quick Primer on Display Types
-
-- *LCD (Liquid Crystal Display)*: Affordable and widely available, these use backlighting
-  for visibility. Great for colourful projects but can drain battery faster due to the light
-  source. Often character-based (e.g., 16x2 text) or graphic.
-- *TFT (Thin-Film Transistor LCD)*: A step up from basic LCDs--sharper, faster refresh rates,
-  and better colours thanks to transistor tech. Ideal for animations or games on the Pico's
-  limited pins.
-- *OLED (Organic Light-Emitting Diode)*: Self-lit pixels mean true blacks, infinite contrast,
-  and super-low power (no backlight!). Perfect for text-heavy or battery-powered apps,
-  though pricier and limited in size.
-- *ePaper (Electronic Paper)*: Mimics ink on paper-bistable (holds image without power),
-  sunlight-readable, and ultra-efficient. Best for static info like labels or sensors,
-  not fast video.
-
-Most are Pico-ready with libraries like `picographics` (Pimoroni), `adafruit_ssd1306`
-(OLEDs), or `st7735` (TFTs) in MicroPython. Power draw varies: OLED/ePaper ~mW, LCD/TFT ~10-50mW.
+1. Hardware + driver: get the ST7789 talking to the Raspberry Pi Pico (SPI / DC / RST / BL).
+   Verify wiring and a minimal init sequence; be able to draw pixels and filled rectangles.
+2. Framebuffer & transfer: choose a buffering strategy (full framebuffer, partial updates,
+   tiled updates), implement a fast transfer path (SPI + DMA, or PIO + DMA for maximal offload).
+   Verify refresh rates and CPU load.
+3. Graphics API: expose simple primitives (pixel, line, rect, blit, tilemap, text) implemented
+   efficiently for the Pico’s constraints!
+4. Scripting / VM: design and implement a small VM (bytecode) that exposes engine APIs
+   (spawn, move, draw, wait, emit). Add coroutines, event dispatch, sandboxing and hot-reload.
+5. Game runtime & tools: entity system, input handling, asset pipeline, simple level editor,
+   and example game content.
+6. Optimise & polish: reduce allocations, tune DMA/PIO usage, add profiler and debug hooks.
 
 
-#### Popular Display Options for Pico
+### Phase 1 — ST7789 on Raspberry Pi Pico: practical requirements and first driver
 
-Here's a selection of current favourites from major vendors. Prices are approximate USD
-(as of mid-2025) and can fluctuate; check retailers like Adafruit, Pimoroni, Waveshare,
-or PiShop for stock.
+Goals
+- Get a working driver that initialises the ST7789 and can draw pixels and rectangles.
+- Measure time to fill screen and CPU load.
 
-| Vendor     | Type  | Size / Resolution       | Interface | Price | Notes & Pico Fit |
-|------------|-------|-------------------------|-----------|-------|------------------|
-| Pimoroni  | TFT (IPS LCD) | 1.14" / 240x135 | SPI | $20 | Original Display Pack: Buttons + RGB LED included. Great for small games like our tank combat. |
-| Pimoroni  | TFT (IPS LCD) | 2.0" / 320x240 | SPI | $25 | Display Pack 2.0: Larger, vibrant colours; easy backpack mount. Updated for Pico 2 (RP2350). |
-| Adafruit  | OLED (Monochrome) | 0.96" / 128x64 | I2C/SPI | $12-18 | STEMMA QT connector for easy wiring. Low-power text display; use with `adafruit_displayio`. |
-| Adafruit  | OLED (Monochrome) | 1.3" / 128x64 | I2C/SPI | $20 | SH1106 driver; compact for wearables. Excellent contrast for dark environments. |
-| Adafruit  | TFT | 1.14" / 240x135 | SPI | $10 | ST7789 chip + microSD; cooler breakout for prototypes. Matches Pimoroni's original res. |
-| Adafruit  | TFT | 1.8" / 128x160 | SPI | $20 | ST7735R + microSD; adds storage for game assets. |
-| Adafruit  | TFT (Touch) | 2.8" / 320x240 | SPI | $30 | ILI9341 + cap touch; bigger for GUIs, but uses more pins. |
-| Waveshare | LCD (Colour) | 1.8" / 160x128 | SPI | $15 | ST7735S driver; 65K coolers, MicroPython demos included. Simple embed. |
-| Waveshare | TFT (Touch IPS) | 3.5" / 480x320 | SPI | $25 | Dedicated touch controller; smooth for interactive apps. |
-| Waveshare / Pi Hut | ePaper | 2.13" / 250x122 | SPI | $20-25 | Bistable, black/white; holds updates forever. Ideal for low-power IoT. |
-| Adafruit  | ePaper | 2.7" / 264x176 | SPI | $30 | Monochrome; sunlight-readable for outdoor Pico projects. |
+__Hardware basics (wiring & pins)__
 
+Typical pins on a 240×240 ST7789 module:
+- VCC → 3.3 V, GND → GND
+- SCL / SCK → SPI SCK pin
+- SDA / MOSI → SPI MOSI pin
+- DC (Data/Command) → GPIO (controls whether byte is command or data)
+- RST → Reset GPIO
+- CS (Chip Select) → optional (can tie low)
+- BL / LED → Backlight control (PWM or on)
+(Examples and typical module specs: 240×240 ST7789 breakout modules, Waveshare?).
 
-### Pimoroni Pico Display Pack (Original)
+Important device facts (load-bearing)
+- ST7789-based 240×240 modules commonly use SPI and accept 16-bit RGB565 data
+  (other modes exist; COLMOD controls pixel format). See ST7789 datasheet for
+  exact commands and COLMOD values.  ￼
+- RP2040 (the Pico) has 264 kB SRAM in multiple banks and supports DMA and PIO;
+  these features make frame buffering and DMA transfer practical on-device.  ￼
 
-The *Pimoroni Pico Display Pack* is a compact add-on board for the Raspberry Pi Pico
-(or Pico W), designed to give your Pico a colourful display and basic input for projects
-like mini games, interfaces, or sensor readouts. Released around early 2021, it’s a
-"backpack" that attaches to the underside of the Pico, making it ideal for portable
-or embedded applications.
+Minimal command flow (concept)
+1. Hardware reset pulse (toggle RST low for X ms).
+2. Send initialization commands (SWRESET, SLEEP OUT, COLMOD, MADCTL, RAMCTRL / GRAM settings,
+   INVERSION ON/OFF, DISPLAY ON). The exact sequence varies by module and panel--use datasheet
+   or your module vendor init array. Problems occur when a register in the init is omitted
+   (e.g. RAMCTRL).
 
-
-#### Key Features
-
-| Feature | Details |
-|---------|---------|
-| *Display* | 1.14-inch IPS LCD, 240x135 pixels (~210 PPI), 18-bit cooler (65K colours), decent viewing angles, and backlit. Uses SPI interface (pins: CS, DC, SCLK, MOSI) with PWM brightness control. |
-| *Input/Output* | Four tactile buttons (A/B/X/Y, mapped to GPIO 12-15 by default). One RGB LED for status or effects. |
-| *Compatibility* | Works with Raspberry Pi Pico/Pico W (needs male headers on the Pico). Supports MicroPython (via Pimoroni’s UF2 build with `picodisplay` library), CircuitPython (ST7789 driver), or C/C++. Stackable with other Pico add-ons. |
-| *Dimensions & Build* | ~35mm x 25mm x 9mm (L x W x H). No soldering if Pico has headers. Compact but slightly delicate buttons. |
-| *Power* | Runs off Pico’s 3.3V, low power for battery setups. |
-
-
-#### Comparison to Pico Display Pack 2.0
-
-- *Screen Size*: Original has a 1.14-inch, 240x135 display; the 2.0 version upgrades to a 2.0-inch,
-  320x240 screen for sharper, larger visuals.
-- *Code*: Uses `picodisplay` in MicroPython (vs. `picodisplay2` for 2.0). Swap the display constant
-  (`DISPLAY_PICO_DISPLAY` vs. `DISPLAY_PICO_DISPLAY_2`) and adjust resolution in code to port projects.
-- *Form Factor*: Same button layout and RGB LED, but the original is smaller, fitting tightly on the Pico.
+Framebuffer size math (digit-by-digit)
+- Resolution: 240 × 240 = 57 600 pixels.
+- Using 16-bit RGB565: bytes per pixel = 2.
+- Framebuffer bytes = 57 600 × 2 = 115 200 bytes.
+So a single full-screen 16-bit framebuffer is 115 200 bytes, which fits inside the Pico’s 264 kB SRAM,
+but leaves space usage for code, stacks and other buffers — plan memory carefully. So we use RPI 2 instead!
 
 
-#### Getting Started
+CHECK Pico C
 
-1. *Setup*: Attach to a Pico with headers. No soldering needed if prepped.
+A compact sketch for initialising SPI and sending a single command/data byte.
+```c
+/* pico_st7789_min.c — schematic */
+#include "pico/stdlib.h"
+#include "hardware/spi.h"
 
-2. *Software*: Flash Pimoroni’s MicroPython UF2 (from their GitHub). Basic example:
-   ```python
-   from picodisplay import PicoDisplay
-   import time
+/* pin assignment — adapt to your wiring */
+#define PIN_SCK  18
+#define PIN_MOSI 19
+#define PIN_CS   17   /* optional */
+#define PIN_DC   16
+#define PIN_RST  20
 
-   display = PicoDisplay()
-   display.set_backlight(1.0)  # Max brightness
-   display.set_pen(255, 255, 255)  # White
-   display.text("Hello, Pico Display!", 10, 60, scale=2)
-   display.update()
-   time.sleep(1)
-   ```
-   Check Pimoroni’s tutorials for more (GitHub or their site).
+static inline void st7789_cmd(uint8_t b) {
+    gpio_put(PIN_DC, 0);
+    gpio_put(PIN_CS, 0);
+    spi_write_blocking(spi0, &b, 1);
+    gpio_put(PIN_CS, 1);
+}
 
-3. *Use Cases*: Great for simple games, small dashboards, or IoT displays.
+static inline void st7789_data(const uint8_t *buf, size_t len) {
+    gpio_put(PIN_DC, 1);
+    gpio_put(PIN_CS, 0);
+    spi_write_blocking(spi0, buf, len);
+    gpio_put(PIN_CS, 1);
+}
 
+void st7789_init(void) {
+    /* reset pulse */
+    gpio_put(PIN_RST, 0);
+    sleep_ms(10);
+    gpio_put(PIN_RST, 1);
+    sleep_ms(120);
 
+    /* Typical init sequence (example commands) */
+    st7789_cmd(0x01); /* SWRESET */
+    sleep_ms(150);
+    st7789_cmd(0x11); /* SLEEP OUT */
+    sleep_ms(120);
+    uint8_t colmod[] = {0x05}; /* 16-bit/pixel = 0x05 */
+    st7789_cmd(0x3A); /* COLMOD */
+    st7789_data(colmod, 1);
+    /* set MADCTL, RAMCTRL, inversion, etc, then DISPLAY ON */
+    st7789_cmd(0x29); /* DISPLAY ON */
+}
+```
 
-### Pimoroni Pico Display Pack 2.0
-
-The *Pico Display Pack 2.0* is a compact add-on board from Pimoroni designed specifically
-for the Raspberry Pi Pico (or Pico W). It's essentially a "backpack" that snaps onto the
-underside of your Pico, turning it into a portable display-equipped device perfect for
-embedded projects, games, or interfaces. Released around mid-2024, it's an upgraded version
-of the original Pico Display Pack, offering a larger, higher-resolution screen while keeping
-the same easy-to-use form factor.
-
-
-#### Key Features
-
-| Feature | Details |
-|---------|---------|
-| *Display* | 2.0-inch (50.8mm) IPS LCD, 320 x 240 pixels (~220 PPI), 18-bit cooler (65K coolers), wide viewing angles, and vibrant backlighting. Communicates via SPI (pins: CS, DC, SCLK, MOSI) with PWM-controlled brightness. |
-| *Input/Output* | Four tactile buttons (labeled A/B/X/Y, connected to GPIO 12-15 by default) for user interaction. Includes a single RGB LED for status indicators. |
-| *Compatibility* | - Raspberry Pi Pico/Pico W (requires male headers soldered on the Pico).<br>- Works with MicroPython (Pimoroni's custom UF2 build), CircuitPython (via Adafruit DisplayIO), or C/C++.<br>- Stackable with other Pico add-ons like Pico Omnibus or Pico Decker (though it may overhang slightly). |
-| *Dimensions & Build* | Approx. 53mm x 25mm x 9mm (L x W x H). No soldering needed if your Pico has headers. The screen protrudes slightly above the buttons, so use gentle fingertip presses to avoid accidental touches. |
-| *Power* | Draws from the Pico (3.3V logic), low power for battery projects. |
-
-
-#### What's New vs. Original Pico Display Pack?
-
-- *Bigger Screen*: Original is 1.14-inch at 240x135; 2.0 is double the diagonal and resolution
-  for sharper graphics and more real estate.
-- *Code Migration*: Super simple-- in MicroPython, swap `import picodisplay` to `import picodisplay2`
-  or use `DISPLAY_PICO_DISPLAY_2` constant.
-- Same button layout and RGB LED, but more space for custom Pico projects (e.g., mounting on larger bases).
+__Notes__
+- Use spi_init(spi0, 20 * 1000 * 1000) for a fast clock (test module limit).
+  Many modules are stable at 10–30 MHz; check module specs.
+- Some modules/driver combinations require SPI mode 0 or mode 3; test and
+  verify--libraries vary.  ￼
 
 
 
-#### Getting Started
+### Phase 2 — Efficient transfers: DMA, double-buffering, PIO
 
-1. *Hardware Setup*: Buy a Pico with headers (or solder your own). Snap the pack onto the Pico's
-   underside--pins align automatically.
+__Options (trade-offs)__
+- Full framebuffer (single buffer): easy; prepare whole frame in RAM, push via DMA
+  to the display. Memory: ~115 KB for 240×240 RGB565. Good when you can spare memory
+  and want simple blits.
+- Double-buffering: prepare next frame off-screen, swap, and DMA-transfer while
+  engine continues. More memory (≈230 KB) but smoother.
+  On Pico this may be tight but sometimes feasible. Check!
+- Tiled / partial updates: keep smaller rectangles updated; stream only changed
+  tiles to save bandwidth. Useful for HUDs or tile-based games.
+- PIO + DMA offload: push pixel stream using PIO state machines and DMA so CPU
+  is free for game logic.  ￼
 
-2. *Software*:
-   - *MicroPython*: Flash Pimoroni's custom UF2 from their GitHub (includes `picographics` library).
-     Example code for basics:
-     ```python
-     import picodisplay2 as picodisplay
-     import time
 
-     display = picodisplay.PicoDisplay2()
-     display.set_backlight(1.0)  # Full brightness
+### Why DMA?
 
-     while True:
-         display.set_pen(picodisplay.WHITE)
-         display.clear()
-         display.text("Hello, Pico Display 2.0!", 10, 100, scale=2)
-         display.update()
-         time.sleep(1)
-     ```
-     Tutorials and full examples are on Pimoroni's site.
-   - *CircuitPython*: Use Adafruit's bundle; look for the ST7789 driver example.
+Using DMA to stream the framebuffer to SPI or PIO reduces CPU interrupts and makes
+it practical to maintain a gameplay update loop concurrently.
+See spi_dma example in Pico examples for reference.  ￼
 
-3. *Projects Ideas*: Retro games (like the Atari-style tank combat I coded
-   earlier--just update the display init to `DISPLAY_PICO_DISPLAY_2` and scale
-   graphics to 320x240), sensors dashboards, portable music players,
-   or even a mini weather station.
+Practical approach on Pico
+1. Start with a single framebuffer in SRAM and implement a DMA routine that streams
+   the buffer to the TFT in row/column order. Confirm timing and observed FPS.
+  (Simple and fast to implement.)
+2. If you need less CPU load or higher refresh, consider PIO + multiple DMA channels
+   to fully offload the refresh to hardware.
 
-Upgrade is trivial from the original to the newer: Change `DISPLAY_PICO_DISPLAY_PACK`
-to `DISPLAY_PICO_DISPLAY_2`, bump WIDTH/HEIGHT to 320/240, and adjust coordinates/scaling.
+For a lot of this: See Dmitry Grinberg.
+
+
+### Phase 3 — Graphics API you should implement (minimal set)
+
+Implement and expose these primitives from C (fast) to the VM (scripted):
+- clear(color)
+- drawPixel(x,y,color)
+- fillRect(x,y,w,h,color) — optimise to fill row by row into framebuffer using memset-like operations where possible.
+- blit(sprite, x, y) — sprite blitting, with optional transparent colour key. Use small sprite atlases.
+- drawText(x,y,string,font) — bitmap font rendering (monospace or variable width).
+- Tilemap helpers: drawTilemap(map, tileset, camera_x, camera_y).
+
+Implementation notes:
+- Pre-convert loaded images into native RGB565 in your asset pipeline (no runtime conversion on Pico).
+- Use batches: aggregate blits into contiguous memory streams to use fewer DMA transfers.
+- Use vertical or horizontal strip transfers to match display memory layout.
+
+Example: 32×32 sprite memory:
+- 32 × 32 = 1024 pixels. At 2 bytes/pixel → 1024 × 2 = 2048 bytes per sprite.
+
+
+
+### Phase 4 — VM design and integration: what the scripting language must provide
+
+A compact bytecode VM is adequate for Pico-based games and gives you full control of
+memory, coroutines and APIs. Below is a recommended design.
+
+High-level requirements for the scripting VM
+1. Small runtime footprint: must fit comfortably with framebuffer and engine code in Pico SRAM.
+2. Coroutines / yields: a wait() primitive or yield must exist so scripts can pause between frames without busy-waiting.
+3. Native bindings: direct, quick calls from script to C engine routines (draw, spawn, set_velocity, play_sound).
+4. Controlled allocation & GC: keep GC simple, predictable, and with small heaps (or avoid GC-heavy patterns).
+5. Determinism support (optional): seedable RNG and careful float use for synchronised multiplayer or deterministic replays.
+6. Hot-reload / recompile of scripts: allow designers to tweak behaviours without rebooting.
+
+VM architecture choices
+- Stack-based VM: simpler to implement (push/pop), compact bytecode. Good for small embedded targets.
+- Register-based VM: fewer instructions, faster on average, more complex to implement.
+
+For a Pico project, a simple stack-based VM is usually the best balance of simplicity and size.
+
+
+### Minimal instruction set (example)
+
+```
+OP_LOAD_CONST <u16 idx>
+OP_LOAD_LOCAL <u8 idx>
+OP_STORE_LOCAL <u8 idx>
+OP_GET_GLOBAL <u16 idx>
+OP_CALL <u8 nargs>
+OP_RETURN
+OP_JMP <s16>
+OP_JMP_IF_FALSE <s16>
+OP_PUSH_INT <s32>
+OP_PUSH_FLOAT <f32>
+OP_WAIT_TICKS <u16>   ; coroutine yield for N engine ticks
+OP_SPAWN <u16 script_id>  ; spawn a new script/coroutine
+OP_NATIVE <u16 native_id>  ; call an engine native function
+```
+Coroutines scheduler (concept)
+- Each script runs as a coroutine with its own stack, PC and local storage.
+- Scheduler runs all “ready” coroutines each frame (or until they yield).
+- OP_WAIT_TICKS n sets coroutine->wake_at = ticks_now + n and yields back
+  to scheduler. Scheduler checks wake times each frame. This yields deterministic
+  timing based on engine ticks.
+
+
+__Example of WAIT in interpreter (sketch)__
+```
+switch(instr) {
+  case OP_WAIT_TICKS: {
+    uint16_t n = fetch_u16();
+    curr->wake_at = engine.ticks + n;
+    curr->state = COROUTINE_SLEEPING;
+    return; /* yield interpreter for this coroutine */
+  }
+  ...
+}
+```
+
+
+Memory and GC strategy (recommendation)
+- Option A: No GC / pool allocation — pre-allocate arrays of objects
+  (entities, small object pools). This is fastest and most deterministic.
+  Use free lists.
+- Option B: Simple reference counting with careful cycle avoidance.
+  Low overhead but must handle cycles.
+- Option C: Tiny mark-and-sweep GC that you can trigger during non-critical times;
+  keep heap small and predictable. For the Pico, pool-based allocation or ref-count
+  are both sensible starting points.
+
+Binding engine functions (native interface)
+- Keep a native function table: native_funcs[native_id] = function pointer.
+- From bytecode use OP_NATIVE native_id with arguments on the stack. Native
+  functions pop arguments and return values via the VM stack. This is efficient and compact.
+
+
+
+### Phase 5 — Bringing VM and graphics together (runtime loop)
+
+Design your engine loop to manage both low-level tasks and the script VM:
+
+```
+while (true) {
+  process_input();            // read buttons / ADC / USB
+  engine.ticks++;
+  run_scripts_for_budget();   // resume coroutines scheduled to run
+  physics_step();             // simple discrete collision / movement
+  update_game_state();        // process AI and events (can be in scripts)
+  render_into_framebuffer();  // call draw primitives to compose the frame
+  kick_dma_transfer();        // start DMA to refresh display (non-blocking)
+  wait_for_next_frame();      // or do a coarse sleep/yield to scheduler
+}
+```
+Key notes:
+- Keep render_into_framebuffer() and kick_dma_transfer() decoupled—start DMA and
+  return control to logic if PIO+DMA offload is used.
+- Cap the script VM execution per frame (instruction budget) to avoid long script-induced frame hitches.
+
+
+
+### Phase 6 — Tools, asset pipeline and workflow
+- Asset pipeline: convert PNG / BMP sprites off-line to RGB565 arrays (tool on PC).
+   Commit .h or binary assets into flash or serve from external storage.
+- Sprite atlas & indices: pack sprites into atlases and store metadata (x,y,w,h) to speed blits.
+- Level editor: simple CSV tilemap editor or a small GUI on PC that exports simple JSON or binary tilemaps.
+- Hot reload: allow script bytecode files to be reloaded from USB mass storage or via a serial protocol.
+
+
+
+### Phase 7 — Example: tiny bytecode + engine native (sketch)
+
+Example bytecode pseudo and the corresponding native call to move a sprite.
+```
+/* pseudo bytecode for "move right 10 ticks" */
+OP_PUSH_INT 100       ; speed
+OP_PUSH_INT 10        ; duration
+OP_NATIVE N_MOVE_SPRITE  ; native: move(sprite_id, speed, duration)
+OP_WAIT_TICKS 10
+OP_RETURN
+```
+Native binding table:
+```
+typedef int (*native_fn)(VMState *vm);
+native_fn native_table[] = { native_move_sprite, native_play_sound, ... };
+
+int native_move_sprite(VMState *vm) {
+  int duration = vm_pop_int(vm);
+  int speed = vm_pop_int(vm);
+  int sprite_id = vm_pop_int(vm);
+  engine_move_sprite(sprite_id, speed, duration);
+  return 0; /* zero return values on VM stack */
+}
+```
+
+
+
+### Phase 8 — Practical development milestones and checklist
+1. Hardware test: wire ST7789 to Pico, implement minimal C driver, show "fill screen" in single colour.
+   (Verify init sequence against datasheet.) DONE.
+2. Framebuffer + SPI transfer: implement single-buffer transfer via spi_write_blocking, measure time
+   to full-screen update.
+3. DMA: refactor streaming to use DMA (reference pico-examples spi_dma). Measure improvement.
+4. Simple graphics primitives: drawPixel, fillRect, blit. Create an art asset or tile set.
+5. Minimal VM: implement stack-based interpreter with WAIT and NATIVE calls.
+   Test a simple "enemy patrol" script.
+6. Asset pipeline: PNG → RGB565 converter and sprite atlas exporter (PC tool).
+7. Input & entity system: map buttons to player actions and spawn entities from VM scripts.
+8. Optimise: if CPU saturates, consider PIO+DMA offload (Dmitry’s approach) and move non-real-time
+   tasks to background.
+
+
+
+Practical tips, pitfalls and suggestions
+- Check the exact module datasheet for your ST7789 variant — init arrays differ between panel
+  manufacturers and clones; leaving out one register can produce strange colour behaviour.  This on DP1?
+- Test SPI mode if the module behaves oddly — some modules/libraries use mode 0, others mode 3.
+  If you share the SPI bus with other devices (SD card), ensure you set the right mode before transfers.  ￼
+- Keep runtime allocations small and prefer pool-based objects on RP2040. Full GC pauses can ruin frame timings.
+- Instrument early: add simple cycle counters and measure frame times before micro-optimising.
+- Start simple: prototype behaviour in MicroPython or Lua to iterate faster, then port hot parts to C when needed.
+
+
+
+Quick MicroPython example — initialise and write a single pixel
+```python
+# micropython_st7789_min.py (schematic)
+from machine import Pin, SPI
+import time
+
+spi = SPI(0, baudrate=20000000, sck=Pin(18), mosi=Pin(19))
+dc = Pin(16, Pin.OUT)
+cs = Pin(17, Pin.OUT)
+rst = Pin(20, Pin.OUT)
+
+def cmd(b):
+    dc.value(0)
+    cs.value(0)
+    spi.write(bytes([b]))
+    cs.value(1)
+
+def data(b):
+    dc.value(1)
+    cs.value(0)
+    spi.write(b if isinstance(b, bytes) else bytes([b]))
+    cs.value(1)
+
+# reset
+rst.value(0); time.sleep_ms(10); rst.value(1); time.sleep_ms(120)
+cmd(0x11)          # SLEEP OUT
+time.sleep_ms(120)
+cmd(0x3A); data(bytes([0x05])) # COLMOD = 16-bit
+cmd(0x29)          # DISPLAY ON
+
+# set a pixel by writing to a window and RAM
+```
+
+
+
+Final notes
+- A language VM is adequate and standard practice for embedding gameplay logic on small platforms.
+  For the Pico balance memory (framebuffer vs VM heap) and CPU (drawing vs script execution).
+  Use C for the driver and VM core; expose a compact bytecode API to scripts.
+
+- Sketch a small stack-based bytecode VM in C tuned to RP2040 memory constraints
+  (coroutines, wait instruction, native binding table)!
+
+
+#### Option A — Display Node + Logic Node
+
+Pi A (Display Node)
+- Talks directly to the ST7789 via SPI.
+- Owns framebuffer, rendering pipeline, sprite blitting.
+- Reads local input (buttons/joystick).
+- Runs a lightweight VM for HUD/animation scripting.
+
+Pi B (Logic Node)
+- Runs the main game loop (AI, physics, entity management).
+- Decides world state: positions, velocities, collisions, triggers.
+- Sends periodic state updates to Display Node over UDP/TCP.
+
+Data over Wi-Fi:
+- From Logic → Display: compressed entity state (positions, sprites, animations).
+- From Display → Logic: player input events (button presses, analog values).
+
+This way, the Display Node only needs to worry about drawing
+the current world state, and the Logic Node can run heavier
+simulation or scripting.
+
+
+Networking Considerations
+- Protocol: Use UDP for fast, low-latency state packets; add your own reliability
+  for critical events. TCP is simpler but may stall if a packet is dropped.
+- Update rate: Don’t try to send updates every pixel/frame. Instead, send at 10–30
+  Hz "world state" updates and let the Display Node interpolate between them.
+- Data format: Binary, compact, little endian. Example packet:
+
+[tick][num_entities][entity_id][x][y][sprite_id][flags]...
+
+- Latency hiding: On the Display Node, run simple prediction (e.g. keep moving entity
+  at last known velocity until update arrives).
+
+
+Development Order
+1. Get Pi A driving the ST7789 reliably (local rendering only).
+2. Implement input loop on Pi A and echo button presses over UDP to Pi B.
+3. Implement simple simulation loop on Pi B and send back entity positions.
+4. Draw entities on Pi A using positions from Pi B.
+5. Add interpolation/prediction so motion looks smooth even if Wi-Fi updates jitter.
+6. Expand to multiple entities, collisions, scripting on Pi B.
+
+
+
+"Analogy"
+
+Think of it as “console + server”:
+- The Display Node (Pi A) is like a thin client/console.
+- The Logic Node (Pi B) is like the game server.
+
+This scales if later multiplayer:
+Pi B could be central “world authority” and multiple Pi A’s (each with screens + inputs) could connect.
+
 
