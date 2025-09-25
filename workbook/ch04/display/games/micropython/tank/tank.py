@@ -10,6 +10,7 @@ import math
 # Setup display
 display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_PACK, rotate=0, pen_type=PEN_P3)
 #display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_PACK2, rotate=0, pen_type=PEN_P3)
+# display = picodisplay.PicoDisplay2()
 WIDTH, HEIGHT = 240, 135
 
 # Colors (RGB888)
