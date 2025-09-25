@@ -6,7 +6,7 @@ Raspberry Pi Pico. From tiny monochrome screens for basic readouts to vibrant co
 panels for games and GUIs, these add-ons connect via simple interfaces like SPI, I2C,
 or GPIO, making them a breeze to integrate with MicroPython or C/C++. Whether you're
 building a retro game like our Atari-inspired tank combat or a weather station, there's
-a display to fit your power budget, size needs, and style. Below, I'll break down the
+a display to fit your power budget, size needs, and style. Below, we will break down the
 main types (LCD, OLED, TFT, and ePaper) with pros/cons, followed by a table of popular
 picks as of 2025.
 
