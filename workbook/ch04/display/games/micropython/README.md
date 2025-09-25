@@ -6,7 +6,7 @@ Raspberry Pi Pico. From tiny monochrome screens for basic readouts to vibrant co
 panels for games and GUIs, these add-ons connect via simple interfaces like SPI, I2C,
 or GPIO, making them a breeze to integrate with MicroPython or C/C++. Whether you're
 building a retro game like our Atari-inspired tank combat or a weather station, there's
-a display to fit your power budget, size needs, and style. Below, I'll break down the
+a display to fit your power budget, size needs, and style. Below, You will find the
 main types (LCD, OLED, TFT, and ePaper) with pros/cons, followed by a table of popular
 picks as of 2025.
 
@@ -14,10 +14,10 @@ picks as of 2025.
 #### Quick Primer on Display Types
 
 - *LCD (Liquid Crystal Display)*: Affordable and widely available, these use backlighting
-  for visibility. Great for colourful projects but can drain battery faster due to the light
+  for visibility. Great for colorful projects but can drain battery faster due to the light
   source. Often character-based (e.g., 16x2 text) or graphic.
 - *TFT (Thin-Film Transistor LCD)*: A step up from basic LCDs—sharper, faster refresh rates,
-  and better colours thanks to transistor tech. Ideal for animations or games on the Pico's
+  and better colors thanks to transistor tech. Ideal for animations or games on the Pico's
   limited pins.
 - *OLED (Organic Light-Emitting Diode)*: Self-lit pixels mean true blacks, infinite contrast,
   and super-low power (no backlight!). Perfect for text-heavy or battery-powered apps,
@@ -32,20 +32,20 @@ Most are Pico-ready with libraries like `picographics` (Pimoroni), `adafruit_ssd
 
 #### Popular Display Options for Pico
 
-Here's a selection of current favourites from major vendors. Prices are approximate USD
+Here's a selection of current favorites from major vendors. Prices are approximate USD
 (as of mid-2025) and can fluctuate; check retailers like Adafruit, Pimoroni, Waveshare,
 or PiShop for stock.
 
 | Vendor     | Type  | Size / Resolution       | Interface | Price | Notes & Pico Fit |
 |------------|-------|-------------------------|-----------|-------|------------------|
 | Pimoroni  | TFT (IPS LCD) | 1.14" / 240x135 | SPI | $20 | Original Display Pack: Buttons + RGB LED included. Great for small games like our tank combat. |
-| Pimoroni  | TFT (IPS LCD) | 2.0" / 320x240 | SPI | $25 | Display Pack 2.0: Larger, vibrant colours; easy backpack mount. Updated for Pico 2 (RP2350). |
+| Pimoroni  | TFT (IPS LCD) | 2.0" / 320x240 | SPI | $25 | Display Pack 2.0: Larger, vibrant colors; easy backpack mount. Updated for Pico 2 (RP2350). |
 | Adafruit  | OLED (Monochrome) | 0.96" / 128x64 | I2C/SPI | $12-18 | STEMMA QT connector for easy wiring. Low-power text display; use with `adafruit_displayio`. |
 | Adafruit  | OLED (Monochrome) | 1.3" / 128x64 | I2C/SPI | $20 | SH1106 driver; compact for wearables. Excellent contrast for dark environments. |
-| Adafruit  | TFT | 1.14" / 240x135 | SPI | $10 | ST7789 chip + microSD; cooler breakout for prototypes. Matches Pimoroni's original res. |
+| Adafruit  | TFT | 1.14" / 240x135 | SPI | $10 | ST7789 chip + microSD; color breakout for prototypes. Matches Pimoroni's original res. |
 | Adafruit  | TFT | 1.8" / 128x160 | SPI | $20 | ST7735R + microSD; adds storage for game assets. |
 | Adafruit  | TFT (Touch) | 2.8" / 320x240 | SPI | $30 | ILI9341 + cap touch; bigger for GUIs, but uses more pins. |
-| Waveshare | LCD (Colour) | 1.8" / 160x128 | SPI | $15 | ST7735S driver; 65K coolers, MicroPython demos included. Simple embed. |
+| Waveshare | LCD (Color) | 1.8" / 160x128 | SPI | $15 | ST7735S driver; 65K colors, MicroPython demos included. Simple embed. |
 | Waveshare | TFT (Touch IPS) | 3.5" / 480x320 | SPI | $25 | Dedicated touch controller; smooth for interactive apps. |
 | Waveshare / Pi Hut | ePaper | 2.13" / 250x122 | SPI | $20-25 | Bistable, black/white; holds updates forever. Ideal for low-power IoT. |
 | Adafruit  | ePaper | 2.7" / 264x176 | SPI | $30 | Monochrome; sunlight-readable for outdoor Pico projects. |
@@ -59,7 +59,7 @@ over other microcontrollers.
 ### Pimoroni Pico Display Pack (Original)
 
 The *Pimoroni Pico Display Pack* is a compact add-on board for the Raspberry Pi Pico
-(or Pico W), designed to give your Pico a colourful display and basic input for projects
+(or Pico W), designed to give your Pico a colorful display and basic input for projects
 like mini games, interfaces, or sensor readouts. Released around early 2021, it’s a
 "backpack" that attaches to the underside of the Pico, making it ideal for portable
 or embedded applications.
@@ -69,7 +69,7 @@ or embedded applications.
 
 | Feature | Details |
 |---------|---------|
-| *Display* | 1.14-inch IPS LCD, 240x135 pixels (~210 PPI), 18-bit cooler (65K colours), decent viewing angles, and backlit. Uses SPI interface (pins: CS, DC, SCLK, MOSI) with PWM brightness control. |
+| *Display* | 1.14-inch IPS LCD, 240x135 pixels (~210 PPI), 18-bit color (65K colors), decent viewing angles, and backlit. Uses SPI interface (pins: CS, DC, SCLK, MOSI) with PWM brightness control. |
 | *Input/Output* | Four tactile buttons (A/B/X/Y, mapped to GPIO 12-15 by default). One RGB LED for status or effects. |
 | *Compatibility* | Works with Raspberry Pi Pico/Pico W (needs male headers on the Pico). Supports MicroPython (via Pimoroni’s UF2 build with `picodisplay` library), CircuitPython (ST7789 driver), or C/C++. Stackable with other Pico add-ons. |
 | *Dimensions & Build* | ~35mm x 25mm x 9mm (L x W x H). No soldering if Pico has headers. Compact but slightly delicate buttons. |
@@ -121,7 +121,7 @@ the same easy-to-use form factor.
 
 | Feature | Details |
 |---------|---------|
-| *Display* | 2.0-inch (50.8mm) IPS LCD, 320 x 240 pixels (~220 PPI), 18-bit cooler (65K coolers), wide viewing angles, and vibrant backlighting. Communicates via SPI (pins: CS, DC, SCLK, MOSI) with PWM-controlled brightness. |
+| *Display* | 2.0-inch (50.8mm) IPS LCD, 320 x 240 pixels (~220 PPI), 18-bit color (65K colors), wide viewing angles, and vibrant backlighting. Communicates via SPI (pins: CS, DC, SCLK, MOSI) with PWM-controlled brightness. |
 | *Input/Output* | Four tactile buttons (labeled A/B/X/Y, connected to GPIO 12-15 by default) for user interaction. Includes a single RGB LED for status indicators. |
 | *Compatibility* | - Raspberry Pi Pico/Pico W (requires male headers soldered on the Pico).<br>- Works with MicroPython (Pimoroni's custom UF2 build), CircuitPython (via Adafruit DisplayIO), or C/C++.<br>- Stackable with other Pico add-ons like Pico Omnibus or Pico Decker (though it may overhang slightly). |
 | *Dimensions & Build* | Approx. 53mm x 25mm x 9mm (L x W x H). No soldering needed if your Pico has headers. The screen protrudes slightly above the buttons, so use gentle fingertip presses to avoid accidental touches. |
