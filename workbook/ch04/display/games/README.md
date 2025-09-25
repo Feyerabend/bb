@@ -16,7 +16,7 @@ picks as of 2025.
 - *LCD (Liquid Crystal Display)*: Affordable and widely available, these use backlighting
   for visibility. Great for colourful projects but can drain battery faster due to the light
   source. Often character-based (e.g., 16x2 text) or graphic.
-- *TFT (Thin-Film Transistor LCD)*: A step up from basic LCDs—sharper, faster refresh rates,
+- *TFT (Thin-Film Transistor LCD)*: A step up from basic LCDs--sharper, faster refresh rates,
   and better colours thanks to transistor tech. Ideal for animations or games on the Pico's
   limited pins.
 - *OLED (Organic Light-Emitting Diode)*: Self-lit pixels mean true blacks, infinite contrast,
@@ -132,7 +132,7 @@ the same easy-to-use form factor.
 
 - *Bigger Screen*: Original is 1.14-inch at 240x135; 2.0 is double the diagonal and resolution
   for sharper graphics and more real estate.
-- *Code Migration*: Super simple— in MicroPython, swap `import picodisplay` to `import picodisplay2`
+- *Code Migration*: Super simple-- in MicroPython, swap `import picodisplay` to `import picodisplay2`
   or use `DISPLAY_PICO_DISPLAY_2` constant.
 - Same button layout and RGB LED, but more space for custom Pico projects (e.g., mounting on larger bases).
 
@@ -141,7 +141,7 @@ the same easy-to-use form factor.
 #### Getting Started
 
 1. *Hardware Setup*: Buy a Pico with headers (or solder your own). Snap the pack onto the Pico's
-   underside—pins align automatically.
+   underside--pins align automatically.
 
 2. *Software*:
    - *MicroPython*: Flash Pimoroni's custom UF2 from their GitHub (includes `picographics` library).
