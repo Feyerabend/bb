@@ -11,7 +11,7 @@ import math
 display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_PACK, rotate=0, pen_type=PEN_P3)
 #display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_PACK2, rotate=0, pen_type=PEN_P3)
 # display = picodisplay.PicoDisplay2()
-WIDTH, HEIGHT = 240, 135
+WIDTH, HEIGHT = 240, 135 # 360, 240
 
 # Colors (RGB888)
 BLACK = display.create_pen(0, 0, 0)
