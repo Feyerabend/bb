@@ -1,4 +1,10 @@
 
+> *The Pimoroni display packs chosen here are used primarily for convenience and simplicity, and
+we do not endorse any particular display over another. The same applies to the choice of the
+Raspberry Pi Pico, which is used here for practical reasons rather than as a recommendation
+over other microcontrollers.*
+
+
 ## Displays for the Raspberry Pi Pico
 
 There are many options for displays even for such very simple microcontrollers as the
@@ -49,11 +55,6 @@ or PiShop for stock.
 | Waveshare | TFT (Touch IPS) | 3.5" / 480x320 | SPI | $25 | Dedicated touch controller; smooth for interactive apps. |
 | Waveshare / Pi Hut | ePaper | 2.13" / 250x122 | SPI | $20-25 | Bistable, black/white; holds updates forever. Ideal for low-power IoT. |
 | Adafruit  | ePaper | 2.7" / 264x176 | SPI | $30 | Monochrome; sunlight-readable for outdoor Pico projects. |
-
-The Pimoroni display packs chosen here are used primarily for convenience and simplicity, and
-we do not endorse any particular display over another. The same applies to the choice of the
-Raspberry Pi Pico, which is used here for practical reasons rather than as a recommendation
-over other microcontrollers.
 
 
 ### Pimoroni Pico Display Pack (Original)
