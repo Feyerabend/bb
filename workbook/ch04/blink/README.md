@@ -1,5 +1,5 @@
 
-## Raspberry Pi Pico (W) Development Environment Setup
+## Raspberry Pi Pico Family Development Environment Setup
 
 - A Raspberry Pi Pico/Pico W board (or if you so wish also: RPi 2/RPi 2 W)
 - A micro USB cable
@@ -17,7 +17,7 @@ electronics: understanding currents, voltages, and logic levels; reading datashe
 and eventually designing and wiring circuits from the ground up. The Pico provides a 
 gentle introduction, but it also leaves room to grow.
 
-Another reason for choosing the Pico is its orientation toward software compared to 
+Another reason for choosing the Pico is its orientation toward *software* compared to 
 many other microcontrollers. While boards such as Arduino are certainly beginner-friendly, 
 they tend to emphasise hardware-level control and embedded applications. The Pico, by 
 contrast, makes it natural to approach microcontroller programming from a more "software 
