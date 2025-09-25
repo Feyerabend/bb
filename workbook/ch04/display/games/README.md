@@ -22,7 +22,7 @@ picks as of 2025.
 - *OLED (Organic Light-Emitting Diode)*: Self-lit pixels mean true blacks, infinite contrast,
   and super-low power (no backlight!). Perfect for text-heavy or battery-powered apps,
   though pricier and limited in size.
-- *ePaper (Electronic Paper)*: Mimics ink on paper—bistable (holds image without power),
+- *ePaper (Electronic Paper)*: Mimics ink on paper-bistable (holds image without power),
   sunlight-readable, and ultra-efficient. Best for static info like labels or sensors,
   not fast video.
 
