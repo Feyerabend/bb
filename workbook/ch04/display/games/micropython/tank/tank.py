@@ -1,161 +1,273 @@
-from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY_PACK, PEN_P3
-# Simple tank game for Raspberry Pi Pico with Display Pack 2.0:
-# DISPLAY_PICO_DISPLAY_PACK2
-# from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY_PACK2, PEN_P3
-# import picodisplay2 as display  # Uncomment if using Display Pack 2.0
+from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY_2, PEN_RGB565
+from pimoroni import Button
 import time
 import random
 import math
 
 # Setup display
-display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_PACK, rotate=0, pen_type=PEN_P3)
-#display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_PACK2, rotate=0, pen_type=PEN_P3)
-# display = picodisplay.PicoDisplay2()
-WIDTH, HEIGHT = 240, 135 # 360, 240
+display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_2, rotate=0, pen_type=PEN_RGB565)
 
-# Colors (RGB888)
+WIDTH, HEIGHT = display.get_bounds()
+
+# Colors
 BLACK = display.create_pen(0, 0, 0)
-GREEN = display.create_pen(0, 255, 0)  # Ground
-BLUE = display.create_pen(0, 0, 255)    # Sky
+GREEN = display.create_pen(0, 255, 0)
+BLUE = display.create_pen(0, 100, 255)
 WHITE = display.create_pen(255, 255, 255)
 RED = display.create_pen(255, 0, 0)
 GRAY = display.create_pen(128, 128, 128)
+BROWN = display.create_pen(139, 69, 19)
+YELLOW = display.create_pen(255, 255, 0)
 
-# Button pins for Display Pack 2.0
-button_a = 12  # Left
-button_b = 13  # Down (right move)
-button_x = 14  # Up (shoot)
-button_y = 15  # Right (unused)
+# Button pins
+button_a = 12  # Move left/up
+button_b = 13  # Move right/down
+button_x = 14  # Shoot
+button_y = 15  # Change angle
 
 def read_button(pin):
     import machine
     return machine.Pin(pin, machine.Pin.IN, machine.Pin.PULL_UP).value() == 0
 
-# Game state
-class Tank:
-    def __init__(self, x, color, is_player=False):
+class Missile:
+    def __init__(self, x, y, dx, dy, owner):
         self.x = x
-        self.y = HEIGHT - 15  # Ground level
+        self.y = y
+        self.dx = dx
+        self.dy = dy
+        self.owner = owner
+        self.active = True
+
+    def update(self, dt):
+        if not self.active:
+            return
+        
+        self.x += self.dx * dt * 60
+        self.y += self.dy * dt * 60
+        self.dy += 0.12  # Medium gravity for balanced difficulty
+        
+        # Check boundaries
+        if self.x < 0 or self.x > WIDTH or self.y > HEIGHT:
+            self.active = False
+
+    def draw(self):
+        if self.active:
+            display.set_pen(YELLOW)
+            display.circle(int(self.x), int(self.y), 2)
+
+class Tank:
+    def __init__(self, x, y, color, is_player=False, facing_right=True):
+        self.x = x
+        self.y = y
         self.color = color
-        self.health = 3
-        self.missiles = []
+        self.health = 5
+        self.max_health = 5
         self.is_player = is_player
-        self.dx = 0  # Movement speed
+        self.facing_right = facing_right
+        self.speed = 1.5
         self.shoot_timer = 0
+        self.angle = 45 if facing_right else 135  # Shooting angle in degrees
+        self.missiles = []
+        
+        # AI behavior
+        self.ai_timer = 0
+        self.move_direction = 0
 
     def update(self, dt):
         if self.is_player:
-            self.dx = 0
+            # Player controls
             if read_button(button_a):
-                self.dx = -2
+                if self.facing_right:
+                    self.y = max(40, self.y - self.speed)  # Move up
+                else:
+                    self.y = min(HEIGHT - 40, self.y + self.speed)  # Move down
+            
             if read_button(button_b):
-                self.dx = 2
+                if self.facing_right:
+                    self.y = min(HEIGHT - 40, self.y + self.speed)  # Move down
+                else:
+                    self.y = max(40, self.y - self.speed)  # Move up
+            
+            if read_button(button_y):
+                # Adjust angle with Y + A/B
+                if read_button(button_a):
+                    # Y + A: Raise angle
+                    if self.facing_right:
+                        self.angle = min(80, self.angle + 1.5)
+                    else:
+                        self.angle = max(100, self.angle - 1.5)
+                elif read_button(button_b):
+                    # Y + B: Lower angle
+                    if self.facing_right:
+                        self.angle = max(10, self.angle - 1.5)
+                    else:
+                        self.angle = min(170, self.angle + 1.5)
+            
             if read_button(button_x) and self.shoot_timer <= 0:
-                self.missiles.append(Missile(self.x, self.y - 5, -1))  # Upward
-                self.shoot_timer = 30  # Cooldown frames
+                self.shoot()
         else:
-            # Enemy AI: random wander and occasional shoot
+            # Enemy AI
+            self.ai_timer += 1
+            
+            # Random movement every 2 seconds
+            if self.ai_timer % 120 == 0:
+                self.move_direction = random.choice([-1, 0, 1])
+            
+            # Move based on direction
+            if self.move_direction != 0:
+                new_y = self.y + self.move_direction * self.speed
+                self.y = max(40, min(HEIGHT - 40, new_y))
+            
+            # Randomly adjust angle
             if random.random() < 0.02:
-                self.dx = random.choice([-1, 1])
-            if random.random() < 0.01 and self.shoot_timer <= 0:  # Rare shot
-                self.missiles.append(Missile(self.x, self.y - 5, -1))
-                self.shoot_timer = 60
-            self.dx *= 0.95  # Friction
+                if self.facing_right:
+                    self.angle += random.choice([-2, 2])
+                    self.angle = max(10, min(80, self.angle))
+                else:
+                    self.angle += random.choice([-2, 2])
+                    self.angle = max(100, min(170, self.angle))
+            
+            # More active enemy shooting
+            if random.random() < 0.03 and self.shoot_timer <= 0:
+                self.shoot()
 
-        self.x += self.dx
-        self.x = max(5, min(WIDTH - 5, self.x))  # Boundaries
-        self.shoot_timer -= 1
-
+        self.shoot_timer = max(0, self.shoot_timer - 1)
+        
         # Update missiles
-        for m in self.missiles[:]:
-            m.update(dt)
-            if m.y < 0 or m.y > HEIGHT:
-                self.missiles.remove(m)
+        for missile in self.missiles[:]:
+            missile.update(dt)
+            if not missile.active:
+                self.missiles.remove(missile)
 
-    def draw(self):
-        # Tank body (rectangle)
-        display.set_pen(self.color)
-        display.rectangle(self.x - 5, self.y - 10, 10, 10)
-        # Turret (small circle)
-        display.set_pen(WHITE)
-        display.circle(self.x, self.y - 12, 3)
-        # Missiles
-        for m in self.missiles:
-            m.draw()
+    def shoot(self):
+        power = 5.0  # Balanced power
+        angle_rad = math.radians(self.angle)
+        
+        # Calculate missile starting position (from turret tip)
+        turret_length = 15
+        start_x = self.x + math.cos(angle_rad) * turret_length
+        start_y = self.y - math.sin(angle_rad) * turret_length
+        
+        # Calculate velocity
+        dx = math.cos(angle_rad) * power
+        dy = -math.sin(angle_rad) * power
+        
+        self.missiles.append(Missile(start_x, start_y, dx, dy, self))
+        self.shoot_timer = 40  # Balanced cooldown
 
-    def check_hit(self, other_missiles):
-        for m in other_missiles:
-            if abs(m.x - self.x) < 8 and abs(m.y - self.y) < 8:
-                self.health -= 1
-                other_missiles.remove(m)
-                return True
+    def check_collisions(self, other_missiles):
+        for missile in other_missiles[:]:
+            if missile.active and missile.owner != self:
+                # Check collision with tank
+                if abs(missile.x - self.x) < 15 and abs(missile.y - self.y) < 12:
+                    self.health -= 1
+                    missile.active = False
+                    other_missiles.remove(missile)
+                    return True
         return False
 
-class Missile:
-    def __init__(self, x, y, dy):
-        self.x = x
-        self.y = y
-        self.dy = dy
-        self.speed = 3
-
-    def update(self, dt):
-        self.y += self.dy * self.speed
-
     def draw(self):
-        display.set_pen(WHITE)
-        display.rectangle(self.x - 1, self.y - 2, 2, 4)
+        # Tank body
+        display.set_pen(self.color)
+        display.rectangle(int(self.x) - 12, int(self.y) - 8, 24, 16)
+        
+        # Tank tracks
+        display.set_pen(GRAY)
+        display.rectangle(int(self.x) - 14, int(self.y) + 6, 28, 4)
+        
+        # Turret
+        display.set_pen(self.color)
+        display.circle(int(self.x), int(self.y) - 2, 8)
+        
+        # Gun barrel
+        angle_rad = math.radians(self.angle)
+        end_x = self.x + math.cos(angle_rad) * 20
+        end_y = self.y - math.sin(angle_rad) * 20
+        
+        display.set_pen(BLACK)
+        # Draw line for gun barrel (approximate with small rectangles)
+        steps = 10
+        for i in range(steps):
+            t = i / steps
+            x = int(self.x + (end_x - self.x) * t)
+            y = int(self.y + (end_y - self.y) * t)
+            display.rectangle(x - 1, y - 1, 2, 2)
+        
+        # Health bar
+        bar_width = 24
+        bar_height = 4
+        health_ratio = self.health / self.max_health
+        
+        display.set_pen(RED)
+        display.rectangle(int(self.x) - bar_width//2, int(self.y) - 20, bar_width, bar_height)
+        display.set_pen(GREEN)
+        display.rectangle(int(self.x) - bar_width//2, int(self.y) - 20, int(bar_width * health_ratio), bar_height)
+        
+        # Draw missiles
+        for missile in self.missiles:
+            missile.draw()
 
-# Init game
-player = Tank(50, GREEN, True)
-enemy = Tank(190, RED, False)
-score_p = 0
-score_e = 0
+# Initialize game
+player = Tank(50, HEIGHT//2, BLUE, True, True)
+enemy = Tank(WIDTH - 50, HEIGHT//2, RED, False, False)
+game_over = False
+winner = None
 clock = 0
-running = True
 
-while running:
-    dt = 1 / 60  # Fake 60 FPS
+# Game loop
+while not game_over:
+    dt = 1/60
     clock += 1
-
-    # Update
+    
+    # Update tanks
     player.update(dt)
     enemy.update(dt)
-
+    
     # Check collisions
-    if player.check_hit(enemy.missiles):
-        score_e += 1
-    if enemy.check_hit(player.missiles):
-        score_p += 1
-
-    # Check win
-    if score_p >= 3:
-        display.set_pen(GREEN)
-        display.text("YOU WIN!", 80, 60, scale=2)
-        display.update()
-        time.sleep(3)
-        running = False
-    elif score_e >= 3:
-        display.set_pen(RED)
-        display.text("YOU LOSE!", 80, 60, scale=2)
-        display.update()
-        time.sleep(3)
-        running = False
-
-    # Draw
+    all_missiles = player.missiles + enemy.missiles
+    player.check_collisions(enemy.missiles)
+    enemy.check_collisions(player.missiles)
+    
+    # Check win conditions
+    if player.health <= 0:
+        winner = "ENEMY WINS!"
+        game_over = True
+    elif enemy.health <= 0:
+        winner = "PLAYER WINS!"
+        game_over = True
+    
+    # Clear screen
     display.set_pen(BLUE)
-    display.rectangle(0, 0, WIDTH, HEIGHT - 15)  # Sky
+    display.rectangle(0, 0, WIDTH, HEIGHT//3)  # Sky
     display.set_pen(GREEN)
-    display.rectangle(0, HEIGHT - 15, WIDTH, 15)  # Ground
-
+    display.rectangle(0, HEIGHT//3, WIDTH, HEIGHT//3)  # Hills
+    display.set_pen(BROWN)
+    display.rectangle(0, 2*HEIGHT//3, WIDTH, HEIGHT//3)  # Ground
+    
+    # Draw tanks
     player.draw()
     enemy.draw()
-
-    # Scores
+    
+    # Draw UI
     display.set_pen(WHITE)
-    display.text(f"P: {score_p}", 10, 10, scale=1)
-    display.text(f"E: {score_e}", WIDTH - 40, 10, scale=1)
-
+    display.text(f"Health: {player.health}", 10, 10, scale=1)
+    display.text(f"Enemy: {enemy.health}", WIDTH - 80, 10, scale=1)
+    display.text(f"Angle: {int(player.angle)}", 10, 25, scale=1)
+    
+    # Controls hint
+    display.text("A/B:Move X:Shoot Y+A:Up Y+B:Down", 10, HEIGHT - 15, scale=1)
+    
     display.update()
-    time.sleep(1/60)  # ~60 FPS
+    time.sleep(dt)
+
+# Game over screen
+if winner:
+    display.set_pen(BLACK)
+    display.rectangle(0, 0, WIDTH, HEIGHT)
+    display.set_pen(WHITE)
+    display.text(winner, WIDTH//2 - 40, HEIGHT//2, scale=2)
+    display.update()
+    time.sleep(3)
 
 print("Game over!")
+
