@@ -128,6 +128,7 @@ const uint8_t tetris_pieces[7][4][4][4] = {
 
 // Game rendering functions
 void draw_board() {
+
     // Clear game area
     display_fill_rect(BOARD_OFFSET_X, BOARD_OFFSET_Y, GAME_AREA_WIDTH, GAME_AREA_HEIGHT, BLACK);
 
@@ -208,6 +209,7 @@ void draw_static_ui() {
 
     // Init UI area once
     if (!ui_initialized) {
+
         // Clear entire right side, extended to cover all potential artifacts?
         display_fill_rect(BOARD_OFFSET_X + GAME_AREA_WIDTH + 5, BOARD_OFFSET_Y,
                           DISPLAY_WIDTH - (BOARD_OFFSET_X + GAME_AREA_WIDTH + 5),
@@ -260,11 +262,11 @@ void draw_static_ui() {
         // Draw instructions below preview box
         int text_x = info_x;
         int text_y = BOARD_OFFSET_Y + 90; // Shifted down from 80
-        display_draw_string(text_x, text_y, "B: Left", WHITE, BLACK);
-        display_draw_string(text_x, text_y + 10, "Y: Right", WHITE, BLACK);
-        display_draw_string(text_x, text_y + 20, "B+Y: Rotate", WHITE, BLACK);
-        display_draw_string(text_x, text_y + 30, "A: Hard Drop", WHITE, BLACK);
-        display_draw_string(text_x, text_y + 40, "X: Soft Drop", WHITE, BLACK);
+        display_draw_string(text_x, text_y, "B: LEFT", WHITE, BLACK);
+        display_draw_string(text_x, text_y + 10, "Y: RIGHT", WHITE, BLACK);
+        display_draw_string(text_x, text_y + 20, "B+Y: ROTATE", WHITE, BLACK);
+        display_draw_string(text_x, text_y + 30, "A: HARD DROP", WHITE, BLACK);
+        display_draw_string(text_x, text_y + 40, "X: SOFT DROP", WHITE, BLACK);
 /*
         // Score bar (vertical)
         int score_height = (score / 100) + 1;
