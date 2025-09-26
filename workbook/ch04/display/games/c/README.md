@@ -35,7 +35,8 @@ appeared in restaurants and cafés as if by magic, their origins unknown and uni
 Night Driver was always a precarious experience, since the steering wheels on the cabinets were often broken or loose,
 making what was already a crude simulation of driving into something almost tragic to play. Gun Fight was different:
 two cowboys duelling across a screen, firing through cacti and wooden obstacles. But the game depended on having an
-opponent, and in my case that usually meant my sister, who had little interest in the contest.
+opponent, and in my case that usually meant my sister, who had little interest in the gameplay--or at least that
+was how I perceived it.
 
 Racing games provide a useful counterpoint to the minimalism of Tetris. From the earliest examples such as *Night Driver*
 but also later *Pole Position* (1982), the focus was overwhelmingly visual: the illusion of speed, the winding of the road,
