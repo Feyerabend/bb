@@ -17,3 +17,6 @@ Here are some of the key changes:
   altered coordinate scaling, modified asset layouts, and so forth.
 
 More on the development of the "library" used in this code, see [drivers](./../../../drivers/pack20/).
+
+![Retro Racer](racer.png)
+
