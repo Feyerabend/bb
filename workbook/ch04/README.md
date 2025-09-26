@@ -25,8 +25,7 @@ __Printed book reference: see explanations and examples in [BOOK].__
 > Code and samples refer to the original Raspberry Pi Pico (RP2040, dual-core Cortex-M0+, 133 MHz, 264 KB SRAM, 2 MB flash), unless specified otherwise. This is the currently the most affordable and easily accessible among the variations. You might have to modify code in case other alternatives are used, e.g. RPI Pico 2, or other boards with the RP2040 mounted.
 
 > [!IMPORTANT]
-> To seperate running C and Python (MicroPython to be exact) on the Raspberry Pi Pico, from that on your main computer (Windows, Macintosh or Linux, type), the repositories here are marked with names "c" or "micropython" for inteded use on the RPI Pico.
-> Certain areas, such as "drivers," are more appropriately addressed in C, whereas topics like "wireless" are more effectively illustrated using MicroPython. Consequently, not all concepts are presented in both languages, and the corresponding language annotations have been applied selectively.
+> To distinguish between running C and Python (specifically MicroPython) on the Raspberry Pi Pico and programming on your main computer (whether Windows, macOS, or Linux), the repositories here are marked with either “c” or “micropython” to indicate their intended use on the Pico. Some areas, such as *device drivers*, are better handled in C, while topics like *wireless* communication are more easily demonstrated in MicroPython. As a result, not every concept is shown in both languages, and the language labels are applied selectively.
 
 
 
