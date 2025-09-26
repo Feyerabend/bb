@@ -21,15 +21,15 @@
 // Game constants
 #define BOARD_WIDTH     10
 #define BOARD_HEIGHT    20
-#define BLOCK_SIZE      11  // Reduced to fit within 240 height with borders
+#define BLOCK_SIZE      11
 #define BOARD_OFFSET_X  50
 #define BOARD_OFFSET_Y  10
 
-// Buffer constants (no longer needed, but kept for calculations)
-#define GAME_AREA_WIDTH  (BOARD_WIDTH * BLOCK_SIZE + 4)  // +4 for 2px borders each side
+// Buffer constants
+#define GAME_AREA_WIDTH  (BOARD_WIDTH * BLOCK_SIZE + 4)
 #define GAME_AREA_HEIGHT (BOARD_HEIGHT * BLOCK_SIZE + 4)
 
-// Colours (using display.h where possible, adding others)
+// Colours ~ basic colors move to display.h later
 #define BLACK       COLOR_BLACK
 #define WHITE       COLOR_WHITE
 #define RED         COLOR_RED
@@ -44,19 +44,19 @@
 // Tetris piece colors
 uint16_t piece_colors[7] = { CYAN, BLUE, ORANGE, YELLOW, GREEN, MAGENTA, RED };
 
-// Game board - 0 = empty, 1-7 = filled with color index
+// Game board
 uint8_t board[BOARD_HEIGHT][BOARD_WIDTH];
-uint8_t prev_board[BOARD_HEIGHT][BOARD_WIDTH]; // For change detection
+uint8_t prev_board[BOARD_HEIGHT][BOARD_WIDTH];
 
 // Current piece state
 typedef struct {
-    int x, y;           // Position
-    int type;           // Piece type (0-6)
-    int rotation;       // Rotation state (0-3)
+    int x, y;
+    int type;
+    int rotation;
 } Piece;
 
 Piece current_piece;
-Piece prev_piece; // For change detection
+Piece prev_piece;
 Piece next_piece;
 
 // Game state
@@ -179,7 +179,7 @@ void update_display() {
 
     if (force_full_redraw || board_changed || piece_changed) {
         // Erase old piece position
-        if (piece_changed && !need_new_piece) {  // Avoid erasing invalid prev_piece
+        if (piece_changed && !need_new_piece) {
             draw_piece(&prev_piece, BLACK);
         }
 
@@ -206,22 +206,20 @@ void draw_static_ui() {
     static int last_lines = -1;
     static int last_next_piece = -1;
 
-    // Init UI area once and force all elements to redraw
+    // Init UI area once
     if (!ui_initialized) {
-        // Clear entire right side of screen
+        // Clear entire right side, extended to cover all potential artifacts?
         display_fill_rect(BOARD_OFFSET_X + GAME_AREA_WIDTH + 5, BOARD_OFFSET_Y,
                           DISPLAY_WIDTH - (BOARD_OFFSET_X + GAME_AREA_WIDTH + 5),
                           DISPLAY_HEIGHT - BOARD_OFFSET_Y, BLACK);
-
         ui_initialized = true;
-        // Force all UI elements to redraw
         last_next_piece = -999;
         last_score = -999;
         last_level = -999;
         last_lines = -999;
     }
 
-    // Update next piece display - always when piece type changes or first time
+    // Update next piece display
     if (next_piece.type != last_next_piece) {
         int preview_x = BOARD_OFFSET_X + GAME_AREA_WIDTH + 20;
         int preview_y = BOARD_OFFSET_Y + 20;
@@ -230,12 +228,12 @@ void draw_static_ui() {
         display_fill_rect(preview_x, preview_y, 60, 60, BLACK);
 
         // Draw gray border
-        display_fill_rect(preview_x, preview_y, 60, 1, GRAY);  // Top
-        display_fill_rect(preview_x, preview_y + 59, 60, 1, GRAY);  // Bottom
-        display_fill_rect(preview_x, preview_y, 1, 60, GRAY);  // Left
-        display_fill_rect(preview_x + 59, preview_y, 1, 60, GRAY);  // Right
+        display_fill_rect(preview_x, preview_y, 60, 1, GRAY);
+        display_fill_rect(preview_x, preview_y + 59, 60, 1, GRAY);
+        display_fill_rect(preview_x, preview_y, 1, 60, GRAY);
+        display_fill_rect(preview_x + 59, preview_y, 1, 60, GRAY);
 
-        // Draw next piece if valid
+        // Draw next piece
         if (next_piece.type >= 0 && next_piece.type < 7) {
             for (int y = 0; y < 4; y++) {
                 for (int x = 0; x < 4; x++) {
@@ -251,19 +249,27 @@ void draw_static_ui() {
         last_next_piece = next_piece.type;
     }
 
-    // Update score display - always when values change or first time
+    // Update score display and instructions
     if (score != last_score || level != last_level || lines_cleared != last_lines) {
         int info_x = BOARD_OFFSET_X + GAME_AREA_WIDTH + 20;
-        int info_y = BOARD_OFFSET_Y + 100;
+        int info_y = BOARD_OFFSET_Y + 150; // Moved down to avoid overlap with instructions
 
-        // Clear info area
-        display_fill_rect(info_x, info_y, 100, 100, BLACK);
+        // Clear larger area to ensure no artifacts remain?
+//        display_fill_rect(info_x, info_y - 70, 150, 150, BLACK);
 
+        // Draw instructions below preview box
+        int text_x = info_x;
+        int text_y = BOARD_OFFSET_Y + 90; // Shifted down from 80
+        display_draw_string(text_x, text_y, "B: Left", WHITE, BLACK);
+        display_draw_string(text_x, text_y + 10, "Y: Right", WHITE, BLACK);
+        display_draw_string(text_x, text_y + 20, "B+Y: Rotate", WHITE, BLACK);
+        display_draw_string(text_x, text_y + 30, "A: Hard Drop", WHITE, BLACK);
+        display_draw_string(text_x, text_y + 40, "X: Soft Drop", WHITE, BLACK);
+/*
         // Score bar (vertical)
         int score_height = (score / 100) + 1;
         if (score_height > 50) score_height = 50;
         if (score_height < 1) score_height = 1;
-
         display_fill_rect(info_x, info_y + (50 - score_height), 10, score_height, GREEN);
 
         // Level indicators (horizontal dots)
@@ -275,9 +281,8 @@ void draw_static_ui() {
         // Lines cleared bar (horizontal)
         int lines_width = (lines_cleared * 2) % 80;
         if (lines_width > 80) lines_width = 80;
-
         display_fill_rect(info_x, info_y + 60, lines_width, 8, CYAN);
-
+*/
         last_score = score;
         last_level = level;
         last_lines = lines_cleared;
@@ -323,9 +328,8 @@ void read_buttons() {
 
 void init_game() {
     memset(board, 0, sizeof(board));
-    memset(prev_board, 255, sizeof(prev_board));  // Force initial redraw by making prev different
+    memset(prev_board, 255, sizeof(prev_board));
 
-    // Reset piece states to invalid values to force redraw
     current_piece.x = -1;
     current_piece.y = -1;
     current_piece.type = -1;
@@ -342,7 +346,6 @@ void init_game() {
     force_full_redraw = true;
     ui_initialized = false;
 
-    // Clear the entire screen at game start
     display_clear(BLACK);
 
     set_led(0, 255, 0);
@@ -355,12 +358,10 @@ bool is_valid_position(Piece *piece) {
                 int board_x = piece->x + x;
                 int board_y = piece->y + y;
 
-                // Check bounds
                 if (board_x < 0 || board_x >= BOARD_WIDTH || board_y >= BOARD_HEIGHT) {
                     return false;
                 }
 
-                // Check collision (only for visible parts)
                 if (board_y >= 0 && board[board_y][board_x] != 0) {
                     return false;
                 }
@@ -388,7 +389,7 @@ void place_piece(Piece *piece) {
 
 void generate_piece(Piece *piece) {
     piece->x = BOARD_WIDTH / 2 - 2;
-    piece->y = 0;  // Start at top visible
+    piece->y = 0;
     piece->type = rand() % 7;
     piece->rotation = 0;
 }
@@ -411,7 +412,7 @@ int clear_full_lines() {
             }
             memset(board[0], 0, BOARD_WIDTH);
             cleared_lines++;
-            y++;  // Re-check the current row after shift
+            y++;
         }
     }
 
@@ -428,7 +429,7 @@ void update_score(int lines) {
         drop_speed = 48 - (level - 1) * 3;
         if (drop_speed < 3) drop_speed = 3;
 
-        set_led(0, 0, 255); // Blue for line clear
+        set_led(0, 0, 255);
     }
 }
 
@@ -456,51 +457,52 @@ void game_loop() {
             game_over = true;
             return;
         }
+        prev_piece = current_piece;
         need_new_piece = false;
     }
 
     Piece test_piece = current_piece;
 
-    // Move left (Y button) - only if X is not pressed
-    if (btn_y && !prev_btn_y && !(btn_x && btn_y)) {
+    // Move left (B button)
+    if (btn_b && !prev_btn_b && !(btn_b && btn_y)) {
         test_piece.x--;
         if (is_valid_position(&test_piece)) {
             current_piece = test_piece;
         }
     }
 
-    // Move right (X button) - only if Y is not pressed
-    if (btn_x && !prev_btn_x && !(btn_x && btn_y)) {
+    // Move right (Y button)
+    if (btn_y && !prev_btn_y && !(btn_b && btn_y)) {
         test_piece.x++;
         if (is_valid_position(&test_piece)) {
             current_piece = test_piece;
         }
     }
 
-    // Rotate (Y + X buttons pressed together)
-    if (btn_y && btn_x && (!prev_btn_y || !prev_btn_x)) {
+    // Rotate (B + Y buttons)
+    if (btn_b && btn_y && (!prev_btn_b || !prev_btn_y)) {
         test_piece.rotation = (test_piece.rotation + 1) % 4;
         if (is_valid_position(&test_piece)) {
             current_piece = test_piece;
         }
     }
 
-    // Soft drop (A button)
-    bool soft_drop = btn_a;
+    // Soft drop (X button)
+    bool soft_drop = btn_x;
 
-    // Hard drop (B button)
-    if (btn_b && !prev_btn_b) {
+    // Hard drop (A button)
+    if (btn_a && !prev_btn_a) {
         while (true) {
             test_piece = current_piece;
             test_piece.y++;
             if (is_valid_position(&test_piece)) {
                 current_piece = test_piece;
-                score += 2; // Bonus for hard drop
+                score += 2;
             } else {
                 break;
             }
         }
-        drop_timer = drop_speed; // Force immediate placement
+        drop_timer = drop_speed;
     }
 
     // Handle piece dropping
@@ -538,7 +540,6 @@ void game_loop() {
 int main() {
     stdio_init_all();
 
-    // Initialize display and buttons using the library
     display_pack_init();
     buttons_init();
     init_led();
@@ -549,14 +550,14 @@ int main() {
     init_game();
 
     printf("Tetris game started!\n");
-    printf("Controls: Y=Left, X=Right, Y+X=Rotate, A=Soft Drop, B=Hard Drop\n");
+    printf("Controls: B=Left, Y=Right, B+Y=Rotate, A=Hard Drop, X=Soft Drop\n");
     printf("Game Over: A=Restart\n");
 
     while (true) {
         game_loop();
         update_display();
         draw_static_ui();
-        sleep_ms(16);  // ~60 FPS
+        sleep_ms(16);
     }
 
     display_cleanup();
