@@ -256,9 +256,6 @@ void draw_static_ui() {
         int info_x = BOARD_OFFSET_X + GAME_AREA_WIDTH + 20;
         int info_y = BOARD_OFFSET_Y + 150; // Moved down to avoid overlap with instructions
 
-        // Clear larger area to ensure no artifacts remain?
-//        display_fill_rect(info_x, info_y - 70, 150, 150, BLACK);
-
         // Draw instructions below preview box
         int text_x = info_x;
         int text_y = BOARD_OFFSET_Y + 90; // Shifted down from 80
@@ -267,24 +264,7 @@ void draw_static_ui() {
         display_draw_string(text_x, text_y + 20, "B+Y: ROTATE", WHITE, BLACK);
         display_draw_string(text_x, text_y + 30, "A: HARD DROP", WHITE, BLACK);
         display_draw_string(text_x, text_y + 40, "X: SOFT DROP", WHITE, BLACK);
-/*
-        // Score bar (vertical)
-        int score_height = (score / 100) + 1;
-        if (score_height > 50) score_height = 50;
-        if (score_height < 1) score_height = 1;
-        display_fill_rect(info_x, info_y + (50 - score_height), 10, score_height, GREEN);
 
-        // Level indicators (horizontal dots)
-        int display_level = (level > 10) ? 10 : level;
-        for (int i = 0; i < display_level; i++) {
-            display_fill_rect(info_x + 20 + i * 8, info_y + 10, 6, 6, YELLOW);
-        }
-
-        // Lines cleared bar (horizontal)
-        int lines_width = (lines_cleared * 2) % 80;
-        if (lines_width > 80) lines_width = 80;
-        display_fill_rect(info_x, info_y + 60, lines_width, 8, CYAN);
-*/
         last_score = score;
         last_level = level;
         last_lines = lines_cleared;
@@ -489,7 +469,7 @@ void game_loop() {
         }
     }
 
-    // Soft drop (X button)
+    // Soft drop (X button) ~doesn't work very well
     bool soft_drop = btn_x;
 
     // Hard drop (A button)
