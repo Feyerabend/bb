@@ -9,7 +9,7 @@ typography. But as soon as text moved onto screens capable of graphics, the issu
 of how to represent letters, words, and pages became more complex.
 
 At the heart of the matter lies the way text was represented on early computer screens.
-Two traditions coexisted. Vector displays—oscilloscope-like x/y screens—drew letters
+Two traditions coexisted. Vector displays, oscilloscope-like x/y screens, drew letters
 by steering the electron beam along line segments, allowing arbitrary scaling and
 rotation but at the cost of complexity and brightness. Raster displays, which soon
 became dominant, treated the screen as a grid of pixels. Each character was stored
