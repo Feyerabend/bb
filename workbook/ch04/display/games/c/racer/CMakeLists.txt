@@ -28,33 +28,33 @@ set(PICO_BOARD pico2 CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(race C CXX ASM)
+project(racer2 C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(race race.c )
+add_executable(racer2 main.c display.c)
 
-pico_set_program_name(race "race")
-pico_set_program_version(race "0.1")
+pico_set_program_name(racer2 "racer2")
+pico_set_program_version(racer2 "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(race 0)
-pico_enable_stdio_usb(race 1)
+pico_enable_stdio_uart(racer2 0)
+pico_enable_stdio_usb(racer2 1)
 
 # Add the standard library to the build
-target_link_libraries(race
+target_link_libraries(racer2
         pico_stdlib)
 
 # Add the standard include files to the build
-target_include_directories(race PRIVATE
+target_include_directories(racer2 PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
 )
 
 # Add any user requested libraries
-target_link_libraries(race 
+target_link_libraries(racer2 
         hardware_spi
         hardware_i2c
         hardware_dma
@@ -63,7 +63,7 @@ target_link_libraries(race
         hardware_watchdog
         hardware_clocks
         hardware_pwm
-)
+        )
 
-pico_add_extra_outputs(race)
+pico_add_extra_outputs(racer2)
 
