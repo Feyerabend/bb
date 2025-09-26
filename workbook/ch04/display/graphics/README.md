@@ -8,13 +8,15 @@ occupied the same amount of space, and there was little concern for elegance or
 typography. But as soon as text moved onto screens capable of graphics, the issue
 of how to represent letters, words, and pages became more complex.
 
-At the heart of the matter lies the pixel, the smallest unit of a digital display.
-Text on early computer screens was built from pixel grids, with each letter stored
-as a bitmap--a tiny pattern of black-and-white dots. While this approach worked well
-at low resolutions, it quickly showed its limits. At small sizes, letters looked
-blocky and uneven, and scaling them up produced jagged edges. The problem of making
-digital text both legible and aesthetically pleasing became central to the development
-of modern computing.
+At the heart of the matter lies the way text was represented on early computer screens.
+Two traditions coexisted. Vector displays—oscilloscope-like x/y screens—drew letters
+by steering the electron beam along line segments, allowing arbitrary scaling and
+rotation but at the cost of complexity and brightness. Raster displays, which soon
+became dominant, treated the screen as a grid of pixels. Each character was stored
+as a small bitmap, a pattern of black-and-white dots. While effective at low resolutions,
+this method quickly showed its limits: letters appeared blocky at small sizes, and
+scaling them up produced jagged edges. Making digital text both legible and
+aesthetically pleasing became a central challenge in the development of modern computing.
 
 One solution came in the form of vector fonts, which describe letters not as fixed
 grids of pixels, but as mathematical shapes--lines, curves, and outlines. With this
