@@ -39,17 +39,149 @@ opponent, and in my case that usually meant my sister, who had little interest i
 was how I perceived it.
 
 Racing games provide a useful counterpoint to the minimalism of Tetris. From the earliest examples such as *Night Driver*
-but also later *Pole Position* (1982), the focus was overwhelmingly visual: the illusion of speed, the winding of the road,
-and the shifting perspective of the horizon line. The player’s engagement depended as much on the sensation of movement
-across a landscape as on the underlying mechanics of steering and avoiding obstacles. In the arcade, the physical cabinet
-often reinforced this visual immersion, surrounding the player with a wheel, pedals, and sometimes even a moving seat.
-Here, the visual design aimed to replicate an external world--the road, the track, the rival cars--and the appeal
-lay in inhabiting that simulated environment.
+but also later *Pole Position* (1982), the focus was overwhelmingly visual: the illusion of speed, the winding of
+the road, and the shifting perspective of the horizon line. The player’s engagement depended as much on the sensation 
+of movement across a landscape as on the underlying mechanics of steering and avoiding obstacles. In the arcade,
+the physical cabinet often reinforced this visual immersion, surrounding the player with a wheel, pedals, and
+sometimes even a moving seat. Here, the visual design aimed to replicate an external world--the road, the track,
+the rival cars--and the appeal lay in inhabiting that simulated environment.
 
 Placed alongside a game like Tetris, racing games highlight two very different traditions in digital play. Racing relies
 on spectacle, the recreation of a recognisable activity through dynamic graphics and motion cues. Tetris, by contrast,
 strips away any reference to a real-world activity and situates its challenge purely within the manipulation of abstract
-forms. Both genres depend on the screen, but one does so to create an illusion of realism, the other to pose an intellectual
-problem. This divergence shows how video games can evolve from the same technological basis--the pixel and the display--yet
-move in profoundly different aesthetic and experiential directions.
+forms. Both genres depend on the screen, but one does so to create an illusion of realism, the other to pose
+an intellectual problem. This divergence shows how video games can evolve from the same technological
+basis--the pixel and the display--yet move in profoundly different aesthetic and experiential directions.
+
+
+
+### Asteroids
+
+You're tasked with recreating and improving a version of the iconic *Asteroids* game on the Raspberry
+Pi Pico with a 320x240 ST7789 Display Pack. *Asteroids*, released by Atari in 1979, is a legendary
+arcade game where you control a spaceship, shoot asteroids, and avoid collisions using vector graphics.
+This project starts with working code, but it has a noticeable flaw: screen flickering. Your mission
+is to fix the flicker while keeping the game playable within the Pico's limits (264KB RAM, 133MHz
+CPU). You'll document your process, tools, challenges, and solutions, learning about embedded 
+rogramming along the way.
+
+
+#### Project Objectives
+- Understand the provided code and get it running on your Raspberry Pi Pico.
+- Identify why the game flickers during gameplay.
+- Experiment with at least one solution to reduce or eliminate flickering.
+- Measure the impact of your changes (e.g., FPS, memory usage, visual quality).
+- Document your work, including the history of *Asteroids*, your code changes,
+  tools used, issues faced, and how you addressed them.
+
+
+#### Getting Started
+
+You'll need:
+- *Hardware*: Raspberry Pi Pico 2 (the original is a bit too slow for this code),
+  ST7789 Display Pack 2.0 (320x240), USB cable for flashing and debugging.
+- *Software*: Pico SDK (install via the official guide), CMake, and a
+  C compiler (e.g., GCC for ARM).
+- *Files Provided* (wrapped below in an artifact):
+  - `main.c`: Core game logic (ship, bullets, asteroids, collision detection).
+  - `display.h`: Defines display and button interfaces.
+  - `display.c`: Low-level display driver using SPI and DMA.
+  - `CMakeLists.txt`: Build configuration.
+
+
+*Possible Setup Steps*:
+1. Clone the Pico SDK if not already installed.
+2. Create a project directory with the provided files.
+3. Run: `mkdir build; cd build; cmake ..; make`.
+4. Flash the generated `asteroids_pico.uf2` to your Pico.
+5. Connect via serial (e.g., `minicom -D /dev/ttyACM0`) to see debug output.
+
+
+*Controls*:
+- *B*: Turn left
+- *Y*: Turn right
+- *A*: Thrust
+- *X*: Shoot (or restart when game over)
+- *RGB LED*: Shows game state (blue for thrust,
+  yellow for shooting, green for idle, red for game over).
+
+
+#### Task Details
+
+The starter code works but flickers because it clears old object positions
+(using bounding rectangles) before drawing new ones, causing visible (black out)
+flashes. Your goal is to improve the display handling to make the game smoother
+while respecting these constraints:
+- *Memory*: ~512KB total RAM. A full 320x240 16-bit frame buffer uses ~150KB.
+- *Performance*: Target 30+ FPS. SPI transfers for large blits (~10-20ms at 31.25MHz)
+  can slow things down.
+- *No External Libraries*: Use only the Pico SDK.
+
+*Experiments to Try* (Choose 1-2):
+1. *Optimise Dirty Rectangles*: Merge overlapping bounding rectangles to reduce
+   clears. Modify `game_loop()` to clear fewer areas.
+2. *Partial Frame Buffer*: Use a small buffer (e.g., 32KB for a 64x64 tile)
+   for changed regions. Track dirty areas, composite them, and blit only those.
+3. *Full Frame Buffer*: Allocate `uint16_t frame_buffer[320*240]` in `main.c`.
+   Redirect drawing functions (e.g., `draw_line_clipped`) to the buffer, then use
+   `display_blit_full`. Clear the buffer each frame with `memset`.
+4. *Reduce Complexity*: Lower asteroid vertices (e.g., from 6 to 4), cap bullets/asteroids,
+   or skip edge draws.
+5. *SPI/DMA Tweaks*: Increase SPI speed (up to 62.5MHz) or overclock Pico (e.g.,
+   `set_sys_clock_khz(200000, true)`). Test stability.
+6. *V-Sync Approximation*: Use `absolute_time_t` to sync updates to ~50Hz, avoiding
+   mid-frame SPI conflicts.
+
+*Measurement Tips*:
+- *FPS*: Add a counter in `game_loop()`; `printf` every second
+  (`to_ms_since_boot(get_absolute_time())`).
+- *Memory*: Estimate free RAM with
+  `extern char __StackLimit; printf("Free RAM: %dKB\n", (uint32_t)&__StackLimit - (uint32_t)malloc(1));`.
+- *Flicker*: Observe on hardware or record video.
+- *Profiling*: Time sections (e.g., clear, draw, blit) with `absolute_time_t`.
+
+
+#### Deliverable
+Submit:
+1. Your modified code (update `main.c` or other files as needed).
+2. A report (1-2 pages) covering:
+   - *History of Asteroids*: Briefly describe its origins (1979, Atari, vector graphics, inspired by Spacewar!).
+   - *Code Overview*: Summarize what `main.c`, `display.h`, and `display.c` do (e.g., game logic, display driver).
+   - *Tools Used*: List hardware, SDK, and build process.
+   - *Flaws Found*: Explain flickering and any other issues (e.g., slow FPS, button jitter).
+   - *Solutions Tried*: Describe your approach (e.g., full buffer), code changes, and why you chose it.
+   - *Results*: Report FPS, memory usage, and flicker improvement. Note failures
+     (e.g., "Double buffering crashed due to 300KB RAM usage").
+   - *Lessons Learned*: What worked, what didn’t, and what you’d try next (e.g., sound via PWM).
+
+
+#### Example Solution: Full Frame Buffer
+
+In `main.c`, add:
+```c
+uint16_t frame_buffer[SCREEN_WIDTH * SCREEN_HEIGHT];
+void buffer_draw_pixel(int x, int y, uint16_t color) {
+    if (x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT) {
+        frame_buffer[y * SCREEN_WIDTH + x] = color;
+    }
+}
+```
+Update `draw_ship()`, `draw_bullets()`, `draw_asteroids()`, and `draw_ui()`
+to use `buffer_draw_pixel`. In `game_loop()`:
+- Clear buffer: `memset(frame_buffer, 0, sizeof(frame_buffer));`.
+- Draw all objects to buffer.
+- Blit with `display_blit_full(frame_buffer);`.
+- Remove incremental clears (`clear_object_rect`).
+
+*Trade-offs*: No flicker, but FPS may drop to ~30 due to full blits. Overclocking
+can help but risks heat. A partial buffer might be better for balance.
+
+
+#### Tips for Success
+- Test on hardware—emulators won’t show real flicker or SPI timing.
+- Start simple (e.g., optimise rectangles) before trying complex buffering.
+- If memory runs out, try a 1-bit-per-pixel buffer (saves ~75% RAM but needs conversion logic).
+- Document failures—they’re as valuable as successes for learning.
+- Have fun! This project blends retro gaming with modern embedded programming.
+
 
