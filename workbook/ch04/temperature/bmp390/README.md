@@ -5,8 +5,9 @@
 2. Parse them into signed/unsigned integers as defined in the datasheet.
 3. Apply Bosch's equations for temperature and pressure compensation.
 
+This also examplifies a I2C connection.
 
-### MicroPython (full BMP390 compensation)
+### MicroPython
 
 ```python
 from machine import Pin, I2C
@@ -43,7 +44,7 @@ def write_reg(addr, data):
     except Exception as e:
         print(f"I2C write error at addr 0x{addr:02x}: {e}")
 
-# Initialize
+# Init
 try:
     print(f"I2C scan: {i2c.scan()}")
     chip_id = read_reg(REG_CHIP_ID)
@@ -272,7 +273,7 @@ Notes:
   but this rate varies with temperature and weather conditions.
 
 
-### MicroPython: Altitude Function (Drop into the BMP390 MicroPython Code Above)
+### MicroPython: Altitude Function
 
 Returns altitude in meters from pressure (hPa).
 - `p_hpa`: Measured pressure in hPa (e.g., value returned by `compensate_press` divided by 100).
