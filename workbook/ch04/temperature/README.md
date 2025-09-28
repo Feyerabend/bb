@@ -1,5 +1,5 @@
 
-## External Temperature Sensors
+## Temperature Sensors
 
 This folder explores temperature and pressure sensing using the BMP280 and BMP390 sensors
 interfaced with the Raspberry Pi Pico, alongside the Pico's onboard temperature sensor.
