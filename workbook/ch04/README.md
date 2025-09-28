@@ -9,7 +9,7 @@ __Printed book reference: see explanations and examples in [BOOK].__
 * [blink](./blink/)               - Setup of development environment,
                                     simple samples of blinking LEDs in MicroPython and C
 * [traffic](./traffic/)           - Traffic light simulations
-* [temperature](./temperature/)   - Builtin sensor used as example for series of measurements  
+* [temperature](./temperature/)   - Sensors used as examples for series of measurements
 * [db](./storage/db/)             - Connect to external SD card as secondary memory (database)
 * [wire](./wire/)                 - Connect two wired Picos to each other for UART communication
 * [mail](./wire/mail/)            - Connect two wired Picos with "mail" exchange
