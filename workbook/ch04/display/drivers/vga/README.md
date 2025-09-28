@@ -181,3 +181,94 @@ This loop ensures continuous refresh without CPU overhead.
 This setup can be extended to DVI/HDMI with faster clocks or additional
 hardware, but VGA remains accessible for retro computing or embedded displays.
 
+
+
+## VGA Connection Pinout
+
+### Resistor Values for 5-bit DAC
+```
+Bit Weight | Resistance | Current (3.3V)
+-----------|------------|----------------
+Bit 0 (LSB)| 8.06 kΩ    | ~0.41 mA
+Bit 1      | 4.02 kΩ    | ~0.82 mA  
+Bit 2      | 2.00 kΩ    | ~1.65 mA
+Bit 3      | 1.00 kΩ    | ~3.30 mA
+Bit 4 (MSB)| 510 Ω      | ~6.47 mA
+```
+
+
+### Pin Connections
+
+### Pico GPIO → VGA DB15 Connector
+
+| Pico Pin | Function      | Resistor | VGA Pin | VGA Function    |
+|----------|---------------|----------|---------|-----------------|
+| GPIO 0   | Red LSB       | 8.06kΩ   | Pin 1   | Red Video       |
+| GPIO 1   | Red Bit 1     | 4.02kΩ   | Pin 1   | Red Video       |
+| GPIO 2   | Red Bit 2     | 2.00kΩ   | Pin 1   | Red Video       |
+| GPIO 3   | Red Bit 3     | 1.00kΩ   | Pin 1   | Red Video       |
+| GPIO 4   | Red MSB       | 510Ω     | Pin 1   | Red Video       |
+|          |               |          |         |                 |
+| GPIO 7   | Green LSB     | 8.06kΩ   | Pin 2   | Green Video     |
+| GPIO 8   | Green Bit 1   | 4.02kΩ   | Pin 2   | Green Video     |
+| GPIO 9   | Green Bit 2   | 2.00kΩ   | Pin 2   | Green Video     |
+| GPIO 10  | Green Bit 3   | 1.00kΩ   | Pin 2   | Green Video     |
+| GPIO 11  | Green MSB     | 510Ω     | Pin 2   | Green Video     |
+|          |               |          |         |                 |
+| GPIO 12  | Blue LSB      | 8.06kΩ   | Pin 3   | Blue Video      |
+| GPIO 13  | Blue Bit 1    | 4.02kΩ   | Pin 3   | Blue Video      |
+| GPIO 14  | Blue Bit 2    | 2.00kΩ   | Pin 3   | Blue Video      |
+| GPIO 15  | Blue Bit 3    | 1.00kΩ   | Pin 3   | Blue Video      |
+| GPIO 16  | Blue MSB      | 510Ω     | Pin 3   | Blue Video      |
+|          |               |          |         |                 |
+| GPIO 5   | HSYNC         | Direct   | Pin 13  | Horizontal Sync |
+| GPIO 6   | VSYNC         | Direct   | Pin 14  | Vertical Sync   |
+|          |               |          |         |                 |
+| GND      | Ground        | Direct   | Pin 5   | Ground          |
+| GND      | Ground        | Direct   | Pin 6   | Red Ground      |
+| GND      | Ground        | Direct   | Pin 7   | Green Ground    |
+| GND      | Ground        | Direct   | Pin 8   | Blue Ground     |
+| GND      | Ground        | Direct   | Pin 10  | Sync Ground     |
+
+
+### VGA DB15 Connector Pinout (Female)
+
+```
+     Pin Layout (Looking at connector face)
+    
+    5  4  3  2  1       1: Red
+   10  9  8  7  6       2: Green  
+     15 14 13 12 11     3: Blue
+                        4: Monitor ID 2 (not used)
+                        5: Ground
+                        6: Red Ground
+                        7: Green Ground  
+                        8: Blue Ground
+                        9: +5V (not used)
+                        10: Sync Ground
+                        11: Monitor ID 0 (not used)
+                        12: Monitor ID 1 (not used)
+                        13: Horizontal Sync
+                        14: Vertical Sync
+                        15: Monitor ID 3 (not used)
+```
+
+
+## Key Notes:
+
+1. *Voltage Levels*: The resistor ladder converts 3.3V GPIO signals to VGA standard 0-0.7V
+2. *Resolution*: This setup provides 5-bit color depth per channel (32 levels each)
+3. *Total Colours*: 32³ = 32,768 possible colors
+4. *Pin Count*: Uses 17 GPIO pins total (15 for RGB + 2 for sync)
+5. *Timing*: HSYNC/VSYNC run at 25MHz, RGB data at 125MHz for sub-pixel precision
+
+
+## Simplified 3-bit Color Option:
+
+For fewer pins, you can use just 1 bit per color (8 total colors):
+- GPIO 0 → Red (via 270Ω resistor)
+- GPIO 1 → Green (via 270Ω resistor)  
+- GPIO 2 → Blue (via 270Ω resistor)
+- GPIO 3 → HSYNC
+- GPIO 4 → VSYNC
+
