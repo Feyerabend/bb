@@ -236,7 +236,7 @@ Bit 4 (MSB)| 510 Ω      | ~6.47 mA
 ```
      Pin Layout (Looking at connector face)
     
-    5  4  3  2  1       1: Red
+     5  4  3  2  1      1: Red
    10  9  8  7  6       2: Green  
      15 14 13 12 11     3: Blue
                         4: Monitor ID 2 (not used)
@@ -263,12 +263,5 @@ Bit 4 (MSB)| 510 Ω      | ~6.47 mA
 5. *Timing*: HSYNC/VSYNC run at 25MHz, RGB data at 125MHz for sub-pixel precision
 
 
-## Simplified 3-bit Color Option:
 
-For fewer pins, you can use just 1 bit per color (8 total colors):
-- GPIO 0 → Red (via 270Ω resistor)
-- GPIO 1 → Green (via 270Ω resistor)  
-- GPIO 2 → Blue (via 270Ω resistor)
-- GPIO 3 → HSYNC
-- GPIO 4 → VSYNC
 

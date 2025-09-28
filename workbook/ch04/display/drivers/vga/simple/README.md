@@ -51,7 +51,7 @@ make
 ```
 
 1. Hold BOOTSEL button on Pico while plugging into USB
-2. Copy `simple_vga_test.uf2` to the RPI-RP2 drive
+2. Copy `test.uf2` to the RPI-RP2 drive
 3. Pico will reboot and start generating VGA signal
 
 
