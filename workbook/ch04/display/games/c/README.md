@@ -55,15 +55,23 @@ basis--the pixel and the display--yet move in profoundly different aesthetic and
 
 
 
-### Asteroids
+### Project: Asteroids
 
-You're tasked with recreating and improving a version of the iconic *Asteroids* game on the Raspberry
-Pi Pico with a 320x240 ST7789 Display Pack. *Asteroids*, released by Atari in 1979, is a legendary
-arcade game where you control a spaceship, shoot asteroids, and avoid collisions using vector graphics.
-This project starts with working code, but it has a noticeable flaw: screen flickering. Your mission
-is to fix the flicker while keeping the game playable within the Pico's limits (264KB RAM, 133MHz
-CPU). You'll document your process, tools, challenges, and solutions, learning about embedded 
-rogramming along the way.
+You are tasked with recreating and improving a version of the iconic Asteroids game on the Raspberry Pi Pico
+with a 320×240 ST7789 Display Pack. Originally released by Atari in 1979, Asteroids is a classic arcade title
+in which the player pilots a spaceship, fires at drifting rocks, and avoids collisions—all rendered in
+vector-style graphics. In this project, you begin with an existing codebase, but it suffers from a clear
+problem: screen flickering. Your challenge is to eliminate this flicker while keeping the game responsive
+within the Pico’s constraints (264 KB RAM, 133 MHz CPU). Along the way, you will document your process,
+the tools you use, the difficulties you encounter, and the solutions you devise—gaining practical
+experience in embedded programming.
+
+Before diving in, however, it is worth pausing to reflect. The current implementation is crude, perhaps
+even “bad.” This raises a common question in real-world development: is the existing codebase worth
+building on at all? Or would it be wiser to discard it and design a fresh solution from the ground up?
+This perspective treats code not as a final product but as a medium for exploration--__code as thinking__.
+In this case, the program is small and malleable, making it a useful playground for testing new ideas
+before committing to a larger redesign.
 
 
 #### Project Objectives
