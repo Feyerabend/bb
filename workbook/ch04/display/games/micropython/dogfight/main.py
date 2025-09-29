@@ -42,7 +42,7 @@ ORANGE = display.create_pen(255, 128, 0)
 # Game constants
 GAME_WIDTH = 100#80
 GAME_HEIGHT = 80#72
-PIXEL_SIZE = 3
+PIXEL_SIZE = 2
 SCREEN_WIDTH = GAME_WIDTH * PIXEL_SIZE
 SCREEN_HEIGHT = GAME_HEIGHT * PIXEL_SIZE
 
@@ -54,10 +54,12 @@ DIR_S, DIR_SW, DIR_W, DIR_NW = 4, 5, 6, 7
 DIR_DX = [0, 1, 1, 1, 0, -1, -1, -1]
 DIR_DY = [-1, -1, 0, 1, 1, 1, 0, -1]
 
+TURNS = 2
+
 # Atari-style jet shapes (8x8 grid for each of 8 directions)
 # Converted from the Atari assembly code - these are beautiful classic shapes!
 PLANE0_SHAPES = [
-    # N - pointing up
+    # N - pointing up -OK
     [0,0,0,1,0,0,0,0,
      0,0,0,1,0,0,0,0,
      0,0,0,1,0,0,0,0,
@@ -67,7 +69,7 @@ PLANE0_SHAPES = [
      1,1,1,1,1,1,1,0,
      0,0,0,1,0,0,0,0],
     
-    # NE - pointing up-right
+    # NW - pointing up-left
     [0,0,0,0,0,0,0,0,
      1,1,0,0,0,0,0,1,
      1,1,1,1,1,1,1,0,
@@ -87,16 +89,16 @@ PLANE0_SHAPES = [
      0,1,1,0,0,0,0,0,
      0,0,0,0,0,0,0,0],
 
-    # SE - pointing down-right
-    [0,0,0,0,0,0,1,0,
-     0,0,0,0,0,1,0,0,
-     0,0,0,0,1,1,0,0,
-     0,0,0,1,1,1,0,0,
-     1,1,1,1,1,1,0,0,
-     1,1,1,1,1,1,0,0,
-     0,0,0,1,1,1,1,0,
-     0,0,0,0,0,1,1,0],
-    
+    # SE - pointing up-right
+    [0,0,1,1,0,0,0,0,
+     0,0,1,1,0,0,0,0,
+     0,0,1,1,0,0,0,0,
+     0,1,1,1,1,0,0,0,
+     0,1,1,1,1,1,0,0,
+     1,1,1,1,1,1,1,0,
+     1,1,0,0,0,0,0,1,
+     0,0,0,0,0,0,0,0],
+
     # S - pointing down
     [0,0,0,1,0,0,0,0,
      1,1,1,1,1,1,1,0,
@@ -107,15 +109,16 @@ PLANE0_SHAPES = [
      0,0,0,1,0,0,0,0,
      0,0,0,0,0,0,0,0],
     
-    # SW - pointing down-left
-    [0,1,0,0,0,0,0,0,
-     0,0,1,0,0,0,0,0,
-     0,0,1,1,0,0,0,0,
-     0,0,1,1,1,0,0,0,
-     0,0,1,1,1,1,1,1,
-     0,0,1,1,1,1,1,1,
-     0,1,1,1,1,0,0,0,
-     0,1,1,0,0,0,0,0],
+    # SW - pointing down-left-OK
+    [0,0,0,0,1,1,0,0,
+     0,0,0,0,1,1,0,0,
+     0,0,0,0,1,1,0,0,
+     0,0,0,1,1,1,1,0,
+     0,0,1,1,1,1,1,0,
+     0,1,1,1,1,1,1,1,
+     1,0,0,0,0,0,1,1,
+     0,0,0,0,0,0,0,0],
+
     
     # W - pointing left
     [0,0,0,0,0,1,1,0,
@@ -127,7 +130,7 @@ PLANE0_SHAPES = [
      0,0,0,0,0,1,1,0,
      0,0,0,0,0,0,0,0],
     
-    # NW - pointing up-left
+    # NE - pointing up-right OK
     [0,0,0,0,0,0,0,0,
      1,0,0,0,0,0,1,1,
      0,1,1,1,1,1,1,1,
@@ -140,7 +143,7 @@ PLANE0_SHAPES = [
 
 # Second plane type - slightly different design
 PLANE1_SHAPES = [
-    # N - pointing up
+    # N - pointing up -OK
     [0,0,0,1,0,0,0,0,
      0,0,0,1,0,0,0,0,
      0,0,0,1,0,0,0,0,
@@ -150,7 +153,7 @@ PLANE1_SHAPES = [
      1,1,1,1,1,1,1,0,
      0,0,0,1,0,0,0,0],
     
-    # NE - pointing up-right
+    # NW - pointing up-left
     [0,0,0,0,0,0,0,0,
      1,1,0,0,0,0,0,1,
      1,1,1,1,1,1,1,0,
@@ -170,16 +173,16 @@ PLANE1_SHAPES = [
      0,1,1,0,0,0,0,0,
      0,0,0,0,0,0,0,0],
 
-    # SE - pointing down-right
-    [0,0,0,0,0,0,1,0,
-     0,0,0,0,0,1,0,0,
-     0,0,0,0,1,1,0,0,
-     0,0,0,1,1,1,0,0,
-     1,1,1,1,1,1,0,0,
-     1,1,1,1,1,1,0,0,
-     0,0,0,1,1,1,1,0,
-     0,0,0,0,0,1,1,0],
-    
+    # SE - pointing up-right
+    [0,0,1,1,0,0,0,0,
+     0,0,1,1,0,0,0,0,
+     0,0,1,1,0,0,0,0,
+     0,1,1,1,1,0,0,0,
+     0,1,1,1,1,1,0,0,
+     1,1,1,1,1,1,1,0,
+     1,1,0,0,0,0,0,1,
+     0,0,0,0,0,0,0,0],
+
     # S - pointing down
     [0,0,0,1,0,0,0,0,
      1,1,1,1,1,1,1,0,
@@ -190,15 +193,16 @@ PLANE1_SHAPES = [
      0,0,0,1,0,0,0,0,
      0,0,0,0,0,0,0,0],
     
-    # SW - pointing down-left
-    [0,1,0,0,0,0,0,0,
-     0,0,1,0,0,0,0,0,
-     0,0,1,1,0,0,0,0,
-     0,0,1,1,1,0,0,0,
-     0,0,1,1,1,1,1,1,
-     0,0,1,1,1,1,1,1,
-     0,1,1,1,1,0,0,0,
-     0,1,1,0,0,0,0,0],
+    # SW - pointing down-left-OK
+    [0,0,0,0,1,1,0,0,
+     0,0,0,0,1,1,0,0,
+     0,0,0,0,1,1,0,0,
+     0,0,0,1,1,1,1,0,
+     0,0,1,1,1,1,1,0,
+     0,1,1,1,1,1,1,1,
+     1,0,0,0,0,0,1,1,
+     0,0,0,0,0,0,0,0],
+
     
     # W - pointing left
     [0,0,0,0,0,1,1,0,
@@ -210,7 +214,7 @@ PLANE1_SHAPES = [
      0,0,0,0,0,1,1,0,
      0,0,0,0,0,0,0,0],
     
-    # NW - pointing up-left
+    # NE - pointing up-right OK
     [0,0,0,0,0,0,0,0,
      1,0,0,0,0,0,1,1,
      0,1,1,1,1,1,1,1,
@@ -259,6 +263,7 @@ class Plane:
         self.shots = []
         self.fire_cooldown = 0
         self.alive = True
+        self.turn_counter = 0  # CHANGED: Added turn counter for smooth turning
         
         # AI state
         self.ai_timer = 0
@@ -302,10 +307,18 @@ class Plane:
             self.fire_cooldown = 12
     
     def turn_left(self):
-        self.dir = (self.dir - 1) % 8
+        # CHANGED: Only turn after counter reaches threshold
+        self.turn_counter += 1
+        if self.turn_counter >= TURNS:  # every TURNS frames
+            self.dir = (self.dir - 1) % 8
+            self.turn_counter = 0
     
     def turn_right(self):
-        self.dir = (self.dir + 1) % 8
+        # CHANGED: Only turn after counter reaches threshold
+        self.turn_counter += 1
+        if self.turn_counter >= TURNS:  # every TURNS frames
+            self.dir = (self.dir + 1) % 8
+            self.turn_counter = 0
     
     def check_hit(self, other_plane):
         shape = other_plane.get_shape()
@@ -492,7 +505,7 @@ def main():
     display.text("DOGFIGHT", 80, 80, scale=4)
     display.set_pen(WHITE)
     display.text("Classic Atari Style", 75, 130, scale=2)
-    display.text("A/B: Turn  A+B: Fire  Y: Reset", 20, 160, scale=1)
+    display.text("A/B: Turn  A+B: Fire  Y: Reset", 110, 160, scale=1)
     display.update()
     time.sleep(3)
     
@@ -549,4 +562,3 @@ def main():
 # Run game
 if __name__ == "__main__":
     main()
-    
