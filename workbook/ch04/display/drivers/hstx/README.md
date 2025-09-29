@@ -15,9 +15,9 @@ At a high level:
 - Purpose: It allows the RP2350 to offload high-bandwidth bit-pushing tasks that would
   otherwise eat CPU cycles or push PIO to its limits.
 - How it works:
-- You load words into an HSTX FIFO.
-- Each word encodes the waveform on multiple HSTX pins for a given number of cycles.
-- The HSTX block then serialises this out continuously with almost no CPU overhead.
+  - You load words into an HSTX FIFO.
+  - Each word encodes the waveform on multiple HSTX pins for a given number of cycles.
+  - The HSTX block then serialises this out continuously with almost no CPU overhead.
 - Use cases: Driving high-speed RGB displays (like ST7789/ST7735), generating LVDS/DDR-style
   signals, or other custom synchronous protocols.
 - Flexibility: Instead of hardwired "SPI mode," you get a bit crossbar (remap logical
