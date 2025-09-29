@@ -2,17 +2,35 @@
 #include <stdlib.h>
 #include <string.h>
 #include "pico/stdlib.h"
+#include "pico/cyw43_arch.h"
+#include "lwip/pbuf.h"
+#include "lwip/udp.h"
 #include "display.h"
+
+// Network configuration
+#define SERVER_SSID "DOGFIGHT_SERVER"
+#define SERVER_PASSWORD "picopico"
+#define SERVER_IP "192.168.4.1"
+#define SERVER_PORT 4242
+
+// Packet types (must match server)
+#define PKT_JOIN_REQUEST  0x01
+#define PKT_JOIN_RESPONSE 0x02
+#define PKT_STATE_UPDATE  0x03
+#define PKT_GAME_STATE    0x04
+#define PKT_GAME_OVER     0x05
+#define PKT_PING          0x06
+#define PKT_PONG          0x07
 
 // Game constants
 #define SCREEN_WIDTH 240
 #define SCREEN_HEIGHT 240
-#define PIXEL_SIZE 3  // Each game pixel is 3x3 screen pixels (80x72 game grid)
-#define GAME_WIDTH (SCREEN_WIDTH / PIXEL_SIZE)   // 80
-#define GAME_HEIGHT (SCREEN_HEIGHT / PIXEL_SIZE) // 80
-#define MAX_SHOTS 2  // Max simultaneous shots per plane
+#define PIXEL_SIZE 3
+#define GAME_WIDTH 80
+#define GAME_HEIGHT 80
+#define MAX_SHOTS 2
 
-// Plane orientations (8 directions, 0-7)
+// Direction constants
 #define DIR_N  0
 #define DIR_NE 1
 #define DIR_E  2
@@ -22,88 +40,81 @@
 #define DIR_W  6
 #define DIR_NW 7
 
-// Plane shapes (3x3 grid, 8 orientations per plane type)
-// Type 0 (first plane)
+// Plane shapes
 static const uint8_t plane0_shapes[8][9] = {
-    {0,1,0, 1,1,1, 0,0,0}, // N
-    {1,0,1, 0,1,0, 1,0,0}, // NE
-    {0,1,0, 1,1,0, 0,1,0}, // E
-    {1,0,0, 0,1,0, 1,0,1}, // SE
-    {0,0,0, 1,1,1, 0,1,0}, // S
-    {0,0,1, 0,1,0, 1,0,1}, // SW
-    {0,1,0, 0,1,1, 0,1,0}, // W
-    {1,0,1, 0,1,0, 0,0,1}  // NW
+    {0,1,0, 1,1,1, 0,0,0}, {1,0,1, 0,1,0, 1,0,0},
+    {0,1,0, 1,1,0, 0,1,0}, {1,0,0, 0,1,0, 1,0,1},
+    {0,0,0, 1,1,1, 0,1,0}, {0,0,1, 0,1,0, 1,0,1},
+    {0,1,0, 0,1,1, 0,1,0}, {1,0,1, 0,1,0, 0,0,1}
 };
 
-// Type 1 (second plane)
 static const uint8_t plane1_shapes[8][9] = {
-    {0,1,0, 1,1,1, 1,0,1}, // N
-    {1,1,1, 1,1,0, 1,0,0}, // NE
-    {0,1,1, 1,1,0, 0,1,1}, // E
-    {1,0,0, 1,1,0, 1,1,1}, // SE
-    {1,0,1, 1,1,1, 0,1,0}, // S
-    {0,0,1, 0,1,1, 1,1,1}, // SW
-    {1,1,0, 0,1,1, 1,1,0}, // W
-    {1,1,1, 0,1,1, 0,0,1}  // NW
+    {0,1,0, 1,1,1, 1,0,1}, {1,1,1, 1,1,0, 1,0,0},
+    {0,1,1, 1,1,0, 0,1,1}, {1,0,0, 1,1,0, 1,1,1},
+    {1,0,1, 1,1,1, 0,1,0}, {0,0,1, 0,1,1, 1,1,1},
+    {1,1,0, 0,1,1, 1,1,0}, {1,1,1, 0,1,1, 0,0,1}
 };
 
 // Shot structure
 typedef struct {
-    int8_t x, y;       // Position
-    int8_t dir;        // Direction (0-7)
-    uint8_t range;     // Remaining range (counts down)
-    bool active;       // Is shot active?
+    int8_t x, y;
+    int8_t dir;
+    uint8_t range;
+    uint8_t active;
 } Shot;
 
-// Plane structure
+// Player structure
 typedef struct {
-    int8_t x, y;       // Position
-    int8_t dir;        // Direction (0-7)
-    uint8_t type;      // Plane type (0 or 1)
+    uint8_t player_id;
+    int8_t x, y;
+    int8_t dir;
+    uint8_t type;
     Shot shots[MAX_SHOTS];
-} Plane;
+} Player;
+
+// Network state
+typedef struct {
+    bool connected;
+    uint8_t my_player_id;
+    struct udp_pcb *pcb;
+    ip_addr_t server_addr;
+    uint32_t last_send;
+    uint32_t last_recv;
+} NetworkState;
 
 // Game state
-static Plane planes[2];
-static bool game_over = false;
-static uint8_t winner = 0; // 0=none, 1=plane0, 2=plane1
-static uint32_t frame_counter = 0;
+typedef struct {
+    Player players[2];
+    uint8_t num_players;
+    bool game_active;
+    uint8_t winner;
+    uint8_t framebuffer[GAME_WIDTH * GAME_HEIGHT];
+    uint8_t prev_framebuffer[GAME_WIDTH * GAME_HEIGHT];
+} GameState;
 
-// Framebuffer (1 bit per game pixel, stored as bytes)
-static uint8_t framebuffer[GAME_WIDTH * GAME_HEIGHT];
+static NetworkState net_state;
+static GameState game_state;
 
-// Previous framebuffer for dirty tracking
-static uint8_t prev_framebuffer[GAME_WIDTH * GAME_HEIGHT];
+// Button state tracking
+static bool prev_fire_btn = false;
+static uint8_t fire_cooldown = 0;
 
-// Direction deltas for movement
-static const int8_t dir_dx[8] = {0, 1, 1, 1, 0, -1, -1, -1};
-static const int8_t dir_dy[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
-
-// Initialize framebuffer
+// Clear framebuffer
 void clear_framebuffer(void) {
-    memset(framebuffer, 0, sizeof(framebuffer));
+    memset(game_state.framebuffer, 0, sizeof(game_state.framebuffer));
 }
 
 // Set pixel in framebuffer
 void set_pixel(int8_t x, int8_t y, uint8_t value) {
     if (x >= 0 && x < GAME_WIDTH && y >= 0 && y < GAME_HEIGHT) {
-        framebuffer[y * GAME_WIDTH + x] = value;
+        game_state.framebuffer[y * GAME_WIDTH + x] = value;
     }
-}
-
-// Get pixel from framebuffer
-uint8_t get_pixel(int8_t x, int8_t y) {
-    if (x >= 0 && x < GAME_WIDTH && y >= 0 && y < GAME_HEIGHT) {
-        return framebuffer[y * GAME_WIDTH + x];
-    }
-    return 0;
 }
 
 // Draw plane to framebuffer
-void draw_plane(Plane *plane) {
+void draw_plane(Player *plane) {
     const uint8_t *shape = (plane->type == 0) ? 
-        plane0_shapes[plane->dir] : 
-        plane1_shapes[plane->dir];
+        plane0_shapes[plane->dir] : plane1_shapes[plane->dir];
     
     for (int dy = 0; dy < 3; dy++) {
         for (int dx = 0; dx < 3; dx++) {
@@ -114,270 +125,291 @@ void draw_plane(Plane *plane) {
     }
 }
 
-// Clear plane from framebuffer
-void clear_plane(Plane *plane) {
-    const uint8_t *shape = (plane->type == 0) ? 
-        plane0_shapes[plane->dir] : 
-        plane1_shapes[plane->dir];
+// Send packet to server
+void send_packet(const uint8_t *data, uint16_t len) {
+    if (!net_state.connected) return;
     
-    for (int dy = 0; dy < 3; dy++) {
-        for (int dx = 0; dx < 3; dx++) {
-            if (shape[dy * 3 + dx]) {
-                set_pixel(plane->x + dx - 1, plane->y + dy - 1, 0);
-            }
-        }
+    struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, len, PBUF_RAM);
+    if (p != NULL) {
+        memcpy(p->payload, data, len);
+        udp_sendto(net_state.pcb, p, &net_state.server_addr, SERVER_PORT);
+        pbuf_free(p);
+        net_state.last_send = to_ms_since_boot(get_absolute_time());
     }
 }
 
-// Check if shot hits plane
-bool check_hit(Shot *shot, Plane *target) {
-    const uint8_t *shape = (target->type == 0) ? 
-        plane0_shapes[target->dir] : 
-        plane1_shapes[target->dir];
-    
-    // Check if shot position overlaps with any part of target plane
-    for (int dy = 0; dy < 3; dy++) {
-        for (int dx = 0; dx < 3; dx++) {
-            if (shape[dy * 3 + dx]) {
-                int8_t px = target->x + dx - 1;
-                int8_t py = target->y + dy - 1;
-                if (shot->x == px && shot->y == py) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
+// Send join request
+void send_join_request(void) {
+    uint8_t packet[1] = {PKT_JOIN_REQUEST};
+    send_packet(packet, 1);
+    printf("Sent join request\n");
 }
 
-// Initialize game
-void init_game(void) {
-    clear_framebuffer();
-    game_over = false;
-    winner = 0;
-    frame_counter = 0;
-    
-    // Initialize plane 0 (bottom right)
-    planes[0].x = GAME_WIDTH - 10;
-    planes[0].y = GAME_HEIGHT - 10;
-    planes[0].dir = DIR_W;
-    planes[0].type = 0;
-    for (int i = 0; i < MAX_SHOTS; i++) {
-        planes[0].shots[i].active = false;
-    }
-    
-    // Initialize plane 1 (top left)
-    planes[1].x = 10;
-    planes[1].y = 10;
-    planes[1].dir = DIR_E;
-    planes[1].type = 1;
-    for (int i = 0; i < MAX_SHOTS; i++) {
-        planes[1].shots[i].active = false;
-    }
+// Send state update
+void send_state_update(int8_t dir, uint8_t fire) {
+    uint8_t packet[4];
+    packet[0] = PKT_STATE_UPDATE;
+    packet[1] = net_state.my_player_id;
+    packet[2] = dir;
+    packet[3] = fire;
+    send_packet(packet, 4);
 }
 
-// Fire shot
-void fire_shot(Plane *plane) {
-    // Find first inactive shot slot
-    for (int i = 0; i < MAX_SHOTS; i++) {
-        if (!plane->shots[i].active) {
-            plane->shots[i].x = plane->x;
-            plane->shots[i].y = plane->y;
-            plane->shots[i].dir = plane->dir;
-            plane->shots[i].range = 15;  // Shot range
-            plane->shots[i].active = true;
-            break;
-        }
-    }
-}
-
-// Update shot position
-void update_shot(Shot *shot) {
-    if (!shot->active) return;
-    
-    // Clear old position
-    set_pixel(shot->x, shot->y, 0);
-    
-    // Move shot
-    shot->x += dir_dx[shot->dir] * 3;  // Shots move 3x faster
-    shot->y += dir_dy[shot->dir] * 3;
-    
-    // Wrap around screen
-    if (shot->x < 0) shot->x = GAME_WIDTH - 1;
-    if (shot->x >= GAME_WIDTH) shot->x = 0;
-    if (shot->y < 0) shot->y = GAME_HEIGHT - 1;
-    if (shot->y >= GAME_HEIGHT) shot->y = 0;
-    
-    // Decrement range
-    shot->range--;
-    if (shot->range == 0) {
-        shot->active = false;
+// Handle incoming packets
+void udp_recv_callback(void *arg, struct udp_pcb *pcb, struct pbuf *p,
+                       const ip_addr_t *addr, u16_t port) {
+    if (p->len < 1) {
+        pbuf_free(p);
         return;
     }
     
-    // Draw new position
-    set_pixel(shot->x, shot->y, 1);
-}
-
-// Update plane position
-void update_plane(Plane *plane) {
-    // Clear old position
-    clear_plane(plane);
+    uint8_t *data = (uint8_t *)p->payload;
+    uint8_t packet_type = data[0];
     
-    // Move plane
-    plane->x += dir_dx[plane->dir];
-    plane->y += dir_dy[plane->dir];
+    net_state.last_recv = to_ms_since_boot(get_absolute_time());
     
-    // Wrap around screen
-    if (plane->x < 1) plane->x = GAME_WIDTH - 2;
-    if (plane->x >= GAME_WIDTH - 1) plane->x = 1;
-    if (plane->y < 1) plane->y = GAME_HEIGHT - 2;
-    if (plane->y >= GAME_HEIGHT - 1) plane->y = 1;
-    
-    // Draw new position
-    draw_plane(plane);
-}
-
-// Game update
-void update_game(void) {
-    if (game_over) return;
-    
-    frame_counter++;
-    
-    // Get button states for both planes
-    bool p0_left = button_pressed(BUTTON_A);   // Plane 0: A=left
-    bool p0_right = button_pressed(BUTTON_B);  // Plane 0: B=right
-    bool p0_fire = button_pressed(BUTTON_X);   // Plane 0: X=fire
-    
-    bool p1_left = button_pressed(BUTTON_Y);   // Plane 1: Y=left (placeholder for now)
-    bool p1_right = false;  // Would need more buttons
-    bool p1_fire = false;   // Would need more buttons
-    
-    // Update plane 0 rotation
-    if (p0_left && !p0_right) {
-        planes[0].dir = (planes[0].dir + 7) % 8;  // Rotate left
-    } else if (p0_right && !p0_left) {
-        planes[0].dir = (planes[0].dir + 1) % 8;  // Rotate right
-    }
-    
-    // Update plane 1 rotation (for testing, will be network-controlled later)
-    if (p1_left && !p1_right) {
-        planes[1].dir = (planes[1].dir + 7) % 8;
-    } else if (p1_right && !p1_left) {
-        planes[1].dir = (planes[1].dir + 1) % 8;
-    }
-    
-    // Fire shots
-    static uint8_t p0_fire_cooldown = 0;
-    static uint8_t p1_fire_cooldown = 0;
-    
-    if (p0_fire && p0_fire_cooldown == 0) {
-        fire_shot(&planes[0]);
-        p0_fire_cooldown = 10;  // Cooldown frames
-    }
-    if (p0_fire_cooldown > 0) p0_fire_cooldown--;
-    
-    if (p1_fire && p1_fire_cooldown == 0) {
-        fire_shot(&planes[1]);
-        p1_fire_cooldown = 10;
-    }
-    if (p1_fire_cooldown > 0) p1_fire_cooldown--;
-    
-    // Update planes (every frame)
-    update_plane(&planes[0]);
-    update_plane(&planes[1]);
-    
-    // Update shots (every frame)
-    for (int i = 0; i < MAX_SHOTS; i++) {
-        if (planes[0].shots[i].active) {
-            update_shot(&planes[0].shots[i]);
-            // Check if plane 0's shot hit plane 1
-            if (check_hit(&planes[0].shots[i], &planes[1])) {
-                game_over = true;
-                winner = 1;
-                planes[0].shots[i].active = false;
+    switch (packet_type) {
+        case PKT_JOIN_RESPONSE: {
+            if (p->len >= 3) {
+                net_state.my_player_id = data[1];
+                bool success = data[2];
+                if (success) {
+                    net_state.connected = true;
+                    printf("Joined as player %d\n", net_state.my_player_id);
+                } else {
+                    printf("Join failed (server full?)\n");
+                }
             }
+            break;
         }
-        if (planes[1].shots[i].active) {
-            update_shot(&planes[1].shots[i]);
-            // Check if plane 1's shot hit plane 0
-            if (check_hit(&planes[1].shots[i], &planes[0])) {
-                game_over = true;
-                winner = 2;
-                planes[1].shots[i].active = false;
+        
+        case PKT_GAME_STATE: {
+            if (p->len >= 4) {
+                game_state.num_players = data[1];
+                game_state.game_active = data[2];
+                game_state.winner = data[3];
+                
+                uint8_t *ptr = data + 4;
+                
+                // Parse player states
+                for (int i = 0; i < game_state.num_players; i++) {
+                    if (ptr + 14 > data + p->len) break;
+                    
+                    Player *player = &game_state.players[i];
+                    player->player_id = *ptr++;
+                    player->x = *ptr++;
+                    player->y = *ptr++;
+                    player->dir = *ptr++;
+                    player->type = *ptr++;
+                    
+                    // Parse shots
+                    for (int s = 0; s < MAX_SHOTS; s++) {
+                        player->shots[s].x = *ptr++;
+                        player->shots[s].y = *ptr++;
+                        player->shots[s].dir = *ptr++;
+                        player->shots[s].range = *ptr++;
+                        player->shots[s].active = *ptr++;
+                    }
+                }
             }
+            break;
+        }
+        
+        case PKT_PONG: {
+            // Server is alive
+            break;
         }
     }
+    
+    pbuf_free(p);
 }
 
-// Render framebuffer to display (only changed pixels)
+// Initialize networking
+bool init_network(void) {
+    if (cyw43_arch_init()) {
+        printf("WiFi init failed\n");
+        return false;
+    }
+    
+    cyw43_arch_enable_sta_mode();
+    
+    printf("Connecting to '%s'...\n", SERVER_SSID);
+    
+    if (cyw43_arch_wifi_connect_timeout_ms(SERVER_SSID, SERVER_PASSWORD, 
+                                            CYW43_AUTH_WPA2_AES_PSK, 30000)) {
+        printf("WiFi connection failed\n");
+        return false;
+    }
+    
+    printf("Connected to WiFi\n");
+    
+    // Parse server IP
+    ipaddr_aton(SERVER_IP, &net_state.server_addr);
+    
+    // Create UDP socket
+    net_state.pcb = udp_new();
+    udp_bind(net_state.pcb, IP_ADDR_ANY, 0);
+    udp_recv(net_state.pcb, udp_recv_callback, NULL);
+    
+    printf("UDP client initialized\n");
+    
+    return true;
+}
+
+// Render framebuffer to display
 void render_display(void) {
+    // Clear framebuffer
+    clear_framebuffer();
+    
+    // Draw all players
+    for (int i = 0; i < game_state.num_players; i++) {
+        draw_plane(&game_state.players[i]);
+        
+        // Draw shots
+        for (int s = 0; s < MAX_SHOTS; s++) {
+            if (game_state.players[i].shots[s].active) {
+                Shot *shot = &game_state.players[i].shots[s];
+                set_pixel(shot->x, shot->y, 1);
+            }
+        }
+    }
+    
+    // Render to display (only changed pixels)
     for (int y = 0; y < GAME_HEIGHT; y++) {
         for (int x = 0; x < GAME_WIDTH; x++) {
-            uint8_t current = framebuffer[y * GAME_WIDTH + x];
-            uint8_t previous = prev_framebuffer[y * GAME_WIDTH + x];
+            uint8_t current = game_state.framebuffer[y * GAME_WIDTH + x];
+            uint8_t previous = game_state.prev_framebuffer[y * GAME_WIDTH + x];
             
-            // Only update changed pixels
             if (current != previous) {
                 uint16_t color = current ? COLOR_WHITE : COLOR_BLACK;
                 display_fill_rect(x * PIXEL_SIZE, y * PIXEL_SIZE, 
                                 PIXEL_SIZE, PIXEL_SIZE, color);
-                prev_framebuffer[y * GAME_WIDTH + x] = current;
+                game_state.prev_framebuffer[y * GAME_WIDTH + x] = current;
             }
         }
     }
     
-    // Draw game over message if needed
-    if (game_over) {
-        char msg[32];
-        snprintf(msg, sizeof(msg), "PLANE %d WINS", winner);
-        display_draw_string(60, 220, msg, COLOR_YELLOW, COLOR_BLACK);
+    // Draw status text
+    char status[64];
+    if (!net_state.connected) {
+        snprintf(status, sizeof(status), "Connecting...");
+        display_draw_string(10, 220, status, COLOR_YELLOW, COLOR_BLACK);
+    } else if (game_state.num_players < 2) {
+        snprintf(status, sizeof(status), "Waiting for opponent...");
+        display_draw_string(10, 220, status, COLOR_CYAN, COLOR_BLACK);
+    } else if (!game_state.game_active && game_state.winner > 0) {
+        snprintf(status, sizeof(status), "Player %d wins!", game_state.winner);
+        display_draw_string(60, 220, status, COLOR_GREEN, COLOR_BLACK);
     }
 }
 
-// Main function
+// Main game loop
 int main() {
     stdio_init_all();
     
-    // Initialize display and buttons
-    display_error_t result = display_pack_init();
-    if (result != DISPLAY_OK) {
-        printf("Display init failed: %s\n", display_error_string(result));
+    printf("Dogfight Client Starting...\n");
+    
+    // Initialize display
+    if (display_pack_init() != DISPLAY_OK) {
+        printf("Display init failed\n");
         return -1;
     }
     
-    result = buttons_init();
-    if (result != DISPLAY_OK) {
-        printf("Button init failed: %s\n", display_error_string(result));
+    if (buttons_init() != DISPLAY_OK) {
+        printf("Buttons init failed\n");
         return -1;
     }
     
-    printf("Dogfight game started!\n");
-    printf("Plane 0 (right): A=left, B=right, X=fire\n");
-    printf("Plane 1 (left): Will be network-controlled\n");
-    
-    // Clear display
     display_clear(COLOR_BLACK);
-    memset(prev_framebuffer, 0, sizeof(prev_framebuffer));
+    memset(game_state.prev_framebuffer, 0, sizeof(game_state.prev_framebuffer));
     
-    // Initialize game
-    init_game();
+    printf("Display initialized\n");
     
-    // Main game loop
+    // Initialize networking
+    if (!init_network()) {
+        display_draw_string(10, 110, "WiFi Failed!", COLOR_RED, COLOR_BLACK);
+        while (true) tight_loop_contents();
+    }
+    
+    // Initialize network state
+    net_state.connected = false;
+    net_state.my_player_id = 0xFF;
+    net_state.last_send = 0;
+    net_state.last_recv = to_ms_since_boot(get_absolute_time());
+    
+    // Initialize game state
+    memset(&game_state, 0, sizeof(game_state));
+    
+    // Send join request
+    send_join_request();
+    
+    uint32_t last_input_send = 0;
+    uint32_t last_ping = 0;
+    
+    printf("Client ready. Controls: A=left, B=right, X=fire\n");
+    
+    // Main loop
     while (true) {
+        cyw43_arch_poll();
         buttons_update();
         
-        // Check for reset (both A and Y pressed)
-        if (button_pressed(BUTTON_A) && button_pressed(BUTTON_Y)) {
-            init_game();
-            display_clear(COLOR_BLACK);
-            memset(prev_framebuffer, 0, sizeof(prev_framebuffer));
+        uint32_t now = to_ms_since_boot(get_absolute_time());
+        
+        // Retry join if not connected
+        if (!net_state.connected && now - net_state.last_send > 2000) {
+            send_join_request();
         }
         
-        update_game();
+        // Handle input and send to server
+        if (net_state.connected && net_state.my_player_id != 0xFF) {
+            bool left = button_pressed(BUTTON_A);
+            bool right = button_pressed(BUTTON_B);
+            bool fire = button_pressed(BUTTON_X);
+            
+            // Get current direction from our player
+            int8_t current_dir = game_state.players[net_state.my_player_id].dir;
+            int8_t new_dir = current_dir;
+            
+            // Update direction based on input
+            if (left && !right) {
+                new_dir = (current_dir + 7) % 8;
+            } else if (right && !left) {
+                new_dir = (current_dir + 1) % 8;
+            }
+            
+            // Handle fire with cooldown
+            bool fire_pressed = false;
+            if (fire && !prev_fire_btn && fire_cooldown == 0) {
+                fire_pressed = true;
+                fire_cooldown = 10;
+            }
+            prev_fire_btn = fire;
+            if (fire_cooldown > 0) fire_cooldown--;
+            
+            // Send input at ~20Hz
+            if (now - last_input_send >= 50) {
+                send_state_update(new_dir, fire_pressed ? 1 : 0);
+                last_input_send = now;
+            }
+        }
+        
+        // Send ping to keep connection alive
+        if (net_state.connected && now - last_ping > 1000) {
+            uint8_t ping[1] = {PKT_PING};
+            send_packet(ping, 1);
+            last_ping = now;
+        }
+        
+        // Check for connection timeout
+        if (net_state.connected && now - net_state.last_recv > 5000) {
+            printf("Connection timeout\n");
+            net_state.connected = false;
+        }
+        
+        // Render display
         render_display();
         
-        sleep_ms(100);  // ~10 FPS (adjust for desired speed)
+        sleep_ms(50); // ~20 FPS
     }
     
     return 0;
