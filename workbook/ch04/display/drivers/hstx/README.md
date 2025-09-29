@@ -7,8 +7,7 @@ pins. This feature is particularly advantageous for applications like video outp
 such as DVI or DSI, without burdening the CPU cores or PIO blocks. The HSTX operates
 independently of the system clock, running at 150 MHz, and is accessible via GPIOs 12 to 19.
 
-HSTX (High-Speed Transmit) on the RP2350 is a relatively new peripheral that provides
-a fast, programmable serial transmission engine. It’s not a generic UART/SPI/I²C controller;
+HSTX (High-Speed Transmit) on the RP2350 is not a generic UART/SPI/I²C controller;
 rather, it’s designed for streaming out waveforms at high speed with precise control
 over pins and timing.
 
