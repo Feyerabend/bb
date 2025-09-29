@@ -363,7 +363,8 @@ def main():
     # Show startup message
     display.set_pen(WHITE)
     display.text("DOGFIGHT", 100, 100, scale=3)
-    display.text("A/B: Turn  X: Fire  Y: Reset", 30, 140, scale=1)
+    display.text("A/B: Turn  A+B: Fire  Y: Reset", 30, 140, scale=1)
+#   display.text("A/B: Turn  X: Fire  Y: Reset", 30, 140, scale=1)
     display.update()
     time.sleep(2)
     
