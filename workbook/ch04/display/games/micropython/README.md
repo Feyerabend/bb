@@ -1,173 +1,132 @@
 
-## Displays for the Raspberry Pi Pico
+## Simple Games
 
-There are many options for displays even for such very simple microcontrollers as the
-Raspberry Pi Pico. From tiny monochrome screens for basic readouts to vibrant colour
-panels for games and GUIs, these add-ons connect via simple interfaces like SPI, I2C,
-or GPIO, making them a breeze to integrate with MicroPython or C/C++. Whether you're
-building a retro game like our Atari-inspired tank combat or a weather station, there's
-a display to fit your power budget, size needs, and style. Below, You will find the
-main types (LCD, OLED, TFT, and ePaper) with pros/cons, followed by a table of popular
-picks as of 2025.
+Games, at their core, are interactive simulations that run in a continuous loop,
+responding to player input while updating the state of the world and rendering
+visuals to create an engaging experience. Most simple games follow a basic structure:
+a main loop that repeatedly checks for input, updates game elements (like positions,
+scores, or statuses), handles interactions (such as collisions), and draws everything
+on the screen. This loop typically runs at a fixed rate, say 10 to 60 times per
+second, to keep things smooth and responsive. By building on this foundation, you
+can create everything from classic arcade-style challenges to strategic duels,
+starting with just a few key concepts.
 
+To get started building simple games, think of your game as a collection of objects
+or "entities" that interact in a virtual space. For example, you might have a
+player-controlled character, opponents, obstacles, and items. Each entity has
+properties like position (x and y coordinates), size, speed, and state
+(alive, moving, etc.). You'll define how these entities behave over time—moving,
+shooting, or growing—and how they react to each other or to the player's actions.
 
-#### Quick Primer on Display Types
-
-- *LCD (Liquid Crystal Display)*: Affordable and widely available, these use backlighting
-  for visibility. Great for colorful projects but can drain battery faster due to the light
-  source. Often character-based (e.g., 16x2 text) or graphic.
-- *TFT (Thin-Film Transistor LCD)*: A step up from basic LCDs—sharper, faster refresh rates,
-  and better colors thanks to transistor tech. Ideal for animations or games on the Pico's
-  limited pins.
-- *OLED (Organic Light-Emitting Diode)*: Self-lit pixels mean true blacks, infinite contrast,
-  and super-low power (no backlight!). Perfect for text-heavy or battery-powered apps,
-  though pricier and limited in size.
-- *ePaper (Electronic Paper)*: Mimics ink on paper—bistable (holds image without power),
-  sunlight-readable, and ultra-efficient. Best for static info like labels or sensors,
-  not fast video.
-
-Most are Pico-ready with libraries like `picographics` (Pimoroni), `adafruit_ssd1306`
-(OLEDs), or `st7735` (TFTs) in MicroPython. Power draw varies: OLED/ePaper ~mW, LCD/TFT ~10-50mW.
+Let's break it down step by step, with ideas for how you could implement basic
+games inspired by timeless mechanics.
 
 
-#### Popular Display Options for Pico
+### 1. The Game Loop: The Heartbeat of Your Game
 
-Here's a selection of current favorites from major vendors. Prices are approximate USD
-(as of mid-2025) and can fluctuate; check retailers like Adafruit, Pimoroni, Waveshare,
-or PiShop for stock.
+Every game needs a central loop that keeps things running. In pseudocode,
+it might look like this:
 
-| Vendor     | Type  | Size / Resolution       | Interface | Price | Notes & Pico Fit |
-|------------|-------|-------------------------|-----------|-------|------------------|
-| Pimoroni  | TFT (IPS LCD) | 1.14" / 240x135 | SPI | $20 | Original Display Pack: Buttons + RGB LED included. Great for small games like our tank combat. |
-| Pimoroni  | TFT (IPS LCD) | 2.0" / 320x240 | SPI | $25 | Display Pack 2.0: Larger, vibrant colors; easy backpack mount. Updated for Pico 2 (RP2350). |
-| Adafruit  | OLED (Monochrome) | 0.96" / 128x64 | I2C/SPI | $12-18 | STEMMA QT connector for easy wiring. Low-power text display; use with `adafruit_displayio`. |
-| Adafruit  | OLED (Monochrome) | 1.3" / 128x64 | I2C/SPI | $20 | SH1106 driver; compact for wearables. Excellent contrast for dark environments. |
-| Adafruit  | TFT | 1.14" / 240x135 | SPI | $10 | ST7789 chip + microSD; color breakout for prototypes. Matches Pimoroni's original res. |
-| Adafruit  | TFT | 1.8" / 128x160 | SPI | $20 | ST7735R + microSD; adds storage for game assets. |
-| Adafruit  | TFT (Touch) | 2.8" / 320x240 | SPI | $30 | ILI9341 + cap touch; bigger for GUIs, but uses more pins. |
-| Waveshare | LCD (Color) | 1.8" / 160x128 | SPI | $15 | ST7735S driver; 65K colors, MicroPython demos included. Simple embed. |
-| Waveshare | TFT (Touch IPS) | 3.5" / 480x320 | SPI | $25 | Dedicated touch controller; smooth for interactive apps. |
-| Waveshare / Pi Hut | ePaper | 2.13" / 250x122 | SPI | $20-25 | Bistable, black/white; holds updates forever. Ideal for low-power IoT. |
-| Adafruit  | ePaper | 2.7" / 264x176 | SPI | $30 | Monochrome; sunlight-readable for outdoor Pico projects. |
+```
+while not game_over:
+    handle_input()  # Check buttons or controls
+    update_game()   # Move things, check collisions
+    render()        # Draw everything
+    wait_a_bit()    # Pause for frame rate control
+```
 
-The Pimoroni display packs chosen here are used primarily for convenience and simplicity, and
-we do not endorse any particular display over another. The same applies to the choice of the
-Raspberry Pi Pico, which is used here for practical reasons rather than as a recommendation
-over other microcontrollers.
+This loop ensures constant action. For instance, in a flying duel game,
+the loop would move your plane and an opponent's, update any fired shots,
+and check if anyone's been hit. You could set a delay of about 0.1 seconds
+per loop for a relaxed 10 FPS pace, or faster for more fluid motion.
 
 
-### Pimoroni Pico Display Pack (Original)
+### 2. Handling Input: Making It Interactive
 
-The *Pimoroni Pico Display Pack* is a compact add-on board for the Raspberry Pi Pico
-(or Pico W), designed to give your Pico a colorful display and basic input for projects
-like mini games, interfaces, or sensor readouts. Released around early 2021, it’s a
-"backpack" that attaches to the underside of the Pico, making it ideal for portable
-or embedded applications.
+Input lets the player control the game. Assume you have buttons for actions
+like moving left/right, up/down, firing, or resetting. In code, you'd check
+these in each loop iteration.
 
+- For a turning-based game like steering a jet: If button A is pressed,
+  turn left (change direction by 45 degrees); button B turns right.
+  Pressing both could trigger a shot.
+- In a paddle game: Button A moves up, B moves down, keeping the paddle
+  within screen bounds.
+- For aiming in a projectile game: Use one button to adjust angle up or down,
+  combined with another to fire.
 
-#### Key Features
-
-| Feature | Details |
-|---------|---------|
-| *Display* | 1.14-inch IPS LCD, 240x135 pixels (~210 PPI), 18-bit color (65K colors), decent viewing angles, and backlit. Uses SPI interface (pins: CS, DC, SCLK, MOSI) with PWM brightness control. |
-| *Input/Output* | Four tactile buttons (A/B/X/Y, mapped to GPIO 12-15 by default). One RGB LED for status or effects. |
-| *Compatibility* | Works with Raspberry Pi Pico/Pico W (needs male headers on the Pico). Supports MicroPython (via Pimoroni’s UF2 build with `picodisplay` library), CircuitPython (ST7789 driver), or C/C++. Stackable with other Pico add-ons. |
-| *Dimensions & Build* | ~35mm x 25mm x 9mm (L x W x H). No soldering if Pico has headers. Compact but slightly delicate buttons. |
-| *Power* | Runs off Pico’s 3.3V, low power for battery setups. |
+Keep it simple—debounce inputs by adding short cooldowns to avoid rapid-fire glitches.
 
 
-#### Comparison to Pico Display Pack 2.0
+### 3. Updating the Game State: Movement and Logic
 
-- *Screen Size*: Original has a 1.14-inch, 240x135 display; the 2.0 version upgrades to a 2.0-inch,
-  320x240 screen for sharper, larger visuals.
-- *Code*: Uses `picodisplay` in MicroPython (vs. `picodisplay2` for 2.0). Swap the display constant
-  (`DISPLAY_PICO_DISPLAY` vs. `DISPLAY_PICO_DISPLAY_2`) and adjust resolution in code to port projects.
-- *Form Factor*: Same button layout and RGB LED, but the original is smaller, fitting tightly on the Pico.
+This is where the fun happens. Update positions and states for all entities each frame.
 
+- *Movement*: Use directions as vectors (like dx for horizontal, dy for vertical speed).
+  For a snake-like game, add a new head segment in the current direction and remove the
+  tail unless it "grows" after eating.
+- *AI Opponents*: For single-player fun, add simple computer-controlled enemies. In a
+  chasing game, have the AI calculate the direction to the player and turn toward them
+  occasionally, with random wiggles for unpredictability. In a side-view battle, the
+  AI could randomly adjust aim and fire at intervals.
+- *Projectiles*: When firing, create a new object with initial position and velocity.
+  Update it by adding speed each frame, perhaps with gravity for arcing shots in a
+  tank duel (dy increases downward over time).
+- *Wrapping or Boundaries*: For endless arenas, wrap positions around screen edges
+  (e.g., if x > width, set x = 0). Otherwise, bounce or stop at walls.
 
-#### Getting Started
-
-1. *Setup*: Attach to a Pico with headers. No soldering needed if prepped.
-
-2. *Software*: Flash Pimoroni’s MicroPython UF2 (from their GitHub). Basic example:
-   ```python
-   from picodisplay import PicoDisplay
-   import time
-
-   display = PicoDisplay()
-   display.set_backlight(1.0)  # Max brightness
-   display.set_pen(255, 255, 255)  # White
-   display.text("Hello, Pico Display!", 10, 60, scale=2)
-   display.update()
-   time.sleep(1)
-   ```
-   Check Pimoroni’s tutorials for more (GitHub or their site).
-
-3. *Use Cases*: Great for simple games, small dashboards, or IoT displays.
+Add timers for cooldowns, like limiting shots to every 0.5 seconds.
 
 
+### 4. Collisions and Interactions: Adding Challenge
 
-### Pimoroni Pico Display Pack 2.0
+Games thrive on consequences. Check if entities overlap or touch.
 
-The *Pico Display Pack 2.0* is a compact add-on board from Pimoroni designed specifically
-for the Raspberry Pi Pico (or Pico W). It's essentially a "backpack" that snaps onto the
-underside of your Pico, turning it into a portable display-equipped device perfect for
-embedded projects, games, or interfaces. Released around mid-2024, it's an upgraded version
-of the original Pico Display Pack, offering a larger, higher-resolution screen while keeping
-the same easy-to-use form factor.
-
-
-#### Key Features
-
-| Feature | Details |
-|---------|---------|
-| *Display* | 2.0-inch (50.8mm) IPS LCD, 320 x 240 pixels (~220 PPI), 18-bit color (65K colors), wide viewing angles, and vibrant backlighting. Communicates via SPI (pins: CS, DC, SCLK, MOSI) with PWM-controlled brightness. |
-| *Input/Output* | Four tactile buttons (labeled A/B/X/Y, connected to GPIO 12-15 by default) for user interaction. Includes a single RGB LED for status indicators. |
-| *Compatibility* | - Raspberry Pi Pico/Pico W (requires male headers soldered on the Pico).<br>- Works with MicroPython (Pimoroni's custom UF2 build), CircuitPython (via Adafruit DisplayIO), or C/C++.<br>- Stackable with other Pico add-ons like Pico Omnibus or Pico Decker (though it may overhang slightly). |
-| *Dimensions & Build* | Approx. 53mm x 25mm x 9mm (L x W x H). No soldering needed if your Pico has headers. The screen protrudes slightly above the buttons, so use gentle fingertip presses to avoid accidental touches. |
-| *Power* | Draws from the Pico (3.3V logic), low power for battery projects. |
+- Use simple rectangle or circle checks: If two objects' bounding boxes intersect,
+  trigger an event.
+- Examples:
+  - In an invasion defense game: If your bullet hits an enemy, remove both and
+    increase score. If an enemy reaches the bottom or hits you, end the game.
+  - For a ball-and-paddle setup: If the ball hits a paddle, reverse its horisontal
+    direction and tweak vertical speed based on where it struck for spin-like effects.
+  - In a shooting duel: If a missile lands near a target, reduce health. Add destructible
+    barriers that erode on hits for strategy.
+- Track scores or health: Increment points for successes, decrement life for failures.
+  End when a win condition is met, like reaching 5 points or eliminating all foes.
 
 
-#### What's New vs. Original Pico Display Pack?
+### 5. Rendering: Drawing the World
 
-- *Bigger Screen*: Original is 1.14-inch at 240x135; 2.0 is double the diagonal and resolution
-  for sharper graphics and more real estate.
-- *Code Migration*: Super simple— in MicroPython, swap `import picodisplay` to `import picodisplay2`
-  or use `DISPLAY_PICO_DISPLAY_2` constant.
-- Same button layout and RGB LED, but more space for custom Pico projects (e.g., mounting on larger bases).
+Clear the screen each frame, then draw entities using basic shapes like rectangles,
+circles, lines, or pixels.
+
+- Colors and Styles: Use pens for colors—white for players, red for enemies, yellow
+  for shots. Draw health bars as filled rectangles.
+- Entities:
+  - Planes or tanks: Combine rectangles for bodies, circles for turrets, lines for barrels.
+  - Invaders or snakes: Use pixel arrays to define shapes, scaling them up for visibility.
+  - Text: Overlay scores, angles, or "Game Over" messages.
+- For polish, add backgrounds like gradients for sky/ground or dotted lines for dividers.
 
 
+### Building Your First Games: Starting Points
 
-#### Getting Started
+With these basics, you can prototype simple games quickly. Here are ideas to expand from:
 
-1. *Hardware Setup*: Buy a Pico with headers (or solder your own). Snap the pack onto the Pico's
-   underside—pins align automatically.
+- *Aerial Duel*: Control a jet that turns and shoots in 8 directions. Add an AI opponent
+  that chases and fires back. Wrap the screen for endless pursuit, track wins on hits.
+- *Invasion Defense*: Waves of enemies march down; shoot them before they reach you.
+  Add bunkers that crumble under fire for cover.
+- *Bounce Challenge*: Move a paddle to hit a ball back at an AI opponent. Score on misses,
+  first to 5 wins.
+- *Growth Quest*: Steer a growing line (snake) to eat items while avoiding walls and
+  self-collisions. Randomize food placement.
+- *Artillery Battle*: Position and angle your shooter to lob arcs at an enemy.
+  Include gravity, health, and AI that moves unpredictably.
 
-2. *Software*:
-   - *MicroPython*: Flash Pimoroni's custom UF2 from their GitHub (includes `picographics` library).
-     Example code for basics:
-     ```python
-     import picodisplay2 as picodisplay
-     import time
-
-     display = picodisplay.PicoDisplay2()
-     display.set_backlight(1.0)  # Full brightness
-
-     while True:
-         display.set_pen(picodisplay.WHITE)
-         display.clear()
-         display.text("Hello, Pico Display 2.0!", 10, 100, scale=2)
-         display.update()
-         time.sleep(1)
-     ```
-     Tutorials and full examples are on Pimoroni's site.
-   - *CircuitPython*: Use Adafruit's bundle; look for the ST7789 driver example.
-
-3. *Projects Ideas*: Retro games (like the Atari-style tank combat I coded
-   earlier--just update the display init to `DISPLAY_PICO_DISPLAY_2` and scale
-   graphics to 320x240), sensors dashboards, portable music players,
-   or even a mini weather station.
-
-Upgrade is trivial from the original to the newer: Change `DISPLAY_PICO_DISPLAY_PACK`
-to `DISPLAY_PICO_DISPLAY_2`, bump WIDTH/HEIGHT to 320/240, and adjust coordinates/scaling.
+*Start small: Code a single moving object first, then add input, collisions, and opponents.
+Test often—tweak speeds, sizes, and rates for balance. As you iterate, you'll see how these
+elements combine into addictive play. Experiment with randomness for replayability, like
+varying AI behaviors or item spawns. From there, the sky's the limit for adding power-ups,
+levels, or multiplayer twists!*
 
