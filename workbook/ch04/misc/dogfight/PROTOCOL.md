@@ -151,7 +151,7 @@ classDiagram
         +unpack(data)
     }
     
-    Note "Packets use struct for binary encoding/decoding"
+    note for ClientInputPacket "Packets use struct for binary encoding/decoding"
 ```
 
 This represents the main classes in `protocol.py`, showing methods for packing/unpacking.
