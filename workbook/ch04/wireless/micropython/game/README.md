@@ -141,3 +141,5 @@ These expanded projects provide hands-on experience with real-world networking c
 Start with Project 1 for foundational improvements, then progress. Document your changes in
 a Markdown file, e.g., inspired by the existing docs.
 
+
+![Dogfight](dogfight.png)
