@@ -145,6 +145,7 @@ class Player:
             nose_y = self.y + protocol.DIR_DY[self.dir] * 4
             self.shots.append(Shot(nose_x, nose_y, self.dir, self.id))
             self.fire_cooldown = 12
+            print(f"Player {self.id} fired! Shots: {len(self.shots)}")
             return True
         return False
     

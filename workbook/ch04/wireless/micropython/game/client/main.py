@@ -116,6 +116,7 @@ class SharedState:
         self.p2_alive = True
         
         self.shots = []
+        self.prev_shot_count = 0  # Track shot count for LED flash
         
         self.game_over = False
         self.winner = 0
@@ -173,15 +174,16 @@ class SharedState:
             if 'shots_added' in state:
                 self.shots.extend(state['shots_added'])
             
+            # Track my own shot count for LED feedback
+            my_shots = [s for s in self.shots if s.get('owner') == self.player_id]
+            self.prev_shot_count = len(my_shots)
+            
             if 'shots_removed' in state:
                 for rem_x, rem_y in state['shots_removed']:
                     self.shots = [s for s in self.shots 
                                  if not (abs(s['x'] - rem_x) < 3 and abs(s['y'] - rem_y) < 3)]
             
-            if 'game_over' in state:
-                self.game_over = state['game_over']
-                if 'winner' in state:
-                    self.winner = state['winner']
+            # Moved game_over handling to top of function
 
     def get_display_state(self):
         with self.lock:
@@ -193,7 +195,8 @@ class SharedState:
                 'winner': self.winner,
                 'player_id': self.player_id,
                 'connected': self.connected,
-                'last_state_time': self.last_state_time
+                'last_state_time': self.last_state_time,
+                'my_shot_count': len([s for s in self.shots if s.get('owner') == self.player_id])
             }
     
     def set_input(self, a, b, x, y):
@@ -460,6 +463,8 @@ def main():
     led.set_rgb(0, 0, 255)
     
     prev_x_button = False
+    prev_shot_count = 0
+    flash_timer = 0
     
     while True:
         btn_a = button_a.read()
@@ -477,7 +482,22 @@ def main():
         
         state = shared_state.get_display_state()
         
-        if state['connected']:
+        # LED flash when firing
+        if flash_timer > 0:
+            flash_timer -= 1
+        
+        my_shot_count = state.get('my_shot_count', 0)
+        if my_shot_count > prev_shot_count:
+            # New shot fired! Flash bright white
+            flash_timer = 3  # Flash for 3 frames
+            print(f"FIRE! Shots: {my_shot_count}")
+        prev_shot_count = my_shot_count
+        
+        # Set LED color
+        if flash_timer > 0:
+            # Bright white flash when firing
+            led.set_rgb(255, 255, 255)
+        elif state['connected']:
             if state['game_over']:
                 if state['winner'] == state['player_id']:
                     led.set_rgb(0, 255, 0)
