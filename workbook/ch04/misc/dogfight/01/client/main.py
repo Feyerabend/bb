@@ -1,10 +1,10 @@
 """
 Dogfight Game Client for Raspberry Pi Pico 2 W
-- Dual core architecture:
-  - Core 0: Display rendering and button input
-  - Core 1: UDP networking
-- Connects to server AP
-- Renders game state with local prediction
+- Robust connection with retry mechanism
+- Manual reconnect button (X button)
+- Better state synchronization
+- Connection timeout handling
+- Enhanced debugging
 """
 
 import network
@@ -19,8 +19,13 @@ import protocol
 # WiFi Configuration
 SSID = "DOGFIGHT_SERVER"
 PASSWORD = "dogfight123"
-SERVER_IP = "192.168.4.1" # default IP for AP mode
+SERVER_IP = "192.168.4.1"
 UDP_PORT = 8888
+
+# Connection parameters
+CONNECT_TIMEOUT = 3000  # 3 seconds to get player ID
+CONNECT_RETRIES = 5
+STATE_TIMEOUT = 2000  # 2 seconds without state = reconnect
 
 # Display setup
 display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_2)
@@ -50,155 +55,43 @@ PIXEL_SIZE = 2
 SCREEN_WIDTH = protocol.GAME_WIDTH * PIXEL_SIZE
 SCREEN_HEIGHT = protocol.GAME_HEIGHT * PIXEL_SIZE
 
-# Plane sprite data (same as original)
+# Plane sprite data
 PLANE0_SHAPES = [
-    # 0
-    [0,0,0,1,0,0,0,0,
-     0,0,0,1,0,0,0,0,
-     0,0,0,1,0,0,0,0,
-     0,0,1,1,1,0,0,0,
-     0,1,1,1,1,1,0,0,
-     1,1,1,1,1,1,1,0,
-     1,1,1,1,1,1,1,0,
-     0,0,0,1,0,0,0,0],
-    # 1
-    [0,0,0,0,0,0,0,0,
-     1,1,0,0,0,0,0,1,
-     1,1,1,1,1,1,1,0,
-     0,1,1,1,1,1,0,0,
-     0,1,1,1,1,0,0,0,
-     0,0,1,1,0,0,0,0,
-     0,0,1,1,0,0,0,0,
-     0,0,1,1,0,0,0,0],
-    # 2
-    [0,1,1,0,0,0,0,0,
-     0,1,1,1,0,0,0,0,
-     0,1,1,1,1,0,0,0,
-     1,1,1,1,1,1,1,1,
-     0,1,1,1,1,0,0,0,
-     0,1,1,1,0,0,0,0,
-     0,1,1,0,0,0,0,0,
-     0,0,0,0,0,0,0,0],
-    # 3
-    [0,0,1,1,0,0,0,0,
-     0,0,1,1,0,0,0,0,
-     0,0,1,1,0,0,0,0,
-     0,1,1,1,1,0,0,0,
-     0,1,1,1,1,1,0,0,
-     1,1,1,1,1,1,1,0,
-     1,1,0,0,0,0,0,1,
-     0,0,0,0,0,0,0,0],
-    # 4
-    [0,0,0,1,0,0,0,0,
-     1,1,1,1,1,1,1,0,
-     1,1,1,1,1,1,1,0,
-     0,1,1,1,1,1,0,0,
-     0,0,1,1,1,0,0,0,
-     0,0,0,1,0,0,0,0,
-     0,0,0,1,0,0,0,0,
-     0,0,0,0,0,0,0,0],
-    # 5
-    [0,0,0,0,1,1,0,0,
-     0,0,0,0,1,1,0,0,
-     0,0,0,0,1,1,0,0,
-     0,0,0,1,1,1,1,0,
-     0,0,1,1,1,1,1,0,
-     0,1,1,1,1,1,1,1,
-     1,0,0,0,0,0,1,1,
-     0,0,0,0,0,0,0,0],
-    # 6
-    [0,0,0,0,0,1,1,0,
-     0,0,0,0,1,1,1,0,
-     0,0,0,1,1,1,1,0,
-     1,1,1,1,1,1,1,1,
-     0,0,0,1,1,1,1,0,
-     0,0,0,0,1,1,1,0,
-     0,0,0,0,0,1,1,0,
-     0,0,0,0,0,0,0,0],
-    # 7
-    [0,0,0,0,0,0,0,0,
-     1,0,0,0,0,0,1,1,
-     0,1,1,1,1,1,1,1,
-     0,0,1,1,1,1,1,0,
-     0,0,0,1,1,1,1,0,
-     0,0,0,0,1,1,0,0,
-     0,0,0,0,1,1,0,0,
-     0,0,0,0,1,1,0,0],
+    [0,0,0,1,0,0,0,0, 0,0,0,1,0,0,0,0, 0,0,0,1,0,0,0,0, 0,0,1,1,1,0,0,0,
+     0,1,1,1,1,1,0,0, 1,1,1,1,1,1,1,0, 1,1,1,1,1,1,1,0, 0,0,0,1,0,0,0,0],
+    [0,0,0,0,0,0,0,0, 1,1,0,0,0,0,0,1, 1,1,1,1,1,1,1,0, 0,1,1,1,1,1,0,0,
+     0,1,1,1,1,0,0,0, 0,0,1,1,0,0,0,0, 0,0,1,1,0,0,0,0, 0,0,1,1,0,0,0,0],
+    [0,1,1,0,0,0,0,0, 0,1,1,1,0,0,0,0, 0,1,1,1,1,0,0,0, 1,1,1,1,1,1,1,1,
+     0,1,1,1,1,0,0,0, 0,1,1,1,0,0,0,0, 0,1,1,0,0,0,0,0, 0,0,0,0,0,0,0,0],
+    [0,0,1,1,0,0,0,0, 0,0,1,1,0,0,0,0, 0,0,1,1,0,0,0,0, 0,1,1,1,1,0,0,0,
+     0,1,1,1,1,1,0,0, 1,1,1,1,1,1,1,0, 1,1,0,0,0,0,0,1, 0,0,0,0,0,0,0,0],
+    [0,0,0,1,0,0,0,0, 1,1,1,1,1,1,1,0, 1,1,1,1,1,1,1,0, 0,1,1,1,1,1,0,0,
+     0,0,1,1,1,0,0,0, 0,0,0,1,0,0,0,0, 0,0,0,1,0,0,0,0, 0,0,0,0,0,0,0,0],
+    [0,0,0,0,1,1,0,0, 0,0,0,0,1,1,0,0, 0,0,0,0,1,1,0,0, 0,0,0,1,1,1,1,0,
+     0,0,1,1,1,1,1,0, 0,1,1,1,1,1,1,1, 1,0,0,0,0,0,1,1, 0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,1,1,0, 0,0,0,0,1,1,1,0, 0,0,0,1,1,1,1,0, 1,1,1,1,1,1,1,1,
+     0,0,0,1,1,1,1,0, 0,0,0,0,1,1,1,0, 0,0,0,0,0,1,1,0, 0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0, 1,0,0,0,0,0,1,1, 0,1,1,1,1,1,1,1, 0,0,1,1,1,1,1,0,
+     0,0,0,1,1,1,1,0, 0,0,0,0,1,1,0,0, 0,0,0,0,1,1,0,0, 0,0,0,0,1,1,0,0],
 ]
 
 PLANE1_SHAPES = [
-    # 0
-    [0,0,0,1,0,0,0,0,
-     0,0,1,1,1,0,0,0,
-     0,0,0,1,0,0,0,0,
-     0,0,1,1,1,0,0,0,
-     0,1,1,1,1,1,0,0,
-     1,1,1,1,1,1,1,0,
-     1,1,1,1,1,1,1,0,
-     0,0,0,1,0,0,0,0],
-    # 1
-    [0,0,0,0,0,0,0,0,
-     1,1,0,0,0,1,0,1,
-     1,1,1,1,1,1,1,0,
-     0,1,1,1,1,1,0,1,
-     0,1,1,1,1,0,0,0,
-     0,0,1,1,0,0,0,0,
-     0,0,1,1,0,0,0,0,
-     0,0,1,1,0,0,0,0],
-    # 2
-    [0,1,1,0,0,0,0,0,
-     0,1,1,1,0,0,0,0,
-     0,1,1,1,1,0,1,0,
-     1,1,1,1,1,1,1,1,
-     0,1,1,1,1,0,1,0,
-     0,1,1,1,0,0,0,0,
-     0,1,1,0,0,0,0,0,
-     0,0,0,0,0,0,0,0],
-    # 3
-    [0,0,1,1,0,0,0,0,
-     0,0,1,1,0,0,0,0,
-     0,0,1,1,0,0,0,0,
-     0,1,1,1,1,0,0,0,
-     0,1,1,1,1,1,0,1,
-     1,1,1,1,1,1,1,0,
-     1,1,0,0,0,1,0,1,
-     0,0,0,0,0,0,0,0],
-    # 4
-    [0,0,0,1,0,0,0,0,
-     1,1,1,1,1,1,1,0,
-     1,1,1,1,1,1,1,0,
-     0,1,1,1,1,1,0,0,
-     0,0,1,1,1,0,0,0,
-     0,0,0,1,0,0,0,0,
-     0,0,1,1,1,0,0,0,
-     0,0,0,1,0,0,0,0],
-    # 5
-    [0,0,0,0,1,1,0,0,
-     0,0,0,0,1,1,0,0,
-     0,0,0,0,1,1,0,0,
-     0,0,0,1,1,1,1,0,
-     1,0,1,1,1,1,1,0,
-     0,1,1,1,1,1,1,1,
-     1,0,1,0,0,0,1,1,
-     0,0,0,0,0,0,0,0],
-    # 6
-    [0,0,0,0,0,1,1,0,
-     0,0,0,0,1,1,1,0,
-     0,1,0,1,1,1,1,0,
-     1,1,1,1,1,1,1,1,
-     0,1,0,1,1,1,1,0,
-     0,0,0,0,1,1,1,0,
-     0,0,0,0,0,1,1,0,
-     0,0,0,0,0,0,0,0],
-    # 7
-    [0,0,0,0,0,0,0,0,
-     1,0,1,0,0,0,1,1,
-     0,1,1,1,1,1,1,1,
-     1,0,1,1,1,1,1,0,
-     0,0,0,1,1,1,1,0,
-     0,0,0,0,1,1,0,0,
-     0,0,0,0,1,1,0,0,
-     0,0,0,0,1,1,0,0],
+    [0,0,0,1,0,0,0,0, 0,0,1,1,1,0,0,0, 0,0,0,1,0,0,0,0, 0,0,1,1,1,0,0,0,
+     0,1,1,1,1,1,0,0, 1,1,1,1,1,1,1,0, 1,1,1,1,1,1,1,0, 0,0,0,1,0,0,0,0],
+    [0,0,0,0,0,0,0,0, 1,1,0,0,0,1,0,1, 1,1,1,1,1,1,1,0, 0,1,1,1,1,1,0,1,
+     0,1,1,1,1,0,0,0, 0,0,1,1,0,0,0,0, 0,0,1,1,0,0,0,0, 0,0,1,1,0,0,0,0],
+    [0,1,1,0,0,0,0,0, 0,1,1,1,0,0,0,0, 0,1,1,1,1,0,1,0, 1,1,1,1,1,1,1,1,
+     0,1,1,1,1,0,1,0, 0,1,1,1,0,0,0,0, 0,1,1,0,0,0,0,0, 0,0,0,0,0,0,0,0],
+    [0,0,1,1,0,0,0,0, 0,0,1,1,0,0,0,0, 0,0,1,1,0,0,0,0, 0,1,1,1,1,0,0,0,
+     0,1,1,1,1,1,0,1, 1,1,1,1,1,1,1,0, 1,1,0,0,0,1,0,1, 0,0,0,0,0,0,0,0],
+    [0,0,0,1,0,0,0,0, 1,1,1,1,1,1,1,0, 1,1,1,1,1,1,1,0, 0,1,1,1,1,1,0,0,
+     0,0,1,1,1,0,0,0, 0,0,0,1,0,0,0,0, 0,0,1,1,1,0,0,0, 0,0,0,1,0,0,0,0],
+    [0,0,0,0,1,1,0,0, 0,0,0,0,1,1,0,0, 0,0,0,0,1,1,0,0, 0,0,0,1,1,1,1,0,
+     1,0,1,1,1,1,1,0, 0,1,1,1,1,1,1,1, 1,0,1,0,0,0,1,1, 0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,1,1,0, 0,0,0,0,1,1,1,0, 0,1,0,1,1,1,1,0, 1,1,1,1,1,1,1,1,
+     0,1,0,1,1,1,1,0, 0,0,0,0,1,1,1,0, 0,0,0,0,0,1,1,0, 0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0, 1,0,1,0,0,0,1,1, 0,1,1,1,1,1,1,1, 1,0,1,1,1,1,1,0,
+     0,0,0,1,1,1,1,0, 0,0,0,0,1,1,0,0, 0,0,0,0,1,1,0,0, 0,0,0,0,1,1,0,0],
 ]
 
 # Shared state between cores
@@ -209,6 +102,7 @@ class SharedState:
         # Network state
         self.connected = False
         self.player_id = 0
+        self.reconnect_request = False
         
         # Game state
         self.p1_x = 0
@@ -221,26 +115,37 @@ class SharedState:
         self.p2_dir = 0
         self.p2_alive = True
         
-        self.shots = []  # List of {x, y, dir, range, owner}
+        self.shots = []
         
         self.game_over = False
         self.winner = 0
         self.last_seq = 0
+        self.last_state_time = 0
         
-        # Input state (written by core 0, read by core 1)
+        # Input state
         self.btn_a = False
         self.btn_b = False
         self.btn_x = False
         self.btn_y = False
-        
-        # Prediction state
-        self.local_predict = True
     
-    # Update from network packet (called by core 1)
     def update_game_state(self, state):
         with self.lock:
+            self.last_state_time = time.ticks_ms()
+            
             if 'seq' in state:
                 self.last_seq = state['seq']
+            
+            # Detect game reset (game_over goes from True to False)
+            was_game_over = self.game_over
+            if 'game_over' in state:
+                self.game_over = state['game_over']
+                if 'winner' in state:
+                    self.winner = state['winner']
+                
+                # If game was over and now it's not, clear everything
+                if was_game_over and not self.game_over:
+                    print("Game reset detected - clearing state")
+                    self.shots = []
             
             if 'p1' in state:
                 if 'x' in state['p1']:
@@ -269,7 +174,6 @@ class SharedState:
                 self.shots.extend(state['shots_added'])
             
             if 'shots_removed' in state:
-                # Remove shots by approximate position
                 for rem_x, rem_y in state['shots_removed']:
                     self.shots = [s for s in self.shots 
                                  if not (abs(s['x'] - rem_x) < 3 and abs(s['y'] - rem_y) < 3)]
@@ -278,9 +182,7 @@ class SharedState:
                 self.game_over = state['game_over']
                 if 'winner' in state:
                     self.winner = state['winner']
-    
 
-    # Get state snapshot for rendering (called by core 0)
     def get_display_state(self):
         with self.lock:
             return {
@@ -290,10 +192,10 @@ class SharedState:
                 'game_over': self.game_over,
                 'winner': self.winner,
                 'player_id': self.player_id,
-                'connected': self.connected
+                'connected': self.connected,
+                'last_state_time': self.last_state_time
             }
     
-    # Update input state (called by core 0)
     def set_input(self, a, b, x, y):
         with self.lock:
             self.btn_a = a
@@ -302,20 +204,41 @@ class SharedState:
             self.btn_y = y
     
     def get_input(self):
-        """Get input snapshot (called by core 1)"""
         with self.lock:
             return (self.btn_a, self.btn_b, self.btn_x, self.btn_y)
     
     def set_connected(self, connected, player_id=0):
-        """Update connection state (called by core 1)"""
         with self.lock:
             self.connected = connected
-            self.player_id = player_id
+            if connected:
+                self.player_id = player_id
+                self.last_state_time = time.ticks_ms()
+    
+    def request_reconnect(self):
+        with self.lock:
+            self.reconnect_request = True
+    
+    def check_reconnect_request(self):
+        with self.lock:
+            req = self.reconnect_request
+            self.reconnect_request = False
+            return req
+    
+    def is_state_stale(self):
+        with self.lock:
+            if not self.connected:
+                return False
+            return time.ticks_diff(time.ticks_ms(), self.last_state_time) > STATE_TIMEOUT
 
-# connect AP
 def connect_wifi():
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
+    
+    if wlan.isconnected():
+        print("Already connected")
+        return wlan
+    
+    print(f"Connecting to {SSID}...")
     wlan.connect(SSID, PASSWORD)
     
     max_wait = 10
@@ -323,82 +246,141 @@ def connect_wifi():
         if wlan.status() < 0 or wlan.status() >= 3:
             break
         max_wait -= 1
-        print(f"Waiting for connection.. {max_wait}")
+        print(f"Waiting for WiFi.. {max_wait}")
         time.sleep(1)
     
     if wlan.status() != 3:
-        raise RuntimeError("Network connection failed")
+        raise RuntimeError("WiFi connection failed")
     
-    print(f"Connected: {wlan.ifconfig()}")
+    print(f"WiFi Connected: {wlan.ifconfig()}")
     return wlan
 
-# Network thread
-def network_thread(shared_state):
-    print("Network thread starting..")
+def request_player_id(sock, server_addr):
+    """Request player ID from server with retries"""
+    connect_packet = protocol.ConnectPacket.pack_request()
     
-    try:
-        # Connect to WiFi
-        wlan = connect_wifi()
+    for attempt in range(CONNECT_RETRIES):
+        print(f"Requesting player ID (attempt {attempt + 1}/{CONNECT_RETRIES})")
         
-        # Create UDP socket
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.setblocking(False)
-        
-        # Request player ID
-        server_addr = (SERVER_IP, UDP_PORT)
-        connect_packet = protocol.ConnectPacket.pack_request()
-        
-        for _ in range(5):
+        try:
             sock.sendto(connect_packet, server_addr)
-            time.sleep(0.2)
-            
+            print(f"Sent connect request to {server_addr}")
+        except Exception as e:
+            print(f"Send error: {e}")
+            continue
+        
+        deadline = time.ticks_add(time.ticks_ms(), CONNECT_TIMEOUT)
+        while time.ticks_diff(deadline, time.ticks_ms()) > 0:
             try:
+                sock.settimeout(0.1)
                 data, addr = sock.recvfrom(256)
+                print(f"Received {len(data)} bytes from {addr}, type={data[0] if len(data) > 0 else 'empty'}")
+                
                 if len(data) > 0 and data[0] == protocol.PKT_CLIENT_ACK:
                     ack = protocol.ConnectPacket.unpack(data)
                     player_id = ack['player_id']
-                    shared_state.set_connected(True, player_id)
-                    print(f"Connected as Player {player_id}")
-                    break
-            except:
+                    if player_id in [1, 2]:
+                        print(f"Assigned Player {player_id}")
+                        return player_id
+                    else:
+                        print(f"Invalid player_id received: {player_id}")
+            except OSError as e:
+                # Timeout - this is normal
                 pass
+            except Exception as e:
+                print(f"Receive error: {e}")
+            
+            time.sleep_ms(100)
         
-        if not shared_state.connected:
-            print("Failed to get player ID")
-            return
-        
-        # Main network loop
-        while True:
-            # Send input
-            btn_a, btn_b, btn_x, btn_y = shared_state.get_input()
-            input_packet = protocol.ClientInputPacket.pack(
-                shared_state.player_id, btn_a, btn_b, btn_x, btn_y
-            )
-            sock.sendto(input_packet, server_addr)
-            
-            # Receive state updates
-            try:
-                data, addr = sock.recvfrom(512)
-                if len(data) > 0:
-                    pkt_type = data[0]
-                    
-                    if pkt_type == protocol.PKT_FULL_STATE:
-                        state = protocol.FullStatePacket.unpack(data)
-                        shared_state.update_game_state(state)
-                    
-                    elif pkt_type == protocol.PKT_DELTA_STATE:
-                        delta = protocol.DeltaStatePacket.unpack(data)
-                        shared_state.update_game_state(delta)
-            
-            except OSError:
-                pass  # No data
-            
-            time.sleep_ms(50)  # 20Hz network updates
+        print(f"Attempt {attempt + 1} timed out")
+        time.sleep(0.5)
     
-    except Exception as e:
-        print(f"Network thread error: {e}")
-        shared_state.set_connected(False)
+    print("Failed to get player ID after all retries")
+    return None
 
+def network_thread(shared_state):
+    print("Network thread starting...")
+    
+    server_addr = (SERVER_IP, UDP_PORT)
+    sock = None
+    wlan = None
+    
+    while True:
+        try:
+            if shared_state.check_reconnect_request():
+                print("Reconnect requested")
+                shared_state.set_connected(False)
+                if sock:
+                    sock.close()
+                    sock = None
+            
+            if not wlan or not wlan.isconnected():
+                print("Connecting to WiFi...")
+                wlan = connect_wifi()
+            
+            if not sock:
+                print("Creating UDP socket...")
+                sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                sock.setblocking(False)
+                print("Socket created")
+            
+            if not shared_state.connected:
+                player_id = request_player_id(sock, server_addr)
+                if player_id:
+                    shared_state.set_connected(True, player_id)
+                else:
+                    print("Retrying in 2 seconds...")
+                    time.sleep(2)
+                    continue
+            
+            while shared_state.connected:
+                if shared_state.is_state_stale():
+                    print("State timeout - reconnecting")
+                    shared_state.set_connected(False)
+                    break
+                
+                if shared_state.check_reconnect_request():
+                    print("Manual reconnect")
+                    shared_state.set_connected(False)
+                    break
+                
+                btn_a, btn_b, btn_x, btn_y = shared_state.get_input()
+                input_packet = protocol.ClientInputPacket.pack(
+                    shared_state.player_id, btn_a, btn_b, btn_x, btn_y
+                )
+                sock.sendto(input_packet, server_addr)
+                
+                for _ in range(5):
+                    try:
+                        sock.settimeout(0.01)
+                        data, addr = sock.recvfrom(512)
+                        if len(data) > 0:
+                            pkt_type = data[0]
+                            
+                            if pkt_type == protocol.PKT_FULL_STATE:
+                                state = protocol.FullStatePacket.unpack(data)
+                                if state:
+                                    shared_state.update_game_state(state)
+                            
+                            elif pkt_type == protocol.PKT_DELTA_STATE:
+                                delta = protocol.DeltaStatePacket.unpack(data)
+                                if delta:
+                                    shared_state.update_game_state(delta)
+                    
+                    except OSError:
+                        break
+                    except Exception as e:
+                        print(f"Receive error: {e}")
+                
+                time.sleep_ms(20)  # Send inputs at 50Hz
+        
+        except Exception as e:
+            print(f"Network error: {e}")
+            shared_state.set_connected(False)
+            if sock:
+                sock.close()
+                sock = None
+            time.sleep(2)
 
 def draw_plane(x, y, dir, plane_type, color):
     shapes = PLANE1_SHAPES if plane_type == 1 else PLANE0_SHAPES
@@ -414,19 +396,15 @@ def draw_plane(x, y, dir, plane_type, color):
                     display.rectangle(px, py, PIXEL_SIZE, PIXEL_SIZE)
 
 def render_game(state):
-    # Clear
     display.set_pen(BLACK)
     display.clear()
     
-    # Draw player 1 (Blue)
     if state['p1']['alive']:
         draw_plane(state['p1']['x'], state['p1']['y'], state['p1']['dir'], 0, BLUE)
     
-    # Draw player 2 (Red)
     if state['p2']['alive']:
         draw_plane(state['p2']['x'], state['p2']['y'], state['p2']['dir'], 1, RED)
     
-    # Draw shots
     for shot in state['shots']:
         if shot['owner'] == 1:
             display.set_pen(CYAN)
@@ -436,9 +414,9 @@ def render_game(state):
         x = shot['x'] * PIXEL_SIZE
         y = shot['y'] * PIXEL_SIZE
         if 0 <= x < SCREEN_WIDTH and 0 <= y < SCREEN_HEIGHT:
-            display.rectangle(x, y, PIXEL_SIZE, PIXEL_SIZE)
+            # Draw larger bullets (3x3 pixels)
+            display.rectangle(x - 1, y - 1, 4, 4)
     
-    # Draw game over
     if state['game_over']:
         display.set_pen(BLACK)
         display.rectangle(60, 95, 200, 50)
@@ -447,28 +425,29 @@ def render_game(state):
         winner_text = "BLUE WINS!" if state['winner'] == 1 else "RED WINS!"
         display.text(winner_text, 70, 110, scale=3)
     
-    # Draw connection status
     if not state['connected']:
         display.set_pen(YELLOW)
         display.text("CONNECTING..", 80, 5, scale=2)
+        display.set_pen(WHITE)
+        display.text("Press X to retry", 60, 220, scale=1)
     else:
-        # Show player ID
         display.set_pen(BLUE if state['player_id'] == 1 else RED)
         display.text(f"P{state['player_id']}", 5, 5, scale=2)
+        
+        state_age = time.ticks_diff(time.ticks_ms(), state['last_state_time'])
+        if state_age > 1000:
+            display.set_pen(YELLOW)
+            display.text("WEAK", WIDTH - 50, 5, scale=1)
     
     display.update()
 
-# render and input
 def main():
-    print("Starting Dogfight Client..")
+    print("Starting Dogfight Client...")
     
-    # Init shared state
     shared_state = SharedState()
     
-    # Start network thread on core 1
     _thread.start_new_thread(network_thread, (shared_state,))
     
-    # Show startup screen
     display.set_pen(BLACK)
     display.clear()
     display.set_pen(CYAN)
@@ -478,39 +457,40 @@ def main():
     display.update()
     time.sleep(2)
     
-    led.set_rgb(0, 0, 255)  # Blue = starting
+    led.set_rgb(0, 0, 255)
     
-    # Main render loop
+    prev_x_button = False
+    
     while True:
-        # Read buttons
         btn_a = button_a.read()
         btn_b = button_b.read()
         btn_x = button_x.read()
         btn_y = button_y.read()
         
-        # Update shared input state
-        shared_state.set_input(btn_a, btn_b, btn_x, btn_y)
+        if btn_x and not prev_x_button:
+            print("Reconnect button pressed")
+            shared_state.request_reconnect()
+        prev_x_button = btn_x
         
-        # Get game state snapshot
+        # X is reconnect, Y is fire
+        shared_state.set_input(btn_a, btn_b, btn_y, False)
+        
         state = shared_state.get_display_state()
         
-        # Update LED
         if state['connected']:
             if state['game_over']:
                 if state['winner'] == state['player_id']:
-                    led.set_rgb(0, 255, 0)  # Green = won
+                    led.set_rgb(0, 255, 0)
                 else:
-                    led.set_rgb(255, 0, 0)  # Red = lost
+                    led.set_rgb(255, 0, 0)
             else:
-                led.set_rgb(0, 100, 100)  # Cyan = playing
+                led.set_rgb(0, 100, 100)
         else:
-            led.set_rgb(255, 255, 0)  # Yellow = connecting
+            led.set_rgb(255, 255, 0)
         
-        # Render
         render_game(state)
         
-        # ~10 FPS
-        time.sleep(0.1)
+        time.sleep(0.03)  # ~30fps
 
 if __name__ == "__main__":
     main()
