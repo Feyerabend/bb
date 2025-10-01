@@ -6,7 +6,7 @@
   itself. It typically begins with a minimal prototype compiler or interpreter, often written in
   a different, well-established language (e.g., C). Once this initial version exists, it is used
   to compile or run a more complete implementation written in the target language. Through successive
-  iterations, the system “pulls itself up by its own bootstraps” until it becomes fully self-hosting.
+  iterations, the system "pulls itself up by its own bootstraps" until it becomes fully self-hosting.
 
 - *[JIT Compilation in HotspotVM](./jit/)*:
   HotspotVM is a stack-based virtual machine that uses Just-In-Time (JIT) compilation to optimise
