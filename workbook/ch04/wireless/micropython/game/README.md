@@ -16,7 +16,7 @@ Dogfight is a two-player, real-time aerial combat game for Raspberry Pi Pico 2 W
 memory and speed can be limits, but might work with Pico W). The two players control planes on
 separate screens, navigating in eight directions using buttons (A to turn left, B to turn right,
 Y to fire). Each plane can fire up to three shots, which travel in the direction the plane is
-facing and have a limited range (barely visible, chnage that!). The objective is to hit the
+facing and have a limited range (barely visible, change that!?). The objective is to hit the
 opponent's plane with a shot, scoring a point and ending the round. The game features a client-server
 architecture, with one Pico W (alt. 2 W) acting as the server (hosting the game) and two clients
 (players) connecting via WiFi. The server manages game state, collision detection, and synchronisation,
