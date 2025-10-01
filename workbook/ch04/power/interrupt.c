@@ -1,3 +1,4 @@
+
 // .. impl. for display ..
 
 void gpio_callback(uint gpio, uint32_t events) {
@@ -11,7 +12,8 @@ int main() {
     gpio_set_irq_enabled_with_callback(2,
         GPIO_IRQ_EDGE_RISE,
         true,
-        &gpio_callback);
+        &gpio_callback
+    );
 
     // low−power mode, wait for interrupts
     while (true) {

@@ -23,47 +23,58 @@ if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
 # ====================================================================================
-set(PICO_BOARD pico2 CACHE STRING "Board type")
+cmake_minimum_required(VERSION 3.13)
 
-# Pull in Raspberry Pi Pico SDK (must be before project)
-include(pico_sdk_import.cmake)
+# Include the Pico SDK
+include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
-project(racer C CXX ASM)
+project(pico_particle C CXX ASM)
 
-# Initialise the Raspberry Pi Pico SDK
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+
+# Initialize the Pico SDK
 pico_sdk_init()
 
-# Add executable. Default name is the project name, version 0.1
-
-add_executable(racer main.c display.c)
-
-pico_set_program_name(racer "racer")
-pico_set_program_version(racer "0.1")
-
-# Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(racer 0)
-pico_enable_stdio_usb(racer 1)
-
-# Add the standard library to the build
-target_link_libraries(racer
-        pico_stdlib)
-
-# Add the standard include files to the build
-target_include_directories(racer PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
+# Add display library
+add_library(display STATIC
+    display.c
 )
 
-# Add any user requested libraries
-target_link_libraries(racer 
-        hardware_spi
-        hardware_i2c
-        hardware_dma
-        hardware_interp
-        hardware_timer
-        hardware_watchdog
-        hardware_clocks
-        hardware_pwm
-        )
+target_link_libraries(display
+    pico_stdlib
+    hardware_spi
+    hardware_dma
+    hardware_gpio
+    hardware_pwm
+    hardware_irq
+    hardware_sync
+)
 
-pico_add_extra_outputs(racer)
+target_include_directories(display PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}
+)
+
+# Particle system executable
+add_executable(particle
+    main.c
+)
+
+target_link_libraries(particle
+    pico_stdlib
+    pico_multicore
+    display
+    hardware_sync
+)
+
+# Enable USB output, disable UART
+pico_enable_stdio_usb(particle 1)
+pico_enable_stdio_uart(particle 0)
+
+# Create map/bin/hex/uf2 files
+pico_add_extra_outputs(particle)
+
+# Optional: Set the board type (for Pico 2 W)
+# Uncomment if you have board definitions
+# set(PICO_BOARD pico2_w)
 
