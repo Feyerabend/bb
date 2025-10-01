@@ -3,11 +3,11 @@
 > The example in this folder requires two *Raspberry Pi Pico 2 W* (or wireless expansion to RPI Pico 2) for use as clients, and a RPi Pico W for server. But you can use other setups as well, if you slightly modify the code. It also assumes two Pimoroni Display Pack 2.0, if you do not want to rewrite the samples for other displays. The display for the server is more optional. The code has consistently been built with __MicroPython only__, which have often good support for networking in libraries. You might enjoy enhancing some projects, with building them in C as they do not build on each other, but are separated in different Picos and communication is not programming language dependent. You could start with porting the server to C ..
 
 
-## Projects for the Dogfight Game
+## Projects for the 2 Player Dogfight Game
 
-This game is not strong in terms of gameplay; its main purpose is to demonstrate networking code
+*This game is not strong in terms of gameplay; its main purpose is to demonstrate networking code
 and protocol. If you wish, you may take on projects to enhance the gameplay itself. Once the gameplay
-provides a better basis for testing, you can move on to one of the other projects listed below.
+provides a better basis for testing, you can move on to one of the other projects listed below.*
 
 
 ### Project 1: Implement Sequence Number Validation for Reliable Updates
