@@ -1,5 +1,5 @@
 
-## Errors ...
+## Errors ..
 
 Errors are central to computing because virtually every computer system, program, or process operates
 in an environment full of uncertainty. Inputs can be invalid, hardware can fail, networks can drop packets,
@@ -57,14 +57,14 @@ Implementation patterns
 
 
 
-### So the Ariane Rocket?
+### So .. the Ariane Rocket?
 
 The Ariane 5 is a European expendable launch vehicle developed by the European Space Agency (ESA)
 and Arianespace. Its first flight was on June 4, 1996, from the Guiana Space Centre in French Guiana.
 The mission ended in failure just 37 seconds after lift-off.
 
 
-### What Happened?
+#### What Happened?
 
 The failure was traced back to the inertial reference system (IRS) software, which was largely
 reused from the Ariane 4 program. Specifically:
@@ -81,7 +81,7 @@ reused from the Ariane 4 program. Specifically:
 4. Cascade Effect: Once the IRS shut down, the control system received invalid data, leading to
    uncommanded trajectory deviations and ultimately the self-destruction of the rocket.
 
-Historical Significance
+__Historical Significance__
 
 1. Cost: The rocket and payload were lost, costing approximately $370 million USD.
 
@@ -96,7 +96,7 @@ Historical Significance
   units failed similarly because the same software was used in both.
 
 
-Broader Implications
+__Broader Implications__
 
 The Ariane 5 incident is a canonical example in software engineering and aerospace courses, illustrating:
 - The dangers of blind code reuse.
@@ -121,6 +121,8 @@ Ariane 5 Flight Conditions
                                                             └─> Catastrophic mission failure
 ```
 
+
+### Conclusion
 
 Errors are unavoidable in computing; they are a fundamental aspect of interacting with imperfect hardware,
 software, and humans. The "why" of error handling is to maintain reliability, safety, and usability. The "how"
