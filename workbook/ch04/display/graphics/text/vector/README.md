@@ -1,66 +1,56 @@
 
 ## Vector text
 
-Taking inspiration from Hersey[^hersey] text fonts, the data dictionary represents a
-set of vector line segments that define each character or number in a simple, stylized
-font. Each character is created using a sequence of connected line segments with specified
-start and end points, relative to a common origin for alignment. These vector paths are
-used to render each glyph by connecting these defined points on a grid.
-
-[^hersey]: See: https://en.wikipedia.org/wiki/Hershey_fonts.
-Also: https://paulbourke.net/dataformats/hershey/.
-
-An empty white image grid is created, and a line-drawing algorithm (similar to
-Bresenham’s line algorithm) is used to apply each character’s line segments to
-the image. Each character is spaced horizontally using a set spacing value. As
-the algorithm iterates over each character, it “draws” them on the image in the
-specified positions, creating a visual representation of the text message using
-only line segments, without relying on any existing fonts or rasterized text data.
-
-Finally, the rendered text is saved as an image file in the PPM format, storing
-RGB values for each pixel across the image, thereby creating a custom bitmap
-representation of the vector-based text.
+Vector text is a method of representing and rendering characters using geometric shapes
+rather than pixel-based bitmaps. Vector text stores each character as a series of *line segments*
+or *curves* defined by mathematical coordinates. Instead of saying "pixel (10,15) is on, pixel (10,16) is on...",
+vector text says "draw a line from point (0,0) to point (5,10)".
 
 
-### First test with text
+### Advantages
 
-File: `text.py`. Sample with scale = 1. The text is saved as an image in
-the PPM format (converted here to PNG).
-
-![text](../../assets/images/text.png)
-
-
-### Add slanted and bold text
-
-To slant text, we apply a shearing matrix to each (x, y) coordinate.
-The shearing transformation matrix to slant by an angle  $\theta$  is:
-
-<img src="https://latex.codecogs.com/svg.latex?\begin{bmatrix}1&\tan(\theta)\\0&1\end{bmatrix}" />
-
-This matrix shifts each y coordinate by a factor of  $x \times \tan(\theta)$ , where  $\theta$  is the slant angle.
-
-A simple way of doing slanted text, is to use a pre-calculated constant instead
-of calculating it each time for each glyph or letter. This also aligns with the use
-in a microcontroller, with limited resources.
-
-We also add bold text by drawing the same as with normal text, only one pixel to the right.
-
-File: `text2.py`. Sample scale = 0.75, with styles NORMAL, __BOLD__, *SLANTED*, __*SLANTEDBOLD*__.
-Text saved as image in PPM format.
-
-![text2](../../assets/images/text2.png)
+1. *Scalable*: You can make text any size without losing quality or getting pixelation
+2. *Transformable*: Easy to rotate, skew, or apply other transformations
+3. *Memory efficient*: A few coordinates take less space than storing every pixel
+4. *Smooth*: At any scale, the text maintains clean edges (as long as your renderer supports it)
 
 
-### Making fonts
+Example: In the code:
 
-![text2](../../assets/images/font.jpg)
+#### Character Definition
+Each character is stored as a list of line segments:
+```python
+'A': [((0, 0), (2.5, 10)), ((2.5, 10), (5, 0)), ((1, 5), (4, 5))]
+```
+This says: "To draw 'A', draw three lines: one from bottom-left to top-center,
+one from top-center to bottom-right, and one horisontal crossbar."
+
+#### Rendering Process
+1. *For each character*, retrieve its line segment definitions
+2. *For each line segment*, apply any transformations (scale, rotation, translation)
+3. *Draw the line* using Bresenham's algorithm (which determines which pixels to light
+   up for a line between two points)
+
+#### Affine Transformations
+The code uses *affine transformations*, a mathematical way to combine multiple operations:
+- *Scale*: Make text bigger or smaller
+- *Rotate*: Spin text around a point
+- *Translate*: Move text to a position
+- *Shear*: Slant text (like italics)
+
+These are represented as a 2x3 matrix that efficiently combines all transformations
+into one operation per point.
 
 
+### Comparison to Bitmap Fonts
 
-NOTE:
-The format isn't very compact: drawing from one coordinate to another, 4 digits. It could instead
-be a `move` with one set of coordinates, and `drawto` with another, then instead of starting over, `drawto` with two sets instead of one,
-if the lines connect .. this what is done with e.g. PostScript and SVG.
+*Bitmap fonts* store each character as a grid of pixels--simple but fixed-size.
+To get 10 different sizes, you need 10 different bitmap sets, if you do not convert
+the maps in a crude manner like doubling pixels.
 
+*Vector fonts* store the mathematical description once, then can render at any size,
+angle, or transformation on-the-fly.
 
+This is why professional (typesetting) fonts (TrueType, OpenType) use vector definitions.
+They work perfectly whether you're printing at 300 DPI or displaying on a low-res screen.
 
