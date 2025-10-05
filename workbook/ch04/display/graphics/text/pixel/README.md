@@ -182,3 +182,6 @@ While vector fonts dominate high-resolution displays, bitmap fonts remain essent
 The simplicity and efficiency of bitmap fonts ensure they'll continue to be relevant,
 especially in embedded systems where resources are limited and reliability is crucial.
 
+
+
+![Bitmap Font](pixeltext.png)

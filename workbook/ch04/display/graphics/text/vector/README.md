@@ -54,3 +54,5 @@ angle, or transformation on-the-fly.
 This is why professional (typesetting) fonts (TrueType, OpenType) use vector definitions.
 They work perfectly whether you're printing at 300 DPI or displaying on a low-res screen.
 
+
+![Vector text](vectortext.png)
