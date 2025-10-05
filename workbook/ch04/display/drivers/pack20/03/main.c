@@ -5,14 +5,14 @@
 #include "display.h"
 
 // Ultra-minimal settings
-#define TEXT_BUFFER_SIZE 512      // Even smaller buffer
-#define MAX_LINE_LENGTH 32        // Limit line length
+#define TEXT_BUFFER_SIZE 512   // Even smaller buffer
+#define MAX_LINE_LENGTH 32     // Limit line length
 #define FONT_WIDTH 6
 #define FONT_HEIGHT 8
 #define SCREEN_CHARS_WIDTH (DISPLAY_WIDTH / FONT_WIDTH)
 #define SCREEN_LINES (DISPLAY_HEIGHT / FONT_HEIGHT)
 #define TEXT_LINES (SCREEN_LINES - 3)  // More space for status
-#define CURSOR_BLINK_MS 1000      // Slower blink
+#define CURSOR_BLINK_MS 1000           // Slower blink
 
 // Simple static buffers - no complex structures
 static char text_buffer[TEXT_BUFFER_SIZE];
@@ -31,9 +31,9 @@ static inline uint32_t get_time_ms(void) {
     return to_ms_since_boot(get_absolute_time());
 }
 
-// Initialize everything
+// Init everything
 static bool editor_init(void) {
-    printf("Editor init starting...\n");
+    printf("Editor init starting..\n");
     
     // Clear all buffers
     memset(text_buffer, 0, sizeof(text_buffer));
@@ -59,7 +59,7 @@ static bool check_display(void) {
     last_display_check = now;
     
     if (!display_is_initialized()) {
-        printf("Display not initialized, attempting reinit...\n");
+        printf("Display not init, attempting reinit..\n");
         display_error_t err = display_pack_init();
         display_ok = (err == DISPLAY_OK);
         if (!display_ok) {
@@ -217,7 +217,7 @@ static bool render_simple(void) {
     }
     
     // Help line
-    err = display_draw_string(0, status_y + FONT_HEIGHT, "A:Debug B:Clear - Type text above", 
+    err = display_draw_string(0, status_y + FONT_HEIGHT, "A:DEBUG B:CLEAR - TYPE TEXT ABOVE", 
                              COLOR_GREEN, COLOR_BLACK);
     if (err != DISPLAY_OK) {
         display_ok = false;
@@ -266,7 +266,7 @@ static void handle_input(void) {
 // Button handlers
 static void handle_button_a(button_t button) {
     // Show debug info instead of clearing
-    printf("\n=== DEBUG INFO ===\n");
+    printf("\n--- DEBUG INFO ---\n");
     printf("Text length: %d\n", text_length);
     printf("Cursor pos: %d\n", cursor_pos);
     printf("Display OK: %d\n", display_ok);
@@ -280,7 +280,7 @@ static void handle_button_a(button_t button) {
         }
     }
     printf("'\n");
-    printf("==================\n\n");
+    printf("---------------------\n\n");
     
     // Force a redraw to test
     needs_redraw = true;
@@ -303,7 +303,7 @@ int main() {
     // Initialize display with retries
     display_error_t disp_err = DISPLAY_ERROR_INIT_FAILED;
     for (int retry = 0; retry < 3; retry++) {
-        printf("Display init attempt %d...\n", retry + 1);
+        printf("Display init attempt %d..\n", retry + 1);
         disp_err = display_pack_init();
         if (disp_err == DISPLAY_OK) {
             display_ok = true;
@@ -323,7 +323,7 @@ int main() {
     
     printf("Display OK\n");
     
-    // Initialize buttons
+    // Init buttons
     display_error_t btn_err = buttons_init();
     if (btn_err == DISPLAY_OK) {
         button_set_callback(BUTTON_A, handle_button_a);
@@ -333,7 +333,7 @@ int main() {
         printf("Buttons failed: %d\n", btn_err);
     }
     
-    // Initialize editor
+    // Init editor
     if (!editor_init()) {
         printf("Editor init failed\n");
         return 1;
@@ -357,7 +357,7 @@ int main() {
         loop_count++;
         uint32_t now = get_time_ms();
         
-        // Health check every 30 seconds (less frequent)
+        // Health check every 30 seconds
         if (now - last_health_check > 30000) {
             last_health_check = now;
             
@@ -389,7 +389,7 @@ int main() {
                 
                 // If too many errors, try display reinit
                 if (error_count > 10) {
-                    printf("Display recovery attempt...\n");
+                    printf("Display recovery attempt..\n");
                     display_cleanup();
                     sleep_ms(500);
                     disp_err = display_pack_init();
