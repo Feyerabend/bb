@@ -13,11 +13,14 @@
 #define BOUNCE_DAMPING 0.85f
 #define PARTICLE_RADIUS 2
 
-// Display boundaries (accounting for offset)
+// Display boundaries (full screen now)
 #define BOUNDS_LEFT 0
-#define BOUNDS_RIGHT 240
-#define BOUNDS_TOP 0
-#define BOUNDS_BOTTOM 200
+#define BOUNDS_RIGHT DISPLAY_WIDTH
+#define BOUNDS_TOP 30  // Leave space for status bar
+#define BOUNDS_BOTTOM DISPLAY_HEIGHT
+
+// Frame buffer for double buffering (320x240 pixels)
+static uint16_t framebuffer[DISPLAY_WIDTH * DISPLAY_HEIGHT];
 
 // Particle structure
 typedef struct {
@@ -58,6 +61,28 @@ static const uint16_t particle_colors[] = {
     0xF81F,  // Pink
     0xFFE0,  // Yellow
 };
+
+// Helper function to draw pixel to framebuffer
+static inline void fb_set_pixel(int x, int y, uint16_t color) {
+    if (x >= 0 && x < DISPLAY_WIDTH && y >= 0 && y < DISPLAY_HEIGHT) {
+        framebuffer[y * DISPLAY_WIDTH + x] = color;
+    }
+}
+
+// Helper function to fill rectangle in framebuffer
+static inline void fb_fill_rect(int x, int y, int w, int h, uint16_t color) {
+    for (int dy = 0; dy < h; dy++) {
+        int py = y + dy;
+        if (py < 0 || py >= DISPLAY_HEIGHT) continue;
+        
+        for (int dx = 0; dx < w; dx++) {
+            int px = x + dx;
+            if (px >= 0 && px < DISPLAY_WIDTH) {
+                framebuffer[py * DISPLAY_WIDTH + px] = color;
+            }
+        }
+    }
+}
 
 // Helper function to create random float between min and max
 static inline float randf(float min, float max) {
@@ -115,54 +140,57 @@ void update_particles_range(int start, int end, uint8_t core_id) {
     }
 }
 
-// Render all particles to display
+// Render all particles to framebuffer
 void render_particles() {
-    // Clear game area
-    display_fill_rect(0, 30, 240, 200, COLOR_BLACK);
+    // Clear game area in framebuffer
+    fb_fill_rect(0, BOUNDS_TOP, DISPLAY_WIDTH, DISPLAY_HEIGHT - BOUNDS_TOP, COLOR_BLACK);
     
     // Draw all particles
     for (int i = 0; i < particle_count; i++) {
         Particle *p = &particles[i];
         int px = (int)p->x;
-        int py = (int)p->y + 30; // Offset for status bar
+        int py = (int)p->y;
         
         // Draw particle as small filled rectangle for visibility
-        if (px >= 0 && px < 240 && py >= 30 && py < 230) {
-            display_fill_rect(px - 1, py - 1, 3, 3, p->color);
+        if (px >= 0 && px < DISPLAY_WIDTH && py >= BOUNDS_TOP && py < DISPLAY_HEIGHT) {
+            // Draw 3x3 particle
+            fb_set_pixel(px, py, p->color);
+            fb_set_pixel(px - 1, py, p->color);
+            fb_set_pixel(px + 1, py, p->color);
+            fb_set_pixel(px, py - 1, p->color);
+            fb_set_pixel(px, py + 1, p->color);
+            fb_set_pixel(px - 1, py - 1, p->color);
+            fb_set_pixel(px + 1, py - 1, p->color);
+            fb_set_pixel(px - 1, py + 1, p->color);
+            fb_set_pixel(px + 1, py + 1, p->color);
         }
     }
 }
 
-// Draw status bar showing performance metrics
+// Draw status bar showing performance metrics to framebuffer
 void draw_status_bar() {
     char buf[50];
     
-    // Clear status bar area
-    display_fill_rect(0, 0, 320, 28, COLOR_BLACK);
+    // Clear status bar area in framebuffer
+    fb_fill_rect(0, 0, DISPLAY_WIDTH, 28, COLOR_BLACK);
     
-    // FPS
-    sprintf(buf, "FPS:%.1f", current_fps);
-    display_draw_string(5, 2, buf, COLOR_GREEN, COLOR_BLACK);
-    
-    // Particle count
-    sprintf(buf, "P:%d", particle_count);
-    display_draw_string(5, 12, buf, COLOR_CYAN, COLOR_BLACK);
-    
-    // Core load indicators (simple bars)
+    // Draw colored bars and simple graphics to framebuffer
     // Core 0 bar (red)
-    int core0_bar = (core0_cycles * 60) / 1000000; // Scale to pixels
-    if (core0_bar > 60) core0_bar = 60;
-    display_fill_rect(90, 4, core0_bar, 8, COLOR_RED);
-    display_draw_string(90, 14, "C0", COLOR_RED, COLOR_BLACK);
+    int core0_bar = (core0_cycles * 80) / 1000000; // Scale to pixels
+    if (core0_bar > 80) core0_bar = 80;
+    fb_fill_rect(90, 4, core0_bar, 8, COLOR_RED);
     
     // Core 1 bar (blue)
-    int core1_bar = (core1_cycles * 60) / 1000000;
-    if (core1_bar > 60) core1_bar = 60;
-    display_fill_rect(160, 4, core1_bar, 8, COLOR_BLUE);
-    display_draw_string(160, 14, "C1", COLOR_BLUE, COLOR_BLACK);
+    int core1_bar = (core1_cycles * 80) / 1000000;
+    if (core1_bar > 80) core1_bar = 80;
+    fb_fill_rect(180, 4, core1_bar, 8, COLOR_BLUE);
     
-    // Controls hint
-    display_draw_string(5, 22, "X/Y:Wind A:Reset B:+/-", COLOR_YELLOW, COLOR_BLACK);
+    // Draw simple FPS indicator (colored square that changes with FPS)
+    uint16_t fps_color = current_fps > 50 ? COLOR_GREEN : (current_fps > 30 ? COLOR_YELLOW : COLOR_RED);
+    fb_fill_rect(5, 4, 8, 8, fps_color);
+    
+    // Particle count indicator
+    fb_fill_rect(5, 16, 8, 8, COLOR_CYAN);
 }
 
 // Update FPS counter
@@ -174,6 +202,10 @@ void update_fps() {
         current_fps = frame_count * 1000.0f / (now - last_fps_time);
         frame_count = 0;
         last_fps_time = now;
+        
+        // Print FPS to console
+        printf("FPS: %.1f | Particles: %d | C0: %lu us | C1: %lu us\n", 
+               current_fps, particle_count, core0_cycles, core1_cycles);
     }
 }
 
@@ -186,6 +218,7 @@ void handle_input() {
     bool btn_a = button_pressed(BUTTON_A);
     if (btn_a && !prev_btn_a) {
         init_particles();
+        printf("Particles reset!\n");
     }
     prev_btn_a = btn_a;
     
@@ -194,6 +227,7 @@ void handle_input() {
     if (btn_b && !prev_btn_b) {
         particle_count += 100;
         if (particle_count > MAX_PARTICLES) particle_count = 100;
+        printf("Particle count: %d\n", particle_count);
     }
     prev_btn_b = btn_b;
     
@@ -238,18 +272,23 @@ void core1_entry() {
 int main() {
     stdio_init_all();
     
+    printf("\n=== Dual-Core Particle System ===\n");
+    printf("Initializing...\n");
+    
     // Initialize display and buttons
     display_error_t result = display_pack_init();
     if (result != DISPLAY_OK) {
         printf("Display initialization failed: %s\n", display_error_string(result));
         return -1;
     }
+    printf("Display initialized successfully\n");
     
     result = buttons_init();
     if (result != DISPLAY_OK) {
         printf("Button initialization failed: %s\n", display_error_string(result));
         return -1;
     }
+    printf("Buttons initialized successfully\n");
     
     // Initialize mutex
     mutex_init(&particle_mutex);
@@ -258,12 +297,24 @@ int main() {
     srand(time_us_32());
     init_particles();
     
+    // Clear framebuffer
+    for (int i = 0; i < DISPLAY_WIDTH * DISPLAY_HEIGHT; i++) {
+        framebuffer[i] = COLOR_BLACK;
+    }
+    
     // Clear screen
     display_clear(COLOR_BLACK);
     
-    printf("Dual-core particle system started!\n");
+    printf("\n=== System Ready ===\n");
     printf("Particles: %d\n", particle_count);
-    printf("Controls: X=Wind Right, Y=Wind Up, A=Reset, B=Change Count\n");
+    printf("Display: 320x240 (full screen)\n");
+    printf("Double buffering: ENABLED (flicker-free)\n");
+    printf("\nControls:\n");
+    printf("  X Button = Wind Right\n");
+    printf("  Y Button = Wind Up\n");
+    printf("  A Button = Reset Particles\n");
+    printf("  B Button = Change Particle Count\n");
+    printf("\nStarting simulation...\n\n");
     
     // Launch core 1
     multicore_launch_core1(core1_entry);
@@ -293,9 +344,12 @@ int main() {
             tight_loop_contents();
         }
         
-        // Render everything (only core 0 does rendering to avoid conflicts)
+        // Render everything to framebuffer (only core 0 does rendering)
         render_particles();
         draw_status_bar();
+        
+        // Blit the entire framebuffer to display in one operation - eliminates flicker!
+        display_blit_full(framebuffer);
         
         update_fps();
         
