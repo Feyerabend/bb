@@ -1,129 +1,66 @@
-#include <stdio.h>
+// main.c - Example to display the horse BMP on the display pack
+
+#include "display.h"
+#include "horse_bmp.h"
 #include "pico/stdlib.h"
-#include "displaybw.h"
-#include "horse.h"
 
+#include <stdlib.h>
 
-// Function to create a centered 320x240 buffer from 240x240 image
-void create_centered_buffer(const uint8_t *img_240x240, uint8_t *buf_320x240) {
-    // Clear the entire buffer (white background)
-    for (int i = 0; i < (320 * 240) / 8; i++) {
-        buf_320x240[i] = 0xFF;
-    }
-    
-    // Center horizontally: (320 - 240) / 2 = 40 pixels offset
-    const int x_offset = 40;
-    const int img_width = 240;
-    const int img_height = 240;
-    
-    // Copy image data row by row
-    for (int y = 0; y < img_height; y++) {
-        // Source: 240x240 image, 30 bytes per row (240/8)
-        const uint8_t *src_row = img_240x240 + (y * (img_width / 8));
-        
-        // Destination: 320x240 buffer, 40 bytes per row (320/8)
-        uint8_t *dst_row = buf_320x240 + (y * (320 / 8));
-        
-        // Calculate byte offset for 40 pixel shift
-        int byte_offset = x_offset / 8;  // 40/8 = 5 bytes
-        int bit_offset = x_offset % 8;   // 40%8 = 0 bits
-        
-        if (bit_offset == 0) {
-            // Perfect byte alignment - direct copy
-            for (int x = 0; x < img_width / 8; x++) {
-                dst_row[byte_offset + x] = src_row[x];
-            }
-        } else {
-            // Need to shift bits (shouldn't happen with 40px offset, but here for completeness)
-            for (int x = 0; x < img_width / 8; x++) {
-                uint8_t byte = src_row[x];
-                dst_row[byte_offset + x] |= (byte >> bit_offset);
-                if (byte_offset + x + 1 < 320 / 8) {
-                    dst_row[byte_offset + x + 1] |= (byte << (8 - bit_offset));
-                }
-            }
-        }
-    }
-}
-
-
-int main() {
-    // Init stdio
+int main(void) {
+    // Initialize stdio for any debug output (optional)
     stdio_init_all();
 
-    // Small delay for USB serial to stabilize
-    sleep_ms(1000);
-
-    printf("Display BW Test: Centered 240x240 Horse Image\n");
-
-    // Init display
+    // Initialize the display
     display_error_t err = display_pack_init();
     if (err != DISPLAY_OK) {
-        printf("Display init failed: %s\n", display_error_string(err));
-        return 1;
+        // Handle error, e.g., loop forever or print
+        while (true) {}
     }
-    printf("Display init successfully\n");
 
-    // Init buttons
-    err = buttons_init();
+    // Optional: Initialize buttons if you want to use them
+    buttons_init();
+
+    // Allocate buffer for RGB565 pixels (320x240x2 bytes = 153600 bytes)
+    uint16_t *pixel_buffer = (uint16_t *)malloc(DISPLAY_WIDTH * DISPLAY_HEIGHT * sizeof(uint16_t));
+    if (pixel_buffer == NULL) {
+        // Memory allocation failed - handle error
+        display_cleanup();
+        while (true) {}
+    }
+
+    // Parse BMP data (assuming it's a valid 320x240 24-bit BMP with top-down rows)
+    // BMP header is 54 bytes, pixel data is BGR order
+    uint8_t *bmp_data = horse_bmp + 54;  // Skip header
+
+    for (uint16_t y = 0; y < DISPLAY_HEIGHT; y++) {
+        for (uint16_t x = 0; x < DISPLAY_WIDTH; x++) {
+            size_t bmp_idx = (y * DISPLAY_WIDTH + x) * 3;
+            uint8_t b = bmp_data[bmp_idx + 0];
+            uint8_t g = bmp_data[bmp_idx + 1];
+            uint8_t r = bmp_data[bmp_idx + 2];
+
+            // Convert to RGB565: (R[7:3] << 11) | (G[7:2] << 5) | B[7:3]
+            uint16_t rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
+            pixel_buffer[y * DISPLAY_WIDTH + x] = rgb565;
+        }
+    }
+
+    // Blit the converted pixels to the display
+    err = display_blit_full(pixel_buffer);
     if (err != DISPLAY_OK) {
-        printf("Button init failed: %s\n", display_error_string(err));
+        // Handle error
     }
 
-    // Allocate buffer for 320x240 (9600 bytes)
-    static uint8_t centered_buffer[320 * 240 / 8];
+    // Free the buffer (optional, since we loop forever)
+    free(pixel_buffer);
 
-    // Create centered image
-    printf("Creating centered image buffer..\n");
-    create_centered_buffer(horse_data, centered_buffer);
-
-    // Clear display to white
-    printf("Clearing display..\n");
-    display_clear(true);
-    sleep_ms(500);
-
-    // Display the centered image
-    printf("Displaying centered horse image..\n");
-    err = display_blit_full_bw(centered_buffer);
-    if (err != DISPLAY_OK) {
-        printf("Blit failed: %s\n", display_error_string(err));
-        return 1;
-    }
-
-    printf("Image displayed successfully!\n");
-    printf("Press BUTTON_A to refresh display\n");
-    printf("Press BUTTON_B to clear display\n");
-
-    // Main loop
+    // Main loop - update buttons and keep running
     while (true) {
         buttons_update();
-
-        if (button_just_pressed(BUTTON_A)) {
-            printf("Refreshing display..\n");
-            display_blit_full_bw(centered_buffer);
-        }
-
-        if (button_just_pressed(BUTTON_B)) {
-            printf("Clearing display..\n");
-            display_clear(true);
-        }
-
-        if (button_just_pressed(BUTTON_X)) {
-            printf("Redisplaying image..\n");
-            display_blit_full_bw(centered_buffer);
-        }
-
-        if (button_just_pressed(BUTTON_Y)) {
-            printf("Inverting: showing original (non-centered)..\n");
-            display_blit_full_bw(horse_data);
-            sleep_ms(2000);
-            printf("Showing centered version again..\n");
-            display_blit_full_bw(centered_buffer);
-        }
-
-        sleep_ms(10);
+        sleep_ms(10);  // Small delay to avoid busy loop
     }
 
+    // Cleanup (unreachable in this example)
+    display_cleanup();
     return 0;
 }
-
