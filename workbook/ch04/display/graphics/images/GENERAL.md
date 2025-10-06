@@ -3,31 +3,59 @@
 
 ### 1. Pixels
 
-At the most fundamental level, a digital image is composed of tiny discrete units called *pixels*. Each pixel represents a single point in the image and carries information about colour or intensity. When arranged in a grid, these pixels collectively form a coherent image that can be displayed or printed. The density of this grid — often expressed in pixels per inch (PPI) — determines how fine or coarse the image appears to the human eye.
+At the most fundamental level, a digital image is composed of tiny discrete units
+called *pixels*. Each pixel represents a single point in the image and carries
+information about colour or intensity. When arranged in a grid, these pixels collectively
+form a coherent image that can be displayed or printed. The density of this grid--often
+expressed in pixels per inch (PPI)--determines how fine or coarse the image appears
+to the human eye.
 
-Pixels can store varying amounts of information depending on the bit depth of the image. In an 8-bit grayscale image, each pixel holds a value between 0 and 255, representing brightness from black to white. In a colour image, each pixel typically contains three or four channels — for instance, red, green, blue (RGB), and optionally an alpha channel (A) representing transparency. Together, these values define the visual characteristics of the image.
+Pixels can store varying amounts of information depending on the bit depth of the image.
+In an 8-bit grayscale image, each pixel holds a value between 0 and 255, representing
+brightness from black to white. In a colour image, each pixel typically contains three
+or four channels--for instance, red, green, blue (RGB), and optionally an alpha channel
+(A) representing transparency. Together, these values define the visual characteristics
+of the image.
 
 #### Picos
 
-While the Raspberry Pi Pico and its variants do not include a graphics subsystem like a GPU, they are perfectly capable of managing pixel-level operations conceptually. In embedded systems, controlling a small LCD or OLED display often involves writing pixel data directly to a framebuffer or display buffer. The Pico’s tight control over GPIO pins and SPI/I²C interfaces makes it suitable for experimenting with low-level pixel manipulation. The Pico W and Pico 2W further allow such displays to be networked or updated remotely, while the Pico 2’s dual-core CPU offers additional concurrency for pixel rendering tasks.
-
+While the Raspberry Pi Pico and its variants do not include a graphics subsystem like a GPU,
+they are perfectly capable of managing pixel-level operations conceptually. In embedded systems,
+controlling a small LCD or OLED display often involves writing pixel data directly to a
+framebuffer or display buffer. The Pico’s tight control over GPIO pins and SPI/I²C interfaces
+makes it suitable for experimenting with low-level pixel manipulation. The Pico W and Pico 2W
+further allow such displays to be networked or updated remotely.
 
 
 ### 2. Image Representation
 
-A digital image is defined by its width and height — the number of pixels along the horizontal and vertical axes — and by the number of channels per pixel. Grayscale images use a single channel, while RGB and RGBA images use three or four. The *bit depth* per channel determines how finely each channel’s value can vary, influencing both dynamic range and file size.
+A digital image is defined by its width and height--the number of pixels along the horizontal
+and vertical axes--and by the number of channels per pixel. Grayscale images use a single
+channel, while RGB and RGBA images use three or four. The *bit depth* per channel determines
+how finely each channel’s value can vary, influencing both dynamic range and file size.
 
-Images can also use *indexed colour* representation, where pixels contain indices into a palette rather than full colour values. This approach was common in early computer graphics to reduce memory usage. Modern image formats typically store full RGB data, but indexed formats remain relevant in constrained environments or for stylistic purposes such as retro game design.
+Images can also use *indexed colour* representation, where pixels contain indices into a
+palette rather than full colour values. This approach was common in early computer graphics
+to reduce memory usage. Modern image formats typically store full RGB data, but indexed
+formats remain relevant in constrained environments or for stylistic purposes such as
+retro game design.
 
 #### Picos
 
-On the Pico, image representation is a practical concern when working with limited memory. A full-colour bitmap at VGA resolution would exceed the available RAM, but indexed or reduced-resolution formats are manageable. The Pico’s microcontroller design encourages thinking about efficient representations — for example, storing sprites as 1-bit masks or using 16-bit RGB565 format. With the wireless models (Pico W and Pico 2W), such images can also be transmitted to or from a networked device, making compact representation essential.
+On the Pico, image representation is a practical concern when working with limited memory.
+A full-colour bitmap at VGA resolution would exceed the available RAM, but indexed or 
+educed-resolution formats are manageable. The Pico’s microcontroller design encourages
+thinking about efficient representations--for example, storing sprites as 1-bit masks or using
+16-bit RGB565 format. With the wireless models (Pico W and Pico 2W), such images can
+also be transmitted to or from a networked device, making compact representation essential.
 
 
 
 ### 3. Colour Models and Spaces
 
-Colour models describe how colours are represented numerically. The RGB model is *additive*, combining red, green, and blue light to produce other colours; it underlies most displays. CMYK, in contrast, is *subtractive*, using cyan, magenta, yellow, and black inks in printing. HSV (Hue, Saturation, Value) and HSL (Hue, Saturation, Lightness) are more perceptually intuitive, separating chromatic information from brightness. Grayscale images use a single channel for luminance, while models like YUV or Y’CbCr separate brightness from colour for compression efficiency in video. The CIELAB model attempts perceptual uniformity, so numeric differences correspond to perceived colour differences.
+Colour models describe how colours are represented numerically. The RGB model is *additive*,
+combining red, green, and blue light to produce other colours; it underlies most displays. CMYK,
+in contrast, is *subtractive*, using cyan, magenta, yellow, and black inks in printing. HSV (Hue, Saturation, Value) and HSL (Hue, Saturation, Lightness) are more perceptually intuitive, separating chromatic information from brightness. Grayscale images use a single channel for luminance, while models like YUV or Y’CbCr separate brightness from colour for compression efficiency in video. The CIELAB model attempts perceptual uniformity, so numeric differences correspond to perceived colour differences.
 
 Understanding colour spaces is crucial when converting between devices or preparing images for processing. Each model serves a specific context, balancing fidelity, computational efficiency, and perceptual relevance.
 
@@ -41,11 +69,11 @@ For the Pico family, colour models become relevant in applications involving sma
 
 Image data must be stored in files that encode both pixel information and metadata. Common formats differ by compression, colour depth, and intended use. BMP is a simple, uncompressed format, mainly used for raw experimentation. PNG provides lossless compression and supports transparency, making it ideal for interface graphics. JPEG uses lossy compression optimised for photographs, trading exact accuracy for reduced size. GIF relies on indexed colour and can store short animations. TIFF remains a flexible format for professional workflows, while RAW captures unprocessed sensor data directly from cameras. Simpler formats like PNM or PAM are used in research and teaching due to their plain-text structure.
 
-Each format embodies trade-offs between simplicity, quality, and efficiency — an essential concept in digital imaging.
+Each format embodies trade-offs between simplicity, quality, and efficiency--an essential concept in digital imaging.
 
 #### Picos
 
-File formats are conceptually important for Pico-based systems because storage and transmission constraints often dictate format choice. A Pico project using a small external flash or SD card may store icons as raw bitmaps, while a Pico W could receive compressed PNG or JPEG data from a network. With the Pico 2 and 2W, faster cores and larger memory allow limited decoding of compressed images directly on the device — a key conceptual step toward lightweight embedded image viewers.
+File formats are conceptually important for Pico-based systems because storage and transmission constraints often dictate format choice. A Pico project using a small external flash or SD card may store icons as raw bitmaps, while a Pico W could receive compressed PNG or JPEG data from a network. With the Pico 2 and 2W, faster cores and larger memory allow limited decoding of compressed images directly on the device--a key conceptual step toward lightweight embedded image viewers.
 
 
 
@@ -65,7 +93,7 @@ Conceptually, the Pico’s control over data streams mirrors the principles of i
 
 Filtering is a central idea in image processing. A *convolution filter* modifies each pixel based on its neighbours using a mathematical kernel. Simple averaging produces blurring, Gaussian kernels yield smooth blurs, and derivative-based kernels such as Sobel or Laplacian detect edges. Sharpening enhances contrast at boundaries, while median filtering reduces noise without blurring edges.
 
-Conceptually, these filters act as local transformations that reveal structural information — crucial in vision, graphics, and machine perception.
+Conceptually, these filters act as local transformations that reveal structural information--crucial in vision, graphics, and machine perception.
 
 #### Picos
 
@@ -75,21 +103,21 @@ Although heavy convolutional filtering is beyond the computational scope of most
 
 ### 7. Higher-Level Techniques
 
-Beyond basic filtering, higher-level image operations include *morphological transformations* (erosion and dilation), *Fourier transforms* (for frequency domain analysis), and *compression* (lossless and lossy). Morphological operations treat images as sets, modifying shapes and boundaries — useful in segmentation. The Fourier transform decomposes images into sinusoidal components, revealing patterns in frequency space, fundamental to compression and signal analysis. Downsampling and mipmaps reduce resolution while preserving detail, crucial in graphics and computer vision.
+Beyond basic filtering, higher-level image operations include *morphological transformations* (erosion and dilation), *Fourier transforms* (for frequency domain analysis), and *compression* (lossless and lossy). Morphological operations treat images as sets, modifying shapes and boundaries--useful in segmentation. The Fourier transform decomposes images into sinusoidal components, revealing patterns in frequency space, fundamental to compression and signal analysis. Downsampling and mipmaps reduce resolution while preserving detail, crucial in graphics and computer vision.
 
 These methods show how complex processing builds from simpler pixel and filter operations.
 
 #### Picos
 
-While the Pico cannot handle full-size Fourier transforms efficiently, the conceptual parallels are rich. For instance, understanding frequency decomposition aids in designing PWM-driven signals or interpreting sensor oscillations — both common in embedded systems. The Pico 2’s computational gains open possibilities for small-scale FFT experiments, and wireless models could relay frequency-domain data to cloud analytics services.
+While the Pico cannot handle full-size Fourier transforms efficiently, the conceptual parallels are rich. For instance, understanding frequency decomposition aids in designing PWM-driven signals or interpreting sensor oscillations--both common in embedded systems. The Pico 2’s computational gains open possibilities for small-scale FFT experiments, and wireless models could relay frequency-domain data to cloud analytics services.
 
 
 
 ### 8. Raster vs Vector
 
-Raster graphics represent images as arrays of pixels, inherently resolution-dependent. Zooming in reveals pixel boundaries. Vector graphics, by contrast, describe images through shapes, lines, and curves — scalable without loss. Each approach has advantages: raster for photographs and texture detail, vector for logos and diagrams. Converting between them requires interpolation or tessellation.
+Raster graphics represent images as arrays of pixels, inherently resolution-dependent. Zooming in reveals pixel boundaries. Vector graphics, by contrast, describe images through shapes, lines, and curves--scalable without loss. Each approach has advantages: raster for photographs and texture detail, vector for logos and diagrams. Converting between them requires interpolation or tessellation.
 
-Conceptually, the distinction illustrates the trade-off between data volume and abstraction — raster for immediacy, vector for generality.
+Conceptually, the distinction illustrates the trade-off between data volume and abstraction--raster for immediacy, vector for generality.
 
 #### Picos
 
@@ -101,11 +129,11 @@ On the Pico, raster and vector concepts appear in display handling. A framebuffe
 
 Conceptual code snippets illustrate algorithmic thinking in image processing. For example, adjusting brightness can be done by adding a constant value to each channel, while convolution applies a sliding window to compute weighted sums. These snippets embody the algorithmic essence of image manipulation, even if simplified.
 
-They emphasise that images are simply structured numerical data — accessible to general computation principles.
+They emphasise that images are simply structured numerical data--accessible to general computation principles.
 
 #### Picos
 
-Such code-level thinking applies directly to the Pico’s environment, where data manipulation is constrained but precise. Writing loops to update pixel data, apply brightness scaling, or manage buffers is analogous to embedded control code. The Pico 2’s dual-core architecture even allows pipeline-style processing — one core handling data input, another performing transformation — mirroring how larger systems process images.
+Such code-level thinking applies directly to the Pico’s environment, where data manipulation is constrained but precise. Writing loops to update pixel data, apply brightness scaling, or manage buffers is analogous to embedded control code. The Pico 2’s dual-core architecture even allows pipeline-style processing--one core handling data input, another performing transformation--mirroring how larger systems process images.
 
 
 
@@ -117,4 +145,6 @@ These applications show how low-level pixel operations scale into major technolo
 
 #### Picos
 
-Conceptually, the Pico family embodies the embedded frontier of imaging. A Pico W can act as a remote sensor node transmitting frames, while a Pico 2 can handle on-device preprocessing — thresholding, edge detection, or signal analysis — before sending results. The family as a whole represents how ideas from large-scale imaging can be distilled into compact, efficient embedded computation, ideal for educational and experimental use.
+Conceptually, the Pico family embodies the embedded frontier of imaging. A Pico W can act as a remote sensor node transmitting frames, while a Pico 2 can handle on-device preprocessing--thresholding, edge detection, or signal analysis--before sending results. The family as a whole represents how ideas from large-scale imaging can be distilled into compact, efficient embedded computation, ideal for educational and experimental use.
+
+
