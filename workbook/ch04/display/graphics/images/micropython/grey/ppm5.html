@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>P5 PPM Viewer</title>
+</head>
+<body>
+    <h1>P5 PPM Viewer</h1>
+    <input type="file" id="fileInput" accept=".ppm">
+    <canvas id="canvas" style="border:1px solid black;"></canvas>
+    
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const buffer = e.target.result;
+                const view = new DataView(buffer);
+                
+                // Read header until the last newline (end of maxval)
+                let header = '';
+                let offset = 0;
+                let lineCount = 0;
+                let inHeader = true;
+                
+                // Read until we have 3 lines or hit binary data
+                while (offset < buffer.byteLength && lineCount < 3 && inHeader) {
+                    const byte = view.getUint8(offset);
+                    if (byte >= 0x20 && byte <= 0x7E) { // Printable ASCII
+                        header += String.fromCharCode(byte);
+                    } else if (byte === 0x0A || byte === 0x0D) { // Newline or carriage return
+                        if (header.trim() && !header.trim().startsWith('#')) {
+                            lineCount++;
+                        }
+                        header += '\n';
+                    } else { // Non-ASCII, likely start of binary data
+                        inHeader = false;
+                    }
+                    offset++;
+                }
+                
+                // Log raw header and bytes for debugging
+                const headerBytes = new Uint8Array(buffer, 0, offset).map(b => b.toString(16).padStart(2, '0')).join(' ');
+                console.log('Raw header bytes:', headerBytes);
+                console.log('Raw header text:', header);
+                
+                // Split into lines, filter empty and comments
+                const lines = header.split(/[\r\n]+/).filter(line => line.trim() && !line.startsWith('#'));
+                console.log('Parsed lines:', lines);
+                
+                // Validate header
+                if (lines.length < 3) {
+                    alert(`Invalid PPM header: expected at least 3 lines (P5, width height, maxval), got ${lines.length}`);
+                    return;
+                }
+                
+                const format = lines[0].trim();
+                const [width, height] = lines[1].split(/\s+/).map(Number);
+                const maxval = parseInt(lines[2].trim());
+                console.log('Parsed:', { format, width, height, maxval });
+                
+                if (format !== 'P5') {
+                    alert(`Not a P5 PPM file, got format: ${format}`);
+                    return;
+                }
+                if (isNaN(width) || isNaN(height)) {
+                    alert(`Invalid width/height: ${lines[1]}`);
+                    return;
+                }
+                if (maxval !== 255) {
+                    alert(`Only 8-bit (maxval 255) supported, got ${maxval}`);
+                    return;
+                }
+                
+                // Read pixel data
+                const pixels = new Uint8Array(buffer, offset, width * height);
+                
+                // Draw to canvas
+                const canvas = document.getElementById('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                const imgData = ctx.createImageData(width, height);
+                
+                for (let i = 0; i < pixels.length; i++) {
+                    const gray = pixels[i];
+                    const idx = i * 4;
+                    imgData.data[idx] = gray;     // R
+                    imgData.data[idx + 1] = gray; // G
+                    imgData.data[idx + 2] = gray; // B
+                    imgData.data[idx + 3] = 255;  // A
+                }
+                
+                ctx.putImageData(imgData, 0, 0);
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    </script>
+</body>
+</html>
