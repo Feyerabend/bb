@@ -1,4 +1,6 @@
 
+
+
 ### Images
 
 Alongside text, graphics have always been central to how computers communicate with their
