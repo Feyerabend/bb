@@ -9,7 +9,7 @@ import array
 DISPLAY_WIDTH = 320
 DISPLAY_HEIGHT = 240
 
-# Colors (RGB565 format)
+# Colours (RGB565 format)
 COLOR_BLACK = 0x0000
 COLOR_WHITE = 0xFFFF
 COLOR_RED = 0xF800
@@ -34,7 +34,7 @@ BUTTON_X_PIN = 14
 BUTTON_Y_PIN = 15
 
 # Particle system parameters
-MAX_PARTICLES = 600
+MAX_PARTICLES = 200
 GRAVITY = 0.12
 BOUNCE_DAMPING = 0.85
 BOUNDS_TOP = 25
@@ -59,8 +59,8 @@ framebuffer = bytearray(DISPLAY_WIDTH * DISPLAY_HEIGHT * 2)
 buttons = {}
 prev_buttons = {}
 
+# ST7789 Display Init
 def display_init():
-    """Initialize ST7789 display"""
     global _spi, _cs, _dc, _reset, _bl
     
     # SPI setup
@@ -95,7 +95,7 @@ def display_init():
             _spi.write(bytes(d))
         _cs.value(1)
 
-    # ST7789 initialization
+    # ST7789 init
     cmd(0x01)  # Software reset
     time.sleep_ms(150)
     cmd(0x11)  # Sleep out
@@ -138,8 +138,8 @@ def display_init():
 
     _bl.value(1)  # Backlight on
 
+# frame to display
 def display_blit():
-    """Send framebuffer to display"""
     # Set window
     _dc.value(0)
     _cs.value(0)
@@ -173,7 +173,6 @@ def display_blit():
     _cs.value(1)
 
 def clear_fb(color):
-    """Clear framebuffer to color"""
     hi = (color >> 8) & 0xFF
     lo = color & 0xFF
     for i in range(0, len(framebuffer), 2):
@@ -181,7 +180,6 @@ def clear_fb(color):
         framebuffer[i + 1] = lo
 
 def fill_rect(x, y, w, h, color):
-    """Fill rectangle in framebuffer"""
     hi = (color >> 8) & 0xFF
     lo = color & 0xFF
     for row in range(y, min(y + h, DISPLAY_HEIGHT)):
@@ -192,8 +190,8 @@ def fill_rect(x, y, w, h, color):
                 framebuffer[offset + 1] = lo
                 offset += 2
 
+# igonre for the moment
 def draw_text(x, y, text, color):
-    """Simple 8x8 text rendering"""
     # Simplified - just draw colored blocks for now
     offset = 0
     for char in text:
@@ -201,11 +199,9 @@ def draw_text(x, y, text, color):
         offset += 7
 
 def randf(min_val, max_val):
-    """Random float in range"""
     return min_val + random.random() * (max_val - min_val)
 
 def init_particles():
-    """Initialize particle array"""
     global particles
     particles = []
     colors = [COLOR_RED, COLOR_GREEN, COLOR_BLUE, COLOR_YELLOW, 
@@ -223,7 +219,6 @@ def init_particles():
         particles.append(p)
 
 def update_particles_range(start, end):
-    """Update particle physics for a range"""
     for i in range(start, min(end, len(particles))):
         p = particles[i]
         
@@ -252,7 +247,6 @@ def update_particles_range(start, end):
             p[2] *= 0.95  # Friction on ground
 
 def render_particles():
-    """Render particles to framebuffer"""
     # Clear simulation area
     fill_rect(0, BOUNDS_TOP, DISPLAY_WIDTH, DISPLAY_HEIGHT - BOUNDS_TOP, COLOR_BLACK)
     
@@ -267,7 +261,6 @@ def render_particles():
             fill_rect(x - 1, y - 1, 3, 3, color)
 
 def draw_status():
-    """Draw status bar"""
     fill_rect(0, 0, DISPLAY_WIDTH, BOUNDS_TOP - 2, COLOR_BLACK)
     # Simple FPS display (would need proper text rendering)
     fps_color = COLOR_GREEN if current_fps > 30 else COLOR_YELLOW if current_fps > 20 else COLOR_RED
@@ -280,7 +273,6 @@ def draw_status():
     fill_rect(5, 15, count_width, 6, COLOR_CYAN)
 
 def handle_input():
-    """Handle button input"""
     global wind_x, wind_y, particle_count, prev_buttons
     
     curr = {k: b.value() for k, b in buttons.items()}
@@ -303,8 +295,8 @@ def handle_input():
     
     prev_buttons = curr
 
+# update second half of particles on core1
 def core1_thread():
-    """Core 1: Update second half of particles"""
     global core1_ready, core1_done
     while True:
         if core1_ready:
@@ -315,14 +307,13 @@ def core1_thread():
         time.sleep_ms(1)
 
 def main():
-    """Main loop"""
     global core1_ready, core1_done, current_fps, buttons, prev_buttons
     
-    print("=== Pico Particle System ===")
-    print("Initializing display...")
+    print(" - Pico Particle System - ")
+    print("Init display..")
     display_init()
     
-    # Initialize buttons
+    # Init buttons
     buttons = {
         'A': machine.Pin(BUTTON_A_PIN, machine.Pin.IN, machine.Pin.PULL_UP),
         'B': machine.Pin(BUTTON_B_PIN, machine.Pin.IN, machine.Pin.PULL_UP),
@@ -331,10 +322,10 @@ def main():
     }
     prev_buttons = {k: 1 for k in buttons.keys()}
     
-    print("Initializing particles...")
+    print("Init particles..")
     init_particles()
     
-    print("Starting Core 1...")
+    print("Starting Core 1..")
     _thread.start_new_thread(core1_thread, ())
     
     clear_fb(COLOR_BLACK)
@@ -379,9 +370,10 @@ def main():
             print(f"FPS: {current_fps:.1f} | Particles: {particle_count}")
         
         # Frame timing (~60 FPS target)
-        frame_time = utime.ticks_diff(utime.ticks_ms(), frame_start)
-        if frame_time < 16:
-            time.sleep_ms(16 - frame_time)
+        #frame_time = utime.ticks_diff(utime.ticks_ms(), frame_start)
+        #if frame_time < 16:
+        #    time.sleep_ms(16 - frame_time)
 
 # Run
 main()
+
