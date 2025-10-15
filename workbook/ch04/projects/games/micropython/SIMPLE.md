@@ -1,8 +1,28 @@
 
+## Simple Game Arcitecture
 
-## OUTLINE: Simple Game Arcitecture
+This is a very *simplified entity-manager pattern*,
+not a true Entity-Component-System:
 
-## Core  (CRC cards)
+*This Approach (Entity-Manager):*
+- Entities use *inheritance* (Player extends Entity)
+- Logic lives *inside entity classes* (Player has input logic)
+- Simpler, more intuitive for small games
+- Less flexible but easier to understand
+
+*True ECS:*
+- Entities are just *IDs* (no logic or data)
+- *Components* are pure data (PositionComponent, VelocityComponent)
+- *Systems* contain all logic (MovementSystem, RenderSystem)
+- Data-oriented design for performance at scale
+- More complex but extremely flexible
+
+*When to upgrade to full ECS:* When you have a 1000 entities,
+need data caching optimisation, or want to compose entities from
+interchangeable parts without inheritance hierarchies.
+
+
+### Core  (CRC cards)
 
 ```
 ║ ENTITY MANAGER
