@@ -7,8 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-// ecs core types
+// ECS Core Types
 
 typedef int EntityID;
 
@@ -50,6 +49,7 @@ struct World {
     HashMap components;
     HashMap component_entities;
     Array systems;
+    Array dead_entities;  // NEW: Track entities to delete
     float camera_x;
     float camera_y;
     bool game_over;
@@ -57,8 +57,7 @@ struct World {
     EntityID player_entity;
 };
 
-
-// component types
+// Component Types
 
 enum ComponentType {
     CT_POSITION = 1,
@@ -88,10 +87,10 @@ typedef struct {
     uint16_t color;
     uint8_t width;
     uint8_t height;
-    const uint8_t* bitmap;  // Pointer to bitmap data
+    const uint8_t* bitmap;
 } SpriteComponent;
 
-// Player component (tag + state)
+// Player component
 typedef struct {
     bool on_ground;
     int jump_count;
@@ -123,10 +122,10 @@ typedef struct {
     float patrol_end;
 } EnemyComponent;
 
-// Platform component (tag)
+// Platform component
 typedef struct {
     bool solid;
-    bool one_way;  // Can jump through from below
+    bool one_way;
 } PlatformComponent;
 
 // Collectible component
@@ -144,14 +143,13 @@ typedef struct {
     float time_accumulator;
 } AnimationComponent;
 
-
-
-// helpers
+// Helper Functions
 
 // Array functions
 void array_init(Array* arr, int elem_size);
 void array_add(Array* arr, void* item);
 void* array_get(Array* arr, int index);
+void array_remove(Array* arr, int index);  // NEW: Remove element
 void array_free(Array* arr);
 
 // HashMap functions
@@ -159,6 +157,7 @@ void hashmap_init(HashMap* map, int capacity);
 void hashmap_put(HashMap* map, int key, void* value);
 void* hashmap_get(HashMap* map, int key);
 int hashmap_contains(HashMap* map, int key);
+void hashmap_remove(HashMap* map, int key);  // NEW: Remove entry
 void hashmap_free(HashMap* map);
 
 // World functions
@@ -170,7 +169,8 @@ int world_has_component(World* world, EntityID entity, int type);
 Array world_query(World* world, int* required, int req_count);
 void world_add_system(World* world, System* system);
 void world_update(World* world, float dt);
-void world_destroy_entity(World* world, EntityID entity);
+void world_destroy_entity(World* world, EntityID entity);  // Deferred deletion
+void world_destroy_entity_immediate(World* world, EntityID entity);  // NEW: Immediate deletion
 void world_free(World* world);
 
 // Collision detection
@@ -181,8 +181,7 @@ bool check_collision(float x1, float y1, float w1, float h1,
 void game_init(World* world);
 void game_create_level(World* world);
 
-
-// system decl.
+// System Declarations
 
 // Input System
 typedef struct {
