@@ -104,7 +104,7 @@ GameLoop
 
 ### Implementation Pattern (Pseudocode)
 
-
+```pseudocode
 class Entity:
     position, velocity, id, active
     update(dt):
@@ -136,11 +136,11 @@ class Game:
         input = inputHandler.poll()
         entityManager.update(dt, input)
         renderer.render(entityManager)
+```
 
 
 
 
------
 
 # Entity-Component System Explained
 
@@ -184,7 +184,7 @@ Not ideal
 
 Extend
 
-### **1. Add More Entity Types**
+### 1. Add More Entity Types
 ```javascript
 class Enemy extends Entity:
     update(dt):
@@ -201,7 +201,7 @@ class Bullet extends Entity:
         super.update(dt)
 ```
 
-### **2. Add Components (Composition over Inheritance)**
+### 2. Add Components (Composition over Inheritance)
 ```javascript
 class Entity:
     components = []
@@ -216,7 +216,7 @@ player.addComponent(new PhysicsComponent())
 player.addComponent(new SpriteComponent())
 ```
 
-### **3. Add Systems**
+### 3. Add Systems
 ```javascript
 class CollisionSystem:
     checkCollisions(entities)
@@ -229,7 +229,7 @@ collisionSystem.check(entityManager.entities)
 renderSystem.render(entityManager.entities)
 ```
 
-### **4. Object Pooling** (Performance)
+### 4. Object Pooling (Performance)
 ```javascript
 class EntityManager:
     pool = []
@@ -246,7 +246,7 @@ class EntityManager:
         // Reuse later
 ```
 
-### **5. Event System**
+### 5. Event System
 ```javascript
 class EventBus:
     listeners = {}
