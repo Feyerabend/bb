@@ -457,3 +457,120 @@ eventBus.on("collision", handleCollision)
 eventBus.emit("collision", {entity1, entity2})
 ```
 
+
+### Project Plan 1: Implement the Basic Simplified Entity-Manager Game
+
+This project focuses on building a minimal viable game using the simplified
+entity-manager pattern described in the text. It's ideal for beginners learning
+game programming, as it emphasises a simple OOP approach with inheritance.
+The goal is to create a basic 2D game loop where a player can move around,
+with static sprites (like background elements) and perhaps one enemy type.
+
+
+#### Objectives
+- Understand and implement the core classes: Entity (base), Player, Sprite,
+  Enemy, EntityManager, InputHandler, Renderer, and Game.
+- Demonstrate the game loop: Input → Update → Render.
+- Keep it simple: <500 lines of code, no advanced features.
+
+#### Steps
+1. *Setup Environment*:
+   - Choose a framework: MicroPython for easy input and rendering, and
+     HTML5 Canvas (JavaScript) for web-based prototyping, if necessary.
+
+2. *Implement Core Classes (Based on Pseudocode and CRC Cards)*:
+   - *Entity (Base)*: Include position, velocity, ID, active state.
+     Implement `update(dt)` for basic movement (position += velocity * dt).
+   - *Player (extends Entity)*: Add input handling to set velocity (e.g.,
+     arrow keys for movement). Call super.update(dt).
+   - *Sprite (extends Entity)*: Static visual entity with velocity=0.
+     Implement `render()` to draw an image or shape.
+   - *Enemy (extends Entity)*: Basic AI to set velocity (e.g., patrol
+     left/right). Call super.update(dt).
+   - *EntityManager*: Store entities in a list. Methods: createEntity(type, args),
+     destroyEntity(id), update(dt, input) to loop over entities.
+   - *InputHandler*: Poll for key states (e.g., up/down/left/right).
+   - *Renderer*: Clear screen, call entity.render() for all active entities,
+     present frame.
+   - *Game*: Initialize manager, input, renderer. Run loop() with a fixed
+     timestep (e.g., 60 FPS).
+
+3. *Build the Game Loop*:
+   - In Game.loop(): Poll input -> EntityManager.update(dt, input) ->
+     Renderer.render(entityManager).
+   - Add a main scene: Create a player, a few sprites (e.g., walls), and one enemy.
+
+4. *Testing and Features*:
+   - Test movement: Player responds to keys, enemy patrols.
+   - Add basic collision: In Entity.update(), check if position overlaps with
+     other entities (simple bounding box).
+   - Run the game: Player moves around a screen with static elements and
+     a moving enemy.
+
+5. *Timeline and Milestones*:
+   - Day 1: Setup and implement Entity base + subclasses.
+   - Day 2: EntityManager and Game loop.
+   - Day 3: InputHandler, Renderer, basic testing.
+   - Total: 3-5 days for a beginner.
+
+6. *Extensions (If Time Allows)*:
+   - Add health to entities (inspired by HealthComponent example).
+   - Make it a simple "dodge the enemy" game.
+
+
+
+### Project Plan 2: Extend to a Component-Based System (Hybrid Approach)
+
+Building on the simplified pattern, this project transitions toward a more
+flexible composition model by adding components, as suggested in the "Project Ideas for Extension"
+section above. This bridges the gap between the OOP entity-manager and a full
+ECS, allowing runtime addition/removal of behaviors without deep inheritance hierarchies.
+
+#### Objectives
+- Refactor the basic system to use components for modularity.
+- Demonstrate composition: Mix and match behaviours like input, physics, 
+  and rendering on any entity.
+- Suitable for intermediate developers prototyping varied entity types.
+
+#### Steps
+1. *Start from Basic Implementation*:
+   - Use Project Plan 1 as a base, or implement it first if needed.
+
+2. *Add Components (Inspired by Extension Idea #2)*:
+   - Create a Component base class with update(dt) and render() methods.
+   - Examples:
+     - InputComponent: Handles key presses to set velocity.
+     - PhysicsComponent: Applies velocity to position.
+     - SpriteComponent: Draws the entity.
+     - AIComponent: Sets velocity based on patrol logic.
+   - Modify Entity: Add a list of components. In Entity.update(dt):
+     Loop over components and call their update(dt). Same for render().
+
+3. *Refactor Subclasses*:
+   - Remove inheritance for Player/Enemy/Sprite. Instead, create plain
+     Entities and add components dynamically.
+     - Player: addComponent(new InputComponent()),
+       addComponent(new PhysicsComponent()), addComponent(new SpriteComponent("player.png")).
+     - Enemy: addComponent(new AIComponent()), addComponent(new PhysicsComponent()).
+     - Sprite: addComponent(new SpriteComponent("static.png")) (no physics).
+
+4. *Update EntityManager and Game Loop*:
+   - EntityManager.createEntity() now returns a plain Entity; user adds components manually.
+   - In update(dt, input): Pass input to entities; entities delegate to components
+     (e.g., InputComponent uses the input).
+
+5. *Add Features*:
+   - Runtime changes: e.g., Add a WeaponComponent to player mid-game for shooting.
+   - Basic event system (from Extension Idea #5): Simple EventBus for "collision" events.
+
+6. *Testing and Features*:
+   - Test: Create a flying-shooting enemy by adding FlightComponent + WeaponComponent
+     (as in the ECS example).
+   - Game idea: A shooter where entities gain/lose abilities (e.g., power-ups add components).
+
+7. *Timeline and Milestones*:
+   - Day 1-2: Refactor Entity to support components.
+   - Day 3: Implement 3-4 component types and refactor subclasses.
+   - Day 4: Enhance game loop and test dynamic additions.
+   - Total: 4-7 days.
+
