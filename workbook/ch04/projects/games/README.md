@@ -62,3 +62,18 @@ Key strategies include:
 Even with ECS and modern design patterns, thoughtful coding is required. Efficient
 data organisation and algorithm choices work together with compiler optimisation
 to deliver high-performance games.
+
+
+#### Small Games on Microcontrollers
+
+A parallel branch of game development has emerged on microcontrollers like the Raspberry Pi Pico.
+- Hardware is extremely limited in CPU speed, memory, and display capabilities.
+- Games are usually small, self-contained programs, often written in C or MicroPython.
+- Developers must carefully manage memory, timing, and I/O, and simplify game logic to fit constraints.
+- Despite limitations, microcontroller games encourage efficient, elegant code, sometimes resembling
+  early home computer games in style and performance demands.
+
+Microcontroller game development provides a hands-on perspective on optimisation,
+resource management, and fundamental programming principles, making it an excellent
+learning environment for understanding game architecture at its most elemental level.
+This is the main purpose in this context.
