@@ -6,9 +6,9 @@
 // Helpers
 
 static unsigned int hash(int key) {
-    // Better hash function
+    // hash function
     key = ((key >> 16) ^ key) * 0x45d9f3b;
-    key = ((key >> 16) ^ key) * 0x45d9f3b;
+    key = ((key >> 16) ^ key) * 0x45d9f3b; // one more time
     key = (key >> 16) ^ key;
     return (unsigned int)key;
 }

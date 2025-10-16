@@ -24,7 +24,7 @@ void button_restart_callback(button_t button) {
         // Clean up old world
         world_free(&world);
         
-        // Reinitialize
+        // Reinit
         game_init(&world);
         
         printf("Game restarted!\n");
@@ -54,13 +54,13 @@ int main() {
                display_error_string(button_result));
         return 1;
     }
-    printf("Buttons initialised successfully\n");
+    printf("Buttons initiated\n");
     
     // Set up button callbacks
     button_set_callback(BUTTON_X, button_x_callback);
     
     // Initialize game world
-    printf("Init game world..\n");
+    printf("Init game world ..\n");
     game_init(&world);
     printf("Game world created with player entity ID: %d\n", world.player_entity);
     
@@ -74,7 +74,7 @@ int main() {
                        "X: Exit", COLOR_RED, COLOR_BLACK);
     sleep_ms(2000);
     
-    printf("Starting game loop...\n");
+    printf("Starting game loop ..\n");
     last_frame_time = to_ms_since_boot(get_absolute_time());
     
     // Main game loop
