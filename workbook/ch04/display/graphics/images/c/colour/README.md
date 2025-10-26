@@ -5,7 +5,7 @@ This project demonstrates the Pimoroni Display Pack 2.0 for Raspberry Pi Pico
 with a TV test pattern and interactive color palette explorer.
 
 
-### Features
+### Features 
 
 #### Mode 1: Test Pattern
 - Displays a classic TV test card with color bars
