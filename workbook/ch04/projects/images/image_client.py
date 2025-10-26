@@ -248,4 +248,4 @@ def main():
         display.show_text(f"Error: {str(e)}", 10, 100)
 
 if __name__ == "__main__":
-    main()
+    main
