@@ -6,8 +6,8 @@ from machine import Pin, RTC
 from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY_2
 from pimoroni import Button
 
-WIFI_SSID = "YOUR_WIFI_SSID"
-WIFI_PASS = "YOUR_WIFI_PASSWORD"
+WIFI_SSID = "SSID"
+WIFI_PASS = "PASSWORD"
 NTP_HOST = "pool.ntp.org"  # Reliable global pool
 
 

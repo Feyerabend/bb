@@ -1,5 +1,5 @@
 # DECRYPTOR
-#Wiring: UART RX (GP1) -> Pico1 TX, GND -> GND
+# Wiring: UART described in the book
 # USB for output monitoring
 
 import _thread
@@ -68,7 +68,7 @@ def main():
         time.sleep_ms(100)
     
     # Setup UART (RX on GP1, no TX needed)
-    uart = UART(0, baudrate=115200, rx=Pin(1))
+    uart = UART(1, baudrate=115200, rx=Pin(5))
     
     print("\n[Core 0] Ready. Listening for encrypted data...")
     print("-" * 50)
