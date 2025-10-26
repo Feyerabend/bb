@@ -1,5 +1,5 @@
 # ENCRYPTOR
-# Wiring: UART TX (GP0) -> Pico2 RX, GND -> GND
+# Wiring: UART as described in the wiring in the book
 # USB for input/output monitoring
 # Note: This is a simplified example for educational purposes.
 
@@ -68,7 +68,7 @@ def main():
         time.sleep_ms(100)
     
     # Setup UART (TX on GP0, no RX needed)
-    uart = UART(0, baudrate=115200, tx=Pin(0))
+    uart = UART(1, baudrate=115200, tx=Pin(4))
     
     print("\n[Core 0] Ready. Send data via USB serial...")
     print("Format: Just type your message and press Enter")
