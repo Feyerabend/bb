@@ -405,4 +405,4 @@ def main():
             display.show_text("Error!", 10, 100)
 
 if __name__ == "__main__":
-    main
+    main()
