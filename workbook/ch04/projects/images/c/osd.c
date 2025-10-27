@@ -298,7 +298,7 @@ void osd_menu_render(void) {
                 
             case MENU_ITEM_VALUE:
                 if (item->data.value.value) {
-                    char val_str[12];
+                    char val_str[12]; // NB: UPPER CASE
                     snprintf(val_str, sizeof(val_str), " %d", *item->data.value.value);
                     strcat(item_text, val_str);
                 }
@@ -399,7 +399,7 @@ void menu_add_back(menu_t *menu) {
     
     menu_item_t *item = &menu->items[menu->item_count++];
     memset(item, 0, sizeof(menu_item_t));
-    strncpy(item->text, "< Back", MENU_ITEM_MAX_LEN - 1);
+    strncpy(item->text, "< BACK", MENU_ITEM_MAX_LEN - 1);
     item->type = MENU_ITEM_BACK;
     item->enabled = true;
 }
