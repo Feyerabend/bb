@@ -1,5 +1,5 @@
 
-## Cores on the Raspberry Pi pIco
+## Cores on the Raspberry Pi Pico
 
 
 ### Raspberry Pi Pico (RP2040)
