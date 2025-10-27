@@ -2,7 +2,7 @@ import network
 import socket
 import utime
 import ujson
-import sys
+import gc
 
 # Try to import display, but make it optional for testing
 try:
@@ -13,13 +13,9 @@ except ImportError as e:
     print(f"Display not available: {e}")
     DISPLAY_AVAILABLE = False
 
-# ============= Compression =============
-class RLECompressor:
-    """Simple Run-Length Encoding decoder"""
-    
+class RLECompressor:    
     @staticmethod
     def decompress(data):
-        """Decompress RLE data"""
         decompressed = bytearray()
         i = 0
         while i < len(data) - 1:
@@ -30,7 +26,6 @@ class RLECompressor:
         return bytes(decompressed)
 
 
-# ============= Display Handler (Optional) =============
 class ImageDisplay:
     def __init__(self):
         if not DISPLAY_AVAILABLE:
@@ -42,13 +37,12 @@ class ImageDisplay:
             self.display = PicoGraphics(display=DISPLAY_PICO_DISPLAY_2)
             self.width = self.display.get_bounds()[0]
             self.height = self.display.get_bounds()[1]
-            print(f"Display initialized: {self.width}x{self.height}")
+            print(f"Display initialised: {self.width}x{self.height}")
         except Exception as e:
             print(f"Display init failed: {e}")
             self.display = None
         
     def clear(self, color=(0, 0, 0)):
-        """Clear display"""
         if not self.display:
             return
         try:
@@ -60,7 +54,6 @@ class ImageDisplay:
             print(f"Clear failed: {e}")
         
     def show_text(self, text, x=10, y=10, scale=2):
-        """Display text"""
         print(f"Display: {text}")
         if not self.display:
             return
@@ -71,8 +64,8 @@ class ImageDisplay:
         except Exception as e:
             print(f"Show text failed: {e}")
         
+    # raw RGB565 image data!
     def display_image(self, image_data):
-        """Display raw RGB565 image data"""
         if not self.display:
             print(f"Would display {len(image_data)} bytes")
             return
@@ -102,132 +95,103 @@ class ImageDisplay:
             print(f"Display image failed: {e}")
 
 
-# ============= Network Client =============
 class ImageClient:
-    def __init__(self, server_ssid, server_password, server_ip, server_port=8080):
+    def __init__(self, server_ssid, server_ip, server_port=8080):
         self.server_ssid = server_ssid
-        self.server_password = server_password
         self.server_ip = server_ip
         self.server_port = server_port
         self.wlan = None
+        self.led = None
         
-    def connect_to_server(self):
-        """Connect to server's WiFi AP"""
-        print("\n=== WiFi Connection ===")
-        print(f"SSID: {self.server_ssid}")
-        print(f"Password: {self.server_password}")
-        
+        # Try to initialize LED
         try:
-            self.wlan = network.WLAN(network.STA_IF)
-            print(f"WLAN object created: {self.wlan}")
+            from machine import Pin
+            self.led = Pin(25, Pin.OUT)
+        except:
+            print("LED not available")
+        
+    def connect_to_network(self):
+        self.wlan = network.WLAN(network.STA_IF)
+        self.wlan.active(True)
+        
+        print(f"\nConnecting to '{self.server_ssid}'..")
+        
+        # Connect to open network (no password)
+        self.wlan.connect(self.server_ssid)
+        
+        # Wait for connection with timeout and status updates
+        max_wait = 20
+        while max_wait > 0:
+            status = self.wlan.status()
             
-            self.wlan.active(True)
-            print("WLAN activated")
-            
-            # Wait for WLAN to become active
-            timeout = 5
-            while not self.wlan.active() and timeout > 0:
-                print("Waiting for WLAN active...")
-                utime.sleep(0.5)
-                timeout -= 0.5
-            
-            if not self.wlan.active():
-                raise RuntimeError("WLAN failed to activate")
-            
-            print("WLAN is active")
-            print(f"Current status: {self.wlan.status()}")
-            
-            # Disconnect if already connected
             if self.wlan.isconnected():
-                print("Already connected, disconnecting...")
-                self.wlan.disconnect()
-                utime.sleep(1)
+                print("\nConnected successfully!")
+                config = self.wlan.ifconfig()
+                print(f"Network configuration:")
+                print(f"  IP: {config[0]}")
+                print(f"  Netmask: {config[1]}")
+                print(f"  Gateway: {config[2]}")
+                print(f"  DNS: {config[3]}")
+                if self.led:
+                    self.led.value(1)  # Indicate successful connection
+                return True
             
-            print(f"Connecting to '{self.server_ssid}'...")
-            self.wlan.connect(self.server_ssid, self.server_password)
-            
-            # Wait for connection with detailed status
-            max_wait = 15
-            while max_wait > 0:
-                status = self.wlan.status()
-                print(f"Status: {status} ", end="")
-                
-                if status == 0:
-                    print("(LINK_DOWN)")
-                elif status == 1:
-                    print("(LINK_JOIN)")
-                elif status == 2:
-                    print("(LINK_NOIP)")
-                elif status == 3:
-                    print("(LINK_UP - Connected!)")
-                    break
-                elif status < 0:
-                    print("(LINK_FAIL)")
-                    break
-                else:
-                    print(f"(Unknown: {status})")
-                
-                max_wait -= 1
-                utime.sleep(1)
-            
-            if self.wlan.status() != 3:
-                status = self.wlan.status()
-                if status == -1:
-                    raise RuntimeError("Connection failed: LINK_FAIL (-1) - Wrong password?")
-                elif status == -2:
-                    raise RuntimeError("Connection failed: NO_AP_FOUND (-2) - Cannot find network")
-                elif status == -3:
-                    raise RuntimeError("Connection failed: LINK_BADAUTH (-3) - Authentication failed")
-                else:
-                    raise RuntimeError(f"Connection failed with status: {status}")
-            
-            print("\n✓ Connected successfully!")
-            config = self.wlan.ifconfig()
-            print(f"IP Address: {config[0]}")
-            print(f"Netmask: {config[1]}")
-            print(f"Gateway: {config[2]}")
-            print(f"DNS: {config[3]}")
-            
-            return True
-            
-        except Exception as e:
-            print(f"\n✗ Connection error: {e}")
-            import sys
-            sys.print_exception(e)
-            return False
+            # Print status indicator
+            print(".", end="")
+            utime.sleep(1)
+            max_wait -= 1
+        
+        print(f"\nFailed to connect to '{self.server_ssid}'")
+        return False
         
     def list_images(self):
-        """Get list of available images from server"""
-        print("\n=== Listing Images ===")
+        print("\n--- Listing Images ---")
+        sock = None
         try:
             print(f"Connecting to {self.server_ip}:{self.server_port}")
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.settimeout(10)
-            s.connect((self.server_ip, self.server_port))
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(10.0)
+            sock.connect((self.server_ip, self.server_port))
             print("Socket connected")
             
             # Send LIST request
-            s.send(b"LIST")
+            sock.send(b"LIST\n")
             print("Sent: LIST")
             
-            # Receive response
-            header = s.recv(256).decode()
+            # Receive response header - read until we get the complete header
+            header = b""
+            while b"\n" not in header:
+                chunk = sock.recv(1)
+                if not chunk:
+                    break
+                header += chunk
+            
+            header = header.decode().strip()
             print(f"Received header: {header}")
             
             if not header.startswith("OK|"):
                 print(f"Error response: {header}")
-                s.close()
                 return []
             
             # Parse header: OK|size|
             parts = header.split("|")
+            if len(parts) < 2:
+                print("Invalid header format")
+                return []
+            
             data_size = int(parts[1])
             print(f"Expecting {data_size} bytes of JSON")
             
             # Receive JSON data
-            data = s.recv(data_size).decode()
+            data = b""
+            while len(data) < data_size:
+                chunk = sock.recv(min(1024, data_size - len(data)))
+                if not chunk:
+                    break
+                data += chunk
+            
+            data = data.decode()
             print(f"Received: {data}")
-            s.close()
             
             files = ujson.loads(data)
             print(f"Parsed {len(files)} files")
@@ -238,52 +202,62 @@ class ImageClient:
             import sys
             sys.print_exception(e)
             return []
+        finally:
+            if sock:
+                try:
+                    sock.close()
+                except:
+                    pass
     
     def get_image(self, filename):
-        """Download and decompress image from server"""
-        print(f"\n=== Getting Image: {filename} ===")
+        print(f"\n--- Getting Image: {filename} ---")
+        sock = None
         try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.settimeout(30)
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(30.0)
             print(f"Connecting to {self.server_ip}:{self.server_port}")
-            s.connect((self.server_ip, self.server_port))
+            sock.connect((self.server_ip, self.server_port))
             print("Connected")
             
             # Send GET request
-            request = f"GET|{filename}"
-            s.send(request.encode())
-            print(f"Sent: {request}")
+            request = f"GET|{filename}\n"
+            sock.send(request.encode())
+            print(f"Sent: {request.strip()}")
             
-            # Receive header
+            # Receive header - read until newline
             header = b""
-            while b"|" not in header or header.count(b"|") < 3:
-                chunk = s.recv(1)
+            while b"\n" not in header:
+                chunk = sock.recv(1)
                 if not chunk:
-                    break
+                    print("Connection closed while reading header")
+                    return None
                 header += chunk
             
-            header = header.decode()
+            header = header.decode().strip()
             print(f"Header: {header}")
             
             if not header.startswith("OK|"):
                 print(f"Error: {header}")
-                s.close()
                 return None
             
             # Parse header: OK|original_size|compressed_size|
             parts = header.split("|")
+            if len(parts) < 3:
+                print("Invalid header format")
+                return None
+                
             original_size = int(parts[1])
             compressed_size = int(parts[2])
             
             print(f"Original: {original_size} bytes")
             print(f"Compressed: {compressed_size} bytes")
-            print("Downloading...")
+            print("Downloading..")
             
             # Receive compressed data
             compressed_data = bytearray()
             while len(compressed_data) < compressed_size:
                 remaining = compressed_size - len(compressed_data)
-                chunk = s.recv(min(1024, remaining))
+                chunk = sock.recv(min(1024, remaining))
                 if not chunk:
                     print("Connection closed early!")
                     break
@@ -294,12 +268,19 @@ class ImageClient:
                 if len(compressed_data) % 10240 == 0 or len(compressed_data) == compressed_size:
                     print(f"  {len(compressed_data)}/{compressed_size} bytes ({progress:.1f}%)")
             
-            s.close()
             print("Download complete")
             
-            print("Decompressing...")
+            # Verify we got all data
+            if len(compressed_data) != compressed_size:
+                print(f"Warning: Expected {compressed_size} bytes, got {len(compressed_data)}")
+            
+            print("Decompressing..")
             image_data = RLECompressor.decompress(bytes(compressed_data))
             print(f"Decompressed: {len(image_data)} bytes")
+            
+            # Verify decompressed size
+            if len(image_data) != original_size:
+                print(f"Warning: Expected {original_size} bytes, got {len(image_data)}")
             
             return image_data
             
@@ -308,17 +289,27 @@ class ImageClient:
             import sys
             sys.print_exception(e)
             return None
+        finally:
+            if sock:
+                try:
+                    sock.close()
+                except:
+                    pass
+    
+    def cleanup(self):
+        if self.led:
+            self.led.value(0)
+        print("Client cleanup completed")
 
 
-# ============= Main Client =============
+
 def main():
-    print("\n" + "="*40)
+    print("\n" + "-"*50)
     print("IMAGE CLIENT STARTING")
-    print("="*40)
+    print("-"*50)
     
     # Configuration
     SERVER_SSID = "PicoImages"
-    SERVER_PASSWORD = "raspberry"
     SERVER_IP = "192.168.4.1"  # Default AP IP
     SERVER_PORT = 8080
     
@@ -326,27 +317,26 @@ def main():
     print(f"  Server SSID: {SERVER_SSID}")
     print(f"  Server IP: {SERVER_IP}:{SERVER_PORT}")
     
-    # Initialize display (optional)
+    # Initialise display (optional)
+    display = None
     try:
         display = ImageDisplay()
     except Exception as e:
         print(f"Display init error: {e}")
-        display = None
     
-    # Connect to image server
+    # Create client
     client = ImageClient(
         server_ssid=SERVER_SSID,
-        server_password=SERVER_PASSWORD,
         server_ip=SERVER_IP,
         server_port=SERVER_PORT
     )
     
     try:
         if display:
-            display.show_text("Connecting...", 10, 100)
+            display.show_text("Connecting..", 10, 100)
         
         # Connect to WiFi
-        if not client.connect_to_server():
+        if not client.connect_to_network():
             print("\n✗ Failed to connect to WiFi")
             if display:
                 display.show_text("WiFi Failed", 10, 100)
@@ -359,7 +349,7 @@ def main():
         
         # List available images
         if display:
-            display.show_text("Listing...", 10, 100)
+            display.show_text("Listing..", 10, 100)
         
         files = client.list_images()
         
@@ -367,24 +357,25 @@ def main():
         for f in files:
             print(f"  {f['name']} - {f['size']} bytes")
         
-        # Download and display first image
+        # Download and display first image!
         if files:
             filename = files[0]['name']
             print(f"\nDownloading: {filename}")
             
             if display:
                 display.clear()
-                display.show_text(f"Loading...", 10, 100)
+                display.show_text(f"Loading..", 10, 100)
             
             image_data = client.get_image(filename)
             
             if image_data:
-                print("✓ Success!")
+                print("Success!")
                 if display:
                     display.clear()
                     display.display_image(image_data)
+                print("\nImage displayed successfully!")
             else:
-                print("✗ Download failed")
+                print("Download failed")
                 if display:
                     display.show_text("Failed", 10, 100)
         else:
@@ -392,9 +383,12 @@ def main():
             if display:
                 display.show_text("No images", 10, 100)
         
-        print("\n" + "="*40)
+        print("\n" + "-"*50)
         print("CLIENT FINISHED")
-        print("="*40)
+        print("-"*50)
+        
+        # Clean up memory
+        gc.collect()
             
     except Exception as e:
         print(f"\n✗ Fatal error: {e}")
@@ -403,6 +397,8 @@ def main():
         if display:
             display.clear()
             display.show_text("Error!", 10, 100)
+    finally:
+        client.cleanup()
 
 if __name__ == "__main__":
     main()

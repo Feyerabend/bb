@@ -5,8 +5,9 @@ import ujson
 import utime
 import network
 import socket
+import gc
 
-#  VFS Component 
+# VFS Component 
 class SimpleVFS:
     def __init__(self, mount_point="/sd"):
         self.mount_point = mount_point
@@ -64,13 +65,10 @@ class SimpleVFS:
         return self.metadata[filename]["size"]
 
 
-#  Compression 
-class RLECompressor:
-    """Simple Run-Length Encoding for image data"""
-    
+# Compression RLE
+class RLECompressor:    
     @staticmethod
     def compress(data):
-        """Compress bytes using RLE"""
         if len(data) == 0:
             return bytes()
         
@@ -92,7 +90,6 @@ class RLECompressor:
     
     @staticmethod
     def decompress(data):
-        """Decompress RLE data"""
         decompressed = bytearray()
         i = 0
         while i < len(data) - 1:
@@ -103,119 +100,211 @@ class RLECompressor:
         return bytes(decompressed)
 
 
-#  Network Server 
+# Network Server 
 class ImageServer:
-    def __init__(self, vfs, ssid="PicoImageServer", password="pico12345", port=8080):
+    def __init__(self, vfs, ssid="PicoImages", port=8080):
         self.vfs = vfs
         self.ssid = ssid
-        self.password = password
         self.port = port
         self.ap = None
         self.server_socket = None
+        self.led = None
         
-    def start_access_point(self):
-        """Start WiFi Access Point"""
+        # Try to initialize LED
+        try:
+            self.led = machine.Pin(25, machine.Pin.OUT)
+        except:
+            print("LED not available")
+        
+    def setup_access_point(self):
         self.ap = network.WLAN(network.AP_IF)
-        self.ap.config(essid=self.ssid, password=self.password)
         self.ap.active(True)
         
-        # Wait for AP to be active
-        while not self.ap.active():
-            utime.sleep(0.1)
+        # Configure as open network (no password for ease of use)
+        self.ap.config(essid=self.ssid, authmode=network.AUTH_OPEN)
+        print(f"Open AP '{self.ssid}' created (no password)")
         
-        print(f"AP Started: {self.ssid}")
-        print(f"IP: {self.ap.ifconfig()[0]}")
-        print(f"Connect with password: {self.password}")
+        # Wait for interface to become active
+        max_wait = 10
+        while max_wait > 0:
+            if self.ap.active():
+                break
+            utime.sleep(1)
+            max_wait -= 1
         
-    def start_server(self):
-        """Start TCP server"""
-        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.server_socket.bind(('0.0.0.0', self.port))
-        self.server_socket.listen(1)
-        print(f"Server listening on port {self.port}")
+        if self.ap.active():
+            config = self.ap.ifconfig()
+            print(f"Access Point active!")
+            print(f"  IP: {config[0]}")
+            print(f"  Netmask: {config[1]}")
+            print(f"  Gateway: {config[2]}")
+            print(f"  DNS: {config[3]}")
+            if self.led:
+                self.led.value(1)  # Turn on LED to indicate AP is active
+        else:
+            print("Failed to activate Access Point")
+            raise RuntimeError("AP activation failed")
+    
+    def setup_tcp_server(self):
+        try:
+            # Create and bind socket using getaddrinfo
+            addr = socket.getaddrinfo('0.0.0.0', self.port)[0][-1]
+            self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.server_socket.bind(addr)
+            self.server_socket.listen(5)  # Allow up to 5 pending connections
+            
+            print(f"TCP server listening on port {self.port}")
+        except Exception as e:
+            print(f"Failed to setup TCP server: {e}")
+            raise
     
     def handle_list_request(self, conn):
-        """Send list of available files"""
-        files = self.vfs.list_files()
-        response = ujson.dumps(files)
-        conn.send(f"OK|{len(response)}|".encode())
-        conn.send(response.encode())
-        
+        try:
+            files = self.vfs.list_files()
+            response = ujson.dumps(files)
+            
+            # Send response with header
+            header = f"OK|{len(response)}|\n"
+            conn.send(header.encode())
+            conn.send(response.encode())
+            
+            print(f"Sent file list: {len(files)} files")
+        except Exception as e:
+            error_msg = f"ERROR|{str(e)}\n"
+            conn.send(error_msg.encode())
+            print(f"List error: {e}")
+    
     def handle_get_request(self, conn, filename):
-        """Send image file with compression"""
         try:
             if not self.vfs.file_exists(filename):
-                conn.send(b"ERROR|File not found")
+                conn.send(b"ERROR|File not found\n")
+                print(f"File not found: {filename}")
                 return
             
             print(f"Reading: {filename}")
             raw_data = self.vfs.read_file(filename)
+            print(f"Read {len(raw_data)} bytes")
             
             # Compress data
-            print(f"Compressing {len(raw_data)} bytes...")
+            print("Compressing..")
             compressed = RLECompressor.compress(raw_data)
-            ratio = len(compressed) / len(raw_data) * 100
+            ratio = len(compressed) / len(raw_data) * 100 if len(raw_data) > 0 else 0
             print(f"Compressed to {len(compressed)} bytes ({ratio:.1f}%)")
             
-            # Send header: OK|original_size|compressed_size|
-            header = f"OK|{len(raw_data)}|{len(compressed)}|".encode()
-            conn.send(header)
+            # Send header with newline: OK|original_size|compressed_size|\n
+            header = f"OK|{len(raw_data)}|{len(compressed)}|\n"
+            conn.send(header.encode())
+            print(f"Sent header: {header.strip()}")
             
             # Send compressed data in chunks
             chunk_size = 1024
+            sent = 0
             for i in range(0, len(compressed), chunk_size):
                 chunk = compressed[i:i+chunk_size]
                 conn.send(chunk)
-                
+                sent += len(chunk)
+                if sent % 10240 == 0 or sent == len(compressed):
+                    print(f"Sent {sent}/{len(compressed)} bytes")
+            
             print("Transfer complete")
             
         except Exception as e:
-            error_msg = f"ERROR|{str(e)}"
+            error_msg = f"ERROR|{str(e)}\n"
             conn.send(error_msg.encode())
-            print(f"Error: {e}")
+            print(f"Transfer error: {e}")
+            import sys
+            sys.print_exception(e)
+    
+    def handle_client_connection(self, client_socket, client_addr):
+        print(f"\nClient connected from {client_addr}")
+        client_socket.settimeout(30.0)  # 30 second timeout
+        
+        try:
+            # Receive request
+            request = client_socket.recv(256).decode().strip()
+            print(f"Request: {request}")
+            
+            if request.startswith("LIST"):
+                self.handle_list_request(client_socket)
+                
+            elif request.startswith("GET|"):
+                parts = request.split("|")
+                if len(parts) >= 2:
+                    filename = parts[1]
+                    self.handle_get_request(client_socket, filename)
+                else:
+                    client_socket.send(b"ERROR|Invalid GET format\n")
+                    
+            else:
+                client_socket.send(b"ERROR|Unknown command. Use LIST or GET|filename\n")
+            
+        except socket.timeout:
+            print(f"Client {client_addr} timed out")
+        except Exception as e:
+            print(f"Error handling client {client_addr}: {e}")
+            import sys
+            sys.print_exception(e)
+        finally:
+            try:
+                client_socket.close()
+            except:
+                pass
+            print(f"Client {client_addr} disconnected\n")
     
     def run(self):
-        """Main server loop"""
-        self.start_access_point()
-        self.start_server()
+        print("\n" + "-"*50)
+        print("IMAGE SERVER STARTING")
+        print("-"*50)
         
-        print("\nWaiting for clients...")
+        self.setup_access_point()
+        self.setup_tcp_server()
         
-        while True:
-            try:
-                conn, addr = self.server_socket.accept()
-                print(f"\nClient connected: {addr}")
-                
-                # Receive request
-                request = conn.recv(256).decode().strip()
-                print(f"Request: {request}")
-                
-                if request.startswith("LIST"):
-                    self.handle_list_request(conn)
-                    
-                elif request.startswith("GET|"):
-                    filename = request.split("|")[1]
-                    self.handle_get_request(conn, filename)
-                    
-                else:
-                    conn.send(b"ERROR|Invalid request format")
-                
-                conn.close()
-                print("Connection closed")
-                
-            except Exception as e:
-                print(f"Error handling client: {e}")
+        print("\nServer ready! Waiting for clients..")
+        print(f"Connect to WiFi: {self.ssid} (no password)")
+        print(f"Server IP: 192.168.4.1:{self.port}")
+        print("="*50 + "\n")
+        
+        try:
+            while True:
                 try:
-                    conn.close()
-                except:
-                    pass
+                    client_socket, client_addr = self.server_socket.accept()
+                    self.handle_client_connection(client_socket, client_addr)
+                    gc.collect()  # Clean up memory after each client
+                    
+                except KeyboardInterrupt:
+                    print("\nServer shutdown requested")
+                    break
+                except Exception as e:
+                    print(f"Server error: {e}")
+                    import sys
+                    sys.print_exception(e)
+                    utime.sleep(1)
+        finally:
+            self.cleanup()
+    
+    def cleanup(self):
+        if self.server_socket:
+            try:
+                self.server_socket.close()
+            except:
+                pass
+        if self.ap:
+            self.ap.active(False)
+        if self.led:
+            self.led.value(0)
+        print("Server cleanup completed")
 
 
-#  Main Setup 
+# Main Setup 
 def main():
+    print("\n" + "-"*50)
+    print("INIT IMAGE SERVER")
+    print("-"*50)
+    
     # Initialize SD card
     try:
+        print("\nMounting SD card..")
         cs = machine.Pin(1, machine.Pin.OUT)
         spi = machine.SPI(0,
                           baudrate=1000000,
@@ -229,22 +318,38 @@ def main():
         sd = sdcard.SDCard(spi, cs)
         vfs_fat = uos.VfsFat(sd)
         uos.mount(vfs_fat, "/sd")
-        print("SD card mounted")
+        print("SD card mounted successfully")
     except Exception as e:
         print(f"SD card error: {e}")
+        import sys
+        sys.print_exception(e)
         raise
     
     # Create VFS wrapper
     vfs = SimpleVFS("/sd")
     
-    # Create some test images (replace with real image data)
-    # For DisplayPack 2.0: 320x240 pixels, RGB565 format (2 bytes per pixel)
-    # Total: 153,600 bytes per full image
-    test_data = bytes([i % 256 for i in range(1000)])  # Dummy data
-    vfs.create_file("test.img", test_data)
+    # Check for existing images or create test data
+    files = vfs.list_files()
+    if not files:
+        print("\nNo images found, creating test image..")
+        # For DisplayPack 2.0: 320x240 pixels, RGB565 format (2 bytes per pixel)
+        # Create a simple gradient test pattern
+        test_data = bytearray()
+        for i in range(320 * 240):
+            # Simple gradient pattern
+            val = (i % 256)
+            test_data.append(val)
+            test_data.append(val)
+        vfs.create_file("test.img", bytes(test_data))
+        print("Test image created: test.img")
+    else:
+        print(f"\nFound {len(files)} existing images:")
+        for f in files:
+            print(f"  - {f['name']} ({f['size']} bytes)")
     
-    print("\nStarting image server...")
-    server = ImageServer(vfs, ssid="PicoImages", password="raspberry")
+    # Start server
+    print("\nStarting image server..")
+    server = ImageServer(vfs, ssid="PicoImages")
     server.run()
 
 if __name__ == "__main__":
