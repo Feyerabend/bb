@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SVG → Simplified Path Exporter (for DisplayPack)</title>
+  <title>SVG to Simplified Path Exporter (for DisplayPack)</title>
   <style>
     body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin: 20px; }
     label { display:block; margin-top:8px }
@@ -15,17 +15,19 @@
   </style>
 </head>
 <body>
-  <h1>SVG → Simplified Path Exporter</h1>
+  <h1>SVG to Simplified Path Exporter</h1>
 
-  <p>Drop an SVG file or paste SVG source into the text area. This upgraded version preserves path commands when possible, converts arc commands to cubic Béziers, improves curve handling, and fixes earlier bugs.</p>
+  <p>Drop an SVG file or paste SVG source into the text area. This preserves
+     path commands when possible, converts arc commands to cubic Béziers,
+     and improves curve handling.</p>
 
   <label>SVG file: <input id="file" type="file" accept="image/svg+xml" /></label>
   <label>Or paste SVG source:</label>
   <textarea id="svgSource" placeholder="Paste SVG source here"></textarea>
 
   <div class="controls">
-    <label>Target width <input id="targetW" type="number" value="240" /></label>
-    <label>Target height <input id="targetH" type="number" value="135" /></label>
+    <label>Target width <input id="targetW" type="number" value="320" /></label>
+    <label>Target height <input id="targetH" type="number" value="240" /></label>
     <label>Sampling resolution (px, used for non-path shapes) <input id="samplePx" type="number" value="2" /></label>
     <button id="convert">Convert</button>
     <a id="download" disabled>Download JSON</a>
@@ -415,8 +417,8 @@
     const svg = doc.querySelector('svg');
     if (!svg) { alert('No <svg> root found.'); return; }
 
-    const tw = parseInt(document.getElementById('targetW').value,10) || 240;
-    const th = parseInt(document.getElementById('targetH').value,10) || 135;
+    const tw = parseInt(document.getElementById('targetW').value,10) || 320;
+    const th = parseInt(document.getElementById('targetH').value,10) || 240;
     const samplePx = parseFloat(document.getElementById('samplePx').value) || 2;
 
     const result = await convertSvg(svg, tw, th, samplePx);
