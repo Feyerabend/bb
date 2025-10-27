@@ -56,7 +56,7 @@ detail, the emphasis is on how the device illustrates key ideas: memory and stor
 input/output, communication, timing, concurrency, error handling, and resource
 management.
 
-The material collected here follows the second path. The Pico and its peripherals
+The material collected here follows the __second path__. The Pico and its peripherals
 are used as a concrete, practical anchor, but the real aim is to highlight general
 principles of computing.
 
