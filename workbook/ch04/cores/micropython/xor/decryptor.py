@@ -51,14 +51,14 @@ def core1_task():
 def main():
     global core1_ready
     
-    print("=" * 50)
+    print("-" * 50)
     print("PICO 2 DECRYPTOR - Dual Core Demo")
-    print("=" * 50)
+    print("-" * 50)
     print(f"Decryption Key: {DECRYPTION_KEY.decode()}")
     print("\nWiring:")
     print("  GP1 (UART RX) -> Pico1 TX")
     print("  GND -> GND")
-    print("=" * 50)
+    print("-" * 50)
     
     # Start Core 1
     _thread.start_new_thread(core1_task, ())
@@ -70,7 +70,7 @@ def main():
     # Setup UART (RX on GP1, no TX needed)
     uart = UART(1, baudrate=115200, rx=Pin(5))
     
-    print("\n[Core 0] Ready. Listening for encrypted data...")
+    print("\n[Core 0] Ready. Listening for encrypted data..")
     print("-" * 50)
     
     buffer = bytearray()
@@ -130,10 +130,10 @@ def main():
                     try:
                         plaintext = full_decrypted.decode('utf-8')
                         print(f"\n[DECRYPTED] '{plaintext}'")
-                        print("[STATUS] ✓ Decryption successful!")
+                        print("[STATUS] Decryption successful!")
                     except:
                         print(f"[DECRYPTED] {full_decrypted.hex()}")
-                        print("[STATUS] ✗ Not valid UTF-8")
+                        print("[STATUS] Not valid UTF-8")
                     
                     print("-" * 50)
                     
