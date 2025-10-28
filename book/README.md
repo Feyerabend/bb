@@ -1,4 +1,6 @@
 
+![Book](./book.png)
+
 # From Code To Computation: A Modern Guide to Programming and Theory
 
 (Previous working title: *From Basics To Bytecode: A guide to computers and programming*)
