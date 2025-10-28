@@ -127,8 +127,8 @@ called *rasterisation*.
 #### Scan Conversion
 
 The most common method is *scanline rasterisation*, where the renderer sweeps horizontally
-across each pixel row (scanline) and determines which pixels lie inside the shape.  
-This involves computing intersections between the scanline and the vector paths and filling
+across each pixel row (scanline) and determines which pixels lie inside the shape. This
+involves computing intersections between the scanline and the vector paths and filling
 between them according to even–odd or non-zero winding rules.
 
 For strokes, the rasteriser expands the line’s mathematical centre into a *polygonal outline*
