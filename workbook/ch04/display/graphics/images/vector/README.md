@@ -106,14 +106,14 @@ efficiently evaluate these curves and fill or stroke them as needed.
 
 ### Vector vs. Raster at a Glance
 
-> | Feature           | Vector Graphics               | Raster Graphics                    |
-> |-------------------|-------------------------------|------------------------------------|
-> | Representation    | Mathematical shapes           | Pixel grid                         |
-> | Scaling           | Infinite, lossless            | Pixelated when enlarged            |
-> | File size         | Small for simple scenes       | Grows with resolution              |
-> | Editing           | Shape-based and precise       | Pixel-based, destructive           |
-> | Typical formats   | SVG, EPS, PDF, AI             | PNG, JPEG, BMP, GIF                |
-> | Best suited for   | Logos, diagrams, type, CAD    | Photos, textures, complex images   |
+| Feature           | Vector Graphics               | Raster Graphics                    |
+|-------------------|-------------------------------|------------------------------------|
+| Representation    | Mathematical shapes           | Pixel grid                         |
+| Scaling           | Infinite, lossless            | Pixelated when enlarged            |
+| File size         | Small for simple scenes       | Grows with resolution              |
+| Editing           | Shape-based and precise       | Pixel-based, destructive           |
+| Typical formats   | SVG, EPS, PDF, AI             | PNG, JPEG, BMP, GIF                |
+| Best suited for   | Logos, diagrams, type, CAD    | Photos, textures, complex images   |
 
 
 
