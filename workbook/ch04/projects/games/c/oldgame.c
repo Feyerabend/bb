@@ -3,15 +3,12 @@
 #include <stdio.h>
 #include <assert.h>
 
-// Configuration
-#define WORLD_WIDTH 2000  // Much larger world for scrolling
-#define GROUND_HEIGHT 220
-
 // Helpers
 
 static unsigned int hash(int key) {
+    // hash function
     key = ((key >> 16) ^ key) * 0x45d9f3b;
-    key = ((key >> 16) ^ key) * 0x45d9f3b;
+    key = ((key >> 16) ^ key) * 0x45d9f3b; // one more time
     key = (key >> 16) ^ key;
     return (unsigned int)key;
 }
@@ -45,6 +42,7 @@ void* array_get(Array* arr, int index) {
 void array_remove(Array* arr, int index) {
     if (!arr || index < 0 || index >= arr->size) return;
     
+    // Shift elements down
     if (index < arr->size - 1) {
         memmove((char*)arr->data + index * arr->elem_size,
                 (char*)arr->data + (index + 1) * arr->elem_size,
@@ -75,20 +73,23 @@ void hashmap_put(HashMap* map, int key, void* value) {
     unsigned int idx = hash(key) % map->capacity;
     MapEntry* entry = &map->entries[idx];
     
+    // Check if key already exists and update
     MapEntry* current = entry;
     while (current && current->value) {
         if (current->key == key) {
-            current->value = value;
+            current->value = value;  // Update existing
             return;
         }
         current = current->next;
     }
     
+    // Add new entry
     if (!entry->value) {
         entry->key = key;
         entry->value = value;
         entry->next = NULL;
     } else {
+        // Find end of chain
         while (entry->next) entry = entry->next;
         entry->next = malloc(sizeof(MapEntry));
         assert(entry->next && "MapEntry allocation failed");
@@ -129,6 +130,7 @@ void hashmap_remove(HashMap* map, int key) {
                 prev->next = entry->next;
                 free(entry);
             } else {
+                // First entry in chain
                 if (entry->next) {
                     MapEntry* next = entry->next;
                     entry->key = next->key;
@@ -185,8 +187,9 @@ void world_init(World* world) {
 EntityID world_create_entity(World* world) {
     assert(world);
     
+    // Check for ID overflow
     if (world->next_entity_id <= 0) {
-        return 0;
+        return 0; // Invalid entity
     }
     
     EntityID id = world->next_entity_id++;
@@ -223,6 +226,7 @@ void world_add_component(World* world, EntityID entity, int type, void* data, in
         hashmap_put(&world->component_entities, type, entities_with_type);
     }
     
+    // Check if entity already in list
     bool already_has = false;
     for (int i = 0; i < entities_with_type->size; i++) {
         EntityID* e = array_get(entities_with_type, i);
@@ -275,6 +279,7 @@ Array world_query(World* world, int* required, int req_count) {
         EntityID* entity = array_get(base_set, i);
         if (!entity) continue;
         
+        // Check if entity marked for deletion
         bool is_dead = false;
         for (int d = 0; d < world->dead_entities.size; d++) {
             EntityID* dead = array_get(&world->dead_entities, d);
@@ -305,6 +310,7 @@ void world_add_system(World* world, System* system) {
 void world_update(World* world, float dt) {
     if (!world) return;
     
+    // Process dead entities
     for (int i = 0; i < world->dead_entities.size; i++) {
         EntityID* entity = array_get(&world->dead_entities, i);
         if (entity) {
@@ -313,6 +319,7 @@ void world_update(World* world, float dt) {
     }
     world->dead_entities.size = 0;
     
+    // Update systems
     for (int i = 0; i < world->systems.size; i++) {
         System** sys_ptr = array_get(&world->systems, i);
         if (sys_ptr && *sys_ptr && (*sys_ptr)->update) {
@@ -332,6 +339,7 @@ void world_destroy_entity_immediate(World* world, EntityID entity) {
     Array* entity_comps = hashmap_get(&world->entity_components, entity);
     if (!entity_comps) return;
     
+    // Free all components
     for (int i = 0; i < entity_comps->size; i++) {
         int* comp_type = array_get(entity_comps, i);
         if (!comp_type) continue;
@@ -345,6 +353,7 @@ void world_destroy_entity_immediate(World* world, EntityID entity) {
             }
         }
         
+        // Remove from component_entities
         Array* entities_with_type = hashmap_get(&world->component_entities, *comp_type);
         if (entities_with_type) {
             for (int j = entities_with_type->size - 1; j >= 0; j--) {
@@ -364,6 +373,7 @@ void world_destroy_entity_immediate(World* world, EntityID entity) {
 void world_free(World* world) {
     if (!world) return;
     
+    // Free systems
     for (int i = 0; i < world->systems.size; i++) {
         System** sys_ptr = array_get(&world->systems, i);
         if (sys_ptr && *sys_ptr) {
@@ -375,6 +385,7 @@ void world_free(World* world) {
     }
     array_free(&world->systems);
     
+    // Free component data
     for (int type = CT_POSITION; type <= CT_ANIMATION; type++) {
         HashMap* type_map = hashmap_get(&world->components, type);
         if (type_map) {
@@ -391,6 +402,7 @@ void world_free(World* world) {
         }
     }
     
+    // Free entity component lists
     for (int i = 0; i < world->entity_components.capacity; i++) {
         MapEntry* entry = &world->entity_components.entries[i];
         while (entry && entry->value) {
@@ -402,6 +414,7 @@ void world_free(World* world) {
         }
     }
     
+    // Free component entity lists
     for (int i = 0; i < world->component_entities.capacity; i++) {
         MapEntry* entry = &world->component_entities.entries[i];
         while (entry && entry->value) {
@@ -444,27 +457,19 @@ void input_update(System* self, World* world, float dt) {
         
         if (!player || !vel) continue;
         
-        // Improved movement with acceleration
-        float move_accel = 500.0f;
-        float max_speed = 120.0f;
-        
+        float move_speed = 80.0f;
         if (button_pressed(BUTTON_A)) {
-            vel->x -= move_accel * dt;
-            if (vel->x < -max_speed) vel->x = -max_speed;
+            vel->x = -move_speed;
         } else if (button_pressed(BUTTON_B)) {
-            vel->x += move_accel * dt;
-            if (vel->x > max_speed) vel->x = max_speed;
+            vel->x = move_speed;
         } else {
-            // Apply friction when no input
-            vel->x *= 0.85f;
-            if (vel->x > -0.1f && vel->x < 0.1f) vel->x = 0;
+            vel->x *= 0.8f;
         }
         
-        // Jump logic
         bool jump_pressed = button_pressed(BUTTON_Y);
         if (jump_pressed && !sys->last_jump_pressed) {
             if (player->on_ground || player->jump_count < player->max_jumps) {
-                vel->y = -180.0f;
+                vel->y = -150.0f;
                 player->jump_count++;
                 player->on_ground = false;
             }
@@ -484,7 +489,7 @@ InputSystem* create_input_system(void) {
     return sys;
 }
 
-// Physics System - IMPROVED
+// Physics System
 void physics_update(System* self, World* world, float dt) {
     if (!self || !world) return;
     
@@ -501,7 +506,6 @@ void physics_update(System* self, World* world, float dt) {
         
         if (!pos || !vel || !phys) continue;
         
-        // Apply gravity
         if (phys->affected_by_gravity) {
             vel->y += phys->gravity * dt;
             if (vel->y > phys->max_fall_speed) {
@@ -509,37 +513,22 @@ void physics_update(System* self, World* world, float dt) {
             }
         }
         
-        // Apply velocity
         pos->x += vel->x * dt;
         pos->y += vel->y * dt;
         
-        // World bounds - FIXED: Use WORLD_WIDTH instead of 800
-        if (pos->x < 0) {
-            pos->x = 0;
-            vel->x = 0;
-        }
-        if (pos->x > WORLD_WIDTH - 16) {
-            pos->x = WORLD_WIDTH - 16;
-            vel->x = 0;
-        }
-        
-        // Bottom boundary (death pit or ground)
-        if (pos->y > DISPLAY_HEIGHT + 50) {
-            // Player fell off - respawn or lose life
+        if (pos->y > DISPLAY_HEIGHT - 16) {
+            pos->y = DISPLAY_HEIGHT - 16;
+            vel->y = 0;
+            
             PlayerComponent* player = world_get_component(world, *entity, CT_PLAYER);
             if (player) {
-                player->lives--;
-                if (player->lives <= 0) {
-                    world->game_over = true;
-                } else {
-                    // Respawn at start
-                    pos->x = 50.0f;
-                    pos->y = 100.0f;
-                    vel->x = 0;
-                    vel->y = 0;
-                }
+                player->on_ground = true;
+                player->jump_count = 0;
             }
         }
+        
+        if (pos->x < 0) pos->x = 0;
+        if (pos->x > 800) pos->x = 800;
     }
     
     array_free(&entities);
@@ -553,7 +542,7 @@ PhysicsSystem* create_physics_system(void) {
     return sys;
 }
 
-// Collision System - IMPROVED
+// Collision System
 void collision_update(System* self, World* world, float dt) {
     if (!self || !world) return;
     
@@ -580,10 +569,8 @@ void collision_update(System* self, World* world, float dt) {
         
         if (!p_pos || !p_col || !p_vel || !player) continue;
         
-        // Reset ground state each frame
         player->on_ground = false;
         
-        // Platform collision - IMPROVED
         for (int j = 0; j < platforms.size; j++) {
             EntityID* plat_ent = array_get(&platforms, j);
             if (!plat_ent) continue;
@@ -597,44 +584,29 @@ void collision_update(System* self, World* world, float dt) {
             if (check_collision(p_pos->x, p_pos->y, p_col->width, p_col->height,
                               plat_pos->x, plat_pos->y, plat_col->width, plat_col->height)) {
                 
-                // Calculate overlap on each axis
-                float overlap_left = (p_pos->x + p_col->width) - plat_pos->x;
-                float overlap_right = (plat_pos->x + plat_col->width) - p_pos->x;
-                float overlap_top = (p_pos->y + p_col->height) - plat_pos->y;
-                float overlap_bottom = (plat_pos->y + plat_col->height) - p_pos->y;
-                
-                // Find minimum overlap
-                float min_overlap = overlap_top;
-                int collision_side = 0; // 0=top, 1=bottom, 2=left, 3=right
-                
-                if (overlap_bottom < min_overlap) { min_overlap = overlap_bottom; collision_side = 1; }
-                if (!platform->one_way && overlap_left < min_overlap) { min_overlap = overlap_left; collision_side = 2; }
-                if (!platform->one_way && overlap_right < min_overlap) { min_overlap = overlap_right; collision_side = 3; }
-                
-                // Resolve collision based on side
-                if (collision_side == 0 && p_vel->y > 0) {
-                    // Landing on top
+                if (p_vel->y > 0 && p_pos->y + p_col->height - 5 < plat_pos->y + plat_col->height) {
                     p_pos->y = plat_pos->y - p_col->height;
                     p_vel->y = 0;
                     player->on_ground = true;
                     player->jump_count = 0;
-                } else if (collision_side == 1 && p_vel->y < 0 && !platform->one_way) {
-                    // Hit bottom
+                }
+                else if (p_vel->y < 0 && !platform->one_way) {
                     p_pos->y = plat_pos->y + plat_col->height;
                     p_vel->y = 0;
-                } else if (collision_side == 2 && !platform->one_way) {
-                    // Hit from left
-                    p_pos->x = plat_pos->x - p_col->width;
-                    p_vel->x = 0;
-                } else if (collision_side == 3 && !platform->one_way) {
-                    // Hit from right
-                    p_pos->x = plat_pos->x + plat_col->width;
-                    p_vel->x = 0;
+                }
+                
+                if (!platform->one_way) {
+                    if (p_vel->x > 0) {
+                        p_pos->x = plat_pos->x - p_col->width;
+                        p_vel->x = 0;
+                    } else if (p_vel->x < 0) {
+                        p_pos->x = plat_pos->x + plat_col->width;
+                        p_vel->x = 0;
+                    }
                 }
             }
         }
         
-        // Enemy collision
         for (int j = 0; j < enemies.size; j++) {
             EntityID* enemy_ent = array_get(&enemies, j);
             if (!enemy_ent) continue;
@@ -647,27 +619,21 @@ void collision_update(System* self, World* world, float dt) {
             if (check_collision(p_pos->x, p_pos->y, p_col->width, p_col->height,
                               e_pos->x, e_pos->y, e_col->width, e_col->height)) {
                 
-                // Check if jumping on enemy
-                if (p_vel->y > 0 && p_pos->y + p_col->height - 8 < e_pos->y + e_col->height / 2) {
+                if (p_vel->y > 0 && p_pos->y + p_col->height - 5 < e_pos->y + e_col->height / 2) {
                     world_destroy_entity(world, *enemy_ent);
-                    p_vel->y = -120.0f;
+                    p_vel->y = -100.0f;
                     world->score += 100;
                 } else {
-                    // Take damage
                     player->lives--;
                     if (player->lives <= 0) {
                         world->game_over = true;
-                    } else {
-                        // Knockback
-                        float knockback_dir = (p_pos->x < e_pos->x) ? -1.0f : 1.0f;
-                        p_vel->x = knockback_dir * 100.0f;
-                        p_vel->y = -80.0f;
                     }
+                    p_pos->x -= 20 * (p_vel->x > 0 ? 1 : -1);
+                    p_vel->x = -p_vel->x * 2;
                 }
             }
         }
         
-        // Collectible collision
         for (int j = 0; j < collectibles.size; j++) {
             EntityID* coll_ent = array_get(&collectibles, j);
             if (!coll_ent) continue;
@@ -685,7 +651,6 @@ void collision_update(System* self, World* world, float dt) {
                               c_pos->x, c_pos->y, c_col->width, c_col->height)) {
                 coll->collected = true;
                 world->score += coll->points;
-                world_destroy_entity(world, *coll_ent);
             }
         }
     }
@@ -743,32 +708,20 @@ EnemyAISystem* create_enemy_ai_system(void) {
     return sys;
 }
 
-// Render System - IMPROVED with better camera
+// Render System
 void render_update(System* self, World* world, float dt) {
     if (!self || !world) return;
     
     display_clear(COLOR_CYAN);
     
-    // Update camera to follow player smoothly
     if (world->player_entity > 0) {
         PositionComponent* player_pos = world_get_component(world, world->player_entity, CT_POSITION);
         if (player_pos) {
-            // Center camera on player with smooth follow
-            float target_camera_x = player_pos->x - DISPLAY_WIDTH / 2;
-            
-            // Clamp camera to world bounds
-            if (target_camera_x < 0) target_camera_x = 0;
-            if (target_camera_x > WORLD_WIDTH - DISPLAY_WIDTH) {
-                target_camera_x = WORLD_WIDTH - DISPLAY_WIDTH;
-            }
-            
-            // Smooth camera movement
-            float camera_speed = 5.0f;
-            world->camera_x += (target_camera_x - world->camera_x) * camera_speed * dt;
+            world->camera_x = player_pos->x - DISPLAY_WIDTH / 2;
+            if (world->camera_x < 0) world->camera_x = 0;
         }
     }
     
-    // Render platforms
     int platform_required[] = {CT_PLATFORM, CT_POSITION, CT_SPRITE};
     Array platforms = world_query(world, platform_required, 3);
     
@@ -784,14 +737,12 @@ void render_update(System* self, World* world, float dt) {
         int screen_x = (int)(pos->x - world->camera_x);
         int screen_y = (int)pos->y;
         
-        // Only render if on screen
         if (screen_x + sprite->width >= 0 && screen_x < DISPLAY_WIDTH) {
             display_fill_rect(screen_x, screen_y, sprite->width, sprite->height, sprite->color);
         }
     }
     array_free(&platforms);
     
-    // Render collectibles
     int coll_required[] = {CT_COLLECTIBLE, CT_POSITION, CT_SPRITE};
     Array collectibles = world_query(world, coll_required, 3);
     
@@ -817,7 +768,6 @@ void render_update(System* self, World* world, float dt) {
     }
     array_free(&collectibles);
     
-    // Render enemies
     int enemy_required[] = {CT_ENEMY, CT_POSITION, CT_SPRITE};
     Array enemies = world_query(world, enemy_required, 3);
     
@@ -839,7 +789,6 @@ void render_update(System* self, World* world, float dt) {
     }
     array_free(&enemies);
     
-    // Render player (always render, even off screen slightly)
     int player_required[] = {CT_PLAYER, CT_POSITION, CT_SPRITE};
     Array players = world_query(world, player_required, 3);
     
@@ -859,12 +808,10 @@ void render_update(System* self, World* world, float dt) {
     }
     array_free(&players);
     
-    // UI - Score
     char score_text[32];
     snprintf(score_text, sizeof(score_text), "Score: %d", world->score);
     display_draw_string(5, 5, score_text, COLOR_WHITE, COLOR_BLACK);
     
-    // UI - Lives
     if (world->player_entity > 0) {
         PlayerComponent* player = world_get_component(world, world->player_entity, CT_PLAYER);
         if (player) {
@@ -874,10 +821,8 @@ void render_update(System* self, World* world, float dt) {
         }
     }
     
-    // Game over screen
     if (world->game_over) {
         display_draw_string(DISPLAY_WIDTH/2 - 30, DISPLAY_HEIGHT/2, "GAME OVER", COLOR_RED, COLOR_BLACK);
-        display_draw_string(DISPLAY_WIDTH/2 - 40, DISPLAY_HEIGHT/2 + 15, "Y: Restart", COLOR_YELLOW, COLOR_BLACK);
     }
 }
 
@@ -889,16 +834,15 @@ RenderSystem* create_render_system(void) {
     return sys;
 }
 
-// Game init - IMPROVED LEVEL
+// Game init
 void game_create_level(World* world) {
     assert(world);
     
-    // Create extended ground platforms
-    int ground_platform_count = (WORLD_WIDTH / 80) + 2;
-    for (int i = 0; i < ground_platform_count; i++) {
+    // Create ground platforms
+    for (int i = 0; i < 10; i++) {
         EntityID platform = world_create_entity(world);
         
-        PositionComponent pos = {i * 80.0f, GROUND_HEIGHT};
+        PositionComponent pos = {i * 80.0f, 220.0f};
         world_add_component(world, platform, CT_POSITION, &pos, sizeof(PositionComponent));
         
         SpriteComponent sprite = {COLOR_GREEN, 80, 20, NULL};
@@ -911,90 +855,75 @@ void game_create_level(World* world) {
         world_add_component(world, platform, CT_PLATFORM, &plat, sizeof(PlatformComponent));
     }
     
-    // Create floating platforms throughout the level
-    struct {float x, y, w;} floating_platforms[] = {
-        {150, 180, 60},
-        {280, 150, 60},
-        {420, 180, 60},
-        {580, 140, 70},
-        {750, 160, 60},
-        {900, 130, 80},
-        {1080, 170, 60},
-        {1240, 140, 70},
-        {1400, 180, 60},
-        {1560, 150, 60},
-        {1720, 130, 70},
-        {1880, 160, 60},
-    };
+    // Create floating platforms
+    EntityID plat1 = world_create_entity(world);
+    PositionComponent pos1 = {150.0f, 180.0f};
+    world_add_component(world, plat1, CT_POSITION, &pos1, sizeof(PositionComponent));
+    SpriteComponent sprite1 = {COLOR_GREEN, 60, 15, NULL};
+    world_add_component(world, plat1, CT_SPRITE, &sprite1, sizeof(SpriteComponent));
+    ColliderComponent collider1 = {60, 15, 0, 0};
+    world_add_component(world, plat1, CT_COLLIDER, &collider1, sizeof(ColliderComponent));
+    PlatformComponent plat1_comp = {true, false};
+    world_add_component(world, plat1, CT_PLATFORM, &plat1_comp, sizeof(PlatformComponent));
     
-    for (int i = 0; i < sizeof(floating_platforms) / sizeof(floating_platforms[0]); i++) {
-        EntityID plat = world_create_entity(world);
-        PositionComponent pos = {floating_platforms[i].x, floating_platforms[i].y};
-        world_add_component(world, plat, CT_POSITION, &pos, sizeof(PositionComponent));
-        
-        SpriteComponent sprite = {COLOR_GREEN, (uint8_t)floating_platforms[i].w, 15, NULL};
-        world_add_component(world, plat, CT_SPRITE, &sprite, sizeof(SpriteComponent));
-        
-        ColliderComponent collider = {floating_platforms[i].w, 15, 0, 0};
-        world_add_component(world, plat, CT_COLLIDER, &collider, sizeof(ColliderComponent));
-        
-        PlatformComponent plat_comp = {true, false};
-        world_add_component(world, plat, CT_PLATFORM, &plat_comp, sizeof(PlatformComponent));
-    }
+    EntityID plat2 = world_create_entity(world);
+    PositionComponent pos2 = {280.0f, 150.0f};
+    world_add_component(world, plat2, CT_POSITION, &pos2, sizeof(PositionComponent));
+    SpriteComponent sprite2 = {COLOR_GREEN, 60, 15, NULL};
+    world_add_component(world, plat2, CT_SPRITE, &sprite2, sizeof(SpriteComponent));
+    ColliderComponent collider2 = {60, 15, 0, 0};
+    world_add_component(world, plat2, CT_COLLIDER, &collider2, sizeof(ColliderComponent));
+    PlatformComponent plat2_comp = {true, false};
+    world_add_component(world, plat2, CT_PLATFORM, &plat2_comp, sizeof(PlatformComponent));
     
-    // Create enemies throughout the level
-    struct {float x, float y, float patrol_start, float patrol_end, float speed;} enemy_data[] = {
-        {250, 200, 200, 350, 30},
-        {450, 160, 400, 500, 35},
-        {700, 140, 650, 800, 40},
-        {1000, 200, 950, 1100, 30},
-        {1300, 160, 1250, 1400, 35},
-        {1600, 130, 1550, 1750, 40},
-    };
+    EntityID plat3 = world_create_entity(world);
+    PositionComponent pos3 = {420.0f, 180.0f};
+    world_add_component(world, plat3, CT_POSITION, &pos3, sizeof(PositionComponent));
+    SpriteComponent sprite3 = {COLOR_GREEN, 60, 15, NULL};
+    world_add_component(world, plat3, CT_SPRITE, &sprite3, sizeof(SpriteComponent));
+    ColliderComponent collider3 = {60, 15, 0, 0};
+    world_add_component(world, plat3, CT_COLLIDER, &collider3, sizeof(ColliderComponent));
+    PlatformComponent plat3_comp = {true, false};
+    world_add_component(world, plat3, CT_PLATFORM, &plat3_comp, sizeof(PlatformComponent));
     
-    for (int i = 0; i < sizeof(enemy_data) / sizeof(enemy_data[0]); i++) {
-        EntityID enemy = world_create_entity(world);
-        
-        PositionComponent e_pos = {enemy_data[i].x, enemy_data[i].y};
-        world_add_component(world, enemy, CT_POSITION, &e_pos, sizeof(PositionComponent));
-        
-        VelocityComponent e_vel = {0, 0};
-        world_add_component(world, enemy, CT_VELOCITY, &e_vel, sizeof(VelocityComponent));
-        
-        SpriteComponent e_sprite = {COLOR_RED, 12, 12, NULL};
-        world_add_component(world, enemy, CT_SPRITE, &e_sprite, sizeof(SpriteComponent));
-        
-        ColliderComponent e_collider = {12, 12, 0, 0};
-        world_add_component(world, enemy, CT_COLLIDER, &e_collider, sizeof(ColliderComponent));
-        
-        EnemyComponent e_comp = {
-            enemy_data[i].speed,
-            1.0f,
-            enemy_data[i].patrol_start,
-            enemy_data[i].patrol_end
-        };
-        world_add_component(world, enemy, CT_ENEMY, &e_comp, sizeof(EnemyComponent));
-        
-        PhysicsComponent e_phys = {400.0f, 200.0f, 0.9f, true};
-        world_add_component(world, enemy, CT_PHYSICS, &e_phys, sizeof(PhysicsComponent));
-    }
+    // Create enemies
+    EntityID enemy1 = world_create_entity(world);
+    PositionComponent e_pos1 = {200.0f, 200.0f};
+    world_add_component(world, enemy1, CT_POSITION, &e_pos1, sizeof(PositionComponent));
+    VelocityComponent e_vel1 = {0, 0};
+    world_add_component(world, enemy1, CT_VELOCITY, &e_vel1, sizeof(VelocityComponent));
+    SpriteComponent e_sprite1 = {COLOR_RED, 12, 12, NULL};
+    world_add_component(world, enemy1, CT_SPRITE, &e_sprite1, sizeof(SpriteComponent));
+    ColliderComponent e_collider1 = {12, 12, 0, 0};
+    world_add_component(world, enemy1, CT_COLLIDER, &e_collider1, sizeof(ColliderComponent));
+    EnemyComponent e_comp1 = {30.0f, 1.0f, 150.0f, 250.0f};
+    world_add_component(world, enemy1, CT_ENEMY, &e_comp1, sizeof(EnemyComponent));
+    PhysicsComponent e_phys1 = {400.0f, 200.0f, 0.9f, true};
+    world_add_component(world, enemy1, CT_PHYSICS, &e_phys1, sizeof(PhysicsComponent));
     
-    // Create collectibles (coins) throughout the level
-    for (int i = 0; i < 20; i++) {
+    EntityID enemy2 = world_create_entity(world);
+    PositionComponent e_pos2 = {400.0f, 160.0f};
+    world_add_component(world, enemy2, CT_POSITION, &e_pos2, sizeof(PositionComponent));
+    VelocityComponent e_vel2 = {0, 0};
+    world_add_component(world, enemy2, CT_VELOCITY, &e_vel2, sizeof(VelocityComponent));
+    SpriteComponent e_sprite2 = {COLOR_RED, 12, 12, NULL};
+    world_add_component(world, enemy2, CT_SPRITE, &e_sprite2, sizeof(SpriteComponent));
+    ColliderComponent e_collider2 = {12, 12, 0, 0};
+    world_add_component(world, enemy2, CT_COLLIDER, &e_collider2, sizeof(ColliderComponent));
+    EnemyComponent e_comp2 = {40.0f, -1.0f, 350.0f, 470.0f};
+    world_add_component(world, enemy2, CT_ENEMY, &e_comp2, sizeof(EnemyComponent));
+    PhysicsComponent e_phys2 = {400.0f, 200.0f, 0.9f, true};
+    world_add_component(world, enemy2, CT_PHYSICS, &e_phys2, sizeof(PhysicsComponent));
+    
+    // Create collectibles (coins)
+    for (int i = 0; i < 5; i++) {
         EntityID coin = world_create_entity(world);
-        
-        float coin_x = 150.0f + i * 100.0f;
-        float coin_y = 100.0f + (i % 3) * 30.0f;
-        
-        PositionComponent c_pos = {coin_x, coin_y};
+        PositionComponent c_pos = {100.0f + i * 100.0f, 130.0f};
         world_add_component(world, coin, CT_POSITION, &c_pos, sizeof(PositionComponent));
-        
         SpriteComponent c_sprite = {COLOR_YELLOW, 8, 8, NULL};
         world_add_component(world, coin, CT_SPRITE, &c_sprite, sizeof(SpriteComponent));
-        
         ColliderComponent c_collider = {8, 8, 0, 0};
         world_add_component(world, coin, CT_COLLIDER, &c_collider, sizeof(ColliderComponent));
-        
         CollectibleComponent c_comp = {50, false};
         world_add_component(world, coin, CT_COLLECTIBLE, &c_comp, sizeof(CollectibleComponent));
     }
