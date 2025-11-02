@@ -6,7 +6,7 @@ import utime
 import network
 import socket
 
-#  VFS Component 
+# ============= VFS Component =============
 class SimpleVFS:
     def __init__(self, mount_point="/sd"):
         self.mount_point = mount_point
@@ -64,7 +64,7 @@ class SimpleVFS:
         return self.metadata[filename]["size"]
 
 
-#  Compression 
+# ============= Compression =============
 class RLECompressor:
     """Simple Run-Length Encoding for image data"""
     
@@ -103,7 +103,7 @@ class RLECompressor:
         return bytes(decompressed)
 
 
-#  Network Server 
+# ============= Network Server =============
 class ImageServer:
     def __init__(self, vfs, ssid="PicoImageServer", password="pico12345", port=8080):
         self.vfs = vfs
@@ -212,7 +212,7 @@ class ImageServer:
                     pass
 
 
-#  Main Setup 
+# ============= Main Setup =============
 def main():
     # Initialize SD card
     try:
