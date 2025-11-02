@@ -484,7 +484,7 @@ InputSystem* create_input_system(void) {
     return sys;
 }
 
-// Physics System - IMPROVED
+// Physics System - FIXED
 void physics_update(System* self, World* world, float dt) {
     if (!self || !world) return;
     
@@ -523,7 +523,7 @@ void physics_update(System* self, World* world, float dt) {
             vel->x = 0;
         }
         
-        // Bottom boundary (death pit or ground)
+        // Bottom boundary (death pit)
         if (pos->y > DISPLAY_HEIGHT + 50) {
             // Player fell off - respawn or lose life
             PlayerComponent* player = world_get_component(world, *entity, CT_PLAYER);
@@ -532,9 +532,9 @@ void physics_update(System* self, World* world, float dt) {
                 if (player->lives <= 0) {
                     world->game_over = true;
                 } else {
-                    // Respawn at start
+                    // Respawn at start - FIXED: spawn on ground
                     pos->x = 50.0f;
-                    pos->y = 100.0f;
+                    pos->y = GROUND_HEIGHT - 14.0f; // Place on ground (14 = player height)
                     vel->x = 0;
                     vel->y = 0;
                 }
@@ -747,6 +747,7 @@ EnemyAISystem* create_enemy_ai_system(void) {
 void render_update(System* self, World* world, float dt) {
     if (!self || !world) return;
     
+    // Clear screen to sky blue
     display_clear(COLOR_CYAN);
     
     // Update camera to follow player smoothly
@@ -889,7 +890,7 @@ RenderSystem* create_render_system(void) {
     return sys;
 }
 
-// Game init - IMPROVED LEVEL
+// Game init - IMPROVED LEVEL with FIXED player spawn position
 void game_create_level(World* world) {
     assert(world);
     
@@ -912,7 +913,13 @@ void game_create_level(World* world) {
     }
     
     // Create floating platforms throughout the level
-    struct {float x, y, w;} floating_platforms[] = {
+    typedef struct {
+        float x;
+        float y;
+        float w;
+    } PlatformData;
+    
+    PlatformData floating_platforms[] = {
         {150, 180, 60},
         {280, 150, 60},
         {420, 180, 60},
@@ -943,7 +950,15 @@ void game_create_level(World* world) {
     }
     
     // Create enemies throughout the level
-    struct {float x, float y, float patrol_start, float patrol_end, float speed;} enemy_data[] = {
+    typedef struct {
+        float x;
+        float y;
+        float patrol_start;
+        float patrol_end;
+        float speed;
+    } EnemyData;
+    
+    EnemyData enemy_data[] = {
         {250, 200, 200, 350, 30},
         {450, 160, 400, 500, 35},
         {700, 140, 650, 800, 40},
@@ -999,11 +1014,12 @@ void game_create_level(World* world) {
         world_add_component(world, coin, CT_COLLECTIBLE, &c_comp, sizeof(CollectibleComponent));
     }
     
-    // Create player
+    // Create player - FIXED: spawn on ground
     EntityID player = world_create_entity(world);
     world->player_entity = player;
     
-    PositionComponent p_pos = {50.0f, 180.0f};
+    // FIXED: Place player ON the ground platform (ground_y - player_height)
+    PositionComponent p_pos = {50.0f, GROUND_HEIGHT - 14.0f};
     world_add_component(world, player, CT_POSITION, &p_pos, sizeof(PositionComponent));
     
     VelocityComponent p_vel = {0, 0};
