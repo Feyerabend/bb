@@ -54,6 +54,14 @@ limited memory and processing power, this allows the Pico to display complex vec
 images efficiently.
 
 
+### *05. Your Project*
+
+Fill in the missing parts from the ideas above. Make your own extension to the project(s)!
+
+
+
+### Project ..
+
 This workflow maintains a degree of scalability and geometric precision while remaining
 realistic for small embedded targets. It bridges the gap between high-level vector
 representation and low-level pixel output, demonstrating how ideas from modern computer
