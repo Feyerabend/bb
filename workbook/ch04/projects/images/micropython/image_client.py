@@ -114,18 +114,71 @@ class ImageClient:
         self.wlan = network.WLAN(network.STA_IF)
         self.wlan.active(True)
         
+        print(f"\nScanning for networks...")
+        utime.sleep(2)  # Give time for scan
+        
+        # Try to scan for networks
+        try:
+            networks = self.wlan.scan()
+            print(f"Found {len(networks)} networks:")
+            found_target = False
+            for net in networks:
+                ssid = net[0].decode('utf-8') if isinstance(net[0], bytes) else net[0]
+                print(f"  - {ssid} (RSSI: {net[3]})")
+                if ssid == self.server_ssid:
+                    found_target = True
+                    print(f"    ^ Target network found!")
+            
+            if not found_target:
+                print(f"\nWARNING: '{self.server_ssid}' not found in scan!")
+                print("Attempting connection anyway...")
+        except Exception as e:
+            print(f"Scan failed (might not be supported): {e}")
+        
         print(f"\nConnecting to '{self.server_ssid}'..")
         
-        # Connect to open network (no password)
-        self.wlan.connect(self.server_ssid)
+        # Disconnect first if already connected
+        if self.wlan.isconnected():
+            print("Disconnecting from previous network...")
+            self.wlan.disconnect()
+            utime.sleep(1)
         
-        # Wait for connection with timeout and status updates
-        max_wait = 20
+        # Try different connection methods for compatibility
+        try:
+            # Method 1: Connect with just SSID (for open networks)
+            self.wlan.connect(self.server_ssid)
+            print("Connection method: SSID only (open network)")
+        except TypeError:
+            try:
+                # Method 2: Connect with empty password
+                self.wlan.connect(self.server_ssid, '')
+                print("Connection method: SSID + empty password")
+            except Exception as e2:
+                print(f"Connection error: {e2}")
+                return False
+        
+        # Wait for connection with detailed status updates
+        max_wait = 30  # Increased timeout
         while max_wait > 0:
             status = self.wlan.status()
             
+            # Print status code for debugging
+            status_msg = {
+                0: "IDLE",
+                1: "CONNECTING", 
+                2: "WRONG_PASSWORD",
+                3: "NO_AP_FOUND",
+                -1: "FAILED",
+                -2: "CONNECT_FAIL",
+                -3: "GOT_IP"
+            }
+            
+            if status in status_msg:
+                if max_wait % 5 == 0:  # Print every 5 seconds
+                    print(f"\nStatus: {status_msg.get(status, status)}")
+            
             if self.wlan.isconnected():
-                print("\nConnected successfully!")
+                print("\n✓ Connected successfully!")
                 config = self.wlan.ifconfig()
                 print(f"Network configuration:")
                 print(f"  IP: {config[0]}")
@@ -136,12 +189,18 @@ class ImageClient:
                     self.led.value(1)  # Indicate successful connection
                 return True
             
-            # Print status indicator
+            # Check for error statuses
+            if status < 0 and status != -3:  # -3 is actually success on some platforms
+                print(f"\n✗ Connection failed with status: {status_msg.get(status, status)}")
+                return False
+            
+            # Print progress indicator
             print(".", end="")
             utime.sleep(1)
             max_wait -= 1
         
-        print(f"\nFailed to connect to '{self.server_ssid}'")
+        print(f"\n✗ Connection timeout - failed to connect to '{self.server_ssid}'")
+        print(f"Final status: {self.wlan.status()}")
         return False
         
     def list_images(self):

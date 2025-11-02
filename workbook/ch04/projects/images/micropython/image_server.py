@@ -120,9 +120,21 @@ class ImageServer:
         self.ap = network.WLAN(network.AP_IF)
         self.ap.active(True)
         
-        # Configure as open network (no password for ease of use)
-        self.ap.config(essid=self.ssid, authmode=network.AUTH_OPEN)
-        print(f"Open AP '{self.ssid}' created (no password)")
+        # Configure AP - try different approaches for compatibility
+        try:
+            # Try method 1: config with authmode parameter
+            # AUTH_OPEN = 0 in most implementations
+            self.ap.config(essid=self.ssid, authmode=0)
+            print(f"Open AP '{self.ssid}' created (no password)")
+        except:
+            try:
+                # Try method 2: config with security parameter
+                self.ap.config(essid=self.ssid, security=0)
+                print(f"Open AP '{self.ssid}' created (no password)")
+            except:
+                # Try method 3: Just set ESSID without auth (some versions default to open)
+                self.ap.config(essid=self.ssid)
+                print(f"AP '{self.ssid}' created")
         
         # Wait for interface to become active
         max_wait = 10
