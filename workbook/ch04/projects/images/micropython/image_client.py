@@ -111,31 +111,61 @@ class ImageClient:
             print("LED not available")
         
     def connect_to_network(self):
+        print("\nInitializing WiFi...")
+        
+        # Make sure WiFi is off first
+        try:
+            self.wlan = network.WLAN(network.STA_IF)
+            if self.wlan.active():
+                print("Deactivating existing WiFi...")
+                self.wlan.active(False)
+                utime.sleep(1)
+        except:
+            pass
+        
+        # Now activate it fresh
         self.wlan = network.WLAN(network.STA_IF)
         self.wlan.active(True)
         
-        print(f"\nScanning for networks...")
-        utime.sleep(2)  # Give time for scan
+        # Wait for WiFi to actually become active
+        print("Activating WiFi interface...")
+        max_wait = 10
+        while max_wait > 0 and not self.wlan.active():
+            print(".", end="")
+            utime.sleep(0.5)
+            max_wait -= 1
         
-        # Try to scan for networks
+        if not self.wlan.active():
+            print("\n✗ Failed to activate WiFi interface!")
+            return False
+        
+        print("\n✓ WiFi interface active")
+        utime.sleep(2)  # Give it time to stabilize
+        
+        print(f"\nScanning for networks...")
+        utime.sleep(1)  # Additional time for scan
+        
+        # Try to scan for networks (but don't fail if scan doesn't work)
         try:
             networks = self.wlan.scan()
-            print(f"Found {len(networks)} networks:")
-            found_target = False
-            for net in networks:
-                ssid = net[0].decode('utf-8') if isinstance(net[0], bytes) else net[0]
-                print(f"  - {ssid} (RSSI: {net[3]})")
-                if ssid == self.server_ssid:
-                    found_target = True
-                    print(f"    ^ Target network found!")
-            
-            if not found_target:
-                print(f"\nWARNING: '{self.server_ssid}' not found in scan!")
-                print("Attempting connection anyway...")
+            if networks and len(networks) > 0:
+                print(f"Found {len(networks)} networks:")
+                found_target = False
+                for net in networks:
+                    ssid = net[0].decode('utf-8') if isinstance(net[0], bytes) else net[0]
+                    print(f"  - {ssid} (RSSI: {net[3]})")
+                    if ssid == self.server_ssid:
+                        found_target = True
+                        print(f"    ^ Target network found!")
+                
+                if not found_target:
+                    print(f"\nWARNING: '{self.server_ssid}' not found in scan!")
+            else:
+                print("Scan returned empty - this is OK, will try connecting anyway")
         except Exception as e:
-            print(f"Scan failed (might not be supported): {e}")
+            print(f"Scan not available (this is normal on some boards): {e}")
         
-        print(f"\nConnecting to '{self.server_ssid}'..")
+        print(f"\nAttempting to connect to '{self.server_ssid}'..")
         
         # Disconnect first if already connected
         if self.wlan.isconnected():
@@ -366,6 +396,15 @@ def main():
     print("\n" + "-"*50)
     print("IMAGE CLIENT STARTING")
     print("-"*50)
+    
+    # Check system info
+    try:
+        import sys
+        print(f"\nSystem info:")
+        print(f"  Platform: {sys.platform}")
+        print(f"  Version: {sys.version}")
+    except:
+        pass
     
     # Configuration
     SERVER_SSID = "PicoImages"
