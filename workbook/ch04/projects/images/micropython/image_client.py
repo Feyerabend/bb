@@ -4,7 +4,7 @@ import utime
 import ujson
 import gc
 
-# Try to import display, but make it optional for testing
+# Try to import display, but make it optional
 try:
     from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY_2
     DISPLAY_AVAILABLE = True
@@ -64,7 +64,6 @@ class ImageDisplay:
         except Exception as e:
             print(f"Show text failed: {e}")
         
-    # raw RGB565 image data!
     def display_image(self, image_data):
         if not self.display:
             print(f"Would display {len(image_data)} bytes")
@@ -79,7 +78,6 @@ class ImageDisplay:
                 for x in range(self.width):
                     idx = (y * self.width + x) * 2
                     if idx + 1 < len(image_data):
-                        # Extract RGB565 pixel
                         pixel = (image_data[idx] << 8) | image_data[idx + 1]
                         r = ((pixel >> 11) & 0x1F) << 3
                         g = ((pixel >> 5) & 0x3F) << 2
@@ -107,187 +105,312 @@ class ImageClient:
         try:
             from machine import Pin
             self.led = Pin(25, Pin.OUT)
-        except:
-            print("LED not available")
+            print("DEBUG: LED initialized")
+        except Exception as e:
+            print(f"DEBUG: LED not available: {e}")
         
     def connect_to_network(self):
-        print("\nInitializing WiFi...")
+        print("\n" + "="*50)
+        print("INITIALIZING WIFI CLIENT")
+        print("="*50)
         
-        # Make sure WiFi is off first
+        # First, make sure AP interface is OFF
+        print("\nDEBUG: Checking AP interface...")
+        try:
+            ap = network.WLAN(network.AP_IF)
+            if ap.active():
+                print("DEBUG: AP interface is active, deactivating...")
+                ap.active(False)
+                utime.sleep(2)
+                print("DEBUG: AP interface deactivated")
+            else:
+                print("DEBUG: AP interface already inactive")
+        except Exception as e:
+            print(f"DEBUG: AP interface check error: {e}")
+        
+        # Make sure STA WiFi is off first
+        print("\nDEBUG: Resetting STA interface...")
         try:
             self.wlan = network.WLAN(network.STA_IF)
             if self.wlan.active():
-                print("Deactivating existing WiFi...")
+                print("DEBUG: STA was active, deactivating...")
                 self.wlan.active(False)
-                utime.sleep(1)
-        except:
-            pass
+                utime.sleep(2)
+                print("DEBUG: STA deactivated")
+        except Exception as e:
+            print(f"DEBUG: Error during reset: {e}")
         
         # Now activate it fresh
+        print("\nDEBUG: Activating STA interface...")
         self.wlan = network.WLAN(network.STA_IF)
         self.wlan.active(True)
         
         # Wait for WiFi to actually become active
-        print("Activating WiFi interface...")
-        max_wait = 10
-        while max_wait > 0 and not self.wlan.active():
+        print("DEBUG: Waiting for interface to become active...")
+        max_wait = 15
+        wait_count = 0
+        while wait_count < max_wait and not self.wlan.active():
             print(".", end="")
             utime.sleep(0.5)
-            max_wait -= 1
+            wait_count += 1
         
         if not self.wlan.active():
-            print("\n✗ Failed to activate WiFi interface!")
+            print("\nERROR: Failed to activate WiFi interface!")
             return False
         
-        print("\n✓ WiFi interface active")
-        utime.sleep(2)  # Give it time to stabilize
+        print(f"\nSUCCESS: WiFi interface active (took {wait_count * 0.5:.1f}s)")
         
-        print(f"\nScanning for networks...")
-        utime.sleep(1)  # Additional time for scan
+        # Extra stabilization time
+        print("DEBUG: Allowing interface to stabilize...")
+        utime.sleep(3)
         
-        # Try to scan for networks (but don't fail if scan doesn't work)
+        # Try to get interface info
+        try:
+            mac = self.wlan.config('mac')
+            mac_str = ':'.join(['%02X' % b for b in mac])
+            print(f"DEBUG: MAC Address: {mac_str}")
+        except Exception as e:
+            print(f"DEBUG: Could not get MAC: {e}")
+        
+        # Scan for networks
+        print(f"\nDEBUG: Scanning for networks (this may take 5-10 seconds)...")
+        utime.sleep(2)
+        
         try:
             networks = self.wlan.scan()
+            print(f"\nDEBUG: Scan complete, found {len(networks)} networks")
+            
             if networks and len(networks) > 0:
-                print(f"Found {len(networks)} networks:")
+                print("\nAvailable networks:")
                 found_target = False
                 for net in networks:
-                    ssid = net[0].decode('utf-8') if isinstance(net[0], bytes) else net[0]
-                    print(f"  - {ssid} (RSSI: {net[3]})")
-                    if ssid == self.server_ssid:
-                        found_target = True
-                        print(f"    ^ Target network found!")
+                    try:
+                        ssid = net[0].decode('utf-8') if isinstance(net[0], bytes) else net[0]
+                        rssi = net[3]
+                        channel = net[2] if len(net) > 2 else '?'
+                        security = net[4] if len(net) > 4 else '?'
+                        
+                        marker = " <-- TARGET" if ssid == self.server_ssid else ""
+                        print(f"  - '{ssid}' (RSSI: {rssi}dBm, Ch: {channel}, Sec: {security}){marker}")
+                        
+                        if ssid == self.server_ssid:
+                            found_target = True
+                    except Exception as e:
+                        print(f"  - <parsing error: {e}>")
                 
-                if not found_target:
-                    print(f"\nWARNING: '{self.server_ssid}' not found in scan!")
+                if found_target:
+                    print(f"\nSUCCESS: Target network '{self.server_ssid}' found in scan!")
+                else:
+                    print(f"\nWARNING: Target network '{self.server_ssid}' NOT found in scan!")
+                    print("This might be OK - will try connecting anyway...")
             else:
-                print("Scan returned empty - this is OK, will try connecting anyway")
+                print("WARNING: Scan returned empty results")
+                
         except Exception as e:
-            print(f"Scan not available (this is normal on some boards): {e}")
+            print(f"DEBUG: Scan failed: {e}")
+            print("This is OK on some boards - will try connecting anyway...")
+            import sys
+            sys.print_exception(e)
         
-        print(f"\nAttempting to connect to '{self.server_ssid}'..")
-        
-        # Disconnect first if already connected
+        # Disconnect if already connected
+        print(f"\nDEBUG: Checking current connection status...")
         if self.wlan.isconnected():
-            print("Disconnecting from previous network...")
+            print("DEBUG: Already connected to a network, disconnecting...")
             self.wlan.disconnect()
-            utime.sleep(1)
+            utime.sleep(2)
+            print("DEBUG: Disconnected")
         
-        # Try different connection methods for compatibility
+        # Try to connect
+        print(f"\n" + "="*50)
+        print(f"CONNECTING TO: '{self.server_ssid}'")
+        print("="*50)
+        
+        connection_success = False
+        
+        # Try Method 1: Empty string password (most compatible for open networks)
         try:
-            # Method 1: Connect with just SSID (for open networks)
-            self.wlan.connect(self.server_ssid)
-            print("Connection method: SSID only (open network)")
-        except TypeError:
+            print("\nDEBUG: Method 1 - Trying connect(ssid, '')...")
+            self.wlan.connect(self.server_ssid, '')
+            connection_success = True
+            print("DEBUG: Connection request accepted")
+        except Exception as e1:
+            print(f"DEBUG: Method 1 failed: {e1}")
+            
+            # Try Method 2: SSID only
             try:
-                # Method 2: Connect with empty password
-                self.wlan.connect(self.server_ssid, '')
-                print("Connection method: SSID + empty password")
+                print("\nDEBUG: Method 2 - Trying connect(ssid)...")
+                self.wlan.connect(self.server_ssid)
+                connection_success = True
+                print("DEBUG: Connection request accepted")
             except Exception as e2:
-                print(f"Connection error: {e2}")
-                return False
+                print(f"DEBUG: Method 2 failed: {e2}")
+                
+                # Try Method 3: None as password
+                try:
+                    print("\nDEBUG: Method 3 - Trying connect(ssid, None)...")
+                    self.wlan.connect(self.server_ssid, None)
+                    connection_success = True
+                    print("DEBUG: Connection request accepted")
+                except Exception as e3:
+                    print(f"DEBUG: Method 3 failed: {e3}")
+        
+        if not connection_success:
+            print("\nERROR: All connection methods failed!")
+            return False
         
         # Wait for connection with detailed status updates
-        max_wait = 30  # Increased timeout
-        while max_wait > 0:
+        print("\nDEBUG: Waiting for connection...")
+        max_wait = 40  # Longer timeout
+        wait_count = 0
+        last_status = None
+        
+        status_names = {
+            0: "STAT_IDLE",
+            1: "STAT_CONNECTING", 
+            2: "STAT_WRONG_PASSWORD",
+            3: "STAT_NO_AP_FOUND",
+            -1: "STAT_CONNECT_FAIL",
+            -2: "STAT_CONNECT_FAIL",
+            -3: "STAT_GOT_IP"
+        }
+        
+        while wait_count < max_wait:
             status = self.wlan.status()
             
-            # Print status code for debugging
-            status_msg = {
-                0: "IDLE",
-                1: "CONNECTING", 
-                2: "WRONG_PASSWORD",
-                3: "NO_AP_FOUND",
-                -1: "FAILED",
-                -2: "CONNECT_FAIL",
-                -3: "GOT_IP"
-            }
+            # Print status changes
+            if status != last_status:
+                status_str = status_names.get(status, f"UNKNOWN({status})")
+                print(f"\nDEBUG: Status changed to: {status_str}")
+                last_status = status
             
-            if status in status_msg:
-                if max_wait % 5 == 0:  # Print every 5 seconds
-                    print(f"\nStatus: {status_msg.get(status, status)}")
-            
+            # Check if connected
             if self.wlan.isconnected():
-                print("\n✓ Connected successfully!")
-                config = self.wlan.ifconfig()
-                print(f"Network configuration:")
-                print(f"  IP: {config[0]}")
-                print(f"  Netmask: {config[1]}")
-                print(f"  Gateway: {config[2]}")
-                print(f"  DNS: {config[3]}")
+                print(f"\n{'='*50}")
+                print("CONNECTION SUCCESSFUL!")
+                print("="*50)
+                
+                try:
+                    config = self.wlan.ifconfig()
+                    print(f"\nNetwork Configuration:")
+                    print(f"  IP Address: {config[0]}")
+                    print(f"  Netmask: {config[1]}")
+                    print(f"  Gateway: {config[2]}")
+                    print(f"  DNS Server: {config[3]}")
+                    print(f"\nConnection time: {wait_count}s")
+                except Exception as e:
+                    print(f"DEBUG: Could not get config: {e}")
+                
                 if self.led:
-                    self.led.value(1)  # Indicate successful connection
+                    self.led.value(1)
+                    print("DEBUG: LED turned on")
+                
                 return True
             
-            # Check for error statuses
-            if status < 0 and status != -3:  # -3 is actually success on some platforms
-                print(f"\n✗ Connection failed with status: {status_msg.get(status, status)}")
+            # Check for definitive error statuses
+            if status in [2, 3, -1, -2]:  # Error states
+                status_str = status_names.get(status, f"UNKNOWN({status})")
+                print(f"\nERROR: Connection failed with status: {status_str}")
+                print("\nPossible causes:")
+                print("  - Server AP not running")
+                print("  - SSID mismatch")
+                print("  - Channel conflict")
+                print("  - Too far away (weak signal)")
                 return False
             
-            # Print progress indicator
-            print(".", end="")
+            # Progress indicator
+            if wait_count % 2 == 0:
+                print(".", end="")
+            
             utime.sleep(1)
-            max_wait -= 1
+            wait_count += 1
         
-        print(f"\n✗ Connection timeout - failed to connect to '{self.server_ssid}'")
-        print(f"Final status: {self.wlan.status()}")
+        # Timeout
+        final_status = self.wlan.status()
+        final_status_str = status_names.get(final_status, f"UNKNOWN({final_status})")
+        print(f"\n\nERROR: Connection timeout after {max_wait}s")
+        print(f"Final status: {final_status_str}")
+        print(f"Connected: {self.wlan.isconnected()}")
+        
         return False
         
     def list_images(self):
-        print("\n--- Listing Images ---")
+        print("\n" + "="*50)
+        print("LISTING IMAGES")
+        print("="*50)
         sock = None
         try:
-            print(f"Connecting to {self.server_ip}:{self.server_port}")
+            print(f"\nDEBUG: Creating socket...")
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(10.0)
+            print(f"DEBUG: Socket created, timeout=10s")
+            
+            print(f"DEBUG: Connecting to {self.server_ip}:{self.server_port}...")
             sock.connect((self.server_ip, self.server_port))
-            print("Socket connected")
+            print("SUCCESS: Socket connected")
             
             # Send LIST request
+            print("DEBUG: Sending 'LIST' command...")
             sock.send(b"LIST\n")
-            print("Sent: LIST")
+            print("DEBUG: Command sent")
             
-            # Receive response header - read until we get the complete header
+            # Receive response header
+            print("DEBUG: Waiting for response header...")
             header = b""
-            while b"\n" not in header:
-                chunk = sock.recv(1)
-                if not chunk:
-                    break
-                header += chunk
+            timeout_count = 0
+            while b"\n" not in header and timeout_count < 100:
+                try:
+                    chunk = sock.recv(1)
+                    if not chunk:
+                        print("DEBUG: Connection closed by server")
+                        break
+                    header += chunk
+                except:
+                    timeout_count += 1
+                    utime.sleep(0.1)
             
-            header = header.decode().strip()
-            print(f"Received header: {header}")
-            
-            if not header.startswith("OK|"):
-                print(f"Error response: {header}")
+            if not header:
+                print("ERROR: No response from server")
                 return []
             
-            # Parse header: OK|size|
+            header = header.decode().strip()
+            print(f"DEBUG: Received header: '{header}'")
+            
+            if not header.startswith("OK|"):
+                print(f"ERROR: Server returned: {header}")
+                return []
+            
+            # Parse header
             parts = header.split("|")
             if len(parts) < 2:
-                print("Invalid header format")
+                print("ERROR: Invalid header format")
                 return []
             
             data_size = int(parts[1])
-            print(f"Expecting {data_size} bytes of JSON")
+            print(f"DEBUG: Expecting {data_size} bytes of JSON data")
             
             # Receive JSON data
+            print("DEBUG: Receiving data...")
             data = b""
             while len(data) < data_size:
-                chunk = sock.recv(min(1024, data_size - len(data)))
+                remaining = data_size - len(data)
+                chunk = sock.recv(min(512, remaining))
                 if not chunk:
+                    print("DEBUG: Connection closed early")
                     break
                 data += chunk
+                if len(data) % 512 == 0:
+                    print(f"DEBUG: Received {len(data)}/{data_size} bytes")
             
-            data = data.decode()
-            print(f"Received: {data}")
+            print(f"DEBUG: Received {len(data)} bytes total")
+            data_str = data.decode()
+            print(f"DEBUG: JSON data: {data_str}")
             
-            files = ujson.loads(data)
-            print(f"Parsed {len(files)} files")
+            files = ujson.loads(data_str)
+            print(f"\nSUCCESS: Parsed {len(files)} file(s)")
             return files
             
         except Exception as e:
-            print(f"List error: {e}")
+            print(f"ERROR: List failed: {e}")
             import sys
             sys.print_exception(e)
             return []
@@ -295,86 +418,104 @@ class ImageClient:
             if sock:
                 try:
                     sock.close()
+                    print("DEBUG: Socket closed")
                 except:
                     pass
     
     def get_image(self, filename):
-        print(f"\n--- Getting Image: {filename} ---")
+        print(f"\n" + "="*50)
+        print(f"DOWNLOADING: {filename}")
+        print("="*50)
         sock = None
         try:
+            print("\nDEBUG: Creating socket...")
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(30.0)
-            print(f"Connecting to {self.server_ip}:{self.server_port}")
+            print("DEBUG: Socket created, timeout=30s")
+            
+            print(f"DEBUG: Connecting to {self.server_ip}:{self.server_port}...")
             sock.connect((self.server_ip, self.server_port))
-            print("Connected")
+            print("SUCCESS: Connected")
             
             # Send GET request
             request = f"GET|{filename}\n"
+            print(f"DEBUG: Sending request: {request.strip()}")
             sock.send(request.encode())
-            print(f"Sent: {request.strip()}")
+            print("DEBUG: Request sent")
             
-            # Receive header - read until newline
+            # Receive header
+            print("DEBUG: Waiting for response header...")
             header = b""
             while b"\n" not in header:
                 chunk = sock.recv(1)
                 if not chunk:
-                    print("Connection closed while reading header")
+                    print("ERROR: Connection closed while reading header")
                     return None
                 header += chunk
             
             header = header.decode().strip()
-            print(f"Header: {header}")
+            print(f"DEBUG: Received header: '{header}'")
             
             if not header.startswith("OK|"):
-                print(f"Error: {header}")
+                print(f"ERROR: Server responded: {header}")
                 return None
             
-            # Parse header: OK|original_size|compressed_size|
+            # Parse header
             parts = header.split("|")
             if len(parts) < 3:
-                print("Invalid header format")
+                print("ERROR: Invalid header format")
                 return None
                 
             original_size = int(parts[1])
             compressed_size = int(parts[2])
             
-            print(f"Original: {original_size} bytes")
-            print(f"Compressed: {compressed_size} bytes")
-            print("Downloading..")
+            print(f"\nFile Info:")
+            print(f"  Original size: {original_size} bytes")
+            print(f"  Compressed size: {compressed_size} bytes")
+            print(f"  Compression ratio: {compressed_size/original_size*100:.1f}%")
             
             # Receive compressed data
+            print("\nDEBUG: Downloading compressed data...")
             compressed_data = bytearray()
+            last_print = 0
+            
             while len(compressed_data) < compressed_size:
                 remaining = compressed_size - len(compressed_data)
                 chunk = sock.recv(min(1024, remaining))
                 if not chunk:
-                    print("Connection closed early!")
+                    print("\nERROR: Connection closed early!")
                     break
                 compressed_data.extend(chunk)
                 
                 # Progress indicator
-                progress = len(compressed_data) / compressed_size * 100
-                if len(compressed_data) % 10240 == 0 or len(compressed_data) == compressed_size:
-                    print(f"  {len(compressed_data)}/{compressed_size} bytes ({progress:.1f}%)")
+                if len(compressed_data) - last_print >= 5120 or len(compressed_data) == compressed_size:
+                    progress = len(compressed_data) / compressed_size * 100
+                    print(f"  Progress: {len(compressed_data)}/{compressed_size} bytes ({progress:.1f}%)")
+                    last_print = len(compressed_data)
             
-            print("Download complete")
-            
-            # Verify we got all data
             if len(compressed_data) != compressed_size:
-                print(f"Warning: Expected {compressed_size} bytes, got {len(compressed_data)}")
+                print(f"\nWARNING: Size mismatch!")
+                print(f"  Expected: {compressed_size} bytes")
+                print(f"  Received: {len(compressed_data)} bytes")
+            else:
+                print(f"\nSUCCESS: Download complete")
             
-            print("Decompressing..")
+            # Decompress
+            print("\nDEBUG: Decompressing...")
             image_data = RLECompressor.decompress(bytes(compressed_data))
-            print(f"Decompressed: {len(image_data)} bytes")
+            print(f"DEBUG: Decompressed to {len(image_data)} bytes")
             
-            # Verify decompressed size
             if len(image_data) != original_size:
-                print(f"Warning: Expected {original_size} bytes, got {len(image_data)}")
+                print(f"WARNING: Decompressed size mismatch!")
+                print(f"  Expected: {original_size} bytes")
+                print(f"  Got: {len(image_data)} bytes")
+            else:
+                print(f"SUCCESS: Decompression successful")
             
             return image_data
             
         except Exception as e:
-            print(f"Download error: {e}")
+            print(f"\nERROR: Download failed: {e}")
             import sys
             sys.print_exception(e)
             return None
@@ -382,40 +523,46 @@ class ImageClient:
             if sock:
                 try:
                     sock.close()
+                    print("DEBUG: Socket closed")
                 except:
                     pass
     
     def cleanup(self):
+        print("\nDEBUG: Cleaning up client...")
         if self.led:
             self.led.value(0)
+            print("DEBUG: LED turned off")
         print("Client cleanup completed")
 
 
-
 def main():
-    print("\n" + "-"*50)
-    print("IMAGE CLIENT STARTING")
-    print("-"*50)
+    print("\n" + "="*70)
+    print(" "*22 + "IMAGE CLIENT STARTING")
+    print("="*70)
     
-    # Check system info
+    # System info
     try:
         import sys
-        print(f"\nSystem info:")
+        print(f"\nSystem Information:")
         print(f"  Platform: {sys.platform}")
         print(f"  Version: {sys.version}")
-    except:
-        pass
+        print(f"  Implementation: {sys.implementation}")
+        print(f"  Free memory: {gc.mem_free()} bytes")
+    except Exception as e:
+        print(f"Could not get system info: {e}")
     
     # Configuration
     SERVER_SSID = "PicoImages"
-    SERVER_IP = "192.168.4.1"  # Default AP IP
+    SERVER_IP = "192.168.4.1"
     SERVER_PORT = 8080
     
     print(f"\nConfiguration:")
-    print(f"  Server SSID: {SERVER_SSID}")
-    print(f"  Server IP: {SERVER_IP}:{SERVER_PORT}")
+    print(f"  Server SSID: '{SERVER_SSID}'")
+    print(f"  Server IP: {SERVER_IP}")
+    print(f"  Server Port: {SERVER_PORT}")
     
-    # Initialise display (optional)
+    # Initialize display (optional)
+    print("\n" + "-"*50)
     display = None
     try:
         display = ImageDisplay()
@@ -423,6 +570,7 @@ def main():
         print(f"Display init error: {e}")
     
     # Create client
+    print("-"*50)
     client = ImageClient(
         server_ssid=SERVER_SSID,
         server_ip=SERVER_IP,
@@ -435,7 +583,15 @@ def main():
         
         # Connect to WiFi
         if not client.connect_to_network():
-            print("\n✗ Failed to connect to WiFi")
+            print("\n" + "="*50)
+            print("WIFI CONNECTION FAILED")
+            print("="*50)
+            print("\nTroubleshooting steps:")
+            print("1. Make sure the SERVER Pico is running first")
+            print("2. Check that SERVER shows 'SERVER READY' message")
+            print("3. Try scanning for WiFi on your phone/laptop")
+            print("4. Make sure both Picos have good power supply")
+            print("5. Try moving them closer together")
             if display:
                 display.show_text("WiFi Failed", 10, 100)
             return
@@ -443,7 +599,8 @@ def main():
         if display:
             display.show_text("Connected!", 10, 100)
         
-        utime.sleep(1)
+        print("\nDEBUG: Waiting 2 seconds before requesting data...")
+        utime.sleep(2)
         
         # List available images
         if display:
@@ -451,14 +608,15 @@ def main():
         
         files = client.list_images()
         
-        print(f"\nAvailable images ({len(files)}):")
-        for f in files:
-            print(f"  {f['name']} - {f['size']} bytes")
-        
-        # Download and display first image!
         if files:
+            print(f"\n" + "-"*50)
+            print(f"Available Images: {len(files)}")
+            print("-"*50)
+            for f in files:
+                print(f"  - {f['name']} ({f['size']} bytes)")
+            
+            # Download first image
             filename = files[0]['name']
-            print(f"\nDownloading: {filename}")
             
             if display:
                 display.clear()
@@ -467,29 +625,38 @@ def main():
             image_data = client.get_image(filename)
             
             if image_data:
-                print("Success!")
+                print("\n" + "="*50)
+                print("SUCCESS - IMAGE READY")
+                print("="*50)
                 if display:
                     display.clear()
                     display.display_image(image_data)
-                print("\nImage displayed successfully!")
+                    print("\nImage displayed on screen!")
             else:
-                print("Download failed")
+                print("\n" + "="*50)
+                print("DOWNLOAD FAILED")
+                print("="*50)
                 if display:
                     display.show_text("Failed", 10, 100)
         else:
-            print("\nNo images found on server")
+            print("\n" + "="*50)
+            print("NO IMAGES FOUND")
+            print("="*50)
             if display:
                 display.show_text("No images", 10, 100)
         
-        print("\n" + "-"*50)
-        print("CLIENT FINISHED")
-        print("-"*50)
+        print("\n" + "="*70)
+        print(" "*24 + "CLIENT FINISHED")
+        print("="*70)
         
-        # Clean up memory
         gc.collect()
+        print(f"\nFinal free memory: {gc.mem_free()} bytes")
             
     except Exception as e:
-        print(f"\n✗ Fatal error: {e}")
+        print(f"\n" + "="*50)
+        print("FATAL ERROR")
+        print("="*50)
+        print(f"Error: {e}")
         import sys
         sys.print_exception(e)
         if display:
