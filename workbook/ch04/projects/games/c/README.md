@@ -1,12 +1,16 @@
 
-UNTESTED!
 
 ## ECS Platform Game for Raspberry Pi Pico with Display Pack 2.0
 
-A complete Mario-style platformer game built using Entity-Component-System
+An incomplete Mario-style platformer game built using Entity-Component-System
 (ECS) architecture in C for the Raspberry Pi Pico/Pico 2/Pico 2W with
 Pimoroni Display Pack 2.0.
 
+The Project here is naturally to make it better. To get it to work. There
+are timing issues with the display, flickering issues, jumping may cause
+glitches, and falling through the ground .. and many other problems!
+
+Starting Features:
 - *Pure ECS Architecture*: Follows the design principles from ECSC.md
 - *Smooth 30 FPS gameplay* with DMA-accelerated rendering
 - *Mario-style mechanics*:
@@ -20,8 +24,8 @@ Pimoroni Display Pack 2.0.
 - *Multiple entity types*: Player, enemies, platforms, collectibles
 - *Modular system design*: Easy to extend with new systems and components
 
-
-- Raspberry Pi Pico, Pico 2, or Pico 2W
+Assumptions:
+- Raspberry Pi Pico, Pico 2, or Pico 2W (prefably the later series)
 - Pimoroni Display Pack 2.0 (320x240 ST7789 display with buttons)
 
 
