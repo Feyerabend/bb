@@ -108,6 +108,12 @@ static const uint8_t font5x8[][5] = {
     {0x43, 0x45, 0x49, 0x51, 0x61}, // Z
 };
 
+const uint8_t* display_get_font_char(char c) {
+    if (c < 32 || c > 90) c = 32;               // map out‑of‑range to space
+    return font5x8[c - 32];                     // font5x8 is static in this file
+}
+
+
 // Error message strings
 static const char* error_strings[] = {
     "OK",
