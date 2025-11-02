@@ -1,10 +1,7 @@
-# ------------------------------------------------------------
-# main.py – Dual-Core + ALL FILTERS + NO RESTART
-# Raspberry Pi Pico 2W (RP2350) – 100% WORKING
-# ------------------------------------------------------------
+# Raspberry Pi Pico 2W (RP2350)
 import machine, framebuf, time, _thread
 
-# ------------------- HARDWARE -------------------
+
 spi = machine.SPI(0, baudrate=62_000_000,
                   sck=machine.Pin(18), mosi=machine.Pin(19))
 cs  = machine.Pin(17, machine.Pin.OUT, value=1)
@@ -21,7 +18,7 @@ btn_y = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_UP)
 WIDTH, HEIGHT = 240, 360
 PROGRESS_BAR_Y = HEIGHT - 1
 
-# ------------------- SPI -------------------
+
 def write_cmd(cmd, data=None):
     cs.value(0); dc.value(0); spi.write(bytearray([cmd]))
     if data: dc.value(1); spi.write(data)
@@ -43,7 +40,7 @@ def st7789_init():
 st7789_init()
 print("Display init OK")
 
-# ------------------- RGB565 -------------------
+
 def rgb565_to_rgb888(col):
     r = ((col >> 11) & 0x1F) << 3
     g = ((col >> 5)  & 0x3F) << 2
@@ -53,7 +50,7 @@ def rgb565_to_rgb888(col):
 def rgb888_to_rgb565(r,g,b):
     return ((r&0xF8)<<8) | ((g&0xFC)<<3) | (b>>3)
 
-# ------------------- TEST PATTERN -------------------
+
 def make_test_pattern():
     fb = framebuf.FrameBuffer(bytearray(WIDTH*HEIGHT*2), WIDTH, HEIGHT, framebuf.RGB565)
     colors = [(255,0,0),(255,127,0),(255,255,0),(0,255,0),(0,255,255),(0,0,255),(127,0,255),(255,255,255)]
@@ -69,7 +66,7 @@ def make_test_pattern():
     for y in range(0, HEIGHT, 30): fb.hline(0, y, WIDTH, grid)
     return fb
 
-# ------------------- KERNELS (with size) -------------------
+
 KERNELS = {
     0: ('original', [0,0,0, 0,1,0, 0,0,0], 3),
     1: ('blur', [
@@ -83,7 +80,7 @@ KERNELS = {
     3: ('emboss',   [-2,-1,0, -1,1,1, 0,1,2], 3),
 }
 
-# ------------------- SHARED STATE -------------------
+
 state = {
     'fb': None,
     'filter_active': False,
@@ -93,7 +90,7 @@ state = {
     'lock': _thread.allocate_lock()
 }
 
-# ------------------- CORE 1: WORKER (AUTO KERNEL SIZE) -------------------
+
 def worker_thread(state):
     while True:
         if state['filter_active'] and not state['filter_done']:
@@ -154,15 +151,15 @@ def worker_thread(state):
                 state['filter_done'] = True
                 print(f"Core 1: {name} DONE!")
 
-# ------------------- START CORE 1 -------------------
+
 _thread.start_new_thread(worker_thread, (state,))
 
-# ------------------- DISPLAY -------------------
+
 def show_fb():
     set_window()
     cs.value(0); dc.value(1); spi.write(state['fb']); cs.value(1)
 
-# ------------------- PROGRESS BAR -------------------
+
 def draw_progress():
     filled = int((state['progress_y'] / HEIGHT) * WIDTH)
     bg = rgb888_to_rgb565(30, 30, 30)
@@ -170,7 +167,7 @@ def draw_progress():
     for x in range(WIDTH):
         state['fb'].pixel(x, PROGRESS_BAR_Y, fg if x < filled else bg)
 
-# ------------------- MAIN (Core 0) -------------------
+
 state['fb'] = make_test_pattern()
 show_fb()
 print("Test pattern shown")
