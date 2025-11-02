@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include "pico/stdlib.h"
 
-// Display Pack 2.0 specifications: 320x240 pixels
+// Display Pack 2.0 spec: 320x240 pixels
 #define DISPLAY_WIDTH 320
 #define DISPLAY_HEIGHT 240
 
@@ -25,7 +25,7 @@ typedef enum {
     BUTTON_B = 1,
     BUTTON_X = 2,
     BUTTON_Y = 3,
-    BUTTON_COUNT = 4  // Added for bounds checking ..
+    BUTTON_COUNT = 4
 } button_t;
 
 // Button callback function type
@@ -40,7 +40,7 @@ typedef enum {
     DISPLAY_ERROR_NOT_INITIALIZED
 } display_error_t;
 
-// Display functions
+//  DISPLAY FUNCTIONS 
 display_error_t display_pack_init(void);
 display_error_t display_clear(uint16_t color);
 display_error_t display_fill_rect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
@@ -50,7 +50,7 @@ display_error_t display_draw_char(uint16_t x, uint16_t y, char c, uint16_t color
 display_error_t display_draw_string(uint16_t x, uint16_t y, const char* str, uint16_t color, uint16_t bg_color);
 display_error_t display_set_backlight(bool on);
 
-// Button functions
+//  BUTTON FUNCTIONS 
 display_error_t buttons_init(void);
 void buttons_update(void);
 bool button_pressed(button_t button);
@@ -58,11 +58,14 @@ bool button_just_pressed(button_t button);
 bool button_just_released(button_t button);
 display_error_t button_set_callback(button_t button, button_callback_t callback);
 
-// Utility functions
+//  UTILITY FUNCTIONS 
 bool display_is_initialized(void);
 bool display_dma_busy(void);
 void display_wait_for_dma(void);
 void display_cleanup(void);
 const char* display_error_string(display_error_t error);
+
+//  FONT ACCESS (for framebuffer rendering) 
+const uint8_t* display_get_font_char(char c);  // Returns pointer to 5-byte glyph (or space)
 
 #endif // DISPLAY_H
