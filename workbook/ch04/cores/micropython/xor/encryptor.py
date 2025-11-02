@@ -1,7 +1,7 @@
 # ENCRYPTOR
 # Wiring: UART as described in the wiring in the book
 # USB for input/output monitoring
-# Note: This is a simplified example for educational purposes.
+# Note: This is a simplified example for educational purposes ONLY.
 
 import _thread
 import time
@@ -51,14 +51,14 @@ def core1_task():
 def main():
     global core1_ready
     
-    print("=" * 50)
+    print("-" * 50)
     print("PICO 2 ENCRYPTOR - Dual Core Demo")
-    print("=" * 50)
+    print("-" * 50)
     print(f"Encryption Key: {ENCRYPTION_KEY.decode()}")
     print("\nWiring:")
     print("  GP0 (UART TX) -> Pico2 RX")
     print("  GND -> GND")
-    print("=" * 50)
+    print("-" * 50)
     
     # Start Core 1
     _thread.start_new_thread(core1_task, ())
@@ -70,7 +70,7 @@ def main():
     # Setup UART (TX on GP0, no RX needed)
     uart = UART(1, baudrate=115200, tx=Pin(4))
     
-    print("\n[Core 0] Ready. Send data via USB serial...")
+    print("\n[Core 0] Ready. Send data via USB serial..")
     print("Format: Just type your message and press Enter")
     print("-" * 50)
     
