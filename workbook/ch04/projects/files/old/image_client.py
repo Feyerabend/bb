@@ -101,7 +101,7 @@ class ImageClient:
         self.wlan = None
         self.led = None
         
-        # Try to initialize LED
+        # Try init LED
         try:
             from machine import Pin
             self.led = Pin(25, Pin.OUT)
@@ -111,15 +111,15 @@ class ImageClient:
         
     def connect_to_network(self):
         print("\n" + "="*50)
-        print("INITIALIZING WIFI CLIENT")
+        print("INIT WIFI CLIENT")
         print("="*50)
         
         # First, make sure AP interface is OFF
-        print("\nDEBUG: Checking AP interface...")
+        print("\nDEBUG: Checking AP interface..")
         try:
             ap = network.WLAN(network.AP_IF)
             if ap.active():
-                print("DEBUG: AP interface is active, deactivating...")
+                print("DEBUG: AP interface is active, deactivating..")
                 ap.active(False)
                 utime.sleep(2)
                 print("DEBUG: AP interface deactivated")
@@ -129,11 +129,11 @@ class ImageClient:
             print(f"DEBUG: AP interface check error: {e}")
         
         # Make sure STA WiFi is off first
-        print("\nDEBUG: Resetting STA interface...")
+        print("\nDEBUG: Resetting STA interface..")
         try:
             self.wlan = network.WLAN(network.STA_IF)
             if self.wlan.active():
-                print("DEBUG: STA was active, deactivating...")
+                print("DEBUG: STA was active, deactivating..")
                 self.wlan.active(False)
                 utime.sleep(2)
                 print("DEBUG: STA deactivated")
@@ -141,12 +141,12 @@ class ImageClient:
             print(f"DEBUG: Error during reset: {e}")
         
         # Now activate it fresh
-        print("\nDEBUG: Activating STA interface...")
+        print("\nDEBUG: Activating STA interface..")
         self.wlan = network.WLAN(network.STA_IF)
         self.wlan.active(True)
         
         # Wait for WiFi to actually become active
-        print("DEBUG: Waiting for interface to become active...")
+        print("DEBUG: Waiting for interface to become active..")
         max_wait = 15
         wait_count = 0
         while wait_count < max_wait and not self.wlan.active():
@@ -161,7 +161,7 @@ class ImageClient:
         print(f"\nSUCCESS: WiFi interface active (took {wait_count * 0.5:.1f}s)")
         
         # Extra stabilization time
-        print("DEBUG: Allowing interface to stabilize...")
+        print("DEBUG: Allowing interface to stabilise..")
         utime.sleep(3)
         
         # Try to get interface info
@@ -173,7 +173,7 @@ class ImageClient:
             print(f"DEBUG: Could not get MAC: {e}")
         
         # Scan for networks
-        print(f"\nDEBUG: Scanning for networks (this may take 5-10 seconds)...")
+        print(f"\nDEBUG: Scanning for networks (this may take 5-10 seconds)..")
         utime.sleep(2)
         
         try:
@@ -202,20 +202,20 @@ class ImageClient:
                     print(f"\nSUCCESS: Target network '{self.server_ssid}' found in scan!")
                 else:
                     print(f"\nWARNING: Target network '{self.server_ssid}' NOT found in scan!")
-                    print("This might be OK - will try connecting anyway...")
+                    print("This might be OK - will try connecting anyway..")
             else:
                 print("WARNING: Scan returned empty results")
                 
         except Exception as e:
             print(f"DEBUG: Scan failed: {e}")
-            print("This is OK on some boards - will try connecting anyway...")
+            print("This is OK on some boards - will try connecting anyway..")
             import sys
             sys.print_exception(e)
         
         # Disconnect if already connected
-        print(f"\nDEBUG: Checking current connection status...")
+        print(f"\nDEBUG: Checking current connection status..")
         if self.wlan.isconnected():
-            print("DEBUG: Already connected to a network, disconnecting...")
+            print("DEBUG: Already connected to a network, disconnecting..")
             self.wlan.disconnect()
             utime.sleep(2)
             print("DEBUG: Disconnected")
@@ -229,7 +229,7 @@ class ImageClient:
         
         # Try Method 1: Empty string password (most compatible for open networks)
         try:
-            print("\nDEBUG: Method 1 - Trying connect(ssid, '')...")
+            print("\nDEBUG: Method 1 - Trying connect(ssid, '')..")
             self.wlan.connect(self.server_ssid, '')
             connection_success = True
             print("DEBUG: Connection request accepted")
@@ -238,7 +238,7 @@ class ImageClient:
             
             # Try Method 2: SSID only
             try:
-                print("\nDEBUG: Method 2 - Trying connect(ssid)...")
+                print("\nDEBUG: Method 2 - Trying connect(ssid)..")
                 self.wlan.connect(self.server_ssid)
                 connection_success = True
                 print("DEBUG: Connection request accepted")
@@ -247,7 +247,7 @@ class ImageClient:
                 
                 # Try Method 3: None as password
                 try:
-                    print("\nDEBUG: Method 3 - Trying connect(ssid, None)...")
+                    print("\nDEBUG: Method 3 - Trying connect(ssid, None)..")
                     self.wlan.connect(self.server_ssid, None)
                     connection_success = True
                     print("DEBUG: Connection request accepted")
@@ -259,7 +259,7 @@ class ImageClient:
             return False
         
         # Wait for connection with detailed status updates
-        print("\nDEBUG: Waiting for connection...")
+        print("\nDEBUG: Waiting for connection..")
         max_wait = 40  # Longer timeout
         wait_count = 0
         last_status = None
@@ -339,7 +339,7 @@ class ImageClient:
         print("="*50)
         sock = None
         try:
-            print(f"\nDEBUG: Creating socket...")
+            print(f"\nDEBUG: Creating socket..")
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(10.0)
             print(f"DEBUG: Socket created, timeout=10s")
@@ -349,12 +349,12 @@ class ImageClient:
             print("SUCCESS: Socket connected")
             
             # Send LIST request
-            print("DEBUG: Sending 'LIST' command...")
+            print("DEBUG: Sending 'LIST' command..")
             sock.send(b"LIST\n")
             print("DEBUG: Command sent")
             
             # Receive response header
-            print("DEBUG: Waiting for response header...")
+            print("DEBUG: Waiting for response header..")
             header = b""
             timeout_count = 0
             while b"\n" not in header and timeout_count < 100:
@@ -389,7 +389,7 @@ class ImageClient:
             print(f"DEBUG: Expecting {data_size} bytes of JSON data")
             
             # Receive JSON data
-            print("DEBUG: Receiving data...")
+            print("DEBUG: Receiving data..")
             data = b""
             while len(data) < data_size:
                 remaining = data_size - len(data)
@@ -428,7 +428,7 @@ class ImageClient:
         print("="*50)
         sock = None
         try:
-            print("\nDEBUG: Creating socket...")
+            print("\nDEBUG: Creating socket..")
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(30.0)
             print("DEBUG: Socket created, timeout=30s")
@@ -444,7 +444,7 @@ class ImageClient:
             print("DEBUG: Request sent")
             
             # Receive header
-            print("DEBUG: Waiting for response header...")
+            print("DEBUG: Waiting for response header..")
             header = b""
             while b"\n" not in header:
                 chunk = sock.recv(1)
@@ -475,7 +475,7 @@ class ImageClient:
             print(f"  Compression ratio: {compressed_size/original_size*100:.1f}%")
             
             # Receive compressed data
-            print("\nDEBUG: Downloading compressed data...")
+            print("\nDEBUG: Downloading compressed data..")
             compressed_data = bytearray()
             last_print = 0
             
@@ -501,7 +501,7 @@ class ImageClient:
                 print(f"\nSUCCESS: Download complete")
             
             # Decompress
-            print("\nDEBUG: Decompressing...")
+            print("\nDEBUG: Decompressing..")
             image_data = RLECompressor.decompress(bytes(compressed_data))
             print(f"DEBUG: Decompressed to {len(image_data)} bytes")
             
@@ -528,7 +528,7 @@ class ImageClient:
                     pass
     
     def cleanup(self):
-        print("\nDEBUG: Cleaning up client...")
+        print("\nDEBUG: Cleaning up client..")
         if self.led:
             self.led.value(0)
             print("DEBUG: LED turned off")
@@ -599,7 +599,7 @@ def main():
         if display:
             display.show_text("Connected!", 10, 100)
         
-        print("\nDEBUG: Waiting 2 seconds before requesting data...")
+        print("\nDEBUG: Waiting 2 seconds before requesting data..")
         utime.sleep(2)
         
         # List available images

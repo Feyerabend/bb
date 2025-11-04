@@ -123,11 +123,11 @@ class ImageServer:
         print("="*50)
         
         # First, make sure STA interface is OFF
-        print("\nDEBUG: Checking STA interface...")
+        print("\nDEBUG: Checking STA interface..")
         try:
             sta = network.WLAN(network.STA_IF)
             if sta.active():
-                print("DEBUG: STA interface is active, deactivating...")
+                print("DEBUG: STA interface is active, deactivating..")
                 sta.active(False)
                 utime.sleep(2)
                 print("DEBUG: STA interface deactivated")
@@ -137,12 +137,12 @@ class ImageServer:
             print(f"DEBUG: STA interface check error: {e}")
         
         # Create and configure AP
-        print("\nDEBUG: Creating AP interface...")
+        print("\nDEBUG: Creating AP interface..")
         self.ap = network.WLAN(network.AP_IF)
         
         # Make sure it's off first
         if self.ap.active():
-            print("DEBUG: AP was already active, deactivating first...")
+            print("DEBUG: AP was already active, deactivating first..")
             self.ap.active(False)
             utime.sleep(2)
         
@@ -156,7 +156,7 @@ class ImageServer:
         
         # Method 1: No password (open network)
         try:
-            print("DEBUG: Trying config(essid=..., password='')...")
+            print("DEBUG: Trying config(essid=..., password='')..")
             self.ap.config(essid=self.ssid, password='')
             config_success = True
             print("DEBUG: Config method 1 succeeded")
@@ -165,7 +165,7 @@ class ImageServer:
             
             # Method 2: Just ESSID
             try:
-                print("DEBUG: Trying config(essid=...)...")
+                print("DEBUG: Trying config(essid=...)..")
                 self.ap.config(essid=self.ssid)
                 config_success = True
                 print("DEBUG: Config method 2 succeeded")
@@ -174,7 +174,7 @@ class ImageServer:
                 
                 # Method 3: With channel
                 try:
-                    print("DEBUG: Trying config(essid=..., channel=6)...")
+                    print("DEBUG: Trying config(essid=..., channel=6)..")
                     self.ap.config(essid=self.ssid, channel=6)
                     config_success = True
                     print("DEBUG: Config method 3 succeeded")
@@ -182,7 +182,7 @@ class ImageServer:
                     print(f"DEBUG: Config method 3 failed: {e3}")
         
         if not config_success:
-            print("WARNING: All config methods failed, but continuing anyway...")
+            print("WARNING: All config methods failed, but continuing anyway..")
         
         # Wait for interface to become active and stable
         print("\nDEBUG: Waiting for AP to become active...")
@@ -200,7 +200,7 @@ class ImageServer:
             raise RuntimeError("AP activation failed")
         
         # Extra stabilization time
-        print("\nDEBUG: Allowing AP to stabilize...")
+        print("\nDEBUG: Allowing AP to stabilise..")
         utime.sleep(3)
         
         # Get and display configuration
@@ -253,7 +253,7 @@ class ImageServer:
         print("="*50)
         
         try:
-            print(f"DEBUG: Creating socket on port {self.port}...")
+            print(f"DEBUG: Creating socket on port {self.port}..")
             addr = socket.getaddrinfo('0.0.0.0', self.port)[0][-1]
             print(f"DEBUG: Address info: {addr}")
             
@@ -280,7 +280,7 @@ class ImageServer:
     
     def handle_list_request(self, conn):
         try:
-            print("DEBUG: Processing LIST request...")
+            print("DEBUG: Processing LIST request..")
             files = self.vfs.list_files()
             response = ujson.dumps(files)
             
@@ -341,13 +341,13 @@ class ImageServer:
             sys.print_exception(e)
     
     def handle_client_connection(self, client_socket, client_addr):
-        print(f"\n{'='*50}")
+        print(f"\n{'-'*50}")
         print(f"CLIENT CONNECTED: {client_addr}")
-        print(f"{'='*50}")
+        print(f"{'-'*50}")
         client_socket.settimeout(30.0)
         
         try:
-            print("DEBUG: Waiting for request...")
+            print("DEBUG: Waiting for request..")
             request = client_socket.recv(256).decode().strip()
             print(f"DEBUG: Received request: '{request}'")
             
@@ -383,20 +383,20 @@ class ImageServer:
             print(f"CLIENT DISCONNECTED: {client_addr}\n")
     
     def run(self):
-        print("\n" + "="*50)
+        print("\n" + "-"*50)
         print("IMAGE SERVER STARTING")
-        print("="*50)
+        print("-"*50)
         
         self.setup_access_point()
         self.setup_tcp_server()
         
-        print("\n" + "="*50)
+        print("\n" + "-"*50)
         print("SERVER READY - WAITING FOR CLIENTS")
-        print("="*50)
+        print("-"*50)
         print(f"\nInstructions for client:")
         print(f"1. Connect to WiFi: '{self.ssid}' (no password)")
         print(f"2. Client will connect to: 192.168.4.1:{self.port}")
-        print("\nListening for connections...\n")
+        print("\nListening for connections..\n")
         
         try:
             while True:
@@ -419,7 +419,7 @@ class ImageServer:
             self.cleanup()
     
     def cleanup(self):
-        print("\nDEBUG: Cleaning up...")
+        print("\nDEBUG: Cleaning up..")
         if self.server_socket:
             try:
                 self.server_socket.close()
@@ -437,9 +437,9 @@ class ImageServer:
 
 # Main Setup 
 def main():
-    print("\n" + "="*70)
+    print("\n" + "-"*70)
     print(" "*20 + "IMAGE SERVER INITIALIZATION")
-    print("="*70)
+    print("-"*70)
     
     # Print system info
     try:
@@ -454,11 +454,11 @@ def main():
     # Initialize SD card
     try:
         print("\n" + "-"*50)
-        print("Mounting SD card...")
+        print("Mounting SD card..")
         print("-"*50)
         
         cs = machine.Pin(1, machine.Pin.OUT)
-        print("DEBUG: CS pin initialized (Pin 1)")
+        print("DEBUG: CS pin initialised (Pin 1)")
         
         spi = machine.SPI(0,
                           baudrate=1000000,
@@ -469,7 +469,7 @@ def main():
                           sck=machine.Pin(2),
                           mosi=machine.Pin(3),
                           miso=machine.Pin(4))
-        print("DEBUG: SPI initialized (SPI0, 1MHz)")
+        print("DEBUG: SPI initialised (SPI0, 1MHz)")
         
         sd = sdcard.SDCard(spi, cs)
         print("DEBUG: SDCard object created")
@@ -487,14 +487,14 @@ def main():
         raise
     
     # Create VFS wrapper
-    print("\nDEBUG: Creating VFS wrapper...")
+    print("\nDEBUG: Creating VFS wrapper..")
     vfs = SimpleVFS("/sd")
     
     # Check for existing images
     files = vfs.list_files()
     if not files:
         print("\n" + "-"*50)
-        print("No images found, creating test image...")
+        print("No images found, creating test image..")
         print("-"*50)
         # For DisplayPack 2.0: 320x240 pixels, RGB565 format (2 bytes per pixel)
         test_data = bytearray()
@@ -513,7 +513,7 @@ def main():
     
     # Start server
     print("\n" + "-"*50)
-    print("Starting image server...")
+    print("Starting image server..")
     print("-"*50)
     server = ImageServer(vfs, ssid="PicoImages")
     server.run()
