@@ -396,16 +396,43 @@ class ImageServer:
         print(f"\nInstructions for client:")
         print(f"1. Connect to WiFi: '{self.ssid}' (no password)")
         print(f"2. Client will connect to: 192.168.4.1:{self.port}")
-        print("\nListening for connections...\n")
+        print("\nLED Status: Blinking = Waiting, Steady = Client connected")
+        print("\nListening for connections (LED should be blinking)...\n")
+        
+        # Blink LED while waiting for clients
+        blink_state = False
+        blink_counter = 0
         
         try:
             while True:
                 try:
-                    print("DEBUG: Waiting for client connection...")
-                    client_socket, client_addr = self.server_socket.accept()
-                    self.handle_client_connection(client_socket, client_addr)
-                    gc.collect()
-                    print(f"DEBUG: Memory collected, free: {gc.mem_free()}")
+                    # Blink LED while waiting (every 500ms)
+                    if self.led and blink_counter % 5 == 0:
+                        blink_state = not blink_state
+                        self.led.value(1 if blink_state else 0)
+                    
+                    blink_counter += 1
+                    
+                    # Check for client connection with timeout
+                    self.server_socket.settimeout(0.1)  # 100ms timeout
+                    try:
+                        client_socket, client_addr = self.server_socket.accept()
+                        
+                        # Turn LED steady when client connects
+                        if self.led:
+                            self.led.value(1)
+                        
+                        print(f"\nDEBUG: Client connected from {client_addr}")
+                        self.handle_client_connection(client_socket, client_addr)
+                        gc.collect()
+                        print(f"DEBUG: Memory collected, free: {gc.mem_free()}")
+                        
+                    except OSError as e:
+                        # OSError with ETIMEDOUT = no client yet, continue blinking
+                        if e.errno == 110 or e.errno == 116:  # ETIMEDOUT or timeout
+                            continue
+                        else:
+                            raise
                     
                 except KeyboardInterrupt:
                     print("\n\nSERVER SHUTDOWN REQUESTED")

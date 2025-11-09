@@ -260,6 +260,7 @@ class ImageClient:
         
         # Wait for connection with detailed status updates
         print("\nDEBUG: Waiting for connection...")
+        print("LED: Blinking = Connecting, Steady = Connected\n")
         max_wait = 40  # Longer timeout
         wait_count = 0
         last_status = None
@@ -275,6 +276,9 @@ class ImageClient:
         }
         
         while wait_count < max_wait:
+            # Blink LED while connecting
+            if self.led and wait_count % 2 == 0:
+                self.led.value(1 if (wait_count // 2) % 2 == 0 else 0)
             status = self.wlan.status()
             
             # Print status changes
