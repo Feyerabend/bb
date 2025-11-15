@@ -124,7 +124,7 @@ int main() {
     // Enable interrupt for button
     gpio_set_irq_enabled_with_callback(BUTTON_PIN, GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
     
-    // Initialize WiFi
+    // InitWiFi
     if (cyw43_arch_init()) {
         printf("WiFi init failed\n");
         return -1;

@@ -7,7 +7,8 @@
 #include "hardware/spi.h"
 #include "hardware/gpio.h"
 
-// DisplayPack 2.0 ST7789 Configuration
+// DisplayPack 2.0 ST7789 Configuration 
+// Change to def driver?
 #define LCD_WIDTH 320
 #define LCD_HEIGHT 240
 #define SPI_PORT spi0
@@ -224,11 +225,11 @@ void broadcast_message(struct udp_pcb *pcb, const char* msg) {
 int main() {
     stdio_init_all();
     
-    // Initialize LCD
+    // Init LCD
     lcd_init();
     lcd_clear(0x0000); // Black
     
-    // Initialize WiFi
+    // Init WiFi
     if (cyw43_arch_init()) {
         printf("WiFi init failed\n");
         return -1;
@@ -354,3 +355,5 @@ int main() {
     cyw43_arch_deinit();
     return 0;
 }
+
+
