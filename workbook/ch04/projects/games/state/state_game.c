@@ -8,7 +8,7 @@
 #define CELL_SIZE      8
 #define FLASH_FRAMES   15
 
-/* ---------- Entity structure ---------- */
+/*  Entity structure  */
 typedef struct {
     int16_t x, y;        // Cell position
     int16_t dx, dy;      // Movement delta
@@ -18,7 +18,7 @@ typedef struct {
     uint8_t flash_timer;
 } Entity;
 
-/* ---------- Game states ---------- */
+/*  Game states  */
 typedef enum {
     STATE_MENU,
     STATE_PLAYING,
@@ -26,7 +26,7 @@ typedef enum {
     STATE_PAUSED
 } GameState;
 
-/* ---------- Global game data ---------- */
+/*  Global game data  */
 static struct {
     GameState state;
     GameState prev_state;
@@ -37,15 +37,15 @@ static struct {
     int16_t field_height;  // In cells
 } game;
 
-/* ---------- State machine functions ---------- */
+/*  State machine functions  */
 
-// Initialize game field
+// Init game field
 static void init_game_field(void) {
     game.field_width = DISPLAY_WIDTH / CELL_SIZE;
     game.field_height = DISPLAY_HEIGHT / CELL_SIZE;
 }
 
-// Initialize entities
+// Init entities
 static void init_entities(void) {
     // Player (entity 0)
     game.entities[0].x = game.field_width / 2;
@@ -75,7 +75,7 @@ static bool check_collision(Entity *a, Entity *b) {
     return (a->x == b->x && a->y == b->y);
 }
 
-/* ---------- State: MENU ---------- */
+/*  State: MENU  */
 static void state_menu_enter(void) {
     game.score = 0;
     game.frame_count = 0;
@@ -90,7 +90,7 @@ static void state_menu_update(void) {
     }
 }
 
-/* ---------- State: PLAYING ---------- */
+/*  State: PLAYING  */
 static void state_playing_enter(void) {
     init_entities();
     display_clear(COLOR_BLACK);
@@ -189,7 +189,7 @@ static void state_playing_render(void) {
     display_draw_string(5, 5, score_str, COLOR_WHITE, COLOR_BLACK);
 }
 
-/* ---------- State: GAME_OVER ---------- */
+/*  State: GAME_OVER  */
 static void state_gameover_enter(void) {
     display_clear(COLOR_BLACK);
     display_draw_string(90, 100, "GAME OVER", COLOR_RED, COLOR_BLACK);
@@ -207,7 +207,7 @@ static void state_gameover_update(void) {
     }
 }
 
-/* ---------- State: PAUSED ---------- */
+/*  State: PAUSED  */
 static void state_paused_enter(void) {
     display_draw_string(120, 110, "PAUSED", COLOR_CYAN, COLOR_BLACK);
 }
@@ -218,7 +218,7 @@ static void state_paused_update(void) {
     }
 }
 
-/* ---------- State machine dispatcher ---------- */
+/*  State machine dispatcher  */
 static void state_machine_update(void) {
     // Check for state change
     if (game.state != game.prev_state) {
@@ -258,9 +258,9 @@ static void state_machine_update(void) {
     }
 }
 
-/* ---------- Main ---------- */
+/*  Main  */
 int main(void) {
-    // Initialize Pico SDK
+    // Init Pico SDK
     stdio_init_all();
     
     // Seed random
@@ -274,7 +274,7 @@ int main(void) {
         return -1;
     }
     
-    // Initialize game
+    // Init game
     memset(&game, 0, sizeof(game));
     init_game_field();
     game.state = STATE_MENU;
