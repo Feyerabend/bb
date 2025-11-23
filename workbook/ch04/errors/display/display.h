@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-// Display specifications
+// 320×240 landscape
 #define DISPLAY_WIDTH  320
 #define DISPLAY_HEIGHT 240
 
@@ -19,44 +19,37 @@
 #define COLOR_CYAN    0x07FF
 #define COLOR_MAGENTA 0xF81F
 
-// Comprehensive error codes
+// Buttons
+typedef enum {
+    BUTTON_A = 0,
+    BUTTON_B = 1,
+    BUTTON_X = 2,
+    BUTTON_Y = 3,
+    BUTTON_COUNT = 4
+} button_t;
+
+typedef void (*button_callback_t)(button_t button);
+
+// Error codes
 typedef enum {
     DISP_OK = 0,
-    
-    // Initialization errors
     DISP_ERR_ALREADY_INIT,
     DISP_ERR_NOT_INIT,
     DISP_ERR_SPI_INIT_FAILED,
     DISP_ERR_GPIO_INIT_FAILED,
     DISP_ERR_RESET_FAILED,
     DISP_ERR_CONFIG_FAILED,
-    
-    // Parameter errors
     DISP_ERR_NULL_POINTER,
     DISP_ERR_INVALID_COORDS,
     DISP_ERR_INVALID_DIMENSIONS,
-    DISP_ERR_BUFFER_TOO_SMALL,
-    
-    // DMA errors
     DISP_ERR_DMA_NOT_AVAILABLE,
     DISP_ERR_DMA_CONFIG_FAILED,
     DISP_ERR_DMA_TIMEOUT,
-    DISP_ERR_DMA_ABORT_FAILED,
-    
-    // Communication errors
-    DISP_ERR_SPI_WRITE_FAILED,
     DISP_ERR_CMD_FAILED,
     DISP_ERR_DATA_FAILED,
-    DISP_ERR_TIMEOUT,
-    
-    // Resource errors
-    DISP_ERR_OUT_OF_MEMORY,
-    DISP_ERR_RESOURCE_BUSY,
-    
     DISP_ERR_UNKNOWN
 } disp_error_t;
 
-// Error context for debugging
 typedef struct {
     disp_error_t code;
     const char *function;
@@ -64,7 +57,6 @@ typedef struct {
     const char *message;
 } disp_error_context_t;
 
-// Configuration options
 typedef struct {
     uint32_t spi_baudrate;
     bool use_dma;
@@ -72,37 +64,43 @@ typedef struct {
     bool enable_backlight;
 } disp_config_t;
 
-// Get default configuration
+// Default config
 disp_config_t disp_get_default_config(void);
 
-// Core display functions
+// Core
 disp_error_t disp_init(const disp_config_t *config);
 disp_error_t disp_deinit(void);
 bool disp_is_initialized(void);
 
-// Drawing functions
+// Drawing
 disp_error_t disp_clear(uint16_t color);
 disp_error_t disp_fill_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color);
 disp_error_t disp_draw_pixel(uint16_t x, uint16_t y, uint16_t color);
-disp_error_t disp_draw_hline(uint16_t x, uint16_t y, uint16_t w, uint16_t color);
-disp_error_t disp_draw_vline(uint16_t x, uint16_t y, uint16_t h, uint16_t color);
 disp_error_t disp_blit(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint16_t *pixels);
 
-// Text functions
+// Text (full ASCII 32-127)
 disp_error_t disp_draw_char(uint16_t x, uint16_t y, char c, uint16_t fg, uint16_t bg);
 disp_error_t disp_draw_text(uint16_t x, uint16_t y, const char *text, uint16_t fg, uint16_t bg);
 
-// Control functions
+// Control
 disp_error_t disp_set_backlight(bool enabled);
 disp_error_t disp_wait_complete(uint32_t timeout_ms);
 
-// Error handling utilities
+// Buttons
+disp_error_t buttons_init(void);
+void buttons_update(void);
+bool button_pressed(button_t button);
+bool button_just_pressed(button_t button);
+bool button_just_released(button_t button);
+disp_error_t button_set_callback(button_t button, button_callback_t callback);
+
+// Error handling
 const char* disp_error_string(disp_error_t error);
 disp_error_context_t disp_get_last_error(void);
 void disp_clear_error(void);
 
-// Macro for error context tracking
-#define DISP_ERROR(code, msg) disp_set_error_context((code), __func__, __LINE__, (msg))
+// Helper macro - returns the error code!
+#define DISP_ERROR(code, msg) \
+    (disp_set_error_context((code), __func__, __LINE__, (msg)), (code))
 
 #endif // DISPLAY_H
-
