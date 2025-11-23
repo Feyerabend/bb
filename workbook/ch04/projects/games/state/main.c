@@ -3,6 +3,7 @@
 #include "display.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define MAX_ENTITIES   4
 #define CELL_SIZE      8
@@ -31,10 +32,13 @@ static struct {
     GameState state;
     GameState prev_state;
     Entity entities[MAX_ENTITIES];
+    Entity prev_entities[MAX_ENTITIES];  // Previous positions for clearing
     uint32_t score;
     uint32_t frame_count;
     int16_t field_width;   // In cells
     int16_t field_height;  // In cells
+    bool needs_render;     // Flag to force render
+    bool first_render;     // First render flag
 } game;
 
 /*  State machine functions  */
@@ -79,9 +83,7 @@ static bool check_collision(Entity *a, Entity *b) {
 static void state_menu_enter(void) {
     game.score = 0;
     game.frame_count = 0;
-    display_clear(COLOR_BLACK);
-    display_draw_string(80, 100, "PRESS Y TO START", COLOR_WHITE, COLOR_BLACK);
-    display_draw_string(80, 120, "X/Y/A/B = MOVE", COLOR_GREEN, COLOR_BLACK);
+    game.needs_render = true;
 }
 
 static void state_menu_update(void) {
@@ -90,10 +92,19 @@ static void state_menu_update(void) {
     }
 }
 
+static void state_menu_render(void) {
+    display_clear(COLOR_BLACK);
+    display_draw_string(80, 100, "PRESS Y TO START", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(80, 120, "X/Y/A/B = MOVE", COLOR_GREEN, COLOR_BLACK);
+}
+
 /*  State: PLAYING  */
 static void state_playing_enter(void) {
     init_entities();
-    display_clear(COLOR_BLACK);
+    game.needs_render = true;
+    game.first_render = true;  // Force full clear on first render
+    // Copy initial positions
+    memcpy(game.prev_entities, game.entities, sizeof(game.entities));
 }
 
 static void state_playing_update(void) {
@@ -137,14 +148,18 @@ static void state_playing_update(void) {
     // Move all entities
     for (int i = 0; i < MAX_ENTITIES; i++) {
         Entity *e = &game.entities[i];
-        e->x += e->dx;
-        e->y += e->dy;
         
-        // Clamp to field
-        if (e->x < 0) e->x = 0;
-        if (e->x >= game.field_width) e->x = game.field_width - 1;
-        if (e->y < 0) e->y = 0;
-        if (e->y >= game.field_height) e->y = game.field_height - 1;
+        // Only move if there's actual movement
+        if (e->dx != 0 || e->dy != 0) {
+            e->x += e->dx;
+            e->y += e->dy;
+            
+            // Clamp to field
+            if (e->x < 0) e->x = 0;
+            if (e->x >= game.field_width) e->x = game.field_width - 1;
+            if (e->y < 0) e->y = 0;
+            if (e->y >= game.field_height) e->y = game.field_height - 1;
+        }
     }
     
     // Check collisions
@@ -160,11 +175,23 @@ static void state_playing_update(void) {
     game.frame_count++;
 }
 
+// Helper to save entity positions (called AFTER rendering)
+static void save_entity_positions(void) {
+    memcpy(game.prev_entities, game.entities, sizeof(game.entities));
+    // Clear first_render flag AFTER we've saved the initial positions
+    if (game.first_render) {
+        game.first_render = false;
+    }
+}
+
 static void state_playing_render(void) {
-    // Clear screen
+    // Clear the whole screen
     display_clear(COLOR_BLACK);
     
-    // Draw all entities
+    // Wait for any DMA operations to complete before drawing
+    display_wait_for_dma();
+    
+    // Draw all entities at current positions
     for (int i = 0; i < MAX_ENTITIES; i++) {
         Entity *e = &game.entities[i];
         
@@ -187,10 +214,23 @@ static void state_playing_render(void) {
     char score_str[32];
     snprintf(score_str, sizeof(score_str), "SCORE:%lu", game.score);
     display_draw_string(5, 5, score_str, COLOR_WHITE, COLOR_BLACK);
+    
+    // Wait for all drawing to complete
+    display_wait_for_dma();
 }
 
 /*  State: GAME_OVER  */
 static void state_gameover_enter(void) {
+    game.needs_render = true;
+}
+
+static void state_gameover_update(void) {
+    if (button_just_pressed(BUTTON_Y)) {
+        game.state = STATE_MENU;
+    }
+}
+
+static void state_gameover_render(void) {
     display_clear(COLOR_BLACK);
     display_draw_string(90, 100, "GAME OVER", COLOR_RED, COLOR_BLACK);
     
@@ -201,21 +241,23 @@ static void state_gameover_enter(void) {
     display_draw_string(60, 150, "PRESS Y FOR MENU", COLOR_GREEN, COLOR_BLACK);
 }
 
-static void state_gameover_update(void) {
-    if (button_just_pressed(BUTTON_Y)) {
-        game.state = STATE_MENU;
-    }
-}
-
 /*  State: PAUSED  */
 static void state_paused_enter(void) {
-    display_draw_string(120, 110, "PAUSED", COLOR_CYAN, COLOR_BLACK);
+    game.needs_render = true;
 }
 
 static void state_paused_update(void) {
     if (button_just_pressed(BUTTON_Y)) {
         game.state = STATE_PLAYING;
     }
+}
+
+static void state_paused_render(void) {
+    // Render playing state in background
+    state_playing_render();
+    // Overlay pause message
+    display_fill_rect(100, 100, 120, 30, COLOR_BLACK);
+    display_draw_string(120, 110, "PAUSED", COLOR_CYAN, COLOR_BLACK);
 }
 
 /*  State machine dispatcher  */
@@ -247,7 +289,6 @@ static void state_machine_update(void) {
             break;
         case STATE_PLAYING:
             state_playing_update();
-            state_playing_render();
             break;
         case STATE_GAME_OVER:
             state_gameover_update();
@@ -255,6 +296,27 @@ static void state_machine_update(void) {
         case STATE_PAUSED:
             state_paused_update();
             break;
+    }
+    
+    // State render - ALWAYS render playing state every frame
+    if (game.state == STATE_PLAYING) {
+        state_playing_render();
+    } else if (game.needs_render) {
+        // Other states only render when needed
+        switch (game.state) {
+            case STATE_MENU:
+                state_menu_render();
+                break;
+            case STATE_GAME_OVER:
+                state_gameover_render();
+                break;
+            case STATE_PAUSED:
+                state_paused_render();
+                break;
+            default:
+                break;
+        }
+        game.needs_render = false;
     }
 }
 
@@ -279,6 +341,8 @@ int main(void) {
     init_game_field();
     game.state = STATE_MENU;
     game.prev_state = STATE_GAME_OVER; // Force entry
+    game.needs_render = true;
+    game.first_render = true;
     
     // Main loop
     while (1) {

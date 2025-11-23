@@ -4,7 +4,7 @@ project(vm_game C CXX ASM)
 pico_sdk_init()
 
 add_executable(state_game
-    state_game.c
+    main.c
     display.c
 )
 
