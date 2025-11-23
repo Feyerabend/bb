@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include "pico/stdlib.h"
@@ -178,13 +179,13 @@ int main() {
     
     // Show initial instructions
     display_clear(COLOR_BLACK);
-    display_draw_string(10, 40, "Mandelbrot Set", COLOR_WHITE, COLOR_BLACK);
-    display_draw_string(10, 60, "Rendering..", COLOR_CYAN, COLOR_BLACK);
-    display_draw_string(10, 100, "Controls:", COLOR_YELLOW, COLOR_BLACK);
-    display_draw_string(10, 120, "A: Zoom In", COLOR_WHITE, COLOR_BLACK);
-    display_draw_string(10, 135, "B: Zoom Out", COLOR_WHITE, COLOR_BLACK);
-    display_draw_string(10, 150, "X: Pan Up", COLOR_WHITE, COLOR_BLACK);
-    display_draw_string(10, 165, "Y: Pan Down", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(10, 40, "MANDELBROT SET", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(10, 60, "RENDERING..", COLOR_CYAN, COLOR_BLACK);
+    display_draw_string(10, 100, "CONTROLS:", COLOR_YELLOW, COLOR_BLACK);
+    display_draw_string(10, 120, "A: ZOOM IN", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(10, 135, "B: ZOOM OUT", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(10, 150, "X: PAN UP", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(10, 165, "Y: PAN DOWN", COLOR_WHITE, COLOR_BLACK);
     sleep_ms(2000);
     
     // Initial render
