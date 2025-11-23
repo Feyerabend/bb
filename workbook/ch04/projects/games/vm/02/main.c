@@ -3,15 +3,27 @@
 #include "display.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define MAX_ENTITIES   32
 #define COMP_SIZE      16
 #define MAX_CODE       2048
 #define CELL_SIZE      8  // 8x8 pixel cells for visibility
+#define FLASH_DURATION 30 // Frames to flash yellow
 
 /*  Flat memory (ECS)  */
 static uint8_t mem[MAX_ENTITIES * COMP_SIZE];
 static bool should_quit = false;
+static uint32_t score = 0;
+
+// Game states
+typedef enum {
+    GAME_STATE_START,
+    GAME_STATE_PLAYING,
+    GAME_STATE_OVER
+} game_state_t;
+
+static game_state_t game_state = GAME_STATE_START;
 
 /*  Component offsets  */
 #define OFF_X      0
@@ -36,6 +48,7 @@ enum {
     OP_CALL_MOVE,
     OP_CALL_CLAMP,
     OP_CALL_FLASH,
+    OP_CALL_COLLISION,
     OP_CALL_RENDER,
     OP_HALT
 };
@@ -56,19 +69,22 @@ static inline void write8(uint32_t e, int o, uint8_t v) {
 
 /*  Game Systems (called by VM)  */
 static void sys_input(uint32_t entity) {
-    // Read hardware buttons
+    // Reset velocity first
+    write16(entity, OFF_DX, 0);
+    write16(entity, OFF_DY, 0);
+    
+    // Read hardware buttons and set velocity only if pressed
     if (button_pressed(BUTTON_Y)) {
-        write16(entity, OFF_DX, 0);
         write16(entity, OFF_DY, -1);
-    } else if (button_pressed(BUTTON_A)) {
-        write16(entity, OFF_DX, 0);
+    }
+    if (button_pressed(BUTTON_A)) {
         write16(entity, OFF_DY, 1);
-    } else if (button_pressed(BUTTON_X)) {
+    }
+    if (button_pressed(BUTTON_X)) {
         write16(entity, OFF_DX, -1);
-        write16(entity, OFF_DY, 0);
-    } else if (button_pressed(BUTTON_B)) {
+    }
+    if (button_pressed(BUTTON_B)) {
         write16(entity, OFF_DX, 1);
-        write16(entity, OFF_DY, 0);
     }
 }
 
@@ -116,9 +132,37 @@ static void sys_flash(uint32_t entity) {
     }
 }
 
+static void sys_collision(void) {
+    // Check player (entity 0) against all AI entities
+    int16_t px = read16(0, OFF_X);
+    int16_t py = read16(0, OFF_Y);
+    
+    for (int e = 1; e < 4; e++) {
+        if (!read8(e, OFF_AI)) continue;
+        
+        int16_t ax = read16(e, OFF_X);
+        int16_t ay = read16(e, OFF_Y);
+        
+        // Check collision (same cell)
+        if (px == ax && py == ay) {
+            // Only count if not already flashing
+            if (!read8(e, OFF_STATE)) {
+                score++;
+                write8(e, OFF_STATE, 1);
+                write8(e, OFF_TIMER, FLASH_DURATION);
+            }
+        }
+    }
+}
+
 static void sys_render(void) {
-    // Clear screen
+    // Clear screen first
     display_clear(COLOR_BLACK);
+    
+    // Draw score at top first (before entities to avoid overlap issues)
+    char score_text[32];
+    snprintf(score_text, sizeof(score_text), "SCORE: %lu", score);
+    display_draw_string(5, 5, score_text, COLOR_WHITE, COLOR_BLACK);
     
     // Render all entities
     for (int e = 0; e < MAX_ENTITIES; ++e) {
@@ -127,9 +171,17 @@ static void sys_render(void) {
         int16_t cell_x = read16(e, OFF_X);
         int16_t cell_y = read16(e, OFF_Y);
         
+        // Bounds check
+        if (cell_x < 0 || cell_y < 0) continue;
+        if (cell_x >= (DISPLAY_WIDTH / CELL_SIZE)) continue;
+        if (cell_y >= (DISPLAY_HEIGHT / CELL_SIZE)) continue;
+        
         // Convert cell coordinates to pixel coordinates
-        uint16_t px = cell_x * CELL_SIZE;
-        uint16_t py = cell_y * CELL_SIZE;
+        uint16_t px = (uint16_t)(cell_x * CELL_SIZE);
+        uint16_t py = (uint16_t)(cell_y * CELL_SIZE);
+        
+        // Ensure we don't draw off screen
+        if (px >= DISPLAY_WIDTH || py >= DISPLAY_HEIGHT) continue;
         
         // Choose color based on entity type
         uint16_t color;
@@ -180,6 +232,10 @@ static void vm_run(VM *vm) {
                 sys_flash(entity);
                 break;
                 
+            case OP_CALL_COLLISION:
+                sys_collision();
+                break;
+                
             case OP_CALL_RENDER:
                 sys_render();
                 break;
@@ -225,6 +281,9 @@ static void build_game_code(VM *vm) {
         vm->code[i++] = e;
     }
     
+    /* Check collisions */
+    vm->code[i++] = OP_CALL_COLLISION;
+    
     /* Render everything */
     vm->code[i++] = OP_CALL_RENDER;
     
@@ -234,24 +293,39 @@ static void build_game_code(VM *vm) {
     vm->len = i;
 }
 
-/*  Main  */
-int main(void) {
-    // Initialize Pico SDK
-    stdio_init_all();
-    
-    // Seed random number generator
-    srand(time_us_32());
-    
-    // Initialize display and buttons
-    if (display_pack_init() != DISPLAY_OK) {
-        return -1;
-    }
-    if (buttons_init() != DISPLAY_OK) {
-        return -1;
-    }
-    
-    // Clear screen to black
+/* Start screen */
+static void show_start_screen(void) {
     display_clear(COLOR_BLACK);
+    
+    // Title
+    display_draw_string(80, 60, "VM CATCH GAME", COLOR_CYAN, COLOR_BLACK);
+    
+    // Instructions
+    display_draw_string(40, 100, "CATCH RED SQUARES", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(40, 115, "USE  X Y A B  BUTTONS", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(40, 130, "TO MOVE GREEN SQUARE", COLOR_WHITE, COLOR_BLACK);
+    
+    // Start prompt
+    display_draw_string(60, 170, "PRESS ANY BUTTON", COLOR_YELLOW, COLOR_BLACK);
+    display_draw_string(80, 185, "TO START", COLOR_YELLOW, COLOR_BLACK);
+    
+    // Wait for any button press
+    while (game_state == GAME_STATE_START) {
+        buttons_update();
+        if (button_pressed(BUTTON_A) || button_pressed(BUTTON_B) || 
+            button_pressed(BUTTON_X) || button_pressed(BUTTON_Y)) {
+            game_state = GAME_STATE_PLAYING;
+            sleep_ms(200); // Debounce
+        }
+        sleep_ms(50);
+    }
+}
+
+/* Initialize game entities */
+static void init_game(void) {
+    // Clear memory
+    memset(mem, 0, sizeof(mem));
+    score = 0;
     
     // Calculate game field dimensions in cells
     const int16_t max_x = (DISPLAY_WIDTH / CELL_SIZE) - 1;
@@ -270,13 +344,36 @@ int main(void) {
         write16(i, OFF_DY, (rand() % 3) - 1);
         write8(i, OFF_AI, 1);
     }
+}
+
+/*  Main  */
+int main(void) {
+    // Initialize Pico SDK
+    stdio_init_all();
+    
+    // Seed random number generator
+    srand(time_us_32());
+    
+    // Initialize display and buttons
+    if (display_pack_init() != DISPLAY_OK) {
+        return -1;
+    }
+    if (buttons_init() != DISPLAY_OK) {
+        return -1;
+    }
+    
+    // Show start screen
+    show_start_screen();
+    
+    // Initialize game
+    init_game();
     
     /* Build VM program */
     VM vm = {0};
     build_game_code(&vm);
     
     /* Game loop: run VM each frame */
-    while (!should_quit) {
+    while (!should_quit && game_state == GAME_STATE_PLAYING) {
         // Update button states
         buttons_update();
         
