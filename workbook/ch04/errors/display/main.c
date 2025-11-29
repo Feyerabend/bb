@@ -1,235 +1,363 @@
 #include "display.h"
 #include "pico/stdlib.h"
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
-/* Simple error logger - stores last 10 errors with full context */
-#define MAX_ERROR_LOG 10
-
-typedef struct {
-    disp_error_context_t ctx;
-    uint32_t timestamp_ms;
-} logged_error_t;
-
-static struct {
-    logged_error_t errors[MAX_ERROR_LOG];
-    int count;
-} error_log = {0};
-
-static void log_error(disp_error_t err) {
-    if (err == DISP_OK || error_log.count >= MAX_ERROR_LOG) return;
-
-    error_log.errors[error_log.count].ctx = disp_get_last_error();
-    error_log.errors[error_log.count].timestamp_ms = to_ms_since_boot(get_absolute_time());
-    error_log.count++;
+// Helper: Draw filled circle in framebuffer
+void fb_draw_circle(uint16_t cx, uint16_t cy, uint16_t r, uint16_t color) {
+    uint16_t *fb = disp_get_framebuffer();
+    if (!fb) return;
+    
+    int r_sq = r * r;
+    for (int y = -r; y <= r; y++) {
+        int y_sq = y * y;
+        for (int x = -r; x <= r; x++) {
+            if (x*x + y_sq <= r_sq) {
+                int px = cx + x;
+                int py = cy + y;
+                if (px >= 0 && px < DISPLAY_WIDTH && py >= 0 && py < DISPLAY_HEIGHT) {
+                    fb[py * DISPLAY_WIDTH + px] = color;
+                }
+            }
+        }
+    }
 }
 
-static void print_error_log(void) {
-    if (error_log.count == 0) {
-        printf("\nNo errors recorded.\n");
+// Helper: Draw text in framebuffer
+void fb_draw_text(uint16_t x, uint16_t y, const char *txt, uint16_t fg, uint16_t bg) {
+    uint16_t *fb = disp_get_framebuffer();
+    if (!fb) return;
+    
+    // Simple 5x8 font drawing - you'd copy the font logic here
+    // For now, just draw rectangles as placeholder
+    while (*txt && x < DISPLAY_WIDTH) {
+        for (int dy = 0; dy < 8; dy++) {
+            for (int dx = 0; dx < 5; dx++) {
+                int px = x + dx;
+                int py = y + dy;
+                if (px < DISPLAY_WIDTH && py < DISPLAY_HEIGHT) {
+                    fb[py * DISPLAY_WIDTH + px] = bg;
+                }
+            }
+        }
+        x += 6;
+        txt++;
+    }
+}
+
+// Demo 1: Smooth bouncing ball
+void demo_bouncing_ball(void) {
+    printf("\n=== Smooth Bouncing Ball Demo ===\n");
+    
+    // Allocate framebuffer
+    if (disp_framebuffer_alloc() != DISP_OK) {
+        printf("Failed to allocate framebuffer!\n");
         return;
     }
-
-    printf("\n=== ERROR LOG (%d recorded) ===\n", error_log.count);
-    for (int i = 0; i < error_log.count; i++) {
-        logged_error_t *e = &error_log.errors[i];
-        printf("\n[%d] %s (at %lu ms)\n", i + 1,
-               disp_error_string(e->ctx.code), (unsigned long)e->timestamp_ms);
-        printf("    Function: %s (line %d)\n", e->ctx.function, e->ctx.line);
-        printf("    Message : %s\n", e->ctx.message);
-    }
-    printf("\n");
-}
-
-static void button_a_cb(button_t b) { printf("Button A pressed!\n"); }
-static void button_b_cb(button_t b) { printf("Button B pressed!\n"); }
-static void button_x_cb(button_t b) { printf("Button X pressed!\n"); }
-static void button_y_cb(button_t b) { printf("Button Y pressed!\n"); }
-
-void demo_robust_init(void) {
-    printf("\n--- Demo 1: Robust Init (DMA fallback) ---\n");
-
-    disp_config_t cfg = disp_get_default_config();
-    cfg.use_dma = true;
-
-    disp_error_t err = disp_init(&cfg);
-    if (err != DISP_OK) {
-        printf("DMA init failed - falling back to software mode..\n");
-        log_error(err);
-
-        cfg.use_dma = false;
-        err = disp_init(&cfg);
-        if (err != DISP_OK) {
-            printf("Init failed completely!\n");
-            log_error(err);
-            return;
+    
+    float x = 160, y = 120;
+    float vx = 3.5, vy = 2.8;
+    uint16_t radius = 15;
+    uint32_t frame = 0;
+    
+    uint32_t last_time = to_ms_since_boot(get_absolute_time());
+    uint32_t last_fps_print = last_time;
+    
+    printf("Press A again to exit\n");
+    
+    while (1) {
+        // Clear framebuffer
+        disp_framebuffer_clear(COLOR_BLACK);
+        
+        // Update physics
+        x += vx;
+        y += vy;
+        
+        if (x - radius < 0) {
+            x = radius;
+            vx = -vx;
         }
-        printf("Init successfully without DMA\n");
-    } else {
-        printf("Init with DMA - perfect!\n");
-    }
-
-    disp_clear(COLOR_GREEN);
-    disp_draw_text(40, 100, "INIT OK", COLOR_BLACK, COLOR_GREEN);
-    sleep_ms(1500);
-    disp_deinit();
-}
-
-void demo_batch_drawing(void) {
-    printf("\n--- Demo 2: Batch drawing (50 rectangles) ---\n");
-
-    disp_init(NULL);
-    disp_clear(COLOR_BLACK);
-
-    int ok = 0, failed = 0;
-    for (int i = 0; i < 50; i++) {
-        uint16_t x = rand() % (DISPLAY_WIDTH  - 40);
-        uint16_t y = rand() % (DISPLAY_HEIGHT - 40);
-        uint16_t col = rand() & 0xFFFF;
-
-        disp_error_t err = disp_fill_rect(x, y, 38, 38, col);
-        if (err != DISP_OK) {
-            failed++;
-            log_error(err);
-            disp_clear_error();
-        } else {
-            ok++;
+        if (x + radius >= DISPLAY_WIDTH) {
+            x = DISPLAY_WIDTH - radius - 1;
+            vx = -vx;
         }
+        if (y - radius < 0) {
+            y = radius;
+            vy = -vy;
+        }
+        if (y + radius >= DISPLAY_HEIGHT) {
+            y = DISPLAY_HEIGHT - radius - 1;
+            vy = -vy;
+        }
+        
+        // Draw ball with rainbow color
+        uint16_t color = ((frame * 8) & 0x1F) << 11 | 
+                        ((frame * 4) & 0x3F) << 5 | 
+                        ((frame * 16) & 0x1F);
+        fb_draw_circle((uint16_t)x, (uint16_t)y, radius, color);
+        
+        // Draw "trail" effect
+        if (frame > 0) {
+            fb_draw_circle((uint16_t)(x - vx), (uint16_t)(y - vy), radius/2, color >> 2);
+        }
+        
+        // Flush to display (single DMA transfer!)
+        disp_framebuffer_flush();
+        
+        frame++;
+        
+        // Calculate FPS every second
+        uint32_t now = to_ms_since_boot(get_absolute_time());
+        if (now - last_fps_print >= 1000) {
+            float fps = frame * 1000.0f / (now - last_time);
+            printf("FPS: %.1f\n", fps);
+            last_fps_print = now;
+        }
+        
+        // Check buttons to exit
+        buttons_update();
+        if (button_pressed(BUTTON_A) || button_pressed(BUTTON_Y)) {
+            printf("Exiting bouncing ball\n");
+            break;
+        }
+        
+        sleep_ms(16);  // ~60 FPS target
     }
-
-    char txt[64];
-    snprintf(txt, sizeof(txt), "OK:%d  ERR:%d", ok, failed);
-    disp_draw_text(10, 10, txt, failed ? COLOR_RED : COLOR_GREEN, COLOR_BLACK);
-
-    printf("Batch complete - %d successful, %d failed\n", ok, failed);
-    sleep_ms(3000);
-    disp_deinit();
+    
+    disp_framebuffer_free();
 }
 
-void demo_safe_blit(void) {
-    printf("\n--- Demo 3: Safe buffer blit (out-of-bounds test) ---\n");
-
-    disp_init(NULL);
-    disp_clear(0x001F); // dark blue
-
-    const int w = 80, h = 80;
-    uint16_t *buf = malloc(w * h * 2);
-    if (!buf) {
-        printf("Failed to allocate buffer!\n");
-        disp_deinit();
+// Demo 2: Plasma effect
+void demo_plasma(void) {
+    printf("\nSmooth Plasma Effect\n");
+    
+    if (disp_framebuffer_alloc() != DISP_OK) {
+        printf("Failed to allocate framebuffer!\n");
         return;
     }
-
-    for (int y = 0; y < h; y++)
-        for (int x = 0; x < w; x++)
-            buf[y * w + x] = ((x * 31 / w) << 11) | ((y * 63 / h) << 5) | (31 - x * 31 / w);
-
-    int positions[][2] = { {0,0}, {250,0}, {0,180}, {300,200}, {120,80} };
-
-    for (int i = 0; i < 5; i++) {
-        disp_error_t err = disp_blit(positions[i][0], positions[i][1], w, h, buf);
-        if (err != DISP_OK) {
-            printf("Blit %d failed (expected): %s\n", i, disp_error_string(err));
-            log_error(err);
-        } else {
-            printf("Blit %d successful\n", i);
+    
+    uint16_t *fb = disp_get_framebuffer();
+    uint32_t frame = 0;
+    uint32_t last_fps_print = to_ms_since_boot(get_absolute_time());
+    
+    printf("Press B again to exit\n");
+    
+    while (1) {
+        float time = frame * 0.05f;
+        
+        // Generate plasma pattern
+        for (int y = 0; y < DISPLAY_HEIGHT; y++) {
+            for (int x = 0; x < DISPLAY_WIDTH; x++) {
+                float fx = x / 40.0f;
+                float fy = y / 40.0f;
+                
+                float v = sinf(fx + time) + 
+                         sinf(fy + time) + 
+                         sinf((fx + fy + time) * 0.5f) + 
+                         sinf(sqrtf(fx*fx + fy*fy) + time);
+                
+                v = (v + 4.0f) / 8.0f;  // Normalize to 0-1
+                
+                uint8_t r = (uint8_t)(sinf(v * 6.28f) * 127 + 128);
+                uint8_t g = (uint8_t)(sinf(v * 6.28f + 2.09f) * 127 + 128);
+                uint8_t b = (uint8_t)(sinf(v * 6.28f + 4.18f) * 127 + 128);
+                
+                // Convert to RGB565
+                uint16_t color = ((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3);
+                fb[y * DISPLAY_WIDTH + x] = color;
+            }
+        }
+        
+        disp_framebuffer_flush();
+        frame++;
+        
+        uint32_t now = to_ms_since_boot(get_absolute_time());
+        if (now - last_fps_print >= 1000) {
+            printf("Frame %lu\n", (unsigned long)frame);
+            last_fps_print = now;
+        }
+        
+        buttons_update();
+        if (button_pressed(BUTTON_B) || button_pressed(BUTTON_Y)) {
+            printf("Exiting plasma\n");
+            break;
         }
     }
-
-    free(buf);
-    disp_draw_text(10, 10, "Blit Test Done", COLOR_YELLOW, COLOR_BLACK);
-    sleep_ms(3000);
-    disp_deinit();
+    
+    disp_framebuffer_free();
 }
 
-void demo_timeout(void) {
-    printf("\n--- Demo 4: DMA timeout test ---\n");
-
-    disp_config_t cfg = disp_get_default_config();
-    cfg.dma_timeout_ms = 5;
-
-    disp_init(&cfg);
-    printf("Trying large clear with 5ms timeout..\n");
-
-    disp_error_t err = disp_clear(COLOR_MAGENTA);
-    if (err == DISP_ERR_DMA_TIMEOUT) {
-        printf("Timeout detected (expected)\n");
-        log_error(err);
-        disp_wait_complete(2000);
-        printf("Recovered - reinit with normal timeout\n");
-        cfg.dma_timeout_ms = 1000;
-        disp_deinit();
-        disp_init(&cfg);
-        disp_clear(COLOR_CYAN);
-        disp_draw_text(40, 100, "Recovered!", COLOR_BLACK, COLOR_CYAN);
+// Demo 3: Starfield
+void demo_starfield(void) {
+    printf("\nSmooth Starfield Demo\n");
+    
+    if (disp_framebuffer_alloc() != DISP_OK) {
+        printf("Failed to allocate framebuffer!\n");
+        return;
     }
-
-    sleep_ms(2000);
-    disp_deinit();
-}
-
-void demo_state_validation(void) {
-    printf("\n--- Demo 5: State validation tests ---\n");
-
-    printf("Before init - initialised? %s\n", disp_is_initialized() ? "YES" : "NO");
-
-    disp_init(NULL);
-    printf("After init   - initialised? %s\n", disp_is_initialized() ? "YES" : "NO");
-
-    disp_error_t err = disp_init(NULL);
-    if (err == DISP_ERR_ALREADY_INIT) {
-        printf("Double init correctly rejected\n");
-        log_error(err);
-        disp_clear_error();
+    
+    #define NUM_STARS 150
+    struct {
+        float x, y, z;
+    } stars[NUM_STARS];
+    
+    // Init stars
+    for (int i = 0; i < NUM_STARS; i++) {
+        stars[i].x = (rand() % 2000) - 1000;
+        stars[i].y = (rand() % 2000) - 1000;
+        stars[i].z = rand() % 1000 + 1;
     }
-
-    disp_deinit();
-    printf("After deinit - initialised? %s\n", disp_is_initialized() ? "YES" : "NO");
-
-    err = disp_clear(COLOR_RED);
-    if (err == DISP_ERR_NOT_INIT) {
-        printf("Use after deinit correctly blocked\n");
-        log_error(err);
+    
+    uint16_t *fb = disp_get_framebuffer();
+    uint32_t frame = 0;
+    uint32_t last_fps_print = to_ms_since_boot(get_absolute_time());
+    
+    printf("Press X again to exit\n");
+    
+    while (1) {
+        disp_framebuffer_clear(0x0000);  // Black
+        
+        // Update and draw stars
+        for (int i = 0; i < NUM_STARS; i++) {
+            stars[i].z -= 8;
+            if (stars[i].z <= 0) {
+                stars[i].x = (rand() % 2000) - 1000;
+                stars[i].y = (rand() % 2000) - 1000;
+                stars[i].z = 1000;
+            }
+            
+            // Project to screen
+            float k = 128.0f / stars[i].z;
+            int sx = (int)(stars[i].x * k) + DISPLAY_WIDTH / 2;
+            int sy = (int)(stars[i].y * k) + DISPLAY_HEIGHT / 2;
+            
+            if (sx >= 0 && sx < DISPLAY_WIDTH && sy >= 0 && sy < DISPLAY_HEIGHT) {
+                // Brightness based on distance
+                uint8_t brightness = (uint8_t)(255 * (1.0f - stars[i].z / 1000.0f));
+                uint16_t color =
+                               ((brightness >> 3) << 11) | 
+                               ((brightness >> 2) << 5) | 
+                               (brightness >> 3);
+                
+                // Draw star with size based on distance
+                int size = 1 + (1000 - (int)stars[i].z) / 400;
+                for (int dy = 0; dy < size; dy++) {
+                    for (int dx = 0; dx < size; dx++) {
+                        int px = sx + dx;
+                        int py = sy + dy;
+                        if (px < DISPLAY_WIDTH && py < DISPLAY_HEIGHT) {
+                            fb[py * DISPLAY_WIDTH + px] = color;
+                        }
+                    }
+                }
+            }
+        }
+        
+        disp_framebuffer_flush();
+        frame++;
+        
+        uint32_t now = to_ms_since_boot(get_absolute_time());
+        if (now - last_fps_print >= 1000) {
+            printf("Frame %lu\n", (unsigned long)frame);
+            last_fps_print = now;
+        }
+        
+        buttons_update();
+        if (button_pressed(BUTTON_X) || button_pressed(BUTTON_Y)) {
+            printf("Exiting starfield\n");
+            break;
+        }
+        
+        sleep_ms(16);  // ~60 FPS
     }
+    
+    disp_framebuffer_free();
 }
 
 int main() {
     stdio_init_all();
     sleep_ms(2000);
-
-    printf("\n");
-    printf("  Pimoroni Display Pack 2.0 - Error Handling Demo\n");
-
-    srand(12345);
-
-    demo_robust_init();
-    demo_batch_drawing();
-    demo_safe_blit();
-    demo_timeout();
-    demo_state_validation();
-
-    print_error_log();
-
-    printf("Demo finished\n");
-    printf("Now testing buttons A/B/X/Y.\n\n");
-
-    /* ----- Final button test (pure C) ----- */
-    buttons_init();
-    button_set_callback(BUTTON_A, button_a_cb);
-    button_set_callback(BUTTON_B, button_b_cb);
-    button_set_callback(BUTTON_X, button_x_cb);
-    button_set_callback(BUTTON_Y, button_y_cb);
-
-    disp_init(NULL);
-    disp_clear(COLOR_BLACK);
-    disp_draw_text(20, 80,  "Everything should work", COLOR_WHITE, COLOR_BLACK);
-    disp_draw_text(50, 120, "Press A B X Y for test", COLOR_CYAN, COLOR_BLACK);
-
-    while (1) {
-        buttons_update();
-        sleep_ms(10);
+    
+    printf("  SMOOTH RENDERING DEMO\n");
+    printf("  Using DMA + Framebuffer\n\n");
+    
+    // Init with DMA enabled
+    disp_config_t cfg = disp_get_default_config();
+    cfg.use_dma = true;
+    cfg.spi_baudrate = 62500000;  // Maximum speed
+    
+    disp_error_t err = disp_init(&cfg);
+    if (err != DISP_OK) {
+        printf("Init failed: %s\n", disp_error_string(err));
+        return 1;
     }
+    
+    buttons_init();
+    
+    // Show intro
+    disp_clear(COLOR_BLACK);
+    disp_draw_text(40, 100, "RENDERING", COLOR_WHITE, COLOR_BLACK);
+    disp_draw_text(60, 120, "Press any button ..", COLOR_CYAN, COLOR_BLACK);
+    sleep_ms(2000);
+    
+    while (1) {
+        disp_clear(COLOR_BLACK);
+        disp_draw_text(20, 40,  "DEMO", COLOR_WHITE, COLOR_BLACK);
+        disp_draw_text(20, 70,  "A: Bouncing Ball", COLOR_GREEN, COLOR_BLACK);
+        disp_draw_text(20, 90,  "B: Plasma Effect", COLOR_YELLOW, COLOR_BLACK);
+        disp_draw_text(20, 110, "X: Starfield", COLOR_CYAN, COLOR_BLACK);
+        disp_draw_text(20, 130, "Y: Exit", COLOR_RED, COLOR_BLACK);
+        disp_draw_text(20, 160, "Press a button!", COLOR_WHITE, COLOR_BLACK);
+        
+        printf("\nMENU: Press A/B/X/Y\n");
+        
+        // Wait for button release first
+        while (button_pressed(BUTTON_A) || button_pressed(BUTTON_B) || 
+               button_pressed(BUTTON_X) || button_pressed(BUTTON_Y)) {
+            buttons_update();
+            sleep_ms(10);
+        }
+        
+        // Now wait for a press
+        bool demo_selected = false;
+        while (!demo_selected) {
+            buttons_update();
+            
+            if (button_just_pressed(BUTTON_A)) {
+                printf("Starting bouncing ball demo ..\n");
+                sleep_ms(100);  // Brief pause
+                demo_bouncing_ball();
+                demo_selected = true;
+            }
 
+            else if (button_just_pressed(BUTTON_B)) {
+                printf("Starting plasma demo ..\n");
+                sleep_ms(100);
+                demo_plasma();
+                demo_selected = true;
+            }
+
+            else if (button_just_pressed(BUTTON_X)) {
+                printf("Starting starfield demo ..\n");
+                sleep_ms(100);
+                demo_starfield();
+                demo_selected = true;
+            }
+
+            else if (button_just_pressed(BUTTON_Y)) {
+                printf("Exiting ..\n");
+                disp_clear(COLOR_BLACK);
+                disp_draw_text(80, 110, "Bye!", COLOR_WHITE, COLOR_BLACK);
+                sleep_ms(1000);
+                disp_deinit();
+                return 0;
+            }
+            
+            sleep_ms(10);
+        }
+    }
+    
     return 0;
-}
+} 
+

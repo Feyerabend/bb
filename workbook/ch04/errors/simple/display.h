@@ -86,6 +86,14 @@ disp_error_t disp_draw_text(uint16_t x, uint16_t y, const char *text, uint16_t f
 disp_error_t disp_set_backlight(bool enabled);
 disp_error_t disp_wait_complete(uint32_t timeout_ms);
 
+// Framebuffer mode (for smooth, flicker-free updates)
+disp_error_t disp_framebuffer_alloc(void);
+void disp_framebuffer_free(void);
+uint16_t* disp_get_framebuffer(void);
+disp_error_t disp_framebuffer_flush(void);
+disp_error_t disp_framebuffer_clear(uint16_t color);
+void disp_framebuffer_set_pixel(uint16_t x, uint16_t y, uint16_t color);
+
 // Buttons
 disp_error_t buttons_init(void);
 void buttons_update(void);
@@ -99,7 +107,7 @@ const char* disp_error_string(disp_error_t error);
 disp_error_context_t disp_get_last_error(void);
 void disp_clear_error(void);
 
-// Helper macro - returns the error code!
+// Helper macro - returns error code
 #define DISP_ERROR(code, msg) \
     (disp_set_error_context((code), __func__, __LINE__, (msg)), (code))
 
