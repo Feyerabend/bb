@@ -3,6 +3,7 @@
 
 This is a complete, battle-tested driver for the *Pimoroni Display Pack 2.0*
 (ST7789 320×240 IPS + 4 tactile buttons) on the *Raspberry Pi Pico (C/C++ SDK)*.
+It also __requires__ the more capable Raspberry Pi Pico 2 or 2W to work.
 
 The primary design goal is *zero silent failures*. Every public function returns
 a detailed error code, tracks full context, validates parameters, and gracefully
