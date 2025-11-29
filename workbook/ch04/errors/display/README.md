@@ -28,6 +28,7 @@ degrades when resources (e.g. DMA) are unavailable.
 - 4-button support with debounced press detection & callbacks
 - Rich error system with function/line/message context
 - Init/deinit state protection (double-init / use-after-free safe)
+- Optional full-screen framebuffer for flicker-free updates
 
 
 ### Quick Start
@@ -76,6 +77,14 @@ disp_error_t disp_blit(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uin
 disp_error_t disp_draw_char(uint16_t x, uint16_t y, char c, uint16_t fg, uint16_t bg);
 disp_error_t disp_draw_text(uint16_t x, uint16_t y, const char *txt, uint16_t fg, uint16_t bg);
 
+// Framebuffer (for smooth, flicker-free updates)
+disp_error_t disp_framebuffer_alloc(void);
+void disp_framebuffer_free(void);
+uint16_t* disp_get_framebuffer(void);
+disp_error_t disp_framebuffer_flush(void);
+disp_error_t disp_framebuffer_clear(uint16_t color);
+void disp_framebuffer_set_pixel(uint16_t x, uint16_t y, uint16_t color);
+
 // Control
 disp_error_t disp_set_backlight(bool on);
 disp_error_t disp_wait_complete(uint32_t timeout_ms);
@@ -85,6 +94,7 @@ disp_error_t buttons_init(void);
 void         buttons_update(void);                     // call often
 bool         button_pressed(button_t b);
 bool         button_just_pressed(button_t b);
+bool         button_just_released(button_t b);
 disp_error_t button_set_callback(button_t b, button_callback_t cb);
 ```
 
@@ -157,7 +167,6 @@ disp_init(&cfg);               // back to normal
 | Small rectangles (<100 px)  | blocking SPI faster (auto fallback) |
 
 
-
 ### Building
 
 Standard Pico SDK project:
@@ -178,4 +187,3 @@ Copy the resulting `.uf2` to the Pico.
 - Use the `DISP_ERROR(code, "msg")` macro to set context
 - Validate coordinates, pointers, and state
 - Add new error strings to `err_str[]` in `display.c`
-

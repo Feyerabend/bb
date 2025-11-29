@@ -18,7 +18,7 @@
 #define PIN_RST   21
 #define PIN_BL    20
 
-// Button pins
+
 #define BTN_A 12
 #define BTN_B 13
 #define BTN_X 14
@@ -38,8 +38,10 @@ static struct {
 } g = {0};
 
 static button_callback_t button_cb[BUTTON_COUNT] = {0};
-static volatile bool btn_state[BUTTON_COUNT] = {0};
-static volatile bool btn_last[BUTTON_COUNT] = {0};
+static volatile bool btn_state[BUTTON_COUNT] = {0};      // Current raw state
+static volatile bool btn_last_raw[BUTTON_COUNT] = {0};   // Last raw state for debouncing
+static volatile bool btn_pressed[BUTTON_COUNT] = {0};    // Edge-detected press event
+static volatile bool btn_released[BUTTON_COUNT] = {0};   // Edge-detected release event
 static uint32_t last_check = 0;
 static bool buttons_ready = false;
 
@@ -463,16 +465,18 @@ disp_error_t buttons_init(void) {
         gpio_set_dir(button_pins[i], GPIO_IN);
         gpio_pull_up(button_pins[i]);
         
-        // Read initial state
-        bool raw = gpio_get(button_pins[i]);
-        bool pressed = !raw;  // Active low
+        // Read initial state (active low, so invert)
+        bool raw = !gpio_get(button_pins[i]);
         
-        btn_state[i] = pressed;
-        btn_last[i] = pressed;
+        btn_state[i] = raw;
+        btn_last_raw[i] = raw;
+        btn_pressed[i] = false;
+        btn_released[i] = false;
     }
+    
     buttons_ready = true;
     last_check = to_ms_since_boot(get_absolute_time());
-    printf("DEBUG: Buttons initialised\n");
+    printf("DEBUG: Buttons initialized\n");
     return DISP_OK;
 }
 
@@ -480,40 +484,51 @@ void buttons_update(void) {
     if (!buttons_ready) return;
 
     uint32_t now = to_ms_since_boot(get_absolute_time());
-    if (now - last_check < 25) return;
+    if (now - last_check < 20) return;  // 20ms debounce
     last_check = now;
 
     for (int i = 0; i < BUTTON_COUNT; i++) {
-        bool raw = gpio_get(button_pins[i]);
-        bool pressed = !raw;  // Active low (true when pressed)
+        // Read current state (active low - pressed = 0, so invert)
+        bool current = !gpio_get(button_pins[i]);
         
-        // Detect press event: was not pressed, now is pressed
-        if (!btn_last[i] && pressed) {
+        // Clear edge flags from previous update
+        btn_pressed[i] = false;
+        btn_released[i] = false;
+        
+        // Detect edges
+        if (current && !btn_last_raw[i]) {
+            // Rising edge - button was just pressed
+            btn_pressed[i] = true;
+            
+            // Fire callback on press
             if (button_cb[i]) {
                 button_cb[i]((button_t)i);
             }
         }
+        else if (!current && btn_last_raw[i]) {
+            // Falling edge - button was just released
+            btn_released[i] = true;
+        }
         
-        // Update state - btn_last gets the OLD btn_state
-        btn_last[i] = btn_state[i];  // Remember previous state
-        btn_state[i] = pressed;      // Store new state
+        // Update state
+        btn_last_raw[i] = btn_state[i];
+        btn_state[i] = current;
     }
 }
 
 bool button_pressed(button_t b) {
+    // Returns true if button is currently held down
     return (b < BUTTON_COUNT) ? btn_state[b] : false;
 }
 
 bool button_just_pressed(button_t b) {
-    if (b >= BUTTON_COUNT) return false;
-    // Check if currently pressed but wasn't in the previous state
-    return btn_state[b] && !btn_last[b];
+    // Returns true for ONE update cycle after press
+    return (b < BUTTON_COUNT) ? btn_pressed[b] : false;
 }
 
 bool button_just_released(button_t b) {
-    if (b >= BUTTON_COUNT) return false;
-    // Check if currently not pressed but was in the previous state
-    return !btn_state[b] && btn_last[b];
+    // Returns true for ONE update cycle after release
+    return (b < BUTTON_COUNT) ? btn_released[b] : false;
 }
 
 disp_error_t button_set_callback(button_t b, button_callback_t cb) {

@@ -13,7 +13,7 @@ void fb_draw_circle(uint16_t cx, uint16_t cy, uint16_t r, uint16_t color) {
     for (int y = -r; y <= r; y++) {
         int y_sq = y * y;
         for (int x = -r; x <= r; x++) {
-            if (x*x + y_sq <= r_sq) {
+            if (x*x + y_sq <= r_sq) { 
                 int px = cx + x;
                 int py = cy + y;
                 if (px >= 0 && px < DISPLAY_WIDTH && py >= 0 && py < DISPLAY_HEIGHT) {
