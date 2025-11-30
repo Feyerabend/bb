@@ -13,7 +13,7 @@ typedef struct {
     int len;          // Total number of digits
 } BigDecimal;
 
-// Initialize a BigDecimal from a string
+// Init a BigDecimal from a string
 BigDecimal* bd_from_string(const char* str) {
     BigDecimal* bd = malloc(sizeof(BigDecimal));
     memset(bd->digits, '0', MAX_DIGITS);
@@ -117,7 +117,8 @@ BigDecimal* bd_add(BigDecimal* a, BigDecimal* b) {
         }
     } else {
         // For subtraction, we'll implement a simple version
-        // This is a simplified implementation - full version would handle all cases
+        // This is a simplified implementation
+        // - full version would handle all cases
         result->sign = 1;
         result->len = 1;
         result->digits[0] = '0';

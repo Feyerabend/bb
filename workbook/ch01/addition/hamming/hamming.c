@@ -2,6 +2,7 @@
 
 // Encode 4-bit data into 7-bit Hamming(7,4) code
 unsigned char hamming_encode_4bit(unsigned char data) {
+
     // Extract individual data bits
     unsigned char d1 = (data >> 3) & 1;
     unsigned char d2 = (data >> 2) & 1;

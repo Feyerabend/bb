@@ -35,7 +35,7 @@ remaining positions.
 ```plaintext
 Codeword Structure:
 Positions:  1   2   3   4   5   6   7   8   ...
-Content:   P1  P2  D1  P4  D2  D3  D4  P8  ...
+Content:   P1  P2  D1  P4  D2  D3  D4  P8   ...
            ^   ^       ^           ^   (powers of 2)
 ```
 
@@ -62,7 +62,7 @@ For example:
   - Code: (12,8) with 8 data bits, 4 parity bits, total length 12
 
 ```plaintext
-(7,4) Codeword: P1 P2 D1 P4 D2 D3 D4
+(7,4)  Codeword: P1 P2 D1 P4 D2 D3 D4
 (15,11) Example: P1 P2 D1 P4 D2 D3 D4 P8 D5 D6 D7 D8 D9 D10 D11
 ```
 
@@ -86,8 +86,8 @@ P2 checks:    [2]  [3]     [6]     [7]     ...
 
 ## Error Detection and Correction
 
-1. *Syndrome Calculation*: The receiver recomputes parity checks. Failed checks form a binary
-*syndrome* indicating the erroneous bit's position.
+1. *Syndrome Calculation*: The receiver recomputes parity checks.
+   Failed checks form a binary *syndrome* indicating the erroneous bit's position.
 2. *Error Handling*:
    - Syndrome = 0: No error
    - Syndrome ≠ 0: Flip the bit at the position indicated by the syndrome
@@ -134,7 +134,8 @@ Corrected:  Syndrome identifies and fixes bit 6
 
 ### Summary
 
-Hamming Codes form a versatile family of error-correcting codes, with variants like (7,4), (15,11),
-and beyond, tailored to different data sizes. Their ability to correct single-bit errors with minimal
-overhead makes them a timeless tool in digital systems, balancing simplicity and reliability.
+Hamming Codes form a versatile family of error-correcting codes, with variants like
+(7,4), (15,11) and beyond, tailored to different data sizes. Their ability to correct
+single-bit errors with minimal overhead makes them a timeless tool in digital systems,
+balancing simplicity and reliability.
 
