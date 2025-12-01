@@ -11,7 +11,7 @@ before any real exploration begins. This can simplify the job of the teacher, bu
 reduces students to passive listeners. Their diverse backgrounds and interests are sidelined
 in favor of a standardized sequence of content.
 
-Here, the goal is different.
+__Here, the goal is different.__
 
 This book is not meant to be followed step by step or consumed passively. It is meant to provoke,
 encourage, and support exploration. It provides a structure, but not a pathway. It contains ideas,
@@ -137,29 +137,29 @@ starting points and inspiration.
 
 #### Suggestions for further study
 
-1. **Classic Computer Science Foundations**
+1. *Classic Computer Science Foundations*
 
    * *Introduction to Algorithms* by Cormen, Leiserson, Rivest, and Stein
    * *Structure and Interpretation of Computer Programs* by Abelson and Sussman
    * Courses in discrete mathematics, logic, and automata theory
 
-2. **Programming Language Theory & Design**
+2. *Programming Language Theory & Design*
 
    * *Programming Languages: Application and Interpretation* by Krishnamurthi
    * Explore functional languages (Haskell), systems languages (Rust), or logic languages (Prolog)
 
-3. **Machine Learning and Data Science**
+3. *Machine Learning and Data Science*
 
    * *The Elements of Statistical Learning* by Hastie, Tibshirani, and Friedman
    * *Deep Learning* by Goodfellow, Bengio, and Courville
    * Practical resources such as fast.ai or scikit-learn tutorials
 
-4. **Systems, Architecture, and Performance**
+4. *Systems, Architecture, and Performance*
 
    * *Computer Systems: A Programmer's Perspective* by Bryant and O'Hallaron
    * Operating systems courses or resources on concurrency and distributed systems
 
-5. **Ethics, Society, and the Impact of Computing**
+5. *Ethics, Society, and the Impact of Computing*
 
    * Literature on algorithmic fairness, data privacy, and responsible AI
    * Interdisciplinary studies connecting computing with philosophy, sociology, and law
