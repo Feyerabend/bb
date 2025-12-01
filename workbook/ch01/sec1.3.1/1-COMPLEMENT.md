@@ -6,7 +6,7 @@ numbers are represented as usual in binary, while negative numbers are obtained 
 (flipping) all bits of the corresponding positive number. This means that for an n-bit system,
 a number x is represented as:
 - x (if positive) -> standard binary representation.
--	-x (if negative) -> bitwise NOT (~x) of the positive counterpart.
+- -x (if negative) -> bitwise NOT (~x) of the positive counterpart.
 
 A key characteristic of one's complement is that it has two representations of zero: all 0s
 (positive zero) and all 1s (negative zero). This can lead to some extra handling in arithmetic
@@ -15,7 +15,8 @@ operations.
 ### Simulation: Basic Arithmetic in One's Complement
 
 Addition in one's complement follows standard binary addition, but with an extra step called
-end-around carry: *if there is a carry from the most significant bit, it is added back to the least significant bit.*
+end-around carry:
+*if there is a carry from the most significant bit, it is added back to the least significant bit.*
 
 Here's a Python implementation that simulates an n-bit one's complement system, including negation, addition, and subtraction.
 
