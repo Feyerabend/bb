@@ -92,7 +92,7 @@ My own learning began with C in the early 1980s, when it was a hot topic in the 
 microcomputers. Naturally, everyone owned the classic K&R book--*The C Programming Language* by
 Kernighan and Ritchie. That was simply the starting point for anyone serious about programming at the time.
 
-* Kernighan, B. W., & Ritchie, D. M. (1988). *The C Programming Language* (2nd ed.). Prentice Hall.
+* Kernighan, B. W., & Ritchie, D. M. (1978). *The C Programming Language*. Prentice Hall.
 
 I became aware of Python later, largely through Bruce Eckel and his books on Java. He made electronic
 editions freely available for anyone willing to host them on their own website. I was one of the relatively
