@@ -92,6 +92,8 @@ My own learning began with C in the early 1980s, when it was a hot topic in the 
 microcomputers. Naturally, everyone owned the classic K&R book--*The C Programming Language* by
 Kernighan and Ritchie. That was simply the starting point for anyone serious about programming at the time.
 
+* Kernighan, B. W., & Ritchie, D. M. (1988). *The C Programming Language* (2nd ed.). Prentice Hall.
+
 I became aware of Python later, largely through Bruce Eckel and his books on Java. He made electronic
 editions freely available for anyone willing to host them on their own website. I was one of the relatively
 few--fewer than fifteen, if I remeber correctly--who actually did this. Eckel also expressed a strong interest
@@ -105,8 +107,6 @@ while it was still easier to write programs in Java using applets.
 
 But as LiveScript evolved into JavaScript and support across browsers improved, it eventually became another
 valuable language in my programming toolbox.
-
-* Kernighan, B. W., & Ritchie, D. M. (1988). *The C Programming Language* (2nd ed.). Prentice Hall.
 
 
 
