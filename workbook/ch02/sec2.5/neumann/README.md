@@ -13,7 +13,7 @@ co-authored by von Neumann, which deeply influenced subsequent computer developm
 
 * On Wikipedia: [https://en.wikipedia.org/wiki/First_Draft_of_a_Report_on_the_EDVAC](https://en.wikipedia.org/wiki/First_Draft_of_a_Report_on_the_EDVAC)
 
-* First draft PDF: [John von Neumann, First Draft of a Report on the EDVAC, 1945](neumann.pdf)
+* First draft PDF: [John von Neumann, First Draft of a Report on the EDVAC, 1945](./../../assets/pdf/neumann.pdf)
 
 
 ### Exercises or projects
@@ -103,4 +103,4 @@ characteristics of the von Neumann architecture:
 Although ENIAC was later modified in 1948 to include some aspects of a stored-program system, this was a
 'retrofit' rather than part of its original design. As such, ENIAC remains firmly categorized as a precursor.
 
-![ENIAC, publ. domain](./eniac.png)
+![ENIAC, publ. domain](./../../assets/image/eniac.png)
