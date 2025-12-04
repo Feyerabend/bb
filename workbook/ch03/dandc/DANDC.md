@@ -14,7 +14,7 @@
 ### Real-World Examples Side-by-Side
 
 | Problem | Naive / D&C approach | Why DP is better (or needed) | Final winner |
-|---|---|---|
+|---|---|---|---|
 | Fibonacci(n) | Pure recursion --> 2ⁿ time | Same subproblems (Fib(n-2), etc.) computed millions of times --> DP in O(n) | *DP* |
 | Longest Common Subsequence | Try all possibilities --> exponential | LCS(i,j) depends on LCS(i-1,j), LCS(i,j-1), etc. --> huge overlap --> DP table | *DP* |
 | MergeSort | Recursively split and merge | Subproblems are independent --> no benefit from storing --> D&C is perfect | *D&C* |
