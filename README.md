@@ -10,8 +10,6 @@
 (Previous working title: *From Basics To Bytecode: A guide to computers and programming*)
 
 - [Content](./book/contents.pdf)
-- [Introduction](./book/introduction.pdf)
-
 
 This repository is primarily to be used as a companion to the book.
 Here you should be able to find more information, errata, exercises, code,
