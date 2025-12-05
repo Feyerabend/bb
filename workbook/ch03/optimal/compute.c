@@ -11,8 +11,6 @@ double compute_opt(int a, int b) {
 }
 
 
-
-
 int square(int x) {
     return x * x;
 }
@@ -20,7 +18,6 @@ int square(int x) {
 int compute2(int x, int y) {
     return square(x) + square(y);
 }
-
 
 int compute2_opt(int x, int y) {
     return (x * x) + (y * y);
