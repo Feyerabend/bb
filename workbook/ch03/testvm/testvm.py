@@ -49,7 +49,6 @@ class Value:
         return False
     
     def to_bool(self) -> bool:
-        """Convert value to boolean for conditional operations"""
         if self.type == ValueType.BOOL:
             return self.data
         elif self.type == ValueType.INT or self.type == ValueType.FLOAT:
@@ -113,9 +112,7 @@ class TimeoutError(TestVMError):
     pass
 
 
-class Function(ABC):
-    """Base class for VM functions"""
-    
+class Function(ABC):    
     @abstractmethod
     def __call__(self, *args: Value) -> Value:
         pass
@@ -123,7 +120,6 @@ class Function(ABC):
     @property
     @abstractmethod
     def arity(self) -> int:
-        """Number of arguments the function expects"""
         pass
     
     @property
@@ -161,7 +157,6 @@ class EnhancedTestVM:
         self._stop_execution = False
         
     def reset(self):
-        """Reset VM state"""
         self.stack: List[Value] = []
         self.variables: Dict[str, Value] = {}
         self.labels: Dict[str, int] = {}
@@ -178,7 +173,6 @@ class EnhancedTestVM:
         self._call_stack: List[Tuple[str, int]] = []  # For debugging
         
     def _setup_builtin_functions(self):
-        """Setup built-in functions"""
         self.functions: Dict[str, Function] = {}
         
         # Math operations
@@ -223,18 +217,15 @@ class EnhancedTestVM:
         self._register_function("typeof", lambda x: Value(ValueType.STRING, x.type.value), 1)
         
     def _register_function(self, name: str, func: Callable, arity: int):
-        """Register a built-in function"""
         self.functions[name] = BuiltinFunction(name, func, arity)
     
     def _substring(self, string_val: Value, start_val: Value, length_val: Value) -> Value:
-        """Extract substring"""
         s = str(string_val.data)
         start = start_val.data
         length = length_val.data
         return Value(ValueType.STRING, s[start:start+length])
     
     def _list_append(self, list_val: Value, item_val: Value) -> Value:
-        """Append item to list"""
         if list_val.type != ValueType.LIST:
             raise TestVMError(f"Cannot append to non-list type: {list_val.type}")
         new_list = list_val.data.copy()
@@ -242,7 +233,6 @@ class EnhancedTestVM:
         return Value(ValueType.LIST, new_list)
     
     def _list_get(self, list_val: Value, index_val: Value) -> Value:
-        """Get item from list by index"""
         if list_val.type != ValueType.LIST:
             raise TestVMError(f"Cannot index non-list type: {list_val.type}")
         if index_val.type != ValueType.INT:
@@ -267,7 +257,6 @@ class EnhancedTestVM:
             raise TestVMError(f"List index out of range: {index_val.data}")
     
     def _to_int(self, val: Value) -> Value:
-        """Convert value to integer"""
         try:
             if val.type == ValueType.INT:
                 return val
@@ -283,7 +272,6 @@ class EnhancedTestVM:
             raise TestVMError(f"Cannot convert {val.type} to int: {val.data}")
     
     def _to_float(self, val: Value) -> Value:
-        """Convert value to float"""
         try:
             if val.type == ValueType.FLOAT:
                 return val
@@ -297,17 +285,14 @@ class EnhancedTestVM:
             raise TestVMError(f"Cannot convert {val.type} to float: {val.data}")
     
     def register_custom_function(self, name: str, func: Function):
-        """Register a custom function"""
         self.functions[name] = func
         
     def push(self, value: Value):
-        """Push value onto stack"""
         self.stack.append(value)
         if self.debug:
             self.log(f"STACK PUSH: {value}")
         
     def pop(self) -> Value:
-        """Pop value from stack"""
         if not self.stack:
             raise TestVMError("Stack underflow", 
                             self.current_instruction.line_number if self.current_instruction else 0,
@@ -318,7 +303,6 @@ class EnhancedTestVM:
         return value
         
     def peek(self) -> Value:
-        """Peek at top of stack without removing"""
         if not self.stack:
             raise TestVMError("Stack is empty", 
                             self.current_instruction.line_number if self.current_instruction else 0,
@@ -326,7 +310,6 @@ class EnhancedTestVM:
         return self.stack[-1]
         
     def get_variable(self, name: str) -> Value:
-        """Get variable value"""
         if name not in self.variables:
             raise TestVMError(f"Variable '{name}' not found", 
                             self.current_instruction.line_number if self.current_instruction else 0,
@@ -334,13 +317,11 @@ class EnhancedTestVM:
         return self.variables[name]
         
     def set_variable(self, name: str, value: Value):
-        """Set variable value"""
         self.variables[name] = value
         if self.debug:
             self.log(f"SET VAR {name} = {value}")
         
     def log(self, message: str):
-        """Add message to log"""
         timestamp = time.time() - self.execution_start_time
         log_entry = f"[{timestamp:.3f}s] {message}"
         self.logs.append(log_entry)
@@ -348,7 +329,6 @@ class EnhancedTestVM:
             print(f"LOG: {log_entry}")
     
     def parse_value(self, value_str: str) -> Value:
-        """Parse a value from string representation with enhanced type detection"""
         # Handle quoted strings
         if value_str.startswith('"') and value_str.endswith('"'):
             return Value(ValueType.STRING, value_str[1:-1])
@@ -384,7 +364,6 @@ class EnhancedTestVM:
         return Value(ValueType.STRING, value_str)
         
     def execute_instruction(self, instruction: Instruction) -> bool:
-        """Execute a single instruction with enhanced error handling"""
         self.current_instruction = instruction
         opcode = instruction.opcode
         args = instruction.args
@@ -522,7 +501,6 @@ class EnhancedTestVM:
         return not self._stop_execution
     
     def _handle_assertion(self, opcode: str, args: List[str]):
-        """Handle assertion instructions"""
         self.assertions_count += 1
         self.last_assertion_failed = False
         
@@ -594,7 +572,6 @@ class EnhancedTestVM:
                 self.assertions_passed += 1
     
     def _get_assertion_value(self, var_name: str) -> Value:
-        """Get value for assertion (supports 'result' and variable names)"""
         if var_name == "result":
             return self.get_variable("result")
         elif var_name == "stack":
@@ -603,7 +580,6 @@ class EnhancedTestVM:
             return self.get_variable(var_name)
     
     def _handle_conditional_jump(self, opcode: str, args: List[str]):
-        """Handle conditional jump instructions"""
         if opcode == "JUMP_IF_FAIL":
             if self.last_assertion_failed:
                 label = args[0]
@@ -635,7 +611,6 @@ class EnhancedTestVM:
                     raise TestVMError(f"Label '{label}' not found")
     
     def _parse_message(self, args: List[str]) -> str:
-        """Parse message from arguments, supporting variable interpolation"""
         message = " ".join(args)
         
         # Remove quotes if the message is quoted
@@ -655,7 +630,6 @@ class EnhancedTestVM:
         return message
         
     def parse_program(self, source: str) -> List[Instruction]:
-        """Parse source code into instructions with better error reporting"""
         instructions = []
         
         for line_num, line in enumerate(source.strip().split('\n'), 1):
@@ -684,7 +658,6 @@ class EnhancedTestVM:
         return instructions
     
     def _tokenize_line(self, line: str) -> List[str]:
-        """Tokenize a line, handling quoted strings properly"""
         tokens = []
         current_token = ""
         in_quotes = False
@@ -719,7 +692,6 @@ class EnhancedTestVM:
         return tokens
         
     def collect_labels(self, instructions: List[Instruction]):
-        """Collect all labels and their positions"""
         self.labels.clear()
         for i, instruction in enumerate(instructions):
             if instruction.opcode == "LABEL":
@@ -732,7 +704,6 @@ class EnhancedTestVM:
                 
     @contextmanager
     def _execution_timeout_context(self, timeout: float):
-        """Context manager for execution timeout"""
         def timeout_handler():
             time.sleep(timeout)
             if not self.passed and not self.failed:
@@ -746,7 +717,6 @@ class EnhancedTestVM:
             self._stop_execution = False
             
     def execute_program(self, source: str, timeout: float = 30.0) -> TestResult:
-        """Execute a complete program with comprehensive result tracking"""
         self.reset()
         self.execution_start_time = time.time()
         
@@ -796,7 +766,6 @@ class EnhancedTestVM:
         )
         
     def execute_test_case(self, test_case: TestCase) -> TestResult:
-        """Execute a single test case with setup and teardown"""
         self.log(f"Starting test case: {test_case.name}")
         
         # Execute setup if provided
@@ -870,7 +839,6 @@ class EnhancedTestVM:
         return main_result
         
     def execute_test_suite(self, test_cases: List[TestCase]) -> List[TestResult]:
-        """Execute a suite of test cases"""
         results = []
         
         for test_case in test_cases:
@@ -881,7 +849,6 @@ class EnhancedTestVM:
         return results
         
     def get_state_snapshot(self) -> Dict[str, Any]:
-        """Get current VM state snapshot for debugging"""
         return {
             "stack": [{"type": v.type.value, "data": v.data} for v in self.stack],
             "variables": {k: {"type": v.type.value, "data": v.data} for k, v in self.variables.items()},
@@ -895,7 +862,6 @@ class EnhancedTestVM:
         }
         
     def load_state_snapshot(self, snapshot: Dict[str, Any]):
-        """Load VM state from snapshot"""
         self.stack = [Value(ValueType(v["type"]), v["data"]) for v in snapshot["stack"]]
         self.variables = {k: Value(ValueType(v["type"]), v["data"]) for k, v in snapshot["variables"].items()}
         self.pc = snapshot["pc"]
@@ -907,22 +873,18 @@ class EnhancedTestVM:
         self.logs = snapshot["logs"].copy()
 
 
-class TestSuite:
-    """Test suite manager for organizing and running multiple tests"""
-    
+class TestSuite:    
     def __init__(self, name: str = "Default Test Suite"):
         self.name = name
         self.test_cases: List[TestCase] = []
         self.vm = EnhancedTestVM()
         
     def add_test_case(self, test_case: TestCase):
-        """Add a test case to the suite"""
         self.test_cases.append(test_case)
         
     def add_test(self, name: str, program: str, expected_result: Optional[str] = None, 
                  timeout: float = 10.0, setup: Optional[str] = None, 
                  teardown: Optional[str] = None, tags: List[str] = None):
-        """Convenience method to add a test"""
         test_case = TestCase(
             name=name,
             program=program,
@@ -935,7 +897,6 @@ class TestSuite:
         self.add_test_case(test_case)
         
     def run_all_tests(self, filter_tags: Optional[List[str]] = None) -> List[TestResult]:
-        """Run all tests in the suite, optionally filtered by tags"""
         tests_to_run = self.test_cases
         
         if filter_tags:
@@ -945,7 +906,6 @@ class TestSuite:
         return self.vm.execute_test_suite(tests_to_run)
         
     def run_single_test(self, test_name: str) -> Optional[TestResult]:
-        """Run a single test by name"""
         for test_case in self.test_cases:
             if test_case.name == test_name:
                 self.vm.reset()
@@ -953,7 +913,6 @@ class TestSuite:
         return None
         
     def generate_report(self, results: List[TestResult]) -> str:
-        """Generate a detailed test report"""
         total_tests = len(results)
         passed_tests = sum(1 for r in results if r.passed)
         failed_tests = sum(1 for r in results if r.failed)
@@ -990,7 +949,6 @@ class TestSuite:
 
 
 def create_example_test_suite() -> TestSuite:
-    """Create an example test suite demonstrating VM capabilities"""
     suite = TestSuite("Enhanced Test VM Examples")
     
     # Basic arithmetic test
@@ -1107,3 +1065,4 @@ if __name__ == "__main__":
             print(f"\n--- {result.name} ---")
             for log_entry in result.logs:
                 print(f"  {log_entry}")
+
