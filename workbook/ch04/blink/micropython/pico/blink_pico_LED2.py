@@ -14,10 +14,8 @@ def blink_slow():
     wrap()
 
 # Start both state machines
-sm0 = rp2.StateMachine(0, blink_fast, freq=31000000, 
-                      sideset_base=machine.Pin(25))  # Onboard LED
-sm1 = rp2.StateMachine(1, blink_slow, freq=31000000, 
-                      sideset_base=machine.Pin(16))  # External LED
+sm0 = rp2.StateMachine(0, blink_fast, freq=31000000, sideset_base=machine.Pin(25))  # Onboard LED
+sm1 = rp2.StateMachine(1, blink_slow, freq=31000000, sideset_base=machine.Pin(16))  # External LED
 
 sm0.active(1)
 sm1.active(1)
