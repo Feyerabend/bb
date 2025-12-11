@@ -1,4 +1,6 @@
 
+![Two Cores C](./../../../../../assets/image/mandelbrot/ctwocores.png)
+
 ## Mandelbrot Set Renderer (Dual Core)
 
 Interactive Mandelbrot set explorer for Raspberry Pi Pico with

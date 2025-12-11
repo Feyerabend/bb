@@ -1,4 +1,6 @@
 
+![One Core C](./../../../../../assets/image/mandelbrot/conecore.png)
+
 ## Mandelbrot Set Renderer (Single Core)
 
 Interactive Mandelbrot set explorer for Raspberry Pi Pico with display pack.
