@@ -593,7 +593,7 @@ Be thorough but explain your reasoning for each suggestion."
 
 
 
-## 📚 Additional Resources
+### Additional Resources
 
 *Version Control for Groups:*
 - Learn Git branching: `learngitbranching.js.org`
@@ -615,22 +615,3 @@ Be thorough but explain your reasoning for each suggestion."
 - Kanban boards (Trello, GitHub Projects)
 - Time estimation techniques
 
----
-
-## 🎉 Final Thoughts
-
-*Individual work* teaches you depth and ownership.
-
-*Group work* teaches you collaboration and scale.
-
-*LLM work* teaches you to leverage tools effectively.
-
-*The magic happens when you combine all three:*
-- Use LLMs to accelerate your individual work
-- Use LLMs to help your group coordinate
-- Use what you learn individually to contribute better to groups
-- Use group feedback to ask better LLM questions
-
-*Remember:* The goal isn't to finish faster with AI—it's to *learn deeper* with AI as a teaching assistant.
-
-Good luck! 🚀
