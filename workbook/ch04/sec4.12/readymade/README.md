@@ -10,8 +10,8 @@ like PicoVision, PicoCalc, PicoDemo, and PicoDV demonstrate just how far this li
 can take you.
 
 
-![PicoVision](./picovision.png)
 
+![PicoVision](./../../assets/image/practice/picovision.png)
 
 #### PicoVision
 
@@ -55,7 +55,8 @@ Key features include:
  IDE for MicroPython or the Pico SDK for C++.
 
 
-![PicoCalc](./picocalc.png)
+
+![PicoCalc](./../../assets/image/practice/picocalc.png)
 
 #### PicoCalc
 
@@ -96,7 +97,8 @@ IoT, or portable coding. It's compact for on-the-go use but relies on community 
 advanced features, as ClockworkPi's software support can be limited.
 
 
-![PicoDemo](./demo_board.png)
+
+![PicoDemo](./../../assets/image/practice/demo_board.png)
 
 #### PicoDemo
 
@@ -132,7 +134,8 @@ raspberrypi/pico-examples (covering USB, PIO, and more) or community projects li
 ReileyB/picoDemo. Use it to prototype displays, sound, or I/O without needing full development setups.
 
 
-![PicoDV](./picodv.png)
+
+![PicoDV](./../../assets/image/practice/picodv.png)
 
 #### PicoDV
 
@@ -166,6 +169,8 @@ expect bugs, as it's not production-ready. Download examples from GitHub (PicoDV
 files via BOOTSEL mode. For audio/video syncing, pair with SD card assets. Note: Pico W variants need
 extra config for wireless integration.
 
+
+### Summary
 
 | Aspect | PicoVision | PicoCalc | PicoDemo (VGA Base) | PicoDV (DV Base) |
 |--|--|--|--|--|

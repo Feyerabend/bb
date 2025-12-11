@@ -113,4 +113,4 @@ Milestone 12: Self-Contained Computer
 - Celebrate — you’ve built a working blinkenlights computer!
 
 
-![PDP-8/1](PDP81.png)
+![PDP-8/1](./../../assets/image/practice/PDP81.png)
