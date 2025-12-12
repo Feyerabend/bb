@@ -160,4 +160,4 @@ Start with Project 1 for foundational improvements, then progress. Document your
 a Markdown file, e.g., inspired by the existing docs.
 
 
-![Dogfight](dogfight.png)
+![Dogfight](./../../../../assets/image/game/dogfight.png)
