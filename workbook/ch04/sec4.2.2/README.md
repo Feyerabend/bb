@@ -8,7 +8,7 @@
 
 
 > [!IMPORTANT]
-> To distinguish between running C and Python (specifically MicroPython) on the Raspberry Pi Pico and programming on your main computer (whether Windows, macOS, or Linux), the repositories here are marked with either "c" or "micropython" to indicate their intended use on the Pico. Some areas, such as *device drivers*, are better handled in C, while topics like *wireless* communication are more easily demonstrated in MicroPython. As a result, not every concept is shown in both languages, and the language labels are applied selectively. The aim is to explore how computers behave as systems, not just how they are wired.
+> To distinguish between running C and Python (specifically MicroPython) on the Raspberry Pi Pico and programming on your main computer (whether Windows, macOS, or Linux), the repositories here are marked with either "c" or "micropython" (occationally "pico") to indicate their intended use on the Pico. Some areas, such as *device drivers*, are better handled in C, while topics like *wireless* communication are more easily demonstrated in MicroPython. As a result, not every concept is shown in both languages, and the language labels are applied selectively. The aim is to explore how computers behave as systems, not just how they are wired.
 
 
 The code in this folder is __not__ about electronics in the strict sense--we’re
@@ -44,7 +44,10 @@ principles of computing.
 ### Reference
 
 - Smith, Stephen. *RP2040 Assembly Language Programming: ARM Cortex-M0+ on the Raspberry Pi Pico*. Apress, 2021.  
-  - A comprehensive guide to programming the RP2040 microcontroller using assembly language. This book provides
-    clear explanations of assembly language concepts and practical examples, helping developers understand
-    low-level programming for embedded systems. It's an essential resource for anyone looking to get hands-on
-    experience with assembly programming on the RP2040 platform.
+  - A comprehensive guide to programming the RP2040 microcontroller using
+    assembly language. This book provides clear explanations of assembly
+    language concepts and practical examples, helping developers understand
+    low-level programming for embedded systems. It's an essential resource
+    for anyone looking to get hands-on experience with assembly programming
+    on the RP2040 platform.
+
