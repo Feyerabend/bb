@@ -1,24 +1,4 @@
 
-__This repository__
-
-* [intro](./intro/)               - Read some general introduction to microcontrollers,
-                                    a bit on the Raspberry Pi Pico and this repository
-
-__Printed book reference: see explanations and examples in [BOOK].__
-
-* [blink](./blink/)               - Setup of development environment,
-                                    simple samples of blinking LEDs in MicroPython and C
-* [traffic](./traffic/)           - Traffic light simulations
-* [temperature](./temperature/)   - Sensors used as examples for series of measurements
-* [db](./storage/db/)             - Connect to external SD card as secondary memory (database)
-* [wire](./wire/)                 - Connect two wired Picos to each other for UART communication
-* [mail](./wire/mail/)            - Connect two wired Picos with "mail" exchange
-* ..
-* [rsa](./secure/rsa/)            - RSA for encryption/decryption
-* ..
-* [practice](./practice/)         - Build your own computer
-
-
 ## Building and Experimenting
 
 > [!NOTE]
