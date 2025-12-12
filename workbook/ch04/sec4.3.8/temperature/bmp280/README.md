@@ -59,7 +59,12 @@ Here’s the sequence in plain terms:
 
 
 __6. Why this could be done manually__
-Bosch designed the chip to be very precise, but not waste silicon area on calculations. By giving you the calibration constants and formula, they let the host microcontroller do the math. This makes the sensor smaller, cheaper, and lower power, at the cost of some code complexity. So when you see libraries (like Adafruit’s), they’re just wrapping exactly this procedure: read constants, read raw data, apply formula, return C (degrees Celsius). Doing it "raw metal" here means following the datasheet and writing the math yourself.
+Bosch designed the chip to be very precise, but not waste silicon area on calculations.
+By giving you the calibration constants and formula, they let the host microcontroller
+do the math. This makes the sensor smaller, cheaper, and lower power, at the cost of some
+code complexity. So when you see libraries (like Adafruit’s), they’re just wrapping exactly
+this procedure: read constants, read raw data, apply formula, return C (degrees Celsius).
+Doing it "raw metal" here means following the datasheet and writing the math yourself.
 
 
 ### MicroPython (no external libs)
@@ -150,7 +155,7 @@ int16_t read_s16(uint8_t reg) {
     int16_t val = (int16_t)read_u16(reg);
     return val;
 }
-v
+
 int main() {
     stdio_init_all();
     i2c_init(i2c0, 100 * 1000);
@@ -192,7 +197,7 @@ int main() {
 ```
 
 
-![BMP280](./bmp280.png)
+![BMP280](./../../../assets/image/temperature/bmp280.png)
 
 Connection Notes:
 - VIN to Physical Pin 36 (3V3_OUT, 3.3V). Alt: Pin 40 (VBUS, 5V).

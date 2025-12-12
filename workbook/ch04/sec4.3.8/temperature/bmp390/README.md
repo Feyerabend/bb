@@ -348,5 +348,5 @@ early instruments did with springs, gears, and cams.
   much greater precision.
 
 
-![BMP390](./bmp390.png)
+![BMP390](./../../temperature/bmp390/bmp390.png)
 
