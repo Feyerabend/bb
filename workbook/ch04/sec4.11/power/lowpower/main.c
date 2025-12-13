@@ -10,7 +10,8 @@
 #include <stdio.h>
 
 
-// Watchdog timeout (8 seconds)
+// Watchdog timeout (8 seconds) ~ safe for most power operations
+// Getting too low risks unwanted resets during clock/voltage changes
 #define WATCHDOG_TIMEOUT_MS 8000
 
 // Power state tracking
@@ -93,7 +94,7 @@ static bool safe_clock_change(uint32_t freq_khz, enum vreg_voltage voltage) {
 
 // Demo 1: DVFS with safety checks
 static void demo_dvfs(void) {
-    printf("\n=== DVFS Demo ===\n");
+    printf("\n-- DVFS Demo --\n");
     
     typedef struct {
         uint32_t freq_khz;
@@ -127,7 +128,7 @@ static void demo_dvfs(void) {
         display_power_info(configs[i].desc, configs[i].freq_khz, voltage);
         
         // Do some work to show the speed difference
-        disp_draw_text(10, 120, "Performing work...", COLOR_RED, COLOR_BLACK);
+        disp_draw_text(10, 120, "Performing work..", COLOR_RED, COLOR_BLACK);
         uint32_t start = time_us_32();
         
         volatile uint32_t dummy = 0;
@@ -167,7 +168,7 @@ static void button_irq_handler(uint gpio, uint32_t events) {
 }
 
 static void demo_wfi(void) {
-    printf("\n=== WFI (Wait for Interrupt) Demo ===\n");
+    printf("\n-- WFI (Wait for Interrupt) Demo --\n");
     
     disp_clear(COLOR_BLACK);
     disp_draw_text(10, 40, "WFI DEMO", COLOR_CYAN, COLOR_BLACK);
@@ -186,7 +187,7 @@ static void demo_wfi(void) {
     
     printf("Entering WFI - CPU will idle until button press or timeout\n");
     
-    disp_draw_text(10, 160, "CPU SLEEPING...", COLOR_RED, COLOR_BLACK);
+    disp_draw_text(10, 160, "CPU SLEEPING..", COLOR_RED, COLOR_BLACK);
     
     uint32_t wfi_count = 0;
     absolute_time_t start = get_absolute_time();
@@ -257,7 +258,7 @@ static void demo_peripheral_power(void) {
     sleep_ms(2000);
     feed_watchdog();
     
-    disp_draw_text(10, 180, "Disabling...", COLOR_RED, COLOR_BLACK);
+    disp_draw_text(10, 180, "Disabling..", COLOR_RED, COLOR_BLACK);
     
     // Disable ADC clock (safe - we're not using it)
     clock_stop(clk_adc);
@@ -273,7 +274,7 @@ static void demo_peripheral_power(void) {
     feed_watchdog();
     
     // Re-enable
-    disp_draw_text(10, 180, "Re-enabling ADC...", COLOR_YELLOW, COLOR_BLACK);
+    disp_draw_text(10, 180, "Re-enabling ADC..", COLOR_YELLOW, COLOR_BLACK);
     clock_configure(clk_adc,
                     0,
                     CLOCKS_CLK_ADC_CTRL_AUXSRC_VALUE_CLKSRC_PLL_USB,
@@ -287,7 +288,7 @@ static void demo_peripheral_power(void) {
 
 // Demo 4: Duty cycle with watchdog feeding
 static void demo_duty_cycle(void) {
-    printf("\n=== Duty Cycle Demo ===\n");
+    printf("\n-- Duty Cycle Demo --\n");
     
     disp_clear(COLOR_BLACK);
     disp_draw_text(10, 40, "DUTY CYCLE DEMO", COLOR_CYAN, COLOR_BLACK);
@@ -307,7 +308,7 @@ static void demo_duty_cycle(void) {
         disp_clear(COLOR_BLACK);
         snprintf(buf, sizeof(buf), "ACTIVE - Cycle %d/5", cycle + 1);
         disp_draw_text(10, 100, buf, COLOR_GREEN, COLOR_BLACK);
-        disp_draw_text(10, 120, "Reading sensors...", COLOR_YELLOW, COLOR_BLACK);
+        disp_draw_text(10, 120, "Reading sensors..", COLOR_YELLOW, COLOR_BLACK);
         
         printf("Cycle %d: ACTIVE\n", cycle + 1);
         
@@ -323,7 +324,7 @@ static void demo_duty_cycle(void) {
         disp_clear(COLOR_BLACK);
         snprintf(buf, sizeof(buf), "SLEEPING - Cycle %d/5", cycle + 1);
         disp_draw_text(10, 100, buf, COLOR_RED, COLOR_BLACK);
-        disp_draw_text(10, 120, "Power saving mode...", COLOR_MAGENTA, COLOR_BLACK);
+        disp_draw_text(10, 120, "Power saving mode..", COLOR_MAGENTA, COLOR_BLACK);
         
         printf("Cycle %d: SLEEP (900ms)\n", cycle + 1);
         
@@ -346,7 +347,7 @@ static void demo_duty_cycle(void) {
 
 // Demo 5: Combined with extra safety
 static void demo_combined(void) {
-    printf("\n=== Combined Power Saving Demo ===\n");
+    printf("\n-- Combined Power Saving Demo --\n");
     
     disp_clear(COLOR_BLACK);
     disp_draw_text(10, 30, "COMBINED STRATEGY", COLOR_CYAN, COLOR_BLACK);
@@ -360,10 +361,10 @@ static void demo_combined(void) {
     
     // Step 1: Lower frequency and voltage
     disp_clear(COLOR_BLACK);
-    disp_draw_text(10, 80, "Setting low power mode...", COLOR_YELLOW, COLOR_BLACK);
+    disp_draw_text(10, 80, "Setting low power mode..", COLOR_YELLOW, COLOR_BLACK);
     
     if (!safe_clock_change(48000, VREG_VOLTAGE_0_95)) {
-        disp_draw_text(10, 100, "Failed! Aborting...", COLOR_RED, COLOR_BLACK);
+        disp_draw_text(10, 100, "Failed! Aborting..", COLOR_RED, COLOR_BLACK);
         sleep_ms(2000);
         return;
     }
@@ -377,7 +378,7 @@ static void demo_combined(void) {
     feed_watchdog();
     
     // Step 2: Disable ADC
-    disp_draw_text(10, 140, "Disabling ADC...", COLOR_YELLOW, COLOR_BLACK);
+    disp_draw_text(10, 140, "Disabling ADC..", COLOR_YELLOW, COLOR_BLACK);
     clock_stop(clk_adc);
     sleep_ms(1000);
     feed_watchdog();
@@ -389,7 +390,7 @@ static void demo_combined(void) {
     feed_watchdog();
     
     // Step 3: Use WFI with timeout
-    disp_draw_text(10, 180, "Using WFI for 3 seconds...", COLOR_YELLOW, COLOR_BLACK);
+    disp_draw_text(10, 180, "Using WFI for 3 seconds..", COLOR_YELLOW, COLOR_BLACK);
     
     for (int i = 0; i < 30; i++) {
         __wfi();
@@ -408,7 +409,7 @@ static void demo_combined(void) {
     
     // Restore
     disp_clear(COLOR_BLACK);
-    disp_draw_text(10, 100, "Restoring normal mode...", COLOR_YELLOW, COLOR_BLACK);
+    disp_draw_text(10, 100, "Restoring normal mode..", COLOR_YELLOW, COLOR_BLACK);
     
     clock_configure(clk_adc, 0, CLOCKS_CLK_ADC_CTRL_AUXSRC_VALUE_CLKSRC_PLL_USB,
                     48 * MHZ, 48 * MHZ);
@@ -424,7 +425,7 @@ static void demo_combined(void) {
 
 // Safe button wait with watchdog
 static void wait_for_button(void) {
-    disp_draw_text(10, 220, "Press any button...", COLOR_CYAN, COLOR_BLACK);
+    disp_draw_text(10, 220, "Press any button..", COLOR_CYAN, COLOR_BLACK);
     
     // Wait for release first
     while (button_pressed(BUTTON_A) || button_pressed(BUTTON_B) ||
@@ -456,11 +457,8 @@ int main() {
     stdio_init_all();
     sleep_ms(2000);
     
-    printf("\n");
-    printf("==========================================\n");
-    printf("  Raspberry Pi Pico Power Management Demo\n");
-    printf("  (With Watchdog Protection)\n");
-    printf("==========================================\n");
+    printf("\n  Raspberry Pi Pico Power Management Demo\n");
+    printf("    (With Watchdog Protection)\n\n");
     
     if (watchdog_reset) {
         printf("\n*** RECOVERED FROM WATCHDOG RESET ***\n\n");
