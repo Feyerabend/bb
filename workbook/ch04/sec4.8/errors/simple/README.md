@@ -1,4 +1,6 @@
 
+![Simple Errors](./../../../assets/image/errors/simple.png)
+
 ## Error Handling in Embedded Systems: A Case Study
 
 This project demonstrates comprehensive error handling patterns in embedded C programming,
