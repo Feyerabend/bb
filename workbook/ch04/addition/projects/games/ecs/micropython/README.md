@@ -574,3 +574,5 @@ ECS, allowing runtime addition/removal of behaviors without deep inheritance hie
    - Day 4: Enhance game loop and test dynamic additions.
    - Total: 4-7 days.
 
+
+![Game](./../../../../../assets/image/projects/pygame.png)
