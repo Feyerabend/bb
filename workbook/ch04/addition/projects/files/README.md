@@ -127,3 +127,9 @@ The most practical projects leverage:
 - The display for immediate visual feedback
 - Low cost for deploying multiple nodes
 - Pico's low power modes for battery operation
+
+
+![Connecting](./../../../assets/image/projects/connecting.png)
+
+![Status](./../../../assets/image/projects/status.png)
+
