@@ -2,16 +2,17 @@
 ## Building and Experimenting
 
 > [!NOTE]
-> Unless otherwise specified, code examples and demonstrations refer to the original Raspberry Pi Pico (RP2040: dual-core Cortex-M +, 133 MHz, 264 KB SRAM, 2 MB flash). This remains the most affordable and widely available variant.
-> For greater performance, one may also use the Raspberry Pi Pico 2 (RP2350: dual-core Cortex-M33 or dual Hazard3 RISC-V cores, 150 MHz, 520 KB SRAM, 4 MB flash). If you are using alternative hardware (e.g. Pico 2 or boards with the RP2350/RP2350A), minor code adjustments may be required.
-> For display work, we primarily use the Pimoroni Display Pack 2.0, though the older Display Pack often works with small modifications. Note that displays commonly demand significant power, substantial memory, and high update speed--especially for applications like games or animations. If you wish to pursue developments such as games, larger LCD screens, or more demanding applications, these will be considerably easier on more capable hardware, rather than struggling with heavy optimisation on less powerful boards.
+> __Progression of microcontroller hardware and recommendations have changed during the wirting of this book and repository.__
+> For greater performance, we have choosen the use of the Raspberry Pi Pico 2 (RP2350: dual-core Cortex-M33 or dual Hazard3 RISC-V cores, 150 MHz, 520 KB SRAM, 4 MB flash), or the version 2W for wireless. If you are using alternative hardware (e.g. Pico 2 or boards with the RP2350/RP2350A), minor code adjustments may be required.
+> The original Raspberry Pi Pico may work with many examples still, but as of today not recommended.
+> For display work and miuch of the code elsewhere, we primarily use the Pimoroni Display Pack 2.0, though the older Display Pack often works with small modifications. Note that displays commonly demand significant power, substantial memory, and high update speed--especially for applications like games or animations. If you wish to pursue developments such as games, larger LCD screens, or more demanding applications, these will be considerably easier on more capable hardware, rather than struggling with heavy optimisation on less powerful boards.
 
 
 > [!IMPORTANT]
 > To distinguish between running C and Python (specifically MicroPython) on the Raspberry Pi Pico and programming on your main computer (whether Windows, macOS, or Linux), the repositories here are marked with either "c" or "micropython" (occationally "pico") to indicate their intended use on the Pico. Some areas, such as *device drivers*, are better handled in C, while topics like *wireless* communication are more easily demonstrated in MicroPython. As a result, not every concept is shown in both languages, and the language labels are applied selectively. The aim is to explore how computers behave as systems, not just how they are wired.
 
 
-The code in this folder is __not__ about electronics in the strict sense--we’re
+The code in these folders is __not__ about electronics in the strict sense--we’re
 not building circuits from scratch. Instead, the Raspberry Pi Pico is used as a
 small, *practical model of a complete computer*. It has memory, I/O, communication,
 timing, power, and error handling--all the same pieces larger systems have.
@@ -51,3 +52,7 @@ principles of computing.
     for anyone looking to get hands-on experience with assembly programming
     on the RP2040 platform.
 
+
+#### Running a Macintosh 128k on a original Raspberry Pi Pico ..
+
+![Mac on Pico](./../assets/image/practice/picomac.png)
