@@ -1,4 +1,6 @@
 
+![Demo Low Power](./../../../assets/image/power/lowpower.png)
+
 ## Raspberry Pi Pico Power Management Demo
 
 A comprehensive demonstration of power-saving techniques for the Raspberry Pi Pico,
