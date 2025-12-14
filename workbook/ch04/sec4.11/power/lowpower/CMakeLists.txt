@@ -25,7 +25,7 @@ target_link_libraries(power_demo
     hardware_xosc
     hardware_pll
     hardware_vreg
-    hardware_watchdog    # <-- ADD THIS
+    hardware_watchdog
 )
 
 pico_add_extra_outputs(power_demo)
