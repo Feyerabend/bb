@@ -24,31 +24,9 @@ void fb_draw_circle(uint16_t cx, uint16_t cy, uint16_t r, uint16_t color) {
     }
 }
 
-// Helper: Draw text in framebuffer
-void fb_draw_text(uint16_t x, uint16_t y, const char *txt, uint16_t fg, uint16_t bg) {
-    uint16_t *fb = disp_get_framebuffer();
-    if (!fb) return;
-    
-    // Simple 5x8 font drawing - you'd copy the font logic here
-    // For now, just draw rectangles as placeholder
-    while (*txt && x < DISPLAY_WIDTH) {
-        for (int dy = 0; dy < 8; dy++) {
-            for (int dx = 0; dx < 5; dx++) {
-                int px = x + dx;
-                int py = y + dy;
-                if (px < DISPLAY_WIDTH && py < DISPLAY_HEIGHT) {
-                    fb[py * DISPLAY_WIDTH + px] = bg;
-                }
-            }
-        }
-        x += 6;
-        txt++;
-    }
-}
-
 // Demo 1: Smooth bouncing ball
 void demo_bouncing_ball(void) {
-    printf("\n=== Smooth Bouncing Ball Demo ===\n");
+    printf("\n-- Smooth Bouncing Ball Demo --\n");
     
     // Allocate framebuffer
     if (disp_framebuffer_alloc() != DISP_OK) {
@@ -64,9 +42,27 @@ void demo_bouncing_ball(void) {
     uint32_t last_time = to_ms_since_boot(get_absolute_time());
     uint32_t last_fps_print = last_time;
     
-    printf("Press A again to exit\n");
+    printf("Running.. any button to exit\n");
+    
+    // Wait for button release first
+    while (button_pressed(BUTTON_A) || button_pressed(BUTTON_B) || 
+           button_pressed(BUTTON_X) || button_pressed(BUTTON_Y)) {
+        buttons_update();
+        sleep_ms(10);
+    }
+    
+    sleep_ms(200);  // Small delay to ensure clean state
     
     while (1) {
+        buttons_update();
+        
+        // Check for ANY button press to exit
+        if (button_just_pressed(BUTTON_A) || button_just_pressed(BUTTON_B) || 
+            button_just_pressed(BUTTON_X) || button_just_pressed(BUTTON_Y)) {
+            printf("Exiting bouncing ball\n");
+            break;
+        }
+        
         // Clear framebuffer
         disp_framebuffer_clear(COLOR_BLACK);
         
@@ -115,13 +111,6 @@ void demo_bouncing_ball(void) {
             last_fps_print = now;
         }
         
-        // Check buttons to exit
-        buttons_update();
-        if (button_pressed(BUTTON_A) || button_pressed(BUTTON_Y)) {
-            printf("Exiting bouncing ball\n");
-            break;
-        }
-        
         sleep_ms(16);  // ~60 FPS target
     }
     
@@ -130,7 +119,7 @@ void demo_bouncing_ball(void) {
 
 // Demo 2: Plasma effect
 void demo_plasma(void) {
-    printf("\nSmooth Plasma Effect\n");
+    printf("\n-- Smooth Plasma Effect --\n");
     
     if (disp_framebuffer_alloc() != DISP_OK) {
         printf("Failed to allocate framebuffer!\n");
@@ -141,9 +130,27 @@ void demo_plasma(void) {
     uint32_t frame = 0;
     uint32_t last_fps_print = to_ms_since_boot(get_absolute_time());
     
-    printf("Press B again to exit\n");
+    printf("Running.. any button to exit\n");
+    
+    // Wait for button release first
+    while (button_pressed(BUTTON_A) || button_pressed(BUTTON_B) || 
+           button_pressed(BUTTON_X) || button_pressed(BUTTON_Y)) {
+        buttons_update();
+        sleep_ms(10);
+    }
+    
+    sleep_ms(200);  // Small delay to ensure clean state
     
     while (1) {
+        buttons_update();
+        
+        // Check for ANY button press to exit
+        if (button_just_pressed(BUTTON_A) || button_just_pressed(BUTTON_B) || 
+            button_just_pressed(BUTTON_X) || button_just_pressed(BUTTON_Y)) {
+            printf("Exiting plasma\n");
+            break;
+        }
+        
         float time = frame * 0.05f;
         
         // Generate plasma pattern
@@ -177,12 +184,6 @@ void demo_plasma(void) {
             printf("Frame %lu\n", (unsigned long)frame);
             last_fps_print = now;
         }
-        
-        buttons_update();
-        if (button_pressed(BUTTON_B) || button_pressed(BUTTON_Y)) {
-            printf("Exiting plasma\n");
-            break;
-        }
     }
     
     disp_framebuffer_free();
@@ -190,7 +191,7 @@ void demo_plasma(void) {
 
 // Demo 3: Starfield
 void demo_starfield(void) {
-    printf("\nSmooth Starfield Demo\n");
+    printf("\n-- Smooth Starfield Demo --\n");
     
     if (disp_framebuffer_alloc() != DISP_OK) {
         printf("Failed to allocate framebuffer!\n");
@@ -213,10 +214,27 @@ void demo_starfield(void) {
     uint32_t frame = 0;
     uint32_t last_fps_print = to_ms_since_boot(get_absolute_time());
     
-    printf("Press X again to exit\n");
-    sleep_ms(150);
-
+    printf("Running.. any button to exit\n");
+    
+    // Wait for button release first
+    while (button_pressed(BUTTON_A) || button_pressed(BUTTON_B) || 
+           button_pressed(BUTTON_X) || button_pressed(BUTTON_Y)) {
+        buttons_update();
+        sleep_ms(10);
+    }
+    
+    sleep_ms(200);  // Small delay to ensure clean state
+    
     while (1) {
+        buttons_update();
+        
+        // Check for ANY button press to exit
+        if (button_just_pressed(BUTTON_A) || button_just_pressed(BUTTON_B) || 
+            button_just_pressed(BUTTON_X) || button_just_pressed(BUTTON_Y)) {
+            printf("Exiting starfield\n");
+            break;
+        }
+        
         disp_framebuffer_clear(0x0000);  // Black
         
         // Update and draw stars
@@ -236,8 +254,7 @@ void demo_starfield(void) {
             if (sx >= 0 && sx < DISPLAY_WIDTH && sy >= 0 && sy < DISPLAY_HEIGHT) {
                 // Brightness based on distance
                 uint8_t brightness = (uint8_t)(255 * (1.0f - stars[i].z / 1000.0f));
-                uint16_t color =
-                               ((brightness >> 3) << 11) | 
+                uint16_t color = ((brightness >> 3) << 11) | 
                                ((brightness >> 2) << 5) | 
                                (brightness >> 3);
                 
@@ -262,12 +279,6 @@ void demo_starfield(void) {
         if (now - last_fps_print >= 1000) {
             printf("Frame %lu\n", (unsigned long)frame);
             last_fps_print = now;
-        }
-        
-        buttons_update();
-        if (button_pressed(BUTTON_X) || button_pressed(BUTTON_Y)) {
-            printf("Exiting starfield\n");
-            break;
         }
         
         sleep_ms(16);  // ~60 FPS
@@ -298,67 +309,62 @@ int main() {
     
     // Show intro
     disp_clear(COLOR_BLACK);
-    disp_draw_text(40, 100, "RENDERING", COLOR_WHITE, COLOR_BLACK);
-    disp_draw_text(60, 120, "Press any button ..", COLOR_CYAN, COLOR_BLACK);
+    disp_draw_text(60, 100, "RENDERING DEMOS", COLOR_WHITE, COLOR_BLACK);
+    disp_draw_text(60, 120, "Press any button", COLOR_CYAN, COLOR_BLACK);
     sleep_ms(2000);
     
     while (1) {
         disp_clear(COLOR_BLACK);
-        disp_draw_text(20, 40,  "DEMO", COLOR_WHITE, COLOR_BLACK);
+        disp_draw_text(80, 30,  "DEMO MENU", COLOR_WHITE, COLOR_BLACK);
         disp_draw_text(20, 70,  "A: Bouncing Ball", COLOR_GREEN, COLOR_BLACK);
         disp_draw_text(20, 90,  "B: Plasma Effect", COLOR_YELLOW, COLOR_BLACK);
         disp_draw_text(20, 110, "X: Starfield", COLOR_CYAN, COLOR_BLACK);
-        disp_draw_text(20, 130, "Y: Exit", COLOR_RED, COLOR_BLACK);
-        disp_draw_text(20, 160, "Press a button!", COLOR_WHITE, COLOR_BLACK);
+        disp_draw_text(20, 150, "Press a button to start!", COLOR_WHITE, COLOR_BLACK);
         
-        printf("\nMENU: Press A/B/X/Y\n");
+        printf("\n--- MENU: Press A/B/X to select demo ---\n");
         
-        // Wait for button release first
+        // Wait for ALL buttons to be released
+        printf("Waiting for button release..\n");
         while (button_pressed(BUTTON_A) || button_pressed(BUTTON_B) || 
                button_pressed(BUTTON_X) || button_pressed(BUTTON_Y)) {
             buttons_update();
             sleep_ms(10);
         }
         
-        // Now wait for a press
+        // Small delay to ensure clean state
+        sleep_ms(200);
+        printf("Ready for input\n");
+        
+        // Now wait for a button press
         bool demo_selected = false;
         while (!demo_selected) {
             buttons_update();
             
             if (button_just_pressed(BUTTON_A)) {
-                printf("Starting bouncing ball demo ..\n");
-                sleep_ms(100);  // Brief pause
+                printf("\n>>> Starting bouncing ball demo <<<\n");
+                sleep_ms(200);
                 demo_bouncing_ball();
                 demo_selected = true;
             }
-
             else if (button_just_pressed(BUTTON_B)) {
-                printf("Starting plasma demo ..\n");
-                sleep_ms(100);
+                printf("\n>>> Starting plasma demo <<<\n");
+                sleep_ms(200);
                 demo_plasma();
                 demo_selected = true;
             }
-
             else if (button_just_pressed(BUTTON_X)) {
-                printf("Starting starfield demo ..\n");
-                sleep_ms(100);
+                printf("\n>>> Starting starfield demo <<<\n");
+                sleep_ms(200);
                 demo_starfield();
                 demo_selected = true;
-            }
-
-            else if (button_just_pressed(BUTTON_Y)) {
-                printf("Exiting ..\n");
-                disp_clear(COLOR_BLACK);
-                disp_draw_text(80, 110, "Bye!", COLOR_WHITE, COLOR_BLACK);
-                sleep_ms(1000);
-                disp_deinit();
-                return 0;
             }
             
             sleep_ms(10);
         }
+        
+        // Small delay after demo before returning to menu
+        sleep_ms(300);
     }
     
     return 0;
-} 
-
+}
