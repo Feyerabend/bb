@@ -214,7 +214,8 @@ void demo_starfield(void) {
     uint32_t last_fps_print = to_ms_since_boot(get_absolute_time());
     
     printf("Press X again to exit\n");
-    
+    sleep_ms(150);
+
     while (1) {
         disp_framebuffer_clear(0x0000);  // Black
         

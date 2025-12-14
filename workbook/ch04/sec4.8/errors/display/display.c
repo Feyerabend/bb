@@ -37,13 +37,16 @@ static struct {
     uint16_t *framebuffer;  // Optional framebuffer for smooth rendering
 } g = {0};
 
+
 static button_callback_t button_cb[BUTTON_COUNT] = {0};
-static volatile bool btn_state[BUTTON_COUNT] = {0};      // Current raw state
-static volatile bool btn_last_raw[BUTTON_COUNT] = {0};   // Last raw state for debouncing
-static volatile bool btn_pressed[BUTTON_COUNT] = {0};    // Edge-detected press event
-static volatile bool btn_released[BUTTON_COUNT] = {0};   // Edge-detected release event
-static uint32_t last_check = 0;
+static volatile bool btn_state[BUTTON_COUNT] = {0};           // Debounced state
+static volatile bool btn_raw_state[BUTTON_COUNT] = {0};       // Current raw reading
+static volatile uint32_t btn_debounce_time[BUTTON_COUNT] = {0}; // Last state change time
+static volatile bool btn_pressed[BUTTON_COUNT] = {0};         // Edge flag
+static volatile bool btn_released[BUTTON_COUNT] = {0};        // Edge flag
 static bool buttons_ready = false;
+
+#define DEBOUNCE_MS 50  // 50ms debounce time
 
 // Full 5×8 font (ASCII 32-127)
 static const uint8_t FONT_5X8[][5] = {
@@ -456,6 +459,45 @@ disp_error_t disp_framebuffer_flush(void) {
     return DISP_OK;
 }
 
+// Framebuffer drawing functions
+void disp_framebuffer_fill_rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color) {
+    if (!g.framebuffer) return;
+    
+    // Clip to screen bounds
+    if (x >= DISPLAY_WIDTH || y >= DISPLAY_HEIGHT) return;
+    if (x + w > DISPLAY_WIDTH) w = DISPLAY_WIDTH - x;
+    if (y + h > DISPLAY_HEIGHT) h = DISPLAY_HEIGHT - y;
+    
+    for (uint16_t dy = 0; dy < h; dy++) {
+        for (uint16_t dx = 0; dx < w; dx++) {
+            g.framebuffer[(y + dy) * DISPLAY_WIDTH + (x + dx)] = color;
+        }
+    }
+}
+
+void disp_framebuffer_draw_char(uint16_t x, uint16_t y, char c, uint16_t fg, uint16_t bg) {
+    if (!g.framebuffer) return;
+    if (c < 32 || c > 127) c = ' ';
+    
+    const uint8_t *glyph = FONT_5X8[c - 32];
+    for (int col = 0; col < 5 && x + col < DISPLAY_WIDTH; col++) {
+        uint8_t line = glyph[col];
+        for (int row = 0; row < 8 && y + row < DISPLAY_HEIGHT; row++) {
+            uint16_t color = (line & (1 << row)) ? fg : bg;
+            g.framebuffer[(y + row) * DISPLAY_WIDTH + (x + col)] = color;
+        }
+    }
+}
+
+void disp_framebuffer_draw_text(uint16_t x, uint16_t y, const char *txt, uint16_t fg, uint16_t bg) {
+    if (!g.framebuffer || !txt) return;
+    
+    while (*txt && x < DISPLAY_WIDTH) {
+        disp_framebuffer_draw_char(x, y, *txt++, fg, bg);
+        x += 6;
+    }
+}
+
 // Buttons
 disp_error_t buttons_init(void) {
     if (buttons_ready) return DISP_OK;
@@ -469,13 +511,13 @@ disp_error_t buttons_init(void) {
         bool raw = !gpio_get(button_pins[i]);
         
         btn_state[i] = raw;
-        btn_last_raw[i] = raw;
+        btn_raw_state[i] = raw;
         btn_pressed[i] = false;
         btn_released[i] = false;
+        btn_debounce_time[i] = to_ms_since_boot(get_absolute_time());
     }
     
     buttons_ready = true;
-    last_check = to_ms_since_boot(get_absolute_time());
     printf("DEBUG: Buttons initialized\n");
     return DISP_OK;
 }
@@ -484,35 +526,48 @@ void buttons_update(void) {
     if (!buttons_ready) return;
 
     uint32_t now = to_ms_since_boot(get_absolute_time());
-    if (now - last_check < 20) return;  // 20ms debounce
-    last_check = now;
 
     for (int i = 0; i < BUTTON_COUNT; i++) {
-        // Read current state (active low - pressed = 0, so invert)
-        bool current = !gpio_get(button_pins[i]);
+        // Read current raw state (active low - pressed = 0, so invert)
+        bool current_raw = !gpio_get(button_pins[i]);
         
-        // Clear edge flags from previous update
+        // Clear edge flags at start of each update
         btn_pressed[i] = false;
         btn_released[i] = false;
         
-        // Detect edges
-        if (current && !btn_last_raw[i]) {
-            // Rising edge - button was just pressed
-            btn_pressed[i] = true;
-            
-            // Fire callback on press
-            if (button_cb[i]) {
-                button_cb[i]((button_t)i);
-            }
-        }
-        else if (!current && btn_last_raw[i]) {
-            // Falling edge - button was just released
-            btn_released[i] = true;
+        // Check if raw state changed
+        if (current_raw != btn_raw_state[i]) {
+            // State changed - restart debounce timer
+            btn_raw_state[i] = current_raw;
+            btn_debounce_time[i] = now;
         }
         
-        // Update state
-        btn_last_raw[i] = btn_state[i];
-        btn_state[i] = current;
+        // Check if enough time has passed for debounce
+        if (now - btn_debounce_time[i] >= DEBOUNCE_MS) {
+            // Debounce time expired, check if debounced state should change
+            if (btn_raw_state[i] != btn_state[i]) {
+                // State confirmed changed after debounce period
+                bool old_state = btn_state[i];
+                btn_state[i] = btn_raw_state[i];
+                
+                // Detect edges
+                if (btn_state[i] && !old_state) {
+                    // Rising edge - button pressed
+                    btn_pressed[i] = true;
+                    printf("DEBUG: Button %d pressed\n", i);
+                    
+                    // Fire callback on press
+                    if (button_cb[i]) {
+                        button_cb[i]((button_t)i);
+                    }
+                }
+                else if (!btn_state[i] && old_state) {
+                    // Falling edge - button released
+                    btn_released[i] = true;
+                    printf("DEBUG: Button %d released\n", i);
+                }
+            }
+        }
     }
 }
 
