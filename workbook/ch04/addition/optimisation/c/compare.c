@@ -1,12 +1,19 @@
 /*
  * Space Invaders - In-Game Algorithm Comparison
  * 
- * This version keeps some of the game but allows switching collision
- * detection *algorithms* on-the-fly to show performance difference.
+ * This shorter version keeps some of the game but
+ * allows switching collision detection *algorithms*
+ * on-the-fly to show *performance* difference.
+ * 
+ * It is not suppose to compare against the other
+ * codes in full detail, but give a quick idea!
+ * Your mission is to make a project go further
+ * from this starting point.
  * 
  * Press Y to toggle: Simple vs Spatial Grid
  * 
- * The profiler here is PART OF THE GAME, not a separate tool.
+ * The profiler here is PART OF THE GAME,
+ * not a separate tool.
  */
 
 #include <stdio.h>
