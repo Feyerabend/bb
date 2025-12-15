@@ -129,7 +129,7 @@ The most practical projects leverage:
 - Pico's low power modes for battery operation
 
 
-![Connecting](./../../../assets/image/projects/connecting.png)
+![Connecting](./../../assets/image/projects/connecting.png)
 
-![Status](./../../../assets/image/projects/status.png)
+![Status](./../../assets/image/projects/status.png)
 

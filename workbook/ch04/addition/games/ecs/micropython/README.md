@@ -575,4 +575,4 @@ ECS, allowing runtime addition/removal of behaviors without deep inheritance hie
    - Total: 4-7 days.
 
 
-![Game](./../../../../../assets/image/projects/pygame.png)
+![Game](./../../../../assets/image/projects/pygame.png)
