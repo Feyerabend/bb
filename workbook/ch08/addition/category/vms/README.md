@@ -320,9 +320,9 @@ Many well-known machines fit this pattern:
 - Writer monad -> tracing and logging machines
 - Maybe monad -> machines with failure
 - Continuation monad -> control-flow machines
-- IO monad →-> interaction machines
+- IO monad -> interaction machines
 
-The SECD machine, CEK machine, and many interpreters can be derived by choosing:
+The SECD machine, [CEK](./cek/) machine, and many interpreters can be derived by choosing:
 - a state space,
 - a set of monadic actions,
 - a sequencing rule.
