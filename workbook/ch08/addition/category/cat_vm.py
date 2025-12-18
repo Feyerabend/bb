@@ -1,6 +1,9 @@
 """
 Categorical Stack-Oriented Virtual Machine
 A stack VM where operations are morphisms in a category
+
+In reality a more decorative implementation of category theory concepts
+as compared to earlier vm examples. Not a good idea for actual use to build upon
 """
 
 from abc import ABC, abstractmethod
@@ -35,7 +38,7 @@ class UnitType(Type):
 class ProductType(Type):
     left: Type
     right: Type
-    def __repr__(self): return f"({self.left} × {self.right})"
+    def __repr__(self): return f"({self.left} x {self.right})"
 
 @dataclass
 class SumType(Type):
