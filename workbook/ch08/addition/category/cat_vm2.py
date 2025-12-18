@@ -749,26 +749,6 @@ def main():
     example_sum_type()
     example_nested_products()
     example_computation()
-    
-    print("\n" + "-"*70)
-    print("SUMMARY")
-    print("-"*70)
-    print("""
-Category theory should be applied EARLY in the pipeline:
-
-✓ Type system design (products, sums, exponentials)
-✓ IR structure (preserve categorical laws)
-✓ Optimisation (use laws for correctness)
-✗ Runtime VM (too late, just execute!)
-
-The categorical structure enables:
-- Type safety
-- Correct optimisations
-- Compositional reasoning
-- Modular compilation
-
-But the final VM is simple and efficient!
-""")
 
 
 if __name__ == "__main__":
