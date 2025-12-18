@@ -21,7 +21,7 @@ Category theory has emerged as one of the central unifying frameworks
 in modern theoretical computer science. It influences:
 
 - *Type system design*: Types as objects, functions as morphisms
-- *Compiler optimization*: Categorical laws guarantee correctness of transformations
+- *Compiler optimisation*: Categorical laws guarantee correctness of transformations
 - *Program semantics*: Denotational semantics via functors and natural transformations
 - *Functional programming*: Direct implementation of categorical concepts (functors, monads, arrows)
 - *Software architecture*: Compositional design via categorical abstractions
@@ -68,9 +68,11 @@ when we trace it through the compilation stages:
 ```
 
 *Key insight*: Category theory serves as a design and verification tool
-at compile-time, enabling powerful optimizations and guarantees. By the
+at compile-time, enabling powerful optimisations and guarantees. By the
 time code reaches the VM, all categorical structure has been compiled away,
 leaving only efficient machine operations.
+
+An example of category theory applied to compilation in [vm2](./vms/vm2/).
 
 
 ### Category Theory as Design Tool
@@ -79,7 +81,7 @@ Category theory provides:
 
 1. *Designing type systems* - Products, sums, exponentials give us the basic vocabulary
 2. *Structuring intermediate representations* - Categorical laws guide IR design
-3. *Proving optimization correctness* - Equational reasoning via categorical identities
+3. *Proving optimisation correctness* - Equational reasoning via categorical identities
 4. *Reasoning about program semantics* - Functors map syntax to meaning
 
 
@@ -200,7 +202,7 @@ curry : (C × A → B) → (C → B^A)
 eval : B^A × A → B
 ```
 
-These universal properties directly correspond to type system features and enable compiler optimizations.
+These universal properties directly correspond to type system features and enable compiler optimisations.
 
 
 ### The Yoneda Lemma
@@ -213,7 +215,7 @@ F(A) ≅ Nat(hom(−, A), F)
 ```
 
 *Meaning*: An object is fully determined by all morphisms into it.
-In programming: *a type is characterized by how functions interact with it*.
+In programming: *a type is characterised by how functions interact with it*.
 
 This justifies:
 - Generic programming techniques
@@ -307,7 +309,7 @@ increment (Left "error") -- Left "error"
 ```
 
 
-#### 4. Compiler Optimizations
+#### 4. Compiler Optimisations
 
 Categorical laws enable sound program transformations:
 
@@ -329,7 +331,7 @@ fmap g (fmap f xs) = fmap (g . f) xs
 (m >>= return) = m       -- eliminate redundant return
 ```
 
-These enable optimization passes while preserving program semantics.
+These enable optimisation passes while preserving program semantics.
 
 
 ### Implementation: A Categorical DSL
@@ -488,10 +490,10 @@ Example: Stream processing, cellular automata, dataflow programming.
 *Challenge*: Generic abstractions may introduce runtime overhead.
 
 *Mitigation*:
-- Modern compilers optimize away abstraction layers
-- Specialization via inlining and fusion
+- Modern compilers optimise away abstraction layers
+- Specialisation via inlining and fusion
 - GHC's rewrite rules for Haskell
-- Monomorphization in Rust
+- Monomorphisation in Rust
 
 
 ### Connections to Other Topics
@@ -541,7 +543,7 @@ Categorical concepts originated in algebraic topology:
 #### Tooling
 
 - *Proof assistants*: Coq, Agda, Idris encode categorical reasoning
-- *Theorem provers*: Isabelle/HOL formalizes category theory
+- *Theorem provers*: Isabelle/HOL formalises category theory
 - *Code generation*: Derive implementations from categorical specifications
 
 
@@ -556,7 +558,7 @@ The concepts explored here—functors, monads, natural transformations—aren't
 merely academic curiosities. They're working tools that enable:
 
 - *Safer programs* through type-driven design
-- *Faster programs* through optimization guarantees
+- *Faster programs* through optimisation guarantees
 - *More maintainable programs* through compositional structure
 - *More expressive programs* through powerful abstractions
 
