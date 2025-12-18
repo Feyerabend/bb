@@ -90,7 +90,7 @@ class Composition(Morphism):
         return self.g.apply(self.f.apply(value))
     
     def __repr__(self):
-        return f"({self.g} ∘ {self.f})"
+        return f"({self.g} o {self.f})"
 
 class Fst(Morphism):
     """First projection: fst : A x B -> A"""
