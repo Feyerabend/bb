@@ -1,1016 +1,690 @@
 """
-A categorical programming language implementation in Python
-Based on category theory primitives: objects, morphisms, functors, and monads
+Categorical Stack-Oriented Virtual Machine
+A stack VM where operations are morphisms in a category
 """
 
 from abc import ABC, abstractmethod
 from typing import Any, Callable, TypeVar, Generic
 from dataclasses import dataclass
+from enum import Enum
 
 
-# Type System (Objects in Category)
+# TYPE SYSTEM (Objects in Category)
 
 class Type(ABC):
-    """Base class for types (objects in our category)"""
+    """Base type (object in category)"""
     pass
 
 @dataclass
-class UnitType(Type):
-    """Unit type (terminal object)"""
-    def __repr__(self): return "Unit"
+class IntType(Type):
+    def __repr__(self): return "Int"
 
 @dataclass
 class BoolType(Type):
-    """Boolean type"""
     def __repr__(self): return "Bool"
 
 @dataclass
+class StrType(Type):
+    def __repr__(self): return "Str"
+
+@dataclass
+class UnitType(Type):
+    def __repr__(self): return "Unit"
+
+@dataclass
 class ProductType(Type):
-    """Product type A x B"""
     left: Type
     right: Type
-    def __repr__(self): return f"({self.left} x {self.right})"
+    def __repr__(self): return f"({self.left} × {self.right})"
 
 @dataclass
-class FunctionType(Type):
-    """Function type A -> B"""
-    domain: Type
-    codomain: Type
-    def __repr__(self): return f"({self.domain} -> {self.codomain})"
-
-
-
-# Values
+class SumType(Type):
+    left: Type
+    right: Type
+    def __repr__(self): return f"({self.left} + {self.right})"
 
 @dataclass
-class Value:
-    """Runtime values"""
-    type: Type
-    data: Any
-    
-    def __repr__(self):
-        return f"{self.data}: {self.type}"
+class StackType(Type):
+    """Type of the entire stack"""
+    types: list[Type]
+    def __repr__(self): return f"[{', '.join(map(str, self.types))}]"
 
 
 
-# Morphisms (Arrows in Category)
-
-class Morphism(ABC):
-    """Base class for morphisms (arrows in our category)"""
-    def __init__(self, domain: Type, codomain: Type):
-        self.domain = domain
-        self.codomain = codomain
-    
-    @abstractmethod
-    def apply(self, value: Value) -> Value:
-        """Apply morphism to a value"""
-        pass
-
-class Identity(Morphism):
-    """Identity morphism: id_A : A -> A"""
-    def __init__(self, typ: Type):
-        super().__init__(typ, typ)
-    
-    def apply(self, value: Value) -> Value:
-        return value
-    
-    def __repr__(self):
-        return f"id_{self.domain}"
-
-class Composition(Morphism):
-    """Composition of morphisms: g o f"""
-    def __init__(self, f: Morphism, g: Morphism):
-        if f.codomain != g.domain:
-            raise TypeError(f"Cannot compose: {f.codomain} != {g.domain}")
-        super().__init__(f.domain, g.codomain)
-        self.f = f
-        self.g = g
-    
-    def apply(self, value: Value) -> Value:
-        return self.g.apply(self.f.apply(value))
-    
-    def __repr__(self):
-        return f"({self.g} ∘ {self.f})"
-
-class Fst(Morphism):
-    """First projection: fst : A x B -> A"""
-    def __init__(self, left: Type, right: Type):
-        super().__init__(ProductType(left, right), left)
-    
-    def apply(self, value: Value) -> Value:
-        if not isinstance(value.type, ProductType):
-            raise TypeError(f"Expected product type, got {value.type}")
-        return Value(self.codomain, value.data[0])
-    
-    def __repr__(self):
-        return "fst"
-
-class Snd(Morphism):
-    """Second projection: snd : A x B -> B"""
-    def __init__(self, left: Type, right: Type):
-        super().__init__(ProductType(left, right), right)
-    
-    def apply(self, value: Value) -> Value:
-        if not isinstance(value.type, ProductType):
-            raise TypeError(f"Expected product type, got {value.type}")
-        return Value(self.codomain, value.data[1])
-    
-    def __repr__(self):
-        return "snd"
-
-class Eval(Morphism):
-    """Evaluation: eval : (A -> B) x A -> B"""
-    def __init__(self, domain: Type, codomain: Type):
-        func_type = FunctionType(domain, codomain)
-        super().__init__(ProductType(func_type, domain), codomain)
-    
-    def apply(self, value: Value) -> Value:
-        func, arg = value.data
-        return func.apply(arg)
-    
-    def __repr__(self):
-        return "eval"
-
-class Lambda(Morphism):
-    """Lambda abstraction (custom morphism)"""
-    def __init__(self, domain: Type, codomain: Type, func: Callable):
-        super().__init__(domain, codomain)
-        self.func = func
-    
-    def apply(self, value: Value) -> Value:
-        result = self.func(value.data)
-        return Value(self.codomain, result)
-    
-    def __repr__(self):
-        return f"λ: {self.domain} → {self.codomain}"
-
-
-
-# Functor Implementation
-
-T = TypeVar('T')
-U = TypeVar('U')
-
-class Functor(Generic[T], ABC):
-    """Functor type class"""
-    
-    @abstractmethod
-    def fmap(self, f: Callable[[Any], Any]) -> 'Functor':
-        """Map a function over the functor"""
-        pass
-
-class Maybe(Functor[T]):
-    """Maybe functor (Option type)"""
-    def __init__(self, value: T | None = None):
-        self.value = value
-    
-    def fmap(self, f: Callable[[T], U]) -> 'Maybe[U]':
-        """Functor law: F(f)"""
-        if self.value is None:
-            return Maybe(None)
-        return Maybe(f(self.value))
-    
-    def __repr__(self):
-        return f"Just({self.value})" if self.value is not None else "Nothing"
-
-class ListFunctor(Functor[T]):
-    """List functor"""
-    def __init__(self, items: list[T]):
-        self.items = items
-    
-    def fmap(self, f: Callable[[T], U]) -> 'ListFunctor[U]':
-        """Functor law: F(f)"""
-        return ListFunctor([f(x) for x in self.items])
-    
-    def __repr__(self):
-        return f"List{self.items}"
-
-
-
-# Monad Implementation
-
-class Monad(Functor[T], ABC):
-    """Monad type class"""
-    
-    @staticmethod
-    @abstractmethod
-    def return_(value: T) -> 'Monad[T]':
-        """Monad return (unit): a -> M a"""
-        pass
-    
-    @abstractmethod
-    def bind(self, f: Callable[[T], 'Monad[U]']) -> 'Monad[U]':
-        """Monad bind (>>=): M a -> (a -> M b) -> M b"""
-        pass
-
-class MaybeMonad(Maybe[T], Monad[T]):
-    """Maybe monad"""
-    
-    @staticmethod
-    def return_(value: T) -> 'MaybeMonad[T]':
-        """return a = Just a"""
-        return MaybeMonad(value)
-    
-    def bind(self, f: Callable[[T], 'MaybeMonad[U]']) -> 'MaybeMonad[U]':
-        """
-        Monad bind satisfying laws:
-        - Left unit: return a >>= f = f a
-        - Right unit: m >>= return = m
-        - Associativity: (m >>= f) >>= g = m >>= (λx -> f x >>= g)
-        """
-        if self.value is None:
-            return MaybeMonad(None)
-        return f(self.value)
-    
-    def __repr__(self):
-        return f"Just({self.value})" if self.value is not None else "Nothing"
-
-class ListMonad(ListFunctor[T], Monad[T]):
-    """List monad"""
-    
-    @staticmethod
-    def return_(value: T) -> 'ListMonad[T]':
-        """return a = [a]"""
-        return ListMonad([value])
-    
-    def bind(self, f: Callable[[T], 'ListMonad[U]']) -> 'ListMonad[U]':
-        """Monad bind for lists (flatMap)"""
-        result = []
-        for x in self.items:
-            result.extend(f(x).items)
-        return ListMonad(result)
-    
-    def __repr__(self):
-        return f"List{self.items}"
-
-
-
-# VM and Examples
-
-def demonstrate_category_laws():
-    """Demonstrate category laws"""
-    print("CATEGORY LAWS DEMONSTRATION")
-    
-    # Types
-    bool_type = BoolType()
-    unit_type = UnitType()
-    
-    # Create a value
-    v = Value(bool_type, True)
-    print(f"\nOriginal value: {v}")
-    
-    # Identity law: id o f = f = f o id
-    id_bool = Identity(bool_type)
-    print(f"\nIdentity: {id_bool.apply(v)}")
-    
-    # Composition
-    f = Lambda(bool_type, bool_type, lambda x: not x)
-    g = Lambda(bool_type, bool_type, lambda x: not x)
-    
-    # f o g
-    composed = Composition(f, g)
-    print(f"\nComposed (- o -): {composed.apply(v)}")
-    
-    # Product and projections
-    prod_type = ProductType(bool_type, bool_type)
-    pair = Value(prod_type, (True, False))
-    print(f"\nProduct value: {pair}")
-    
-    fst_proj = Fst(bool_type, bool_type)
-    snd_proj = Snd(bool_type, bool_type)
-    print(f"fst: {fst_proj.apply(pair)}")
-    print(f"snd: {snd_proj.apply(pair)}")
-
-def demonstrate_functor_laws():
-    """Demonstrate functor laws"""
-    print("FUNCTOR LAWS DEMONSTRATION")
-    
-    # F(id) = id
-    m = Maybe(42)
-    id_func = lambda x: x
-    print(f"\nOriginal: {m}")
-    print(f"F(id): {m.fmap(id_func)}")
-    
-    # F(g o f) = F(g) o F(f)
-    f = lambda x: x + 1
-    g = lambda x: x * 2
-    
-    # Left side: F(g o f)
-    left = m.fmap(lambda x: g(f(x)))
-    
-    # Right side: F(g) o F(f)
-    right = m.fmap(f).fmap(g)
-    
-    print(f"\nF(g o f) = {left}")
-    print(f"F(g) o F(f) = {right}")
-    print(f"Equal: {left.value == right.value}")
-    
-    # List functor
-    lst = ListFunctor([1, 2, 3])
-    print(f"\nList: {lst}")
-    print(f"fmap (+1): {lst.fmap(lambda x: x + 1)}")
-
-def demonstrate_monad_laws():
-    """Demonstrate monad laws"""
-    print("MONAD LAWS DEMONSTRATION")
-    
-    # Define some monadic functions
-    safe_div = lambda x: MaybeMonad(None) if x == 0 else MaybeMonad(10 / x)
-    safe_sqrt = lambda x: MaybeMonad(None) if x < 0 else MaybeMonad(x ** 0.5)
-    
-    # Left unit: return a >>= f = f a
-    a = 5
-    left = MaybeMonad.return_(a).bind(safe_div)
-    right = safe_div(a)
-    print(f"\nLeft unit law:")
-    print(f"  return {a} >>= safe_div = {left}")
-    print(f"  safe_div {a} = {right}")
-    print(f"  Equal: {left.value == right.value}")
-    
-    # Right unit: m >>= return = m
-    m = MaybeMonad(42)
-    left = m.bind(MaybeMonad.return_)
-    print(f"\nRight unit law:")
-    print(f"  {m} >>= return = {left}")
-    print(f"  Equal: {left.value == m.value}")
-    
-    # Associativity: (m >>= f) >>= g = m >>= (λx -> f x >>= g)
-    m = MaybeMonad(100)
-    left = m.bind(safe_div).bind(safe_sqrt)
-    right = m.bind(lambda x: safe_div(x).bind(safe_sqrt))
-    print(f"\nAssociativity law:")
-    print(f"  ({m} >>= safe_div) >>= safe_sqrt = {left}")
-    print(f"  {m} >>= (λx -> safe_div x >>= safe_sqrt) = {right}")
-    print(f"  Equal: {left.value == right.value}")
-    
-    # List monad example
-    print(f"\nList monad example:")
-    lst = ListMonad([1, 2, 3])
-    result = lst.bind(lambda x: ListMonad([x, x * 10]))
-    print(f"  {lst} >>= λx -> [x, x*10] = {result}")
-
-def practical_example():
-    """A practical example: safe computation pipeline"""
-    print("PRACTICAL EXAMPLE: Safe Computation Pipeline")
-    
-    # Chain of operations that might fail
-    def parse_int(s: str) -> MaybeMonad[int]:
-        try:
-            return MaybeMonad(int(s))
-        except:
-            return MaybeMonad(None)
-    
-    def safe_reciprocal(x: int) -> MaybeMonad[float]:
-        return MaybeMonad(None) if x == 0 else MaybeMonad(1.0 / x)
-    
-    def double(x: float) -> MaybeMonad[float]:
-        return MaybeMonad(x * 2)
-    
-    # Compose operations monadically
-    inputs = ["10", "0", "not_a_number", "5"]
-    
-    for inp in inputs:
-        result = (parse_int(inp)
-                 .bind(safe_reciprocal)
-                 .bind(double))
-        print(f"  Process '{inp}': {result}")
-
-
-# Natural Transformations
-
-class NaturalTransformation(ABC):
-    """Natural transformation between functors"""
-    
-    @abstractmethod
-    def transform(self, fa: Functor[T]) -> Functor[T]:
-        """Transform F[A] -> G[A]"""
-        pass
-
-class MaybeToList(NaturalTransformation):
-    """Natural transformation: Maybe -> List"""
-    
-    def transform(self, ma: Maybe[T]) -> ListFunctor[T]:
-        if ma.value is None:
-            return ListFunctor([])
-        return ListFunctor([ma.value])
-    
-    def __repr__(self):
-        return "Maybe → List"
-
-
-# Applicative Functor
-
-class Applicative(Functor[T], ABC):
-    """Applicative functor"""
-    
-    @staticmethod
-    @abstractmethod
-    def pure(value: T) -> 'Applicative[T]':
-        """Lift a value into the applicative"""
-        pass
-    
-    @abstractmethod
-    def ap(self, ff: 'Applicative[Callable[[T], U]]') -> 'Applicative[U]':
-        """Apply a wrapped function to a wrapped value"""
-        pass
-
-class MaybeApplicative(MaybeMonad[T], Applicative[T]):
-    """Maybe as an applicative functor"""
-    
-    @staticmethod
-    def pure(value: T) -> 'MaybeApplicative[T]':
-        return MaybeApplicative(value)
-    
-    def ap(self, ff: 'MaybeApplicative[Callable[[T], U]]') -> 'MaybeApplicative[U]':
-        if ff.value is None or self.value is None:
-            return MaybeApplicative(None)
-        return MaybeApplicative(ff.value(self.value))
-
-
-
-# Monoid
-
-class Monoid(ABC):
-    """Monoid structure: (M, mempty, mappend)"""
-    
-    @staticmethod
-    @abstractmethod
-    def mempty() -> 'Monoid':
-        """Identity element"""
-        pass
-    
-    @abstractmethod
-    def mappend(self, other: 'Monoid') -> 'Monoid':
-        """Associative binary operation"""
-        pass
-
-class Sum(Monoid):
-    """Sum monoid (integers under addition)"""
-    def __init__(self, value: int):
-        self.value = value
-    
-    @staticmethod
-    def mempty() -> 'Sum':
-        return Sum(0)
-    
-    def mappend(self, other: 'Sum') -> 'Sum':
-        return Sum(self.value + other.value)
-    
-    def __repr__(self):
-        return f"Sum({self.value})"
-
-class Product(Monoid):
-    """Product monoid (integers under multiplication)"""
-    def __init__(self, value: int):
-        self.value = value
-    
-    @staticmethod
-    def mempty() -> 'Product':
-        return Product(1)
-    
-    def mappend(self, other: 'Product') -> 'Product':
-        return Product(self.value * other.value)
-    
-    def __repr__(self):
-        return f"Product({self.value})"
-
-
-# Free Monad (for building DSLs)
-
-class Free(Generic[T]):
-    """Free monad for building EDSLs"""
-    pass
-
-class Pure(Free[T]):
-    """Pure value in free monad"""
-    def __init__(self, value: T):
-        self.value = value
-    
-    def __repr__(self):
-        return f"Pure({self.value})"
-
-class Impure(Free[T]):
-    """Impure computation in free monad"""
-    def __init__(self, functor: Functor, continuation: Callable):
-        self.functor = functor
-        self.continuation = continuation
-    
-    def __repr__(self):
-        return f"Impure({self.functor}, ...)"
-
-
-# Writer Monad (for logging)
-
-class Writer(Monad[T]):
-    """Writer monad for computations with logging"""
-    def __init__(self, value: T, log: list[str]):
-        self.value = value
-        self.log = log
-    
-    @staticmethod
-    def return_(value: T) -> 'Writer[T]':
-        return Writer(value, [])
-    
-    def bind(self, f: Callable[[T], 'Writer[U]']) -> 'Writer[U]':
-        result = f(self.value)
-        return Writer(result.value, self.log + result.log)
-    
-    def fmap(self, f: Callable[[T], U]) -> 'Writer[U]':
-        return Writer(f(self.value), self.log)
-    
-    def tell(self, message: str) -> 'Writer[T]':
-        """Add a log message"""
-        return Writer(self.value, self.log + [message])
-    
-    def __repr__(self):
-        return f"Writer({self.value}, {self.log})"
-
-
-# State Monad
-
-class State(Monad[T]):
-    """State monad for stateful computations"""
-    def __init__(self, run_state: Callable[[Any], tuple[T, Any]]):
-        self.run_state = run_state
-    
-    @staticmethod
-    def return_(value: T) -> 'State[T]':
-        return State(lambda s: (value, s))
-    
-    def bind(self, f: Callable[[T], 'State[U]']) -> 'State[U]':
-        def new_state(s):
-            value, new_s = self.run_state(s)
-            return f(value).run_state(new_s)
-        return State(new_state)
-    
-    def fmap(self, f: Callable[[T], U]) -> 'State[U]':
-        return State(lambda s: (f(self.run_state(s)[0]), self.run_state(s)[1]))
-    
-    @staticmethod
-    def get() -> 'State[Any]':
-        """Get the current state"""
-        return State(lambda s: (s, s))
-    
-    @staticmethod
-    def put(new_state: Any) -> 'State[None]':
-        """Set the state"""
-        return State(lambda s: (None, new_state))
-    
-    def eval(self, initial_state: Any) -> T:
-        """Run the stateful computation"""
-        return self.run_state(initial_state)[0]
-    
-    def exec(self, initial_state: Any) -> Any:
-        """Run and return final state"""
-        return self.run_state(initial_state)[1]
-
-
-# Extended Demonstrations
-
-def demonstrate_natural_transformations():
-    """Demonstrate natural transformations"""
-    print("NATURAL TRANSFORMATIONS")
-    
-    nt = MaybeToList()
-    
-    m1 = Maybe(42)
-    m2 = Maybe(None)
-    
-    print(f"\n{nt}")
-    print(f"  {m1} → {nt.transform(m1)}")
-    print(f"  {m2} → {nt.transform(m2)}")
-    
-    # Naturality condition: fmap f . transform = transform . fmap f
-    f = lambda x: x * 2
-    left = nt.transform(m1).fmap(f)
-    right = nt.transform(m1.fmap(f))
-    print(f"\nNaturality check:")
-    print(f"  fmap f . transform = {left}")
-    print(f"  transform . fmap f = {right}")
-
-def demonstrate_applicative():
-    """Demonstrate applicative functors"""
-    print("APPLICATIVE FUNCTORS")
-    
-    # Apply a wrapped function to wrapped values
-    add = lambda x: lambda y: x + y
-    
-    m1 = MaybeApplicative(5)
-    m2 = MaybeApplicative(3)
-    mf = MaybeApplicative(add)
-    
-    # <*> operator simulation
-    result = m2.ap(m1.ap(mf))
-    print(f"\nApplicative application:")
-    print(f"  pure (+) <*> Just 5 <*> Just 3 = {result}")
-    
-    # With Nothing
-    m_none = MaybeApplicative(None)
-    result2 = m_none.ap(mf)
-    print(f"  Nothing <*> pure (+) = {result2}")
-
-def demonstrate_monoids():
-    """Demonstrate monoids"""
-    print("MONOIDS")
-    
-    # Sum monoid
-    s1, s2, s3 = Sum(5), Sum(10), Sum(7)
-    print(f"\nSum monoid:")
-    print(f"  mempty = {Sum.mempty()}")
-    print(f"  {s1} <> {s2} = {s1.mappend(s2)}")
-    print(f"  ({s1} <> {s2}) <> {s3} = {s1.mappend(s2).mappend(s3)}")
-    print(f"  {s1} <> ({s2} <> {s3}) = {s1.mappend(s2.mappend(s3))}")
-    
-    # Product monoid
-    p1, p2, p3 = Product(2), Product(3), Product(4)
-    print(f"\nProduct monoid:")
-    print(f"  mempty = {Product.mempty()}")
-    print(f"  {p1} <> {p2} <> {p3} = {p1.mappend(p2).mappend(p3)}")
-
-def demonstrate_writer_monad():
-    """Demonstrate writer monad for logging"""
-    print("WRITER MONAD (Logging)")
-    
-    def add_with_log(x: int) -> Writer[int]:
-        return Writer(x + 1, [f"Added 1 to {x}, got {x + 1}"])
-    
-    def multiply_with_log(x: int) -> Writer[int]:
-        return Writer(x * 2, [f"Multiplied {x} by 2, got {x * 2}"])
-    
-    # Chain operations with logging
-    result = (Writer.return_(5)
-             .bind(add_with_log)
-             .bind(multiply_with_log)
-             .bind(add_with_log))
-    
-    print(f"\nComputation with logging:")
-    print(f"  Final value: {result.value}")
-    print(f"  Log:")
-    for entry in result.log:
-        print(f"    - {entry}")
-
-def demonstrate_state_monad():
-    """Demonstrate state monad"""
-    print("STATE MONAD")
-    
-    # Stack operations using state monad
-    def push(x: int) -> State[None]:
-        return State.get().bind(lambda stack: 
-               State.put(stack + [x]))
-    
-    def pop() -> State[int]:
-        def pop_impl(stack):
-            if not stack:
-                return (None, stack)
-            return (stack[-1], stack[:-1])
-        return State(pop_impl)
-    
-    # Build a computation
-    computation = (push(1)
-                  .bind(lambda _: push(2))
-                  .bind(lambda _: push(3))
-                  .bind(lambda _: pop())
-                  .bind(lambda x: State.return_(x)))
-    
-    result = computation.eval([])
-    final_state = computation.exec([])
-    
-    print(f"\nStack operations:")
-    print(f"  push 1, push 2, push 3, pop")
-    print(f"  Popped value: {result}")
-    print(f"  Final stack: {final_state}")
-
-
-# Parser Combinators (using Applicative and Monad)
-
-class Parser(Monad[T]):
-    """Parser monad for building composable parsers"""
-    def __init__(self, parse: Callable[[str], list[tuple[T, str]]]):
-        self.parse = parse
-    
-    @staticmethod
-    def return_(value: T) -> 'Parser[T]':
-        """Parser that always succeeds without consuming input"""
-        return Parser(lambda s: [(value, s)])
-    
-    def bind(self, f: Callable[[T], 'Parser[U]']) -> 'Parser[U]':
-        """Monadic bind for parsers"""
-        def parser(s):
-            results = []
-            for (value, rest) in self.parse(s):
-                results.extend(f(value).parse(rest))
-            return results
-        return Parser(parser)
-    
-    def fmap(self, f: Callable[[T], U]) -> 'Parser[U]':
-        """Map over parser result"""
-        return Parser(lambda s: [(f(v), r) for (v, r) in self.parse(s)])
-    
-    def or_else(self, other: 'Parser[T]') -> 'Parser[T]':
-        """Alternative combinator (choice)"""
-        return Parser(lambda s: self.parse(s) + other.parse(s))
-    
-    def many(self) -> 'Parser[list[T]]':
-        """Zero or more occurrences"""
-        return self.some().or_else(Parser.return_([]))
-    
-    def some(self) -> 'Parser[list[T]]':
-        """One or more occurrences"""
-        return self.bind(lambda x: 
-               self.many().bind(lambda xs: 
-               Parser.return_([x] + xs)))
-    
-    def run(self, s: str) -> list[tuple[T, str]]:
-        """Run the parser on input"""
-        return self.parse(s)
-
-# Basic parser primitives
-def char(c: str) -> Parser[str]:
-    """Parse a specific character"""
-    def parse(s):
-        if s and s[0] == c:
-            return [(c, s[1:])]
-        return []
-    return Parser(parse)
-
-def digit() -> Parser[int]:
-    """Parse a digit"""
-    def parse(s):
-        if s and s[0].isdigit():
-            return [(int(s[0]), s[1:])]
-        return []
-    return Parser(parse)
-
-def satisfy(pred: Callable[[str], bool]) -> Parser[str]:
-    """Parse a character satisfying a predicate"""
-    def parse(s):
-        if s and pred(s[0]):
-            return [(s[0], s[1:])]
-        return []
-    return Parser(parse)
-
-def string(target: str) -> Parser[str]:
-    """Parse a specific string"""
-    if not target:
-        return Parser.return_("")
-    return char(target[0]).bind(lambda c:
-           string(target[1:]).bind(lambda cs:
-           Parser.return_(c + cs)))
-
-def spaces() -> Parser[str]:
-    """Parse zero or more spaces"""
-    return satisfy(lambda c: c.isspace()).many().fmap(lambda cs: ''.join(cs))
-
-
-# Expression Language AST
-
-class Expr(ABC):
-    """Abstract expression"""
-    @abstractmethod
-    def eval(self, env: dict[str, int]) -> int:
-        pass
+# TYPED VALUES
 
 @dataclass
-class Num(Expr):
-    """Numeric literal"""
-    value: int
-    
-    def eval(self, env):
-        return self.value
+class TypedValue:
+    """A value with its type"""
+    typ: Type
+    value: Any
     
     def __repr__(self):
-        return str(self.value)
+        return f"{self.value}:{self.typ}"
 
-@dataclass
-class Var(Expr):
-    """Variable reference"""
-    name: str
+
+
+# INSTRUCTIONS (Morphisms)
+
+class Instruction(ABC):
+    """Base instruction - represents a morphism between stack types"""
     
-    def eval(self, env):
-        return env.get(self.name, 0)
+    @abstractmethod
+    def execute(self, stack: list[TypedValue]) -> list[TypedValue]:
+        """Execute instruction (apply morphism)"""
+        pass
+    
+    @abstractmethod
+    def type_transform(self, stack_type: StackType) -> StackType:
+        """Type-level transformation"""
+        pass
+
+
+# Stack Manipulation (Structural morphisms)
+
+class Push(Instruction):
+    """Push a value onto stack: S -> (a : S)"""
+    def __init__(self, value: TypedValue):
+        self.value = value
+    
+    def execute(self, stack):
+        return [self.value] + stack
+    
+    def type_transform(self, st):
+        return StackType([self.value.typ] + st.types)
     
     def __repr__(self):
-        return self.name
+        return f"PUSH {self.value}"
 
-@dataclass
-class BinOp(Expr):
-    """Binary operation"""
-    op: str
-    left: Expr
-    right: Expr
+class Dup(Instruction):
+    """Duplicate top: (a : S) -> (a : a : S)"""
+    def execute(self, stack):
+        if not stack:
+            raise RuntimeError("Cannot DUP empty stack")
+        return [stack[0], stack[0]] + stack[1:]
     
-    def eval(self, env):
-        l, r = self.left.eval(env), self.right.eval(env)
-        if self.op == '+': return l + r
-        if self.op == '-': return l - r
-        if self.op == '*': return l * r
-        if self.op == '/': return l // r if r != 0 else 0
-        return 0
+    def type_transform(self, st):
+        if not st.types:
+            raise TypeError("Cannot DUP empty stack type")
+        return StackType([st.types[0], st.types[0]] + st.types[1:])
     
     def __repr__(self):
-        return f"({self.left} {self.op} {self.right})"
+        return "DUP"
+
+class Drop(Instruction):
+    """Drop top: (a : S) -> S"""
+    def execute(self, stack):
+        if not stack:
+            raise RuntimeError("Cannot DROP empty stack")
+        return stack[1:]
+    
+    def type_transform(self, st):
+        if not st.types:
+            raise TypeError("Cannot DROP empty stack type")
+        return StackType(st.types[1:])
+    
+    def __repr__(self):
+        return "DROP"
+
+class Swap(Instruction):
+    """Swap top two: (a : b : S) -> (b : a : S)"""
+    def execute(self, stack):
+        if len(stack) < 2:
+            raise RuntimeError("Cannot SWAP with fewer than 2 elements")
+        return [stack[1], stack[0]] + stack[2:]
+    
+    def type_transform(self, st):
+        if len(st.types) < 2:
+            raise TypeError("Cannot SWAP with fewer than 2 types")
+        return StackType([st.types[1], st.types[0]] + st.types[2:])
+    
+    def __repr__(self):
+        return "SWAP"
+
+class Rot(Instruction):
+    """Rotate top three: (a : b : c : S) -> (b : c : a : S)"""
+    def execute(self, stack):
+        if len(stack) < 3:
+            raise RuntimeError("Cannot ROT with fewer than 3 elements")
+        return [stack[1], stack[2], stack[0]] + stack[3:]
+    
+    def type_transform(self, st):
+        if len(st.types) < 3:
+            raise TypeError("Cannot ROT with fewer than 3 types")
+        return StackType([st.types[1], st.types[2], st.types[0]] + st.types[3:])
+    
+    def __repr__(self):
+        return "ROT"
 
 
-# Expression Parser
+# Arithmetic Operations (Endomorphisms on Int)
 
-def parse_number() -> Parser[Expr]:
-    """Parse a number"""
-    return digit().some().fmap(lambda ds: Num(int(''.join(map(str, ds)))))
+class Add(Instruction):
+    """Addition: (Int : Int : S) -> (Int : S)"""
+    def execute(self, stack):
+        if len(stack) < 2:
+            raise RuntimeError("ADD requires 2 values")
+        a, b = stack[0], stack[1]
+        if not (isinstance(a.typ, IntType) and isinstance(b.typ, IntType)):
+            raise TypeError("ADD requires Int types")
+        return [TypedValue(IntType(), a.value + b.value)] + stack[2:]
+    
+    def type_transform(self, st):
+        if len(st.types) < 2:
+            raise TypeError("ADD requires 2 types")
+        return StackType([IntType()] + st.types[2:])
+    
+    def __repr__(self):
+        return "ADD"
 
-def parse_var() -> Parser[Expr]:
-    """Parse a variable (single letter)"""
-    return satisfy(lambda c: c.isalpha()).fmap(lambda c: Var(c))
+class Sub(Instruction):
+    """Subtraction: (Int : Int : S) -> (Int : S)"""
+    def execute(self, stack):
+        if len(stack) < 2:
+            raise RuntimeError("SUB requires 2 values")
+        a, b = stack[0], stack[1]
+        if not (isinstance(a.typ, IntType) and isinstance(b.typ, IntType)):
+            raise TypeError("SUB requires Int types")
+        return [TypedValue(IntType(), b.value - a.value)] + stack[2:]
+    
+    def type_transform(self, st):
+        if len(st.types) < 2:
+            raise TypeError("SUB requires 2 types")
+        return StackType([IntType()] + st.types[2:])
+    
+    def __repr__(self):
+        return "SUB"
 
-def parse_atom() -> Parser[Expr]:
-    """Parse an atomic expression"""
-    return parse_number().or_else(parse_var()).or_else(parse_parens())
+class Mul(Instruction):
+    """Multiplication: (Int : Int : S) -> (Int : S)"""
+    def execute(self, stack):
+        if len(stack) < 2:
+            raise RuntimeError("MUL requires 2 values")
+        a, b = stack[0], stack[1]
+        if not (isinstance(a.typ, IntType) and isinstance(b.typ, IntType)):
+            raise TypeError("MUL requires Int types")
+        return [TypedValue(IntType(), a.value * b.value)] + stack[2:]
+    
+    def type_transform(self, st):
+        if len(st.types) < 2:
+            raise TypeError("MUL requires 2 types")
+        return StackType([IntType()] + st.types[2:])
+    
+    def __repr__(self):
+        return "MUL"
 
-def parse_parens() -> Parser[Expr]:
-    """Parse parenthesized expression"""
-    return (char('(').bind(lambda _:
-            spaces().bind(lambda _:
-            parse_expr().bind(lambda e:
-            spaces().bind(lambda _:
-            char(')').bind(lambda _:
-            Parser.return_(e)))))))
+class Div(Instruction):
+    """Division: (Int : Int : S) -> (Int : S)"""
+    def execute(self, stack):
+        if len(stack) < 2:
+            raise RuntimeError("DIV requires 2 values")
+        a, b = stack[0], stack[1]
+        if not (isinstance(a.typ, IntType) and isinstance(b.typ, IntType)):
+            raise TypeError("DIV requires Int types")
+        if a.value == 0:
+            raise RuntimeError("Division by zero")
+        return [TypedValue(IntType(), b.value // a.value)] + stack[2:]
+    
+    def type_transform(self, st):
+        if len(st.types) < 2:
+            raise TypeError("DIV requires 2 types")
+        return StackType([IntType()] + st.types[2:])
+    
+    def __repr__(self):
+        return "DIV"
 
-def parse_term() -> Parser[Expr]:
-    """Parse a term (handles * and /)"""
-    def rest(left):
-        op_parser = (spaces().bind(lambda _:
-                     (char('*').or_else(char('/'))).bind(lambda op:
-                     spaces().bind(lambda _:
-                     parse_atom().bind(lambda right:
-                     Parser.return_((op, right)))))))
+
+# Comparison Operations (Int × Int -> Bool)
+
+class Eq(Instruction):
+    """Equality: (Int : Int : S) -> (Bool : S)"""
+    def execute(self, stack):
+        if len(stack) < 2:
+            raise RuntimeError("EQ requires 2 values")
+        a, b = stack[0], stack[1]
+        return [TypedValue(BoolType(), a.value == b.value)] + stack[2:]
+    
+    def type_transform(self, st):
+        if len(st.types) < 2:
+            raise TypeError("EQ requires 2 types")
+        return StackType([BoolType()] + st.types[2:])
+    
+    def __repr__(self):
+        return "EQ"
+
+class Lt(Instruction):
+    """Less than: (Int : Int : S) -> (Bool : S)"""
+    def execute(self, stack):
+        if len(stack) < 2:
+            raise RuntimeError("LT requires 2 values")
+        a, b = stack[0], stack[1]
+        if not (isinstance(a.typ, IntType) and isinstance(b.typ, IntType)):
+            raise TypeError("LT requires Int types")
+        return [TypedValue(BoolType(), b.value < a.value)] + stack[2:]
+    
+    def type_transform(self, st):
+        if len(st.types) < 2:
+            raise TypeError("LT requires 2 types")
+        return StackType([BoolType()] + st.types[2:])
+    
+    def __repr__(self):
+        return "LT"
+
+
+# Product Operations (Categorical Products)
+
+class Pair(Instruction):
+    """Create pair: (a : b : S) -> ((a x b) : S)"""
+    def execute(self, stack):
+        if len(stack) < 2:
+            raise RuntimeError("PAIR requires 2 values")
+        a, b = stack[0], stack[1]
+        prod_type = ProductType(b.typ, a.typ)
+        return [TypedValue(prod_type, (b.value, a.value))] + stack[2:]
+    
+    def type_transform(self, st):
+        if len(st.types) < 2:
+            raise TypeError("PAIR requires 2 types")
+        return StackType([ProductType(st.types[1], st.types[0])] + st.types[2:])
+    
+    def __repr__(self):
+        return "PAIR"
+
+class Fst(Instruction):
+    """First projection: ((a x b) : S) -> (a : S)"""
+    def execute(self, stack):
+        if not stack:
+            raise RuntimeError("FST requires 1 value")
+        val = stack[0]
+        if not isinstance(val.typ, ProductType):
+            raise TypeError("FST requires Product type")
+        return [TypedValue(val.typ.left, val.value[0])] + stack[1:]
+    
+    def type_transform(self, st):
+        if not st.types or not isinstance(st.types[0], ProductType):
+            raise TypeError("FST requires Product type")
+        return StackType([st.types[0].left] + st.types[1:])
+    
+    def __repr__(self):
+        return "FST"
+
+class Snd(Instruction):
+    """Second projection: ((a x b) : S) -> (b : S)"""
+    def execute(self, stack):
+        if not stack:
+            raise RuntimeError("SND requires 1 value")
+        val = stack[0]
+        if not isinstance(val.typ, ProductType):
+            raise TypeError("SND requires Product type")
+        return [TypedValue(val.typ.right, val.value[1])] + stack[1:]
+    
+    def type_transform(self, st):
+        if not st.types or not isinstance(st.types[0], ProductType):
+            raise TypeError("SND requires Product type")
+        return StackType([st.types[0].right] + st.types[1:])
+    
+    def __repr__(self):
+        return "SND"
+
+
+# Sum Operations (Categorical Coproducts)
+
+class InL(Instruction):
+    """Left injection: (a : S) -> ((a + b) : S)"""
+    def __init__(self, right_type: Type):
+        self.right_type = right_type
+    
+    def execute(self, stack):
+        if not stack:
+            raise RuntimeError("INL requires 1 value")
+        val = stack[0]
+        sum_type = SumType(val.typ, self.right_type)
+        return [TypedValue(sum_type, ('left', val.value))] + stack[1:]
+    
+    def type_transform(self, st):
+        if not st.types:
+            raise TypeError("INL requires 1 type")
+        return StackType([SumType(st.types[0], self.right_type)] + st.types[1:])
+    
+    def __repr__(self):
+        return f"INL[{self.right_type}]"
+
+class InR(Instruction):
+    """Right injection: (b : S) -> ((a + b) : S)"""
+    def __init__(self, left_type: Type):
+        self.left_type = left_type
+    
+    def execute(self, stack):
+        if not stack:
+            raise RuntimeError("INR requires 1 value")
+        val = stack[0]
+        sum_type = SumType(self.left_type, val.typ)
+        return [TypedValue(sum_type, ('right', val.value))] + stack[1:]
+    
+    def type_transform(self, st):
+        if not st.types:
+            raise TypeError("INR requires 1 type")
+        return StackType([SumType(self.left_type, st.types[0])] + st.types[1:])
+    
+    def __repr__(self):
+        return f"INR[{self.left_type}]"
+
+class Case(Instruction):
+    """Case analysis: ((a + b) : S) -> ? (branches handle continuation)"""
+    def __init__(self, left_prog: list[Instruction], right_prog: list[Instruction]):
+        self.left_prog = left_prog
+        self.right_prog = right_prog
+    
+    def execute(self, stack):
+        if not stack:
+            raise RuntimeError("CASE requires 1 value")
+        val = stack[0]
+        if not isinstance(val.typ, SumType):
+            raise TypeError("CASE requires Sum type")
         
-        return op_parser.bind(lambda op_right:
-               rest(BinOp(op_right[0], left, op_right[1]))).or_else(
-               Parser.return_(left))
-    
-    return parse_atom().bind(rest)
-
-def parse_expr() -> Parser[Expr]:
-    """Parse a full expression (handles + and -)"""
-    def rest(left):
-        op_parser = (spaces().bind(lambda _:
-                     (char('+').or_else(char('-'))).bind(lambda op:
-                     spaces().bind(lambda _:
-                     parse_term().bind(lambda right:
-                     Parser.return_((op, right)))))))
+        tag, data = val.value
+        rest = stack[1:]
         
-        return op_parser.bind(lambda op_right:
-               rest(BinOp(op_right[0], left, op_right[1]))).or_else(
-               Parser.return_(left))
+        if tag == 'left':
+            new_stack = [TypedValue(val.typ.left, data)] + rest
+            return VM.execute_program(self.left_prog, new_stack)
+        else:
+            new_stack = [TypedValue(val.typ.right, data)] + rest
+            return VM.execute_program(self.right_prog, new_stack)
     
-    return parse_term().bind(rest)
-
-
-# Comonad
-
-class Comonad(Generic[T], ABC):
-    """Comonad - dual of Monad"""
-    
-    @abstractmethod
-    def extract(self) -> T:
-        """Extract the value (dual of return)"""
-        pass
-    
-    @abstractmethod
-    def extend(self, f: Callable[['Comonad[T]'], U]) -> 'Comonad[U]':
-        """Extend (dual of bind)"""
-        pass
-
-class Stream(Comonad[T]):
-    """Infinite stream comonad"""
-    def __init__(self, head: T, tail: Callable[[], 'Stream[T]']):
-        self.head = head
-        self._tail = tail
-    
-    @property
-    def tail(self) -> 'Stream[T]':
-        return self._tail()
-    
-    def extract(self) -> T:
-        return self.head
-    
-    def extend(self, f: Callable[['Stream[T]'], U]) -> 'Stream[U]':
-        return Stream(f(self), lambda: self.tail.extend(f))
-    
-    def take(self, n: int) -> list[T]:
-        """Take first n elements"""
-        if n <= 0:
-            return []
-        return [self.head] + self.tail.take(n - 1)
+    def type_transform(self, st):
+        # Simplified - would need full type inference
+        return st
     
     def __repr__(self):
-        return f"Stream({self.take(5)}...)"
-
-def fibonacci_stream() -> Stream[int]:
-    """Create Fibonacci stream"""
-    def fib(a: int, b: int) -> Stream[int]:
-        return Stream(a, lambda: fib(b, a + b))
-    return fib(0, 1)
+        return f"CASE"
 
 
-# Advanced Demonstrations
+# Control Flow
 
-def demonstrate_parser_combinators():
-    """Demonstrate parser combinators"""
-    print("PARSER COMBINATORS")
+class Quote(Instruction):
+    """Quote a program (creates a function value)"""
+    def __init__(self, program: list[Instruction]):
+        self.program = program
     
-    # Parse simple expressions
-    expressions = [
-        "42",
-        "3 + 4",
-        "2 * 3 + 4",
-        "(1 + 2) * 3",
-        "x + y * 2"
+    def execute(self, stack):
+        # Push the quoted program as data
+        return [TypedValue(StrType(), f"<quoted: {len(self.program)} instrs>")] + stack
+    
+    def type_transform(self, st):
+        return st  # Simplified
+    
+    def __repr__(self):
+        return f"QUOTE[{len(self.program)}]"
+
+class Call(Instruction):
+    """Call a quoted program"""
+    def __init__(self, program: list[Instruction]):
+        self.program = program
+    
+    def execute(self, stack):
+        return VM.execute_program(self.program, stack)
+    
+    def type_transform(self, st):
+        return st  # Would need proper inference
+    
+    def __repr__(self):
+        return f"CALL"
+
+
+
+# CAT VIRTUAL MACHINE
+
+class VM:
+    """Categorical Stack VM"""
+    
+    def __init__(self):
+        self.stack: list[TypedValue] = []
+        self.trace: bool = False
+    
+    def push(self, typ: Type, value: Any):
+        """Push a typed value"""
+        self.stack = [TypedValue(typ, value)] + self.stack
+    
+    def execute(self, instr: Instruction):
+        """Execute single instruction"""
+        if self.trace:
+            instr_str = str(instr).ljust(20)
+            print(f"  {instr_str} | Stack: {self.format_stack()}")
+        self.stack = instr.execute(self.stack)
+    
+    def run(self, program: list[Instruction]):
+        """Run a program"""
+        for instr in program:
+            self.execute(instr)
+    
+    @staticmethod
+    def execute_program(program: list[Instruction], stack: list[TypedValue]) -> list[TypedValue]:
+        """Execute program on given stack (static method for CASE)"""
+        for instr in program:
+            stack = instr.execute(stack)
+        return stack
+    
+    def format_stack(self) -> str:
+        """Format stack for display"""
+        if not self.stack:
+            return "[]"
+        return f"[{', '.join(str(v) for v in self.stack)}]"
+    
+    def __repr__(self):
+        return f"VM(stack={self.format_stack()})"
+
+
+
+
+# EXAMPLES & TESTS
+
+def example_basic_arithmetic():
+    """Basic arithmetic operations"""
+    print("\n" + "-"*70)
+    print("EXAMPLE: Basic Arithmetic")
+    print("-"*70)
+    
+    vm = VM()
+    vm.trace = True
+    
+    # Compute: (3 + 4) * 2
+    program = [
+        Push(TypedValue(IntType(), 3)),
+        Push(TypedValue(IntType(), 4)),
+        Add(),
+        Push(TypedValue(IntType(), 2)),
+        Mul(),
     ]
     
-    print("\nParsing expressions:")
-    for expr_str in expressions:
-        results = parse_expr().run(expr_str)
-        if results:
-            ast, remaining = results[0]
-            print(f"  '{expr_str}' → {ast}")
-            
-            # Evaluate with environment
-            if isinstance(ast, (Num, BinOp)):
-                env = {'x': 10, 'y': 5}
-                result = ast.eval(env)
-                print(f"    Eval (x=10, y=5): {result}")
-        else:
-            print(f"  '{expr_str}' → Parse failed")
+    print("\nProgram: (3 + 4) * 2")
+    print("-" * 70)
+    vm.run(program)
+    print("-" * 70)
+    print(f"Result: {vm.stack[0] if vm.stack else 'empty'}")
+    assert vm.stack[0].value == 14
 
-def demonstrate_comonad():
-    """Demonstrate comonads"""
-    print("COMONAD (Fibonacci Stream)")
+def example_stack_manipulation():
+    """Stack manipulation operations"""
+    print("\n" + "-"*70)
+    print("EXAMPLE: Stack Manipulation")
+    print("-"*70)
     
-    fib = fibonacci_stream()
-    print(f"\nFibonacci stream: {fib}")
-    print(f"extract: {fib.extract()}")
+    vm = VM()
+    vm.trace = True
     
-    # Extend with a function that sums the next 3 elements
-    def sum_three(s: Stream[int]) -> int:
-        return sum(s.take(3))
+    # DUP, SWAP, ROT demo
+    program = [
+        Push(TypedValue(IntType(), 1)),
+        Push(TypedValue(IntType(), 2)),
+        Push(TypedValue(IntType(), 3)),
+        Dup(),     # [3, 3, 2, 1]
+        Rot(),     # [2, 1, 3, 3]
+        Swap(),    # [1, 2, 3, 3]
+    ]
     
-    summed = fib.extend(sum_three)
-    print(f"\nExtend (sum of next 3): {summed}")
-    print(f"First 10 sums: {summed.take(10)}")
+    print("\nProgram: Push 1,2,3 then DUP, ROT, SWAP")
+    print("-" * 70)
+    vm.run(program)
+    print("-" * 70)
+    print(f"Final stack: {vm.format_stack()}")
 
-def demonstrate_complete_pipeline():
-    """Demonstrate a complete categorical pipeline"""
-    print("COMPLETE CATEGORICAL PIPELINE")
+def example_products():
+    """Categorical products"""
+    print("\n" + "-"*70)
+    print("EXAMPLE: Categorical Products (Pairs)")
+    print("-"*70)
     
-    # Parse an expression using parser combinators (Applicative/Monad)
-    expr_str = "10 + 20 * 2"
-    print(f"\nInput: '{expr_str}'")
+    vm = VM()
+    vm.trace = True
     
-    # Step 1: Parse (using Parser monad)
-    parse_result = parse_expr().run(expr_str)
-    if not parse_result:
-        print("  Parse failed!")
-        return
+    # Create a pair and project
+    program = [
+        Push(TypedValue(IntType(), 42)),
+        Push(TypedValue(IntType(), 17)),
+        Pair(),    # Create (42, 17)
+        Dup(),     # Duplicate the pair
+        Fst(),     # Project first: 42
+        Swap(),    # Swap to get pair back on top
+        Snd(),     # Project second: 17
+    ]
     
-    ast, _ = parse_result[0]
-    print(f"  Parsed AST: {ast}")
+    print("\nProgram: Create pair (42, 17) and project both components")
+    print("-" * 70)
+    vm.run(program)
+    print("-" * 70)
+    print(f"Final stack: {vm.format_stack()}")
+
+def example_sums():
+    """Categorical sums (coproducts)"""
+    print("\n" + "-"*70)
+    print("EXAMPLE: Categorical Sums (Either)")
+    print("-"*70)
     
-    # Step 2: Evaluate with error handling (using Maybe monad)
-    def safe_eval(expr: Expr, env: dict) -> MaybeMonad[int]:
-        try:
-            result = expr.eval(env)
-            return MaybeMonad(result)
-        except:
-            return MaybeMonad(None)
+    # Test left injection
+    vm1 = VM()
+    vm1.trace = True
     
-    result = safe_eval(ast, {})
-    print(f"  Evaluation result: {result}")
+    program1 = [
+        Push(TypedValue(IntType(), 42)),
+        InL(BoolType()),  # Left injection into (Int + Bool)
+        Case(
+            # Left branch: double it
+            [Push(TypedValue(IntType(), 2)), Mul()],
+            # Right branch: convert true->1, false->0
+            [Drop(), Push(TypedValue(IntType(), 0))]
+        )
+    ]
     
-    # Step 3: Log the computation (using Writer monad)
-    def eval_with_log(expr: Expr, env: dict) -> Writer[int]:
-        val = expr.eval(env)
-        return Writer(val, [f"Evaluated {expr} = {val}"])
+    print("\nProgram 1: Left injection (Int + Bool) with Int=42")
+    print("-" * 70)
+    vm1.run(program1)
+    print("-" * 70)
+    print(f"Result: {vm1.stack[0]}")
     
-    logged = eval_with_log(ast, {})
-    print(f"  With logging: {logged}")
+    # Test right injection
+    vm2 = VM()
+    vm2.trace = True
     
-    # Step 4: Transform result (using Functor)
-    doubled = result.fmap(lambda x: x * 2)
-    print(f"  Doubled result: {doubled}")
+    program2 = [
+        Push(TypedValue(BoolType(), True)),
+        InR(IntType()),  # Right injection into (Int + Bool)
+        Case(
+            # Left branch: double it
+            [Push(TypedValue(IntType(), 2)), Mul()],
+            # Right branch: convert bool to int
+            [Drop(), Push(TypedValue(IntType(), 1))]
+        )
+    ]
     
-    print("\n  Pipeline: Parser -> Maybe -> Writer -> Functor")
-    print("  All categorical concepts working together!")
+    print("\nProgram 2: Right injection (Int + Bool) with Bool=True")
+    print("-" * 70)
+    vm2.run(program2)
+    print("-" * 70)
+    print(f"Result: {vm2.stack[0]}")
+
+def example_factorial():
+    """Factorial using categorical primitives"""
+    print("\n" + "-"*70)
+    print("EXAMPLE: Factorial (Iterative)")
+    print("-"*70)
+    
+    def factorial_program(n: int) -> list[Instruction]:
+        """Generate factorial program for n"""
+        # Simple approach: compute n * (n-1) * (n-2) * ... * 1
+        if n == 0 or n == 1:
+            return [Push(TypedValue(IntType(), 1))]
+        
+        # Start by pushing all numbers from n down to 1
+        program = []
+        for i in range(n, 0, -1):
+            program.append(Push(TypedValue(IntType(), i)))
+        
+        # Now multiply them all together (n-1 multiplications)
+        for _ in range(n - 1):
+            program.append(Mul())
+        
+        return program
+    
+    vm = VM()
+    vm.trace = False  # Too verbose for factorial
+    
+    for n in [5, 6, 7]:
+        vm.stack = []
+        program = factorial_program(n)
+        print(f"\nComputing {n}!")
+        vm.run(program)
+        result = vm.stack[0].value
+        expected = 1
+        for i in range(1, n + 1):
+            expected *= i
+        print(f"  Result: {result}")
+        print(f"  Expected: {expected}")
+        print(f"  Correct: {result == expected}")
+        assert result == expected
+
+def example_comparison_and_logic():
+    """Comparison operations"""
+    print("\n" + "-"*70)
+    print("EXAMPLE: Comparison Operations")
+    print("-"*70)
+    
+    vm = VM()
+    vm.trace = True
+    
+    # Test: is 5 < 10?
+    program = [
+        Push(TypedValue(IntType(), 5)),
+        Push(TypedValue(IntType(), 10)),
+        Lt(),
+    ]
+    
+    print("\nProgram: 5 < 10")
+    print("-" * 70)
+    vm.run(program)
+    print("-" * 70)
+    print(f"Result: {vm.stack[0]}")
+    assert vm.stack[0].value == True
+
+def run_all_tests():
+    """Run all examples"""
+    print("\n" + "-"*70)
+    print("CATEGORICAL STACK VM - DEMONSTRATION\n")
+    print("A stack-based VM where operations are morphisms in a category")
+    print("- Types are objects")
+    print("- Instructions are arrows (morphisms)")
+    print("- Composition is instruction sequencing")
+    print("- Products and Sums are categorical constructs")
+    
+    example_basic_arithmetic()
+    example_stack_manipulation()
+    example_products()
+    example_sums()
+    example_comparison_and_logic()
+    example_factorial()
+    
+
+    print("\n\nALL TESTS PASSED!\n")
 
 if __name__ == "__main__":
-    demonstrate_category_laws()
-    demonstrate_functor_laws()
-    demonstrate_monad_laws()
-    practical_example()
-    demonstrate_natural_transformations()
-    demonstrate_applicative()
-    demonstrate_monoids()
-    demonstrate_writer_monad()
-    demonstrate_state_monad()
-    demonstrate_parser_combinators()
-    demonstrate_comonad()
-    demonstrate_complete_pipeline()
+    run_all_tests()
