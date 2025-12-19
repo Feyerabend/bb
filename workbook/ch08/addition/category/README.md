@@ -2,8 +2,9 @@
 ## Category Theory in Programming
 
 This document restores what was originally omitted from the main text:
-a comprehensive treatment of category theory and its deep connections
-to programming language design, compilation, and software engineering.
+a comprehensive treatment of [category theory](./../../assets/pdf/category.pdf)
+and its deep connections to programming language design, compilation,
+and software engineering.
 
 At over 750+ pages in total, the original manuscript had grown beyond
 practical constraints. Category theory--despite its fundamental
