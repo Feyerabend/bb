@@ -50,9 +50,6 @@ This one engages more directly with applied category theory in databases:
 
 This mirrors real research in *categorical database theory* (e.g., David Spivak, Bob Rosebrugh, and others),
 where relational algebra operations are reinterpreted using limits, colimits, functors, and natural transformations.
-
 Both files shows how category theory concepts can inspire cleaner, more compositional designs in programming
-languages and data querying systems. They run standalone (with example outputs in their `if __name__ == "__main__"`
-blocks) and emphasize functional, composable abstractions.
-
+languages and data querying systems.
 
