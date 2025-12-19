@@ -9,6 +9,8 @@ from contextlib import contextmanager
 from io import StringIO
 import time
 
+
+
 class VMError(Exception):
     pass
 
@@ -943,10 +945,27 @@ def main():
     print(f"- Instructions executed: {vm.instruction_count}")
     print(f"- Hotspots detected: {len([c for c in vm.exec_count.values() if c >= vm.hotspot_threshold])}")
 
+    # Run interpreter-only
+    #vm.hotspot_threshold = 100000  # disable JIT
+    #start = time.time()
+    #vm.run()
+    #no_jit_time = time.time() - start
+
+    # Run with JIT
+    #vm.reset()
+    #vm.hotspot_threshold = 5
+    #start = time.time()
+    #vm.run()
+    #jit_time = time.time() - start
+
+    #print(f"No JIT: {no_jit_time:.4f}s")
+    #print(f"With JIT: {jit_time:.4f}s")
+    #print(f"Speedup: {no_jit_time/jit_time:.2f}x")
+
+
 if __name__ == "__main__":
     print("Running tests...")
     unittest.main(argv=[''], exit=False, verbosity=2)
     print("\n" + "="*60)
     main()
-
 
