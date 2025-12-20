@@ -1,14 +1,47 @@
 
 ## Game Programming Projects
 
-### Key Enhancements:
+The files in the folder [simple](./simple/) should be read as expressions of ideas
+rather than as complete or idiomatic programs--obviously not. Their purpose is to
+isolate and expose a single concept, structure, or mechanism as clearly as possible.
+
+This distinction matters. Beginners often assume that any piece of code they encounter
+is meant to be copied, extended, or treated as a model for "how real programs are
+written." In practice, much instructional code deliberately violates normal expectations
+of structure, robustness, efficiency, or style in order to make one idea stand out.
+
+Examples of such ideas include:
+- how control flow can be expressed,
+- how data moves through a computation,
+- how a particular abstraction is constructed,
+- how a mechanism works when stripped of surrounding infrastructure.
+
+In this sense, the code plays a role similar to a diagram in mathematics or physics.
+A diagram of a lever or an electrical circuit is not a blueprint for manufacturing,
+but a way to make relationships visible. Likewise, these code fragments are conceptual
+artefacts: they show what is essential and temporarily ignore what is incidental.
+
+Taking such examples "literally" as programs can be misleading. Real programs must deal
+with many additional concerns--error handling, interfaces, performance, naming, testing,
+composition--that would only obscure the core idea being demonstrated here.
+
+A useful mental model is therefore:
+- Idea code answers the question: "What is the simplest form of this concept?"
+- Production code answers the question: "How do we use this concept safely and
+  effectively in a real system?"
+
+Learning to recognise the difference is itself an important step in
+becoming a competent programmer.
+
+In [Grid Game](grid_game.py) we pass from testing our ideas to a more finished program:
 1. *Procedural Map Generation* - Creates rooms and corridors instead of random walls
 2. *Better AI* - Line-of-sight detection, memory of last seen position
 3. *Game Systems* - Score, health, collectibles, HUD
-4. *Performance* - Optimized rendering, bot updates every other frame
-5. *Color Palette* - Organized color management
+4. *Performance* - Optimised rendering, bot updates every other frame
+5. *Color Palette* - Organised colour management
 6. *Collision Response* - Proper damage and pushback mechanics
 
+For going further try out some projects ..
 
 
 ### Project 1: *Memory-Constrained Snake*
@@ -37,7 +70,7 @@ tail_segments = [(x, y, direction), ...]  # Max 50 segments
 *Focus*: Timing, interrupts, state machines
 
 *Core Mechanic*:
-- Random stimulus appears (color, position)
+- Random stimulus appears (colour, position)
 - Player presses matching button
 - Measure reaction time in milliseconds
 
@@ -154,7 +187,7 @@ box = {
 
 
 ### Project 6: *Networked Multiplayer via I2C/SPI*
-*Focus*: Communication protocols, synchronization
+*Focus*: Communication protocols, synchronisation
 
 *Architecture*:
 ```python
@@ -181,8 +214,8 @@ input_packet = {
 
 *What You'll Learn*:
 - I2C multi-master communication
-- Packet serialization (struct module)
-- Clock synchronization
+- Packet serialisation (struct module)
+- Clock synchronisation
 - Handling dropped packets
 - Latency hiding (client prediction)
 
@@ -194,7 +227,7 @@ input_packet = {
 
 
 ### Project 7: *Raycasting 3D Engine*
-*Focus*: Graphics optimization, DDA algorithm
+*Focus*: Graphics optimisation, DDA algorithm
 
 *Core Concept*:
 ```python
@@ -218,7 +251,7 @@ for x in range(WIDTH):
     draw_line(x, HEIGHT/2 - height/2, height)
 ```
 
-*Optimizations*:
+*Optimisations*:
 - Pre-calculated sin/cos lookup tables
 - Integer-only DDA
 - Distance fog (far walls = darker)
@@ -232,10 +265,10 @@ for x in range(WIDTH):
 
 
 
-### Project 8: *AI Behavior Trees & FSM*
+### Project 8: *AI Behaviour Trees & FSM*
 *Focus*: AI architecture, decision systems
 
-*Behavior Tree Example*:
+*Behaviour Tree Example*:
 ```python
 class BehaviorNode:
     def execute(self, bot): pass
@@ -260,7 +293,7 @@ class Sequence:
 ```
 
 *What You'll Learn*:
-- Finite State Machines vs Behavior Trees
+- Finite State Machines vs Behaviour Trees
 - Utility-based AI (scoring actions)
 - Goal-Oriented Action Planning (GOAP)
 - Emergence from simple rules
@@ -331,7 +364,7 @@ with open('save.dat', 'rb') as f:
 
 ### Learning Path Recommendation
 
-1. *Week 1-2*: Modify base code (change colors, speeds, AI behavior)
+1. *Week 1-2*: Modify base code (change colours, speeds, AI behaviour)
 2. *Week 3-4*: Build Snake or Reaction Trainer from scratch
 3. *Week 5-6*: Implement procedural generation
 4. *Week 7-8*: Add physics or networking
@@ -341,7 +374,7 @@ Pick one project and add:
 - *Persistent storage* (save system)
 - *Sound effects* (piezo buzzer)
 - *External sensors* (temperature affects game speed)
-- *Power optimization* (run on battery for 8+ hours)
+- *Power optimisation* (run on battery for 8+ hours)
 - *Multiplayer* (wire two Picos together)
 
 
@@ -362,7 +395,7 @@ def log_frame(ms):
         print(f"Avg: {avg}ms")
         frame_times.clear()
 
-# 3. State visualization
+# 3. State visualisation
 display.text(f"State:{bot['state']}", 0, 10, scale=1)
 
 # 4. Memory check
@@ -370,12 +403,3 @@ import gc
 gc.collect()
 print(f"Free RAM: {gc.mem_free()} bytes")
 ```
-
-
-### Resources
-
-- *MicroPython Docs*: [docs.micropython.org](https://docs.micropython.org)
-- *Pimoroni Libraries*: [github.com/pimoroni](https://github.com/pimoroni)
-- *Game Dev Math*: gamemath.com
-- *Fixed-Point Guide*: [embedded.com fixed-point guide](https://www.embedded.com/how-to-use-fixed-point-arithmetic/)
-
