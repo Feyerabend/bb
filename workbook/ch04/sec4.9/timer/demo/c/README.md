@@ -142,3 +142,5 @@ Feel free to enhance this project with:
 - Data logging to flash
 - Multiple lap storage
 - Improved UI animations
+
+![Stopwatch](./../../../../assets/image/timer/cdemo.png)
