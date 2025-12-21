@@ -1,7 +1,8 @@
 
 > [!TIP]
-> Use Raspberry Pi Pico 2/2W as it has much more memory for a hungry display, if you intend
-> to develop this further. For this example we've used a RPI Pico and the older Pimironi Display Pack.
+> Use Raspberry Pi Pico 2/2W as it has much more memory for a hungry display,
+> if you intend to develop this further. For this example we've used a
+> RPI Pico and the older Pimironi Display Pack.
 
 
 ## Graphics Engine Code
@@ -268,3 +269,7 @@ while (true) {
 }
 engine_shutdown();
 ```
+
+
+![Display Pack](./../../../../../assets/image/game/dppico.png).
+
