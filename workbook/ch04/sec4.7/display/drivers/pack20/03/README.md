@@ -460,3 +460,5 @@ For a full screen of text (~500 characters):
 - At 31.25 MHz SPI = ~50ms total
 
 
+![Text Editor](./../../../../../assets/image/game/editor_dp2.png)
+
