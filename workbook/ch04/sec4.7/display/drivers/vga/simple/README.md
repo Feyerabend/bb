@@ -104,3 +104,5 @@ Binary | Hex | Colour
 - *Real-time Update*: Pattern can be changed while display is running
 
 This is a minimal but fully functional VGA implementation.
+
+![Resistor](./../../../../../assets/image/game/270ohm.png)
