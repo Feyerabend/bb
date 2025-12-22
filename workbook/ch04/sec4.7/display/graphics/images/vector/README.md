@@ -171,3 +171,5 @@ first used in oscilloscopes and plotters, remains essential for modern display a
 Every scalable logo, font, and SVG image today relies on these same principles: *mathematical precision,
 transformable geometry, and device-independent rendering*.
 
+![Tektronix40141](./../../../../../assets/image/display/tektronix40141.png)
+

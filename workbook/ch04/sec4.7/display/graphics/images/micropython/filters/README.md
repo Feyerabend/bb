@@ -100,3 +100,5 @@ Try adding:
 - *Sobel edge detection*
 - *Custom kernels via serial input*
 - *Animated filters*
+
+![Edge](./../../../../../../assets/image/display/edge.png)

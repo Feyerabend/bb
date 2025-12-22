@@ -130,3 +130,12 @@ elements combine into addictive play. Experiment with randomness for replayabili
 varying AI behaviors or item spawns. From there, the sky's the limit for adding power-ups,
 levels, or multiplayer twists!*
 
+### Samples
+
+![Dogfight](./../../../../assets/image/display/pydogfight.png)
+
+![Pong](./../../../../assets/image/display/pypong.png)
+
+![Snake](./../../../../assets/image/display/pysnake.png)
+
+![Tank](./../../../../assets/image/display/pytank.png)

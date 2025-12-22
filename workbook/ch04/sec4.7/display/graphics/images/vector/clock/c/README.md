@@ -52,3 +52,7 @@ These projects move the system from basic procedural drawing toward a genuine
 *vector graphics engine*, capable of handling transformations, compositing, and
 device abstraction--still in C, and still entirely under your control.
 You might ven go further to a graphics game engine ..
+
+
+![Clock](./../../../../../../../assets/image/display/clock.png)
+

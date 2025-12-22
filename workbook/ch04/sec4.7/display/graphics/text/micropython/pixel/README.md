@@ -184,4 +184,4 @@ especially in embedded systems where resources are limited and reliability is cr
 
 
 
-![Bitmap Font](pixeltext.png)
+![Bitmap Font](./../../../../../../assets/image/display/pixeltext.png)

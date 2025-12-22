@@ -55,4 +55,4 @@ This is why professional (typesetting) fonts (TrueType, OpenType) use vector def
 They work perfectly whether you're printing at 300 DPI or displaying on a low-res screen.
 
 
-![Vector text](vectortext.png)
+![Vector text](./../../../../../../assets/image/display/vectortext.png)

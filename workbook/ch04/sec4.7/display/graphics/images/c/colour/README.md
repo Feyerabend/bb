@@ -121,3 +121,5 @@ This will generate `display_test_pattern.uf2` in the build directory.
 - Buttons have 50ms debounce delay
 - Make sure Display Pack is firmly connected
 
+
+![Testpattern](./../../../../../../assets/image/display/testpattern.png)
