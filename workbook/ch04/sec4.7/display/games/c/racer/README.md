@@ -18,5 +18,5 @@ Here are some of the key changes:
 
 More on the development of the "library" used in this code, see [drivers](./../../../drivers/pack20/).
 
-![Retro Racer](racer.png)
+![Retro Racer](./../../../../../assets/image/display/racer.png)
 

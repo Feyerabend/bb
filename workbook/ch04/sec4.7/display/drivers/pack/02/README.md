@@ -271,5 +271,5 @@ engine_shutdown();
 ```
 
 
-![Display Pack](./../../../../../assets/image/game/dppico.png).
+![Display Pack](./../../../../../assets/image/display/dppico.png).
 

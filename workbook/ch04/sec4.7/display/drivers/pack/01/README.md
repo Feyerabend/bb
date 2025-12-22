@@ -160,5 +160,5 @@ __DMA timeout errors__
 - Code includes automatic recovery (1-second timeout)
 - May indicate hardware issue or incorrect wiring
 
-![Breakout](./../../../../../assets/image/game/breakout.png)
+![Breakout](./../../../../../assets/image/display/breakout.png)
 

@@ -262,4 +262,4 @@ Potential enhancements for advanced users:
 7. *Statistics Tracking* - Average score, fastest completion time
 
 
-![Breakout](./../../../../../assets/image/game/breakout_dp2.png)
+![Breakout](./../../../../../assets/image/display/breakout_dp2.png)

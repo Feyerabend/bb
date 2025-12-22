@@ -266,4 +266,4 @@ int main() {
 - Display rotation is set in initialization (MADCTL command)
 - Modify `display_pack_init()` MADCTL value (0x36 command) if needed
 
-![Demo](./../../../../../assets/image/game/demo_dp2.png)
+![Demo](./../../../../../assets/image/display/demo_dp2.png)
