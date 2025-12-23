@@ -122,7 +122,7 @@ supports nested directories with metadata distributed across superblock and dire
 ### Conclusion
 
 - *SimpleVFS*: Best for simple, FAT-based applications needing permissions and minimal overhead.
-  It’s practical for quick file management on existing SD cards.
+  It's practical for quick file management on existing SD cards.
 
 - *HierarchicalVFS*: Ideal for learning file system mechanics or projects requiring custom storage
   without FAT dependency, but limited by file size and features.
