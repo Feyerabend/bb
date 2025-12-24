@@ -1,9 +1,9 @@
-#include "pico/stdlib.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdlib.h>
 
-/* SHA256 implementation (tiny, stripped-down) */
+/*  SHA256 implementation (tiny, stripped-down as intended for Pico)  */
 
 #define ROTR(x,n) (((x) >> (n)) | ((x) << (32-(n))))
 #define CH(x,y,z) (((x) & (y)) ^ (~(x) & (z)))
@@ -96,7 +96,7 @@ void sha256_final(SHA256_CTX *ctx,uint8_t hash[]){
     }
 }
 
-/* PBKDF2-HMAC-SHA256 */
+/*  PBKDF2-HMAC-SHA256  */
 
 void hmac_sha256(const uint8_t *key, size_t key_len,
                  const uint8_t *data, size_t data_len,
@@ -143,7 +143,7 @@ void pbkdf2_sha256(const uint8_t *password,size_t pass_len,
         salt_buf[salt_len+3]=i&0xff;
         hmac_sha256(password,pass_len,salt_buf,salt_len+4,U);
         memcpy(T,U,32);
-        for (j=1;j<iterations;j++){
+        for (j=1;j<(uint32_t)iterations;j++){
             hmac_sha256(password,pass_len,U,32,U);
             for (k=0;k<32;k++) T[k]^=U[k];
         }
@@ -153,7 +153,7 @@ void pbkdf2_sha256(const uint8_t *password,size_t pass_len,
     }
 }
 
-/* Similarity check (Levenshtein) */
+/*  Similarity check (Levenshtein)  */
 int levenshtein(const char *s1, const char *s2){
     int len1=strlen(s1), len2=strlen(s2);
     int v0[len2+1], v1[len2+1];
@@ -182,27 +182,37 @@ double similarity_ratio(const char *s1, const char *s2){
 
 /* demo */
 int main() {
-    stdio_init_all();
-
     const char *old_pw="Summer2024!";
     const char *new_pw="Summer2025!";
 
+    printf("Password Similarity Checker\n");
+    printf("---------------------------\n\n");
+    
+    printf("Old password: %s\n", old_pw);
+    printf("New password: %s\n\n", new_pw);
+
     double sim = similarity_ratio(old_pw,new_pw);
-    printf("Similarity ratio=%.2f\n", sim);
+    printf("Similarity ratio: %.2f (threshold: 0.70)\n\n", sim);
+    
     if(sim > 0.7){
-        printf("Rejected: too similar.\n");
+        printf("- REJECTED: New password too similar to old password.\n");
+        printf("   Please choose a more distinctive password.\n");
         return 1;
     }
+
+    printf("+ Password similarity check passed.\n\n");
 
     // Salt
     const uint8_t salt[8]={'p','i','c','o','2','s','a','l'};
     uint8_t hash[32];
+    
+    printf("Computing PBKDF2-HMAC-SHA256 (10000 iterations)..\n");
     pbkdf2_sha256((const uint8_t*)new_pw,strlen(new_pw),
                   salt,sizeof(salt),10000,hash,32);
 
     printf("Stored hash: ");
     for(int i=0;i<32;i++) printf("%02x",hash[i]);
-    printf("\n");
+    printf("\n\n+ Password hashed successfully.\n");
 
     return 0;
 }

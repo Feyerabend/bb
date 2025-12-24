@@ -39,7 +39,7 @@ typedef struct Functor {
     Object* (*map_object)(struct Functor*, Object*);
 } Functor;
 
-// Forward declaration
+// Fwd decl
 struct AST;
 typedef struct AST AST;
 
@@ -68,6 +68,25 @@ Object* maybe_map_object(Functor* f, Object* o) {
 // Identity functor: Id(A) = A
 Object* identity_map_object(Functor* f, Object* o) {
     return o;
+}
+
+// Helper
+int obj_equal(Object* a, Object* b) {
+    if (!a || !b) return a == b;
+    if (a->type != b->type) return 0;
+    
+    switch (a->type) {
+        case OBJ_INT:
+        case OBJ_BOOL:
+        case OBJ_UNIT:
+            return 1;
+        case OBJ_ARROW:
+            return obj_equal(a->left, b->left) && obj_equal(a->right, b->right);
+        case OBJ_FUNCTOR_APP:
+            return a->functor == b->functor && obj_equal(a->arg, b->arg);
+        default:
+            return 0;
+    }
 }
 
 Functor* functor_list() {
@@ -411,7 +430,8 @@ void test_functors() {
     TEST("Identity functor");
     Functor* id_f = functor_identity();
     Object* id_int = obj_functor_app(id_f, obj_int());
-    ASSERT_TRUE(id_int == obj_int(), "Id(Int) ≡ Int");
+    //ASSERT_TRUE(id_int == obj_int(), "Id(Int) ≡ Int");
+    ASSERT_TRUE(obj_equal(id_int, obj_int()), "Id(Int) ≡ Int");
 }
 
 void test_morphisms() {
