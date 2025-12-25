@@ -1,10 +1,12 @@
 
 ## Category Theory in Programming
 
-This document restores what was originally omitted from the main text:
+This document restores in a way what was originally omitted from the main text:
 a comprehensive treatment of [category theory](./../../assets/pdf/category.pdf)
 and its deep connections to programming language design, compilation,
-and software engineering.
+and software engineering. If this book ever gets an update, this is
+a must. Another choice would to make another book in the series,
+a continuation, where this is a part.
 
 At over 750+ pages in total, the original manuscript had grown beyond
 practical constraints. Category theory--despite its fundamental
@@ -396,12 +398,10 @@ assert left.value == right.value
 *Monad Laws*:
 ```python
 # Left unit: return a >>= f = f a
-assert (MaybeMonad.return_(a).bind(f).value == 
-        f(a).value)
+assert (MaybeMonad.return_(a).bind(f).value == f(a).value)
 
 # Right unit: m >>= return = m
-assert (m.bind(MaybeMonad.return_).value == 
-        m.value)
+assert (m.bind(MaybeMonad.return_).value == m.value)
 
 # Associativity: (m >>= f) >>= g = m >>= (λx. f x >>= g)
 left = m.bind(f).bind(g)
