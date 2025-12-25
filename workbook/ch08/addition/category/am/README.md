@@ -8,7 +8,9 @@ Many well-known machines fit this pattern:
 - Continuation monad -> control-flow machines
 - IO monad -> interaction machines
 
-The SECD machine as we have seen in this workbook ch05, [CEK](./cek/) machine,
+The SECD machine as we have seen previously in this workbook
+[ch05](./../../../../ch05/addition/am/secd/),
+[CEK](./cek/) machine,
 and many interpreters can be derived by choosing:
 - a state space,
 - a set of monadic actions,
