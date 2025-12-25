@@ -1,5 +1,5 @@
 
-## Category Theory as a VM / Interpreter
+## Category Theory as an Abstract Machine (VM / Interpreter)
 
 This is not intended as a blueprint for building a VM using category-theoretic
 concepts. Rather, it serves as an illustration of how these concepts operate.
