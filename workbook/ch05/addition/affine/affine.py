@@ -246,7 +246,7 @@ class Memory:
         self.heap[addr] = value
         self.next_addr += 1
         self.allocations += 1
-        print(f"  💾 ALLOC: address {addr} = {value}")
+        print(f"    ALLOC: address {addr} = {value}")
         return addr
     
     def read(self, addr: int) -> int:
@@ -261,10 +261,10 @@ class Memory:
             value = self.heap[addr]
             del self.heap[addr]
             self.deallocations += 1
-            print(f"  🗑️  FREE: address {addr} (was {value})")
+            print(f"     FREE: address {addr} (was {value})")
     
     def stats(self):
-        print(f"\n📊 Memory Stats:")
+        print(f"\n Memory Stats:")
         print(f"   Allocations: {self.allocations}")
         print(f"   Deallocations: {self.deallocations}")
         print(f"   Leaked: {self.allocations - self.deallocations}")
@@ -400,31 +400,31 @@ class Interpreter:
         """Run program"""
         for i, stmt in enumerate(stmts):
             self.checker.line = i + 1
-            print(f"\n📍 Line {i + 1}: {stmt}")
+            print(f"\n  Line {i + 1}: {stmt}")
             
             try:
                 self.exec_stmt(stmt)
             except RuntimeError as e:
-                print(f"❌ RUNTIME ERROR: {e}")
+                print(f"  RUNTIME ERROR: {e}")
                 break
         
         # Check for memory leaks
-        print("\n" + "="*50)
+        print("\n" + "-"*50)
         self.memory.stats()
         
         if self.checker.errors:
-            print(f"\n❌ Found {len(self.checker.errors)} affine type errors")
+            print(f"\n  Found {len(self.checker.errors)} affine type errors")
         else:
-            print(f"\n✅ No affine type errors!")
+            print(f"\n  No affine type errors!")
 
 
 # Samples
 
 def example_basic():
     """Basic affine types"""
-    print("="*50)
+    print("-"*50)
     print("EXAMPLE 1: Basic Affine Types")
-    print("="*50)
+    print("-"*50)
     
     program = [
         Let("x", New(Number(42))),      # x owns heap value
@@ -439,9 +439,9 @@ def example_basic():
 
 def example_use_after_move():
     """Demonstrates use-after-move error"""
-    print("\n" + "="*50)
+    print("\n" + "-"*50)
     print("EXAMPLE 2: Use After Move (ERROR)")
-    print("="*50)
+    print("-"*50)
     
     program = [
         Let("x", New(Number(100))),
@@ -455,9 +455,9 @@ def example_use_after_move():
 
 def example_copy():
     """Explicit copy"""
-    print("\n" + "="*50)
+    print("\n" + "-"*50)
     print("EXAMPLE 3: Explicit Copy")
-    print("="*50)
+    print("-"*50)
     
     program = [
         Let("x", New(Number(42))),
@@ -473,9 +473,9 @@ def example_copy():
 
 def example_arithmetic():
     """Arithmetic with affine types"""
-    print("\n" + "="*50)
+    print("\n" + "-"*50)
     print("EXAMPLE 4: Arithmetic")
-    print("="*50)
+    print("-"*50)
     
     program = [
         Let("x", New(Number(10))),
@@ -492,9 +492,9 @@ def example_arithmetic():
 
 def example_no_cleanup():
     """Shows memory leak without cleanup"""
-    print("\n" + "="*50)
+    print("\n" + "-"*50)
     print("EXAMPLE 5: Memory Leak (no drop)")
-    print("="*50)
+    print("-"*50)
     
     program = [
         Let("x", New(Number(42))),
@@ -512,9 +512,9 @@ if __name__ == "__main__":
     example_arithmetic()
     example_no_cleanup()
     
-    print("\n" + "="*50)
+    print("\n" + "-"*50)
     print("Key Concepts Demonstrated:")
-    print("="*50)
+    print("-"*50)
     print("+ Affine types: values used at most once")
     print("+ Move semantics: assignment consumes source")
     print("+ Use-after-move detection at 'runtime' (would be compile-time)")
