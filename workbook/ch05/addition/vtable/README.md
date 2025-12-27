@@ -16,7 +16,7 @@ nature of code and the dynamic behaviour of objects at runtime.
    - *Description*: Extend the first compiler to support integer variables and basic arithmetic operations
      (e.g. `+`, `-`, `*`, `/`) within methods. For example, allow syntax like `def calculate() { print(5 + 3); }`.
    - *Learning Goals*: Understand tokenization, parsing expressions, and generating C code for arithmetic.
-   - *Challenge*: Modify the lexer (`TOKENS`) to recognize numbers and operators, update the parser to handle
+   - *Challenge*: Modify the lexer (`TOKENS`) to recognise numbers and operators, update the parser to handle
      expressions, and generate appropriate `printf` calls in C.
 
 2. Support Multiple Print Statements
@@ -59,12 +59,12 @@ nature of code and the dynamic behaviour of objects at runtime.
 
 
 
-### Advamced Projects
+### Advanced Projects
 
 7. *Add Support for Multiple Classes and Objects*
    - *Description*: Extend the first compiler to support multiple classes in a single file (like the second
      compiler) and allow creating multiple objects in `main()` with method calls (e.g. `Dog* d1 = Dog_create(); d1->speak();`).
-   - *Learning Goals*: Understand multi-class parsing, object instantiation, and runtime behavior.
+   - *Learning Goals*: Understand multi-class parsing, object instantiation, and runtime behaviour.
    - *Challenge*: Update the parser to handle multiple `parse_class` calls, store them in the AST, and
      generate C code for multiple class definitions and object interactions.
 
@@ -95,7 +95,7 @@ nature of code and the dynamic behaviour of objects at runtime.
 11. *Design a Domain-Specific Language (DSL)*
     - *Description*: Use the first compiler as a base to create a DSL for a specific purpose (e.g.
       a scripting language for a game or a configuration language). Define new keywords and semantics.
-    - *Learning Goals*: Understand language design and customization.
+    - *Learning Goals*: Understand language design and customisation.
     - *Challenge*: Redefine `TOKENS` and the parser for the new DSL, then map it to C code that fits the domain.
 
 12. *Build a Simple REPL*
@@ -104,9 +104,9 @@ nature of code and the dynamic behaviour of objects at runtime.
     - *Learning Goals*: Explore interactive programming and runtime code execution.
     - *Challenge*: Integrate the compiler into a loop, dynamically generate and compile C code (e.g. using 'gcc'), and execute it.
 
-13. *Optimize the Generated C Code*
-    - *Description*: Analyze the C code output by either compiler and optimize it (e.g. reduce redundant
+13. *Optimise the Generated C Code*
+    - *Description*: Analyse the C code output by either compiler and optimise it (e.g. reduce redundant
       allocations, inline small methods, or improve vtable lookups).
-    - *Learning Goals*: Learn about code optimization and performance tuning.
+    - *Learning Goals*: Learn about code optimisation and performance tuning.
     - *Challenge*: Profile the generated code with tools like 'gcc -O2' or 'valgrind', then modify
       `generate_c_code` to produce more efficient output.

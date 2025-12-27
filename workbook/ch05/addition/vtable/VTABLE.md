@@ -8,8 +8,8 @@ different types to respond uniquely to the same method call.
 
 ### What Problem Do Vtables Solve?
 
-Imagine a scenario where a base class (e.g., "Animal") defines a general behavior (e.g., "makeSound()"),
-and derived classes ("Cat" or "Dog") override this behavior with their own implementations. The challenge
+Imagine a scenario where a base class (e.g., "Animal") defines a general behaviour (e.g., "makeSound()"),
+and derived classes ("Cat" or "Dog") override this behaviour with their own implementations. The challenge
 arises when a program references an object *through its base type* (e.g., treating a "Cat" as an "Animal").
 The system must still invoke the correct method ("Cat's makeSound()" instead of "Animal's default").
 Vtables solve this by decoupling the method call from the specific implementation at compile time,
@@ -377,7 +377,7 @@ Points to Dog object     Points to          Outputs "Woof!"
 The evolution from `compiler.py` to `compiler2.py` illustrates how vtables scale to support complex OOP
 features in a low-level language like C. By mapping method calls to runtime-resolved function pointers,
 vtables remain a lightweight, efficient solution for polymorphism. Whether manually crafted or generated,
-they bridge the gap between static code and dynamic behavior, making them a cornerstone of OOP implementation.
+they bridge the gap between static code and dynamic behaviour, making them a cornerstone of OOP implementation.
 
 
 > [!IMPORTANT]  
