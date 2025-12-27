@@ -391,7 +391,7 @@ class Interpreter:
             if typ.is_affine():
                 val = self.memory.read(val)
             
-            print(f"  📤 OUTPUT: {val}")
+            print(f"    OUTPUT: {val}")
         
         elif isinstance(stmt, ExprStmt):
             self.eval_expr(stmt.expr)
