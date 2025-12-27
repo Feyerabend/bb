@@ -121,7 +121,7 @@ class AffineChecker:
     This is the core of affine type checking!
     Tracks consumption state for each variable.
     """
-    
+
     def __init__(self):
         self.vars: Dict[str, VarInfo] = {}
         self.line = 0
@@ -223,7 +223,7 @@ class AffineChecker:
     
     def error(self, msg: str):
         self.errors.append(f"Line {self.line}: {msg}")
-        print(f"❌ ERROR (line {self.line}): {msg}")
+        print(f"  ERROR (line {self.line}): {msg}")
     
     def log(self, msg: str):
         print(f"  [{self.line}] {msg}")
