@@ -271,6 +271,7 @@ class Memory:
         if len(self.heap) > 0:
             print(f"   Still allocated: {list(self.heap.keys())}")
 
+
 class Interpreter:
     """Interpreter with affine type checking"""
     
@@ -427,7 +428,7 @@ def example_basic():
     print("-"*50)
     
     program = [
-        Let("x", New(Number(42))),      # x owns heap value
+        Let("x", New(Number(42))),       # x owns heap value
         Let("y", Var("x")),              # Move x to y (x consumed!)
         Print(Var("y")),                 # OK - y is valid
         # Print(Var("x")),               # Would error: x consumed!
