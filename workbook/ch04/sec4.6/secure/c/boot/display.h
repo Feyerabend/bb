@@ -25,7 +25,7 @@ typedef enum {
     BUTTON_B = 1,
     BUTTON_X = 2,
     BUTTON_Y = 3,
-    BUTTON_COUNT = 4  // Added for bounds checking ..
+    BUTTON_COUNT = 4
 } button_t;
 
 // Button callback function type

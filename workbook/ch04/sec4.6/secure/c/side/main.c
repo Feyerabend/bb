@@ -1,10 +1,10 @@
 /*
  * Side-Channel Attack Demonstration for Raspberry Pi Pico 2
  * With Pimoroni Display Pack 2.0
- * 
+
  * This demonstrates timing and power analysis side-channels in cryptographic
  * operations, showing both vulnerable and hardened implementations.
- * 
+
  * Educational Features:
  * - Timing attack on password comparison (visual on display)
  * - Timing attack on AES key scheduling  
@@ -351,16 +351,16 @@ void demo_countermeasures(void) {
     draw_title("COUNTERMEASURES", COLOR_GREEN);
     
     const char *lines[] = {
-"1. CONSTANT-TIME OPERATIONS",
-"   NO SECRET-DEPENDENT BRANCHES",
-"2. MASKING",
-"   RANDOMIZE INTERMEDIATES",
-"3. BLINDING",
-"   RANDOMIZE COMPUTATION",
-"4. NOISE INJECTION",
-"   DUMMY OPERATIONS / JITTER",
-"5. HARDWARE PROTECTION",
-"   POWER/EM FILTERING AND SHIELDING"
+        "1. CONSTANT-TIME OPERATIONS",
+        "   NO SECRET-DEPENDENT BRANCHES",
+        "2. MASKING",
+        "   RANDOMIZE INTERMEDIATES",
+        "3. BLINDING",
+        "   RANDOMIZE COMPUTATION",
+        "4. NOISE INJECTION",
+        "   DUMMY OPERATIONS / JITTER",
+        "5. HARDWARE PROTECTION",
+        "   POWER/EM FILTERING AND SHIELDING"
     };
     
     int y = 45;
@@ -482,3 +482,4 @@ int main() {
     
     return 0;
 }
+
