@@ -138,16 +138,21 @@ the server is set server_ip = "192.168.4.1".
 Common approaches for this in embedded/Wi-Fi contexts:
 
 1. Static addressing (simplest).
-Decide that the AP always has 192.168.4.1, and clients always use whatever DHCP gives them. They just connect to 192.168.4.1 without discovery.
+Decide that the AP always has 192.168.4.1, and clients always use whatever DHCP gives them.
+They just connect to 192.168.4.1 without discovery.
 
 2. Well-known port + broadcast.
-The client can send a UDP broadcast like “Who is the server?” on a fixed port, and the server replies with its IP. (This is a minimal discovery protocol.)
+The client can send a UDP broadcast like “Who is the server?” on a fixed port, and the server
+replies with its IP. (This is a minimal discovery protocol.)
 
 3. mDNS / Zeroconf (Bonjour/Avahi).
-Some MicroPython builds support this, but it’s heavier. It lets you reach devices by name (e.g. pico.local) without knowing the IP. The RP2040 + CYW43439 doesn’t have it by default, but people have hacked simple mDNS responders in MicroPython.
+Some MicroPython builds support this, but it’s heavier. It lets you reach devices by name
+(e.g. pico.local) without knowing the IP. The RP2040 + CYW43439 doesn’t have it by default,
+but people have hacked simple mDNS responders in MicroPython.
 
 4. Pre-shared role convention.
-Decide in advance that one Pico will always be the AP/server, the other always the STA/client. No discovery is needed — just use the fixed AP IP.
+Decide in advance that one Pico will always be the AP/server, the other always the STA/client.
+No discovery is needed — just use the fixed AP IP.
 
 
 So,
@@ -278,7 +283,8 @@ This way, three Picos discover each other automatically, without manually set IP
 
 LIST BROADCAST
 
-Extend it so the AP keeps track of all connected nodes and periodically broadcasts the list back to everyone. That way, each Pico knows who’s in the “cluster”.
+Extend it so the AP keeps track of all connected nodes and periodically broadcasts the list
+back to everyone. That way, each Pico knows who’s in the “cluster”.
 
 Pico A (Access Point + Node Manager)
 ```python
