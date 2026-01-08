@@ -15,6 +15,7 @@ target_link_libraries(side_channel_demo
     hardware_timer
     hardware_spi
     hardware_dma
+    hardware_pwm
 )
 
 pico_enable_stdio_usb(side_channel_demo 1)
