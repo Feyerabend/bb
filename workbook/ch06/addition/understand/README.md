@@ -17,16 +17,17 @@ to express what I was exploring. One of the results of that work is a document f
 It's printed on one of the laser printers that were just becoming available back then, probably at
 300 dpi. It represents where I was at that time, both in terms of technology and my own thinking.
 
-[Understand Programming](ö/../../../assets/pdf/understand.pdf)-
+[Understand Programming](./../../assets/pdf/understand.pdf)
+
 
 ### Reflections
 
 "Understand Programming" presents an interdisciplinary framework for viewing programming through
 linguistic, psychological, and cognitive lenses. It emphasizes programming not just as a technical
 exercise but as a human-centered activity deeply intertwined with how we process, understand, and
-construct meaning. Modern developments in cognitive science, programming language theory, neurolinguistics,
-and cognitive load theory could enrich this perspective, offering practical insights for improving
-programming education, language design, and software development.
+construct meaning. Modern developments in cognitive science, programming language theory,
+neurolinguistics, and cognitive load theory could enrich this perspective, offering practical
+insights for improving programming education, language design, and software development.
 
 Written in the early 1990s, the text emerged in an era when personal computing was becoming mainstream,
 yet programming methodologies prioritized technical precision over human engagement. Philosophical
