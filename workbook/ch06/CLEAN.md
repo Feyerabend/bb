@@ -14,29 +14,29 @@ when and how to apply clean code practices effectively.
 __Core Principles of Clean Code__
 
 1. Readable and Understandable:
-	- Code should be self-explanatory, requiring minimal comments.
-	- A developer unfamiliar with the codebase should grasp the logic quickly.
+ - Code should be self-explanatory, requiring minimal comments.
+ - A developer unfamiliar with the codebase should grasp the logic quickly.
 
 2. Simple and Minimal:
-	- Avoid unnecessary complexity. Code should do one thing and do it well.
+ - Avoid unnecessary complexity. Code should do one thing and do it well.
 
 3. Consistent:
-	- Follow consistent naming conventions, formatting, and design patterns across the codebase.
+ - Follow consistent naming conventions, formatting, and design patterns across the codebase.
 
 4. Modular and Reusable:
-	- Code should be broken into small, focused, and reusable components.
+ - Code should be broken into small, focused, and reusable components.
 
 5. Testable:
-	- Clean code encourages the creation of testable units, ensuring functionality and reliability.
+ - Clean code encourages the creation of testable units, ensuring functionality and reliability.
 
 6. Avoid Duplication:
-	- Follow the DRY (Don’t Repeat Yourself) principle. Duplicate logic leads to inconsistencies and maintenance headaches.
+ - Follow the DRY (Don’t Repeat Yourself) principle. Duplicate logic leads to inconsistencies and maintenance headaches.
 
 7. Descriptive Naming:
-	- Names should reflect the purpose of variables, functions, classes, etc., making the code self-documenting.
+ - Names should reflect the purpose of variables, functions, classes, etc., making the code self-documenting.
 
 8. Encapsulation:
-	- Internal details should be hidden behind clear interfaces, following the principle of information hiding.
+ - Internal details should be hidden behind clear interfaces, following the principle of information hiding.
 
 
 ### Practical Examples
@@ -171,18 +171,18 @@ Benefits of Clean Code
 Influential References
 
 1. Books:
-	- *Clean Code: A Handbook of Agile Software Craftsmanship* by Robert C. Martin.
-	- *The Pragmatic Programmer* by Andrew Hunt and David Thomas.
-	- *Code Complete* by Steve McConnell.
+ - *Clean Code: A Handbook of Agile Software Craftsmanship* by Robert C. Martin.
+ - *The Pragmatic Programmer* by Andrew Hunt and David Thomas.
+ - *Code Complete* by Steve McConnell.
 
-2.	Online Resources:
-	- Clean Code JavaScript: A community-driven repository showcasing clean code principles in JavaScript.
-	- Articles by Martin Fowler on refactoring and simplicity.
+2. Online Resources:
+ - Clean Code JavaScript: A community-driven repository showcasing clean code principles in JavaScript.
+ - Articles by Martin Fowler on refactoring and simplicity.
 
-3.	Tools for Enforcing Clean Code:
-	- Linters (e.g., ESLint, Pylint, RuboCop).
-	- Formatters (e.g., Prettier, Black).
-	- Static analysis tools (e.g., SonarQube).
+3. Tools for Enforcing Clean Code:
+ - Linters (e.g., ESLint, Pylint, RuboCop).
+ - Formatters (e.g., Prettier, Black).
+ - Static analysis tools (e.g., SonarQube).
 
 ### Summary
 
@@ -193,7 +193,7 @@ widely considered essential for minimizing technical debt and ensuring the long-
 projects. Balancing pragmatism with clean code ideals is key to navigating real-world constraints.
 
 
-### The Position: “Code Will Always Be Error-Prone”
+### The Position: "Code Will Always Be Error-Prone"
 
 So what could be considered problematic, or not always the way you want to go?
 
@@ -205,9 +205,9 @@ __Core Claim__
 2. Focus on Maintenance: Instead of striving for "cleanliness," the priority should be
    on making code maintainable in the context of inevitable imperfection. Maintainability
    means it is:
-	- Easier to debug.
-	- Easier to modify.
-	- Easier to add new features.
+ - Easier to debug.
+ - Easier to modify.
+ - Easier to add new features.
 
 3. Critique of "Clean Code": The Clean Code paradigm, as espoused by figures like Robert
    C. Martin, is seen as overly idealistic. It assumes that certain principles (like naming
