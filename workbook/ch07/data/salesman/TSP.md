@@ -67,7 +67,7 @@ This code generates a Euclidean TSP instance with cities as 2D points. Using a f
 seed ensures reproducibility, critical for benchmarking and debugging.
 
 
-#### Population Initialization
+#### Population Initialisation
 
 ```python
 def create_population(size, num_cities):
@@ -141,3 +141,4 @@ exploration.
 This implementation captures core principles of genetic algorithms for TSP, continuing a rich
 tradition of computational problem-solving. By incorporating modern enhancements, it can
 further bridge historical methodologies with contemporary optimisation challenges.
+
