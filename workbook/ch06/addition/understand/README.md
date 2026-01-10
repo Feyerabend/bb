@@ -132,3 +132,6 @@ intertwined--and how ideas that may have seemed unconventional or early on can e
 and interact with technology.
 
 ![Symbolics 3650](./../../assets/image/symbolics.png)
+
+__A LISP Machine Symbolics 3650 previously used by Uppsala University.
+Now in the hands of the Update association situated in Uppsala.__
