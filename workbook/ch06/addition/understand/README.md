@@ -23,14 +23,14 @@ It's printed on one of the laser printers that were just becoming available back
 ### Reflections
 
 "Understand Programming" presents an interdisciplinary framework for viewing programming through
-linguistic, psychological, and cognitive lenses. It emphasizes programming not just as a technical
+linguistic, psychological, and cognitive lenses. It emphasises programming not just as a technical
 exercise but as a human-centered activity deeply intertwined with how we process, understand, and
 construct meaning. Modern developments in cognitive science, programming language theory,
 neurolinguistics, and cognitive load theory could enrich this perspective, offering practical
 insights for improving programming education, language design, and software development.
 
 Written in the early 1990s, the text emerged in an era when personal computing was becoming mainstream,
-yet programming methodologies prioritized technical precision over human engagement. Philosophical
+yet programming methodologies prioritised technical precision over human engagement. Philosophical
 constructs like constructivism and intuitionism, influential in mathematics and epistemology, were
 rarely applied to programming. This work sought to bridge that gap, framing programming as an
 interpretative act grounded in language, logic, and meaning-making.
@@ -46,7 +46,7 @@ Inspiration also came from the Second International Conference on Logic Programm
 Uppsala, where my university was based. The event introduced me to foundational concepts of logic
 programming, particularly Prolog and LISP. We had a Lisp Machine at the university, a pinnacle of
 advanced computing at the time. However, I never interacted with the machine until half a year ago,
-when encountering one felt like rediscovering a lost artifact from a pivotal time in my academic
+when encountering one felt like rediscovering a lost artefact from a pivotal time in my academic
 journey.
 
 Although drawn to programming, I approached it philosophically, focusing on logic and its connection
@@ -83,7 +83,7 @@ between cognitive processes and programming.
 
 The *constructivist philosophy*, which views knowledge as emerging through active engagement, resonates with
 programming as a dynamic, iterative process of discovery and refinement. This idea prefigured modern practices
-like *Test-Driven Development* (TDD), *Agile*, and *Extreme Programming* (XP), which emphasize incremental learning
+like *Test-Driven Development* (TDD), *Agile*, and *Extreme Programming* (XP), which emphasise incremental learning
 and continuous improvement.
 
 In education and development, iterative methods foster understanding by breaking problems into manageable chunks,
@@ -130,3 +130,5 @@ interfaces and tools all echo ideas from thought I had at the time.
 It's a timeless nature of some of these core concepts--how programming, cognition, and language will always be deeply
 intertwined--and how ideas that may have seemed unconventional or early on can eventually shape how we understand
 and interact with technology.
+
+![Symbolics 3650](./../../assets/image/symbolics.png)
