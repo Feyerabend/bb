@@ -18,7 +18,7 @@
  * - Illustrates defense-in-depth principles
  * - Shows secure coding practices
  */
-
+ 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -30,8 +30,8 @@
 #include "pico/time.h"
 #include "display.h"
 
-// Built-in LED pin
-#define LED_PIN PICO_DEFAULT_LED_PIN
+// Built-in LED pin (board status LED)
+//#define LED_PIN PICO_DEFAULT_LED_PIN
 
 // Security constants
 #define SIGNATURE_SIZE 64
@@ -129,18 +129,18 @@ static void draw_security_alert(const char *message) {
     
     // Alert pattern on LED
     for (int i = 0; i < 5; i++) {
-        gpio_put(LED_PIN, 1);
+        //gpio_put(LED_PIN, 1);
         sleep_ms(100);
-        gpio_put(LED_PIN, 0);
+        //gpio_put(LED_PIN, 0);
         sleep_ms(100);
     }
 }
 
 static void blink_led(int times, uint32_t delay_ms) {
     for (int i = 0; i < times; i++) {
-        gpio_put(LED_PIN, 1);
+        //gpio_put(LED_PIN, 1);
         sleep_ms(delay_ms);
-        gpio_put(LED_PIN, 0);
+        //gpio_put(LED_PIN, 0);
         sleep_ms(delay_ms);
     }
 }
@@ -151,12 +151,12 @@ static void set_boot_stage_led(int stage, bool on) {
     if (on) {
         blink_led(stage + 1, 200);
     } else {
-        gpio_put(LED_PIN, 0);
+        //gpio_put(LED_PIN, 0);
     }
 }
 
 static void clear_all_leds(void) {
-    gpio_put(LED_PIN, 0);
+    //gpio_put(LED_PIN, 0);
 }
 
 /*
@@ -589,7 +589,7 @@ static void demo_successful_boot(void) {
     for (int i = 0; i < 3; i++) {
         clear_all_leds();
         sleep_ms(200);
-        gpio_put(LED_PIN, 1);
+        //gpio_put(LED_PIN, 1);
         sleep_ms(200);
     }
 
@@ -958,18 +958,18 @@ int main() {
     stdio_init_all();
     
     // Initialize LED first for error indication
-    gpio_init(LED_PIN);
-    gpio_set_dir(LED_PIN, GPIO_OUT);
-    gpio_put(LED_PIN, 0);
+    //gpio_init(LED_PIN);
+    //gpio_set_dir(LED_PIN, GPIO_OUT);
+    //gpio_put(LED_PIN, 0);
     
     // Initialize display
     display_error_t disp_err = display_pack_init();
     if (disp_err != DISPLAY_OK) {
         // Error - blink LED rapidly
         while (1) {
-            gpio_put(LED_PIN, 1);
+            //gpio_put(LED_PIN, 1);
             sleep_ms(100);
-            gpio_put(LED_PIN, 0);
+            //gpio_put(LED_PIN, 0);
             sleep_ms(100);
         }
     }

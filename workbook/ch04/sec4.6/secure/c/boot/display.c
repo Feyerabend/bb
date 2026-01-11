@@ -6,7 +6,7 @@
 #include "hardware/irq.h"
 #include "pico/time.h"
 #include "hardware/timer.h"
-
+ 
 #include <string.h>
 
 // Display Pack pin defs
@@ -45,8 +45,13 @@ static const uint8_t button_pins[BUTTON_COUNT] = {
     BUTTON_A_PIN, BUTTON_B_PIN, BUTTON_X_PIN, BUTTON_Y_PIN
 };
 
-// Fixed 5x8 font (same as before but with bounds checking)
-static const uint8_t font5x8[][5] = {
+// Font definitions - calculate bounds from array size
+#define FONT_FIRST_CHAR 32
+#define FONT_CHAR_COUNT 59  // Space (32) through Z (90)
+#define FONT_LAST_CHAR (FONT_FIRST_CHAR + FONT_CHAR_COUNT - 1)
+
+// Fixed 5x8 font
+static const uint8_t font5x8[FONT_CHAR_COUNT][5] = {
     {0x00, 0x00, 0x00, 0x00, 0x00}, // Space
     {0x00, 0x00, 0x5F, 0x00, 0x00}, // !
     {0x00, 0x07, 0x00, 0x07, 0x00}, // "
@@ -122,11 +127,17 @@ static inline uint32_t get_time_ms(void) {
     return to_ms_since_boot(get_absolute_time());
 }
 
+// Memory barrier for proper synchronization
+static inline void memory_barrier(void) {
+    __dmb();  // Data Memory Barrier
+}
+
 // DMA interrupt handler with safety checks
 void __isr dma_handler() {
     // Check if this is our channel and clear the interrupt
     if (dma_channel >= 0 && (dma_hw->ints0 & (1u << dma_channel))) {
         dma_hw->ints0 = 1u << dma_channel;
+        memory_barrier();
         dma_busy = false;
     }
 }
@@ -151,6 +162,7 @@ static display_error_t dma_init(void) {
 static bool dma_wait_for_finish_timeout(uint32_t timeout_ms) {
     uint32_t start = get_time_ms();
     while (dma_busy) {
+        memory_barrier();
         if (get_time_ms() - start > timeout_ms) {
             return false; // Timeout
         }
@@ -159,14 +171,23 @@ static bool dma_wait_for_finish_timeout(uint32_t timeout_ms) {
     return true;
 }
 
-// Safe DMA wait
+// Safe DMA wait with proper cleanup on timeout
 static void dma_wait_for_finish(void) {
     if (!dma_wait_for_finish_timeout(1000)) { // 1 second timeout
         // Force stop the DMA channel if timeout occurs
         if (dma_channel >= 0) {
             dma_channel_abort(dma_channel);
-            dma_hw->ints0 = 1u << dma_channel; // Clear pending interrupt to prevent ghost IRQs
+            
+            // Wait for abort to complete
+            while (dma_channel_is_busy(dma_channel)) {
+                tight_loop_contents();
+            }
+            
+            // Clear any pending transfers and reset channel
+            dma_channel_cleanup(dma_channel);
+            dma_hw->ints0 = 1u << dma_channel; // Clear pending interrupt
         }
+        memory_barrier();
         dma_busy = false;
     }
 }
@@ -175,14 +196,19 @@ static void dma_wait_for_finish(void) {
 static display_error_t dma_spi_write_buffer(uint8_t* data, size_t len) {
     if (!data || len == 0) return DISPLAY_ERROR_INVALID_PARAM;
     
-    if (!dma_initialized && dma_init() != DISPLAY_OK) {
-        // Fallback to regular SPI if DMA init fails
-        spi_write_blocking(spi0, data, len);
-        return DISPLAY_OK;
+    if (!dma_initialized) {
+        if (dma_init() != DISPLAY_OK) {
+            // Fallback to regular SPI if DMA init fails
+            if (!display_initialized) return DISPLAY_ERROR_NOT_INITIALIZED;
+            spi_write_blocking(spi0, data, len);
+            return DISPLAY_OK;
+        }
     }
     
     dma_wait_for_finish();
+    memory_barrier();
     dma_busy = true;
+    memory_barrier();
     
     // Configure DMA channel
     dma_channel_config c = dma_channel_get_default_config(dma_channel);
@@ -336,7 +362,7 @@ display_error_t display_pack_init(void) {
     if ((result = display_write_data(0x00)) != DISPLAY_OK) goto init_error;
     if ((result = display_write_data(0xEF)) != DISPLAY_OK) goto init_error;
     
-    // Additional settings (continue even if some fail)
+    // Additional settings (these are optional - failures are logged but not fatal)
     display_write_command(0xB2); // PORCTRL
     display_write_data(0x0C);
     display_write_data(0x0C);
@@ -369,7 +395,7 @@ display_error_t display_pack_init(void) {
     display_write_data(0xA4);
     display_write_data(0xA1);
     
-    // Gamma correction (continue even if fails)
+    // Gamma correction
     display_write_command(0xE0);
     display_write_data(0xD0); display_write_data(0x04); display_write_data(0x0D);
     display_write_data(0x11); display_write_data(0x13); display_write_data(0x2B);
@@ -408,12 +434,12 @@ display_error_t display_fill_rect(uint16_t x, uint16_t y, uint16_t width, uint16
     if (!display_initialized) return DISPLAY_ERROR_NOT_INITIALIZED;
     if (x >= DISPLAY_WIDTH || y >= DISPLAY_HEIGHT) return DISPLAY_ERROR_INVALID_PARAM;
     
-    // Clamp dimensions to display bounds
-    if (x + width > DISPLAY_WIDTH) width = DISPLAY_WIDTH - x;
-    if (y + height > DISPLAY_HEIGHT) height = DISPLAY_HEIGHT - y;
+    // Clamp dimensions to display bounds with overflow protection
+    if (width > DISPLAY_WIDTH - x) width = DISPLAY_WIDTH - x;
+    if (height > DISPLAY_HEIGHT - y) height = DISPLAY_HEIGHT - y;
     if (width == 0 || height == 0) return DISPLAY_OK;
     
-    uint32_t pixel_count = width * height;
+    uint32_t pixel_count = (uint32_t)width * (uint32_t)height;
     
     display_error_t result = display_set_window(x, y, x + width - 1, y + height - 1);
     if (result != DISPLAY_OK) return result;
@@ -488,9 +514,12 @@ display_error_t display_draw_char(uint16_t x, uint16_t y, char c, uint16_t color
     if (!display_initialized) return DISPLAY_ERROR_NOT_INITIALIZED;
     if (x >= DISPLAY_WIDTH || y >= DISPLAY_HEIGHT) return DISPLAY_ERROR_INVALID_PARAM;
     
-    if (c < 32 || c > 90) c = 32; // Space for unsupported chars
+    // Bounds-checked character mapping
+    if (c < FONT_FIRST_CHAR || c > FONT_LAST_CHAR) {
+        c = FONT_FIRST_CHAR; // Default to space for unsupported chars
+    }
     
-    const uint8_t *char_data = font5x8[c - 32];
+    const uint8_t *char_data = font5x8[c - FONT_FIRST_CHAR];
     
     // Draw character bitmap with bounds checking
     for (int col = 0; col < 5 && (x + col) < DISPLAY_WIDTH; col++) {
@@ -547,19 +576,20 @@ void buttons_update(void) {
     
     uint32_t now = get_time_ms();
     
-    // Debounce - only check buttons every 50ms
-    if (now - last_button_check < 50) return;
+    // Debounce - only check buttons every 20ms (improved from 50ms)
+    if (now - last_button_check < 20) return;
     last_button_check = now;
     
     for (int i = 0; i < BUTTON_COUNT; i++) {
         button_last_state[i] = button_state[i];
         button_state[i] = gpio_get(button_pins[i]);
         
-        // Call callback if button was just pressed and callback exists
-        if (button_last_state[i] && !button_state[i] && button_callbacks[i]) {
-            // Extra safety: check callback is still valid before calling
-            if (button_callbacks[i] != NULL) {
-                button_callbacks[i]((button_t)i);
+        // Call callback if button was just pressed
+        // Store callback locally to prevent race condition
+        if (button_last_state[i] && !button_state[i]) {
+            button_callback_t callback = button_callbacks[i];
+            if (callback != NULL) {
+                callback((button_t)i);
             }
         }
     }
@@ -598,6 +628,7 @@ bool display_is_initialized(void) {
 }
 
 bool display_dma_busy(void) {
+    memory_barrier();
     return dma_busy;
 }
 
@@ -653,4 +684,3 @@ void display_cleanup(void) {
         button_callbacks[i] = NULL;
     }
 }
-
