@@ -120,8 +120,14 @@ def main():
         time.sleep_ms(100)
     
     # Setup UART (both TX and RX)
-    uart = UART(0, baudrate=115200, tx=Pin(0), rx=Pin(1))
+    #uart = UART(0, baudrate=115200, tx=Pin(0), rx=Pin(1))
+    uart = UART(1, baudrate=115200, tx=Pin(4), rx=Pin(5))
     
+    #define UART_ID uart1
+    #define BAUD_RATE 9600
+    #define UART_TX_PIN 4
+    #define UART_RX_PIN 5
+
     print("\n[Core 0] Ready. Starting DH key exchange...")
     print("-" * 50)
     

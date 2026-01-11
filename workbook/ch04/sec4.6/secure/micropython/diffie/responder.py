@@ -1,6 +1,6 @@
 # DIFFIE-HELLMAN RESPONDER
 # Demonstrates key exchange then symmetric decryption
-# Wiring: UART RX (GP1) -> Pico1 TX, UART TX (GP0) -> Pico1 RX, GND -> GND
+# CHANGE! Wiring: UART RX (GP1) -> Pico1 TX, UART TX (GP0) -> Pico1 RX, GND -> GND
 
 import _thread
 import time
@@ -118,8 +118,9 @@ def main():
         time.sleep_ms(100)
     
     # Setup UART (both RX and TX)
-    uart = UART(0, baudrate=115200, tx=Pin(0), rx=Pin(1))
-    
+    #uart = UART(0, baudrate=115200, tx=Pin(0), rx=Pin(1))
+    uart = UART(1, baudrate=115200, tx=Pin(4), rx=Pin(5))
+
     print("\n[Core 0] Ready. Waiting for DH key exchange...")
     print("-" * 50)
     
