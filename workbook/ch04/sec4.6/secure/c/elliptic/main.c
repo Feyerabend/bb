@@ -81,6 +81,7 @@ int main() {
     long long decrypted = 0;
     
     stage_t stage = STAGE_INTRO;
+    stage_t last_stage = STAGE_COMPLETE; // Force initial draw
     uint32_t last_update = 0;
     float animation_progress = 0.0f;
     
@@ -92,7 +93,7 @@ int main() {
         if (button_just_pressed(BUTTON_A) || button_just_pressed(BUTTON_B)) {
             stage = (stage + 1) % 5;
             animation_progress = 0.0f;
-            display_clear(COLOR_BLACK);
+            last_stage = STAGE_COMPLETE; // Force redraw
         }
         
         // Update animation
@@ -102,53 +103,59 @@ int main() {
             if (animation_progress > 1.0f) animation_progress = 1.0f;
         }
         
-        // Render based on stage
+        // Redraw screen when stage changes
+        if (stage != last_stage) {
+            display_clear(COLOR_BLACK);
+            last_stage = stage;
+        }
+        
+        // Render based on stage - ALWAYS RENDER EVERY FRAME
         switch (stage) {
             case STAGE_INTRO:
                 display_draw_string(60, 20, "RSA ENCRYPTION", COLOR_CYAN, COLOR_BLACK);
                 display_draw_string(50, 40, "DEMONSTRATION", COLOR_CYAN, COLOR_BLACK);
                 display_fill_rect(40, 60, 240, 2, COLOR_CYAN);
                 
-                display_draw_string(20, 80, "Message: 65 ('A')", COLOR_GREEN, COLOR_BLACK);
-                display_draw_string(20, 100, "Primes: p=61, q=53", COLOR_YELLOW, COLOR_BLACK);
-                display_draw_string(20, 120, "Modulus: n=3233", COLOR_YELLOW, COLOR_BLACK);
+                display_draw_string(20, 80, "MESSAGE: 65 ('A')", COLOR_GREEN, COLOR_BLACK);
+                display_draw_string(20, 100, "PRIMES: P=61, Q=53", COLOR_YELLOW, COLOR_BLACK);
+                display_draw_string(20, 120, "MODULUS: N=3233", COLOR_YELLOW, COLOR_BLACK);
                 
-                display_draw_string(30, 160, "Press A/B to", COLOR_WHITE, COLOR_BLACK);
-                display_draw_string(30, 172, "advance stages", COLOR_WHITE, COLOR_BLACK);
+                display_draw_string(30, 160, "PRESS A/B TO", COLOR_WHITE, COLOR_BLACK);
+                display_draw_string(30, 172, "ADVANCE STAGES", COLOR_WHITE, COLOR_BLACK);
                 break;
                 
             case STAGE_KEYS:
                 display_draw_string(80, 10, "KEY GENERATION", COLOR_MAGENTA, COLOR_BLACK);
                 display_fill_rect(20, 30, 280, 2, COLOR_MAGENTA);
                 
-                draw_key(20, 50, "Public Key:", e, n, COLOR_GREEN);
+                draw_key(20, 50, "PUBLIC KEY:", e, n, COLOR_GREEN);
                 draw_progress_bar(20, 75, 280, 20, animation_progress, COLOR_GREEN);
                 
-                draw_key(20, 110, "Private Key:", d, n, COLOR_RED);
+                draw_key(20, 110, "PRIVATE KEY:", d, n, COLOR_RED);
                 draw_progress_bar(20, 135, 280, 20, animation_progress, COLOR_RED);
                 
-                display_draw_string(20, 170, "Public: Encrypt", COLOR_GREEN, COLOR_BLACK);
-                display_draw_string(20, 185, "Private: Decrypt", COLOR_RED, COLOR_BLACK);
+                display_draw_string(20, 170, "PUBLIC: ENCRYPT", COLOR_GREEN, COLOR_BLACK);
+                display_draw_string(20, 185, "PRIVATE: DECRYPT", COLOR_RED, COLOR_BLACK);
                 break;
                 
             case STAGE_ENCRYPT:
                 display_draw_string(70, 10, "ENCRYPTION", COLOR_YELLOW, COLOR_BLACK);
                 display_fill_rect(20, 30, 280, 2, COLOR_YELLOW);
                 
-                display_draw_string(20, 50, "Message M:", COLOR_WHITE, COLOR_BLACK);
+                display_draw_string(20, 50, "MESSAGE M:", COLOR_WHITE, COLOR_BLACK);
                 animate_number(130, 50, message, COLOR_GREEN);
                 
-                display_draw_string(20, 75, "Computing:", COLOR_WHITE, COLOR_BLACK);
-                display_draw_string(20, 90, "C = M^e mod n", COLOR_CYAN, COLOR_BLACK);
+                display_draw_string(20, 75, "COMPUTING:", COLOR_WHITE, COLOR_BLACK);
+                display_draw_string(20, 90, "C = M^E MOD N", COLOR_CYAN, COLOR_BLACK);
                 
                 draw_progress_bar(20, 110, 280, 25, animation_progress, COLOR_YELLOW);
                 
                 if (animation_progress > 0.5f) {
                     ciphertext = mod_exp(message, e, n);
-                    display_draw_string(20, 150, "Ciphertext C:", COLOR_WHITE, COLOR_BLACK);
-                    animate_number(150, 150, ciphertext, COLOR_YELLOW);
+                    display_draw_string(20, 150, "CIPHERTEXT C:", COLOR_WHITE, COLOR_BLACK);
+                    animate_number(165, 150, ciphertext, COLOR_YELLOW);
                     
-                    display_draw_string(20, 175, "Encrypted!", COLOR_GREEN, COLOR_BLACK);
+                    display_draw_string(20, 175, "ENCRYPTED!", COLOR_GREEN, COLOR_BLACK);
                 }
                 break;
                 
@@ -156,20 +163,20 @@ int main() {
                 display_draw_string(70, 10, "DECRYPTION", COLOR_CYAN, COLOR_BLACK);
                 display_fill_rect(20, 30, 280, 2, COLOR_CYAN);
                 
-                display_draw_string(20, 50, "Ciphertext C:", COLOR_WHITE, COLOR_BLACK);
-                animate_number(150, 50, ciphertext, COLOR_YELLOW);
+                display_draw_string(20, 50, "CIPHERTEXT C:", COLOR_WHITE, COLOR_BLACK);
+                animate_number(165, 50, ciphertext, COLOR_YELLOW);
                 
-                display_draw_string(20, 75, "Computing:", COLOR_WHITE, COLOR_BLACK);
-                display_draw_string(20, 90, "M = C^d mod n", COLOR_MAGENTA, COLOR_BLACK);
+                display_draw_string(20, 75, "COMPUTING:", COLOR_WHITE, COLOR_BLACK);
+                display_draw_string(20, 90, "M = C^D MOD N", COLOR_MAGENTA, COLOR_BLACK);
                 
                 draw_progress_bar(20, 110, 280, 25, animation_progress, COLOR_CYAN);
                 
                 if (animation_progress > 0.5f) {
                     decrypted = mod_exp(ciphertext, d, n);
-                    display_draw_string(20, 150, "Decrypted M:", COLOR_WHITE, COLOR_BLACK);
-                    animate_number(150, 150, decrypted, COLOR_GREEN);
+                    display_draw_string(20, 150, "DECRYPTED M:", COLOR_WHITE, COLOR_BLACK);
+                    animate_number(155, 150, decrypted, COLOR_GREEN);
                     
-                    display_draw_string(20, 175, "Success!", COLOR_GREEN, COLOR_BLACK);
+                    display_draw_string(20, 175, "SUCCESS!", COLOR_GREEN, COLOR_BLACK);
                 }
                 break;
                 
@@ -177,14 +184,14 @@ int main() {
                 display_draw_string(90, 20, "COMPLETE!", COLOR_GREEN, COLOR_BLACK);
                 display_fill_rect(20, 45, 280, 3, COLOR_GREEN);
                 
-                display_draw_string(20, 65, "Original:", COLOR_WHITE, COLOR_BLACK);
+                display_draw_string(20, 65, "ORIGINAL:", COLOR_WHITE, COLOR_BLACK);
                 animate_number(120, 65, message, COLOR_CYAN);
                 
-                display_draw_string(20, 85, "Encrypted:", COLOR_WHITE, COLOR_BLACK);
-                animate_number(130, 85, ciphertext, COLOR_YELLOW);
+                display_draw_string(20, 85, "ENCRYPTED:", COLOR_WHITE, COLOR_BLACK);
+                animate_number(135, 85, ciphertext, COLOR_YELLOW);
                 
-                display_draw_string(20, 105, "Decrypted:", COLOR_WHITE, COLOR_BLACK);
-                animate_number(130, 105, decrypted, COLOR_GREEN);
+                display_draw_string(20, 105, "DECRYPTED:", COLOR_WHITE, COLOR_BLACK);
+                animate_number(135, 105, decrypted, COLOR_GREEN);
                 
                 if (message == decrypted) {
                     display_draw_string(40, 140, "MATCH: RSA WORKS!", COLOR_GREEN, COLOR_BLACK);
@@ -195,8 +202,8 @@ int main() {
                     display_fill_rect(146, check_y + 10, 15, 6, COLOR_GREEN);
                 }
                 
-                display_draw_string(30, 200, "Press A/B to", COLOR_WHITE, COLOR_BLACK);
-                display_draw_string(30, 212, "restart", COLOR_WHITE, COLOR_BLACK);
+                display_draw_string(30, 200, "PRESS A/B TO", COLOR_WHITE, COLOR_BLACK);
+                display_draw_string(30, 212, "RESTART", COLOR_WHITE, COLOR_BLACK);
                 break;
         }
         
@@ -205,3 +212,4 @@ int main() {
     
     return 0;
 }
+
