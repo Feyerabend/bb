@@ -1,22 +1,6 @@
 /*
- * Hardened Secure Boot Chain Demonstration for Raspberry Pi Pico 2
- * With Pimoroni Display Pack 2.0
- *
- * SECURITY:
- * - Constant-time comparisons to prevent timing attacks
- * - Secure memory wiping after sensitive operations
- * - Defense against fault injection
- * - Proper bounds checking everywhere
- * - Secure state machine with validation
- * - Enhanced rollback protection with persistent storage
- * - Boot attestation and audit logging
- * - Secure failure handling (fail-secure)
- *
- * Educational Features:
- * - Shows complete chain of trust with detailed steps
- * - Demonstrates multiple attack vectors
- * - Illustrates defense-in-depth principles
- * - Shows secure coding practices
+ * Boot Chain Demo
+ * Raspberry Pi Pico 2 + Pimoroni Display Pack 2.0
  */
  
 #include <stdio.h>
@@ -24,31 +8,29 @@
 #include <stdlib.h>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
-#include "hardware/flash.h"
-#include "hardware/sync.h"
-#include "hardware/watchdog.h"
-#include "pico/time.h"
 #include "display.h"
 
-// Built-in LED pin (board status LED)
-//#define LED_PIN PICO_DEFAULT_LED_PIN
 
-// Security constants
+// SECURITY CONSTANTS
+
 #define SIGNATURE_SIZE 64
 #define HASH_SIZE 32
 #define PUBLIC_KEY_SIZE 32
-#define VERSION_COUNTER_SIZE 4
-#define MAX_IMAGE_SIZE (128 * 1024)  // 128KB max image size
+#define MAX_IMAGE_SIZE (128 * 1024)
 #define BOOT_MAGIC 0x53454342  // "SECB"
 
-// Secure wipe pattern (multiple passes with different patterns)
-#define WIPE_PASSES 3
-static const uint8_t wipe_patterns[WIPE_PASSES] = {0x00, 0xFF, 0xAA};
+// For attack detection
+#define MAX_FAILED_VERIFICATIONS 5
+
+// SECURITY PRIMITIVES
 
 /*
- * SECURITY: Constant-time memory comparison to prevent timing attacks
+ * SECURITY: Constant-time comparison prevents timing attacks
+ * An attacker can't learn about the data by measuring how long comparison takes
  */
 static bool secure_compare(const uint8_t *a, const uint8_t *b, size_t len) {
+    if (!a || !b) return false;
+    
     volatile uint8_t diff = 0;
     for (size_t i = 0; i < len; i++) {
         diff |= (a[i] ^ b[i]);
@@ -57,123 +39,34 @@ static bool secure_compare(const uint8_t *a, const uint8_t *b, size_t len) {
 }
 
 /*
- * SECURITY: Secure memory wipe - prevents sensitive data leakage
+ * SECURITY: Secure memory wipe prevents key/data leakage
+ * Overwrites memory with multiple patterns before freeing
  */
 static void secure_wipe(void *ptr, size_t len) {
     if (!ptr || len == 0) return;
     
     volatile uint8_t *p = (volatile uint8_t *)ptr;
-    for (int pass = 0; pass < WIPE_PASSES; pass++) {
-        for (size_t i = 0; i < len; i++) {
-            p[i] = wipe_patterns[pass];
-        }
-    }
-}
-
-/*
- * SECURITY: Bounds-checked memory operations
- */
-static bool safe_memcpy(void *dest, size_t dest_size, const void *src, size_t copy_size) {
-    if (!dest || !src || copy_size > dest_size) {
-        return false;
-    }
-    memcpy(dest, src, copy_size);
-    return true;
-}
-
-/*
- * DISPLAY HELPER FUNCTIONS (Enhanced with error handling)
- */
-
-static void draw_boot_header(const char *stage, uint16_t color) {
-    if (!stage) return;
-    display_fill_rect(0, 0, DISPLAY_WIDTH, 30, COLOR_BLACK);
-    display_draw_string(10, 10, stage, color, COLOR_BLACK);
-}
-
-static void draw_boot_step(uint16_t y, const char *text, uint16_t color) {
-    if (!text || y >= DISPLAY_HEIGHT) return;
-    display_draw_string(10, y, text, color, COLOR_BLACK);
-}
-
-static void draw_verification_box(uint16_t y, const char *title, bool passed) {
-    if (!title || y >= DISPLAY_HEIGHT - 35) return;
     
-    uint16_t bg_color = passed ? 0x0320 : 0x6000;
-    uint16_t fg_color = passed ? COLOR_GREEN : COLOR_RED;
-    
-    display_fill_rect(5, y, 310, 35, bg_color);
-    display_draw_string(10, y + 5, title, fg_color, bg_color);
-    
-    const char *status = passed ? "[VERIFIED]" : "[FAILED]";
-    display_draw_string(10, y + 20, status, fg_color, bg_color);
+    // Three-pass wipe with different patterns
+    for (size_t i = 0; i < len; i++) p[i] = 0x00;
+    for (size_t i = 0; i < len; i++) p[i] = 0xFF;
+    for (size_t i = 0; i < len; i++) p[i] = 0xAA;
 }
 
-static void draw_image_info(uint16_t y, const char *desc, uint32_t version, uint32_t size) {
-    if (!desc || y >= DISPLAY_HEIGHT - 24) return;
-    
-    char info[64];
-    snprintf(info, sizeof(info), "DESC: %.30s", desc);
-    display_draw_string(15, y, info, COLOR_WHITE, COLOR_BLACK);
-    
-    snprintf(info, sizeof(info), "VER: %u  SIZE: %u", version, size);
-    display_draw_string(15, y + 12, info, COLOR_CYAN, COLOR_BLACK);
-}
 
-static void draw_security_alert(const char *message) {
-    if (!message) return;
-    
-    display_fill_rect(0, 200, DISPLAY_WIDTH, 40, COLOR_RED);
-    display_draw_string(10, 210, "SECURITY ALERT!", COLOR_YELLOW, COLOR_RED);
-    display_draw_string(10, 222, message, COLOR_WHITE, COLOR_RED);
-    
-    // Alert pattern on LED
-    for (int i = 0; i < 5; i++) {
-        //gpio_put(LED_PIN, 1);
-        sleep_ms(100);
-        //gpio_put(LED_PIN, 0);
-        sleep_ms(100);
-    }
-}
-
-static void blink_led(int times, uint32_t delay_ms) {
-    for (int i = 0; i < times; i++) {
-        //gpio_put(LED_PIN, 1);
-        sleep_ms(delay_ms);
-        //gpio_put(LED_PIN, 0);
-        sleep_ms(delay_ms);
-    }
-}
-
-static void set_boot_stage_led(int stage, bool on) {
-    if (stage < 0 || stage > 3) return;
-    
-    if (on) {
-        blink_led(stage + 1, 200);
-    } else {
-        //gpio_put(LED_PIN, 0);
-    }
-}
-
-static void clear_all_leds(void) {
-    //gpio_put(LED_PIN, 0);
-}
-
-/*
- * CRYPTOGRAPHIC PRIMITIVES (Enhanced)
- */
+// CRYPTOGRAPHIC STRUCTURES
 
 typedef struct {
     uint8_t data[PUBLIC_KEY_SIZE];
     char name[32];
-    bool is_revoked;  // Key revocation support
+    bool is_revoked;  // Can mark keys as compromised
 } public_key_t;
 
 typedef struct {
     uint8_t data[SIGNATURE_SIZE];
 } signature_t;
 
-// Root of Trust public keys (immutable - stored in "ROM")
+// Root keys - in real system these would be in hardware ROM
 static const public_key_t ROOT_PUBLIC_KEY = {
     .data = {
         0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0,
@@ -196,25 +89,28 @@ static const public_key_t BOOTLOADER_PUBLIC_KEY = {
     .is_revoked = false
 };
 
-/*
- * SECURITY: Enhanced hash with length validation
- */
+
+// SIMPLIFIED HASH FUNCTION (Educational - NEVER for production!)
+
 static bool simple_hash(const uint8_t *data, size_t len, uint8_t *hash) {
     if (!data || !hash || len == 0 || len > MAX_IMAGE_SIZE) {
         return false;
     }
     
+    // Init with constants (similar to SHA-256 initial values)
     uint32_t h[8] = {
         0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
         0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
     };
     
+    // Mix in each byte (simplified - real SHA is much more complex)
     for (size_t i = 0; i < len; i++) {
         h[i % 8] ^= data[i];
         h[i % 8] = (h[i % 8] << 7) | (h[i % 8] >> 25);
         h[i % 8] += data[i] * 31;
     }
     
+    // Convert to bytes
     for (int i = 0; i < 8; i++) {
         hash[i*4 + 0] = (h[i] >> 24) & 0xFF;
         hash[i*4 + 1] = (h[i] >> 16) & 0xFF;
@@ -225,34 +121,28 @@ static bool simple_hash(const uint8_t *data, size_t len, uint8_t *hash) {
     return true;
 }
 
-/*
- * SECURITY: Enhanced signature verification with key revocation check
- */
+
+// SIGNATURE VERIFICATION (Educational - NOT for production!)
+
 static bool verify_signature(const uint8_t *data, size_t len, 
                             const signature_t *sig, const public_key_t *pubkey) {
-    if (!data || !sig || !pubkey || len == 0) {
-        return false;
-    }
+    if (!data || !sig || !pubkey || len == 0) return false;
+    if (pubkey->is_revoked) return false;
     
-    // Check key revocation
-    if (pubkey->is_revoked) {
-        return false;
-    }
-    
+    // Hash the data
     uint8_t hash[HASH_SIZE];
-    if (!simple_hash(data, len, hash)) {
-        return false;
-    }
+    if (!simple_hash(data, len, hash)) return false;
     
+    // Create expected signature (simplified - real crypto is more complex)
     uint8_t expected[SIGNATURE_SIZE];
     for (int i = 0; i < SIGNATURE_SIZE; i++) {
         expected[i] = hash[i % HASH_SIZE] ^ pubkey->data[i % PUBLIC_KEY_SIZE];
     }
     
-    // SECURITY: Constant-time comparison
+    // SECURITY: Use constant-time comparison
     bool valid = secure_compare(sig->data, expected, SIGNATURE_SIZE);
     
-    // SECURITY: Wipe temporary buffers
+    // SECURITY: Wipe temporary data
     secure_wipe(hash, sizeof(hash));
     secure_wipe(expected, sizeof(expected));
     
@@ -261,14 +151,10 @@ static bool verify_signature(const uint8_t *data, size_t len,
 
 static bool sign_data(const uint8_t *data, size_t len, signature_t *sig, 
                      const public_key_t *pubkey) {
-    if (!data || !sig || !pubkey || len == 0) {
-        return false;
-    }
+    if (!data || !sig || !pubkey || len == 0) return false;
     
     uint8_t hash[HASH_SIZE];
-    if (!simple_hash(data, len, hash)) {
-        return false;
-    }
+    if (!simple_hash(data, len, hash)) return false;
     
     for (int i = 0; i < SIGNATURE_SIZE; i++) {
         sig->data[i] = hash[i % HASH_SIZE] ^ pubkey->data[i % PUBLIC_KEY_SIZE];
@@ -278,15 +164,12 @@ static bool sign_data(const uint8_t *data, size_t len, signature_t *sig,
     return true;
 }
 
-/*
- * IMAGE METADATA AND VERSIONING (Enhanced)
- */
+// IMAGE STRUCTURES
 
 typedef enum {
     IMAGE_TYPE_INVALID = 0,
     IMAGE_TYPE_BOOTLOADER = 1,
     IMAGE_TYPE_APPLICATION = 2,
-    IMAGE_TYPE_MODULE = 3,
     IMAGE_TYPE_MAX
 } image_type_t;
 
@@ -295,27 +178,17 @@ typedef struct {
     uint32_t version;
     uint32_t image_size;
     image_type_t image_type;
-    uint32_t timestamp;
     signature_t signature;
     uint8_t hash[HASH_SIZE];
     char description[64];
-    uint32_t flags;  // Security flags
-    uint32_t checksum;  // Additional integrity check
 } __attribute__((packed)) image_header_t;
 
-// Version counters with rollback protection
+// Version counters (simulated anti-rollback storage)
 static uint32_t version_counters[IMAGE_TYPE_MAX] = {0};
-
-// Boot attempt counter (for attack detection)
-static uint32_t boot_attempt_counter = 0;
 static uint32_t failed_verification_counter = 0;
 
-#define MAX_BOOT_ATTEMPTS 3
-#define MAX_FAILED_VERIFICATIONS 5
 
-/*
- * BOOT STATUS (Enhanced)
- */
+// VERIFICATION STATUS
 
 typedef enum {
     BOOT_STATUS_OK = 0,
@@ -323,10 +196,7 @@ typedef enum {
     BOOT_STATUS_VERSION_ROLLBACK,
     BOOT_STATUS_HASH_MISMATCH,
     BOOT_STATUS_CORRUPTED,
-    BOOT_STATUS_UNTRUSTED,
-    BOOT_STATUS_KEY_REVOKED,
     BOOT_STATUS_SIZE_INVALID,
-    BOOT_STATUS_CHECKSUM_FAILED,
     BOOT_STATUS_ATTACK_DETECTED
 } boot_status_t;
 
@@ -335,35 +205,13 @@ static const char* boot_status_strings[] = {
     "SIGNATURE INVALID",
     "VERSION ROLLBACK",
     "HASH MISMATCH",
-    "CORRUPTED HEADER",
-    "UNTRUSTED SOURCE",
-    "KEY REVOKED",
+    "CORRUPTED",
     "INVALID SIZE",
-    "CHECKSUM FAILED",
     "ATTACK DETECTED"
 };
 
-/*
- * SECURITY: Calculate header checksum
- */
-static uint32_t calculate_checksum(const image_header_t *hdr) {
-    if (!hdr) return 0;
-    
-    uint32_t sum = 0;
-    const uint8_t *ptr = (const uint8_t *)hdr;
-    size_t len = sizeof(image_header_t) - sizeof(uint32_t);  // Exclude checksum field
-    
-    for (size_t i = 0; i < len; i++) {
-        sum += ptr[i];
-        sum = (sum << 1) | (sum >> 31);  // Rotate left
-    }
-    
-    return sum;
-}
+// IMAGE VERIFICATION (The Core Security Logic)
 
-/*
- * SECURITY: Enhanced image verification with multiple checks
- */
 static boot_status_t verify_image(const image_header_t *hdr, 
                                   const uint8_t *image_data,
                                   const public_key_t *expected_key, 
@@ -372,35 +220,22 @@ static boot_status_t verify_image(const image_header_t *hdr,
         return BOOT_STATUS_CORRUPTED;
     }
     
-    // Check 1: Magic number (defense against random data)
+    // Check 1: Magic number
     if (hdr->magic != BOOT_MAGIC) {
         return BOOT_STATUS_CORRUPTED;
     }
     
-    // Check 2: Image type validation
-    if (hdr->image_type != expected_type || 
-        hdr->image_type <= IMAGE_TYPE_INVALID || 
-        hdr->image_type >= IMAGE_TYPE_MAX) {
-        return BOOT_STATUS_UNTRUSTED;
+    // Check 2: Image type
+    if (hdr->image_type != expected_type) {
+        return BOOT_STATUS_CORRUPTED;
     }
     
-    // Check 3: Size validation (prevent overflow attacks)
+    // Check 3: Size bounds
     if (hdr->image_size == 0 || hdr->image_size > MAX_IMAGE_SIZE) {
         return BOOT_STATUS_SIZE_INVALID;
     }
     
-    // Check 4: Header checksum
-    uint32_t expected_checksum = calculate_checksum(hdr);
-    if (hdr->checksum != expected_checksum) {
-        return BOOT_STATUS_CHECKSUM_FAILED;
-    }
-    
-    // Check 5: Key revocation
-    if (expected_key->is_revoked) {
-        return BOOT_STATUS_KEY_REVOKED;
-    }
-    
-    // Check 6: Hash verification (integrity)
+    // Check 4: Hash integrity
     uint8_t computed_hash[HASH_SIZE];
     if (!simple_hash(image_data, hdr->image_size, computed_hash)) {
         return BOOT_STATUS_CORRUPTED;
@@ -411,57 +246,44 @@ static boot_status_t verify_image(const image_header_t *hdr,
         failed_verification_counter++;
         return BOOT_STATUS_HASH_MISMATCH;
     }
-    
     secure_wipe(computed_hash, sizeof(computed_hash));
     
-    // Check 7: Digital signature (authenticity)
+    // Check 5: Digital signature
     if (!verify_signature(image_data, hdr->image_size, 
                          &hdr->signature, expected_key)) {
         failed_verification_counter++;
         return BOOT_STATUS_SIG_INVALID;
     }
     
-    // Check 8: Version rollback protection
-    uint32_t stored_version = version_counters[expected_type];
-    if (hdr->version < stored_version) {
+    // Check 6: Version rollback protection
+    if (hdr->version < version_counters[expected_type]) {
         failed_verification_counter++;
         return BOOT_STATUS_VERSION_ROLLBACK;
     }
     
-    // Check 9: Attack detection (too many failures)
+    // Check 7: Attack detection
     if (failed_verification_counter >= MAX_FAILED_VERIFICATIONS) {
         return BOOT_STATUS_ATTACK_DETECTED;
     }
     
-    // Update version counter if newer
-    if (hdr->version > stored_version) {
+    // Success - update version counter
+    if (hdr->version > version_counters[expected_type]) {
         version_counters[expected_type] = hdr->version;
     }
-    
-    // Reset counters on successful verification
-    boot_attempt_counter = 0;
     
     return BOOT_STATUS_OK;
 }
 
-/*
- * SECURITY: Safe image creation with bounds checking
- */
+
+// TEST IMAGE CREATION
+
 static bool create_test_image(image_header_t *hdr, uint8_t *image_data, 
                              size_t size, image_type_t type, uint32_t version,
                              const char *desc, const public_key_t *signing_key, 
                              bool tamper) {
-    if (!hdr || !image_data || !desc || !signing_key) {
-        return false;
-    }
-    
-    if (size == 0 || size > MAX_IMAGE_SIZE) {
-        return false;
-    }
-    
-    if (type <= IMAGE_TYPE_INVALID || type >= IMAGE_TYPE_MAX) {
-        return false;
-    }
+    if (!hdr || !image_data || !desc || !signing_key) return false;
+    if (size == 0 || size > MAX_IMAGE_SIZE) return false;
+    if (type <= IMAGE_TYPE_INVALID || type >= IMAGE_TYPE_MAX) return false;
     
     // Initialize header
     memset(hdr, 0, sizeof(image_header_t));
@@ -469,55 +291,61 @@ static bool create_test_image(image_header_t *hdr, uint8_t *image_data,
     hdr->version = version;
     hdr->image_size = size;
     hdr->image_type = type;
-    hdr->timestamp = to_ms_since_boot(get_absolute_time());
-    hdr->flags = 0;
+    strncpy(hdr->description, desc, sizeof(hdr->description) - 1);
     
-    if (!safe_memcpy(hdr->description, sizeof(hdr->description), 
-                     desc, strlen(desc) + 1)) {
-        return false;
-    }
-    
-    // Generate deterministic image data
+    // Generate fake image data
     for (size_t i = 0; i < size; i++) {
         image_data[i] = (uint8_t)(i ^ version ^ type);
     }
     
-    // Simulate tampering
+    // Tamper if requested (for demos)
     if (tamper && size > 2) {
         image_data[size / 2] ^= 0xFF;
     }
     
     // Calculate hash
-    if (!simple_hash(image_data, size, hdr->hash)) {
-        return false;
-    }
+    if (!simple_hash(image_data, size, hdr->hash)) return false;
     
     // Sign image
-    if (!sign_data(image_data, size, &hdr->signature, signing_key)) {
-        return false;
-    }
-    
-    // Calculate header checksum (must be last)
-    hdr->checksum = calculate_checksum(hdr);
+    if (!sign_data(image_data, size, &hdr->signature, signing_key)) return false;
     
     return true;
 }
 
-/*
- * DEMONSTRATION SCENARIOS (Enhanced)
- */
+// DISPLAY HELPERS
+
+static void draw_header(const char *title, uint16_t color) {
+    display_fill_rect(0, 0, DISPLAY_WIDTH, 30, COLOR_BLACK);
+    display_draw_string(10, 10, title, color, COLOR_BLACK);
+}
+
+static void draw_status_box(uint16_t y, const char *text, bool passed) {
+    uint16_t bg = passed ? 0x0320 : 0x6000;  // Dark green or dark red
+    uint16_t fg = passed ? COLOR_GREEN : COLOR_RED;
+    
+    display_fill_rect(5, y, 310, 30, bg);
+    display_draw_string(10, y + 8, text, fg, bg);
+}
+
+static void draw_alert(const char *message) {
+    display_fill_rect(0, 200, DISPLAY_WIDTH, 40, COLOR_RED);
+    display_draw_string(20, 210, "SECURITY ALERT!", COLOR_YELLOW, COLOR_RED);
+    display_draw_string(20, 222, message, COLOR_WHITE, COLOR_RED);
+}
+
+// DEMO SCENARIOS
 
 static void demo_successful_boot(void) {
     display_clear(COLOR_BLACK);
-    draw_boot_header("SCENARIO 1: SUCCESSFUL BOOT", COLOR_GREEN);
+    draw_header("SCENARIO 1: SUCCESSFUL BOOT", COLOR_GREEN);
     
-    // Allocate buffers
-    uint8_t *bl_data = malloc(1024);
+    // Allocate memory
+    uint8_t *bootloader_data = malloc(1024);
     uint8_t *app_data = malloc(2048);
     
-    if (!bl_data || !app_data) {
-        draw_security_alert("MEMORY ALLOCATION FAILED!");
-        free(bl_data);
+    if (!bootloader_data || !app_data) {
+        draw_alert("Out of memory!");
+        free(bootloader_data);
         free(app_data);
         sleep_ms(3000);
         return;
@@ -525,79 +353,66 @@ static void demo_successful_boot(void) {
     
     image_header_t bl_hdr, app_hdr;
     
-    // Create test images
-    if (!create_test_image(&bl_hdr, bl_data, 1024, IMAGE_TYPE_BOOTLOADER, 
-                          1, "BOOTLOADER v1.0", &ROOT_PUBLIC_KEY, false)) {
-        draw_security_alert("IMAGE CREATION FAILED!");
+    // Create bootloader image
+    if (!create_test_image(&bl_hdr, bootloader_data, 1024, 
+                          IMAGE_TYPE_BOOTLOADER, 1, 
+                          "Bootloader v1.0", &ROOT_PUBLIC_KEY, false)) {
+        draw_alert("Image creation failed");
         goto cleanup;
     }
     
-    if (!create_test_image(&app_hdr, app_data, 2048, IMAGE_TYPE_APPLICATION,
-                          1, "APPLICATION v1.0", &BOOTLOADER_PUBLIC_KEY, false)) {
-        draw_security_alert("IMAGE CREATION FAILED!");
+    // Create application image
+    if (!create_test_image(&app_hdr, app_data, 2048,
+                          IMAGE_TYPE_APPLICATION, 1,
+                          "Application v1.0", &BOOTLOADER_PUBLIC_KEY, false)) {
+        draw_alert("Image creation failed");
         goto cleanup;
     }
     
-    // Stage 1: Root of Trust verifies Bootloader
-    display_draw_string(10, 40, "STAGE 1: ROOT OF TRUST", COLOR_CYAN, COLOR_BLACK);
-    set_boot_stage_led(0, true);
-    sleep_ms(500);
+    // Stage 1: Verify bootloader
+    display_draw_string(10, 40, "STAGE 1: ROOT verifies BOOTLOADER", 
+                       COLOR_CYAN, COLOR_BLACK);
+    sleep_ms(800);
     
-    draw_image_info(55, bl_hdr.description, bl_hdr.version, bl_hdr.image_size);
+    boot_status_t status = verify_image(&bl_hdr, bootloader_data, 
+                                       &ROOT_PUBLIC_KEY, IMAGE_TYPE_BOOTLOADER);
     
-    boot_status_t status = verify_image(&bl_hdr, bl_data, &ROOT_PUBLIC_KEY, 
-                                       IMAGE_TYPE_BOOTLOADER);
-    
-    char status_msg[64];
-    snprintf(status_msg, sizeof(status_msg), "VERIFYING: %s", 
-            boot_status_strings[status]);
-    draw_verification_box(80, status_msg, status == BOOT_STATUS_OK);
+    char msg[64];
+    snprintf(msg, sizeof(msg), "Result: %s", boot_status_strings[status]);
+    draw_status_box(70, msg, status == BOOT_STATUS_OK);
     sleep_ms(1500);
     
     if (status != BOOT_STATUS_OK) {
-        draw_security_alert("BOOTLOADER VERIFY FAILED!");
+        draw_alert("Bootloader verification failed!");
         goto cleanup;
     }
     
-    // Stage 2: Bootloader verifies Application
-    display_draw_string(10, 125, "STAGE 2: BOOTLOADER", COLOR_CYAN, COLOR_BLACK);
-    set_boot_stage_led(1, true);
-    sleep_ms(500);
+    // Stage 2: Verify application
+    display_draw_string(10, 110, "STAGE 2: BOOTLOADER verifies APP",
+                       COLOR_CYAN, COLOR_BLACK);
+    sleep_ms(800);
     
-    draw_image_info(140, app_hdr.description, app_hdr.version, app_hdr.image_size);
+    status = verify_image(&app_hdr, app_data,
+                         &BOOTLOADER_PUBLIC_KEY, IMAGE_TYPE_APPLICATION);
     
-    status = verify_image(&app_hdr, app_data, &BOOTLOADER_PUBLIC_KEY,
-                         IMAGE_TYPE_APPLICATION);
-    
-    snprintf(status_msg, sizeof(status_msg), "VERIFYING: %s",
-            boot_status_strings[status]);
-    draw_verification_box(165, status_msg, status == BOOT_STATUS_OK);
+    snprintf(msg, sizeof(msg), "Result: %s", boot_status_strings[status]);
+    draw_status_box(140, msg, status == BOOT_STATUS_OK);
     sleep_ms(1500);
     
     if (status != BOOT_STATUS_OK) {
-        draw_security_alert("APPLICATION VERIFY FAILED!");
+        draw_alert("Application verification failed!");
         goto cleanup;
     }
-    
-    set_boot_stage_led(2, true);
     
     // Success!
     display_fill_rect(0, 200, DISPLAY_WIDTH, 40, 0x0320);
-    display_draw_string(60, 210, "BOOT SUCCESSFUL!", COLOR_GREEN, 0x0320);
-    display_draw_string(50, 222, "SYSTEM IS SECURE", COLOR_WHITE, 0x0320);
-    
-    for (int i = 0; i < 3; i++) {
-        clear_all_leds();
-        sleep_ms(200);
-        //gpio_put(LED_PIN, 1);
-        sleep_ms(200);
-    }
+    display_draw_string(70, 210, "BOOT SUCCESS!", COLOR_GREEN, 0x0320);
+    display_draw_string(60, 222, "System is secure", COLOR_WHITE, 0x0320);
 
 cleanup:
-    // SECURITY: Wipe sensitive data
-    if (bl_data) {
-        secure_wipe(bl_data, 1024);
-        free(bl_data);
+    if (bootloader_data) {
+        secure_wipe(bootloader_data, 1024);
+        free(bootloader_data);
     }
     if (app_data) {
         secure_wipe(app_data, 2048);
@@ -607,51 +422,52 @@ cleanup:
     secure_wipe(&app_hdr, sizeof(app_hdr));
     
     sleep_ms(3000);
-    clear_all_leds();
 }
 
 static void demo_tampered_image(void) {
     display_clear(COLOR_BLACK);
-    draw_boot_header("SCENARIO 2: TAMPERED IMAGE", COLOR_RED);
+    draw_header("SCENARIO 2: TAMPERED IMAGE", COLOR_RED);
     
     uint8_t *app_data = malloc(2048);
     if (!app_data) {
-        draw_security_alert("MEMORY ALLOCATION FAILED!");
+        draw_alert("Out of memory!");
         sleep_ms(3000);
         return;
     }
     
     image_header_t app_hdr;
     
-    display_draw_string(10, 40, "ATTACKER MODIFIES BINARY..", COLOR_YELLOW, COLOR_BLACK);
+    display_draw_string(10, 40, "Attacker modifies code...", 
+                       COLOR_YELLOW, COLOR_BLACK);
     sleep_ms(1000);
     
-    if (!create_test_image(&app_hdr, app_data, 2048, IMAGE_TYPE_APPLICATION,
-                          1, "APP V1.0 [TAMPERED]", &BOOTLOADER_PUBLIC_KEY, true)) {
-        draw_security_alert("IMAGE CREATION FAILED!");
+    // Create tampered image (tamper flag = true)
+    if (!create_test_image(&app_hdr, app_data, 2048,
+                          IMAGE_TYPE_APPLICATION, 1,
+                          "Tampered App", &BOOTLOADER_PUBLIC_KEY, true)) {
+        draw_alert("Image creation failed");
         goto cleanup;
     }
     
-    set_boot_stage_led(1, true);
-    
-    draw_image_info(60, app_hdr.description, app_hdr.version, app_hdr.image_size);
-    
-    display_draw_string(10, 95, "BOOTLOADER VERIFYING..", COLOR_CYAN, COLOR_BLACK);
+    display_draw_string(10, 70, "Bootloader verifying...", 
+                       COLOR_CYAN, COLOR_BLACK);
     sleep_ms(1000);
     
-    boot_status_t status = verify_image(&app_hdr, app_data, &BOOTLOADER_PUBLIC_KEY,
+    boot_status_t status = verify_image(&app_hdr, app_data,
+                                       &BOOTLOADER_PUBLIC_KEY, 
                                        IMAGE_TYPE_APPLICATION);
     
-    char status_msg[64];
-    snprintf(status_msg, sizeof(status_msg), "STATUS: %s",
-            boot_status_strings[status]);
-    draw_verification_box(115, status_msg, status == BOOT_STATUS_OK);
+    char msg[64];
+    snprintf(msg, sizeof(msg), "Result: %s", boot_status_strings[status]);
+    draw_status_box(100, msg, status == BOOT_STATUS_OK);
     sleep_ms(1500);
     
-    draw_security_alert("TAMPERING DETECTED!");
+    draw_alert("TAMPERING DETECTED!");
     
-    display_draw_string(10, 165, "HASH MISMATCH DETECTED!", COLOR_RED, COLOR_BLACK);
-    display_draw_string(10, 180, "IMAGE HAS BEEN MODIFIED", COLOR_RED, COLOR_BLACK);
+    display_draw_string(10, 165, "The hash doesn't match!", 
+                       COLOR_RED, COLOR_BLACK);
+    display_draw_string(10, 180, "Code was modified after signing",
+                       COLOR_RED, COLOR_BLACK);
     
 cleanup:
     if (app_data) {
@@ -661,108 +477,107 @@ cleanup:
     secure_wipe(&app_hdr, sizeof(app_hdr));
     
     sleep_ms(3000);
-    clear_all_leds();
 }
 
 static void demo_rollback_attack(void) {
     display_clear(COLOR_BLACK);
-    draw_boot_header("SCENARIO 3: ROLLBACK ATTACK", COLOR_RED);
+    draw_header("SCENARIO 3: ROLLBACK ATTACK", COLOR_RED);
     
-    uint8_t *app_data_v2 = malloc(2048);
-    uint8_t *app_data_v1 = malloc(2048);
+    uint8_t *app_v2 = malloc(2048);
+    uint8_t *app_v1 = malloc(2048);
     
-    if (!app_data_v2 || !app_data_v1) {
-        draw_security_alert("MEMORY ALLOCATION FAILED!");
-        free(app_data_v2);
-        free(app_data_v1);
+    if (!app_v2 || !app_v1) {
+        draw_alert("Out of memory!");
+        free(app_v2);
+        free(app_v1);
         sleep_ms(3000);
         return;
     }
     
-    image_header_t app_hdr_v2, app_hdr_v1;
+    image_header_t hdr_v2, hdr_v1;
     
-    display_draw_string(10, 40, "STEP 1: INSTALL V2.0 (SECURE)", COLOR_CYAN, COLOR_BLACK);
+    // Install v2.0 (patched version)
+    display_draw_string(10, 40, "Step 1: Install v2.0 (patched)",
+                       COLOR_CYAN, COLOR_BLACK);
     
-    if (!create_test_image(&app_hdr_v2, app_data_v2, 2048, IMAGE_TYPE_APPLICATION,
-                          2, "APP V2.0 (PATCHED)", &BOOTLOADER_PUBLIC_KEY, false)) {
-        draw_security_alert("IMAGE CREATION FAILED!");
+    if (!create_test_image(&hdr_v2, app_v2, 2048, IMAGE_TYPE_APPLICATION,
+                          2, "App v2.0 (secure)", 
+                          &BOOTLOADER_PUBLIC_KEY, false)) {
+        draw_alert("Image creation failed");
         goto cleanup;
     }
     
-    set_boot_stage_led(1, true);
-    draw_image_info(55, app_hdr_v2.description, app_hdr_v2.version, app_hdr_v2.image_size);
+    boot_status_t status = verify_image(&hdr_v2, app_v2,
+                                       &BOOTLOADER_PUBLIC_KEY,
+                                       IMAGE_TYPE_APPLICATION);
     
-    boot_status_t status = verify_image(&app_hdr_v2, app_data_v2,
-                                       &BOOTLOADER_PUBLIC_KEY, IMAGE_TYPE_APPLICATION);
-    
-    char status_msg[64];
-    snprintf(status_msg, sizeof(status_msg), "INSTALLING: %s",
-            boot_status_strings[status]);
-    draw_verification_box(80, status_msg, status == BOOT_STATUS_OK);
+    char msg[64];
+    snprintf(msg, sizeof(msg), "v2.0 installed: %s", boot_status_strings[status]);
+    draw_status_box(70, msg, status == BOOT_STATUS_OK);
     sleep_ms(1500);
     
-    snprintf(status_msg, sizeof(status_msg), "VERSION COUNTER: %u",
+    snprintf(msg, sizeof(msg), "Version counter now: %u",
             version_counters[IMAGE_TYPE_APPLICATION]);
-    display_draw_string(10, 105, status_msg, COLOR_GREEN, COLOR_BLACK);
+    display_draw_string(10, 110, msg, COLOR_GREEN, COLOR_BLACK);
     sleep_ms(1500);
     
-    // Attacker tries to downgrade
-    display_draw_string(10, 125, "STEP 2: ATTACKER TRIES V1.0", COLOR_YELLOW, COLOR_BLACK);
+    // Attacker tries v1.0 (vulnerable version)
+    display_draw_string(10, 130, "Step 2: Attacker tries v1.0...",
+                       COLOR_YELLOW, COLOR_BLACK);
     sleep_ms(1000);
     
-    if (!create_test_image(&app_hdr_v1, app_data_v1, 2048, IMAGE_TYPE_APPLICATION,
-                          1, "APP V1.0 (VULNERABLE)", &BOOTLOADER_PUBLIC_KEY, false)) {
-        draw_security_alert("IMAGE CREATION FAILED!");
+    if (!create_test_image(&hdr_v1, app_v1, 2048, IMAGE_TYPE_APPLICATION,
+                          1, "App v1.0 (vulnerable)",
+                          &BOOTLOADER_PUBLIC_KEY, false)) {
+        draw_alert("Image creation failed");
         goto cleanup;
     }
     
-    set_boot_stage_led(2, true);
-    draw_image_info(140, app_hdr_v1.description, app_hdr_v1.version, app_hdr_v1.image_size);
-    
-    status = verify_image(&app_hdr_v1, app_data_v1, &BOOTLOADER_PUBLIC_KEY,
+    status = verify_image(&hdr_v1, app_v1, &BOOTLOADER_PUBLIC_KEY,
                          IMAGE_TYPE_APPLICATION);
     
-    snprintf(status_msg, sizeof(status_msg), "VERSION CHECK: %s",
-            boot_status_strings[status]);
-    draw_verification_box(165, status_msg, status == BOOT_STATUS_OK);
+    snprintf(msg, sizeof(msg), "v1.0 blocked: %s", boot_status_strings[status]);
+    draw_status_box(160, msg, status == BOOT_STATUS_OK);
     sleep_ms(1500);
     
-    draw_security_alert("ROLLBACK BLOCKED!");
+    draw_alert("ROLLBACK BLOCKED!");
     
-    display_draw_string(10, 175, "VERSION TOO OLD!", COLOR_RED, COLOR_BLACK);
+    display_draw_string(10, 175, "Can't downgrade to old version!",
+                       COLOR_RED, COLOR_BLACK);
     
 cleanup:
-    if (app_data_v2) {
-        secure_wipe(app_data_v2, 2048);
-        free(app_data_v2);
+    if (app_v2) {
+        secure_wipe(app_v2, 2048);
+        free(app_v2);
     }
-    if (app_data_v1) {
-        secure_wipe(app_data_v1, 2048);
-        free(app_data_v1);
+    if (app_v1) {
+        secure_wipe(app_v1, 2048);
+        free(app_v1);
     }
-    secure_wipe(&app_hdr_v2, sizeof(app_hdr_v2));
-    secure_wipe(&app_hdr_v1, sizeof(app_hdr_v1));
+    secure_wipe(&hdr_v2, sizeof(hdr_v2));
+    secure_wipe(&hdr_v1, sizeof(hdr_v1));
     
     sleep_ms(3000);
-    clear_all_leds();
 }
 
 static void demo_wrong_signature(void) {
     display_clear(COLOR_BLACK);
-    draw_boot_header("SCENARIO 4: UNTRUSTED KEY", COLOR_RED);
+    draw_header("SCENARIO 4: WRONG SIGNATURE", COLOR_RED);
     
     uint8_t *app_data = malloc(2048);
     if (!app_data) {
-        draw_security_alert("MEMORY ALLOCATION FAILED!");
+        draw_alert("Out of memory!");
         sleep_ms(3000);
         return;
     }
     
     image_header_t app_hdr;
     
-    display_draw_string(10, 40, "ATTACKER SIGNS WITH WRONG KEY", COLOR_YELLOW, COLOR_BLACK);
+    display_draw_string(10, 40, "Attacker uses their own key...",
+                       COLOR_YELLOW, COLOR_BLACK);
     sleep_ms(1000);
     
+    // Attacker's key (not trusted)
     public_key_t attacker_key = {
         .data = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
                  0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
@@ -772,32 +587,33 @@ static void demo_wrong_signature(void) {
         .is_revoked = false
     };
     
+    // Create image signed with wrong key
     if (!create_test_image(&app_hdr, app_data, 2048, IMAGE_TYPE_APPLICATION,
-                          3, "MALICIOUS APP", &attacker_key, false)) {
-        draw_security_alert("IMAGE CREATION FAILED!");
+                          1, "Malicious app", &attacker_key, false)) {
+        draw_alert("Image creation failed");
         goto cleanup;
     }
     
-    set_boot_stage_led(1, true);
-    
-    draw_image_info(60, app_hdr.description, app_hdr.version, app_hdr.image_size);
-    
-    display_draw_string(10, 95, "BOOTLOADER VERIFYING..", COLOR_CYAN, COLOR_BLACK);
+    display_draw_string(10, 70, "Bootloader checking signature...",
+                       COLOR_CYAN, COLOR_BLACK);
     sleep_ms(1000);
     
-    boot_status_t status = verify_image(&app_hdr, app_data, &BOOTLOADER_PUBLIC_KEY,
+    // Try to verify with correct key (should fail)
+    boot_status_t status = verify_image(&app_hdr, app_data,
+                                       &BOOTLOADER_PUBLIC_KEY,
                                        IMAGE_TYPE_APPLICATION);
     
-    char status_msg[64];
-    snprintf(status_msg, sizeof(status_msg), "SIG CHECK: %s",
-            boot_status_strings[status]);
-    draw_verification_box(115, status_msg, status == BOOT_STATUS_OK);
+    char msg[64];
+    snprintf(msg, sizeof(msg), "Result: %s", boot_status_strings[status]);
+    draw_status_box(100, msg, status == BOOT_STATUS_OK);
     sleep_ms(1500);
     
-    draw_security_alert("UNTRUSTED CODE!");
+    draw_alert("UNTRUSTED CODE!");
     
-    display_draw_string(10, 165, "SIGNATURE INVALID!", COLOR_RED, COLOR_BLACK);
-    display_draw_string(10, 180, "NOT SIGNED BY TRUSTED KEY", COLOR_RED, COLOR_BLACK);
+    display_draw_string(10, 165, "Signature doesn't match!",
+                       COLOR_RED, COLOR_BLACK);
+    display_draw_string(10, 180, "Not signed by trusted key",
+                       COLOR_RED, COLOR_BLACK);
     
 cleanup:
     if (app_data) {
@@ -808,80 +624,80 @@ cleanup:
     secure_wipe(&attacker_key, sizeof(attacker_key));
     
     sleep_ms(3000);
-    clear_all_leds();
 }
 
 static void show_chain_of_trust(void) {
     display_clear(COLOR_BLACK);
-    draw_boot_header("CHAIN OF TRUST", COLOR_CYAN);
+    draw_header("CHAIN OF TRUST", COLOR_CYAN);
     
     display_draw_string(10, 50, "ROOT OF TRUST (ROM)", COLOR_GREEN, COLOR_BLACK);
-    display_draw_string(20, 65, "- IMMUTABLE HARDWARE ROOT", COLOR_WHITE, COLOR_BLACK);
-    display_draw_string(20, 77, "- CONTAINS PUBLIC KEYS", COLOR_WHITE, COLOR_BLACK);
-    set_boot_stage_led(0, true);
+    display_draw_string(15, 65, "- BUILT INTO HARDWARE", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(15, 77, "- CONTAINS PUBLIC KEYS", COLOR_WHITE, COLOR_BLACK);
     sleep_ms(1500);
     
-    display_draw_string(40, 95, "|", COLOR_YELLOW, COLOR_BLACK);
-    display_draw_string(40, 100, "V", COLOR_YELLOW, COLOR_BLACK);
+    display_draw_string(30, 95, "|", COLOR_YELLOW, COLOR_BLACK);
+    display_draw_string(30, 100, "v", COLOR_YELLOW, COLOR_BLACK);
     
     display_draw_string(10, 110, "BOOTLOADER", COLOR_GREEN, COLOR_BLACK);
-    display_draw_string(20, 125, "- VERIFIED BY ROT", COLOR_WHITE, COLOR_BLACK);
-    display_draw_string(20, 137, "- VERIFIES APPLICATION", COLOR_WHITE, COLOR_BLACK);
-    set_boot_stage_led(1, true);
+    display_draw_string(15, 125, "- VERIFIED BY ROOT", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(15, 137, "- VERIFIES APPLICATION", COLOR_WHITE, COLOR_BLACK);
     sleep_ms(1500);
     
-    display_draw_string(40, 155, "|", COLOR_YELLOW, COLOR_BLACK);
-    display_draw_string(40, 160, "V", COLOR_YELLOW, COLOR_BLACK);
+    display_draw_string(30, 155, "|", COLOR_YELLOW, COLOR_BLACK);
+    display_draw_string(30, 160, "v", COLOR_YELLOW, COLOR_BLACK);
     
     display_draw_string(10, 170, "APPLICATION", COLOR_GREEN, COLOR_BLACK);
-    display_draw_string(20, 185, "- VERIFIED BY BOOTLOADER", COLOR_WHITE, COLOR_BLACK);
-    display_draw_string(20, 197, "- CAN LOAD MODULES", COLOR_WHITE, COLOR_BLACK);
-    set_boot_stage_led(2, true);
+    display_draw_string(15, 185, "- VERIFIED BY BOOTLOADER", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(15, 197, "- CAN LOAD MODULES", COLOR_WHITE, COLOR_BLACK);
     
-    display_draw_string(10, 215, "EACH STAGE TRUSTS ONLY WHAT", COLOR_CYAN, COLOR_BLACK);
-    display_draw_string(10, 227, "IT VERIFIES CRYPTOGRAPHICALLY", COLOR_CYAN, COLOR_BLACK);
+    display_draw_string(10, 215, "EACH STEP VERIFIES THE NEXT",
+                       COLOR_CYAN, COLOR_BLACK);
     
-    sleep_ms(5000);
-    clear_all_leds();
+    sleep_ms(4000);
 }
 
 static void demo_attack_detection(void) {
     display_clear(COLOR_BLACK);
-    draw_boot_header("SCENARIO 5: ATTACK DETECTION", COLOR_RED);
+    draw_header("SCENARIO 6: ATTACK DETECTION", COLOR_RED);
     
-    display_draw_string(10, 40, "SIMULATING MULTIPLE ATTACKS..", COLOR_YELLOW, COLOR_BLACK);
+    display_draw_string(10, 40, "SIMULATING REPEATED ATTACKS..",
+                       COLOR_YELLOW, COLOR_BLACK);
     sleep_ms(1000);
     
     uint8_t *app_data = malloc(2048);
     if (!app_data) {
-        draw_security_alert("MEMORY ALLOCATION FAILED!");
+        draw_alert("OUT OF MEMORY!");
         sleep_ms(3000);
         return;
     }
     
     image_header_t app_hdr;
     
-    // Simulate multiple failed attacks
+    // Try multiple tampered images
     for (int i = 0; i < MAX_FAILED_VERIFICATIONS; i++) {
         char msg[64];
-        snprintf(msg, sizeof(msg), "ATTACK ATTEMPT %d/%d", i + 1, MAX_FAILED_VERIFICATIONS);
-        display_draw_string(10, 60 + i * 15, msg, COLOR_YELLOW, COLOR_BLACK);
+        snprintf(msg, sizeof(msg), "Attack %d/%d", 
+                i + 1, MAX_FAILED_VERIFICATIONS);
+        display_draw_string(10, 60 + i * 15, msg, 
+                           COLOR_YELLOW, COLOR_BLACK);
         
         // Create tampered image
-        if (!create_test_image(&app_hdr, app_data, 2048, IMAGE_TYPE_APPLICATION,
-                              1, "MALICIOUS", &BOOTLOADER_PUBLIC_KEY, true)) {
+        if (!create_test_image(&app_hdr, app_data, 2048,
+                              IMAGE_TYPE_APPLICATION, 1,
+                              "Malicious", &BOOTLOADER_PUBLIC_KEY, true)) {
             continue;
         }
         
         boot_status_t status = verify_image(&app_hdr, app_data,
-                                           &BOOTLOADER_PUBLIC_KEY, IMAGE_TYPE_APPLICATION);
+                                           &BOOTLOADER_PUBLIC_KEY,
+                                           IMAGE_TYPE_APPLICATION);
         
-        display_draw_string(200, 60 + i * 15, 
+        display_draw_string(200, 60 + i * 15,
                           status == BOOT_STATUS_OK ? "[OK]" : "[FAIL]",
                           status == BOOT_STATUS_OK ? COLOR_GREEN : COLOR_RED,
                           COLOR_BLACK);
         
-        sleep_ms(500);
+        sleep_ms(400);
         
         if (failed_verification_counter >= MAX_FAILED_VERIFICATIONS) {
             break;
@@ -889,13 +705,14 @@ static void demo_attack_detection(void) {
     }
     
     sleep_ms(1000);
+    draw_alert("SYSTEM LOCKED!");
     
-    draw_security_alert("ATTACK DETECTED!");
+    display_draw_string(10, 175, "TOO MANY FAILED ATTEMPTS!",
+                       COLOR_RED, COLOR_BLACK);
+    display_draw_string(10, 190, "POTENTIAL ATTACK DETECTED",
+                       COLOR_RED, COLOR_BLACK);
     
-    display_draw_string(10, 180, "TOO MANY FAILED VERIFICATIONS!", COLOR_RED, COLOR_BLACK);
-    display_draw_string(10, 195, "SYSTEM LOCKED DOWN", COLOR_RED, COLOR_BLACK);
-    
-    // Reset counter for demo purposes
+    // Reset for demo
     failed_verification_counter = 0;
     
     if (app_data) {
@@ -905,25 +722,22 @@ static void demo_attack_detection(void) {
     secure_wipe(&app_hdr, sizeof(app_hdr));
     
     sleep_ms(3000);
-    clear_all_leds();
 }
 
-/*
- * BUTTON CALLBACKS AND STATE MACHINE
- */
 
+// MAIN APPLICATION
 typedef enum {
     STATE_MENU,
-    STATE_RUNNING,
-    STATE_ERROR
+    STATE_RUNNING
 } app_state_t;
 
 static app_state_t app_state = STATE_MENU;
 static int current_scenario = 0;
 static const int num_scenarios = 6;
-static volatile bool scenario_trigger = false;
+static volatile bool run_scenario = false;
 static bool auto_advance = false;
 
+// Button callbacks
 static void button_a_callback(button_t button) {
     (void)button;
     if (app_state == STATE_MENU) {
@@ -941,7 +755,7 @@ static void button_b_callback(button_t button) {
 static void button_x_callback(button_t button) {
     (void)button;
     if (app_state == STATE_MENU) {
-        scenario_trigger = true;
+        run_scenario = true;
     }
 }
 
@@ -950,39 +764,29 @@ static void button_y_callback(button_t button) {
     auto_advance = !auto_advance;
 }
 
-/*
- * MAIN PROGRAM
- */
-
 int main() {
     stdio_init_all();
     
-    // Initialize LED first for error indication
-    //gpio_init(LED_PIN);
-    //gpio_set_dir(LED_PIN, GPIO_OUT);
-    //gpio_put(LED_PIN, 0);
-    
-    // Initialize display
-    display_error_t disp_err = display_pack_init();
-    if (disp_err != DISPLAY_OK) {
-        // Error - blink LED rapidly
+    // Init display
+    display_error_t err = display_pack_init();
+    if (err != DISPLAY_OK) {
+        // Can't show error on display, just hang
         while (1) {
-            //gpio_put(LED_PIN, 1);
-            sleep_ms(100);
-            //gpio_put(LED_PIN, 0);
-            sleep_ms(100);
+            sleep_ms(1000);
         }
     }
     
-    // Initialize buttons
-    if (buttons_init() != DISPLAY_OK) {
+    // Init buttons
+    err = buttons_init();
+    if (err != DISPLAY_OK) {
         display_clear(COLOR_BLACK);
-        display_draw_string(30, 100, "BUTTON INIT FAILED!", COLOR_RED, COLOR_BLACK);
+        display_draw_string(30, 100, "BUTTON INIT FAILED!",
+                          COLOR_RED, COLOR_BLACK);
         sleep_ms(3000);
-        app_state = STATE_ERROR;
+        while (1) sleep_ms(1000);
     }
     
-    // Set up button callbacks
+    // Set button callbacks
     button_set_callback(BUTTON_A, button_a_callback);
     button_set_callback(BUTTON_B, button_b_callback);
     button_set_callback(BUTTON_X, button_x_callback);
@@ -990,15 +794,14 @@ int main() {
     
     // Splash screen
     display_clear(COLOR_BLACK);
-    display_draw_string(30, 60, "SECURE BOOT CHAIN", COLOR_CYAN, COLOR_BLACK);
-    display_draw_string(60, 80, "DEMONSTRATION", COLOR_CYAN, COLOR_BLACK);
-    display_draw_string(60, 110, "WITH HARDENING", COLOR_GREEN, COLOR_BLACK);
-    display_draw_string(20, 140, "A: NEXT  B: PREV", COLOR_GREEN, COLOR_BLACK);
-    display_draw_string(20, 155, "X: RUN   Y: AUTO", COLOR_GREEN, COLOR_BLACK);
+    display_draw_string(30, 60, "SECURE BOOT DEMO", COLOR_CYAN, COLOR_BLACK);
+    //display_draw_string(20, 90, "RPI PICO 2", COLOR_WHITE, COLOR_BLACK);
+    display_draw_string(20, 120, "A: NEXT  B: PREV", COLOR_GREEN, COLOR_BLACK);
+    display_draw_string(20, 135, "X: RUN   Y: AUTO", COLOR_GREEN, COLOR_BLACK);
     sleep_ms(3000);
     
     const char *scenario_names[] = {
-        "1. SUCCESSFUL BOOT",
+        "1. SUCESSFUL BOOT",
         "2. TAMPERED IMAGE",
         "3. ROLLBACK ATTACK",
         "4. WRONG SIGNATURE",
@@ -1013,25 +816,29 @@ int main() {
             case STATE_MENU:
                 // Show menu
                 display_clear(COLOR_BLACK);
-                draw_boot_header("SELECT SCENARIO", COLOR_CYAN);
+                draw_header("SELECT SCENARIO", COLOR_CYAN);
                 
                 for (int i = 0; i < num_scenarios; i++) {
-                    uint16_t color = (i == current_scenario) ? COLOR_GREEN : COLOR_WHITE;
+                    uint16_t color = (i == current_scenario) ? 
+                                    COLOR_GREEN : COLOR_WHITE;
                     char line[40];
                     snprintf(line, sizeof(line), "%s %s",
-                            (i == current_scenario) ? ">" : " ", scenario_names[i]);
-                    display_draw_string(10, 50 + i * 20, line, color, COLOR_BLACK);
+                            (i == current_scenario) ? ">" : " ",
+                            scenario_names[i]);
+                    display_draw_string(10, 50 + i * 20, line, 
+                                      color, COLOR_BLACK);
                 }
                 
-                display_draw_string(10, 200, "A/B: SELECT  X: RUN", COLOR_CYAN, COLOR_BLACK);
+                display_draw_string(10, 200, "X: RUN SCENARIO",
+                                  COLOR_CYAN, COLOR_BLACK);
                 
                 char auto_msg[32];
                 snprintf(auto_msg, sizeof(auto_msg), "Y: AUTO [%s]",
                         auto_advance ? "ON" : "OFF");
                 display_draw_string(10, 215, auto_msg, COLOR_CYAN, COLOR_BLACK);
                 
-                if (scenario_trigger) {
-                    scenario_trigger = false;
+                if (run_scenario) {
+                    run_scenario = false;
                     app_state = STATE_RUNNING;
                 }
                 
@@ -1059,41 +866,32 @@ int main() {
                     case 5:
                         demo_attack_detection();
                         break;
-                    default:
-                        display_clear(COLOR_BLACK);
-                        display_draw_string(30, 100, "INVALID SCENARIO!",
-                                          COLOR_RED, COLOR_BLACK);
-                        sleep_ms(2000);
-                        break;
                 }
                 
-                // Show completion screen
+                // Completion screen
                 display_clear(COLOR_BLACK);
-                display_draw_string(70, 100, "SCENARIO COMPLETE", COLOR_GREEN, COLOR_BLACK);
-                display_draw_string(40, 140, "PRESS X TO RUN AGAIN", COLOR_WHITE, COLOR_BLACK);
-                display_draw_string(50, 170, "OR A/B TO SELECT", COLOR_WHITE, COLOR_BLACK);
+                display_draw_string(60, 100, "SCENARIO COMPLETE",
+                                  COLOR_GREEN, COLOR_BLACK);
+                display_draw_string(40, 130, "PRESS X TO RUN AGAIN",
+                                  COLOR_WHITE, COLOR_BLACK);
+                display_draw_string(40, 150, "OR A/B TO SELECT ANOTHER",
+                                  COLOR_WHITE, COLOR_BLACK);
                 
-                sleep_ms(1800);
+                sleep_ms(2000);
                 
                 // Auto-advance if enabled
                 if (auto_advance) {
                     current_scenario = (current_scenario + 1) % num_scenarios;
-                    scenario_trigger = true;
-                    sleep_ms(800);
+                    run_scenario = true;
+                    sleep_ms(1000);
                 } else {
                     app_state = STATE_MENU;
                 }
-                break;
-                
-            case STATE_ERROR:
-                // Error state - show error and halt
-                display_clear(COLOR_BLACK);
-                display_draw_string(50, 100, "SYSTEM ERROR", COLOR_RED, COLOR_BLACK);
-                display_draw_string(30, 120, "PLEASE RESET DEVICE", COLOR_YELLOW, COLOR_BLACK);
-                blink_led(1, 1000);
                 break;
         }
     }
 
     return 0;
 }
+
+
