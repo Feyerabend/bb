@@ -8,18 +8,18 @@ than a single block using AES.
 
 ### Quick Summary Table -- AES-CBC at a Glance
 
-| Property                  | Description                                                                |
-|---------------------------|----------------------------------------------------------------------------|
-| Block size                | Always 128 bits (16 bytes) for AES                                         |
-| Key sizes                 | 128, 192 or 256 bits                                                       |
-| Needs IV?                 | Yes -- 128-bit (16 bytes), *must be unpredictable/random* for each message |
-| Needs padding?            | Yes (when message length not multiple of 16 bytes)                         |
-| Parallel encryption?      | *No* -- sequential (chaining dependency)                                   |
-| Parallel decryption?      | *Yes*                                                                      |
-| Hides patterns?           | Good (much better than ECB)                                                |
-| Provides authentication?  | *No* -- only confidentiality                                               |
-| Malleable?                | Yes -- bit-flipping attack possible                                        |
-| Modern recommendation     | Mostly *legacy* -- prefer AES-GCM or ChaCha20-Poly1305 today               |
+| Property                 | Description                                                                |
+|--------------------------|----------------------------------------------------------------------------|
+| Block size               | Always 128 bits (16 bytes) for AES                                         |
+| Key sizes                | 128, 192 or 256 bits                                                       |
+| Needs IV?                | Yes -- 128-bit (16 bytes), *must be unpredictable/random* for each message |
+| Needs padding?           | Yes (when message length not multiple of 16 bytes)                         |
+| Parallel encryption?     | *No* -- sequential (chaining dependency)                                   |
+| Parallel decryption?     | *Yes*                                                                      |
+| Hides patterns?          | Good (much better than ECB)                                                |
+| Provides authentication? | *No* -- only confidentiality                                               |
+| Malleable?               | Yes -- bit-flipping attack possible                                        |
+| Modern recommendation    | Mostly *legacy* -- prefer AES-GCM or ChaCha20-Poly1305 today               |
 
 
 ### How AES-CBC Works -- Step by Step
@@ -111,30 +111,34 @@ last 7 bytes (and you should check they are all 0x07).
 
 *Serious weaknesses / gotchas (why it's considered legacy today)*
 
-1. *No authentication / integrity*  
+1. *No authentication / integrity*
+
    Attacker can flip bits in ciphertext -> flips corresponding bits
    in plaintext after decryption (bit-flipping attack)
 
-2. *Padding Oracle attacks* (very famous & practical!)  
+2. *Padding Oracle attacks* (very famous & practical!)
+
    If server tells attacker (even indirectly) whether padding was
    correct -> can decrypt everything byte-by-byte
    -> Never decrypt unauthenticated CBC in protocols you control!
 
-3. *Must use unpredictable IV* every time  
+3. *Must use unpredictable IV* every time
+
    Reusing IV + same key -> leaks whether first blocks are equal
 
-4. *Cannot parallelize encryption*  
+4. *Cannot parallelize encryption*
+
    Bad for very high-speed / multi-core scenarios
 
 
 ### Modern Recommendation (2025--2026 reality)
 
-| Goal / Use-case                        | Recommended today                  | Why not CBC?                           |
-|----------------------------------------|------------------------------------|----------------------------------------|
-| Most new applications                  | *AES-GCM* or *ChaCha20-Poly1305*   | Built-in authentication + fast         |
-| Legacy systems / compatibility         | AES-CBC + *HMAC* (Encrypt-then-MAC)| Very careful implementation required   |
-| Very constrained devices (tiny memory) | ChaCha20-Poly1305                  | Smaller code size, no big tables       |
-| Disk encryption                        | AES-XTS                            | Better for random access               |
+| Goal / Use-case                        | Recommended today                   | Why not CBC?                         |
+|----------------------------------------|-------------------------------------|--------------------------------------|
+| Most new applications                  | *AES-GCM* or *ChaCha20-Poly1305*    | Built-in authentication + fast       |
+| Legacy systems / compatibility         | AES-CBC + *HMAC* (Encrypt-then-MAC) | Very careful implementation required |
+| Very constrained devices (tiny memory) | ChaCha20-Poly1305                   | Smaller code size, no big tables     |
+| Disk encryption                        | AES-XTS                             | Better for random access             |
 
 
 ### Quick Mnemonic
@@ -145,6 +149,5 @@ CBC -> "Classic But Careful" -- needs HMAC + random IV + proper padding handling
 GCM -> "Great Choice Modern" -- confidentiality + authentication in one shot
 ```
 
-Hope this gives you a clear mental picture of how AES-CBC really works — and why we mostly moved on to authenticated modes! 😄
 
-Any particular part (padding, IV rules, attacks, comparison with GCM...) you want to go deeper into?
+
