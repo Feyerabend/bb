@@ -1,6 +1,5 @@
-
-# Token Service for MicroPython on Raspberry Pi Pico W
-# This script connects to WiFi, generates TOTP tokens, and serves them over HTTP
+# token_service.py - Device A (Token Generator with Access Point)
+# This device creates a WiFi Access Point and generates TOTP tokens
 
 import network
 import socket
@@ -24,35 +23,35 @@ button_y = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_UP)
 led = RGBLED(6, 7, 8)
 
 # TOTP Configuration
-TOTP_SECRET = b"JBSWY3DPEHPK3PXP"  # Shared secret with server B
-TOTP_INTERVAL = 30  # 30 second windows
+TOTP_SECRET = b"JBSWY3DPEHPK3PXP"
+TOTP_INTERVAL = 30
 
 # PIN Configuration
-CORRECT_PIN = "1234"  # Map buttons: A=1, B=2, X=3, Y=4
+CORRECT_PIN = "1234"  # A=1, B=2, X=3, Y=4
 current_pin = ""
 pin_locked = False
 last_button_time = 0
 DEBOUNCE_MS = 300
 
-# WiFi Configuration
-WIFI_SSID = "YOUR_WIFI_SSID"
-WIFI_PASSWORD = "YOUR_WIFI_PASSWORD"
+# WiFi Access Point Configuration
+AP_SSID = "2FA_Token_Service"
+AP_PASSWORD = "SecureToken2024"
 
-def connect_wifi():
-    """Connect to WiFi network"""
-    wlan = network.WLAN(network.STA_IF)
-    wlan.active(True)
-    wlan.connect(WIFI_SSID, WIFI_PASSWORD)
+def start_access_point():
+    """Start WiFi Access Point"""
+    ap = network.WLAN(network.AP_IF)
+    ap.active(True)
+    ap.config(essid=AP_SSID, password=AP_PASSWORD)
     
     display.set_pen(0)
     display.clear()
     display.set_pen(15)
-    display.text("Connecting WiFi...", 10, 50, scale=2)
+    display.text("Starting AP...", 10, 50, scale=2)
     display.update()
     
     max_wait = 10
     while max_wait > 0:
-        if wlan.status() < 0 or wlan.status() >= 3:
+        if ap.active():
             break
         max_wait -= 1
         led.set_rgb(50, 50, 0)
@@ -60,24 +59,26 @@ def connect_wifi():
         led.set_rgb(0, 0, 0)
         time.sleep(0.5)
     
-    if wlan.status() != 3:
+    if not ap.active():
         led.set_rgb(255, 0, 0)
         display.set_pen(0)
         display.clear()
         display.set_pen(15)
-        display.text("WiFi Failed!", 10, 50, scale=2)
+        display.text("AP Failed!", 10, 50, scale=2)
         display.update()
-        raise RuntimeError('WiFi connection failed')
+        raise RuntimeError('Access Point failed')
     else:
         led.set_rgb(0, 255, 0)
         time.sleep(1)
         led.set_rgb(0, 0, 0)
-        status = wlan.ifconfig()
+        status = ap.ifconfig()
+        print('AP Started')
+        print('SSID:', AP_SSID)
         print('IP:', status[0])
         return status[0]
 
 def base32_decode(s):
-    """Simple base32 decoder for TOTP secret"""
+    """Base32 decoder for TOTP secret"""
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
     result = []
     bits = 0
@@ -96,8 +97,7 @@ def base32_decode(s):
     return bytes(result)
 
 def hmac_sha1(key, msg):
-    """Simplified HMAC-SHA1 (you'll need to import hashlib or use uhashlib)"""
-    # This is a placeholder - MicroPython needs uhashlib
+    """HMAC-SHA1 implementation"""
     import uhashlib
     
     blocksize = 64
@@ -129,37 +129,31 @@ def draw_screen(ip_addr, token=None, pin_display="", message=""):
     display.clear()
     display.set_pen(15)
     
-    # Title
     display.text("Token Service", 10, 10, scale=2)
-    display.text(ip_addr, 10, 30, scale=1)
+    display.text(f"AP: {AP_SSID}", 10, 30, scale=1)
     
-    # PIN Entry Area
     if not pin_locked:
         display.text("Enter PIN:", 10, 60, scale=2)
-        display.text("*" * len(pin_display), 10, 80, scale=3)
+        display.text("*" * len(pin_display), 10, 85, scale=3)
     else:
-        # Token display
         if token:
             display.text("TOKEN:", 10, 60, scale=2)
-            display.text(token, 30, 90, scale=4)
+            display.text(token, 30, 95, scale=4)
             
-            # Time remaining
             remaining = TOTP_INTERVAL - (int(time.time()) % TOTP_INTERVAL)
-            display.text(f"Valid: {remaining}s", 10, 130, scale=2)
+            display.text(f"Valid: {remaining}s", 10, 140, scale=2)
     
-    # Message area
     if message:
         display.set_pen(10)
-        display.text(message, 10, 170, scale=1)
+        display.text(message, 10, 180, scale=1)
     
-    # Button guide
     display.set_pen(8)
-    display.text("A=1 B=2 X=3 Y=4", 10, 200, scale=1)
+    display.text("A=1 B=2 X=3 Y=4", 10, 210, scale=1)
     
     display.update()
 
 def check_buttons():
-    """Check button presses with debouncing"""
+    """Check button presses"""
     global current_pin, pin_locked, last_button_time
     
     current_time = time.ticks_ms()
@@ -191,7 +185,6 @@ def check_buttons():
         time.sleep(0.1)
         led.set_rgb(0, 0, 0)
     
-    # Check PIN length
     if len(current_pin) >= len(CORRECT_PIN):
         if current_pin == CORRECT_PIN:
             pin_locked = True
@@ -205,11 +198,10 @@ def check_buttons():
             current_pin = ""
 
 def handle_request(conn):
-    """Handle HTTP requests for token validation"""
+    """Handle HTTP requests"""
     request = conn.recv(1024).decode()
     
     if "GET /validate" in request:
-        # Extract token from query string
         try:
             token_start = request.find("token=") + 6
             token_end = request.find(" ", token_start)
@@ -220,9 +212,6 @@ def handle_request(conn):
             
             provided_token = request[token_start:token_end]
             current_token = generate_totp(TOTP_SECRET)
-            
-            # Check current and previous window for clock drift
-            prev_token = generate_totp(TOTP_SECRET, TOTP_INTERVAL)
             
             valid = (provided_token == current_token)
             
@@ -242,10 +231,8 @@ def main():
     """Main program loop"""
     global current_pin, pin_locked
     
-    # Connect to WiFi
-    ip = connect_wifi()
+    ip = start_access_point()
     
-    # Setup socket server
     addr = socket.getaddrinfo('0.0.0.0', 8080)[0][-1]
     s = socket.socket()
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -253,12 +240,11 @@ def main():
     s.listen(1)
     s.setblocking(False)
     
-    print(f'Token service listening on {ip}:8080')
+    print(f'Listening on {ip}:8080')
     
     last_token = ""
     
     while True:
-        # Handle incoming connections (non-blocking)
         try:
             conn, addr = s.accept()
             print('Connection from', addr)
@@ -266,10 +252,8 @@ def main():
         except OSError:
             pass
         
-        # Check buttons
         check_buttons()
         
-        # Generate and display token if PIN is correct
         if pin_locked:
             token = generate_totp(TOTP_SECRET)
             if token != last_token:
@@ -282,3 +266,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+

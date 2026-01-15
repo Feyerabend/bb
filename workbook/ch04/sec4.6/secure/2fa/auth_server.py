@@ -1,5 +1,5 @@
-
-# auth_server.py testing..
+# auth_server.py - Device B (Authentication Server)
+# This device connects to Device A's Access Point
 
 import network
 import socket
@@ -18,13 +18,13 @@ WIDTH, HEIGHT = display.get_bounds()
 # LED setup
 led = RGBLED(6, 7, 8)
 
-# Configuration
-WIFI_SSID = "YOUR_WIFI_SSID"
-WIFI_PASSWORD = "YOUR_WIFI_PASSWORD"
-TOKEN_SERVICE_IP = "192.168.1.100"  # IP of Device A
+# WiFi Configuration - Connect to Device A's AP
+WIFI_SSID = "2FA_Token_Service"
+WIFI_PASSWORD = "SecureToken2024"
+TOKEN_SERVICE_IP = "192.168.4.1"  # Device A's AP IP
 TOKEN_SERVICE_PORT = 8080
 
-# User database (in real app, use hashed passwords)
+# User database
 USERS = {
     "alice": "password123",
     "bob": "secret456"
@@ -33,9 +33,10 @@ USERS = {
 # Session storage
 active_sessions = {}
 session_counter = 0
+message_display = "Ready"
 
 def connect_wifi():
-    """Connect to WiFi network"""
+    """Connect to Device A's WiFi AP"""
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
     wlan.connect(WIFI_SSID, WIFI_PASSWORD)
@@ -43,7 +44,8 @@ def connect_wifi():
     display.set_pen(0)
     display.clear()
     display.set_pen(15)
-    display.text("Connecting WiFi...", 10, 50, scale=2)
+    display.text("Connecting...", 10, 50, scale=2)
+    display.text(WIFI_SSID, 10, 75, scale=1)
     display.update()
     
     max_wait = 10
@@ -69,6 +71,7 @@ def connect_wifi():
         time.sleep(1)
         led.set_rgb(0, 0, 0)
         status = wlan.ifconfig()
+        print('Connected to', WIFI_SSID)
         print('IP:', status[0])
         return status[0]
 
@@ -78,29 +81,25 @@ def draw_screen(ip_addr, message="", auth_count=0):
     display.clear()
     display.set_pen(15)
     
-    # Title
     display.text("Auth Server", 10, 10, scale=2)
-    display.text(ip_addr, 10, 30, scale=1)
+    display.text(ip_addr, 10, 35, scale=1)
     
-    # Status
-    display.text(f"Sessions: {len(active_sessions)}", 10, 60, scale=2)
-    display.text(f"Auth OK: {auth_count}", 10, 85, scale=2)
+    display.text(f"Sessions: {len(active_sessions)}", 10, 70, scale=2)
+    display.text(f"Auth OK: {auth_count}", 10, 100, scale=2)
     
-    # Activity message
     if message:
         display.set_pen(10)
-        display.text(message[:30], 10, 120, scale=1)
-        if len(message) > 30:
-            display.text(message[30:60], 10, 135, scale=1)
+        display.text(message[:25], 10, 140, scale=1)
+        if len(message) > 25:
+            display.text(message[25:50], 10, 155, scale=1)
     
-    # Status indicator
     display.set_pen(8)
-    display.text("Listening on :9090", 10, 200, scale=1)
+    display.text("Port: 9090", 10, 210, scale=1)
     
     display.update()
 
 def validate_token_with_service(token):
-    """Validate token with Token Service (Device A)"""
+    """Validate token with Device A"""
     try:
         url = f"http://{TOKEN_SERVICE_IP}:{TOKEN_SERVICE_PORT}/validate?token={token}"
         response = urequests.get(url, timeout=5)
@@ -112,17 +111,15 @@ def validate_token_with_service(token):
         return False
 
 def handle_login(data):
-    """Handle login request (Step 1: password verification)"""
+    """Handle login request"""
     global session_counter
     
     username = data.get("username")
     password = data.get("password")
     
-    # Verify username and password
     if username not in USERS or USERS[username] != password:
         return {"status": "error", "message": "Invalid credentials"}
     
-    # Create session
     session_counter += 1
     session_id = f"sess_{session_counter}_{int(time.time())}"
     
@@ -143,15 +140,13 @@ def handle_login(data):
     }
 
 def handle_verify(data):
-    """Handle token verification (Step 2: 2FA verification)"""
+    """Handle token verification"""
     session_id = data.get("session_id")
     token = data.get("token")
     
-    # Check session exists
     if session_id not in active_sessions:
         return {"status": "error", "message": "Invalid session"}
     
-    # Validate token with Device A
     if validate_token_with_service(token):
         active_sessions[session_id]["authenticated"] = True
         
@@ -193,13 +188,10 @@ def handle_request(conn):
     
     try:
         request = conn.recv(2048).decode()
-        
-        # Parse request
         lines = request.split('\r\n')
         request_line = lines[0]
         
         if "POST /login" in request_line:
-            # Extract JSON body
             body_start = request.find('\r\n\r\n') + 4
             body = request[body_start:]
             data = json.loads(body)
@@ -225,7 +217,6 @@ def handle_request(conn):
         else:
             response_data = {"status": "error", "message": "Unknown endpoint"}
         
-        # Send response
         response_json = json.dumps(response_data)
         conn.send('HTTP/1.1 200 OK\r\n')
         conn.send('Content-Type: application/json\r\n')
@@ -244,7 +235,7 @@ def cleanup_old_sessions():
     to_remove = []
     
     for session_id, session_data in active_sessions.items():
-        if current_time - session_data["created"] > 300:  # 5 minutes
+        if current_time - session_data["created"] > 300:
             to_remove.append(session_id)
     
     for session_id in to_remove:
@@ -256,10 +247,8 @@ def main():
     message_display = "Ready"
     auth_count = 0
     
-    # Connect to WiFi
     ip = connect_wifi()
     
-    # Setup socket server
     addr = socket.getaddrinfo('0.0.0.0', 9090)[0][-1]
     s = socket.socket()
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -273,24 +262,20 @@ def main():
     last_cleanup = time.time()
     
     while True:
-        # Handle incoming connections
         try:
             conn, addr = s.accept()
             print('Connection from', addr)
             handle_request(conn)
             
-            # Count successful authentications
             auth_count = sum(1 for s in active_sessions.values() if s["authenticated"])
             
         except OSError:
             pass
         
-        # Cleanup old sessions every 60 seconds
         if time.time() - last_cleanup > 60:
             cleanup_old_sessions()
             last_cleanup = time.time()
         
-        # Update display
         draw_screen(ip, message_display, auth_count)
         
         time.sleep(0.1)
