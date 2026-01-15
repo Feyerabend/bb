@@ -3,6 +3,8 @@
  * Raspberry Pi Pico W with Pimoroni Display Pack 2.0
  */
 
+// NOT READY! LACKING ..
+
 #include <stdio.h>
 #include <string.h>
 #include <time.h>

@@ -180,7 +180,6 @@ class SecureAuthClient:
 
 
 def demonstrate_totp():
-    """Demonstrate TOTP code generation"""
     print("\nTOTP CODE GENERATION DEMONSTRATION\n")
     
     secret = "ALICE_SECRET_KEY_12345"
@@ -204,6 +203,8 @@ def demonstrate_totp():
     
     print("\n\n")
 
+
+# NOT YET READY!!
 
 def main():
     print("\n" + "-" * 40)
