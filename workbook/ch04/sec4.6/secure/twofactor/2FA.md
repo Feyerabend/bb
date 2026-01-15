@@ -6,11 +6,12 @@ Passwords (TOTP) based on RFC 6238, with visual feedback through the
 Pimoroni Display Pack 2.0.
 
 ```
-               HTTPS
+               HTTPS (TOO HEAVY!)
 Python Client  ---->  Pico (2)W Server      Hardware Tokens
                <----                ^--------^
                JSON                  Same TOTP
 ```
+REWORK TO A SIMPLER SOLUTION!
 
 
 ### Authentication Flow
