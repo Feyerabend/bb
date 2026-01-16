@@ -1026,7 +1026,7 @@ and memory management, as seen in allocators like the arena allocator.
 5. *Atomic Operations and Thread Safety*: Misaligned data can break atomic
    reads/writes in multithreaded code, leading to torn reads or undefined behavior.
 
-#### How Alignment Works in Your Arena Allocator Code
+#### How Alignment Works in the Arena Allocator Code
 In the `arena_alloc` function, you see this:
 ```c
 size_t aligned_size = (size + 7) & ~7;
