@@ -972,3 +972,99 @@ void add_element(Arena *arena, Array *arr, int value) {
 
 ..
 
+
+### Memory Alignment
+
+We have touched on memory alignment early in the book. But it can be worth
+reflecting on this in relation to arena memory management. Memory alignment
+refers to the way data is arranged and accessed in computer memory, ensuring
+that data objects are stored at memory addresses that are *multiples* of
+their *size* or a *specific boundary* (e.g., 2 bytes, 4 bytes, 8 bytes).
+This is a fundamental concept in low-level programming, hardware interaction,
+and memory management, as seen in allocators like the arena allocator.
+
+#### Why Memory Alignment Matters
+
+1. *Hardware Requirements*: Many CPU architectures (e.g., x86, ARM)
+   require or prefer that certain data types be aligned to specific
+   boundaries. For example:
+   - A 4-byte integer should start at an address that's a multiple of 4.
+   - An 8-byte double or 64-bit pointer should start at a multiple of 8.
+     If data is misaligned (e.g., a 4-byte int at address 0x03 instead
+     of 0x04), the CPU might:
+     - Generate a hardware exception or bus error (crashing the program
+       on strict architectures like older ARM or SPARC).
+     - Handle it automatically but with a performance penalty (e.g., on
+       x86, it might split the access into multiple slower operations).
+
+2. *Performance Optimization*:
+   - Aligned access is faster because the CPU can fetch data in a single
+     cycle from cache lines or memory buses, which are typically aligned
+     to powers of 2 (e.g., 64-byte cache lines on modern CPUs).
+   - Misaligned access can cause cache misses, extra bus cycles, or even
+     page faults, slowing down your program significantly—up to 10x or
+     more in extreme cases.
+   - In vectorized operations (e.g., SIMD instructions like SSE/AVX),
+     alignment is often mandatory for efficiency.
+
+3. *Portability*: Alignment rules vary by platform. Aligning conservatively
+   (e.g., to 8 bytes) makes code more portable across 32-bit and
+   64-bit systems.
+
+4. *Struct Padding and Packing*: In C/C++, structs may include implicit
+   padding bytes to align members. For example:
+   ```c
+   struct Example {
+       char a;    // 1 byte
+       int b;     // 4 bytes, but may start at offset 4 due to 4-byte alignment
+   };
+   ```
+   - sizeof(Example) might be 8 bytes (not 5) due to padding after 'a'.
+   - Compilers handle this automatically, but manual memory management
+     (like in the included arena) must respect it.
+
+5. *Atomic Operations and Thread Safety*: Misaligned data can break atomic
+   reads/writes in multithreaded code, leading to torn reads or undefined behavior.
+
+#### How Alignment Works in Your Arena Allocator Code
+In the `arena_alloc` function, you see this:
+```c
+size_t aligned_size = (size + 7) & ~7;
+```
+- This aligns the requested `size` to the next multiple of 8 bytes.
+- *Breakdown*:
+  - Adding 7: If `size` is already a multiple of 8, it stays the same
+    after the operation. Otherwise, it "rounds up" (e.g., size=5 -> 5+7=12).
+  - Bitwise AND with ~7: ~7 is binary ..11111000 (all 1s except the
+    last 3 bits), which clears the lowest 3 bits, effectively
+    rounding up to a multiple of 8 (2^3).
+- Why 8 bytes? It's a common default for 64-bit systems (aligns pointers,
+  doubles, etc.). For 32-bit, 4 bytes might suffice,
+  but 8 is safer and more future-proof.
+- The allocator then bumps the pointer forward by `aligned_size`,
+  ensuring the next allocation starts aligned too.
+- This prevents fragmentation or misalignment in the arena's contiguous blocks.
+
+If you didn't align, allocations could start at odd offsets, causing issues
+when storing aligned types (e.g., via `arena_alloc_type(arena, ASTNode)`, if
+ASTNode has an int, it needs 4-byte alignment at minimum).
+
+#### Calculating Alignment in Code
+- To check alignment: `if ((uintptr_t)ptr % alignment == 0) // aligned`.
+- General rounding up: `aligned_size = ((size + (alignment - 1)) / alignment) * alignment;`.
+- Your bitwise method is faster for power-of-2 alignments (like 8=2^3).
+
+#### Potential Issues and Best Practices
+- *Over-Alignment*: Wastes memory (e.g., aligning small 1-byte chars to
+  8 bytes), but in arenas, it's a trade-off for simplicity and speed.
+- *Under-Alignment*: Crashes or slowdowns. Use `alignof(type)` in C11+
+  to get a type's required alignment dynamically.
+- *In Custom Allocators*: Always align to at least the maximum of
+  `sizeof(void*)` or the platform's word size.
+- *Debugging*: Tools like Valgrind or AddressSanitizer can detect
+  misalignment issues.
+- *When to Ignore*: For byte arrays or untyped data, alignment
+  might not matter, but it's good hygiene.
+
+
+
