@@ -36,13 +36,13 @@ involves simple pointer arithmetic rather than expensive general-purpose allocat
 routines.
 
 In summary, instead of relying on scattered allocate/deallocate patterns that are
-fragile and difficult to scale, arena allocation provides a disciplined memory management model.
-It reduces complexity, minimises errors, improves performance, and aligns naturally
+fragile and difficult to scale, arena allocation provides a disciplined memory management
+model. It reduces complexity, minimises errors, improves performance, and aligns naturally
 with the phase-oriented structure of a compiler, making it a particularly suitable
 choice for systems built in a classical, low-level style.
 
 
-### The Memory Problem in Compilers {#the-memory-problem}
+### The Memory Problem in Compilers
 
 Compilers create thousands of short-lived objects during compilation:
 
@@ -61,7 +61,7 @@ All discarded after compilation!
 ```
 
 
-#### The Traditional Approach (Brittle)
+#### The Brittle Traditional Approach
 
 ```c
 // parser.c - Classic brittle construction
@@ -98,7 +98,7 @@ void freeNode(ASTNode *node) {
 }
 ```
 
-#### Problems with This Approach
+#### Problems with This Brittle Approach
 
 1. *Memory Leaks Everywhere*
    - Forget to free? Leak.
@@ -117,7 +117,7 @@ void freeNode(ASTNode *node) {
 4. *Brittle Error Handling*
    ```c
    ASTNode *node = malloc(sizeof(ASTNode));
-   node->value = strdup(value);  // What if malloc succeeded but strdup failed?
+   node->value = strdup(value);   // What if malloc succeeded but strdup failed?
    node->children = malloc(...);  // Now we have 2 allocations to track
    // Error here? Must free node and node->value
    ```
@@ -134,7 +134,7 @@ void freeNode(ASTNode *node) {
 
 
 
-### What is an Arena Allocator? {#what-is-an-arena}
+### What is an Arena Allocator?
 
 An arena (also called region, zone, or bump allocator)
 is a memory management pattern that:
@@ -146,13 +146,13 @@ is a memory management pattern that:
 #### Core Concept
 
 ```
-┌───────────────────────────────────────────────────────┐
-│                  Arena (64KB Block)                   │
-├────────┬────────┬────────┬────────────────────────────┤
-│ Node 1 │ Node 2 │ Node 3 │      Free Space            │
-│ 24 B   │ 24 B   │ 24 B   │                            │
-└────────┴────────┴────────┴────────────────────────────┘
-                           ↑
+┌──────────────────────────────────────────────────┐
+│                  Arena (64KB Block)              │
+├────────┬────────┬────────┬───────────────────────┤
+│ Node 1 │ Node 2 │ Node 3 │      Free Space       │
+│ 24 B   │ 24 B   │ 24 B   │                       │
+└────────┴────────┴────────┴───────────────────────┘
+                           |
                Current pointer (bumps forward)
 ```
 
@@ -168,7 +168,7 @@ That's it. No `arena_free()` for individual objects.
 
 
 
-### Why Compilers Need Arenas {#why-compilers-need-arenas}
+### Why Compilers Need Arenas
 
 #### 1. *Uniform Lifetime*
 
@@ -255,7 +255,7 @@ void *arena_alloc(Arena *a, size_t size) {
 
 
 
-### Memory Issues in Traditional Compilers {#memory-issues-traditional}
+### Memory Issues in Traditional Compilers
 
 #### Issue 1: String Duplication Hell
 
@@ -347,19 +347,18 @@ for (int i = 0; i < 10000; i++) {
 }
 
 // Result:
-┌──┬──┬─┬──┬─┬──┬──┬─┬──┬─┬──┐  ← Fragmented heap
-│24│24│ │24│ │24│24│ │24│ │24│  ← Poor cache locality
-└──┴──┴─┴──┴─┴──┴──┴─┴──┴─┴──┘  ← Wasted space
+┌──┬──┬─┬──┬─┬──┬──┬─┬──┬─┬──┐  - Fragmented heap
+│24│24│ │24│ │24│24│ │24│ │24│  - Poor cache locality
+└──┴──┴─┴──┴─┴──┴──┴─┴──┴─┴──┘  - Wasted space
 ```
 
 *Problem:* Poor performance, cache misses, memory waste.
 
 
 
-### String Handling in Parsing {#string-handling}
+### String Handling in Parsing
 
 Strings are particularly problematic in compilers because:
-
 1. *Frequent duplication* - Same identifier appears many times
 2. *Varied lifetimes* - Some needed until end, some temporary
 3. *Ownership unclear* - Who's responsible for freeing?
@@ -461,7 +460,7 @@ if (node->name == s1) { ... }  // No strcmp needed!
 
 
 
-### AST Construction with Arenas {#ast-construction}
+### AST Construction with Arenas
 
 #### Traditional Brittle AST
 
@@ -594,7 +593,7 @@ ASTNode *parseExpression(Arena *arena) {
 
 
 
-### Symbol Tables and Scopes {#symbol-tables}
+### Symbol Tables and Scopes
 
 Symbol tables in compilers often have hierarchical scopes:
 
@@ -609,7 +608,7 @@ Global Scope
                     └── var inner
 ```
 
-#### Traditional Approach (Complex)
+#### Traditional Approach
 
 ```c
 typedef struct Symbol {
@@ -647,7 +646,7 @@ void freeScope(Scope *scope) {
 }
 ```
 
-#### Arena Approach (Simple)
+#### Arena Approach
 
 ```c
 typedef struct Symbol {
@@ -714,11 +713,11 @@ void buildSymbolTable(Arena *arena, ASTNode *root) {
 
 
 
-### Intermediate Representations {#intermediate-representations}
+### Intermediate Representations
 
 TAC (Three-Address Code) generation creates many small instructions:
 
-#### Traditional TAC (Memory-Intensive)
+#### Traditional TAC
 
 ```c
 typedef struct TAC {
@@ -742,7 +741,7 @@ TAC *emitTAC(const char *op, const char *arg1,
 // For 1000 instructions: 5000+ allocations!
 ```
 
-#### Arena TAC (Efficient)
+#### Arena TAC
 
 ```c
 typedef struct TAC {
@@ -799,7 +798,7 @@ char *newTemp(Arena *arena) {
 
 
 
-### Complete Implementation Pattern {#implementation-pattern}
+### Complete Implementation Pattern
 
 #### Compiler Structure with Arena
 
@@ -899,7 +898,7 @@ int main(int argc, char *argv) {
 
 
 
-### Common Pitfalls and Solutions {#pitfalls}
+### Common Pitfalls and Solutions
 
 #### Pitfall 1: Mixing Arena and malloc
 
@@ -972,6 +971,7 @@ void add_element(Arena *arena, Array *arr, int value) {
 
 ..
 
+---
 
 ### Memory Alignment
 
