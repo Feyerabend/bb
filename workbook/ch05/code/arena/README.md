@@ -968,10 +968,145 @@ void add_element(Arena *arena, Array *arr, int value) {
 }
 ```
 
+*Solution:* Over-allocate initially, or use linked structures:
+```c
+// GOOD: Pre-allocate
+Array *array_create(Arena *arena, size_t initial_capacity) {
+    Array *arr = arena_alloc(arena, sizeof(Array));
+    arr->capacity = initial_capacity * 2;  // Extra space
+    arr->data = arena_alloc(arena, arr->capacity * sizeof(int));
+    arr->count = 0;
+    return arr;
+}
 
-..
+// Or use linked list (no reallocation):
+typedef struct Node {
+    int value;
+    struct Node *next;
+} Node;
 
----
+void add_element(Arena *arena, Node **head, int value) {
+    Node *node = arena_alloc(arena, sizeof(Node));
+    node->value = value;
+    node->next = *head;
+    *head = node;
+}
+```
+
+
+#### Pitfall 4: Not Aligning Allocations
+
+```c
+// BAD: Misaligned pointers (can crash on ARM/MIPS)
+void *arena_alloc(Arena *arena, size_t size) {
+    void *ptr = arena->memory + arena->used;
+    arena->used += size;  // No alignment
+    return ptr;
+}
+```
+
+*Solution:* Always align to 8 bytes:
+```c
+// GOOD: Aligned allocations
+void *arena_alloc(Arena *arena, size_t size) {
+    size_t aligned = (size + 7) & ~7;  // Round up to multiple of 8
+    void *ptr = arena->memory + arena->used;
+    arena->used += aligned;
+    return ptr;
+}
+```
+
+
+#### Pitfall 5: Forgetting to Check for NULL
+
+```c
+// BAD: No error checking
+ASTNode *node = arena_alloc(arena, sizeof(ASTNode));
+node->value = ..;  // Crash if allocation failed
+```
+
+**Solution:** Always check (or use assertions in debug builds):
+```c
+// GOOD: Check allocations
+ASTNode *node = arena_alloc(arena, sizeof(ASTNode));
+if (!node) {
+    return ERROR("Out of memory");
+}
+
+// Or in debug builds:
+#ifdef DEBUG
+    #define ARENA_ALLOC(arena, size) \
+        ({ void *p = arena_alloc(arena, size); assert(p); p; })
+#else
+    #define ARENA_ALLOC arena_alloc
+#endif
+```
+
+
+
+### Performance Characteristics
+
+#### Speed Comparison
+
+```
+Operation          malloc/free    Arena       Speedup
+─────────────────────────────────────────────────────
+Single alloc       ~100 cycles    ~5 cycles   20x
+1000 allocs        ~100K cycles   ~5K cycles  20x
+Cleanup            ~100K cycles   ~10 cycles  10,000x
+Total (typical)    ~200K cycles   ~5K cycles  40x
+```
+
+#### Memory Usage
+
+For a typical 1000-line program:
+
+*Traditional:*
+```
+AST nodes:        500 × 24 bytes = 12,000 bytes
+  + malloc overhead: 500 × 16 bytes = 8,000 bytes
+Symbols:          100 × 32 bytes = 3,200 bytes
+  + malloc overhead: 100 × 16 bytes = 1,600 bytes
+TAC instructions: 800 × 40 bytes = 32,000 bytes
+  + malloc overhead: 800 × 16 bytes = 12,800 bytes
+Strings (dupes):  ~200 strings × 3 copies × 12 bytes avg = 7,200 bytes
+  + malloc overhead: 600 × 16 bytes = 9,600 bytes
+-------------------------------------------------
+Total: 86,400 bytes
+Actual memory used: ~47,200 bytes
+Wasted overhead: 39,200 bytes (45% waste!)
+```
+
+*Arena:*
+```
+Single arena:     64 KB = 65,536 bytes
+Actual used:      ~47,200 bytes
+Wasted:           ~18,336 bytes (28% waste)
+-------------------------------------------------
+Total: 65,536 bytes
+Savings: 20,864 bytes (24% less memory)
+```
+
+
+#### Cache Performance
+
+*Traditional (fragmented):*
+```
+Node A [heap addr 0x1000]
+Node B [heap addr 0x5000]  <- Far apart
+Node C [heap addr 0x2000]  <- Cache miss
+```
+
+*Arena (contiguous):*
+```
+Node A [arena addr 0x1000]
+Node B [arena addr 0x1018]  <- Same cache line
+Node C [arena addr 0x1030]  <- Cache hit!
+```
+
+Result: ~2-3x fewer cache misses on AST traversal.
+
+
 
 ### Memory Alignment
 
@@ -1067,4 +1202,224 @@ ASTNode has an int, it needs 4-byte alignment at minimum).
   might not matter, but it's good hygiene.
 
 
+
+
+### Concrete Example
+
+Let's compile this PL/0 program:
+
+```pascal
+var x, sum;
+
+procedure addToSum;
+var temp;
+begin
+  temp := x;
+  sum := sum + temp
+end;
+
+begin
+  x := 5;
+  sum := 0;
+  while (x > 0) do
+  begin
+    call addToSum;
+    x := x - 1
+  end
+end.
+```
+
+### Memory Allocations Needed
+
+*Phase 1 - Lexing:* 45 tokens
+```
+Token("var")    -> 16 bytes
+Token("x")      -> 16 bytes
+Token(",")      -> 16 bytes
+... (42 more)
+---------------------------
+Total: 720 bytes
+```
+
+*Phase 2 - Parsing:* 28 AST nodes
+```
+NODE_PROGRAM        -> 40 bytes
+NODE_BLOCK          -> 40 bytes
+NODE_VAR_DECL("x")  -> 40 bytes + 2 bytes (string)
+NODE_VAR_DECL("sum")-> 40 bytes + 4 bytes (string)
+... (24 more nodes)
+--------------------------------------------------
+Total: ~1,500 bytes
+```
+
+*Phase 3 - Symbols:* 6 symbols
+```
+Global: x           -> 32 bytes
+Global: sum         -> 32 bytes
+Procedure: addToSum -> 48 bytes
+  Local: temp       -> 32 bytes
+-------------------------------
+Total: 144 bytes
+```
+
+*Phase 4 - TAC:* 23 instructions
+```
+LABEL main          -> 40 bytes
+t0 = LOAD 5         -> 40 bytes
+x = t0              -> 40 bytes
+.. (20 more)
+-------------------------------
+Total: 920 bytes
+```
+
+#### Traditional Approach
+
+```c
+// 102 separate malloc calls
+// 102 separate free calls
+// Fragmented across heap
+// Easy to leak if error occurs
+
+Total operations: ~204
+Total time: ~20,400 cycles
+Risk of leaks: HIGH / VERY HIGH
+```
+
+#### Arena Approach
+
+```c
+Arena *arena = arena_create(4096);  // One 4KB block
+
+// All allocations from this block
+// Total used: ~3,284 bytes
+// Waste: ~812 bytes (20%)
+
+arena_destroy(arena);  // One operation frees all
+
+Total operations: ~2
+Total time: ~500 cycles  
+Risk of leaks: ZERO
+```
+
+#### Implementation
+
+```c
+#include <stdio.h>
+#include "arena.h"
+#include "compiler.h"
+
+int main(int argc, char **argv) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <source.pl0>\n", argv[0]);
+        return 1;
+    }
+    
+    // Create compiler context with arena
+    CompilerContext *ctx = compiler_create();
+    
+    // Compile
+    Result result = compiler_compile(ctx, argv[1]);
+    
+    if (result.has_error) {
+        fprintf(stderr, "Error: %s\n", result.error.message);
+        compiler_destroy(ctx);  // Clean exit
+        return 1;
+    }
+    
+    // Print results
+    printf("-- TAC Output --\n");
+    tac_print(ctx->tac, stdout);
+    
+    printf("\n-- Statistics --\n");
+    printf("Tokens:       %zu\n", ctx->tokens->count);
+    printf("AST nodes:    %d\n", ast_node_count(ctx->ast));
+    printf("Symbols:      %d\n", symbol_table_size(ctx->symtab));
+    printf("Instructions: %d\n", tac_instruction_count(ctx->tac));
+    
+    arena_stats(ctx->arena);
+    
+    // Cleanup (one line!)
+    compiler_destroy(ctx);
+    
+    return 0;
+}
+```
+
+*Output:*
+```
+-- TAC Output --
+main:
+  t0 = LOAD 5
+  x = t0
+  t1 = LOAD 0
+  sum = t1
+L0:
+  t2 = LOAD x
+  t3 = LOAD 0
+  t4 = > t2 t3
+  IF_NOT t4 GOTO L1
+  CALL addToSum
+  t5 = LOAD x
+  t6 = LOAD 1
+  t7 = - t5 t6
+  x = t7
+  GOTO L0
+L1:
+
+-- Statistics --
+Tokens:       45
+AST nodes:    28
+Symbols:      6
+Instructions: 23
+
+Arena Statistics:
+  Total allocated: 4,096 bytes
+  Total used:      3,284 bytes
+  Waste:           812 bytes (19.8%)
+  Blocks:          1
+
+  Compilation successful!
+```
+
+
+
+### Summary
+
+__The Core Problem:__
+Compilers create thousands of short-lived, interconnected objects
+with uniform lifetime. Traditional malloc/free is:
+- *Slow* (100x slower than arena)
+- *Fragmented* (poor cache performance)
+- *Error-prone* (easy to leak)
+- *Complex* (unclear ownership)
+
+__The Arena Solution:__
+One allocator for the entire compilation:
+- *Fast* (pointer bump allocation)
+- *Simple* (no individual frees)
+- *Safe* (impossible to leak)
+- *Clean* (one-line cleanup)
+
+__Principles:__
+1. *Allocate from arena:* Everything uses `arena_alloc()`
+2. *No individual frees:* Trust the arena
+3. *Destroy once:* `arena_destroy()` at the end
+4. *Consistent strategy:* Don't mix malloc and arena
+
+
+#### When to Use Arena in Compilers
+
+*Suitable for:*
+- AST nodes
+- Tokens
+- Symbol table entries
+- Temporary strings
+- Intermediate code
+- Error messages
+- Any tree/graph structure
+
+*Not suitable for:*
+- Long-lived caches across compilations (temporary files might do better)
+- Interactive REPL state
+- Persistent data structures
 
