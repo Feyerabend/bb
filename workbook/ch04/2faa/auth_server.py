@@ -1,4 +1,4 @@
-# auth_server.py - Device B (Authentication Server) - FIXED?
+# auth_server.py - Device B (Authentication Server) - FIXED VERSION v2
 # This device connects to Device A's Access Point
 
 import network
@@ -9,6 +9,7 @@ import json
 import urequests
 from pimoroni import RGBLED
 import picographics
+import select
 
 # Display setup
 display = picographics.PicoGraphics(display=picographics.DISPLAY_PICO_DISPLAY_2)
@@ -26,9 +27,10 @@ TOKEN_SERVICE_PORT = 8080
 AUTH_SERVER_PORT = 9090
 SESSION_TIMEOUT = 300  # 5 minutes
 SESSION_CLEANUP_INTERVAL = 60  # 1 minute
-MAX_SESSIONS = 50  # Prevent memory exhaustion (NEW)
-VALIDATION_TIMEOUT = 10  # Increased timeout (NEW)
-MAX_VALIDATION_RETRIES = 2  # Retry failed validations (NEW)
+MAX_SESSIONS = 50
+VALIDATION_TIMEOUT = 10
+MAX_VALIDATION_RETRIES = 2
+SOCKET_READ_TIMEOUT = 2  # Seconds to wait for data (NEW)
 
 # User database (should use hashed passwords in production)
 USERS = {
@@ -43,7 +45,7 @@ message_display = "Ready"
 auth_success_count = 0
 
 def connect_wifi():
-    """Connect to Device A's WiFi AP with retry logic (IMPROVED)"""
+    """Connect to Device A's WiFi AP with retry logic"""
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
     
@@ -101,7 +103,7 @@ def connect_wifi():
     raise RuntimeError('WiFi connection failed after retries')
 
 def draw_screen(ip_addr, message="", auth_count=0):
-    """Draw the server status screen (IMPROVED)"""
+    """Draw the server status screen"""
     display.set_pen(0)
     display.clear()
     display.set_pen(15)
@@ -121,7 +123,6 @@ def draw_screen(ip_addr, message="", auth_count=0):
     # Status message
     if message:
         display.set_pen(11)  # Cyan
-        # Word wrap for long messages
         if len(message) <= 25:
             display.text(message, 10, 140, scale=1)
         else:
@@ -137,7 +138,7 @@ def draw_screen(ip_addr, message="", auth_count=0):
     display.update()
 
 def validate_token_with_service(token, retries=MAX_VALIDATION_RETRIES):
-    """Validate token with Device A with retry logic (IMPROVED)"""
+    """Validate token with Device A with retry logic"""
     for attempt in range(retries):
         try:
             url = f"http://{TOKEN_SERVICE_IP}:{TOKEN_SERVICE_PORT}/validate?token={token}"
@@ -154,7 +155,7 @@ def validate_token_with_service(token, retries=MAX_VALIDATION_RETRIES):
         except Exception as e:
             print(f"Token validation error (attempt {attempt + 1}): {e}")
             if attempt < retries - 1:
-                time.sleep(1)  # Wait before retry
+                time.sleep(1)
             else:
                 print("All validation attempts failed")
                 return False
@@ -162,24 +163,21 @@ def validate_token_with_service(token, retries=MAX_VALIDATION_RETRIES):
     return False
 
 def handle_login(data):
-    """Handle login request with better validation (IMPROVED)"""
+    """Handle login request"""
     global session_counter, message_display
     
     username = data.get("username", "").strip()
     password = data.get("password", "")
     
-    # Input validation
     if not username or not password:
         return {"status": "error", "message": "Username and password required"}
     
     if username not in USERS:
-        # Generic error message for security
         return {"status": "error", "message": "Invalid credentials"}
     
     if USERS[username] != password:
         return {"status": "error", "message": "Invalid credentials"}
     
-    # Check session limit (NEW)
     if len(active_sessions) >= MAX_SESSIONS:
         return {"status": "error", "message": "Server busy, try again later"}
     
@@ -190,7 +188,7 @@ def handle_login(data):
         "username": username,
         "authenticated": False,
         "created": time.time(),
-        "last_activity": time.time()  # Track activity (NEW)
+        "last_activity": time.time()
     }
     
     led.set_rgb(0, 0, 255)
@@ -207,13 +205,12 @@ def handle_login(data):
     }
 
 def handle_verify(data):
-    """Handle token verification with better error handling (IMPROVED)"""
+    """Handle token verification"""
     global message_display, auth_success_count
     
     session_id = data.get("session_id", "").strip()
     token = data.get("token", "").strip()
     
-    # Validation
     if not session_id:
         return {"status": "error", "message": "Session ID required"}
     
@@ -223,12 +220,10 @@ def handle_verify(data):
     if not token or len(token) != 6 or not token.isdigit():
         return {"status": "error", "message": "Invalid token format"}
     
-    # Update activity timestamp
     active_sessions[session_id]["last_activity"] = time.time()
     
     message_display = f"Verifying token..."
     
-    # Validate with token service
     if validate_token_with_service(token):
         active_sessions[session_id]["authenticated"] = True
         auth_success_count += 1
@@ -258,7 +253,7 @@ def handle_verify(data):
         return {"status": "error", "message": "Invalid or expired token"}
 
 def handle_status(data):
-    """Check authentication status (IMPROVED)"""
+    """Check authentication status"""
     session_id = data.get("session_id", "").strip()
     
     if not session_id:
@@ -268,8 +263,6 @@ def handle_status(data):
         return {"status": "error", "message": "Invalid or expired session"}
     
     session = active_sessions[session_id]
-    
-    # Update activity
     session["last_activity"] = time.time()
     
     return {
@@ -279,19 +272,88 @@ def handle_status(data):
         "created": session["created"]
     }
 
+def read_request_with_timeout(conn, timeout=SOCKET_READ_TIMEOUT):
+    """Read HTTP request with proper timeout handling (FIXED)"""
+    # Set socket to blocking mode temporarily
+    conn.setblocking(True)
+    conn.settimeout(timeout)
+    
+    try:
+        # Read request in chunks
+        request_data = b""
+        start_time = time.time()
+        
+        while time.time() - start_time < timeout:
+            try:
+                chunk = conn.recv(1024)
+                if not chunk:
+                    break
+                request_data += chunk
+                
+                # Check if we have complete HTTP request (ends with \r\n\r\n)
+                if b'\r\n\r\n' in request_data:
+                    # For POST requests, check if we have the body
+                    if b'POST' in request_data:
+                        # Try to get Content-Length
+                        try:
+                            header_end = request_data.find(b'\r\n\r\n')
+                            headers = request_data[:header_end].decode()
+                            
+                            content_length = 0
+                            for line in headers.split('\r\n'):
+                                if line.lower().startswith('content-length:'):
+                                    content_length = int(line.split(':')[1].strip())
+                                    break
+                            
+                            if content_length > 0:
+                                body_start = header_end + 4
+                                body_received = len(request_data) - body_start
+                                
+                                # Keep reading until we have the full body
+                                while body_received < content_length:
+                                    chunk = conn.recv(min(1024, content_length - body_received))
+                                    if not chunk:
+                                        break
+                                    request_data += chunk
+                                    body_received = len(request_data) - body_start
+                        except:
+                            pass  # If we can't parse content-length, return what we have
+                    
+                    break
+                    
+            except OSError as e:
+                if e.args[0] == 11:  # EAGAIN
+                    time.sleep(0.01)  # Small delay before retry
+                    continue
+                else:
+                    raise
+        
+        return request_data.decode() if request_data else None
+        
+    except Exception as e:
+        print(f"Read error: {e}")
+        return None
+    finally:
+        # Restore non-blocking mode
+        conn.setblocking(False)
+
 def handle_request(conn):
-    """Handle incoming HTTP requests with improved error handling (IMPROVED)"""
+    """Handle incoming HTTP requests with fixed socket reading"""
     global message_display
     
     try:
-        request = conn.recv(2048).decode()
+        # Read request with proper timeout
+        request = read_request_with_timeout(conn)
         
         if not request:
+            print("Empty or invalid request")
             conn.close()
             return
         
         lines = request.split('\r\n')
         request_line = lines[0] if lines else ""
+        
+        print(f"Request: {request_line}")
         
         # Route requests
         if "POST /login" in request_line:
@@ -304,7 +366,8 @@ def handle_request(conn):
                 try:
                     data = json.loads(body)
                     response_data = handle_login(data)
-                except json.JSONDecodeError:
+                except json.JSONDecodeError as e:
+                    print(f"JSON decode error: {e}")
                     response_data = {"status": "error", "message": "Invalid JSON"}
             
         elif "POST /verify" in request_line:
@@ -317,7 +380,8 @@ def handle_request(conn):
                 try:
                     data = json.loads(body)
                     response_data = handle_verify(data)
-                except json.JSONDecodeError:
+                except json.JSONDecodeError as e:
+                    print(f"JSON decode error: {e}")
                     response_data = {"status": "error", "message": "Invalid JSON"}
             
         elif "POST /status" in request_line:
@@ -330,11 +394,11 @@ def handle_request(conn):
                 try:
                     data = json.loads(body)
                     response_data = handle_status(data)
-                except json.JSONDecodeError:
+                except json.JSONDecodeError as e:
+                    print(f"JSON decode error: {e}")
                     response_data = {"status": "error", "message": "Invalid JSON"}
         
         elif "GET /health" in request_line:
-            # Health check endpoint (NEW)
             response_data = {
                 "status": "ok",
                 "sessions": len(active_sessions),
@@ -346,14 +410,23 @@ def handle_request(conn):
         
         # Send response
         response_json = json.dumps(response_data)
+        
+        # Send response in blocking mode to ensure it goes through
+        conn.setblocking(True)
         conn.send('HTTP/1.1 200 OK\r\n')
         conn.send('Content-Type: application/json\r\n')
+        conn.send(f'Content-Length: {len(response_json)}\r\n')
         conn.send('Connection: close\r\n\r\n')
         conn.send(response_json)
         
+        print(f"Response sent: {response_data.get('status', 'unknown')}")
+        
     except Exception as e:
         print(f"Request error: {e}")
+        import sys
+        sys.print_exception(e)
         try:
+            conn.setblocking(True)
             conn.send('HTTP/1.1 500 Internal Server Error\r\n')
             conn.send('Content-Type: application/json\r\n')
             conn.send('Connection: close\r\n\r\n')
@@ -367,12 +440,11 @@ def handle_request(conn):
             pass
 
 def cleanup_old_sessions():
-    """Remove expired sessions (IMPROVED)"""
+    """Remove expired sessions"""
     current_time = time.time()
     to_remove = []
     
     for session_id, session_data in active_sessions.items():
-        # Remove if created more than SESSION_TIMEOUT ago
         age = current_time - session_data["created"]
         if age > SESSION_TIMEOUT:
             to_remove.append(session_id)
@@ -385,7 +457,7 @@ def cleanup_old_sessions():
         print(f"Cleaned up {len(to_remove)} expired sessions")
 
 def main():
-    """Main server loop with improved error handling (IMPROVED)"""
+    """Main server loop"""
     global message_display, auth_success_count
     message_display = "Starting..."
     
@@ -405,8 +477,8 @@ def main():
         s = socket.socket()
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.bind(addr)
-        s.listen(5)  # Increased backlog
-        s.setblocking(False)
+        s.listen(5)
+        s.setblocking(False)  # Non-blocking for accept()
         
         print(f'Auth server listening on {ip}:{AUTH_SERVER_PORT}')
         print(f'Token service at {TOKEN_SERVICE_IP}:{TOKEN_SERVICE_PORT}')
@@ -450,7 +522,9 @@ def main():
             break
         except Exception as e:
             print(f"Loop error: {e}")
-            led.set_rgb(255, 165, 0)  # Orange for error
+            import sys
+            sys.print_exception(e)
+            led.set_rgb(255, 165, 0)
             time.sleep(0.2)
             led.set_rgb(0, 0, 0)
             time.sleep(1)
