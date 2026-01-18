@@ -1,10 +1,26 @@
 
 ## The Traveling Salesman Problem
 
-The Traveling Salesman Problem (TSP) is one of the most famous *problems* in computational
-mathematics and optimisation, with roots tracing back to the 1800s. The problem was first
-mathematically formulated by Irish mathematician W.R. Hamilton and British mathematician
-Thomas Kirkman. Later in the 1930s, Karl Menger of the Vienna Circle provided the formalisation
+The Travelling Salesman Problem (TSP) asks the following: given a set of cities and
+the distances between every pair of them, find the shortest possible route that visits
+each city exactly once and returns to the starting city. The problem is simple to
+state but difficult to solve efficiently. A solution is not just any tour that covers
+all cities, but the one whose total distance (or cost) is minimal among all such tours.
+The input is typically represented as a complete weighted graph, where cities are
+nodes and distances are edge weights, and the task is to find a minimum-weight
+Hamiltonian cycle.
+
+What makes the TSP important is that the number of possible tours grows factorially
+with the number of cities. For even moderate sizes, exhaustive search becomes
+computationally infeasible. This places the TSP among the classic NP-hard problems
+in computer science and optimisation. It serves as a benchmark for algorithms,
+heuristics, and approximation methods, and it captures a central tension in computation:
+problems that are easy to define and verify, but extraordinarily hard to solve optimally at scale.
+
+TSP is one of the most famous *problems* in computational mathematics and optimisation,
+with roots tracing back to the 1800s. The problem was first mathematically formulated
+by Irish mathematician W.R. Hamilton and British mathematician Thomas Kirkman.
+Later in the 1930s, Karl Menger of the Vienna Circle provided the formalisation
 recognised today. During the 1950s and 60s, researchers at the RAND Corporation--including
 George Dantzig, Ray Fulkerson, and Selmer Johnson--achieved a breakthrough by solving a
 49-city instance, a remarkable feat for the era. In 1972, Richard Karp demonstrated the
@@ -51,7 +67,7 @@ This code generates a Euclidean TSP instance with cities as 2D points. Using a f
 seed ensures reproducibility, critical for benchmarking and debugging.
 
 
-#### Population Initialization
+#### Population Initialisation
 
 ```python
 def create_population(size, num_cities):
@@ -125,3 +141,4 @@ exploration.
 This implementation captures core principles of genetic algorithms for TSP, continuing a rich
 tradition of computational problem-solving. By incorporating modern enhancements, it can
 further bridge historical methodologies with contemporary optimisation challenges.
+

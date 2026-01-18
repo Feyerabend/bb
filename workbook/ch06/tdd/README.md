@@ -1,7 +1,7 @@
 
 ## Test-Driven Development (TDD) Overview
 
-*Test-Driven Development* (TDD) is a software development methodology that emphasizes
+*Test-Driven Development* (TDD) is a software development methodology that emphasises
 writing tests before the actual implementation of code. It is designed to ensure code
 correctness, enhance design quality, and support maintainability. In TDD, the development
 process revolves around short, iterative cycles where tests guide the creation of
@@ -14,7 +14,7 @@ allowing developers to address issues at their inception.
 TDD is defined by a three-step cycle, often referred to as Red-Green-Refactor:
 
 1. *Red*
-	- Write a test that describes the desired behavior of a piece of functionality.
+	- Write a test that describes the desired behaviour of a piece of functionality.
 	- Run the test, and *ensure it fails*. This confirms the test is valid and that
       the functionality doesn't already exist.
 
@@ -25,7 +25,7 @@ TDD is defined by a three-step cycle, often referred to as Red-Green-Refactor:
 
 3. *Refactor*
 	- Refine the code for clarity, efficiency, and maintainability without altering
-      its behavior.
+      its behaviour.
 	- Rerun *all tests* to confirm no existing functionality is broken.
 
 This cycle repeats for every piece of functionality, ensuring that code evolves
@@ -68,26 +68,26 @@ members to understand and work with the codebase.
 1. Write Small, Incremental Tests
 
 Each test should target a specific aspect of functionality. Tests should be fast, concise,
-and focused on verifying one behavior at a time.
+and focused on verifying one behaviour at a time.
 
 
-2. Test Behavior, Not Implementation
+2. Test Behaviour, Not Implementation
 
-TDD emphasizes testing the outcomes of code, not its internal mechanics. This makes test
+TDD emphasises testing the outcomes of code, not its internal mechanics. This makes test
 less brittle and more resilient to changes in implementation.
 
 
 3. Aim for Full Test Coverage
 
 Comprehensive test coverage ensures all scenarios, including edge cases, are accounted for.
-However, coverage should prioritize meaningful functionality rather than achieving arbitrary
+However, coverage should prioritise meaningful functionality rather than achieving arbitrary
 metrics.
 
 
 4. Use Mocking and Stubbing
 
 For external dependencies, mocks and stubs allow testing in isolation, ensuring tests focus
-on the behavior of the unit under development.
+on the behaviour of the unit under development.
 
 
 ### Challenges and Misconceptions
@@ -127,9 +127,9 @@ improvement.
 
 ### Advanced Concepts
 
-- Behavior-Driven Development (BDD)
+- Behaviour-Driven Development (BDD)
 
-An evolution of TDD, focusing on the behavior of an application from the user's perspective,
+An evolution of TDD, focusing on the behaviour of an application from the user's perspective,
 (often using tools like Cucumber or SpecFlow).
 
 - Property-Based Testing

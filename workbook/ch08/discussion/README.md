@@ -1,0 +1,4 @@
+- group projects
+- individual projects
+- LLM use in the right places
+- planning, production ... thinking

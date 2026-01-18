@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Keyboard - Improved</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #input-area {
+            width: 100%;
+            min-height: 80px;
+            margin: 20px 0;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            font-size: 18px;
+            line-height: 1.4;
+            outline: none;
+            background: #fff;
+        }
+        #input-area:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+        }
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(10, 48px);
+            gap: 6px;
+            margin: 20px 0;
+            user-select: none;
+        }
+        .key {
+            width: 48px;
+            height: 48px;
+            background: #f5f5f5;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .key:hover    { background: #e8e8e8; }
+        .key:active   { background: #d0d0d0; }
+        .key.wide     { grid-column: span 2; }
+        .key.special  { background: #e0e0ff; font-size: 14px; }
+
+        #send {
+            padding: 12px 28px;
+            font-size: 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        #send:hover { background: #0069d9; }
+    </style>
+</head>
+<body>
+
+<h1>Virtual Keyboard</h1>
+
+<div id="input-area" contenteditable="true" spellcheck="false"></div>
+
+<div class="keyboard">
+    <div class="key" data-key="Q">Q</div>
+    <div class="key" data-key="W">W</div>
+    <div class="key" data-key="E">E</div>
+    <div class="key" data-key="R">R</div>
+    <div class="key" data-key="T">T</div>
+    <div class="key" data-key="Y">Y</div>
+    <div class="key" data-key="U">U</div>
+    <div class="key" data-key="I">I</div>
+    <div class="key" data-key="O">O</div>
+    <div class="key" data-key="P">P</div>
+
+    <div class="key" data-key="A">A</div>
+    <div class="key" data-key="S">S</div>
+    <div class="key" data-key="D">D</div>
+    <div class="key" data-key="F">F</div>
+    <div class="key" data-key="G">G</div>
+    <div class="key" data-key="H">H</div>
+    <div class="key" data-key="J">J</div>
+    <div class="key" data-key="K">K</div>
+    <div class="key" data-key="L">L</div>
+    <div class="key special wide" data-key="Backspace">← Back</div>
+
+    <div class="key" data-key="Z">Z</div>
+    <div class="key" data-key="X">X</div>
+    <div class="key" data-key="C">C</div>
+    <div class="key" data-key="V">V</div>
+    <div class="key" data-key="B">B</div>
+    <div class="key" data-key="N">N</div>
+    <div class="key" data-key="M">M</div>
+    <div class="key wide" data-key=" ">Space</div>
+    <div class="key special wide" data-key="Enter">↵ Send</div>
+</div>
+
+<button id="send">Send to Server</button>
+
+<script>
+const input = document.getElementById('input-area');
+const sendButton = document.getElementById('send');
+
+// Focus input on page load
+input.focus();
+
+// Virtual keyboard clicks
+document.querySelectorAll('.key').forEach(key => {
+    key.addEventListener('click', () => {
+        const value = key.dataset.key;
+        
+        if (value === 'Backspace') {
+            document.execCommand('delete', false, null);
+        }
+        else if (value === 'Enter') {
+            sendData();
+        }
+        else {
+            document.execCommand('insertText', false, value);
+        }
+        
+        input.focus();
+    });
+});
+
+// Real physical keyboard support
+document.addEventListener('keydown', (e) => {
+    // Let browser handle Ctrl+R, F5, etc...
+    if (e.ctrlKey || e.metaKey) return;
+
+    if (e.key === 'Enter') {
+        e.preventDefault();  // prevent new line
+        sendData();
+    }
+    else if (e.key === 'Backspace' || e.key === 'Delete') {
+        // Let browser handle it naturally
+    }
+    else if (e.key.length === 1) {   // normal characters
+        // We could block here, but better to let browser insert
+        // We'll just make sure focus stays
+    }
+});
+
+// Main send function
+async function sendData() {
+    const text = input.textContent.trim();
+    if (!text) return;
+
+    try {
+        const sharedKey = 'mysecretkey12345'; // ← change / secure this!
+        const encrypted = await encryptData(text, sharedKey);
+
+        const response = await fetch('http://your-pico-server-ip:80/keystrokes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ encrypted })
+        });
+
+        if (!response.ok) throw new Error('Server error');
+
+        const result = await response.text();
+        console.log('Server response:', result);
+        
+        alert('Data sent successfully!');
+        input.textContent = '';
+        input.focus();
+        
+    } catch (err) {
+        console.error(err);
+        alert('Error sending data: ' + err.message);
+    }
+}
+
+// Same encryption as before (unchanged)
+async function encryptData(plaintext, key) {
+    const enc = new TextEncoder();
+    const encoded = enc.encode(plaintext);
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    
+    const cryptoKey = await crypto.subtle.importKey(
+        "raw",
+        enc.encode(key),
+        { name: "AES-GCM" },
+        false,
+        ["encrypt"]
+    );
+    
+    const encrypted = await crypto.subtle.encrypt(
+        { name: "AES-GCM", iv },
+        cryptoKey,
+        encoded
+    );
+    
+    const combined = new Uint8Array(iv.byteLength + encrypted.byteLength);
+    combined.set(iv, 0);
+    combined.set(new Uint8Array(encrypted), iv.byteLength);
+    
+    return Array.from(combined)
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+}
+
+// Also allow clicking the real Send button
+sendButton.addEventListener('click', sendData);
+</script>
+</body>
+</html>

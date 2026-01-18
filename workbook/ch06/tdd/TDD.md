@@ -46,9 +46,9 @@ can run more complex programs.
 
 ### TDD Process for the RVM
 
-How do we go about construting this, if we would adopt a TDD process?
+How do we go about constructing this, if we would adopt a TDD process?
 
-1. Start with a behavior test: Define what the virtual machine should do, not how it works internally.
+1. Start with a behaviour test: Define what the virtual machine should do, not how it works internally.
 Example: __"The MOV instruction places a value into a register, and we can verify it by querying that register."__
 As we are planning a virtual machine we can not abstract too much from implementation, even if we leave the
 details.
@@ -101,14 +101,14 @@ make the minimum effort to see it succeed.
 building on the general implementation.
 - Test `ADD`: Ensure adding two registers updates the correct value.
 - Test `CMP`: Ensure comparisons set a status flag correctly.
-- Test `JMP_IF`: Validate branching behavior based on status flags.
+- Test `JMP_IF`: Validate branching behaviour based on status flags.
 
 Each test focuses solely on *what* the VM does, not *how* it achieves it.
 
 This approach ensures that:
-- Behavior-Driven: You only define what the system should do (outputs) given specific inputs.
-- No Premature Optimization: The design of the system emerges organically to satisfy the tests.
-- No Overdesign: Only the functionality that is required by the tests gets implemented.
+- Behaviour-Driven: You only define what the system should do (outputs) given specific inputs.
+- No Premature Optimisation: The design of the system emerges organically to satisfy the tests.
+- No Over-design: Only the functionality that is required by the tests gets implemented.
 
 
 ### Conditional jumps and comparison
@@ -117,7 +117,7 @@ Let's see how we can expand this with jumps and comparison.
 
 A. Test: Comparison (CMP)
 
-Behavior Definition: The CMP instruction compares the values of two registers and sets a status flag
+Behaviour Definition: The CMP instruction compares the values of two registers and sets a status flag
 (ZERO, LESS, or GREATER) based on the result.
 
 1. Start with a simple test for the CMP instruction.
@@ -126,8 +126,8 @@ Behavior Definition: The CMP instruction compares the values of two registers an
 def test_cmp_instruction():
     vm = VirtualMachine()
     vm.execute([
-        ("MOV", "R0", 10),  # Initialize R0 with 10
-        ("MOV", "R1", 20),  # Initialize R1 with 20
+        ("MOV", "R0", 10),  # Init R0 with 10
+        ("MOV", "R1", 20),  # Init R1 with 20
         ("CMP", "R0", "R1") # Compare R0 and R1
     ])
     assert vm.get_status_flag() == "LESS"  # 10 < 20
@@ -197,7 +197,7 @@ def test_cmp_greater():
 
 B. Test: Conditional Jump (JMP_IF)
 
-Behavior Definition: The JMP_IF instruction jumps to a specified instruction address if a given condition (LESS, GREATER, ZERO) is met.
+Behaviour Definition: The JMP_IF instruction jumps to a specified instruction address if a given condition (LESS, GREATER, ZERO) is met.
 
 1. Write a test where conditional jumping skips an instruction based on the flag.
 
@@ -265,11 +265,11 @@ def test_jmp_if_not_met():
 ```
 
 2. Chained Conditions: Test programs with multiple `JMP_IF` instructions for complex control flows.
-3. Integration with Loops: Use `JMP_IF` for iterative behaviors (e.g. counting loops).
+3. Integration with Loops: Use `JMP_IF` for iterative behaviours (e.g. counting loops).
 
 Recap: TDD in Action
 
-1. Define Behavior: Each test specifies what the VM should do for a given scenario.
+1. Define Behaviour: Each test specifies what the VM should do for a given scenario.
 2. Write the Test First: Add tests incrementally, covering basic and edge cases.
 3. Implement Only to Pass: Create the simplest implementation that satisfies the test.
 4. Refactor: Improve the code structure after passing tests, ensuring no regressions.
@@ -277,13 +277,13 @@ Recap: TDD in Action
 
 ### Loops or nested conditional logic
 
-To explore loops and nested conditional logic, we'll enhance the virtual machine's behavior
+To explore loops and nested conditional logic, we'll enhance the virtual machine's behaviour
 step-by-step using TDD. Loops and nested logic often involve a combination of comparison (`CMP`),
 conditional jumps (`JMP_IF`), and sometimes unconditional jumps (`JMP`).
 
 1. Loops with Counter
 
-Behavior Definition
+Behaviour Definition
 
 We'll implement a loop that decrements a register value until it reaches zero.
 
@@ -296,7 +296,7 @@ while (R0 > 0):
 
 Test Case
 
-Write a test to validate the loop's behavior.
+Write a test to validate the loop's behaviour.
 
 ```python
 def test_loop_with_counter():
@@ -408,19 +408,19 @@ refactoring at times of the code, and add logging to facilitate progress and tro
 ### Conclusion
 
 Developing a robust virtual machine with TDD provides a structured, incremental approach
-that emphasizes clarity, correctness, and flexibility.
+that emphasises clarity, correctness, and flexibility.
 
-1. Behavior-Driven Design: Each component (registers, stack frames, conditionals, loops,
-   and I/O) is introduced with a clear behavioral expectation. Tests focus on what the
+1. Behaviour-Driven Design: Each component (registers, stack frames, conditionals, loops,
+   and I/O) is introduced with a clear behavioural expectation. Tests focus on what the
    system should achieve, not on how it is implemented.
 
 2. Incremental Development: Starting with simple instructions like MOV and gradually adding
    complexity (e.g. CMP, JMP_IF, and nested conditionals) ensures that the implementation
-   evolves in manageable steps. This approach avoids overdesign and premature optimization.
+   evolves in manageable steps. This approach avoids over-design and premature optimisation.
 
-3. Refactoring for Generalization: After passing initial tests, refactoring the implementation
+3. Refactoring for Generalisation: After passing initial tests, refactoring the implementation
    to handle edge cases and new scenarios promotes code reuse and flexibility, as seen with
-   the CMP instruction's generalization to handle both registers and literals.
+   the CMP instruction's generalisation to handle both registers and literals.
 
 4. Testing Edge Cases: Incorporating tests for skipped loops, nested conditionals, and invalid
    scenarios ensures the VM handles unexpected inputs gracefully, reinforcing its robustness.
