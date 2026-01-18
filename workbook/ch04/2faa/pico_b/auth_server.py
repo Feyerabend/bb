@@ -1,4 +1,4 @@
-# auth_server.py - Device B (Authentication Server) - FIXED VERSION v2
+# auth_server.py - Device B (Authentication Server)
 # This device connects to Device A's Access Point
 
 import network
@@ -103,7 +103,6 @@ def connect_wifi():
     raise RuntimeError('WiFi connection failed after retries')
 
 def draw_screen(ip_addr, message="", auth_count=0):
-    """Draw the server status screen"""
     display.set_pen(0)
     display.clear()
     display.set_pen(15)
@@ -114,7 +113,7 @@ def draw_screen(ip_addr, message="", auth_count=0):
     # Session stats
     display.text(f"Sessions: {len(active_sessions)}", 10, 70, scale=2)
     
-    # Color code based on activity
+    # Colour code based on activity
     if auth_count > 0:
         display.set_pen(10)  # Green
     display.text(f"Auth OK: {auth_count}", 10, 100, scale=2)
@@ -138,7 +137,6 @@ def draw_screen(ip_addr, message="", auth_count=0):
     display.update()
 
 def validate_token_with_service(token, retries=MAX_VALIDATION_RETRIES):
-    """Validate token with Device A with retry logic"""
     for attempt in range(retries):
         try:
             url = f"http://{TOKEN_SERVICE_IP}:{TOKEN_SERVICE_PORT}/validate?token={token}"
@@ -163,7 +161,6 @@ def validate_token_with_service(token, retries=MAX_VALIDATION_RETRIES):
     return False
 
 def handle_login(data):
-    """Handle login request"""
     global session_counter, message_display
     
     username = data.get("username", "").strip()
@@ -205,7 +202,6 @@ def handle_login(data):
     }
 
 def handle_verify(data):
-    """Handle token verification"""
     global message_display, auth_success_count
     
     session_id = data.get("session_id", "").strip()
@@ -253,7 +249,6 @@ def handle_verify(data):
         return {"status": "error", "message": "Invalid or expired token"}
 
 def handle_status(data):
-    """Check authentication status"""
     session_id = data.get("session_id", "").strip()
     
     if not session_id:
@@ -273,7 +268,6 @@ def handle_status(data):
     }
 
 def read_request_with_timeout(conn, timeout=SOCKET_READ_TIMEOUT):
-    """Read HTTP request with proper timeout handling (FIXED)"""
     # Set socket to blocking mode temporarily
     conn.setblocking(True)
     conn.settimeout(timeout)
@@ -338,7 +332,6 @@ def read_request_with_timeout(conn, timeout=SOCKET_READ_TIMEOUT):
         conn.setblocking(False)
 
 def handle_request(conn):
-    """Handle incoming HTTP requests with fixed socket reading"""
     global message_display
     
     try:
@@ -440,7 +433,6 @@ def handle_request(conn):
             pass
 
 def cleanup_old_sessions():
-    """Remove expired sessions"""
     current_time = time.time()
     to_remove = []
     
@@ -456,10 +448,10 @@ def cleanup_old_sessions():
     if to_remove:
         print(f"Cleaned up {len(to_remove)} expired sessions")
 
+
 def main():
-    """Main server loop"""
     global message_display, auth_success_count
-    message_display = "Starting..."
+    message_display = "Starting.."
     
     try:
         ip = connect_wifi()
@@ -518,7 +510,7 @@ def main():
                 print(f"Status: {len(active_sessions)} sessions, {auth_count} authenticated")
             
         except KeyboardInterrupt:
-            print("\nShutting down...")
+            print("\nShutting down..")
             break
         except Exception as e:
             print(f"Loop error: {e}")

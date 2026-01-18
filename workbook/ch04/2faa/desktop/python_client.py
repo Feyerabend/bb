@@ -1,4 +1,4 @@
-# python_client.py - Client for 2FA authentication system - FIXED?
+# python_client.py - Client for 2FA authentication system
 # This runs on your PC/Mac and connects to Device B
 
 import requests
@@ -12,15 +12,12 @@ REQUEST_TIMEOUT = 10  # Increased timeout
 MAX_RETRIES = 2  # Retry failed requests
 
 class AuthClient:
-    """Client for 2FA authentication system with improved error handling"""
-    
     def __init__(self, server_ip: str, server_port: int = DEFAULT_PORT):
         self.server_url = f"http://{server_ip}:{server_port}"
         self.session_id: Optional[str] = None
         self.username: Optional[str] = None
         
     def _make_request(self, endpoint: str, data: dict, method: str = "POST") -> dict:
-        """Make HTTP request with retry logic (NEW)"""
         for attempt in range(MAX_RETRIES):
             try:
                 if method == "POST":
@@ -53,7 +50,6 @@ class AuthClient:
         return {"status": "error", "message": "All connection attempts failed"}
     
     def login(self, username: str, password: str) -> dict:
-        """Step 1: Login with username and password (IMPROVED)"""
         # Input validation
         if not username or not password:
             print("    Error: Username and password required")
@@ -71,28 +67,27 @@ class AuthClient:
         if data.get("status") == "pending":
             self.session_id = data["session_id"]
             self.username = username
-            print(f"    ✓ Password accepted!")
+            print(f"      Password accepted!")
             print(f"    Session ID: {self.session_id}")
             print(f"    {data['message']}")
         elif data.get("status") == "error":
-            print(f"    ✗ Login failed: {data.get('message', 'Unknown error')}")
+            print(f"      Login failed: {data.get('message', 'Unknown error')}")
         
         return data
     
     def verify_token(self, token: str) -> dict:
-        """Step 2: Verify 2FA token from Device A (IMPROVED)"""
         if not self.session_id:
-            print("    ✗ No active session. Login first.")
+            print("      No active session. Login first.")
             return {"status": "error", "message": "No session"}
         
         # Validate token format
         token = token.strip()
         if len(token) != 6:
-            print("    ✗ Token must be exactly 6 digits")
+            print("      Token must be exactly 6 digits")
             return {"status": "error", "message": "Token must be 6 digits"}
         
         if not token.isdigit():
-            print("    ✗ Token must contain only digits")
+            print("      Token must contain only digits")
             return {"status": "error", "message": "Token must be numeric"}
         
         print(f"\n[Step 2] Verifying token '{token}'...")
@@ -103,17 +98,17 @@ class AuthClient:
         })
         
         if data.get("status") == "success":
-            print(f"    ✓ Authentication successful!")
+            print(f"      Authentication successful!")
             print(f"    Welcome, {data.get('username', self.username)}!")
         elif data.get("status") == "error":
-            print(f"    ✗ Verification failed: {data.get('message', 'Unknown error')}")
+            print(f"      Verification failed: {data.get('message', 'Unknown error')}")
         
         return data
     
     def check_status(self) -> dict:
         """Check authentication status (IMPROVED)"""
         if not self.session_id:
-            print("    ✗ No active session")
+            print("      No active session")
             return {"status": "error", "message": "No session"}
         
         data = self._make_request("/status", {
@@ -121,23 +116,19 @@ class AuthClient:
         })
         
         if data.get("status") == "ok":
-            auth_status = "✓ Authenticated" if data.get("authenticated") else "⧗ Pending 2FA"
-            print(f"\n╔══════════════════════════════")
-            print(f"║ Session Status")
-            print(f"╠══════════════════════════════")
-            print(f"║ User:   {data.get('username', 'Unknown')}")
-            print(f"║ Status: {auth_status}")
+            auth_status = "  Authenticated" if data.get("authenticated") else "  Pending 2FA"
+            print(f"> Session Status")
+            print(f"> User:   {data.get('username', 'Unknown')}")
+            print(f"> Status: {auth_status}")
             if "created" in data:
                 age = int(time.time() - data["created"])
-                print(f"║ Age:    {age}s")
-            print(f"╚══════════════════════════════")
+                print(f"> Age:    {age}s")
         elif data.get("status") == "error":
-            print(f"    ✗ Status check failed: {data.get('message', 'Unknown error')}")
+            print(f"      Status check failed: {data.get('message', 'Unknown error')}")
         
         return data
     
     def check_health(self) -> dict:
-        """Check server health (NEW)"""
         try:
             response = requests.get(
                 f"{self.server_url}/health",
@@ -149,14 +140,10 @@ class AuthClient:
 
 
 def print_banner():
-    """Print client banner"""
-    print("=" * 60)
     print("  2FA Authentication Client".center(60))
-    print("=" * 60)
 
 
 def validate_ip(ip: str) -> bool:
-    """Validate IP address format (NEW)"""
     parts = ip.split('.')
     if len(parts) != 4:
         return False
@@ -167,7 +154,6 @@ def validate_ip(ip: str) -> bool:
 
 
 def interactive_mode(server_ip: str):
-    """Interactive client mode (IMPROVED)"""
     print_banner()
     
     client = AuthClient(server_ip)
@@ -177,15 +163,15 @@ def interactive_mode(server_ip: str):
     # Check server health
     health = client.check_health()
     if health.get("status") == "ok":
-        print("✓ Server is online")
+        print("  Server is online")
         if "sessions" in health:
             print(f"  Active sessions: {health['sessions']}")
     else:
-        print("⚠ Warning: Could not reach server")
+        print("! Warning: Could not reach server")
     
     print("\nAvailable test users:")
-    print("  • alice / password123")
-    print("  • bob   / secret456")
+    print("  - alice / password123")
+    print("  - bob   / secret456")
     
     while True:
         print("\n" + "─" * 60)
@@ -204,7 +190,7 @@ def interactive_mode(server_ip: str):
             password = input("Password: ").strip()
             
             if not username or not password:
-                print("✗ Username and password required")
+                print("  Username and password required")
                 continue
             
             result = client.login(username, password)
@@ -220,7 +206,7 @@ def interactive_mode(server_ip: str):
             
         elif choice == "2":
             if not client.session_id:
-                print("✗ Please login first (option 1)")
+                print("  Please login first (option 1)")
                 continue
             
             token = input("Enter 6-digit token from Device A: ").strip()
@@ -228,53 +214,52 @@ def interactive_mode(server_ip: str):
             
             if result.get("status") == "success":
                 print("\n" + "=" * 60)
-                print("  ✓ YOU ARE NOW FULLY AUTHENTICATED! ✓".center(60))
+                print("    YOU ARE NOW FULLY AUTHENTICATED!  ".center(60))
                 print("=" * 60)
             
         elif choice == "3":
             client.check_status()
             
         elif choice == "4":
-            print("\nChecking server health...")
+            print("\nChecking server health..")
             health = client.check_health()
             if health.get("status") == "ok":
-                print("✓ Server is healthy")
+                print("  Server is healthy")
                 if "sessions" in health:
                     print(f"  Active sessions: {health['sessions']}")
                 if "authenticated" in health:
                     print(f"  Authenticated users: {health['authenticated']}")
             else:
-                print(f"✗ Health check failed: {health.get('message', 'Unknown error')}")
+                print(f"  Health check failed: {health.get('message', 'Unknown error')}")
             
         elif choice == "5":
-            print("\n👋 Goodbye!")
+            print("\nBye!")
             break
             
         else:
-            print("✗ Invalid choice. Please enter 1-5.")
+            print("  Invalid choice. Please enter 1-5.")
 
 
 def demo_mode(server_ip: str):
-    """Automated demo with better validation (IMPROVED)"""
     print_banner()
-    print("\n▶ Running automated demo...\n")
+    print("\n> Running automated demo..\n")
     
     client = AuthClient(server_ip)
     
     # Check server health first
-    print("Checking server connectivity...")
+    print("Checking server connectivity..")
     health = client.check_health()
     if health.get("status") != "ok":
-        print("✗ Cannot reach server. Is Device B running?")
+        print("  Cannot reach server. Is Device B running?")
         return
-    print("✓ Server is online\n")
+    print("  Server is online\n")
     
     # Step 1: Login
     print("─" * 60)
     result = client.login("alice", "password123")
     
     if result.get("status") != "pending":
-        print("✗ Demo failed at login step")
+        print("  Demo failed at login step")
         return
     
     time.sleep(2)
@@ -282,23 +267,23 @@ def demo_mode(server_ip: str):
     # Step 2: Get token from user
     print("\n" + "─" * 60)
     print("\n⏸  PAUSED - Manual step required:")
-    print("   ┌─────────────────────────────────────────────┐")
-    print("   │ 1. Go to Device A (Token Service)          │")
-    print("   │ 2. Enter PIN: 1234                         │")
-    print("   │    (Use buttons: A=1, B=2, X=3, Y=4)       │")
-    print("   │ 3. Read the 6-digit token from display     │")
-    print("   │ 4. Enter it below                          │")
-    print("   └─────────────────────────────────────────────┘")
+    print("   ┌──────────────────────────────────────────┐")
+    print("   │ 1. Go to Device A (Token Service)        │")
+    print("   │ 2. Enter PIN: 1234                       │")
+    print("   │    (Use buttons: A=1, B=2, X=3, Y=4)     │")
+    print("   │ 3. Read the 6-digit token from display   │")
+    print("   │ 4. Enter it below                        │")
+    print("   └──────────────────────────────────────────┘")
     
     while True:
-        token = input("\n▶ Enter token: ").strip()
+        token = input("\n> Enter token: ").strip()
         
         if len(token) != 6:
-            print("✗ Token must be exactly 6 digits. Try again.")
+            print("  Token must be exactly 6 digits. Try again.")
             continue
         
         if not token.isdigit():
-            print("✗ Token must contain only numbers. Try again.")
+            print("  Token must contain only numbers. Try again.")
             continue
         
         break
@@ -314,14 +299,14 @@ def demo_mode(server_ip: str):
         client.check_status()
         
         print("\n" + "=" * 60)
-        print("  ✓ DEMO COMPLETE!".center(60))
+        print("    DEMO COMPLETE!".center(60))
         print("=" * 60)
         print("\nThis demonstrated two-factor authentication:")
-        print("  ✓ Something you know: password")
-        print("  ✓ Something you have: Device A with correct PIN")
+        print("    Something you know: password")
+        print("    Something you have: Device A with correct PIN")
         print("\nBoth factors were required for successful authentication.")
     else:
-        print("\n✗ Demo failed at verification step")
+        print("\n  Demo failed at verification step")
         print(f"  Reason: {result.get('message', 'Unknown error')}")
 
 
@@ -351,12 +336,12 @@ if __name__ == "__main__":
     else:
         server_ip = input("\nEnter Device B's IP address: ").strip()
         if not server_ip:
-            print("✗ Error: IP address required")
+            print("  Error: IP address required")
             sys.exit(1)
     
     # Validate IP format
     if not validate_ip(server_ip):
-        print(f"✗ Error: '{server_ip}' is not a valid IP address")
+        print(f"  Error: '{server_ip}' is not a valid IP address")
         print("  Expected format: xxx.xxx.xxx.xxx (e.g., 192.168.4.2)")
         sys.exit(1)
     
@@ -372,5 +357,7 @@ if __name__ == "__main__":
     elif mode == "2":
         demo_mode(server_ip)
     else:
-        print("✗ Invalid mode. Please run again and choose 1 or 2.")
+        print("  Invalid mode. Please run again and choose 1 or 2.")
         sys.exit(1)
+
+

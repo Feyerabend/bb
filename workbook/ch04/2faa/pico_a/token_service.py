@@ -1,4 +1,4 @@
-# token_service.py - Device A (Token Generator with Access Point) - FIXED?
+# token_service.py - Device A (Token Generator with Access Point)
 # This device creates a WiFi Access Point and generates TOTP tokens
 
 import network
@@ -13,7 +13,7 @@ display = picographics.PicoGraphics(display=picographics.DISPLAY_PICO_DISPLAY_2)
 display.set_backlight(0.8)
 WIDTH, HEIGHT = display.get_bounds()
 
-# Button setup (FIXED: removed "jk" typo)
+# Button setup
 button_a = machine.Pin(12, machine.Pin.IN, machine.Pin.PULL_UP)
 button_b = machine.Pin(13, machine.Pin.IN, machine.Pin.PULL_UP)
 button_x = machine.Pin(14, machine.Pin.IN, machine.Pin.PULL_UP)
@@ -27,7 +27,7 @@ TOTP_SECRET = b"JBSWY3DPEHPK3PXP"
 TOTP_INTERVAL = 30
 CORRECT_PIN = "1234"  # A=1, B=2, X=3, Y=4
 DEBOUNCE_MS = 300
-PIN_TIMEOUT_SECONDS = 120  # Auto-lock after 2 minutes (NEW)
+PIN_TIMEOUT_SECONDS = 120  # Auto-lock after 2 minutes
 AP_SSID = "2FA_Token_Service"
 AP_PASSWORD = "SecureToken2024"
 HTTP_PORT = 8080
@@ -35,11 +35,10 @@ HTTP_PORT = 8080
 # State variables
 current_pin = ""
 pin_locked = False
-pin_unlock_time = 0  # Track when PIN was unlocked (NEW)
+pin_unlock_time = 0
 last_button_time = 0
 
 def start_access_point():
-    """Start WiFi Access Point with better error handling"""
     ap = network.WLAN(network.AP_IF)
     ap.active(True)
     
@@ -52,7 +51,7 @@ def start_access_point():
     display.set_pen(0)
     display.clear()
     display.set_pen(15)
-    display.text("Starting AP...", 10, 50, scale=2)
+    display.text("Starting AP..", 10, 50, scale=2)
     display.update()
     
     max_wait = 10
@@ -105,7 +104,6 @@ def base32_decode(s):
     return bytes(result)
 
 def hmac_sha1(key, msg):
-    """HMAC-SHA1 implementation"""
     import uhashlib
     
     blocksize = 64
@@ -120,7 +118,6 @@ def hmac_sha1(key, msg):
     return uhashlib.sha1(o_key_pad + uhashlib.sha1(i_key_pad + msg).digest()).digest()
 
 def generate_totp(secret, time_step=30):
-    """Generate TOTP token"""
     try:
         key = base32_decode(secret)
         timestamp = int(time.time()) // time_step
@@ -136,7 +133,6 @@ def generate_totp(secret, time_step=30):
         return "ERROR!"
 
 def check_pin_timeout():
-    """Check if PIN has timed out and auto-lock (NEW)"""
     global pin_locked, current_pin, pin_unlock_time
     
     if pin_locked and pin_unlock_time > 0:
@@ -151,7 +147,6 @@ def check_pin_timeout():
             led.set_rgb(0, 0, 0)
 
 def draw_screen(ip_addr, token=None, pin_display="", message=""):
-    """Draw the main screen with timeout indicator (IMPROVED)"""
     display.set_pen(0)
     display.clear()
     display.set_pen(15)
@@ -193,7 +188,6 @@ def draw_screen(ip_addr, token=None, pin_display="", message=""):
     display.update()
 
 def check_buttons():
-    """Check button presses with improved debouncing (IMPROVED)"""
     global current_pin, pin_locked, last_button_time, pin_unlock_time
     
     current_time = time.ticks_ms()
@@ -244,7 +238,6 @@ def check_buttons():
             print("Incorrect PIN attempt")
 
 def handle_request(conn):
-    """Handle HTTP requests with better error handling (IMPROVED)"""
     try:
         request = conn.recv(1024).decode()
         
@@ -306,8 +299,9 @@ def handle_request(conn):
         except:
             pass
 
+
 def main():
-    """Main program loop with improved error handling (IMPROVED)"""
+
     global current_pin, pin_locked
     
     try:
@@ -371,7 +365,7 @@ def main():
                 print(f"Status: Locked={pin_locked}, Clients can connect to {AP_SSID}")
             
         except KeyboardInterrupt:
-            print("\nShutting down...")
+            print("\nShutting down..")
             break
         except Exception as e:
             print(f"Loop error: {e}")
