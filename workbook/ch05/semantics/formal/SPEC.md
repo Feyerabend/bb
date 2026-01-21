@@ -1,12 +1,31 @@
 
 ## Programming Language Semantics: A Comprehensive Guide
 
-Programming language semantics is the study of what programs mean—how to rigorously
+Programming language semantics is the study of what programs mean--how to rigorously
 define what a program does when executed. While syntax tells us whether a program is
 well-formed, semantics tells us what that well-formed program actually computes. There
-are three primary approaches to defining semantics: operational, denotational, and
-axiomatic. Each approach serves different purposes and provides unique insights
-into program behavior.
+are three primary approaches to defining semantics: *operational*, *denotational*, and
+*axiomatic*. Each approach serves different purposes and provides unique insights
+into program behaviour.
+
+A serious compiler typically relies on all three:
+- Operational:
+  To ensure generated machine code behaves like the source program.
+- Denotational:
+  To justify that transformations preserve meaning.
+- Axiomatic:
+  To reason about correctness, safety, and invariants.
+
+In a deep sense:
+```
+Operational semantics  ->  How it runs
+Denotational semantics ->  What it means
+Axiomatic semantics    ->  What is guaranteed
+```
+
+Semantics is primarily about specifying a language. A compiler is only one
+consumer of that specification. The real goal is to define what programs
+mean in a precise and unambiguous way.
 
 
 ### Operational Semantics
@@ -20,7 +39,7 @@ of it as a formal, precise specification of an interpreter.
 
 #### How It Works
 
-Operational semantics typically comes in two flavors:
+Operational semantics typically comes in two flavours:
 
 *Small-step (structural) operational semantics* defines individual computation steps.
 Each rule shows how a single atomic operation transforms the program state. For example:
@@ -232,4 +251,7 @@ Together, these three approaches form a complete framework for understanding pro
 languages at a deep, formal level. Each provides unique insights, and modern programming
 language research often employs all three to fully understand and verify language designs
 and implementations.
+
+
+---
 
