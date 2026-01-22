@@ -2,8 +2,9 @@ from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Optional, Protocol, runtime_checkable #Final, List
-
+from typing import Any, Optional, Protocol, runtime_checkable
+from collections import defaultdict
+import time
 
 
 class VMError(Exception):
@@ -29,8 +30,6 @@ class DivisionByZeroError(VMError):
 
 class CallStackUnderflowError(VMError):
     pass
-
-
 
 
 class OpCode(Enum):
@@ -106,8 +105,6 @@ class Instruction:
             )
 
 
-
-
 @runtime_checkable
 class InstructionExecutor(Protocol):
     def execute(self, vm: 'ExecutionEngine', instr: Instruction) -> Optional[int]:
@@ -123,8 +120,6 @@ class InstructionCompiler(Protocol):
 class InstructionHandler(ABC, InstructionExecutor, InstructionCompiler):
     """Base class for handlers that implement both execution and JIT compilation"""
     pass
-
-
 
 
 class StackHandler(InstructionHandler):
@@ -256,7 +251,8 @@ class ControlFlowHandler(InstructionHandler):
 
             case OpCode.JUMP_IF_ZERO:
                 if not vm.stack: raise StackUnderflowError("JUMP_IF_ZERO")
-                if vm.stack.pop() == 0:
+                val = vm.stack.pop()
+                if val == 0:
                     target = instr.operands[0]
                     if not (0 <= target < len(vm.instructions)):
                         raise VMError(f"Jump target out of bounds: {target}")
@@ -264,7 +260,8 @@ class ControlFlowHandler(InstructionHandler):
 
             case OpCode.JUMP_IF_NOT_ZERO:
                 if not vm.stack: raise StackUnderflowError("JUMP_IF_NOT_ZERO")
-                if vm.stack.pop() != 0:
+                val = vm.stack.pop()
+                if val != 0:
                     target = instr.operands[0]
                     if not (0 <= target < len(vm.instructions)):
                         raise VMError(f"Jump target out of bounds: {target}")
@@ -285,11 +282,30 @@ class ControlFlowHandler(InstructionHandler):
         return None
 
     def compile_to_python(self, vm: 'ExecutionEngine', instr: Instruction) -> list[str]:
-        # Control flow is usually not directly jittable in simple linear regions
-        return [
-            "    # Control flow instruction - cannot be fully JIT compiled in linear block",
-            f"    return {vm.pc}  # force exit of current JIT region"
-        ]
+        # For loop compilation - compile conditional branches differently
+        match instr.opcode:
+            case OpCode.JUMP_IF_ZERO:
+                target = instr.operands[0]
+                # In a loop, this exits to code after the loop
+                return [
+                    "    if not stack: raise StackUnderflowError('JUMP_IF_ZERO')",
+                    "    val = stack.pop()",
+                    f"    if val == 0:",
+                    f"        return {target}  # exit loop"
+                ]
+            case OpCode.JUMP_IF_NOT_ZERO:
+                target = instr.operands[0]
+                return [
+                    "    if not stack: raise StackUnderflowError('JUMP_IF_NOT_ZERO')",
+                    "    val = stack.pop()",
+                    f"    if val != 0:",
+                    f"        return {target}  # conditional jump"
+                ]
+            case OpCode.JUMP:
+                # Backward jump - handled by while loop, don't compile
+                return ["    # backward jump - handled by loop structure"]
+            case _:
+                return [f"    return {vm.pc}  # exit JIT region"]
 
 
 class MemoryHandler(InstructionHandler):
@@ -414,10 +430,36 @@ class IOHandler(InstructionHandler):
         return []
 
 
+@dataclass
+class JITStats:
+    """Statistics about JIT compilation"""
+    compilations: int = 0
+    jit_executions: int = 0
+    interpreter_executions: int = 0
+    total_jit_time: float = 0.0
+    total_interp_time: float = 0.0
+    
+    def show(self) -> None:
+        print(f"\n{'='*60}")
+        print(f"JIT COMPILATION STATISTICS")
+        print(f"{'='*60}")
+        print(f"Total compilations:       {self.compilations}")
+        print(f"JIT executions:           {self.jit_executions:,}")
+        print(f"Interpreter executions:   {self.interpreter_executions:,}")
+        print(f"Total JIT time:           {self.total_jit_time:.6f}s")
+        print(f"Total interpreter time:   {self.total_interp_time:.6f}s")
+        if self.jit_executions > 0 and self.interpreter_executions > 0:
+            avg_jit = self.total_jit_time / self.jit_executions
+            avg_interp = self.total_interp_time / self.interpreter_executions
+            speedup = avg_interp / avg_jit if avg_jit > 0 else 0
+            print(f"Avg JIT exec time:        {avg_jit*1e6:.2f}μs")
+            print(f"Avg interp exec time:     {avg_interp*1e6:.2f}μs")
+            print(f"Speedup factor:           {speedup:.2f}x")
+        print(f"{'='*60}\n")
 
 
 class ExecutionEngine:
-    def __init__(self, hotspot_threshold: int = 5):
+    def __init__(self, hotspot_threshold: int = 10, verbose: bool = False):
         self.stack: list[Any] = []
         self.call_stack: list[int] = []
         self.memory: dict[int, Any] = {}
@@ -425,10 +467,17 @@ class ExecutionEngine:
         self.pc: int = 0
         self.instructions: list[Instruction] = []
         self.hotspot_threshold = hotspot_threshold
-        self.exec_count: dict[int, int] = {}
+        self.verbose = verbose
+        
+        # JIT tracking
+        self.exec_count: dict[int, int] = defaultdict(int)
         self.jit_cache: dict[int, callable] = {}
         self.handlers: dict[OpCode, InstructionHandler] = {}
-
+        self.stats = JITStats()
+        
+        # Loop detection
+        self.edge_count: dict[tuple[int, int], int] = defaultdict(int)
+        
         self._register_handlers()
 
     def _register_handlers(self) -> None:
@@ -451,37 +500,77 @@ class ExecutionEngine:
         self.instructions = instructions
         self.pc = 0
         for i, instr in enumerate(self.instructions):
-            object.__setattr__(instr, 'address', i)  # frozen dataclass workaround
+            object.__setattr__(instr, 'address', i)
 
     def run(self) -> None:
+        last_pc = -1
+        
         while self.pc < len(self.instructions):
             instr = self.instructions[self.pc]
 
             if instr.opcode == OpCode.HALT:
                 break
 
-            # JIT fast path
+            # Track control flow edges for loop detection
+            if last_pc != -1:
+                edge = (last_pc, self.pc)
+                self.edge_count[edge] += 1
+
+            # JIT fast path - execute compiled code
             if self.pc in self.jit_cache:
-                self.pc = self.jit_cache[self.pc]()
+                start_time = time.perf_counter()
+                next_pc = self.jit_cache[self.pc]()
+                self.stats.total_jit_time += time.perf_counter() - start_time
+                self.stats.jit_executions += 1
+                last_pc = self.pc
+                self.pc = next_pc
                 continue
 
             # Hotspot detection
-            self.exec_count[self.pc] = self.exec_count.get(self.pc, 0) + 1
-            if self.exec_count[self.pc] >= self.hotspot_threshold:
-                region = self._try_detect_hot_region()
-                if region:
-                    self._jit_compile_region(region)
-                    continue
+            self.exec_count[self.pc] += 1
+            if self.exec_count[self.pc] >= self.hotspot_threshold and self.pc not in self.jit_cache:
+                # Try to detect a loop first (most important for JIT)
+                loop = self._detect_loop(self.pc)
+                if loop:
+                    self._jit_compile_loop(loop)
+                    # After compilation, continue from current PC (will hit cache next iteration)
+                    # Don't immediately execute, let it go through normal path once more
+                else:
+                    # Fallback to straight-line region
+                    region = self._try_detect_hot_region()
+                    if region:
+                        self._jit_compile_region(region)
 
             # Normal interpreter path
+            start_time = time.perf_counter()
             handler = self.handlers.get(instr.opcode)
             if handler is None:
                 raise InvalidInstructionError(f"No handler for opcode: {instr.opcode}")
 
             new_pc = handler.execute(self, instr)
+            self.stats.total_interp_time += time.perf_counter() - start_time
+            self.stats.interpreter_executions += 1
+            
+            last_pc = self.pc
             self.pc = new_pc if new_pc is not None else self.pc + 1
 
+    def _detect_loop(self, pc: int) -> Optional[tuple[int, int]]:
+        """Detect backward jumps (loops) starting at pc"""
+        # Look for backward jump instruction within next few instructions
+        for i in range(pc, min(pc + 50, len(self.instructions))):
+            instr = self.instructions[i]
+            if instr.opcode == OpCode.JUMP:
+                target = instr.operands[0]
+                # Backward jump indicates a loop
+                if target <= pc:
+                    # Check if this edge is hot
+                    edge = (i, target)
+                    if self.edge_count.get(edge, 0) >= self.hotspot_threshold // 2:
+                        return (target, i)  # loop body from target to jump (excluding jump itself)
+        return None
+
     def _try_detect_hot_region(self) -> Optional[tuple[int, int]]:
+        """Detect straight-line code region"""
         start = self.pc
         end = start
         max_scan = min(start + 30, len(self.instructions))
@@ -500,8 +589,69 @@ class ExecutionEngine:
             return start, end
         return None
 
+    def _jit_compile_loop(self, loop: tuple[int, int]) -> None:
+        """Compile a loop - this is where JIT really shines!"""
+        start, end = loop
+        
+        # The backward JUMP is at position 'end', loop body is start to end-1
+        if self.verbose:
+            print(f"\n[JIT] Compiling LOOP at PC {start}-{end}")
+            for i in range(start, end + 1):
+                print(f"  {i:3d}: {self.instructions[i]}")
+        
+        lines = [
+            "def jit_loop():",
+            "    # JIT-compiled loop - runs much faster than interpreter!",
+            "    stack = self.stack",
+            "    memory = self.memory",
+            "    locals = self.locals",
+            "    while True:  # loop structure"
+        ]
+
+        # Compile loop body (start to end-1, excluding the backward JUMP at 'end')
+        for i in range(start, end):
+            instr = self.instructions[i]
+            handler = self.handlers.get(instr.opcode)
+            if handler:
+                compiled = handler.compile_to_python(self, instr)
+                # Indent one more level for while loop
+                lines.extend("    " + line for line in compiled)
+        
+        # After the while loop completes via return, we're done
+        # No need to compile the backward JUMP - the while handles it
+
+        code = "\n".join(lines)
+        
+        if self.verbose:
+            print("\n[JIT] Generated code:")
+            print(code)
+        
+        local_env = {}
+        try:
+            exec(code, {
+                "self": self,
+                "StackUnderflowError": StackUnderflowError,
+                "MemoryAccessError": MemoryAccessError,
+                "DivisionByZeroError": DivisionByZeroError,
+                "VMError": VMError
+            }, local_env)
+            self.jit_cache[start] = local_env["jit_loop"]
+            self.stats.compilations += 1
+            if self.verbose:
+                print(f"[JIT] ✓ Loop compiled successfully!\n")
+        except Exception as e:
+            if self.verbose:
+                print(f"[JIT] ✗ Loop compilation failed: {e}\n")
+
     def _jit_compile_region(self, region: tuple[int, int]) -> None:
+        """Compile a straight-line region"""
         start, end = region
+        
+        if self.verbose:
+            print(f"\n[JIT] Compiling REGION at PC {start}-{end-1}")
+            for i in range(start, end):
+                print(f"  {i:3d}: {self.instructions[i]}")
+        
         lines = [
             "def jit_block():",
             "    stack = self.stack",
@@ -518,31 +668,136 @@ class ExecutionEngine:
         lines.append(f"    return {end}")
 
         code = "\n".join(lines)
+        
+        if self.verbose:
+            print("\n[JIT] Generated code:")
+            print(code)
+        
         local_env = {}
         try:
-            exec(code, {"self": self}, local_env)
+            exec(code, {
+                "self": self,
+                "StackUnderflowError": StackUnderflowError,
+                "MemoryAccessError": MemoryAccessError,
+                "DivisionByZeroError": DivisionByZeroError
+            }, local_env)
             self.jit_cache[start] = local_env["jit_block"]
+            self.stats.compilations += 1
+            if self.verbose:
+                print(f"[JIT] ✓ Region compiled successfully!\n")
         except Exception as e:
-            print(f"JIT compilation failed for region {start}-{end-1}: {e}")
+            if self.verbose:
+                print(f"[JIT] ✗ Compilation failed: {e}\n")
 
 
-
-
-if __name__ == "__main__":
-    vm = ExecutionEngine(hotspot_threshold=3)
-
-    # simple test
-    program = [
-        Instruction(OpCode.PUSH, (8,)),
-        Instruction(OpCode.PUSH, (5,)),
-        Instruction(OpCode.ADD, ()),
-        Instruction(OpCode.PRINT, ()),
-        Instruction(OpCode.PUSH, (13,)),
-        Instruction(OpCode.PRINT_CHAR, ()),
+def create_countdown_program(n: int) -> list[Instruction]:
+    """Create a countdown loop - perfect for demonstrating JIT!"""
+    return [
+        # loop start (PC 0)
+        Instruction(OpCode.LOAD_LOCAL, (0,)),      # load counter
+        Instruction(OpCode.DUP, ()),                # duplicate for test
+        Instruction(OpCode.JUMP_IF_ZERO, (7,)),     # exit if zero (was 8, should be 7)
+        # loop body
+        Instruction(OpCode.PUSH, (1,)),             # push 1
+        Instruction(OpCode.SUB, ()),                # counter - 1
+        Instruction(OpCode.STORE_LOCAL, (0,)),      # store back (was duplicated, now direct)
+        Instruction(OpCode.JUMP, (0,)),             # jump to start
+        # after loop (PC 7)
         Instruction(OpCode.HALT, ())
     ]
 
-    vm.load(program)
-    print("Running simple program..")
-    vm.run()
-    print("\nFinal stack:", vm.stack)
+
+def create_sum_program(n: int) -> list[Instruction]:
+    """Sum from 1 to n - another great JIT example"""
+    return [
+        # Initialize: counter=n (local 0), sum=0 (local 1)
+        Instruction(OpCode.PUSH, (0,)),
+        Instruction(OpCode.STORE_LOCAL, (1,)),      # sum = 0
+        
+        # loop start (PC 2)
+        Instruction(OpCode.LOAD_LOCAL, (0,)),       # load counter
+        Instruction(OpCode.DUP, ()),                # duplicate for test
+        Instruction(OpCode.JUMP_IF_ZERO, (14,)),    # exit if zero (skip the JUMP)
+        
+        # loop body: sum += counter; counter--
+        Instruction(OpCode.LOAD_LOCAL, (1,)),       # load sum
+        Instruction(OpCode.LOAD_LOCAL, (0,)),       # load counter
+        Instruction(OpCode.ADD, ()),                # sum + counter
+        Instruction(OpCode.STORE_LOCAL, (1,)),      # store sum
+        
+        Instruction(OpCode.LOAD_LOCAL, (0,)),       # load counter
+        Instruction(OpCode.PUSH, (1,)),             # push 1
+        Instruction(OpCode.SUB, ()),                # counter - 1
+        Instruction(OpCode.STORE_LOCAL, (0,)),      # store counter
+        Instruction(OpCode.JUMP, (2,)),             # jump to loop start (PC 13)
+        
+        # after loop (PC 14)
+        Instruction(OpCode.POP, ()),                # clean up stack
+        Instruction(OpCode.LOAD_LOCAL, (1,)),       # load result
+        Instruction(OpCode.PRINT, ()),              # print sum
+        Instruction(OpCode.HALT, ())
+    ]
+
+
+if __name__ == "__main__":
+    print("="*60)
+    print("HotspotVM - JIT Compilation Demonstration")
+    print("="*60)
+    
+    # Example 1: Countdown loop (shows JIT compilation)
+    print("\n--- Example 1: Countdown Loop (10,000 iterations) ---")
+    vm1 = ExecutionEngine(hotspot_threshold=10, verbose=True)
+    program1 = create_countdown_program(10_000)
+    vm1.locals = [10_000]  # Initialize counter
+    vm1.load(program1)
+    
+    start = time.perf_counter()
+    vm1.run()
+    elapsed = time.perf_counter() - start
+    
+    print(f"\nCompleted in {elapsed:.4f}s")
+    vm1.stats.show()
+    
+    # Example 2: Sum calculation (more complex)
+    print("\n--- Example 2: Sum 1 to 1000 ---")
+    vm2 = ExecutionEngine(hotspot_threshold=10, verbose=True)
+    program2 = create_sum_program(1000)
+    vm2.locals = [1000, 0]  # counter, sum
+    vm2.load(program2)
+    
+    start = time.perf_counter()
+    vm2.run()
+    elapsed = time.perf_counter() - start
+    
+    print(f"\nCompleted in {elapsed:.4f}s")
+    vm2.stats.show()
+    
+    # Example 3: Comparison - with vs without JIT
+    print("\n--- Example 3: JIT vs Interpreter Comparison ---")
+    iterations = 5000
+    
+    print(f"\nRunning with JIT (threshold=5)...")
+    vm_jit = ExecutionEngine(hotspot_threshold=5, verbose=False)
+    program = create_countdown_program(iterations)
+    vm_jit.locals = [iterations]
+    vm_jit.load(program)
+    start = time.perf_counter()
+    vm_jit.run()
+    jit_time = time.perf_counter() - start
+    
+    print(f"Running WITHOUT JIT (threshold=999999)...")
+    vm_no_jit = ExecutionEngine(hotspot_threshold=999999, verbose=False)
+    program = create_countdown_program(iterations)
+    vm_no_jit.locals = [iterations]
+    vm_no_jit.load(program)
+    start = time.perf_counter()
+    vm_no_jit.run()
+    no_jit_time = time.perf_counter() - start
+    
+    print(f"\n{'='*60}")
+    print("COMPARISON RESULTS")
+    print(f"{'='*60}")
+    print(f"With JIT:     {jit_time:.4f}s")
+    print(f"Without JIT:  {no_jit_time:.4f}s")
+    print(f"Speedup:      {no_jit_time/jit_time:.2f}x faster with JIT!")
+    print(f"{'='*60}")
