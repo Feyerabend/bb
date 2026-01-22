@@ -638,10 +638,10 @@ class ExecutionEngine:
             self.jit_cache[start] = local_env["jit_loop"]
             self.stats.compilations += 1
             if self.verbose:
-                print(f"[JIT] ✓ Loop compiled successfully!\n")
+                print(f"[JIT] + Loop compiled successfully!\n")
         except Exception as e:
             if self.verbose:
-                print(f"[JIT] ✗ Loop compilation failed: {e}\n")
+                print(f"[JIT] - Loop compilation failed: {e}\n")
 
     def _jit_compile_region(self, region: tuple[int, int]) -> None:
         """Compile a straight-line region"""
@@ -684,10 +684,10 @@ class ExecutionEngine:
             self.jit_cache[start] = local_env["jit_block"]
             self.stats.compilations += 1
             if self.verbose:
-                print(f"[JIT] ✓ Region compiled successfully!\n")
+                print(f"[JIT] + Region compiled successfully!\n")
         except Exception as e:
             if self.verbose:
-                print(f"[JIT] ✗ Compilation failed: {e}\n")
+                print(f"[JIT] - Compilation failed: {e}\n")
 
 
 def create_countdown_program(n: int) -> list[Instruction]:
@@ -710,7 +710,7 @@ def create_countdown_program(n: int) -> list[Instruction]:
 def create_sum_program(n: int) -> list[Instruction]:
     """Sum from 1 to n - another great JIT example"""
     return [
-        # Initialize: counter=n (local 0), sum=0 (local 1)
+        # Initialise: counter=n (local 0), sum=0 (local 1)
         Instruction(OpCode.PUSH, (0,)),
         Instruction(OpCode.STORE_LOCAL, (1,)),      # sum = 0
         
@@ -748,7 +748,7 @@ if __name__ == "__main__":
     print("\n--- Example 1: Countdown Loop (10,000 iterations) ---")
     vm1 = ExecutionEngine(hotspot_threshold=10, verbose=True)
     program1 = create_countdown_program(10_000)
-    vm1.locals = [10_000]  # Initialize counter
+    vm1.locals = [10_000]  # Initialise counter
     vm1.load(program1)
     
     start = time.perf_counter()

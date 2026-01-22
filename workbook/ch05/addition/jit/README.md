@@ -13,19 +13,19 @@ profile -> detect hotspots -> compile -> cache -> execute fast
 ```
 
 While production JITs are vastly more complex (native code generation,
-type specialization, multiple compilation tiers, sophisticated optimizations,
-deoptimization), this core loop remains the same.
+type specialisation, multiple compilation tiers, sophisticated optimisations,
+deoptimisation), this core loop remains the same.
 
-*The insight:* Don't optimize everything, optimize what matters.
-JIT compilation makes that decision at runtime based on actual behavior,
+*The insight:* Don't optimise everything, optimise what matters.
+JIT compilation makes that decision at runtime based on actual behaviour,
 not static analysis.
 
 *Why JIT wins:*
-- Adapts to actual runtime behavior
-- Optimizes the hot 10% that matters
+- Adapts to actual runtime behaviour
+- Optimises the hot 10% that matters
 - Combines interpreted flexibility with compiled speed
-- Enables optimizations impossible for static compilers
-  (e.g., specialization based on observed types)
+- Enables optimisations impossible for static compilers
+  (e.g., specialisation based on observed types)
 
 HotspotVM proves these concepts work--even our simple
 Python-to-Python JIT achieves 3-5x speedup on loops.
@@ -33,12 +33,12 @@ Python-to-Python JIT achieves 3-5x speedup on loops.
 
 ### What is JIT Compilation?
 
-*Just-In-Time (JIT) compilation* is a runtime optimization technique
+*Just-In-Time (JIT) compilation* is a runtime optimisation technique
 that dramatically improves performance by:
 1. *Running code initially as an interpreter* - fast startup, no compilation overhead
 2. *Detecting "hot" code* - identifying frequently executed regions (especially loops)
 3. *Compiling hot code on-the-fly* - translating it into faster executable form
-4. *Switching to compiled code* - executing the optimized version instead of interpreting
+4. *Switching to compiled code* - executing the optimised version instead of interpreting
 
 This hybrid approach combines the best of both worlds: interpreted code's
 flexibility with compiled code's speed.
@@ -65,12 +65,12 @@ Every instruction handler implements *two methods*:
 ```python
 class ArithmeticHandler(InstructionHandler):
     def execute(self, vm, instr):
-        ## Interpreter mode - runs immediately
+        # Interpreter mode - runs immediately
         b, a = vm.stack.pop(), vm.stack.pop()
         vm.stack.append(a + b)
     
     def compile_to_python(self, vm, instr):
-        ## JIT mode - generates optimized code
+        # JIT mode - generates optimised code
         return [
             "    b = stack.pop()",
             "    a = stack.pop()",
@@ -111,7 +111,7 @@ if jump_target < current_pc and edge is hot:
 Loops are the *most important target* for JIT compilation because:
 - They execute many times (high iteration count = high payoff)
 - Small code size means low compilation overhead
-- Huge performance gains when optimized (typically 3-5x faster)
+- Huge performance gains when optimised (typically 3-5x faster)
 
 #### 4. Code Generation
 
@@ -252,15 +252,15 @@ The `hotspot_threshold` parameter controls when compilation happens:
 - `+` Frequently executed functions
 
 *Not worth JIT (overhead > benefit):*
-- `-` One-time initialization code
+- `-` One-time initialisation code
 - `-` I/O operations (already slow, compilation won't help)
 - `-` Exception handling paths (rarely executed)
 - `-` Code with unpredictable branches
 
-#### 4. Compilation Overhead Amortization
+#### 4. Compilation Overhead Amortisation
 
 JIT compilation takes time. The code must execute enough
-times to *amortize* the compilation cost:
+times to *amortise* the compilation cost:
 
 ```
 Total execution time = compilation_time + (iterations × per_iteration_time)
@@ -298,7 +298,7 @@ locals = self.locals    # Direct reference, not copy
 This means:
 - No marshaling/unmarshaling data
 - No function call overhead for each instruction
-- Python's bytecode compiler optimizes the generated code
+- Python's bytecode compiler optimises the generated code
 - All loop iterations execute in tight Python loop
 
 #### Control Flow Handling
@@ -325,15 +325,15 @@ jump instruction to avoid infinite recompilation.
 - *Why this matters:* Real JITs get 10-100x speedup; we get 3-5x
 
 #### 2. No Type Specialisation
-- *Production JITs* generate specialized code for observed types
+- *Production JITs* generate specialised code for observed types
   ```python
   # Generic: check types, handle any operands
-  # Specialized: assume int, use fast int operations
+  # Specialised: assume int, use fast int operations
   ```
-- *HotspotVM* keeps dynamic typing -> misses major optimization
-- *Impact:* Real JITs can optimize `a + b` to single CPU instruction
+- *HotspotVM* keeps dynamic typing -> misses major optimisation
+- *Impact:* Real JITs can optimise `a + b` to single CPU instruction
 
-#### 3. No Deoptimization
+#### 3. No Deoptimisation
 - *Production JITs* can "bail out" if assumptions break
   ```python
   # Compiled with assumption: x is always int
@@ -344,15 +344,15 @@ jump instruction to avoid infinite recompilation.
 
 #### 4. No Inlining
 - *Production JITs* inline function calls into hot code
-- *HotspotVM* doesn't handle cross-function optimization
+- *HotspotVM* doesn't handle cross-function optimisation
 - *Benefit missed:* Eliminating call overhead,
-  enabling further optimizations
+  enabling further optimisations
 
 #### 5. Simple Loop Detection
 - *Production JITs* use:
   - Trace-based compilation (LuaJIT, some JS engines)
   - Graph-based IR with sophisticated analysis (HotSpot, V8)
-  - Profile-guided optimization
+  - Profile-guided optimisation
 - *HotspotVM* uses simple backward-jump detection
 - *Limitation:* Can't handle complex control flow patterns
 
@@ -360,10 +360,10 @@ jump instruction to avoid infinite recompilation.
 - *Production JITs* have multiple compilation levels:
   1. Interpreter
   2. Quick baseline JIT
-  3. Optimizing JIT
-  4. Super-optimizing JIT (with aggressive speculation)
+  3. Opbtimizing JIT
+  4. Super-optimising JIT (with aggressive speculation)
 - *HotspotVM* has only interpreter + one JIT tier
-- *Missing:* Gradual optimization based on execution frequency
+- *Missing:* Gradual optimisation based on execution frequency
 
 
 ### Learning Path
@@ -397,7 +397,7 @@ Quantify the performance impact--see the speedup numbers.
 Try nested loops, different patterns, see what compiles well.
 
 *Step 7:* Modify the compiler.
-Add optimizations, try different compilation strategies.
+Add optimisations, try different compilation strategies.
 
 
 ### Further Exploration
@@ -405,11 +405,11 @@ Add optimizations, try different compilation strategies.
 To deepen understanding:
 
 1. *Add new opcodes* - implement both `execute()` and `compile_to_python()`
-2. *Implement constant folding* - optimize `PUSH 2; PUSH 3; ADD` -> `PUSH 5`
-3. *Add type specialization* - detect when operands are always integers
+2. *Implement constant folding* - optimise `PUSH 2; PUSH 3; ADD` -> `PUSH 5`
+3. *Add type specialisation* - detect when operands are always integers
 4. *Experiment with thresholds* - find optimal compilation trigger for different workloads
 5. *Try trace-based compilation* - record execution paths instead of detecting loops
 6. *Profile with Python tools* - use `cProfile` to see where time is spent
 7. *Compare compilation strategies* - method-based vs region-based vs trace-based
-8. *Add deoptimization* - detect when assumptions break, fall back to interpreter
+8. *Add deoptimisation* - detect when assumptions break, fall back to interpreter
 
