@@ -62,11 +62,12 @@ class RISCVVM:
         """Sign extend a value"""
         mask = 1 << (bits - 1)
         if val & mask:
-            return val | (~0 << bits)
+            return val | (~((1 << bits) - 1))
         return val
     
     def read_mem(self, addr: int, size: int, signed: bool = False) -> int:
         """Read from memory (size in bytes: 1, 2, or 4)"""
+        addr = addr & 0xFFFFFFFF
         if addr < 0 or addr + size > len(self.memory):
             raise ValueError(f"Memory access out of bounds: {addr}")
         
@@ -85,6 +86,7 @@ class RISCVVM:
     
     def write_mem(self, addr: int, val: int, size: int):
         """Write to memory (size in bytes: 1, 2, or 4)"""
+        addr = addr & 0xFFFFFFFF
         if addr < 0 or addr + size > len(self.memory):
             raise ValueError(f"Memory access out of bounds: {addr}")
         
@@ -206,13 +208,11 @@ class RISCVVM:
             return Instruction('JALR', rd=rd, rs1=rs1, imm=imm, funct3=0b000)
 
         elif opcode == 0b0110111:  # LUI
-            imm = word & 0xFFFFF000
-            imm = self.sign_extend(imm, 32) >> 12  # but since U-type imm is upper, it's imm[31:12]
+            imm = (word >> 12) & 0xFFFFF
             return Instruction('LUI', rd=rd, imm=imm)
 
         elif opcode == 0b0010111:  # AUIPC
-            imm = word & 0xFFFFF000
-            imm = self.sign_extend(imm, 32) >> 12
+            imm = (word >> 12) & 0xFFFFF
             return Instruction('AUIPC', rd=rd, imm=imm)
 
         elif opcode == 0b1110011:  # SYSTEM
@@ -410,42 +410,42 @@ class RISCVVM:
         # Branch operations
         elif op == 'BEQ':
             if self.regs[instr.rs1] == self.regs[instr.rs2]:
-                self.pc += instr.imm
+                self.pc = (self.pc + instr.imm) & 0xFFFFFFFF
             else:
                 self.pc += 4
         elif op == 'BNE':
             if self.regs[instr.rs1] != self.regs[instr.rs2]:
-                self.pc += instr.imm
+                self.pc = (self.pc + instr.imm) & 0xFFFFFFFF
             else:
                 self.pc += 4
         elif op == 'BLT':
             if self.signed(self.regs[instr.rs1]) < self.signed(self.regs[instr.rs2]):
-                self.pc += instr.imm
+                self.pc = (self.pc + instr.imm) & 0xFFFFFFFF
             else:
                 self.pc += 4
         elif op == 'BGE':
             if self.signed(self.regs[instr.rs1]) >= self.signed(self.regs[instr.rs2]):
-                self.pc += instr.imm
+                self.pc = (self.pc + instr.imm) & 0xFFFFFFFF
             else:
                 self.pc += 4
         elif op == 'BLTU':
             if self.unsigned(self.regs[instr.rs1]) < self.unsigned(self.regs[instr.rs2]):
-                self.pc += instr.imm
+                self.pc = (self.pc + instr.imm) & 0xFFFFFFFF
             else:
                 self.pc += 4
         elif op == 'BGEU':
             if self.unsigned(self.regs[instr.rs1]) >= self.unsigned(self.regs[instr.rs2]):
-                self.pc += instr.imm
+                self.pc = (self.pc + instr.imm) & 0xFFFFFFFF
             else:
                 self.pc += 4
         
         # Jump operations
         elif op == 'JAL':
-            self.regs[instr.rd] = self.pc + 4
-            self.pc += instr.imm
+            self.regs[instr.rd] = (self.pc + 4) & 0xFFFFFFFF
+            self.pc = (self.pc + instr.imm) & 0xFFFFFFFF
         elif op == 'JALR':
-            temp = self.pc + 4
-            self.pc = (self.regs[instr.rs1] + instr.imm) & ~1
+            temp = (self.pc + 4) & 0xFFFFFFFF
+            self.pc = (self.regs[instr.rs1] + instr.imm) & 0xFFFFFFFE
             self.regs[instr.rd] = temp
         
         # Upper immediate

@@ -138,7 +138,7 @@ class RISCVAssembler:
     def parse_immediate(self, imm: str) -> int:
         """Parse immediate value (decimal or hex, can be negative)"""
         imm = imm.strip().rstrip(',')
-        if imm.startswith('0x'):
+        if imm.startswith('0x') or imm.startswith('0X'):
             return int(imm, 16)
         return int(imm)
     
@@ -146,7 +146,7 @@ class RISCVAssembler:
         """Sign extend a value"""
         mask = 1 << (bits - 1)
         if val & mask:
-            return val | (~0 << bits)
+            return val | (~((1 << bits) - 1))
         return val
     
     def parse_offset(self, operand: str) -> Tuple[int, int]:
@@ -546,7 +546,7 @@ class RISCVAssembler:
         # JALR: jalr rd, offset(rs1) or jalr rd, rs1
         elif op == 'JALR':
             rd = self.parse_register(parts[1])
-            if len(parts) > 3:
+            if len(parts) > 2 and '(' in parts[2]:
                 offset, base = self.parse_offset(parts[2])
             else:
                 offset = 0
@@ -609,7 +609,7 @@ class RISCVAssembler:
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: python assembler.py input.s output.bin")
+        print("Usage: python asm.py input.asm output.bin")
         sys.exit(1)
     
     with open(sys.argv[1], 'r') as f:
