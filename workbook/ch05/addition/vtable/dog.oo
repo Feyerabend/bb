@@ -1,5 +1,0 @@
-class Dog inherits Object {
-    def bark() {
-        print("Woof!");
-    }
-}

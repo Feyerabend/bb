@@ -1,8 +1,12 @@
 # RISC-V Assembler and VM Makefile
 
-# Find all .asm files
-ASM_SOURCES := $(wildcard *.asm)
-BIN_TARGETS := $(ASM_SOURCES:.asm=.bin)
+# Directories
+SRC_DIR := src
+BIN_DIR := bin
+
+# Find all .asm files in src/
+ASM_SOURCES := $(wildcard $(SRC_DIR)/*.asm)
+BIN_TARGETS := $(patsubst $(SRC_DIR)/%.asm,$(BIN_DIR)/%.bin,$(ASM_SOURCES))
 
 # Python interpreter
 PYTHON := python3
@@ -15,8 +19,14 @@ VM := ./vm.py
 .PHONY: all
 all: $(BIN_TARGETS)
 
+# Create bin directory if it doesn't exist
+$(BIN_TARGETS): | $(BIN_DIR)
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
 # Rule to assemble .asm files to .bin files
-%.bin: %.asm $(ASM)
+$(BIN_DIR)/%.bin: $(SRC_DIR)/%.asm $(ASM)
 	$(PYTHON) $(ASM) $< $@
 
 # Run a specific .bin file (usage: make run BIN=program.bin)
@@ -26,7 +36,7 @@ ifndef BIN
 	@echo "Usage: make run BIN=program.bin"
 	@exit 1
 endif
-	$(PYTHON) $(VM) $(BIN)
+	$(PYTHON) $(VM) $(BIN_DIR)/$(BIN)
 
 # Run with debug output
 .PHONY: debug
@@ -35,12 +45,12 @@ ifndef BIN
 	@echo "Usage: make debug BIN=program.bin"
 	@exit 1
 endif
-	$(PYTHON) $(VM) $(BIN) -d
+	$(PYTHON) $(VM) $(BIN_DIR)/$(BIN) -d
 
 # Clean all generated .bin files
 .PHONY: clean
 clean:
-	rm -f *.bin
+	rm -f $(BIN_DIR)/*.bin
 
 # Run all .bin files
 .PHONY: run-all
@@ -70,3 +80,4 @@ help:
 	@echo "  make program.bin        # Build program.asm to program.bin"
 	@echo "  make run BIN=prog.bin   # Run prog.bin"
 	@echo "  make debug BIN=prog.bin # Run prog.bin with debug output"
+	@echo "  make clean              # Clean all .bin files"
