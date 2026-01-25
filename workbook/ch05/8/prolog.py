@@ -1,13 +1,5 @@
 """
-A refactored Prolog interpreter with proper syntax parsing and cut (!) support.
-
-Key improvements over the original:
-- Fixed operator precedence parsing (lower precedence operators parsed first)
-- Proper handling of negative numbers vs subtraction operator
-- Fixed variable renaming to use variable IDs instead of object keys
-- Preserved integer types in arithmetic (critical for proper unification)
-- Added circular reference detection
-- Better error handling and code organization
+A Prolog interpreter with cut (!) support.
 
 Usage:
     prolog = PrologInterpreter()
@@ -187,18 +179,10 @@ class PrologParser:
         if re.match(r'^[A-Z_][a-zA-Z0-9_]*$', text):
             return self._get_or_create_variable(text)
 
-        # Handle variables
-#        if text[0].isupper() or text[0] == '_':
-#            return self._get_or_create_variable(text)
-
         # Handle numbers
         if self._is_number(text):
             return float(text)
 
-        # Handle numbers
-#        if self._is_number(text):
-#            return float(text) if '.' in text else int(text)
-        
         # Parse operators in order of INCREASING precedence
         # Lower precedence should be tried first
         
