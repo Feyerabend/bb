@@ -1,0 +1,66 @@
+# Pico Display Demo - Math Quiz
+# This program displays a series of math problems
+
+print("=== Math Quiz ===");
+print("");
+
+# Problem 1
+print("Problem 1:");
+let a = 7;
+let b = 8;
+print("What is 7 x 8?");
+let answer1 = a * b;
+print("Answer:");
+print(answer1);
+print("");
+
+# Problem 2
+print("Problem 2:");
+let c = 144;
+let d = 12;
+print("What is 144 / 12?");
+let answer2 = c / d;
+print("Answer:");
+print(answer2);
+print("");
+
+# Fibonacci sequence
+print("Fibonacci (10):");
+let n1 = 0;
+let n2 = 1;
+let count = 0;
+
+print(n1);
+print(n2);
+
+while count < 8 {
+    let n3 = n1 + n2;
+    print(n3);
+    n1 = n2;
+    n2 = n3;
+    count = count + 1;
+}
+print("");
+
+# Sum of first 10 numbers
+print("Sum 1 to 10:");
+let sum = 0;
+let num = 1;
+while num < 11 {
+    sum = sum + num;
+    num = num + 1;
+}
+print(sum);
+print("");
+
+# Multiplication table
+print("Table of 5:");
+let i = 1;
+while i < 11 {
+    let product = i * 5;
+    print(product);
+    i = i + 1;
+}
+print("");
+
+print("=== Quiz End ===");
