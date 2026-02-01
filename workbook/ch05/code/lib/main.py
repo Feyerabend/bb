@@ -1,6 +1,6 @@
-from math_add_library import math_add_library
-from math_multiply_library import math_multiply_library
-from math_max_library import math_max_library
+from math_add_lib import math_add_library
+from math_multiply_lib import math_multiply_library
+from math_max_lib import math_max_library
 from loader import LibraryLoader
 from vm import VirtualMachine
 
