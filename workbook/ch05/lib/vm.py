@@ -130,12 +130,16 @@ class VirtualMachine:
 
         elif inst_type == "return":
             if self.stack:
-                # restore program counter and memory state
+                # Save the return value before restoring memory
+                return_value = self.memory.get("result", 0)
+                # Restore program counter and memory state
                 self.pc, self.memory = self.stack.pop()
+                # Set the result in the caller's memory
+                self.memory["result"] = return_value
                 self.pc -= 1  # -1 to offset PC increment
                 self.call_depth -= 1  # decrease recursion depth
             else:
-                self.running = False  # no stack frames; "halt"
+                self.running = False
 
         elif inst_type == "halt":
             self.running = False

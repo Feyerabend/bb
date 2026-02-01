@@ -1,5 +1,5 @@
 from math_add_lib import math_add_library
-from math_multiply_lib import math_multiply_library
+from math_mul_lib import math_multiply_library
 from math_max_lib import math_max_library
 from loader import LibraryLoader
 from vm import VirtualMachine
