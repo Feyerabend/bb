@@ -1,0 +1,33 @@
+        ORG     0100h       ; Start at 0x100
+
+; Test subroutine calls (CALL/RET)
+
+START:  LD      SP, 0FFFFh  ; Initialize stack
+
+        ; Call subroutine to print message
+        CALL    PRINT_A
+        CALL    PRINT_B
+        CALL    PRINT_C
+        
+        LD      A, 0Ah      ; Newline
+        OUT     (2), A
+        
+        JP      0000h       ; Halt
+
+; Subroutines
+PRINT_A:
+        LD      A, 'A'
+        OUT     (2), A
+        RET
+
+PRINT_B:
+        LD      A, 'B'
+        OUT     (2), A
+        RET
+
+PRINT_C:
+        LD      A, 'C'
+        OUT     (2), A
+        RET
+
+        END

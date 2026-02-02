@@ -1,0 +1,14 @@
+        ORG     0100h       ; Start at 0x100
+
+START:  LD      HL, MSG     ; Load address of message
+LOOP:   LD      A, (HL)     ; Get next char
+        OR      A           ; End of string? (0 terminator)
+        JP      Z, DONE     ; Yes, done
+        OUT     (2), A      ; Print char via port 2
+        INC     HL          ; Next char
+        JP      LOOP        ; Repeat
+
+DONE:   JP      0000h       ; Halt (triggers emulator exit)
+
+MSG:    DB      "Hello, World!", 0Dh, 0Ah, 00h  ; Message + CR/LF + null
+        END

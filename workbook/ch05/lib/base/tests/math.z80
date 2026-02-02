@@ -1,0 +1,20 @@
+        ORG     0100h       ; Start at 0x100
+
+VAR1    EQU     8000h       ; Variable address (as in emulator)
+VAR2    EQU     8001h
+RESULT  EQU     8002h
+
+START:  LD      A, 5        ; Load 5
+        LD      (VAR1), A   ; Store to 0x8000
+        LD      A, 3        ; Load 3
+        LD      (VAR2), A   ; Store to 0x8001
+        ADD     A, (VAR1)   ; Add: A = 5 + 3 = 8
+        LD      (RESULT), A ; Store to 0x8002
+        ADD     A, 30h      ; Convert to ASCII '8' (0x38)
+        OUT     (2), A      ; Print '8' via port 2
+        LD      A, 0Ah      ; Line feed
+        OUT     (2), A
+        JP      0000h       ; Halt
+
+        END
+

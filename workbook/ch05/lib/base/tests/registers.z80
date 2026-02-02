@@ -1,0 +1,27 @@
+        ORG     0100h       ; Start at 0x100
+
+; Test various register operations and print results
+
+START:  ; Test 8-bit register loads
+        LD      A, 42       ; Load A with 42
+        LD      B, A        ; Copy to B
+        LD      C, 100      ; Load C with 100
+        
+        ; Test 16-bit register pair
+        LD      HL, 1234h   ; Load HL with 0x1234
+        LD      D, H        ; D = H (0x12)
+        LD      E, L        ; E = L (0x34)
+        
+        ; Print "Registers OK"
+        LD      HL, MSG
+LOOP:   LD      A, (HL)
+        OR      A
+        JP      Z, DONE
+        OUT     (2), A
+        INC     HL
+        JP      LOOP
+
+DONE:   JP      0000h       ; Halt
+
+MSG:    DB      "Registers OK", 0Dh, 0Ah, 00h
+        END
