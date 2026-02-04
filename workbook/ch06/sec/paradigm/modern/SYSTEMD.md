@@ -199,10 +199,10 @@ between intent and execution.
 ### XII. Tools
 
 The only tool I have experience with is [Alloy](https://alloytools.org/).
-Another close tools is [TLA+](https://lamport.azurewebsites.net/tla/tla.html) by Lamport.
-See also [Learn TLA+](https://learntla.com/). The latter have had much support
-from industry, while the former has been more evolving out of university
-research (MIT).
+Another close tools is [TLA+](https://lamport.azurewebsites.net/tla/tla.html)
+by Leslie Lamport. See also [Learn TLA+](https://learntla.com/).
+The latter have had much support from industry,
+while the former has been more evolving out of university research (MIT).
 
 TLA+ and Alloy are both formal specification languages used in software
 engineering to model, analyse, and verify systems, helping identify design
