@@ -214,8 +214,6 @@ significantly in their paradigms, strengths, and ideal applications.
 
 ### Reference
 
-![Deontic](./../../../assets/image/deontic.png)
-
 - Hilpinen, R. (Ed.). (1971). Deontic logic: Introductory and systematic readings. Dordrecht: Reidel.
 
     - This is the canonical collection. It includes von Wright, Kanger, and several key early contributors.
@@ -263,4 +261,7 @@ significantly in their paradigms, strengths, and ideal applications.
     - Åqvist represents a more technically sophisticated Scandinavian line,
       especially concerning conditional obligation and preference-based semantics.
 
+
+
+![Deontic](./../../../assets/image/deontic.png)
 
