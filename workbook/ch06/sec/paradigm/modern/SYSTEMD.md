@@ -198,7 +198,7 @@ between intent and execution.
 
 ### Reference
 
-![Deontic](./)
+![Deontic](./../../../assets/image/deontic.png)
 
 - Hilpinen, R. (Ed.). (1971). Deontic logic: Introductory and systematic readings. Dordrecht: Reidel.
 
