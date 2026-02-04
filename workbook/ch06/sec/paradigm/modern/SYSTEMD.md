@@ -185,7 +185,7 @@ And that is a feature, not a flaw.
 
 
 
-### XI. Final perspective
+### XI. Penultimate perspective
 
 What you end up with is *not* "a deontic logic" in the classical sense,
 but a semantic discipline for normatively constrained systems.
@@ -194,6 +194,22 @@ It lives exactly where you are pointing:
 between analytical philosophy and software architecture,
 between Kanger’s worlds and Alloy’s instances,
 between intent and execution.
+
+
+### XII. Tools
+
+The only tool I have experience with is [Alloy](https://alloytools.org/).
+Another close tools is [TLA+](https://lamport.azurewebsites.net/tla/tla.html) by Lamport.
+See also [Learn TLA+](https://learntla.com/). The latter have had much support
+from industry, while the former has been more evolving out of university
+research (MIT).
+
+TLA+ and Alloy are both formal specification languages used in software
+engineering to model, analyse, and verify systems, helping identify design
+flaws early through mathematical rigour and automated checking.
+They overlap in their goals of improving system reliability but differ
+significantly in their paradigms, strengths, and ideal applications.
+
 
 
 ### Reference
