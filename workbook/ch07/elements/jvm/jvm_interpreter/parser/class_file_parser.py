@@ -1,3 +1,4 @@
+from email import header
 import struct
 import io
 from typing import List
@@ -95,4 +96,7 @@ def parse_class_file(filename: str) -> ClassFile:
         interfaces = parse_interfaces(f, cp)
         fields = parse_members(f, cp, "field")
         methods = parse_members(f, cp, "method")
-        return ClassFile(header, cp, access, this_class, super_class, interfaces, fields, methods)
+        #return ClassFile(header, cp, access, this_class, super_class, interfaces, fields, methods)
+        attributes = [parse_attribute(f, cp) for _ in range(struct.unpack("!H", f.read(2))[0])]
+        return ClassFile(header, cp, access, this_class, super_class, interfaces, fields, methods, attributes) # added attributes
+    

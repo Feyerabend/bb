@@ -63,10 +63,23 @@ class Member:
     def __str__(self) -> str:
         return f"Member: 0x{self.access.value:04X} {self.name} {self.descriptor}"
 
+#class ClassFile:
+#    def __init__(self, header: Header, cp: List[ConstantPoolEntry], access: AccessFlags,
+#                 this_class: ClassReference, super_class: ClassReference, interfaces: List[ClassReference],
+#                 fields: List[Member], methods: List[Member]):
+#        self.header = header
+#        self.constant_pool = cp
+#        self.access = access
+#        self.this_class = this_class
+#        self.super_class = super_class
+#        self.interfaces = interfaces
+#        self.fields = fields
+#        self.methods = methods
+
 class ClassFile:
     def __init__(self, header: Header, cp: List[ConstantPoolEntry], access: AccessFlags,
                  this_class: ClassReference, super_class: ClassReference, interfaces: List[ClassReference],
-                 fields: List[Member], methods: List[Member]):
+                 fields: List[Member], methods: List[Member], attributes: List[AttributeInfo]):
         self.header = header
         self.constant_pool = cp
         self.access = access
@@ -75,3 +88,4 @@ class ClassFile:
         self.interfaces = interfaces
         self.fields = fields
         self.methods = methods
+        self.attributes = attributes  # Added attributes parameter (signature changd)

@@ -1,3 +1,4 @@
+import importlib
 from typing import List, Dict, Any, Optional, Tuple
 from jvm_interpreter.parser.class_file_parser import parse_class_file
 from jvm_interpreter.models.class_file_models import ClassFile, CodeAttribute
@@ -13,17 +14,28 @@ class ClassLoader:
         if class_name in self.loaded_classes:
             return self.loaded_classes[class_name]
         
+        # Check if it's a standard lib with proxy; if importable, create dummy ClassFile
+        py_name = class_name.replace('/', '.')
+        try:
+            importlib.import_module(py_name)
+            # Dummy ClassFile for proxies (minimal, since no bytecode needed)
+            dummy = ClassFile(Header(0xCAFEBABE, 0, 52), [], AccessFlags(0x0021),
+                            ClassReference(py_name), ClassReference('java/lang/Object'),
+                            [], [], [])
+            self.loaded_classes[class_name] = dummy
+            return dummy
+        except ImportError:
+            pass  # Fall through to file load
+        
         for path in self.class_path:
             try:
                 file_path = f"{path}/{class_name}.class"
                 class_file = parse_class_file(file_path)
                 self.loaded_classes[class_name] = class_file
+                # Run <clinit> if present...
                 return class_file
             except FileNotFoundError:
                 continue
-            except Exception as e:
-                print(f"Error loading class {class_name} from {file_path}: {e}")
-        
         raise ValueError(f"Class {class_name} not found in class path: {self.class_path}")
 
     def get_method_code(self, class_name: str, method_name: str) -> Optional[Tuple[int, int, bytes]]:

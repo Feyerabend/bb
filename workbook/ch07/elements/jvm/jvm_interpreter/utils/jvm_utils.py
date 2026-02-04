@@ -44,7 +44,7 @@ def disassemble_code(code: bytes, cp: List[ConstantPoolEntry]) -> str:
         args = code_bytes[pc + 1:pc + oplen]
         arg_str = ""
         if args:
-            if opcode in (18, 19, 178, 179, 180, 181, 182, 183, 184, 185):
+            if opcode in (18, 19, 178, 179, 180, 181, 182, 183, 184, 185, 187): #187, 189, 192, 193):
                 index = (args[0] << 8) | args[1] if len(args) > 1 else args[0]
                 arg_str = f" #{index} -> {format_constant(cp, index)}"
             elif opcode in (153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 167):
@@ -87,39 +87,66 @@ def print_class_info(cf: ClassFile):
         for f in cf.fields:
             print(f"  {f}")
             print(f"    Flags: {decode_flags(f.access.value, 'field')}")
+#    if cf.methods:
+#        print("\nMethods:")
+#        for m in cf.methods:
+#            print(f"  {m}")
+#            print(f"    Flags: {decode_flags(m.access.value, 'method')}")
+#            try:
+#                for a in m.attributes:
+#                    try:
+#                       print(f"    Inspecting attribute object: {a}")
+#                        print(f"    Has name attribute: {hasattr(a, 'name')}")
+#                        name = getattr(a, 'name', '<no name>')
+#                        print(f"    Attribute name: {name}")
+#                    except Exception as e:
+#                        print(f"Error accessing attribute name: {str(e)}")
+#                        raise
+#                    print(f"    Processing attribute: {name}")
+#                    print(f"    Namespace check: local_code_attribute={local_code_attribute}")
+#                    print(f"    Attribute type: {type(a)}")
+#                    try: # Need this try?
+#                        is_code_attribute = (type(a) is local_code_attribute)
+#                        print(f"    Is CodeAttribute: {is_code_attribute}")
+#                        if is_code_attribute:
+#                            print(f"    {a}")
+#                            print("    Disassembled Code:")
+#                            print(disassemble_code(a.code, cf.constant_pool))
+#                        else:
+#                            print(f"    {a}")
+#                    except Exception as e:
+#                        print(f"Inner error processing attribute {name}: {str(e)}")
+#                        raise
+#            except Exception as e:
+#                print(f"Outer error processing method {m.name}: {str(e)}")
+#                raise
+
     if cf.methods:
         print("\nMethods:")
         for m in cf.methods:
             print(f"  {m}")
             print(f"    Flags: {decode_flags(m.access.value, 'method')}")
-            try:
-                for a in m.attributes:
-                    try:
-                        print(f"    Inspecting attribute object: {a}")
-                        print(f"    Has name attribute: {hasattr(a, 'name')}")
-                        name = getattr(a, 'name', '<no name>')
-                        print(f"    Attribute name: {name}")
-                    except Exception as e:
-                        print(f"Error accessing attribute name: {str(e)}")
-                        raise
-                    print(f"    Processing attribute: {name}")
-                    print(f"    Namespace check: local_code_attribute={local_code_attribute}")
-                    print(f"    Attribute type: {type(a)}")
-                    try:
-                        is_code_attribute = (type(a) is local_code_attribute)
-                        print(f"    Is CodeAttribute: {is_code_attribute}")
-                        if is_code_attribute:
-                            print(f"    {a}")
-                            print("    Disassembled Code:")
-                            print(disassemble_code(a.code, cf.constant_pool))
-                        else:
-                            print(f"    {a}")
-                    except Exception as e:
-                        print(f"Inner error processing attribute {name}: {str(e)}")
-                        raise
-            except Exception as e:
-                print(f"Outer error processing method {m.name}: {str(e)}")
-                raise
+            for a in m.attributes:
+                if isinstance(a, CodeAttribute):
+                    print(f"    {a}")
+                    print("    Disassembled Code:")
+                    print(disassemble_code(a.code, cf.constant_pool))
+                else:
+                    print(f"    {a}")
+
+#    if cf.attributes:
+#        print("\nAttributes:")
+#        for a in cf.attributes:
+#            print(f"  {a}")
+#            if hasattr(a, 'name'):
+#                print(f"    Name: {a.name}")
+#            else:
+#                print("    <no name attribute>")
+#            if hasattr(a, 'value'):
+#                print(f"    Value: {a.value}")
+#            else:
+#                print("    <no value attribute>")
+
     if cf.attributes:
         print("\nAttributes:")
         for a in cf.attributes:
@@ -128,9 +155,14 @@ def print_class_info(cf: ClassFile):
                 print(f"    Name: {a.name}")
             else:
                 print("    <no name attribute>")
-            if hasattr(a, 'value'):
-                print(f"    Value: {a.value}")
+            if a.name == 'SourceFile' and len(a.data) == 2:
+                import struct
+                index = struct.unpack('!H', a.data)[0]
+                source = cf.constant_pool[index - 1].value
+                print(f"    Source file: {source}")
+            elif hasattr(a, 'data'):
+                print(f"    Data: {a.data}")
             else:
-                print("    <no value attribute>")
+                print("    <no data attribute>")
     print("\nEnd of Class File Info")
 

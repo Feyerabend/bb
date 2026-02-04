@@ -1,5 +1,5 @@
 import struct
-import importlib
+#import importlib
 from typing import List, Dict, Any, Optional
 from jvm_interpreter.models.class_file_models import ConstantPoolEntry, CodeAttribute
 from jvm_interpreter.runtime.class_loader import ClassLoader
@@ -384,15 +384,21 @@ class Interpreter:
         name_and_type = self.constant_pool[name_and_type_index - 1].value
         name_index = name_and_type[0]
         name = self.constant_pool[name_index - 1].value
-        try:
-            value = self.class_loader.resolve_field(class_name, name)
-            if value is None:
-                target_class = importlib.import_module(class_name)
-                value = getattr(target_class, name)
+        
+        # Try to resolve the static field from the class loader
+        value = self.class_loader.resolve_field(class_name, name)
+        if value is None:
+            # Special handling for known Java system fields
+            if class_name == "java.lang.System" and name == "out":
+                # Return a mock PrintStream object
+                class MockPrintStream:
+                    def println(self, s):
+                        print(s)
+                value = MockPrintStream()
                 self.class_loader.set_field(class_name, name, value)
-            self.stack.append(value)
-        except (ImportError, AttributeError) as e:
-            raise ValueError(f"Failed to resolve getstatic: {class_name}.{name} - {e}")
+            else:
+                raise ValueError(f"Static field not found: {class_name}.{name}")
+        self.stack.append(value)
 
     def instr_putstatic(self):
         index = self.advance(2)
@@ -405,12 +411,8 @@ class Interpreter:
         name_index = name_and_type[0]
         name = self.constant_pool[name_index - 1].value
         value = self.stack.pop()
-        try:
-            target_class = importlib.import_module(class_name)
-            setattr(target_class, name, value)
-            self.class_loader.set_field(class_name, name, value)
-        except (ImportError, AttributeError) as e:
-            self.class_loader.set_field(class_name, name, value)
+        # Store the static field value in the class loader
+        self.class_loader.set_field(class_name, name, value)
 
     def instr_getfield(self):
         index = self.advance(2)
@@ -490,14 +492,25 @@ class Interpreter:
         obj = self.stack.pop()
         if obj is None:
             raise ValueError("Null pointer in invokespecial")
-        try:
-            target_class = importlib.import_module(class_name)
-            target_method = getattr(target_class, name)
-            result = target_method(obj, *args)
+        
+        # Try to get method from the loaded class
+        code = self.class_loader.get_method_code(class_name, name)
+        if code:
+            sub_interpreter = Interpreter(code[2], code[0], code[1], 
+                                        self.class_loader.load_class(class_name).constant_pool, 
+                                        self.class_loader)
+            # Set up locals: 'this' reference plus arguments
+            sub_interpreter.locals[0] = obj
+            sub_interpreter.locals[1:len(args)+1] = args
+            result = sub_interpreter.run()
             if typee.startswith('()') and typee != '()V':
                 self.stack.append(result)
-        except (ImportError, AttributeError) as e:
-            raise ValueError(f"Failed to invoke special method: {class_name}.{name}{typee} - {e}")
+        else:
+            # For system methods like Object.<init>, just ignore
+            if class_name.startswith("java."):
+                pass  # Ignore Java standard library method calls
+            else:
+                raise ValueError(f"Failed to invoke special method: {class_name}.{name}{typee}")
 
     def instr_invokestatic(self):
         index = self.advance(2)
@@ -511,22 +524,19 @@ class Interpreter:
         arg_num = len(typee.split(';')) - 1
         args = [self.stack.pop() for _ in range(arg_num)]
         args.reverse()
-        try:
-            target_class = importlib.import_module(class_name)
-            target_method = getattr(target_class, name)
-            result = target_method(*args)
+        
+        # Try to load and execute method from class loader
+        code = self.class_loader.get_method_code(class_name, name)
+        if code:
+            sub_interpreter = Interpreter(code[2], code[0], code[1], 
+                                        self.class_loader.load_class(class_name).constant_pool, 
+                                        self.class_loader)
+            sub_interpreter.locals[:len(args)] = args
+            result = sub_interpreter.run()
             if typee.startswith('()') and typee != '()V':
                 self.stack.append(result)
-        except (ImportError, AttributeError) as e:
-            code = self.class_loader.get_method_code(class_name, name)
-            if code:
-                sub_interpreter = Interpreter(code[2], code[0], code[1], self.class_loader.load_class(class_name).constant_pool, self.class_loader)
-                sub_interpreter.locals[:len(args)] = args
-                result = sub_interpreter.run()
-                if typee.startswith('()') and typee != '()V':
-                    self.stack.append(result)
-            else:
-                raise ValueError(f"Failed to invoke static method: {class_name}.{name}{typee} - {e}")
+        else:
+            raise ValueError(f"Failed to invoke static method: {class_name}.{name}{typee}")
 
     def instr_invokeinterface(self):
         index = self.advance(2)
