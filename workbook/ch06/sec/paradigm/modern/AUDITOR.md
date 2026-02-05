@@ -729,28 +729,28 @@ __Step 3: Interpretation for Logic Auditing__
 
 ```mermaid
 stateDiagram-v2
-    [*] --> w0 : start (empty library)
+    [*] --> w0
 
-    %% World nodes with concise labels
-    w0 : empty
-    w1 : b1:u1 borrowed
-    w2 : b1:u1, b2:u2 borrowed (VIP)
-    w3 : b1:u1 borrowed, b2:u1 reserved
-    w4 : b2:u2 borrowed (VIP)
-    w5 : b1:u2 borrowed (VIP)
-    w6 : b1:u2, b2:u2 borrowed (VIP)
-    w7 : b1:u1 borrowed, b1:u2 reserved
-    w8 : b1:u1 borrowed, b2:u2 borrowed (VIP), b2:u1 reserved
-    w9 : b1:u2 borrowed (VIP), b2:u1 reserved
-    w10 : b1:u2, b2:u2 borrowed (VIP), b2:u1 reserved
+    %% World nodes with predicates
+    w0 : "empty\n¬Borrowed(b1,u1)\n¬Borrowed(b1,u2)\n¬Borrowed(b2,u1)\n¬Borrowed(b2,u2)\n¬Reserved(b1,u1)\n¬Reserved(b2,u1)"
+    w1 : "b1:u1 borrowed\nDue=21\n¬Borrowed(b2,u1,u2)\n¬Reserved(b2,u1)"
+    w2 : "b1:u1 borrowed, b2:u2 borrowed (VIP)\nDue b1=21, b2=5\n¬Reserved(b2,u1)"
+    w3 : "b1:u1 borrowed\nb2:u1 reserved\n¬Borrowed(b2,u2)"
+    w4 : "b2:u2 borrowed (VIP)\nDue=5\n¬Borrowed(b1,u1,u2)\n¬Reserved(b2,u1)"
+    w5 : "b1:u2 borrowed (VIP)\nDue=21\n¬Borrowed(b2,u1,u2)\n¬Reserved(b2,u1)"
+    w6 : "b1:u2 borrowed, b2:u2 borrowed (VIP)\nDue b1=21, b2=5\n¬Reserved(b2,u1)"
+    w7 : "b1:u1 borrowed\nb1:u2 reserved\n¬Borrowed(b2,u1,u2)"
+    w8 : "b1:u1 borrowed, b2:u2 borrowed (VIP)\nb2:u1 reserved\nDue b1=21, b2=5"
+    w9 : "b1:u2 borrowed (VIP)\nb2:u1 reserved\nDue b1=21"
+    w10 : "b1:u2 borrowed, b2:u2 borrowed (VIP)\nb2:u1 reserved\nDue b1=21, b2=5"
 
-    %% Transitions (actions)
+    %% Transitions
     w0 --> w1 : u1 borrows b1
     w0 --> w4 : u2 borrows b2
     w0 --> w5 : u2 borrows b1
     w0 --> w3 : u1 reserves b2
 
-    w1 --> w2 : u2 borrows b2 (VIP)
+    w1 --> w2 : u2 borrows b2
     w1 --> w0 : u1 returns b1
     w1 --> w3 : u1 reserves b2
 
