@@ -55,7 +55,19 @@ __Actions as Transitions__
 - $w2$ — $Checkout(u1)→ w3$
 - $w3$ — $ShipOrder(u1)→ w4$
 
+```mermaid
+sequenceDiagram
+    participant U1 as User1
+    participant B as LibrarySystem
 
+    %% Scenario: borrowing b1, reserving b2, returning b1
+    U1->>B: Borrow b1
+    B-->>U1: Confirm borrow, due=21
+    U1->>B: Reserve b2
+    B-->>U1: Confirm reservation
+    U1->>B: Return b1
+    B-->>U1: Confirm return
+```
 
 __Expressing with Act Concept__
 
