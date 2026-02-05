@@ -68,7 +68,7 @@ sequenceDiagram
     U1->>WS: Checkout
     WS-->>U1: Confirm payment
     WS->>U1: ShipOrder
-    U1-->>WS: Receive confirmation
+    U1-->>WS: Receive confirmations
 ```
 
 __Expressing with Act Concept__
@@ -101,6 +101,8 @@ __Why This Matters for a Programmer__
 
 
 ### Second Sample
+
+Here we introduce some adversial in countermodels. Actions that are not suppose to happend.
 
 ```mermaid
 stateDiagram-v2
@@ -196,7 +198,7 @@ Formally:
 ```
 
 
-Optional Logical Properties
+__Optional Logical Properties__
 1. Admissibility: $w \in W$ is admissible if $\exists a \in Act$ such that $Pre(a,w) = true$ or it is an initial world.
 2. Temporal progression: if $w \rightarrow_{a} w'$ then $w'$ occurs after $w$.
 3. Invariant: $Stock(i, w) \ge 0$ is an invariant in all admissible worlds.
