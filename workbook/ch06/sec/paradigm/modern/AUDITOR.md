@@ -316,7 +316,7 @@ As a consequence, the locus of responsibility in programming shifts. When code
 generation becomes inexpensive, the primary source of risk is no longer faulty
 *construction*, but faulty *specification*. In semantic terms, errors arise not
 because an implementation is poorly written, but because the set of admissible
-worlds A has been inadequately or ambiguously defined. This shift gives rise
+worlds $A$ has been inadequately or ambiguously defined. This shift gives rise
 to a distinct role: the *Logic Auditor*.
 
 The Logic Auditor is not primarily a programmer in the traditional sense, nor a
@@ -344,7 +344,7 @@ who enforces this distinction.
 
 Importantly, this role is inherently *communicative*. Stakeholders may understand prototypes
 or feature lists, but they are accountable for the logic of the system only when its
-normative structure is made visible. By presenting the logic model—the admissibility
+normative structure is made visible. By presenting the logic model--the admissibility
 conditions, obligations, and forbidden states--the Logic Auditor creates a shared object
 of *responsibility*. If a system behaves undesirably, the question is no longer
 "Who wrote this code?" but "Which constraint was accepted, omitted, or misunderstood?"
@@ -429,6 +429,10 @@ This stage corresponds directly to the classical use of possible-world semantics
 Instead of proving theorems, the auditor explores models. Countermodels are especially valuable:
 they represent system behaviours that satisfy the formal constraints while violating
 the stakeholders' expectations.
+By examining these counterexamples, the Logic Auditor can refine the specification,
+tightening constraints or clarifying ambiguous norms. In this way, countermodels act as early
+warning signals, ensuring the system's behavior aligns with both formal correctness and
+stakeholder intent before code is generated.
 
 When such a countermodel is found, the failure is *not* attributed to the tool or the LLM.
 It is attributed to an underspecified or misarticulated norm.
@@ -479,4 +483,121 @@ The theoretical machinery developed to reason about obligation and action now fi
 constraining systems whose behaviour space has become too large to manage informally.
 LLMs simply make this machinery operational at scale.
 
+
+
+#### 13. Example: Admissible Worlds in a Library System
+
+Assume:
+- Books $B = \{ b_1, b_2 \}$
+- Users $U = \{ u_1, u_2 \}$
+- Categories: $b_1$ is Textbook, $b_2$ is Rare
+- User types: $u_1$ Standard, $u_2$ VIP
+
+The rules/admissibility constraints include:
+1. Reference books cannot be borrowed.
+2. Borrow durations respect category limits
+   (3 days for Rare, 30 days for Textbook; VIPs can extend Rare books by 2 days).
+3. Overdue books cannot be borrowed again.
+4. Reservations prevent borrowing by others.
+
+
+Admissible Worlds (snapshots of the system)
+1. World $w_1$ – Minimal activity
+```math
+Borrowed(b_1,u_1,w_1) = \text{true},\quad Due(b_1,u_1,w_1) = 21
+Borrowed(b_2,u_2,w_1) = \text{false}, \quad Reserved(b_2,u_1,w_1) = \text{false}
+```
+Explanation: Only a standard book is borrowed within allowed duration. Rare book untouched.
+
+2. World $w_2$ – VIP exception applied
+```math
+Borrowed(b_1,u_1,w_2) = \text{true}, \quad Due(b_1,u_1,w_2) = 21
+Borrowed(b_2,u_2,w_2) = \text{true}, \quad Due(b_2,u_2,w_2) = 5
+```
+Explanation: VIP user borrows Rare book; due date extended by 2 days. All admissibility rules satisfied.
+
+3. World $w_3$ – Reservation respected
+```math
+Reserved(b_2,u_1,w_3) = \text{true}, \quad Borrowed(b_2,u_2,w_3) = \text{false}
+Borrowed(b_1,u_1,w_3) = \text{true}, \quad Due(b_1,u_1,w_3) = 21
+```
+Explanation: Rare book reserved by another user; cannot be borrowed. All rules satisfied.
+
+4. World $w_4$ – Empty library
+```math
+\forall b,u: Borrowed(b,u,w_4) = \text{false}, \quad Reserved(b,u,w_4) = \text{false}
+```
+Explanation: No books borrowed, all constraints trivially satisfied. Admissible as a starting or resting state.
+
+
+How the Logic Auditor Uses These Worlds
+- Step 1: Enumerate admissible worlds as above to visualise all allowed states.
+- Step 2: Check for completeness: Are there plausible states the stakeholders
+  expect that are missing? Are exceptions (like VIP loans) represented?
+- Step 3: Compare candidate LLM-generated specifications or code against these
+  admissible worlds. If a generated world violates a rule, it is immediately flagged.
+- Step 4: Iterate: adjust rules, update admissibility predicate, and regenerate
+  candidate worlds to see if they now match stakeholder expectations.
+
+
+#### Illustration
+
+All combinations for a small library system like before (2 books, 2 users, 1 VIP exception, borrowing/reservation rules) and illustrate transitions (borrow, return, reserve) while showing which worlds are admissible.
+
+```mermaid
+stateDiagram-v2
+    [*] --> w4: start (empty library)
+
+    %% World w4: no books borrowed, no reservations
+    state w4 {
+        Borrowed(b1,u1)=false
+        Borrowed(b2,u2)=false
+        Reserved(b1,u1)=false
+        Reserved(b2,u1)=false
+    }
+    w4 --> w1: u1 borrows b1
+    w4 --> w3: u1 reserves b2
+
+    %% World w1: b1 borrowed by u1, b2 free
+    state w1 {
+        Borrowed(b1,u1)=true
+        Due(b1,u1)=21
+        Borrowed(b2,u2)=false
+        Reserved(b2,u1)=false
+    }
+    w1 --> w2: u2 borrows b2 (VIP exception)
+    w1 --> w4: u1 returns b1
+
+    %% World w2: VIP exception applied
+    state w2 {
+        Borrowed(b1,u1)=true
+        Due(b1,u1)=21
+        Borrowed(b2,u2)=true
+        Due(b2,u2)=5
+        Reserved(b2,u1)=false
+    }
+    w2 --> w1: u2 returns b2
+    w2 --> w4: u1 returns b1, u2 returns b2
+
+    %% World w3: reservation respected
+    state w3 {
+        Borrowed(b1,u1)=true
+        Due(b1,u1)=21
+        Borrowed(b2,u2)=false
+        Reserved(b2,u1)=true
+    }
+    w3 --> w1: u1 cancels reservation on b2
+    w3 --> w4: u1 returns b1
+```
+
+
+How to Read This Diagram
+- Nodes w4, w1, w2, w3 represent admissible worlds. Each world lists the system state:
+  which books are borrowed, due dates, and reservations.
+- Edges represent transitions (actions) like borrowing, returning, or reserving a book.
+- Only transitions that produce admissible worlds are included. Any action that would
+  violate a rule (e.g., borrowing a reserved or overdue book) is excluded--these woul
+  lead to inadmissible worlds.
+- This visualises the state space that the Logic Auditor can reason about *before* implementation.
+  LLM-generated candidate code can be checked against these admissible transitions.
 
