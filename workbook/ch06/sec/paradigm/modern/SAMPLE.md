@@ -95,31 +95,21 @@ stateDiagram-v2
     w2 : cart={i1,i2}, unpaid, stock i1=1,i2=1
     w3 : cart={i1,i2}, paid, stock i1=0,i2=0
     w4 : cart={i1,i2}, paid, shipped, stock i1=0,i2=0
-    wX : invalid/countermodel
+    wX : INVALID / countermodel
 
     %% Valid transitions
-    w0 --> w1 : AddToCart(i1)
-    w0 --> w2 : AddToCart(i2)  %% only if stock allows, otherwise wX
-    w1 --> w2 : AddToCart(i2)
-    w2 --> w3 : Checkout
-    w3 --> w4 : ShipOrder
-    w2 --> w1 : RemoveFromCart(i2)
-    w1 --> w0 : RemoveFromCart(i1)
+    w0 --> w1 : [ADD] AddToCart(i1)
+    w0 --> w2 : [ADD] AddToCart(i2)
+    w1 --> w2 : [ADD] AddToCart(i2)
+    w2 --> w3 : [CHK] Checkout
+    w3 --> w4 : [SHIP] ShipOrder
+    w2 --> w1 : [REM] RemoveFromCart(i2)
+    w1 --> w0 : [REM] RemoveFromCart(i1)
 
     %% Invalid transitions (countermodels)
-    w0 --> wX : Checkout (cart empty)
-    w1 --> wX : Checkout (cart incomplete)
-    w2 --> wX : ShipOrder (not paid)
-    w3 --> wX : AddToCart(i1) (stock exhausted)
-    w3 --> wX : RemoveFromCart(i2) (already checked out)
-
-    %% Notes for action semantics
-    note right of w0
-        Action colors / meaning:
-        - AddToCart: blue
-        - RemoveFromCart: orange
-        - Checkout: green
-        - ShipOrder: purple
-        - Countermodel: red
-    end note
+    w0 --> wX : [CHK] Checkout (cart empty)
+    w1 --> wX : [CHK] Checkout (cart incomplete)
+    w2 --> wX : [SHIP] ShipOrder (not paid)
+    w3 --> wX : [ADD] AddToCart(i1) (stock exhausted)
+    w3 --> wX : [REM] RemoveFromCart(i2) (already checked out)
 ```
