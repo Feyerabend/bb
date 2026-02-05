@@ -4,8 +4,8 @@
 ##### Abstract
 This paper presents a semantics-first formulation of a deontic action logic suitable
 for software specification and analysis. Rather than beginning with axioms or proof
-systems, we introduce a small set of semantic primitives—possible worlds, admissibility,
-obligation, permission, and action—directly in first-order logic. We show how normative
+systems, we introduce a small set of semantic primitives--*possible worlds*, *admissibility*,
+*obligation*, *permission*, and *action*--directly in first-order logic. We show how normative
 concepts arise as constraints over structures, and how this framework naturally supports
 reasoning about system behaviour.
 
@@ -36,12 +36,12 @@ that can be understood by developers, audited by stakeholders, and implemented b
 We begin by introducing the core primitives directly.
 
 #### 2.1 Worlds
-Let W be a non-empty set. Elements $w \in W$ are called worlds. A world represents a complete
+Let $W$ be a non-empty set. Elements $w \in W$ are called worlds. A world represents a complete
 description of a system state, or, if desired, a complete execution history. No internal
 structure of worlds is assumed at this stage.
 
 #### 2.2 Admissibility
-Not all worlds are acceptable. Norms distinguish acceptable from unacceptable system behaviors.
+Not all worlds are acceptable. Norms distinguish acceptable from unacceptable system behaviours.
 
 We introduce a unary predicate:
 ```math
@@ -55,19 +55,81 @@ A = \{ w \in W \mid A(w) \}
 ```
 Normativity enters the model entirely through this predicate.
 
+##### NOTE: Admissable
+A world is admissible if it is a world the system is willing to acknowledge as an acceptable outcome of its design.
+Think of admissibility as a normative filter placed over the space of all possible system behaviours.
+Before any logic is applied, there exists a vast space of logically possible worlds. Most of these worlds are
+irrelevant, dangerous, nonsensical, or unacceptable from the standpoint of the system's purpose.
+
 #### 2.3 Propositions
 Let propositional conditions be represented by unary predicates over worlds. For *example*:
 ```math
 Borrowed(w), \quad Overdue(w), \quad Reserved(w)
 ```
 Each predicate specifies whether a condition holds in a given world.
+Borrowed(w) is true if, in world w, a book is currently checked out.
+Overdue(w) is true if any book has passed its due date in that world.
+Reserved(w) is true if a book has an active reservation.
+
 Truth is always evaluated relative to a world.
 
-##### NOTE: Admissable
-A world is admissible if it is a world the system is willing to acknowledge as an acceptable outcome of its design.
-Think of admissibility as a normative filter placed over the space of all possible system behaviours.
-Before any logic is applied, there exists a vast space of logically possible worlds. Most of these worlds are
-irrelevant, dangerous, nonsensical, or unacceptable from the standpoint of the system's purpose.
+##### NOTE: In Practice
+This perspective is practically useful because it shifts the developer's focus from writing code
+for single actions to *reasoning about the set of possible system states*. For example, if a developer
+wants to ensure that no overdue book is ever loaned, they can express this as:
+```math
+\forall w \big( A(w) \rightarrow \neg (Overdue(w) \land Borrowed(w)) \big)
+```
+Here, $A(w)$ defines admissibility: only worlds that satisfy the system's norms are considered.
+The formula says: in every admissible system snapshot, it must never happen that a copy of a book
+is both overdue and borrowed.
+
+By working with predicates over worlds, the developer, or future Logic Auditor, can reason semantically
+about the entire system behaviour, rather than only about individual actions. Predicates over worlds
+act as formalised, queryable conditions that bridge intention, specification, and implementation,
+making it possible to verify or generate code while keeping the system within the explicitly defined
+space of acceptable outcomes.
+
+Let's take an example. Library systems often encode many seemingly exceptional cases: borrowing
+durations differ by book type, user category, or special circumstances; certain rare books might
+have stricter rules; temporary exceptions might override normal rules. In traditional systems,
+these exceptions are implemented as special-case code, sometimes scattered across the application.
+Each exception increases the cognitive load, risks contradictions, and makes reasoning about the
+system globally much harder.
+
+From a semantic viewpoint, these "exceptions" are simply constraints on admissibility.
+Each rule, including exceptions, defines which worlds are acceptable. For instance:
+- Standard textbooks: 30-day loan period.
+- Reference books: cannot be loaned.
+- Rare manuscripts: 3-day loan, special handling required. They stay at the library.
+- User exceptions: certain categories may get extended loans.
+
+Instead of treating these as isolated code paths, we can model them as predicates over worlds.
+Each world $w$ encodes the full system state: all loans, book types, and user categories.
+A predicate for a given rule might be:
+```math
+LoanDuration(b,u,w) \leq MaxDuration(b,u)
+```
+Where $MaxDuration(b,u)$ depends on book $b$ and user $u$, capturing all "exceptions" declaratively.
+Then the admissibility predicate combines all these constraints:
+```math
+A(w) \;\equiv\; \bigwedge_{\text{rule } i} Rule_i(w)
+```
+By defining admissibility this way, exceptions are handled early in the reasoning process. A world
+that violates any of the rules, even a rare exception, is automatically excluded from the set of
+admissible worlds.
+
+1. Early semantic validation: Before generating code, the Logic Auditor can explore candidate
+   worlds and ensure that all exception rules are consistent.
+2. Unified reasoning: Borrowing rules, exceptions, and special cases are treated uniformly as
+   constraints on worlds, rather than ad-hoc code branches.
+3. Simplified implementation: Code (human-written or LLM-generated) becomes a projection of
+   admissible worlds; exception handling is largely a byproduct of adherence to admissibility
+   rather than bespoke logic.
+
+In other words, predicates over worlds are the practical tool for enforcing admissibility:
+they make the system's constraints explicit and machine-checkable, whether by static analysis,
+model checking, or even LLM-assisted candidate generation.
 
 
 ### 3. Obligation, Prohibition, and Permission
