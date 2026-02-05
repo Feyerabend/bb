@@ -540,13 +540,16 @@ How the Logic Auditor Uses These Worlds
   candidate worlds to see if they now match stakeholder expectations.
 
 
-#### Illustration
+##### Simple Illustration
 
-All combinations for a small library system like before (2 books, 2 users, 1 VIP exception, borrowing/reservation rules) and illustrate transitions (borrow, return, reserve) while showing which worlds are admissible.
+All combinations for a small library system like before
+(2 books, 2 users, 1 VIP exception, borrowing/reservation rules)
+and illustrate transitions (borrow, return, reserve)
+while showing which worlds are admissible.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> w4 : start (empty library)
+    [*] --> w4 : start (empty library -- no action)
 
     w4 : Borrowed(b1,u1)=false
     w4 : Borrowed(b2,u2)=false
@@ -593,3 +596,242 @@ How to Read This Diagram
 - This visualises the state space that the Logic Auditor can reason about *before* implementation.
   LLM-generated candidate code can be checked against these admissible transitions.
 
+
+
+#### 14. Another Sample
+
+__Step 1: Define Predicates__
+
+We use the following unary or relational predicates over worlds $w$:
+- $Borrowed(b,u,w)$ — book $b$ is borrowed by user $u$ in world $w$
+- $Reserved(b,u,w)$ — book $b$ is reserved by user $u$ in world $w$
+- $Due(b,u,d,w)$ — borrowed book $b$ by user $u$ is due in $d$ days in world $w$
+
+Derived predicate for rules:
+```math
+AllowedBorrowDuration(b,u,d) =
+\begin{cases}
+21 & b = Fiction \\
+3 & b = Rare \text{ (standard)} \\
+5 & b = Rare \text{ (VIP)}
+\end{cases}
+```
+A world $w$ is admissible if all rules are satisfied:
+```math
+A(w) \equiv
+\forall b,u,d \; \Big( Borrowed(b,u,w) \rightarrow d \leq AllowedBorrowDuration(b,u,d) \Big) \wedge \text{Reservation constraints} \wedge \text{No Reference borrowed}
+```
+
+
+__Step 2: Describe Worlds as Predicates__
+
+For simplicity, we enumerate the admissible worlds from before, now fully in predicates.
+
+World $w0$ — empty library
+```math
+\neg Borrowed(b_1,u_1,w_0), \neg Borrowed(b_1,u_2,w_0)
+\neg Borrowed(b_2,u_1,w_0), \neg Borrowed(b_2,u_2,w_0)
+\neg Reserved(b_1,u_1,w_0), \neg Reserved(b_2,u_1,w_0)
+```
+
+
+World $w1$ — standard user borrows fiction
+```math
+Borrowed(b_1,u_1,w_1), Due(b_1,u_1,21,w_1)
+\neg Borrowed(b_2,u_1,w_1), \neg Borrowed(b_2,u_2,w_1)
+\neg Reserved(b_2,u_1,w_1)
+```
+
+
+World $w2$ — standard user borrows textbook, VIP borrows rare (VIP exception)
+```math
+Borrowed(b_1,u_1,w_2), Due(b_1,u_1,21,w_2)
+Borrowed(b_2,u_2,w_2), Due(b_2,u_2,5,w_2)
+\neg Reserved(b_2,u_1,w_2)
+```
+
+
+World $w3$ — reservation respected, textbook borrowed by standard user
+```math
+Borrowed(b_1,u_1,w_3), Due(b_1,u_1,21,w_3)
+\neg Borrowed(b_2,u_2,w_3)
+Reserved(b_2,u_1,w_3)
+```
+
+
+World $w4$ — VIP borrows rare alone
+```math
+Borrowed(b_2,u_2,w_4), Due(b_2,u_2,5,w_4)
+\neg Borrowed(b_1,u_1,w_4), \neg Borrowed(b_1,u_2,w_4)
+\neg Reserved(b_2,u_1,w_4)
+```
+
+
+World $w5$ — VIP borrows textbook alone
+```math
+Borrowed(b_1,u_2,w_5), Due(b_1,u_2,21,w_5)
+\neg Borrowed(b_2,u_2,w_5)
+\neg Reserved(b_2,u_1,w_5)
+```
+
+
+World $w6$ — VIP borrows textbook and rare
+```math
+Borrowed(b_1,u_2,w_6), Due(b_1,u_2,21,w_6)
+Borrowed(b_2,u_2,w_6), Due(b_2,u_2,5,w_6)
+\neg Reserved(b_2,u_1,w_6)
+```
+
+
+World $w7$ — textbook reserved by VIP, borrowed by standard user
+```math
+Borrowed(b_1,u_1,w_7), Due(b_1,u_1,21,w_7)
+Reserved(b_1,u_2,w_7)
+\neg Borrowed(b_2,u_1,w_7), \neg Borrowed(b_2,u_2,w_7)
+```
+
+
+World $w8$ — complex: standard borrows textbook, VIP borrows rare, $b2$ reserved by $u1$
+```math
+Borrowed(b_1,u_1,w_8), Due(b_1,u_1,21,w_8)
+Borrowed(b_2,u_2,w_8), Due(b_2,u_2,5,w_8)
+Reserved(b_2,u_1,w_8)
+```
+
+
+World $w9$ — VIP borrows textbook, rare reserved by $u1$
+```math
+Borrowed(b_1,u_2,w_9), Due(b_1,u_2,21,w_9)
+Reserved(b_2,u_1,w_9)
+\neg Borrowed(b_2,u_2,w_9)
+```
+
+
+World $w10$ — VIP borrows textbook & rare, rare reserved by $u1$
+```math
+Borrowed(b_1,u_2,w_{10}), Due(b_1,u_2,21,w_{10})
+Borrowed(b_2,u_2,w_{10}), Due(b_2,u_2,5,w_{10})
+Reserved(b_2,u_1,w_{10})
+```
+
+
+__Step 3: Interpretation for Logic Auditing__
+- Each world $w_i$ corresponds to a fully defined admissible state.
+- LLMs can propose candidate transitions (borrow, return, reserve)
+  and the auditor checks $A(w)$ to ensure the resulting world is admissible.
+- Exceptions (VIP extension, reservation overrides) are already baked
+  into the worlds, so any transition that violates rules would lead
+  to a world not listed above.
+- Countermodels are easy to see: any candidate world outside this set
+  violates admissibility and indicates a problem in rules or generated code.
+
+##### Complex Illustration
+
+```mermaid
+stateDiagram-v2
+    [*] --> w0 : start (empty library)
+
+    %% World nodes with concise labels
+    w0 : empty
+    w1 : b1:u1 borrowed
+    w2 : b1:u1, b2:u2 borrowed (VIP)
+    w3 : b1:u1 borrowed, b2:u1 reserved
+    w4 : b2:u2 borrowed (VIP)
+    w5 : b1:u2 borrowed (VIP)
+    w6 : b1:u2, b2:u2 borrowed (VIP)
+    w7 : b1:u1 borrowed, b1:u2 reserved
+    w8 : b1:u1 borrowed, b2:u2 borrowed (VIP), b2:u1 reserved
+    w9 : b1:u2 borrowed (VIP), b2:u1 reserved
+    w10 : b1:u2, b2:u2 borrowed (VIP), b2:u1 reserved
+
+    %% Transitions (actions)
+    w0 --> w1 : u1 borrows b1
+    w0 --> w4 : u2 borrows b2
+    w0 --> w5 : u2 borrows b1
+    w0 --> w3 : u1 reserves b2
+
+    w1 --> w2 : u2 borrows b2 (VIP)
+    w1 --> w0 : u1 returns b1
+    w1 --> w3 : u1 reserves b2
+
+    w2 --> w1 : u2 returns b2
+    w2 --> w0 : u1 returns b1, u2 returns b2
+
+    w3 --> w1 : u1 cancels reservation
+    w3 --> w0 : u1 returns b1
+
+    w4 --> w0 : u2 returns b2
+    w5 --> w0 : u2 returns b1
+    w6 --> w5 : u2 returns b2
+    w6 --> w0 : u2 returns b1 & b2
+
+    w7 --> w1 : VIP cancels reservation
+    w7 --> w0 : u1 returns b1
+
+    w8 --> w2 : u1 cancels reservation
+    w8 --> w0 : u1 returns b1, u2 returns b2
+
+    w9 --> w5 : u1 cancels reservation
+    w9 --> w0 : u2 returns b1
+
+    w10 --> w6 : u1 cancels reservation
+    w10 --> w0 : u2 returns b1 & b2
+```
+
+Notes on Rendering and Interpretation
+1. All worlds are admissible: each node represents a system state satisfying rules, including exceptions.
+2. Transitions are only allowed moves: e.g., no borrowing a reserved book, no overdue violations.
+3. Logic Auditing Workflow: LLMs generate candidate transitions, the auditor checks if the resulting
+   world is in this diagram; if not, it’s a countermodel.
+
+
+```mermaid
+stateDiagram-v2
+    [*] --> w0 : start (empty library)
+
+    %% World nodes with predicates
+    w0 : ¬Borrowed(b1,u1)\n¬Borrowed(b1,u2)\n¬Borrowed(b2,u1)\n¬Borrowed(b2,u2)\n¬Reserved(b1,u1)\n¬Reserved(b2,u1)
+    w1 : Borrowed(b1,u1), Due=21\n¬Borrowed(b2,u1,u2)\n¬Reserved(b2,u1)
+    w2 : Borrowed(b1,u1), Due=21\nBorrowed(b2,u2), Due=5\n¬Reserved(b2,u1)
+    w3 : Borrowed(b1,u1), Due=21\n¬Borrowed(b2,u2)\nReserved(b2,u1)
+    w4 : ¬Borrowed(b1,u1,u2)\nBorrowed(b2,u2), Due=5\n¬Reserved(b2,u1)
+    w5 : Borrowed(b1,u2), Due=21\n¬Borrowed(b2,u1,u2)\n¬Reserved(b2,u1)
+    w6 : Borrowed(b1,u2), Due=21\nBorrowed(b2,u2), Due=5\n¬Reserved(b2,u1)
+    w7 : Borrowed(b1,u1), Due=21\n¬Borrowed(b2,u1,u2)\nReserved(b1,u2)
+    w8 : Borrowed(b1,u1), Due=21\nBorrowed(b2,u2), Due=5\nReserved(b2,u1)
+    w9 : Borrowed(b1,u2), Due=21\n¬Borrowed(b2,u1,u2)\nReserved(b2,u1)
+    w10 : Borrowed(b1,u2), Due=21\nBorrowed(b2,u2), Due=5\nReserved(b2,u1)
+
+    %% Transitions (actions)
+    w0 --> w1 : u1 borrows b1
+    w0 --> w4 : u2 borrows b2
+    w0 --> w5 : u2 borrows b1
+    w0 --> w3 : u1 reserves b2
+
+    w1 --> w2 : u2 borrows b2
+    w1 --> w0 : u1 returns b1
+    w1 --> w3 : u1 reserves b2
+
+    w2 --> w1 : u2 returns b2
+    w2 --> w0 : u1 returns b1, u2 returns b2
+
+    w3 --> w1 : u1 cancels reservation
+    w3 --> w0 : u1 returns b1
+
+    w4 --> w0 : u2 returns b2
+    w5 --> w0 : u2 returns b1
+    w6 --> w5 : u2 returns b2
+    w6 --> w0 : u2 returns b1 & b2
+
+    w7 --> w1 : VIP cancels reservation
+    w7 --> w0 : u1 returns b1
+
+    w8 --> w2 : u1 cancels reservation
+    w8 --> w0 : u1 returns b1, u2 returns b2
+
+    w9 --> w5 : u1 cancels reservation
+    w9 --> w0 : u2 returns b1
+
+    w10 --> w6 : u1 cancels reservation
+    w10 --> w0 : u2 returns b1 & b2
+```
