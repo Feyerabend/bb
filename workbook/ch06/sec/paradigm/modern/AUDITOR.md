@@ -536,13 +536,13 @@ Explanation: Rare book reserved by another user; cannot be borrowed. All rules s
 Explanation: No books borrowed, all constraints trivially satisfied. Admissible as a starting or resting state.
 
 
-How the Logic Auditor Uses These Worlds
-- Step 1: Enumerate admissible worlds as above to visualise all allowed states.
-- Step 2: Check for completeness: Are there plausible states the stakeholders
+*How the Logic Auditor Uses These Worlds*
+- *Step 1*: Enumerate admissible worlds as above to visualise all allowed states.
+- *Step 2*: Check for completeness: Are there plausible states the stakeholders
   expect that are missing? Are exceptions (like VIP loans) represented?
-- Step 3: Compare candidate LLM-generated specifications or code against these
+- *Step 3*: Compare candidate LLM-generated specifications or code against these
   admissible worlds. If a generated world violates a rule, it is immediately flagged.
-- Step 4: Iterate: adjust rules, update admissibility predicate, and regenerate
+- *Step 4*: Iterate: adjust rules, update admissibility predicate, and regenerate
   candidate worlds to see if they now match stakeholder expectations.
 
 
