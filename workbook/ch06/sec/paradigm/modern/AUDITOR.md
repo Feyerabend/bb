@@ -206,7 +206,7 @@ This is a safety condition over transitions.
 We have not introduced deontic logic (a modal logic) and the reasoning background.
 But at this point, nothing modal remains. All deontic notions are reduced to first-order quantification
 over explicitly represented worlds. The expressive power lies not in axioms,
-but in the structure of admissibility.
+but in the *structure of admissibility*.
 
 This framework is intentionally weak proof-theoretically and strong semantically.
 It is designed to describe normative assumptions, not to derive all their consequences automatically.
@@ -215,7 +215,7 @@ We will return to this later.
 
 ### 7. Example: A Library System
 
-We now apply the framework to a simplified library interaction.
+We now apply the framework to our simplified library interaction.
 
 #### 7.1 Domain Predicates
 Assume the following predicates over worlds:
