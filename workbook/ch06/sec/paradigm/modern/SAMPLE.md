@@ -58,15 +58,17 @@ __Actions as Transitions__
 ```mermaid
 sequenceDiagram
     participant U1 as User1
-    participant B as LibrarySystem
+    participant WS as WebShop
 
-    %% Scenario: borrowing b1, reserving b2, returning b1
-    U1->>B: Borrow b1
-    B-->>U1: Confirm borrow, due=21
-    U1->>B: Reserve b2
-    B-->>U1: Confirm reservation
-    U1->>B: Return b1
-    B-->>U1: Confirm return
+    %% Scenario: add i1, add i2, checkout, ship order
+    U1->>WS: AddToCart(i1)
+    WS-->>U1: Confirm added
+    U1->>WS: AddToCart(i2)
+    WS-->>U1: Confirm added
+    U1->>WS: Checkout
+    WS-->>U1: Confirm payment
+    WS->>U1: ShipOrder
+    U1-->>WS: Receive confirmation
 ```
 
 __Expressing with Act Concept__
