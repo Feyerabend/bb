@@ -604,7 +604,7 @@ How to Read This Diagram
 
 
 
-#### 14. A Sematic Model
+#### 14. A Semantic Model
 
 Let's turn the miniature library universe into a fully formal predicate-based semantic model,
 so each world is explicitly described in terms of Borrowed, Reserved, and Due predicates.
