@@ -640,7 +640,7 @@ Derived predicate for rules:
 ```math
 AllowedBorrowDuration(b,u,d) =
 \begin{cases}
-30 & b = Fiction \\
+30 & b = Textbook \\
 3 & b = Rare \text{ (standard)} \\
 5 & b = Rare \text{ (VIP)}
 \end{cases}
@@ -668,7 +668,7 @@ World $w0$ — empty library
 ```
 
 
-World $w1$ — standard user borrows fiction
+World $w1$ — standard user borrows Textbook
 ```math
 Borrowed(b_1,u_1,w_1), Due(b_1,u_1,30,w_1)
 ```
