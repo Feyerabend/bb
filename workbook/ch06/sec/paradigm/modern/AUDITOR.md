@@ -731,18 +731,18 @@ __Step 3: Interpretation for Logic Auditing__
 stateDiagram-v2
     [*] --> w0
 
-    %% World nodes with predicates
-    w0 : "empty\n¬Borrowed(b1,u1)\n¬Borrowed(b1,u2)\n¬Borrowed(b2,u1)\n¬Borrowed(b2,u2)\n¬Reserved(b1,u1)\n¬Reserved(b2,u1)"
-    w1 : "b1:u1 borrowed\nDue=21\n¬Borrowed(b2,u1,u2)\n¬Reserved(b2,u1)"
-    w2 : "b1:u1 borrowed, b2:u2 borrowed (VIP)\nDue b1=21, b2=5\n¬Reserved(b2,u1)"
-    w3 : "b1:u1 borrowed\nb2:u1 reserved\n¬Borrowed(b2,u2)"
-    w4 : "b2:u2 borrowed (VIP)\nDue=5\n¬Borrowed(b1,u1,u2)\n¬Reserved(b2,u1)"
-    w5 : "b1:u2 borrowed (VIP)\nDue=21\n¬Borrowed(b2,u1,u2)\n¬Reserved(b2,u1)"
-    w6 : "b1:u2 borrowed, b2:u2 borrowed (VIP)\nDue b1=21, b2=5\n¬Reserved(b2,u1)"
-    w7 : "b1:u1 borrowed\nb1:u2 reserved\n¬Borrowed(b2,u1,u2)"
-    w8 : "b1:u1 borrowed, b2:u2 borrowed (VIP)\nb2:u1 reserved\nDue b1=21, b2=5"
-    w9 : "b1:u2 borrowed (VIP)\nb2:u1 reserved\nDue b1=21"
-    w10 : "b1:u2 borrowed, b2:u2 borrowed (VIP)\nb2:u1 reserved\nDue b1=21, b2=5"
+    %% World nodes with simplified labels
+    w0 : empty
+    w1 : b1 u1 borrowed
+    w2 : b1 u1, b2 u2 borrowed VIP
+    w3 : b1 u1 borrowed, b2 u1 reserved
+    w4 : b2 u2 borrowed VIP
+    w5 : b1 u2 borrowed VIP
+    w6 : b1 u2, b2 u2 borrowed VIP
+    w7 : b1 u1 borrowed, b1 u2 reserved
+    w8 : b1 u1 borrowed, b2 u2 borrowed VIP, b2 u1 reserved
+    w9 : b1 u2 borrowed VIP, b2 u1 reserved
+    w10 : b1 u2, b2 u2 borrowed VIP, b2 u1 reserved
 
     %% Transitions
     w0 --> w1 : u1 borrows b1
@@ -763,7 +763,7 @@ stateDiagram-v2
     w4 --> w0 : u2 returns b2
     w5 --> w0 : u2 returns b1
     w6 --> w5 : u2 returns b2
-    w6 --> w0 : u2 returns b1 & b2
+    w6 --> w0 : u2 returns b1 and b2
 
     w7 --> w1 : VIP cancels reservation
     w7 --> w0 : u1 returns b1
@@ -775,7 +775,7 @@ stateDiagram-v2
     w9 --> w0 : u2 returns b1
 
     w10 --> w6 : u1 cancels reservation
-    w10 --> w0 : u2 returns b1 & b2
+    w10 --> w0 : u2 returns b1 and b2
 ```
 
 Notes on Rendering and Interpretation
