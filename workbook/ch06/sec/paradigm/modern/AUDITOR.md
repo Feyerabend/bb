@@ -279,10 +279,10 @@ must lead to a world where the book is not overdue.
 ### 8. From Semantics to Implementation
 
 A developer implementing a library system is not primarily writing code,
-but selecting admissible worlds. The code is correct if and only if its
-reachable states are a subset of A.
+but *selecting admissible worlds*. The code is correct if and only if its
+reachable states are a subset of $A$.
 
-Testing, model checking, and specification languages like Alloy can all
+Testing, model checking, and specification languages like e.g. Alloy can all
 be understood as tools for approximating this semantic judgment.
 
 
