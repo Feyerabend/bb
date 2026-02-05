@@ -505,6 +505,8 @@ Admissible Worlds (snapshots of the system)
 1. World $w_1$ – Minimal activity
 ```math
 Borrowed(b_1,u_1,w_1) = \text{true},\quad Due(b_1,u_1,w_1) = 30
+```
+```math
 Borrowed(b_2,u_2,w_1) = \text{false}, \quad Reserved(b_2,u_1,w_1) = \text{false}
 ```
 Explanation: Only a standard book is borrowed within allowed duration. Rare book untouched.
@@ -512,6 +514,8 @@ Explanation: Only a standard book is borrowed within allowed duration. Rare book
 2. World $w_2$ – VIP exception applied
 ```math
 Borrowed(b_1,u_1,w_2) = \text{true}, \quad Due(b_1,u_1,w_2) = 30
+```
+```math
 Borrowed(b_2,u_2,w_2) = \text{true}, \quad Due(b_2,u_2,w_2) = 5
 ```
 Explanation: VIP user borrows Rare book; due date extended by 2 days. All admissibility rules satisfied.
@@ -519,6 +523,8 @@ Explanation: VIP user borrows Rare book; due date extended by 2 days. All admiss
 3. World $w_3$ – Reservation respected
 ```math
 Reserved(b_2,u_1,w_3) = \text{true}, \quad Borrowed(b_2,u_2,w_3) = \text{false}
+```
+```math
 Borrowed(b_1,u_1,w_3) = \text{true}, \quad Due(b_1,u_1,w_3) = 30
 ```
 Explanation: Rare book reserved by another user; cannot be borrowed. All rules satisfied.
@@ -598,7 +604,12 @@ How to Read This Diagram
 
 
 
-#### 14. Another Sample
+#### 14. A Sematic Model
+
+Let's turn the miniature library universe into a fully formal predicate-based semantic model,
+so each world is explicitly described in terms of Borrowed, Reserved, and Due predicates.
+This connects directly to the Logic Auditor / admissible world framework, and can serve
+as a basis for LLM-assisted *specification*.
 
 __Step 1: Define Predicates__
 
@@ -769,61 +780,3 @@ __Step 3: Interpretation for Logic Auditing__
 - Countermodels are easy to see: any candidate world outside this set
   violates admissibility and indicates a problem in rules or generated code.
 
-##### Complex Illustration
-
-```mermaid
-stateDiagram-v2
-    [*] --> w0
-
-    %% World nodes with simplified labels
-    w0 : empty
-    w1 : b1 u1 borrowed
-    w2 : b1 u1, b2 u2 borrowed VIP
-    w3 : b1 u1 borrowed, b2 u1 reserved
-    w4 : b2 u2 borrowed VIP
-    w5 : b1 u2 borrowed VIP
-    w6 : b1 u2, b2 u2 borrowed VIP
-    w7 : b1 u1 borrowed, b1 u2 reserved
-    w8 : b1 u1 borrowed, b2 u2 borrowed VIP, b2 u1 reserved
-    w9 : b1 u2 borrowed VIP, b2 u1 reserved
-    w10 : b1 u2, b2 u2 borrowed VIP, b2 u1 reserved
-
-    %% Transitions
-    w0 --> w1 : u1 borrows b1
-    w0 --> w4 : u2 borrows b2
-    w0 --> w5 : u2 borrows b1
-    w0 --> w3 : u1 reserves b2
-
-    w1 --> w2 : u2 borrows b2
-    w1 --> w0 : u1 returns b1
-    w1 --> w3 : u1 reserves b2
-
-    w2 --> w1 : u2 returns b2
-    w2 --> w0 : u1 returns b1, u2 returns b2
-
-    w3 --> w1 : u1 cancels reservation
-    w3 --> w0 : u1 returns b1
-
-    w4 --> w0 : u2 returns b2
-    w5 --> w0 : u2 returns b1
-    w6 --> w5 : u2 returns b2
-    w6 --> w0 : u2 returns b1 and b2
-
-    w7 --> w1 : VIP cancels reservation
-    w7 --> w0 : u1 returns b1
-
-    w8 --> w2 : u1 cancels reservation
-    w8 --> w0 : u1 returns b1, u2 returns b2
-
-    w9 --> w5 : u1 cancels reservation
-    w9 --> w0 : u2 returns b1
-
-    w10 --> w6 : u1 cancels reservation
-    w10 --> w0 : u2 returns b1 and b2
-```
-
-Notes on Rendering and Interpretation
-1. All worlds are admissible: each node represents a system state satisfying rules, including exceptions.
-2. Transitions are only allowed moves: e.g., no borrowing a reserved book, no overdue violations.
-3. Logic Auditing Workflow: LLMs generate candidate transitions, the auditor checks if the resulting
-   world is in this diagram; if not, it’s a countermodel.
