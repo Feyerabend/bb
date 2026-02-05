@@ -274,6 +274,22 @@ A(w) \land T(w,borrow(b,u),w')
 This states that any admissible execution of a borrow action
 must lead to a world where the book is not overdue.
 
+
+### 8. From Semantics to Implementation
+
+A developer implementing a library system is not primarily writing code,
+but *selecting admissible worlds*. The code is correct if and only if its
+reachable states are a subset of $A$.
+
+Testing, model checking, and specification languages like e.g. Alloy can all
+be understood as tools for approximating this semantic judgment.
+
+Often, developers naturally think in terms of temporal sequences of events,
+rather than as transitions between abstract worlds. Introducing actions as
+first-class entities makes it possible to model these sequences explicitly,
+and to reason about preconditions, effects, and admissibility in a temporal
+context. As much as the stakeholder also might be reasoning in these terms.
+
 ```mermaid
 sequenceDiagram
     participant U1 as User1
@@ -287,16 +303,6 @@ sequenceDiagram
     U1->>B: Return b1
     B-->>U1: Confirm return
 ```
-
-### 8. From Semantics to Implementation
-
-A developer implementing a library system is not primarily writing code,
-but *selecting admissible worlds*. The code is correct if and only if its
-reachable states are a subset of $A$.
-
-Testing, model checking, and specification languages like e.g. Alloy can all
-be understood as tools for approximating this semantic judgment.
-
 
 
 ### 9. Conclusion
