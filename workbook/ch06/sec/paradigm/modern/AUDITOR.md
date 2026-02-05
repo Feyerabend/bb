@@ -504,14 +504,14 @@ The rules/admissibility constraints include:
 Admissible Worlds (snapshots of the system)
 1. World $w_1$ – Minimal activity
 ```math
-Borrowed(b_1,u_1,w_1) = \text{true},\quad Due(b_1,u_1,w_1) = 21
+Borrowed(b_1,u_1,w_1) = \text{true},\quad Due(b_1,u_1,w_1) = 30
 Borrowed(b_2,u_2,w_1) = \text{false}, \quad Reserved(b_2,u_1,w_1) = \text{false}
 ```
 Explanation: Only a standard book is borrowed within allowed duration. Rare book untouched.
 
 2. World $w_2$ – VIP exception applied
 ```math
-Borrowed(b_1,u_1,w_2) = \text{true}, \quad Due(b_1,u_1,w_2) = 21
+Borrowed(b_1,u_1,w_2) = \text{true}, \quad Due(b_1,u_1,w_2) = 30
 Borrowed(b_2,u_2,w_2) = \text{true}, \quad Due(b_2,u_2,w_2) = 5
 ```
 Explanation: VIP user borrows Rare book; due date extended by 2 days. All admissibility rules satisfied.
@@ -519,7 +519,7 @@ Explanation: VIP user borrows Rare book; due date extended by 2 days. All admiss
 3. World $w_3$ – Reservation respected
 ```math
 Reserved(b_2,u_1,w_3) = \text{true}, \quad Borrowed(b_2,u_2,w_3) = \text{false}
-Borrowed(b_1,u_1,w_3) = \text{true}, \quad Due(b_1,u_1,w_3) = 21
+Borrowed(b_1,u_1,w_3) = \text{true}, \quad Due(b_1,u_1,w_3) = 30
 ```
 Explanation: Rare book reserved by another user; cannot be borrowed. All rules satisfied.
 
@@ -560,7 +560,7 @@ stateDiagram-v2
     w4 --> w3 : u1 reserves b2
 
     w1 : Borrowed(b1,u1)=true
-    w1 : Due(b1,u1)=21
+    w1 : Due(b1,u1)=30
     w1 : Borrowed(b2,u2)=false
     w1 : Reserved(b2,u1)=false
 
@@ -568,7 +568,7 @@ stateDiagram-v2
     w1 --> w4 : u1 returns b1
 
     w2 : Borrowed(b1,u1)=true
-    w2 : Due(b1,u1)=21
+    w2 : Due(b1,u1)=30
     w2 : Borrowed(b2,u2)=true
     w2 : Due(b2,u2)=5
     w2 : Reserved(b2,u1)=false
@@ -577,7 +577,7 @@ stateDiagram-v2
     w2 --> w4 : u1 returns b1, u2 returns b2
 
     w3 : Borrowed(b1,u1)=true
-    w3 : Due(b1,u1)=21
+    w3 : Due(b1,u1)=30
     w3 : Borrowed(b2,u2)=false
     w3 : Reserved(b2,u1)=true
 
@@ -611,7 +611,7 @@ Derived predicate for rules:
 ```math
 AllowedBorrowDuration(b,u,d) =
 \begin{cases}
-21 & b = Fiction \\
+30 & b = Fiction \\
 3 & b = Rare \text{ (standard)} \\
 5 & b = Rare \text{ (VIP)}
 \end{cases}
@@ -630,31 +630,47 @@ For simplicity, we enumerate the admissible worlds from before, now fully in pre
 World $w0$ — empty library
 ```math
 \neg Borrowed(b_1,u_1,w_0), \neg Borrowed(b_1,u_2,w_0)
+```
+```math
 \neg Borrowed(b_2,u_1,w_0), \neg Borrowed(b_2,u_2,w_0)
+```
+```math
 \neg Reserved(b_1,u_1,w_0), \neg Reserved(b_2,u_1,w_0)
 ```
 
 
 World $w1$ — standard user borrows fiction
 ```math
-Borrowed(b_1,u_1,w_1), Due(b_1,u_1,21,w_1)
+Borrowed(b_1,u_1,w_1), Due(b_1,u_1,30,w_1)
+```
+```math
 \neg Borrowed(b_2,u_1,w_1), \neg Borrowed(b_2,u_2,w_1)
+```
+```math
 \neg Reserved(b_2,u_1,w_1)
 ```
 
 
 World $w2$ — standard user borrows textbook, VIP borrows rare (VIP exception)
 ```math
-Borrowed(b_1,u_1,w_2), Due(b_1,u_1,21,w_2)
+Borrowed(b_1,u_1,w_2), Due(b_1,u_1,30,w_2)
+```
+```math
 Borrowed(b_2,u_2,w_2), Due(b_2,u_2,5,w_2)
+```
+```math
 \neg Reserved(b_2,u_1,w_2)
 ```
 
 
 World $w3$ — reservation respected, textbook borrowed by standard user
 ```math
-Borrowed(b_1,u_1,w_3), Due(b_1,u_1,21,w_3)
+Borrowed(b_1,u_1,w_3), Due(b_1,u_1,30,w_3)
+```
+```math
 \neg Borrowed(b_2,u_2,w_3)
+```
+```math
 Reserved(b_2,u_1,w_3)
 ```
 
@@ -662,55 +678,83 @@ Reserved(b_2,u_1,w_3)
 World $w4$ — VIP borrows rare alone
 ```math
 Borrowed(b_2,u_2,w_4), Due(b_2,u_2,5,w_4)
+```
+```math
 \neg Borrowed(b_1,u_1,w_4), \neg Borrowed(b_1,u_2,w_4)
+```
+```math
 \neg Reserved(b_2,u_1,w_4)
 ```
 
 
 World $w5$ — VIP borrows textbook alone
 ```math
-Borrowed(b_1,u_2,w_5), Due(b_1,u_2,21,w_5)
+Borrowed(b_1,u_2,w_5), Due(b_1,u_2,30,w_5)
+```
+```math
 \neg Borrowed(b_2,u_2,w_5)
+```
+```math
 \neg Reserved(b_2,u_1,w_5)
 ```
 
 
 World $w6$ — VIP borrows textbook and rare
 ```math
-Borrowed(b_1,u_2,w_6), Due(b_1,u_2,21,w_6)
+Borrowed(b_1,u_2,w_6), Due(b_1,u_2,30,w_6)
+```
+```math
 Borrowed(b_2,u_2,w_6), Due(b_2,u_2,5,w_6)
+```
+```math
 \neg Reserved(b_2,u_1,w_6)
 ```
 
 
 World $w7$ — textbook reserved by VIP, borrowed by standard user
 ```math
-Borrowed(b_1,u_1,w_7), Due(b_1,u_1,21,w_7)
+Borrowed(b_1,u_1,w_7), Due(b_1,u_1,30,w_7)
+```
+```math
 Reserved(b_1,u_2,w_7)
+```
+```math
 \neg Borrowed(b_2,u_1,w_7), \neg Borrowed(b_2,u_2,w_7)
 ```
 
 
 World $w8$ — complex: standard borrows textbook, VIP borrows rare, $b2$ reserved by $u1$
 ```math
-Borrowed(b_1,u_1,w_8), Due(b_1,u_1,21,w_8)
+Borrowed(b_1,u_1,w_8), Due(b_1,u_1,30,w_8)
+```
+```math
 Borrowed(b_2,u_2,w_8), Due(b_2,u_2,5,w_8)
+```
+```math
 Reserved(b_2,u_1,w_8)
 ```
 
 
 World $w9$ — VIP borrows textbook, rare reserved by $u1$
 ```math
-Borrowed(b_1,u_2,w_9), Due(b_1,u_2,21,w_9)
+Borrowed(b_1,u_2,w_9), Due(b_1,u_2,30,w_9)
+```
+```math
 Reserved(b_2,u_1,w_9)
+```
+```math
 \neg Borrowed(b_2,u_2,w_9)
 ```
 
 
 World $w10$ — VIP borrows textbook & rare, rare reserved by $u1$
 ```math
-Borrowed(b_1,u_2,w_{10}), Due(b_1,u_2,21,w_{10})
+Borrowed(b_1,u_2,w_{10}), Due(b_1,u_2,30,w_{10})
+```
+```math
 Borrowed(b_2,u_2,w_{10}), Due(b_2,u_2,5,w_{10})
+```
+```math
 Reserved(b_2,u_1,w_{10})
 ```
 
@@ -783,55 +827,3 @@ Notes on Rendering and Interpretation
 2. Transitions are only allowed moves: e.g., no borrowing a reserved book, no overdue violations.
 3. Logic Auditing Workflow: LLMs generate candidate transitions, the auditor checks if the resulting
    world is in this diagram; if not, it’s a countermodel.
-
-
-```mermaid
-stateDiagram-v2
-    [*] --> w0 : start (empty library)
-
-    %% World nodes with predicates
-    w0 : ¬Borrowed(b1,u1)\n¬Borrowed(b1,u2)\n¬Borrowed(b2,u1)\n¬Borrowed(b2,u2)\n¬Reserved(b1,u1)\n¬Reserved(b2,u1)
-    w1 : Borrowed(b1,u1), Due=21\n¬Borrowed(b2,u1,u2)\n¬Reserved(b2,u1)
-    w2 : Borrowed(b1,u1), Due=21\nBorrowed(b2,u2), Due=5\n¬Reserved(b2,u1)
-    w3 : Borrowed(b1,u1), Due=21\n¬Borrowed(b2,u2)\nReserved(b2,u1)
-    w4 : ¬Borrowed(b1,u1,u2)\nBorrowed(b2,u2), Due=5\n¬Reserved(b2,u1)
-    w5 : Borrowed(b1,u2), Due=21\n¬Borrowed(b2,u1,u2)\n¬Reserved(b2,u1)
-    w6 : Borrowed(b1,u2), Due=21\nBorrowed(b2,u2), Due=5\n¬Reserved(b2,u1)
-    w7 : Borrowed(b1,u1), Due=21\n¬Borrowed(b2,u1,u2)\nReserved(b1,u2)
-    w8 : Borrowed(b1,u1), Due=21\nBorrowed(b2,u2), Due=5\nReserved(b2,u1)
-    w9 : Borrowed(b1,u2), Due=21\n¬Borrowed(b2,u1,u2)\nReserved(b2,u1)
-    w10 : Borrowed(b1,u2), Due=21\nBorrowed(b2,u2), Due=5\nReserved(b2,u1)
-
-    %% Transitions (actions)
-    w0 --> w1 : u1 borrows b1
-    w0 --> w4 : u2 borrows b2
-    w0 --> w5 : u2 borrows b1
-    w0 --> w3 : u1 reserves b2
-
-    w1 --> w2 : u2 borrows b2
-    w1 --> w0 : u1 returns b1
-    w1 --> w3 : u1 reserves b2
-
-    w2 --> w1 : u2 returns b2
-    w2 --> w0 : u1 returns b1, u2 returns b2
-
-    w3 --> w1 : u1 cancels reservation
-    w3 --> w0 : u1 returns b1
-
-    w4 --> w0 : u2 returns b2
-    w5 --> w0 : u2 returns b1
-    w6 --> w5 : u2 returns b2
-    w6 --> w0 : u2 returns b1 & b2
-
-    w7 --> w1 : VIP cancels reservation
-    w7 --> w0 : u1 returns b1
-
-    w8 --> w2 : u1 cancels reservation
-    w8 --> w0 : u1 returns b1, u2 returns b2
-
-    w9 --> w5 : u1 cancels reservation
-    w9 --> w0 : u2 returns b1
-
-    w10 --> w6 : u1 cancels reservation
-    w10 --> w0 : u2 returns b1 & b2
-```
