@@ -546,48 +546,40 @@ All combinations for a small library system like before (2 books, 2 users, 1 VIP
 
 ```mermaid
 stateDiagram-v2
-    [*] --> w4: start (empty library)
+    [*] --> w4 : start (empty library)
 
-    %% World w4: no books borrowed, no reservations
-    state w4 {
-        Borrowed(b1,u1)=false
-        Borrowed(b2,u2)=false
-        Reserved(b1,u1)=false
-        Reserved(b2,u1)=false
-    }
-    w4 --> w1: u1 borrows b1
-    w4 --> w3: u1 reserves b2
+    w4 : Borrowed(b1,u1)=false
+    w4 : Borrowed(b2,u2)=false
+    w4 : Reserved(b1,u1)=false
+    w4 : Reserved(b2,u1)=false
 
-    %% World w1: b1 borrowed by u1, b2 free
-    state w1 {
-        Borrowed(b1,u1)=true
-        Due(b1,u1)=21
-        Borrowed(b2,u2)=false
-        Reserved(b2,u1)=false
-    }
-    w1 --> w2: u2 borrows b2 (VIP exception)
-    w1 --> w4: u1 returns b1
+    w4 --> w1 : u1 borrows b1
+    w4 --> w3 : u1 reserves b2
 
-    %% World w2: VIP exception applied
-    state w2 {
-        Borrowed(b1,u1)=true
-        Due(b1,u1)=21
-        Borrowed(b2,u2)=true
-        Due(b2,u2)=5
-        Reserved(b2,u1)=false
-    }
-    w2 --> w1: u2 returns b2
-    w2 --> w4: u1 returns b1, u2 returns b2
+    w1 : Borrowed(b1,u1)=true
+    w1 : Due(b1,u1)=21
+    w1 : Borrowed(b2,u2)=false
+    w1 : Reserved(b2,u1)=false
 
-    %% World w3: reservation respected
-    state w3 {
-        Borrowed(b1,u1)=true
-        Due(b1,u1)=21
-        Borrowed(b2,u2)=false
-        Reserved(b2,u1)=true
-    }
-    w3 --> w1: u1 cancels reservation on b2
-    w3 --> w4: u1 returns b1
+    w1 --> w2 : u2 borrows b2 (VIP exception)
+    w1 --> w4 : u1 returns b1
+
+    w2 : Borrowed(b1,u1)=true
+    w2 : Due(b1,u1)=21
+    w2 : Borrowed(b2,u2)=true
+    w2 : Due(b2,u2)=5
+    w2 : Reserved(b2,u1)=false
+
+    w2 --> w1 : u2 returns b2
+    w2 --> w4 : u1 returns b1, u2 returns b2
+
+    w3 : Borrowed(b1,u1)=true
+    w3 : Due(b1,u1)=21
+    w3 : Borrowed(b2,u2)=false
+    w3 : Reserved(b2,u1)=true
+
+    w3 --> w1 : u1 cancels reservation on b2
+    w3 --> w4 : u1 returns b1
 ```
 
 
