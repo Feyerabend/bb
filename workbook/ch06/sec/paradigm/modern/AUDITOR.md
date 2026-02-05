@@ -274,7 +274,19 @@ A(w) \land T(w,borrow(b,u),w')
 This states that any admissible execution of a borrow action
 must lead to a world where the book is not overdue.
 
+```mermaid
+sequenceDiagram
+    participant U1 as User1
+    participant B as LibrarySystem
 
+    %% Scenario: borrowing b1, reserving b2, returning b1
+    U1->>B: Borrow b1
+    B-->>U1: Confirm borrow, due=21
+    U1->>B: Reserve b2
+    B-->>U1: Confirm reservation
+    U1->>B: Return b1
+    B-->>U1: Confirm return
+```
 
 ### 8. From Semantics to Implementation
 
