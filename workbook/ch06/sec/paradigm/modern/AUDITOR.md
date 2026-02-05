@@ -221,9 +221,11 @@ We now apply the framework to our simplified library interaction.
 Assume the following predicates over worlds:
 ```math
 Borrowed(b,w) \quad \text{"book } b \text{ is borrowed in } w\text{"}
-
+```
+```math
 Overdue(b,w) \quad \text{"book } b \text{ is overdue in } w\text{"}
-
+```
+```math
 LoanedTo(b,u,w) \quad \text{"book } b \text{ is loaned to user } u \text{ in } w\text{"}
 ```
 
