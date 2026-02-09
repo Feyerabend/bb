@@ -8,9 +8,9 @@ Code can serve a dual purpose:
 Let's explore this further.
 
 
-__Code is more about communication than productification__
+__Code is more about communication than "productification"__
 
-In theory, the primary function of code is to produce behavior in a machine. But in practice,
+In theory, the primary function of code is to produce behaviour in a machine. But in practice,
 code is as much for humans as it is for machines. It is a medium of thought, coordination, and
 intent--written not just to be executed but to be read, understood, extended, and maintained by
 *other* developers.
@@ -65,15 +65,15 @@ This dual role--communication with machines and other humans, explains why progr
 and linguistic. Writing good code is not just about getting it to work, it's about getting it to work well
 in a shared human system.
 
-| Aspect            | For Machine                | For Human Developer                  |
-|-------------------|----------------------------|--------------------------------------|
-| Code Content      | Must compile/interpret     | Must express intent                  |
-| Structure         | Irrelevant post-compilation| Crucial for comprehension            |
-| Naming/Comments   | Ignored                    | Key to communication                 |
-| Purpose           | Executable behavior        | Collaborative expression of behavior |
+| Aspect            | For Machine                | For Human Developer                   |
+|-------------------|----------------------------|---------------------------------------|
+| Code Content      | Must compile/interpret     | Must express intent                   |
+| Structure         | Irrelevant post-compilation| Crucial for comprehension             |
+| Naming/Comments   | Ignored                    | Key to communication                  |
+| Purpose           | Executable behaviour       | Collaborative expression of behaviour |
 
-[^comment]: I'm not sure that comments have to be inlined with code, as the parctice have been.
+[^comment]: I'm not sure that comments have to be inlined with code, as the practice have been.
 I would rather see separate documents, perhaps in the spirit (not the execution) as "literate
-programming" (cf. Knuth). I can see a shift of this may happend in regard to the events of LLMs.
-For me code is enough as it stands alone. Well, it should be well written then.
+programming" (cf. Knuth). I can see a shift of this may happen in regard to the events of LLMs.
+Personally code is enough as it stands alone. Well, it should be written well then.
 
