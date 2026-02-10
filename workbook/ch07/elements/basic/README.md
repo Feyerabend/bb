@@ -3,13 +3,16 @@
 
 *BASIC comes in many dialects.*
 
-BASIC (Beginner’s All-purpose Symbolic Instruction Code) is not a single, standardised language[^stand] but
-rather a family of related de facto programming languages. Since its creation in the 1960s at Dartmouth College,
-BASIC has evolved into numerous dialects, each tailored to different platforms, educational goals, hardware
-constraints, or vendor-specific features. Read more [history](./HISTORY.md) of the language.
+BASIC (Beginner’s All-purpose Symbolic Instruction Code) is not a single,
+standardised language[^stand] but rather a family of related de facto programming
+languages. Since its creation in the 1960s at Dartmouth College,
+BASIC has evolved into numerous dialects, each tailored to different platforms,
+educational goals, hardware constraints, or vendor-specific features.
+Read more [history](./HISTORY.md) of the language.
 
-Some dialects like Microsoft BASIC, QBASIC, GW-BASIC, Commodore BASIC, or BBC BASIC include graphical or sound
-commands specific to the machines they ran on. Others, like FreeBASIC or VB.NET, introduced more modern language
+Some dialects like Microsoft BASIC, QBASIC, GW-BASIC, Commodore BASIC, or
+BBC BASIC include graphical or sound commands specific to the machines they ran on.
+Others, like FreeBASIC or VB.NET, introduced more modern language
 constructs like structured programming, modules, and even object orientation.
 
 Despite the diversity, most BASIC dialects share a few core traits, such as:
@@ -19,8 +22,9 @@ Despite the diversity, most BASIC dialects share a few core traits, such as:
 
 This diagram reflects the common logical flow found in many of these classic BASIC interpreters.
 
-[^stand]: BASIC did have formal standards developed to bring consistency across implementations.
-Two notable standards are: ANSI Minimal BASIC (ANSI X3.60-1978), and ISO Full BASIC (ISO/IEC 6373:1984).
+[^stand]: BASIC did have formal standards developed to bring consistency
+across implementations. Two notable standards though, are: ANSI Minimal BASIC (ANSI X3.60-1978),
+and ISO Full BASIC (ISO/IEC 6373:1984).
 
 
 ```mermaid
@@ -44,7 +48,7 @@ graph TD
 
 ### BASIC
 
-The BASIC interpreter in [01](./01/) is a modern implementation of a classic BASIC language, designed to run
+The BASIC interpreter in [01](./01/) is an implementation of a classic BASIC language, designed to run
 simple programs with features like variables, arrays, loops, conditionals, and input/output operations. Below
 is a concise introduction covering its essentials, how it works, and its implementation.
 
@@ -149,13 +153,13 @@ RUN
 and loops to print a sequence.
 
 
-### Limitations
+### Many Limitations
 
-- No advanced graphics or sound, as it’s console-based.
-- Limited function set compared to modern languages.
-- Performance may degrade for large programs due to Python’s interpretive nature.
+- No advanced graphics or sound.
+- Limited function set.
+- Performance may degrade for large programs.
 
-This BASIC interpreter is useful for educational purposes, retro computing enthusiasts, or simple scripting,
-offering a faithful yet extensible implementation of a classic programming language. For more details, run `HELP`
+This BASIC interpreter is useful for educational purposes,
+retro computing enthusiasts, or simple scripting. For more details, run `HELP`
 in the interpreter or explore the command-specific code in `basic_commands.py`.
 
