@@ -18,60 +18,60 @@ Take that in mind when you work on the questions below.
 ### Projects
 
 1. Innovation in Programming Practices
-	- *How does relying on AI tools for tasks like coding, debugging, and code completion impact
-	  your problem-solving abilities and understanding of algorithms?*
-	- Task: Create a program with minimal AI assistance. Reflect on how using AI in this process
-	  might have changed your approach to problem-solving. Discuss how deepening your understanding
-	  of algorithms and data structures could enhance your coding skills.
+ - *How does relying on AI tools for tasks like coding, debugging, and code completion impact
+   your problem-solving abilities and understanding of algorithms?*
+ - Task: Create a program with minimal AI assistance. Reflect on how using AI in this process
+   might have changed your approach to problem-solving. Discuss how deepening your understanding
+   of algorithms and data structures could enhance your coding skills.
 
 2. Standardisation and Stagnation in Software
-	- *Do AI-generated solutions tend to follow established patterns, potentially stifling creativity
-	  and leading to homogenisation in programming practices?*
-	- Task: Develop a piece of software using an AI tool, then replicate the same software manually
-	  without AI assistance. Compare the two solutions and analyse how the AI may have influenced
-	  the design and coding choices.
+ - *Do AI-generated solutions tend to follow established patterns, potentially stifling creativity
+   and leading to homogenisation in programming practices?*
+ - Task: Develop a piece of software using an AI tool, then replicate the same software manually
+   without AI assistance. Compare the two solutions and analyse how the AI may have influenced
+   the design and coding choices.
 
 3. Over-Reliance on AI in Development
-	- *What are the risks of becoming too reliant on AI-generated code in terms of innovation,
-	  custom solutions, and software design?*
-	- Task: Attempt to replicate the functionality of a common AI tool with your own custom code.
-	  Reflect on how this process helped you deepen your understanding of software development
-	  and problem-solving.
+ - *What are the risks of becoming too reliant on AI-generated code in terms of innovation,
+   custom solutions, and software design?*
+ - Task: Attempt to replicate the functionality of a common AI tool with your own custom code.
+   Reflect on how this process helped you deepen your understanding of software development
+   and problem-solving.
 
 4. Impact on Open Source and Collaborative Innovation
-	- *How does the increasing use of AI tools in software development affect the culture of
-	  open-source collaboration and community-driven innovation?*
-	- Task: Contribute to an open-source project while using AI tools for part of the development
-	  process. Reflect on how this experience compares with previous contributions you've made
-	  without AI assistance.
+ - *How does the increasing use of AI tools in software development affect the culture of
+   open-source collaboration and community-driven innovation?*
+ - Task: Contribute to an open-source project while using AI tools for part of the development
+   process. Reflect on how this experience compares with previous contributions you've made
+   without AI assistance.
 
 5. Ethical and Security Challenges in Software Development
-	- *How might AI-generated code introduce ethical issues or security vulnerabilities in software development?*
-	- Task: Write a security review for a piece of software you have developed, considering
-	  how AI might have impacted security or ethical decision-making. What measures can developers
-	  take to mitigate these risks?
+ - *How might AI-generated code introduce ethical issues or security vulnerabilities in software development?*
+ - Task: Write a security review for a piece of software you have developed, considering
+   how AI might have impacted security or ethical decision-making. What measures can developers
+   take to mitigate these risks?
 
 6. Shifting Roles in Software Development
-	- *As AI increasingly automates repetitive tasks in coding, how might the role of programmers
-	  change? Will you move from __creating__ code to __curating__ AI-generated outputs?*
-	- Task: Reflect on your experience as a developer when using AI tools. How does your role shift
-	  when AI handles more routine tasks? Which skills do you believe will become more crucial
-	  in the future of programming?
+ - *As AI increasingly automates repetitive tasks in coding, how might the role of programmers
+   change? Will you move from __creating__ code to __curating__ AI-generated outputs?*
+ - Task: Reflect on your experience as a developer when using AI tools. How does your role shift
+   when AI handles more routine tasks? Which skills do you believe will become more crucial
+   in the future of programming?
 
 7. Economic Incentives and Consumerism in Software
-	- *How does the growing consumer-oriented development of AI tools impact innovation in programming?
-	  Are there risks of prioritising short-term, commercial applications over long-term, foundational
-	  advancements?*
-	- Task: Research AI-driven consumer tools such as no-code platforms or commercial AI products. How
-	  might these tools influence the future of programming? Write a report discussing the impact of
-	  consumer-driven AI tools on innovation and creativity in programming.
+ - *How does the growing consumer-oriented development of AI tools impact innovation in programming?
+   Are there risks of prioritising short-term, commercial applications over long-term, foundational
+   advancements?*
+ - Task: Research AI-driven consumer tools such as no-code platforms or commercial AI products. How
+   might these tools influence the future of programming? Write a report discussing the impact of
+   consumer-driven AI tools on innovation and creativity in programming.
 
 8. AI Dependency in Programming Education
-	- *How does the use of AI in programming education affect the development of problem-solving and
-	  algorithmic thinking skills in learners?*
-	- Task: Learn a new programming language or framework using AI assistance. Reflect on how AI
-	  influenced your learning process. Did you feel more dependent on the AI, or did it enhance your
-	  understanding?
+ - *How does the use of AI in programming education affect the development of problem-solving and
+   algorithmic thinking skills in learners?*
+ - Task: Learn a new programming language or framework using AI assistance. Reflect on how AI
+   influenced your learning process. Did you feel more dependent on the AI, or did it enhance your
+   understanding?
 
 By exploring these questions and tasks, you will gain a deeper understanding of how AI is reshaping
 the programming field. You will also develop insights into how AI tools can both enhance and limit
