@@ -245,5 +245,5 @@ if __name__ == "__main__":
     print("-" * 25)
     print()
     print("Try running the example programs in bas/ directory:")
-    print("  python -m main bas/3dplot.bas")
+    print("  python -m main bas/hello.bas")
 
