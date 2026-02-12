@@ -206,11 +206,11 @@ function draw() {
   
   ctx.fillStyle = gradient;
   ctx.beginPath();
-  ctx.moveTo(0, h);              // Bottom left of canvas
-  ctx.lineTo(w, h);              // Bottom right of canvas  
+  ctx.moveTo(0, h);               // Bottom left of canvas
+  ctx.lineTo(w, h);               // Bottom right of canvas  
   ctx.lineTo(w, horizonPoint[1]); // Right edge to horizon level
-  ctx.lineTo(...farRight);       // Far right of floor
-  ctx.lineTo(...farLeft);        // Far left of floor
+  ctx.lineTo(...farRight);        // Far right of floor
+  ctx.lineTo(...farLeft);         // Far left of floor
   ctx.lineTo(0, horizonPoint[1]); // Left edge to horizon level
   ctx.closePath();
   ctx.fill();

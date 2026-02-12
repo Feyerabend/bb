@@ -11,7 +11,7 @@
 </head>
 <body>
 <canvas id="cubeCanvas" width="600" height="600"></canvas>
-<div id="hud">Angles – X: 0°, Y: 0°</div>
+<div id="hud">Angles - X: 0°, Y: 0°</div>
 
 <script>
 const canvas = document.getElementById('cubeCanvas');
@@ -133,7 +133,7 @@ canvas.addEventListener('mousemove', e => {
     lastY = e.clientY;
     angleY += dx * 0.01;
     angleX += dy * 0.01;
-    hud.textContent = `Angles – X: ${Math.round(angleX * 180 / Math.PI)}°, Y: ${Math.round(angleY * 180 / Math.PI)}°`;
+    hud.textContent = `Angles - X: ${Math.round(angleX * 180 / Math.PI)}°, Y: ${Math.round(angleY * 180 / Math.PI)}°`;
 });
 
 function animate() {
