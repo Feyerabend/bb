@@ -1,115 +1,230 @@
 
-## Java Virtual Machine-like Engine
-
-Some prior experience with Java is assumed. In essence, the workflow involves compiling a Java source
-file--such as src/Sample.java--into a corresponding bytecode file--e.g., classes/Sample.class.
-This compilation is performed using the `javac` command-line tool, which is included with the OpenJDK
-or the Oracle JDK distributions.
-
-Since the '.class' bytecode format has remained largely backward-compatible over the years, older
-versions of the Java class libraries are often still usable, depending on the features and class
-file version your code requires.
-
-To emulate what happens when the `java` command is run to execute a compiled class file, we instead
-use a custom interpreter implemented in Python. The script main.py serves as a command-line interface
-to this interpreter, which is built around the JavaClassInterpreter API here.
-
-The following command illustrates how to use it:
-
-```shell
-python3 main.py Sample ./classes -v
-```
-
-This will load the Sample.class file from the ./classes directory and execute its main method,
-also displaying verbose output due to the -v flag.
-
-
-### File Structure
-
-* *src* -- contains Sample.java
-* *classes* -- contains Sample.class
-* *java* -- contains a simulated runtime environment, minimal for the Sample,
-  and used by the interpreter
-
+## Quick Start Guide
 
 ```
-jvm_interpreter/
-├── __init__.py
-├── constants/
-│   ├── __init__.py
-│   └── jvm_constants.py
-├── models/
-│   ├── __init__.py
-│   └── class_file_models.py
-├── parser/
-│   ├── __init__.py
-│   └── class_file_parser.py
-├── runtime/
-│   ├── __init__.py
-│   ├── class_loader.py
-│   └── interpreter.py
-├── utils/
-│   ├── __init__.py
-│   └── jvm_utils.py
-└── api/
-    ├── __init__.py
-    └── jvm_api.py
-main.py
+your-project/
+├── jvm_interpreter/  # The JVM interpreter package
+│   ├── api/
+│   ├── constants/
+│   ├── models/
+│   ├── native/
+│   ├── parser/
+│   ├── runtime/
+│   └── utils/
+├── debug_test.py     # Test to understand System.out behaviour
+├── main.py           # Entry point for running Java classes
+├── quick_test.py     # Some internal check, no need for Java
+├── verify_setup.py   # Some checks on installations
+└── README.md         # This
+
 ```
 
+Before diving into Java:
 
-- *jvm_interpreter/*: Root package for the project, making it importable as a library.
-- *constants/*: Holds JVM-related constants (e.g., opcodes, tags, access flags).
-- *models/*: Defines data models for class file components (e.g., Header, ClassFile).
-- *parser/*: Contains parsing logic for reading and structuring .class files.
-- *runtime/*: Manages runtime components like class loading and bytecode interpretation.
-- *utils/*: Utility functions for formatting, decoding, and printing class file info.
-- *api/*: Exposes a clean, high-level API for external use.
-- *main.py*: Entry point for command-line execution, using the API.
+```bash
+python verify_setup.py
+```
 
+### Running Your First Java Program
 
+#### Step 1: Create a Java file
 
-### Hierarchical Structure
+```java
+// Hello.java
+public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello from JVM Interpreter!");
+    }
+}
+```
 
-The code is organised into a *jvm_interpreter package* with submodules (*constants, models,
-parser, runtime, utils, api*). Each submodule has a clear responsibility, improving maintainability
-and readability.
+#### Step 2: Compile it
 
-Empty `__init__.py` files (except for the root) enable the package structure; the root `__init__.py`
-exposes the main API class.
+```bash
+javac Hello.java
+```
 
-
-### Modularity
-
-- *Constants*: JVM-specific constants are isolated in `jvm_constants.py`.
-- *Models*: Data structures (e.g., `ClassFile`, `Header`) are grouped in `class_file_models.py`.
-- *Parser*: Parsing logic for `.class` files is in `class_file_parser.py`.
-- *Runtime*: Runtime components (`ClassLoader`, `Interpreter`) are under `runtime/`.
-- *Utils*: Helper functions for decoding and printing are in `jvm_utils.py`.
-- *API*: A clean `JavaClassInterpreter` class in `jvm_interpreter/api/jvm_api.py` provides
-  a public interface.
+This creates `Hello.class`
 
 
+#### Step 3: Run it with the interpreter
 
-### API for External Use
+```bash
+python main.py Hello . -v
+```
 
-The `JavaClassInterpreter` class in `jvm_interpreter/api/jvm_api.py` offers methods
-like `load_and_parse_class`, `get_method_code`, `run_method`, and `print_class_details`.
-This allows external code to use the library, e.g.:
+Arguments:
+- `Hello` - class name (without .class)
+- `.` - classpath (current directory)
+- `-v` - verbose mode (optional)
+
+
+### More Examples
+
+#### Example 1: Using StringBuilder
+
+```java
+public class StringBuilderExample {
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hello ");
+        sb.append("World");
+        System.out.println(sb.toString());
+    }
+}
+```
+
+Run: `python main.py StringBuilderExample . -v`
+
+#### Example 2: Custom Class
+
+```java
+public class Counter {
+    private int count;
+    
+    public Counter() {
+        this.count = 0;
+    }
+    
+    public void increment() {
+        this.count++;
+    }
+    
+    public int getCount() {
+        return this.count;
+    }
+    
+    public static void main(String[] args) {
+        Counter c = new Counter();
+        c.increment();
+        c.increment();
+        c.increment();
+        System.out.println(c.getCount());
+    }
+}
+```
+
+Compile: `javac Counter.java`
+Run: `python main.py Counter . -v`
+
+
+#### Example 3: Using Multiple Directories
+
+If your classes are in different directories:
+
+```bash
+python main.py MyClass ./bin:./lib -v
+```
+
+Use `:` on Unix/Mac, `;` on Windows to separate paths.
+
+
+
+
+### Adding Your Own Native Class
+
+Let's say you want to add `java.util.Random`:
+
+1. Open `jvm_interpreter/native/native_registry.py`
+
+2. Add the class:
 
 ```python
-from jvm_interpreter import JavaClassInterpreter
-interpreter = JavaClassInterpreter(["/path/to/classes"])
-class_file = interpreter.load_and_parse_class("MyClass")
-interpreter.print_class_details(class_file)
-result = interpreter.run_method("MyClass", "main", verbose=True)
+class JavaUtilRandom(NativeObject):
+    def __init__(self):
+        super().__init__("java.util.Random")
+        import random
+        self.random = random
+    
+    def nextInt(self, bound=None):
+        if bound:
+            return self.random.randint(0, bound - 1)
+        return self.random.randint(0, 2**31 - 1)
+```
+
+3. Register it in `_register_natives()`:
+
+```python
+self.register_constructor("java.util.Random", 
+                         lambda: JavaUtilRandom())
+self.register_method("java.util.Random", "nextInt",
+                    lambda self, bound=None: self.nextInt(bound))
+self.register_method("java.util.Random", "<init>",
+                    lambda self: None)
+```
+
+4. Now use it in Java:
+
+```java
+import java.util.Random;
+
+public class RandomExample {
+    public static void main(String[] args) {
+        Random r = new Random();
+        System.out.println(r.nextInt(100));
+    }
+}
 ```
 
 
 
-### Reusability
 
-The package structure makes it importable as a library for other projects.
-Clear separation of concerns allows individual components (e.g., `ClassLoader`,
-`Interpreter`) to be reused or extended.
+### Currently Supported Features
+
+Supported Instructions:
+- Load/store variables
+- Arithmetic operations
+- Control flow (if, goto)
+- Method invocation (all types)
+- Object creation
+- Field access (instance and static)
+- Return statements
+
+Native Java Classes:
+- `java.lang.Object`
+- `java.lang.StringBuilder`
+- `java.io.PrintStream`
+- `java.lang.System`
+
+Java Features:
+- Classes and objects
+- Instance and static methods
+- Instance and static fields
+- Constructors
+- Basic control flow
+- Arithmetic
+- String operations (via StringBuilder)
+- Console output (via System.out)
+
+
+## Limitations
+
+This is an educational interpreter with limitations:
+- No arrays (yet)
+- No exceptions
+- No threads
+- No garbage collection
+- Limited stdlib (only basic classes)
+- No reflection
+- No generics
+- No lambdas
+
+
+
+### Troubleshooting
+
+"Class X not found":
+- Make sure the .class file exists in the classpath
+- Check that you're using the class name without .class extension
+- Verify the classpath is correct (use absolute paths if needed)
+
+
+"Method Y not found":
+- Make sure your Java class has a `main` method (or the method you're trying to run)
+- Check that the method signature matches
+
+
+Import errors:
+- Make sure you're running from the directory containing `jvm_interpreter/`
+- Verify Python 3.7+ is installed: `python --version`
 

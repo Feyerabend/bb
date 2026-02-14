@@ -16,10 +16,9 @@ def main():
         result = interpreter.run_method(class_file.this_class.name, 'main', verbose)
     except Exception as e:
         print(f"Error: {e}")
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
 
 if __name__ == "__main__":
     main()
-
-# python3 main.py Sample ./classes -v
-
