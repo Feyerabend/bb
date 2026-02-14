@@ -1,14 +1,16 @@
-# 3D Raycasting World - Technical Documentation
 
-## Overview
+## 3D Raycasting World
 
-This is a **raycasting engine** that creates a 3D first-person view from a 2D map, similar to classic games like Wolfenstein 3D (1992) and early Doom. The rendering technique creates the illusion of 3D using only 2D calculations and clever projection.
+This is a *raycasting engine* that creates a 3D first-person view from a 2D map,
+similar to classic games like Wolfenstein 3D (1992) and early Doom. The rendering
+technique creates the illusion of 3D using only 2D calculations and clever projection.
 
-## How Raycasting Works
 
 ### The Core Concept
 
-Raycasting simulates 3D by casting rays from the player's position in the direction they're looking. Each ray travels until it hits a wall, and the distance determines how tall to draw that wall slice on screen.
+Raycasting simulates 3D by casting rays from the player's position in the direction
+they're looking. Each ray travels until it hits a wall, and the distance determines
+how tall to draw that wall slice on screen.
 
 ```
 Player view angle: 60° FOV (Field of View)
@@ -17,13 +19,14 @@ Player view angle: 60° FOV (Field of View)
    /   Camera    \
   /    Position   \
  /                 \
-└─────────────────────┘
+└-------------------┘
     Screen (800px)
 ```
 
+
 ### Step-by-Step Rendering Process
 
-#### 1. **Ray Casting** (Wall Detection)
+#### 1. *Ray Casting* (Wall Detection)
 
 For each vertical column on the screen (800 rays for 800px width):
 
@@ -50,9 +53,11 @@ while (!hitWall && distance < MAX_DEPTH) {
 }
 ```
 
-#### 2. **Fish-Eye Correction**
 
-Raw distances create a "fish-eye" distortion effect. We correct this by projecting onto the view plane:
+#### 2. *Fish-Eye Correction*
+
+Raw distances create a "fish-eye" distortion effect.
+We correct this by projecting onto the view plane:
 
 ```javascript
 // Without correction: walls appear curved
@@ -62,7 +67,7 @@ const rawDistance = distance;
 const correctedDistance = distance * cos(rayAngle - player.angle);
 ```
 
-**Why this works:**
+*Why this works:*
 - Rays at the edge of FOV travel at an angle
 - They measure diagonal distance (longer than perpendicular)
 - Multiplying by cosine projects onto the perpendicular view plane
@@ -76,25 +81,27 @@ const correctedDistance = distance * cos(rayAngle - player.angle);
  /     \ |
 Player   |
          |
+
 corrected_d = d * cos(α)
 ```
 
-#### 3. **Wall Height Calculation**
+#### 3. *Wall Height Calculation*
 
-Walls appear taller when closer, shorter when far away. This uses **perspective projection**:
+Walls appear taller when closer, shorter when far away. This uses *perspective projection*:
 
 ```javascript
 const wallHeight = (TILE_SIZE * screenHeight) / correctedDistance;
 ```
 
-**The math:**
+*The math:*
 - `TILE_SIZE` = actual wall height in world units (64 units)
 - `screenHeight` = screen resolution (600px)
 - Division by distance = perspective scaling
 - When distance is small → wallHeight is large
 - When distance is large → wallHeight is small
 
-#### 4. **Vertical Centering**
+
+#### 4. *Vertical Centering*
 
 Walls are drawn centered vertically on screen to simulate eye-level view:
 
@@ -106,7 +113,8 @@ const wallBottom = wallTop + wallHeight;
 ctx.fillRect(column, wallTop, 1, wallHeight);
 ```
 
-#### 5. **Distance-Based Shading**
+
+#### 5. *Distance-Based Shading*
 
 Walls fade to darkness with distance to create depth perception:
 
@@ -115,7 +123,8 @@ const brightness = max(0, 255 - (distance / MAX_DEPTH) * 255);
 const color = rgb(brightness, brightness * 0.5, brightness * 0.5);
 ```
 
-This simulates **fog** or **atmospheric perspective** - a natural depth cue.
+This simulates *fog* or *atmospheric perspective* - a natural depth cue.
+
 
 ### The Z-Buffer
 
@@ -129,7 +138,7 @@ for (let x = 0; x < screenWidth; x++) {
     const distance = castRay(angle);
     zBuffer[x] = distance;  // Store for later
     
-    // Draw wall...
+    // Draw wall..
 }
 
 // Later, when drawing sprites
@@ -139,9 +148,10 @@ if (spriteDistance < zBuffer[x]) {
 }
 ```
 
-This ensures sprites appear **behind** walls when appropriate.
+This ensures sprites appear *behind* walls when appropriate.
 
-## The 2D Map Representation
+
+### The 2D Map Representation
 
 The world is stored as a 2D array:
 
@@ -157,11 +167,11 @@ const map = [
 const TILE_SIZE = 64;  // Each tile is 64x64 units
 ```
 
-**Player position** is in world coordinates:
+*Player position* is in world coordinates:
 - `player.x = 128` = 2 tiles from left edge
 - `player.y = 128` = 2 tiles from top edge
 
-**Collision detection** checks tiles around player position:
+*Collision detection* checks tiles around player position:
 
 ```javascript
 const mapX = floor(player.x / TILE_SIZE);
@@ -172,7 +182,8 @@ if (map[mapY][mapX] === 1) {
 }
 ```
 
-## Performance Optimizations
+
+### Performance Optimisations
 
 ### 1. Fixed Step Size
 Instead of checking every pixel, we step by 0.5 units:
@@ -192,9 +203,10 @@ Each ray draws exactly 1 pixel wide column:
 ctx.fillRect(x, y, 1, height);  // Width = 1
 ```
 
-## Mathematical Foundations
 
-### Trigonometry
+### Mathematical Foundations
+
+#### Trigonometry
 
 The engine heavily uses sine and cosine for direction calculations:
 
@@ -208,7 +220,7 @@ newX = x + dx * speed;
 newY = y + dy * speed;
 ```
 
-### Perspective Projection
+#### Perspective Projection
 
 The fundamental perspective equation:
 
@@ -224,7 +236,7 @@ In code:
 wallHeight = (TILE_SIZE * screenHeight) / distance;
 ```
 
-## Ceiling and Floor
+### Ceiling and Floor
 
 Currently rendered as flat colors:
 
@@ -238,20 +250,21 @@ ctx.fillStyle = '#4a4a4a';
 ctx.fillRect(0, height/2, width, height/2);
 ```
 
-**Could be enhanced with:**
+*Could be enhanced with:*
 - Texture mapping (like floor tiles)
 - Distance-based shading
 - Reflections
 
-## Input and Movement
 
-### Rotation
+### Input and Movement
+
+#### Rotation
 ```javascript
 if (keyPressed('LEFT'))  player.angle -= TURN_SPEED;
 if (keyPressed('RIGHT')) player.angle += TURN_SPEED;
 ```
 
-### Movement
+#### Movement
 ```javascript
 // Calculate movement vector based on view direction
 const moveX = cos(player.angle) * MOVE_SPEED;
@@ -263,26 +276,27 @@ if (!isColliding(player.x + moveX, player.y)) {
 }
 ```
 
-**Separate X/Y collision** allows sliding along walls instead of getting stuck.
+*Separate X/Y collision* allows sliding along walls instead of getting stuck.
 
-## Limitations of Raycasting
+### Limitations of Raycasting
 
-### What Raycasting CAN do:
-✓ Vertical walls of uniform height
-✓ Fast rendering (simple calculations)
-✓ Atmospheric lighting/fog
-✓ Sprite objects (billboards)
+#### What Raycasting CAN do:
+- Vertical walls of uniform height
+- Fast rendering (simple calculations)
+- Atmospheric lighting/fog
+- Sprite objects (billboards)
 
 ### What Raycasting CANNOT do:
-✗ Looking up/down (no Y-axis rotation)
-✗ Rooms above rooms (no height variation)
-✗ Sloped walls or floors
-✗ Curved surfaces
-✗ Complex 3D geometry
+- Looking up/down (no Y-axis rotation)
+- Rooms above rooms (no height variation)
+- Sloped walls or floors
+- Curved surfaces
+- Complex 3D geometry
 
-For these features, you need full **3D polygon rendering** (like Quake, modern 3D engines).
+For these features, you need full *3D polygon rendering* (like Quake, modern 3D engines).
 
-## Game Loop
+
+### Game Loop
 
 The main rendering cycle:
 
@@ -296,33 +310,30 @@ function gameLoop() {
 }
 ```
 
-## Coordinate Systems
 
-### World Space
+### Coordinate Systems
+
+#### World Space
 - Origin (0,0) at top-left
 - X increases right
 - Y increases down
 - Units: arbitrary (typically 64 units = 1 tile)
 
-### Screen Space
+#### Screen Space
 - Origin (0,0) at top-left
 - X increases right  
 - Y increases down
 - Units: pixels
 
-### Angles
+#### Angles
 - 0 radians = facing right (+X)
 - π/2 radians = facing down (+Y)
 - π radians = facing left (-X)
 - 3π/2 radians = facing up (-Y)
 
-## Further Reading
 
-- **Lode's Raycasting Tutorial**: Classic comprehensive guide
-- **Game Engine Black Book - Wolfenstein 3D**: Deep dive into the original
-- **Ray-Casting Tutorial For Game Development**: Step-by-step math explanation
 
-## Try It Yourself
+### Try It Yourself
 
 Experiment with these constants to see how they affect rendering:
 
@@ -333,6 +344,8 @@ const TILE_SIZE = 64;           // Try 32 (larger world) or 128 (smaller)
 const MAX_DEPTH = 800;          // Try 400 (more fog) or 1600 (see further)
 ```
 
----
 
-**Note**: Object/sprite rendering uses a different technique (billboard sprites with z-buffering) and is documented separately.
+
+*Note*: Object/sprite rendering uses a different technique
+(billboard sprites with z-buffering) and is documented
+in [SPRITES.md](./SPRITES.md).
