@@ -135,7 +135,9 @@ void compute_barycentric(Vec3 p, Vec3 a, Vec3 b, Vec3 c, float* u, float* v, flo
 }
 
 void fill_triangle_textured(Framebuffer* fb, Vec3 v1, Vec3 v2, Vec3 v3, 
-                           TexCoord t1, TexCoord t2, TexCoord t3, Model* model, Light* light) {
+                           TexCoord t1, TexCoord t2, TexCoord t3, 
+                           float z1, float z2, float z3,
+                           Model* model, Light* light) {
     if (!fb || !fb->pixels || !model || !light) return;
     
     // Find bounding box of triangle
@@ -159,25 +161,46 @@ void fill_triangle_textured(Framebuffer* fb, Vec3 v1, Vec3 v2, Vec3 v3,
         normal = (Vec3){0.0f, 0.0f, 1.0f};
     }
     
-    // FIXED: Use proper barycentric coordinate calculation
+    // Precompute 1/z for perspective correction
+    float inv_z1 = 1.0f / fmaxf(z1, 0.001f);
+    float inv_z2 = 1.0f / fmaxf(z2, 0.001f);
+    float inv_z3 = 1.0f / fmaxf(z3, 0.001f);
+    
+    // Precompute texture coordinates divided by z
+    float t1u_z = t1.u * inv_z1;
+    float t1v_z = t1.v * inv_z1;
+    float t2u_z = t2.u * inv_z2;
+    float t2v_z = t2.v * inv_z2;
+    float t3u_z = t3.u * inv_z3;
+    float t3v_z = t3.v * inv_z3;
+    
     float inv_area = 1.0f / area;
     
     for (int y = min_y; y <= max_y; y++) {
         for (int x = min_x; x <= max_x; x++) {
-            // Calculate barycentric coordinates using cross products
+            // Calculate barycentric coordinates
             float px = (float)x + 0.5f;
             float py = (float)y + 0.5f;
             
-            // Calculate areas of sub-triangles
-            float area1 = ((v2.x - px) * (v3.y - py) - (v3.x - px) * (v2.y - py)) * inv_area;
-            float area2 = ((v3.x - px) * (v1.y - py) - (v1.x - px) * (v3.y - py)) * inv_area;
-            float area3 = 1.0f - area1 - area2;
+            // Calculate areas of sub-triangles (barycentric weights)
+            float w1 = ((v2.x - px) * (v3.y - py) - (v3.x - px) * (v2.y - py)) * inv_area;
+            float w2 = ((v3.x - px) * (v1.y - py) - (v1.x - px) * (v3.y - py)) * inv_area;
+            float w3 = 1.0f - w1 - w2;
             
             // Check if point is inside triangle
-            if (area1 >= 0.0f && area2 >= 0.0f && area3 >= 0.0f) {
-                // Interpolate texture coordinates
-                float tex_u = area1 * t1.u + area2 * t2.u + area3 * t3.u;
-                float tex_v = area1 * t1.v + area2 * t2.v + area3 * t3.v;
+            if (w1 >= 0.0f && w2 >= 0.0f && w3 >= 0.0f) {
+                // Perspective-correct interpolation
+                // Interpolate 1/z
+                float inv_z = w1 * inv_z1 + w2 * inv_z2 + w3 * inv_z3;
+                float z = 1.0f / inv_z;
+                
+                // Interpolate u/z and v/z
+                float tex_u_z = w1 * t1u_z + w2 * t2u_z + w3 * t3u_z;
+                float tex_v_z = w1 * t1v_z + w2 * t2v_z + w3 * t3v_z;
+                
+                // Recover perspective-correct u and v
+                float tex_u = tex_u_z * z;
+                float tex_v = tex_v_z * z;
                 
                 // Clamp texture coordinates
                 tex_u = fmaxf(0.0f, fminf(1.0f, tex_u));
@@ -328,80 +351,6 @@ int compare_triangles(const void *a, const void *b) {
     return 0;
 }
 
-TexCoord get_texture_coord(Model* model, Face* face, int vertex_index) {
-    if (!model || !face) {
-        return (TexCoord){0.5f, 0.5f};
-    }
-    
-    // Get vertex index from face
-    int vert_index = -1;
-    if (vertex_index == 0) vert_index = face->v1;
-    else if (vertex_index == 1) vert_index = face->v2;
-    else if (vertex_index == 2) vert_index = face->v3;
-    
-    if (vert_index < 0 || vert_index >= model->vertex_count) {
-        return (TexCoord){0.5f, 0.5f};
-    }
-    
-    Vec3 vertex = model->vertices[vert_index];
-    
-    // FIXED: Generate proper cube face texture coordinates
-    // Determine which face this vertex belongs to and generate appropriate UVs
-    float abs_x = fabsf(vertex.x);
-    float abs_y = fabsf(vertex.y);
-    float abs_z = fabsf(vertex.z);
-    
-    // Use a small epsilon for floating point comparison
-    const float epsilon = 0.9f;
-    
-    if (abs_x > epsilon) {
-        // Left/Right face (X-dominant)
-        if (vertex.x > 0) {
-            // Right face (+X)
-            return (TexCoord){
-                (1.0f - vertex.z) * 0.5f + 0.5f,  // Map Z to U
-                (vertex.y + 1.0f) * 0.5f           // Map Y to V
-            };
-        } else {
-            // Left face (-X)
-            return (TexCoord){
-                (vertex.z + 1.0f) * 0.5f,          // Map Z to U
-                (vertex.y + 1.0f) * 0.5f           // Map Y to V
-            };
-        }
-    } else if (abs_y > epsilon) {
-        // Top/Bottom face (Y-dominant)
-        if (vertex.y > 0) {
-            // Top face (+Y)
-            return (TexCoord){
-                (vertex.x + 1.0f) * 0.5f,          // Map X to U
-                (1.0f - vertex.z) * 0.5f + 0.5f   // Map Z to V (flipped)
-            };
-        } else {
-            // Bottom face (-Y)
-            return (TexCoord){
-                (vertex.x + 1.0f) * 0.5f,          // Map X to U
-                (vertex.z + 1.0f) * 0.5f           // Map Z to V
-            };
-        }
-    } else {
-        // Front/Back face (Z-dominant)
-        if (vertex.z > 0) {
-            // Front face (+Z)
-            return (TexCoord){
-                (vertex.x + 1.0f) * 0.5f,          // Map X to U
-                (1.0f - vertex.y) * 0.5f + 0.5f   // Map Y to V (flipped for screen space)
-            };
-        } else {
-            // Back face (-Z)
-            return (TexCoord){
-                (1.0f - vertex.x) * 0.5f + 0.5f,  // Map X to U (flipped)
-                (1.0f - vertex.y) * 0.5f + 0.5f   // Map Y to V (flipped)
-            };
-        }
-    }
-}
-
 void render_solid_with_lighting(Model* model, Camera* camera, Vec3 object_position, 
                                Vec3 object_rotation, Framebuffer* fb, Light* light) {
     if (!model || !camera || !fb || !light) return;
@@ -414,15 +363,24 @@ void render_solid_with_lighting(Model* model, Camera* camera, Vec3 object_positi
     Mat4 rotation = mat4_multiply(mat4_multiply(rot_z, rot_y), rot_x);
     Mat4 model_matrix = mat4_multiply(translation, rotation);
     Mat4 view = mat4_translation(-camera->position.x, -camera->position.y, -camera->position.z);
+    Mat4 model_view = mat4_multiply(view, model_matrix);
     float aspect = (float)camera->screen_width / camera->screen_height;
     Mat4 projection = mat4_perspective(camera->fov, aspect, camera->near_plane, camera->far_plane);
-    Mat4 mvp = mat4_multiply(mat4_multiply(projection, view), model_matrix);
+    Mat4 mvp = mat4_multiply(projection, model_view);
 
-    // Project all vertices
+    // Project all vertices and store view-space depths
     Vec3* projected_vertices = malloc(model->vertex_count * sizeof(Vec3));
-    if (!projected_vertices) return;
+    Vec3* view_space_vertices = malloc(model->vertex_count * sizeof(Vec3));
+    if (!projected_vertices || !view_space_vertices) {
+        free(projected_vertices);
+        free(view_space_vertices);
+        return;
+    }
     
     for (int i = 0; i < model->vertex_count; i++) {
+        // Get view-space position (before projection)
+        view_space_vertices[i] = mat4_transform_vec3(model_view, model->vertices[i]);
+        // Get projected position
         projected_vertices[i] = mat4_transform_vec3(mvp, model->vertices[i]);
     }
 
@@ -430,6 +388,7 @@ void render_solid_with_lighting(Model* model, Camera* camera, Vec3 object_positi
     Triangle* triangles = malloc(model->face_count * sizeof(Triangle));
     if (!triangles) {
         free(projected_vertices);
+        free(view_space_vertices);
         return;
     }
     
@@ -454,15 +413,11 @@ void render_solid_with_lighting(Model* model, Camera* camera, Vec3 object_positi
             Vec3 screen_normal = vec3_cross(edge1, edge2);
             
             if (screen_normal.z > 0) { // Front-facing triangle
-                // Get texture coordinates properly
-                TexCoord tc1 = get_texture_coord(model, &face, 0);
-                TexCoord tc2 = get_texture_coord(model, &face, 1);
-                TexCoord tc3 = get_texture_coord(model, &face, 2);
-                
-                // Validate texture coordinates
-                if (!isfinite(tc1.u) || !isfinite(tc1.v)) tc1 = (TexCoord){0.0f, 0.0f};
-                if (!isfinite(tc2.u) || !isfinite(tc2.v)) tc2 = (TexCoord){1.0f, 0.0f};
-                if (!isfinite(tc3.u) || !isfinite(tc3.v)) tc3 = (TexCoord){0.5f, 1.0f};
+                // Use the pre-defined texture coordinates for this face
+                int tex_index = i * 3; // 3 texture coords per face
+                TexCoord tc1 = model->tex_coords[tex_index];
+                TexCoord tc2 = model->tex_coords[tex_index + 1];
+                TexCoord tc3 = model->tex_coords[tex_index + 2];
                 
                 triangles[triangle_count].v1 = p1;
                 triangles[triangle_count].v2 = p2;
@@ -470,6 +425,11 @@ void render_solid_with_lighting(Model* model, Camera* camera, Vec3 object_positi
                 triangles[triangle_count].t1 = tc1;
                 triangles[triangle_count].t2 = tc2;
                 triangles[triangle_count].t3 = tc3;
+                
+                // Store view-space z-depths for perspective correction (negative z in view space)
+                triangles[triangle_count].z1 = -view_space_vertices[face.v1].z;
+                triangles[triangle_count].z2 = -view_space_vertices[face.v2].z;
+                triangles[triangle_count].z3 = -view_space_vertices[face.v3].z;
                 
                 // Use face color if available
                 if (model->face_colors && i < model->face_count) {
@@ -491,9 +451,10 @@ void render_solid_with_lighting(Model* model, Camera* camera, Vec3 object_positi
     // Render triangles
     for (int i = 0; i < triangle_count; i++) {
         Triangle t = triangles[i];
-        fill_triangle_textured(fb, t.v1, t.v2, t.v3, t.t1, t.t2, t.t3, model, light);
+        fill_triangle_textured(fb, t.v1, t.v2, t.v3, t.t1, t.t2, t.t3, t.z1, t.z2, t.z3, model, light);
     }
 
     free(projected_vertices);
+    free(view_space_vertices);
     free(triangles);
 }

@@ -8,9 +8,9 @@ int main() {
     printf("Starting 3D Renderer...\n");
 
     Camera camera = {
-        .position = {0, 1, 8}, // Fixed camera position, slightly above and far for visibility
+        .position = {0, 0, 4}, // Move camera closer
         .rotation = {0, 0, 0},
-        .fov = 45.0f * M_PI / 180.0f,
+        .fov = 60.0f * M_PI / 180.0f, // Wider field of view
         .near_plane = 0.1f,
         .far_plane = 100.0f,
         .screen_width = 800,
@@ -26,7 +26,7 @@ int main() {
 
     for (int frame = 0; frame < num_frames; frame++) {
         printf("Rendering frame %d/%d\n", frame + 1, num_frames);
-        clear_framebuffer(fb, 20);
+        clear_framebuffer(fb, 40); // Slightly lighter background
 
         float t = (float)frame / (num_frames - 1) * animation_speed * M_PI;
 
@@ -37,9 +37,9 @@ int main() {
         };
 
         Vec3 cube_position = {
-            0.5f, // Fixed x position, centered
-            0.5f, // Fixed y position, centered
-            0.0f  // Fixed z position, no progression toward camera
+            0.0f, // Centered
+            0.0f, // Centered
+            0.0f  // At origin
         };
 
         light.direction = vec3_normalize((Vec3){

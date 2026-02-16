@@ -14,6 +14,7 @@ typedef struct {
 typedef struct {
     Vec3 v1, v2, v3;  // Screen space vertices with z
     TexCoord t1, t2, t3;  // Texture coordinates for each vertex
+    float z1, z2, z3;     // Original z values for perspective correction
     Vec3 color;       // RGB color (after lighting)
     float avg_z;      // Average z for sorting
 } Triangle;
@@ -24,7 +25,9 @@ void clear_framebuffer(Framebuffer* fb, unsigned char value);
 void set_pixel(Framebuffer* fb, int x, int y, unsigned char r, unsigned char g, unsigned char b);
 Vec3 sample_texture(Model* model, float u, float v);
 void fill_triangle_textured(Framebuffer* fb, Vec3 v1, Vec3 v2, Vec3 v3, 
-                           TexCoord t1, TexCoord t2, TexCoord t3, Model* model, Light* light);
+                           TexCoord t1, TexCoord t2, TexCoord t3, 
+                           float z1, float z2, float z3,
+                           Model* model, Light* light);
 void draw_line_fb(Framebuffer* fb, int x0, int y0, int x1, int y1, 
                   unsigned char r, unsigned char g, unsigned char b);
 void save_pam(Framebuffer* fb, const char* filename);

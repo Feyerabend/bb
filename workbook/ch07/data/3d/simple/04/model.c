@@ -121,7 +121,9 @@ Model* create_colored_cube(const char* pam_filename) {
     model->faces = malloc(model->face_count * sizeof(Face));
     model->face_colors = malloc(model->face_count * sizeof(Vec3));
     model->face_normals = malloc(model->face_count * sizeof(Vec3));
-    model->tex_coords = malloc(model->vertex_count * sizeof(TexCoord));
+    
+    // Allocate 3 texture coordinates per face (one for each triangle vertex)
+    model->tex_coords = malloc(model->face_count * 3 * sizeof(TexCoord));
     
     // Vertex positions
     model->vertices[0] = (Vec3){-1, -1, -1}; // back bottom left
@@ -131,71 +133,108 @@ Model* create_colored_cube(const char* pam_filename) {
     model->vertices[4] = (Vec3){-1, -1,  1}; // front bottom left
     model->vertices[5] = (Vec3){ 1, -1,  1}; // front bottom right
     model->vertices[6] = (Vec3){ 1,  1,  1}; // front top right
-    model->vertices[7] = (Vec3){-1,  1,  1}; // front top left
-    
-    // FIXED: Proper texture coordinates for cube faces
-    // These will be overridden by face-specific coordinates in rendering
-    model->tex_coords[0] = (TexCoord){0, 0}; 
-    model->tex_coords[1] = (TexCoord){1, 0}; 
-    model->tex_coords[2] = (TexCoord){1, 1}; 
-    model->tex_coords[3] = (TexCoord){0, 1}; 
-    model->tex_coords[4] = (TexCoord){0, 0}; 
-    model->tex_coords[5] = (TexCoord){1, 0}; 
-    model->tex_coords[6] = (TexCoord){1, 1}; 
-    model->tex_coords[7] = (TexCoord){0, 1}; 
+    model->vertices[7] = (Vec3){-1,  1,  1}; // front top left 
     
     for (int i = 0; i < model->vertex_count; i++) {
         model->normals[i] = (Vec3){0, 0, 0};
     }
     
-    // Face definitions remain the same...
-    // Back face - Red
+    // Face definitions with FIXED texture coordinates per triangle
+    // Back face - Red (triangles 0, 1)
     model->faces[0] = (Face){0, 1, 2};
     model->faces[1] = (Face){0, 2, 3};
     model->face_colors[0] = (Vec3){0.8f, 0.2f, 0.2f};
     model->face_colors[1] = (Vec3){0.8f, 0.2f, 0.2f};
     model->face_normals[0] = (Vec3){0, 0, -1};
     model->face_normals[1] = (Vec3){0, 0, -1};
+    // Triangle 0: v0, v1, v2
+    model->tex_coords[0] = (TexCoord){0, 1}; // bottom-left
+    model->tex_coords[1] = (TexCoord){1, 1}; // bottom-right
+    model->tex_coords[2] = (TexCoord){1, 0}; // top-right
+    // Triangle 1: v0, v2, v3
+    model->tex_coords[3] = (TexCoord){0, 1}; // bottom-left
+    model->tex_coords[4] = (TexCoord){1, 0}; // top-right
+    model->tex_coords[5] = (TexCoord){0, 0}; // top-left
     
-    // Front face - Green
+    // Front face - Green (triangles 2, 3)
     model->faces[2] = (Face){4, 6, 5};
     model->faces[3] = (Face){4, 7, 6};
     model->face_colors[2] = (Vec3){0.2f, 0.8f, 0.2f};
     model->face_colors[3] = (Vec3){0.2f, 0.8f, 0.2f};
     model->face_normals[2] = (Vec3){0, 0, 1};
     model->face_normals[3] = (Vec3){0, 0, 1};
+    // Triangle 2: v4, v6, v5
+    model->tex_coords[6] = (TexCoord){0, 1};  // bottom-left
+    model->tex_coords[7] = (TexCoord){1, 0};  // top-right
+    model->tex_coords[8] = (TexCoord){1, 1};  // bottom-right
+    // Triangle 3: v4, v7, v6
+    model->tex_coords[9] = (TexCoord){0, 1};   // bottom-left
+    model->tex_coords[10] = (TexCoord){0, 0};  // top-left
+    model->tex_coords[11] = (TexCoord){1, 0};  // top-right
     
-    // Left face - Blue
+    // Left face - Blue (triangles 4, 5)
     model->faces[4] = (Face){0, 3, 7};
     model->faces[5] = (Face){0, 7, 4};
     model->face_colors[4] = (Vec3){0.2f, 0.2f, 0.8f};
     model->face_colors[5] = (Vec3){0.2f, 0.2f, 0.8f};
     model->face_normals[4] = (Vec3){-1, 0, 0};
     model->face_normals[5] = (Vec3){-1, 0, 0};
+    // Triangle 4: v0, v3, v7
+    model->tex_coords[12] = (TexCoord){0, 1}; // bottom-left
+    model->tex_coords[13] = (TexCoord){1, 1}; // bottom-right
+    model->tex_coords[14] = (TexCoord){1, 0}; // top-right
+    // Triangle 5: v0, v7, v4
+    model->tex_coords[15] = (TexCoord){0, 1}; // bottom-left
+    model->tex_coords[16] = (TexCoord){1, 0}; // top-right
+    model->tex_coords[17] = (TexCoord){0, 0}; // top-left
     
-    // Right face - Yellow
+    // Right face - Yellow (triangles 6, 7)
     model->faces[6] = (Face){1, 5, 6};
     model->faces[7] = (Face){1, 6, 2};
     model->face_colors[6] = (Vec3){0.8f, 0.8f, 0.2f};
     model->face_colors[7] = (Vec3){0.8f, 0.8f, 0.2f};
     model->face_normals[6] = (Vec3){1, 0, 0};
     model->face_normals[7] = (Vec3){1, 0, 0};
+    // Triangle 6: v1, v5, v6
+    model->tex_coords[18] = (TexCoord){0, 1}; // bottom-left
+    model->tex_coords[19] = (TexCoord){1, 1}; // bottom-right
+    model->tex_coords[20] = (TexCoord){1, 0}; // top-right
+    // Triangle 7: v1, v6, v2
+    model->tex_coords[21] = (TexCoord){0, 1}; // bottom-left
+    model->tex_coords[22] = (TexCoord){1, 0}; // top-right
+    model->tex_coords[23] = (TexCoord){0, 0}; // top-left
     
-    // Bottom face - Magenta
+    // Bottom face - Magenta (triangles 8, 9)
     model->faces[8] = (Face){0, 4, 5};
     model->faces[9] = (Face){0, 5, 1};
     model->face_colors[8] = (Vec3){0.8f, 0.2f, 0.8f};
     model->face_colors[9] = (Vec3){0.8f, 0.2f, 0.8f};
     model->face_normals[8] = (Vec3){0, -1, 0};
     model->face_normals[9] = (Vec3){0, -1, 0};
+    // Triangle 8: v0, v4, v5
+    model->tex_coords[24] = (TexCoord){0, 0}; // top-left
+    model->tex_coords[25] = (TexCoord){0, 1}; // bottom-left
+    model->tex_coords[26] = (TexCoord){1, 1}; // bottom-right
+    // Triangle 9: v0, v5, v1
+    model->tex_coords[27] = (TexCoord){0, 0}; // top-left
+    model->tex_coords[28] = (TexCoord){1, 1}; // bottom-right
+    model->tex_coords[29] = (TexCoord){1, 0}; // top-right
     
-    // Top face - Cyan
+    // Top face - Cyan (triangles 10, 11)
     model->faces[10] = (Face){3, 2, 6};
     model->faces[11] = (Face){3, 6, 7};
     model->face_colors[10] = (Vec3){0.2f, 0.8f, 0.8f};
     model->face_colors[11] = (Vec3){0.2f, 0.8f, 0.8f};
     model->face_normals[10] = (Vec3){0, 1, 0};
     model->face_normals[11] = (Vec3){0, 1, 0};
+    // Triangle 10: v3, v2, v6
+    model->tex_coords[30] = (TexCoord){0, 0}; // top-left
+    model->tex_coords[31] = (TexCoord){1, 0}; // top-right
+    model->tex_coords[32] = (TexCoord){1, 1}; // bottom-right
+    // Triangle 11: v3, v6, v7
+    model->tex_coords[33] = (TexCoord){0, 0}; // top-left
+    model->tex_coords[34] = (TexCoord){1, 1}; // bottom-right
+    model->tex_coords[35] = (TexCoord){0, 1}; // bottom-left
     
     // Load PAM texture
     if (!load_pam_texture(pam_filename, &model->texture, &model->tex_width, &model->tex_height)) {
@@ -241,9 +280,9 @@ void free_model(Model* model) {
 Light create_default_light() {
     Light light;
     light.direction = vec3_normalize((Vec3){0.3f, -0.7f, 0.2f});
-    light.color = (Vec3){1.0f, 1.0f, 0.9f}; // Slightly warm white
-    light.intensity = 0.8f;
-    light.ambient_color = (Vec3){0.8f, 0.9f, 1.0f}; // Slightly cool ambient
-    light.ambient_intensity = 0.3f;
+    light.color = (Vec3){1.0f, 1.0f, 1.0f}; // Pure white for better visibility
+    light.intensity = 1.2f; // Increased intensity
+    light.ambient_color = (Vec3){1.0f, 1.0f, 1.0f}; // Pure white ambient
+    light.ambient_intensity = 0.5f; // Increased ambient for better visibility
     return light;
 }
