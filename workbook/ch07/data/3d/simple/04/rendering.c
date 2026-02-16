@@ -168,16 +168,19 @@ void fill_triangle_textured(Framebuffer* fb, Vec3 v1, Vec3 v2, Vec3 v3,
             float px = (float)x + 0.5f;
             float py = (float)y + 0.5f;
             
-            // Calculate areas of sub-triangles
-            float area1 = ((v2.x - px) * (v3.y - py) - (v3.x - px) * (v2.y - py)) * inv_area;
-            float area2 = ((v3.x - px) * (v1.y - py) - (v1.x - px) * (v3.y - py)) * inv_area;
-            float area3 = 1.0f - area1 - area2;
+            // Calculate barycentric weights
+            // w1 is the weight for v1 (based on area of triangle p-v2-v3)
+            // w2 is the weight for v2 (based on area of triangle p-v3-v1)
+            // w3 is the weight for v3 (based on area of triangle p-v1-v2)
+            float w1 = ((v2.x - px) * (v3.y - py) - (v3.x - px) * (v2.y - py)) * inv_area;
+            float w2 = ((v3.x - px) * (v1.y - py) - (v1.x - px) * (v3.y - py)) * inv_area;
+            float w3 = ((v1.x - px) * (v2.y - py) - (v2.x - px) * (v1.y - py)) * inv_area;
             
             // Check if point is inside triangle
-            if (area1 >= 0.0f && area2 >= 0.0f && area3 >= 0.0f) {
-                // Interpolate texture coordinates
-                float tex_u = area1 * t1.u + area2 * t2.u + area3 * t3.u;
-                float tex_v = area1 * t1.v + area2 * t2.v + area3 * t3.v;
+            if (w1 >= 0.0f && w2 >= 0.0f && w3 >= 0.0f) {
+                // Interpolate texture coordinates using correct barycentric weights
+                float tex_u = w1 * t1.u + w2 * t2.u + w3 * t3.u;
+                float tex_v = w1 * t1.v + w2 * t2.v + w3 * t3.v;
                 
                 // Clamp texture coordinates
                 tex_u = fmaxf(0.0f, fminf(1.0f, tex_u));
