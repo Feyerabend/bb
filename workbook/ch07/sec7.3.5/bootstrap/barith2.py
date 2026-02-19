@@ -2,7 +2,6 @@
 
 # Bootstrap Language - Self-Hosting Interpreter
 # The outer Python layer is minimal infrastructure.
-# The inner language implements an improved! recursive descent parser for itself.
 
 import re
 from typing import Any, Dict, List
@@ -329,16 +328,16 @@ def run_code(code: str):
 
 # -----------------------------------------------------------------------------
 # THE SELF-HOSTED LAYER
-# A better recursive-descent parser written in the language itself.
+# A recursive-descent parser written in the language itself.
 # It handles:
-#   • Multi-digit numbers
-#   • + - * /  with correct precedence  (mul/div binds tighter)
-#   • Parenthesised sub-expressions nested arbitrarily deep
-#   • Unary minus
+#   . Multi-digit numbers
+#   . + - * /  with correct precedence  (mul/div binds tighter)
+#   . Parenthesised sub-expressions nested arbitrarily deep
+#   . Unary minus
 #
-# The key trick: instead of guessing positions, the inner parser passes a
-# mutable "state" list [pos] around so each function can advance the cursor
-# and return both a value AND the updated position — genuine recursive descent.
+# The inner parser passes a mutable "state" list [pos] around
+# so each function can advance the cursor and return both a value
+# AND the updated position.
 # -----------------------------------------------------------------------------
 
 self_hosted_code = r'''
