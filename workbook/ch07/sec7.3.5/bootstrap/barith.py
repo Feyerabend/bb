@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 # Bootstrap Language - Self-Hosting Interpreter
-# 1. The Python interpreter (bootstrap)
-# 2. The language written in its own syntax (self-hosted)
-
+# The outer Python layer is minimal infrastructure.
 
 import re
 from typing import Any, Dict, List
@@ -11,7 +9,6 @@ from typing import Any, Dict, List
 class Lexer:
     def __init__(self, code: str):
         self.code = code
-        self.pos = 0
         
     def tokenize(self) -> List[tuple]:
         tokens = []
@@ -49,7 +46,6 @@ class Lexer:
             ('SKIP', r'[ \t]+'),
             ('COMMENT', r'#[^\n]*'),
         ]
-        
         pattern = '|'.join(f'(?P<{name}>{pat})' for name, pat in patterns)
         for match in re.finditer(pattern, self.code):
             kind = match.lastgroup
@@ -59,7 +55,7 @@ class Lexer:
         return tokens
 
 class Parser:
-    def __init__(self, tokens: List[tuple]):
+    def __init__(self, tokens):
         self.tokens = tokens
         self.pos = 0
         
@@ -71,7 +67,7 @@ class Parser:
             return None
         token = self.tokens[self.pos]
         if expected and token[0] != expected:
-            raise SyntaxError(f"Expected {expected}, got {token[0]}")
+            raise SyntaxError(f"Expected {expected}, got {token[0]} ({token[1]!r})")
         self.pos += 1
         return token
     
@@ -83,25 +79,18 @@ class Parser:
     
     def parse_statement(self):
         token = self.peek()
-        if token[0] == 'LET':
-            return self.parse_let()
-        elif token[0] == 'FN':
-            return self.parse_fn()
-        elif token[0] == 'IF':
-            return self.parse_if()
-        elif token[0] == 'WHILE':
-            return self.parse_while()
-        elif token[0] == 'RETURN':
-            return self.parse_return()
-        else:
-            return ('EXPR', self.parse_expr())
+        if token[0] == 'LET':   return self.parse_let()
+        elif token[0] == 'FN':  return self.parse_fn()
+        elif token[0] == 'IF':  return self.parse_if()
+        elif token[0] == 'WHILE': return self.parse_while()
+        elif token[0] == 'RETURN': return self.parse_return()
+        else: return ('EXPR', self.parse_expr())
     
     def parse_let(self):
         self.consume('LET')
         name = self.consume('ID')[1]
         self.consume('ASSIGN')
-        value = self.parse_expr()
-        return ('LET', name, value)
+        return ('LET', name, self.parse_expr())
     
     def parse_fn(self):
         self.consume('FN')
@@ -128,7 +117,8 @@ class Parser:
         while self.peek()[0] != 'RBRACE':
             body.append(self.parse_statement())
         self.consume('RBRACE')
-        return ('IF', cond, body)
+        else_body = []
+        return ('IF', cond, body, else_body)
     
     def parse_while(self):
         self.consume('WHILE')
@@ -142,50 +132,43 @@ class Parser:
     
     def parse_return(self):
         self.consume('RETURN')
-        value = self.parse_expr()
-        return ('RETURN', value)
+        return ('RETURN', self.parse_expr())
     
-    def parse_expr(self):
-        return self.parse_or()
+    def parse_expr(self):   return self.parse_or()
     
     def parse_or(self):
         left = self.parse_and()
         while self.peek() and self.peek()[0] == 'OR':
-            self.consume('OR')
-            right = self.parse_and()
-            left = ('OR', left, right)
+            self.consume()
+            left = ('OR', left, self.parse_and())
         return left
     
     def parse_and(self):
         left = self.parse_comparison()
         while self.peek() and self.peek()[0] == 'AND':
-            self.consume('AND')
-            right = self.parse_comparison()
-            left = ('AND', left, right)
+            self.consume()
+            left = ('AND', left, self.parse_comparison())
         return left
     
     def parse_comparison(self):
         left = self.parse_additive()
-        if self.peek() and self.peek()[0] in ('EQ', 'NE', 'LT', 'GT', 'LE', 'GE'):
+        if self.peek() and self.peek()[0] in ('EQ','NE','LT','GT','LE','GE'):
             op = self.consume()[0]
-            right = self.parse_additive()
-            return (op, left, right)
+            return (op, left, self.parse_additive())
         return left
     
     def parse_additive(self):
         left = self.parse_multiplicative()
-        while self.peek() and self.peek()[0] in ('PLUS', 'MINUS'):
+        while self.peek() and self.peek()[0] in ('PLUS','MINUS'):
             op = self.consume()[0]
-            right = self.parse_multiplicative()
-            left = (op, left, right)
+            left = (op, left, self.parse_multiplicative())
         return left
     
     def parse_multiplicative(self):
         left = self.parse_postfix()
-        while self.peek() and self.peek()[0] in ('MULT', 'DIV'):
+        while self.peek() and self.peek()[0] in ('MULT','DIV'):
             op = self.consume()[0]
-            right = self.parse_postfix()
-            left = (op, left, right)
+            left = (op, left, self.parse_postfix())
         return left
     
     def parse_postfix(self):
@@ -199,7 +182,11 @@ class Parser:
     
     def parse_primary(self):
         token = self.peek()
-        if token[0] == 'NUMBER':
+        if token[0] == 'MINUS':
+            self.consume()
+            operand = self.parse_primary()
+            return ('MINUS', ('NUMBER', 0), operand)
+        elif token[0] == 'NUMBER':
             self.consume()
             return ('NUMBER', int(token[1]))
         elif token[0] == 'STRING':
@@ -239,237 +226,359 @@ class Parser:
         self.consume('RPAREN')
         return ('CALL', name, args)
 
+
 class Interpreter:
     def __init__(self):
         self.globals = {
-            'print': lambda *args: print(*args),
-            'len': lambda x: len(x),
-            'append': lambda lst, item: lst + [item],
-            'get': lambda lst, i: lst[i] if i < len(lst) else None,
-            'set': lambda lst, i, val: lst[:i] + [val] + lst[i+1:],
-            'substr': lambda s, start, end: s[start:end],
-            'char_at': lambda s, i: s[i] if i < len(s) else "",
-            'str_eq': lambda a, b: a == b,
-            'is_digit': lambda c: c.isdigit() if c else False,
-            'is_alpha': lambda c: c.isalpha() if c else False,
-            'int_val': lambda s: int(s) if s.isdigit() else 0,
+            'print':    lambda *args: print(*[str(a) for a in args]),
+            'len':      lambda x: len(x),
+            'append':   lambda lst, item: lst + [item],
+            'get':      lambda lst, i: lst[i] if lst is not None and 0 <= i < len(lst) else None,
+            'set':      lambda lst, i, val: lst[:i] + [val] + lst[i+1:],
+            'substr':   lambda s, start, end: s[start:end],
+            'char_at':  lambda s, i: s[i] if 0 <= i < len(s) else "",
+            'str_eq':   lambda a, b: 1 if a == b else 0,
+            'str_cat':  lambda a, b: str(a) + str(b),
+            'is_digit': lambda c: 1 if (c and c.isdigit()) else 0,
+            'is_alpha': lambda c: 1 if (c and c.isalpha()) else 0,
+            'is_space': lambda c: 1 if (c and c in ' \t\n') else 0,
+            'int_val':  lambda s: int(s) if str(s).lstrip('-').isdigit() else 0,
+            'to_str':   lambda n: str(n),
+            'error':    lambda msg: (_ for _ in ()).throw(RuntimeError(msg)),
         }
         
-    def run(self, ast: List):
+    def run(self, ast):
         for stmt in ast:
             result = self.eval_stmt(stmt, self.globals)
             if result and result[0] == 'RETURN':
                 return result[1]
     
     def eval_stmt(self, stmt, env):
-        if stmt[0] == 'LET':
-            _, name, expr = stmt
-            env[name] = self.eval_expr(expr, env)
-        elif stmt[0] == 'FN':
+        kind = stmt[0]
+        if kind == 'LET':
+            env[stmt[1]] = self.eval_expr(stmt[2], env)
+        elif kind == 'FN':
             _, name, params, body = stmt
             env[name] = ('FUNCTION', params, body, env)
-        elif stmt[0] == 'IF':
-            _, cond, body = stmt
+        elif kind == 'IF':
+            _, cond, body, else_body = stmt
             if self.eval_expr(cond, env):
                 for s in body:
-                    result = self.eval_stmt(s, env)
-                    if result and result[0] == 'RETURN':
-                        return result
-        elif stmt[0] == 'WHILE':
+                    r = self.eval_stmt(s, env)
+                    if r and r[0] == 'RETURN': return r
+            else:
+                for s in else_body:
+                    r = self.eval_stmt(s, env)
+                    if r and r[0] == 'RETURN': return r
+        elif kind == 'WHILE':
             _, cond, body = stmt
             while self.eval_expr(cond, env):
                 for s in body:
-                    result = self.eval_stmt(s, env)
-                    if result and result[0] == 'RETURN':
-                        return result
-        elif stmt[0] == 'RETURN':
+                    r = self.eval_stmt(s, env)
+                    if r and r[0] == 'RETURN': return r
+        elif kind == 'RETURN':
             return ('RETURN', self.eval_expr(stmt[1], env))
-        elif stmt[0] == 'EXPR':
+        elif kind == 'EXPR':
             self.eval_expr(stmt[1], env)
     
     def eval_expr(self, expr, env):
-        if expr[0] == 'NUMBER':
-            return expr[1]
-        elif expr[0] == 'STRING':
-            return expr[1]
-        elif expr[0] == 'LIST':
-            return [self.eval_expr(e, env) for e in expr[1]]
-        elif expr[0] == 'ID':
+        kind = expr[0]
+        if kind == 'NUMBER': return expr[1]
+        elif kind == 'STRING': return expr[1]
+        elif kind == 'LIST':  return [self.eval_expr(e, env) for e in expr[1]]
+        elif kind == 'ID':
+            if expr[1] not in env:
+                raise NameError(f"Undefined: {expr[1]}")
             return env[expr[1]]
-        elif expr[0] == 'INDEX':
+        elif kind == 'INDEX':
             lst = self.eval_expr(expr[1], env)
             idx = self.eval_expr(expr[2], env)
             return lst[idx]
-        elif expr[0] == 'CALL':
+        elif kind == 'CALL':
             _, name, args = expr
             fn = env[name]
-            arg_vals = [self.eval_expr(arg, env) for arg in args]
+            vals = [self.eval_expr(a, env) for a in args]
             if callable(fn):
-                return fn(*arg_vals)
-            else:
-                _, params, body, fn_env = fn
-                local_env = fn_env.copy()
-                for param, val in zip(params, arg_vals):
-                    local_env[param] = val
-                for stmt in body:
-                    result = self.eval_stmt(stmt, local_env)
-                    if result and result[0] == 'RETURN':
-                        return result[1]
-        elif expr[0] in ('PLUS', 'MINUS', 'MULT', 'DIV'):
-            left = self.eval_expr(expr[1], env)
-            right = self.eval_expr(expr[2], env)
-            if expr[0] == 'PLUS': return left + right
-            elif expr[0] == 'MINUS': return left - right
-            elif expr[0] == 'MULT': return left * right
-            elif expr[0] == 'DIV': return left // right
-        elif expr[0] in ('EQ', 'NE', 'LT', 'GT', 'LE', 'GE'):
-            left = self.eval_expr(expr[1], env)
-            right = self.eval_expr(expr[2], env)
-            if expr[0] == 'EQ': return left == right
-            elif expr[0] == 'NE': return left != right
-            elif expr[0] == 'LT': return left < right
-            elif expr[0] == 'GT': return left > right
-            elif expr[0] == 'LE': return left <= right
-            elif expr[0] == 'GE': return left >= right
-        elif expr[0] in ('AND', 'OR'):
-            left = self.eval_expr(expr[1], env)
-            right = self.eval_expr(expr[2], env)
-            if expr[0] == 'AND': return left and right
-            elif expr[0] == 'OR': return left or right
+                return fn(*vals)
+            _, params, body, fn_env = fn
+            local = {**fn_env, **dict(zip(params, vals))}
+            for s in body:
+                r = self.eval_stmt(s, local)
+                if r and r[0] == 'RETURN': return r[1]
+            return None
+        elif kind == 'PLUS':  return self.eval_expr(expr[1], env) + self.eval_expr(expr[2], env)
+        elif kind == 'MINUS': return self.eval_expr(expr[1], env) - self.eval_expr(expr[2], env)
+        elif kind == 'MULT':  return self.eval_expr(expr[1], env) * self.eval_expr(expr[2], env)
+        elif kind == 'DIV':   return self.eval_expr(expr[1], env) // self.eval_expr(expr[2], env)
+        elif kind == 'EQ':    return 1 if self.eval_expr(expr[1], env) == self.eval_expr(expr[2], env) else 0
+        elif kind == 'NE':    return 1 if self.eval_expr(expr[1], env) != self.eval_expr(expr[2], env) else 0
+        elif kind == 'LT':    return 1 if self.eval_expr(expr[1], env) <  self.eval_expr(expr[2], env) else 0
+        elif kind == 'GT':    return 1 if self.eval_expr(expr[1], env) >  self.eval_expr(expr[2], env) else 0
+        elif kind == 'LE':    return 1 if self.eval_expr(expr[1], env) <= self.eval_expr(expr[2], env) else 0
+        elif kind == 'GE':    return 1 if self.eval_expr(expr[1], env) >= self.eval_expr(expr[2], env) else 0
+        elif kind == 'AND':   return self.eval_expr(expr[1], env) and self.eval_expr(expr[2], env)
+        elif kind == 'OR':    return self.eval_expr(expr[1], env) or  self.eval_expr(expr[2], env)
+        raise RuntimeError(f"Unknown expr: {expr}")
 
 def run_code(code: str):
-    lexer = Lexer(code)
-    tokens = lexer.tokenize()
-    parser = Parser(tokens)
-    ast = parser.parse()
-    interpreter = Interpreter()
-    interpreter.run(ast)
+    tokens = Lexer(code).tokenize()
+    ast    = Parser(tokens).parse()
+    Interpreter().run(ast)
 
-# Self-hosted interpreter in its own language
-self_hosted_code = '''
-# Helper to scan a number
-fn scan_number(code, i) {
-    let end = i
-    let len_code = len(code)
-    
-    while end < len_code {
-        if is_digit(char_at(code, end)) {
-            let end = end + 1
-        }
-        if is_digit(char_at(code, end)) {
-            let end = end
-        }
-        if is_digit(char_at(code, end)) == 0 {
-            return end
+
+# -----------------------------------------------------------------------------
+# THE SELF-HOSTED LAYER
+# A recursive-descent parser written in the language itself.
+# It handles:
+#   . Multi-digit numbers
+#   . + - * /  with correct precedence  (mul/div binds tighter)
+#   . Parenthesised sub-expressions nested arbitrarily deep
+#   . Unary minus
+#
+# The inner parser passes a mutable "state" list [pos] around
+# so each function can advance the cursor and return both a value
+# AND the updated position.
+# -----------------------------------------------------------------------------
+
+self_hosted_code = r'''
+# -----------------------------------------------------------------------------
+# Self-hosted recursive-descent arithmetic parser
+#
+# Design: every parse function returns a triple  [value, new_pos, ok]
+# so callers can thread position through the recursion without mutation.
+# The language has no break/else, so loops use tail-recursive helpers.
+# -----------------------------------------------------------------------------
+
+# Tokenizer
+
+fn skip_spaces(code, i) {
+    let n = len(code)
+    if i < n {
+        if is_space(char_at(code, i)) {
+            return skip_spaces(code, i + 1)
         }
     }
-    return end
+    return i
 }
 
-# Tokenizer using recursion
-fn tokenize_helper(code, i, tokens) {
-    let len_code = len(code)
-    
-    if i >= len_code {
+fn scan_number(code, i) {
+    let n = len(code)
+    if i < n {
+        if is_digit(char_at(code, i)) {
+            return scan_number(code, i + 1)
+        }
+    }
+    return i
+}
+
+fn tokenize_loop(code, i, tokens) {
+    let n = len(code)
+    let i = skip_spaces(code, i)
+    if i >= n {
         return tokens
     }
-    
+
     let c = char_at(code, i)
-    
-    # Skip whitespace
-    if str_eq(c, " ") {
-        return tokenize_helper(code, i + 1, tokens)
-    }
-    
-    # Numbers - just scan single digit for simplicity
+
     if is_digit(c) {
-        let tokens = append(tokens, ["NUMBER", int_val(c)])
-        return tokenize_helper(code, i + 1, tokens)
+        let end = scan_number(code, i)
+        let num_str = substr(code, i, end)
+        return tokenize_loop(code, end, append(tokens, ["NUM", int_val(num_str)]))
     }
-    
-    # Operators
     if str_eq(c, "+") {
-        let tokens = append(tokens, ["PLUS", "+"])
-        return tokenize_helper(code, i + 1, tokens)
+        return tokenize_loop(code, i + 1, append(tokens, ["PLUS", 0]))
+    }
+    if str_eq(c, "-") {
+        return tokenize_loop(code, i + 1, append(tokens, ["MINUS", 0]))
     }
     if str_eq(c, "*") {
-        let tokens = append(tokens, ["MULT", "*"])
-        return tokenize_helper(code, i + 1, tokens)
+        return tokenize_loop(code, i + 1, append(tokens, ["MULT", 0]))
+    }
+    if str_eq(c, "/") {
+        return tokenize_loop(code, i + 1, append(tokens, ["DIV", 0]))
     }
     if str_eq(c, "(") {
-        let tokens = append(tokens, ["LPAREN", "("])
-        return tokenize_helper(code, i + 1, tokens)
+        return tokenize_loop(code, i + 1, append(tokens, ["LPAREN", 0]))
     }
     if str_eq(c, ")") {
-        let tokens = append(tokens, ["RPAREN", ")"])
-        return tokenize_helper(code, i + 1, tokens)
+        return tokenize_loop(code, i + 1, append(tokens, ["RPAREN", 0]))
     }
-    
-    return tokenize_helper(code, i + 1, tokens)
+    # Unknown char - skip
+    return tokenize_loop(code, i + 1, tokens)
 }
 
 fn tokenize(code) {
-    return tokenize_helper(code, 0, [])
+    return tokenize_loop(code, 0, [])
 }
 
-# Simple evaluator for arithmetic expressions
-fn eval_expr(tokens, pos) {
-    let token = get(tokens, pos)
-    let type = get(token, 0)
-    
-    if str_eq(type, "NUMBER") {
-        return get(token, 1)
+# Token helpers
+
+fn tok_type(tokens, pos) {
+    let tok = get(tokens, pos)
+    if tok == 0 {
+        return "EOF"
     }
-    
-    if str_eq(type, "LPAREN") {
-        let left = eval_expr(tokens, pos + 1)
-        let op_token = get(tokens, pos + 2)
-        let right = eval_expr(tokens, pos + 3)
-        
-        let op = get(op_token, 0)
-        if str_eq(op, "PLUS") {
-            return left + right
-        }
-        if str_eq(op, "MULT") {
-            return left * right
-        }
-    }
-    
-    return 0
+    return get(tok, 0)
 }
 
-# Test it!
-print("Self-hosted interpreter demo:")
-print("")
+fn tok_val(tokens, pos) {
+    let tok = get(tokens, pos)
+    if tok == 0 {
+        return 0
+    }
+    return get(tok, 1)
+}
 
-let code1 = "2"
-print("Parsing:", code1)
-let tokens1 = tokenize(code1)
-let result1 = eval_expr(tokens1, 0)
-print("Result:", result1)
-print("")
+# -- parse_primary: NUMBER | LPAREN expr RPAREN | MINUS primary --
+# Returns [value, new_pos]
 
-let code2 = "(2 + 3)"
-print("Parsing:", code2)
-let tokens2 = tokenize(code2)
-let result2 = eval_expr(tokens2, 0)
-print("Result:", result2)
-print("")
+fn parse_primary(tokens, pos) {
+    let tt = tok_type(tokens, pos)
 
-let code3 = "(4 * 5)"
-print("Parsing:", code3)
-let tokens3 = tokenize(code3)
-let result3 = eval_expr(tokens3, 0)
-print("Result:", result3)
+    if str_eq(tt, "NUM") {
+        return [tok_val(tokens, pos), pos + 1]
+    }
+    if str_eq(tt, "LPAREN") {
+        let inner = parse_expr(tokens, pos + 1)
+        let val   = get(inner, 0)
+        let npos  = get(inner, 1)
+        # consume RPAREN
+        return [val, npos + 1]
+    }
+    if str_eq(tt, "MINUS") {
+        let inner = parse_primary(tokens, pos + 1)
+        let val   = get(inner, 0)
+        let npos  = get(inner, 1)
+        return [0 - val, npos]
+    }
+    return [0, pos + 1]
+}
+
+# -- parse_term_loop: left-associative * / chain --
+
+fn parse_term_loop(tokens, pos, left) {
+    let tt = tok_type(tokens, pos)
+
+    if str_eq(tt, "MULT") {
+        let rhs  = parse_primary(tokens, pos + 1)
+        let rval = get(rhs, 0)
+        let rpos = get(rhs, 1)
+        return parse_term_loop(tokens, rpos, left * rval)
+    }
+    if str_eq(tt, "DIV") {
+        let rhs  = parse_primary(tokens, pos + 1)
+        let rval = get(rhs, 0)
+        let rpos = get(rhs, 1)
+        return parse_term_loop(tokens, rpos, left / rval)
+    }
+    return [left, pos]
+}
+
+fn parse_term(tokens, pos) {
+    let lhs  = parse_primary(tokens, pos)
+    let lval = get(lhs, 0)
+    let lpos = get(lhs, 1)
+    return parse_term_loop(tokens, lpos, lval)
+}
+
+# -- parse_expr_loop: left-associative + - chain --
+
+fn parse_expr_loop(tokens, pos, left) {
+    let tt = tok_type(tokens, pos)
+
+    if str_eq(tt, "PLUS") {
+        let rhs  = parse_term(tokens, pos + 1)
+        let rval = get(rhs, 0)
+        let rpos = get(rhs, 1)
+        return parse_expr_loop(tokens, rpos, left + rval)
+    }
+    if str_eq(tt, "MINUS") {
+        let rhs  = parse_term(tokens, pos + 1)
+        let rval = get(rhs, 0)
+        let rpos = get(rhs, 1)
+        return parse_expr_loop(tokens, rpos, left - rval)
+    }
+    return [left, pos]
+}
+
+fn parse_expr(tokens, pos) {
+    let lhs  = parse_term(tokens, pos)
+    let lval = get(lhs, 0)
+    let lpos = get(lhs, 1)
+    return parse_expr_loop(tokens, lpos, lval)
+}
+
+# -- Top-level --
+
+fn evaluate(code) {
+    let tokens = tokenize(code)
+    let result = parse_expr(tokens, 0)
+    return get(result, 0)
+}
+
+# -- Test harness --
+
+fn run_test(expr, expected) {
+    let got = evaluate(expr)
+    if got == expected {
+        print(str_cat(str_cat(str_cat("  PASS  ", expr), "  =>  "), to_str(got)))
+    }
+    if got != expected {
+        print(str_cat(str_cat(str_cat(str_cat(str_cat(
+            "  FAIL  ", expr), "  got "), to_str(got)),
+            "  expected "), to_str(expected)))
+    }
+}
+
+print("*** Self-hosted recursive-descent arithmetic parser ***")
+print("")
+print("")
+print("Single numbers:")
+run_test("42", 42)
+run_test("100", 100)
+run_test("0", 0)
+print("")
+print("Basic arithmetic:")
+run_test("3 + 4", 7)
+run_test("10 - 3", 7)
+run_test("6 * 7", 42)
+run_test("20 / 4", 5)
+print("")
+print("Operator precedence (* / before + -):")
+run_test("2 + 3 * 4", 14)
+run_test("10 - 2 * 3", 4)
+run_test("2 * 3 + 4 * 5", 26)
+run_test("100 / 10 + 3 * 7", 31)
+print("")
+print("Parentheses override precedence:")
+run_test("(2 + 3) * 4", 20)
+run_test("2 * (3 + 4)", 14)
+run_test("(10 - 2) * (3 + 1)", 32)
+print("")
+print("Deeply nested:")
+run_test("((2 + 3) * (4 - 1)) + 7", 22)
+run_test("(((10)))", 10)
+run_test("2 * (3 * (4 * (5 * 1)))", 120)
+run_test("((1 + 2) * (3 + 4)) * ((5 - 3) * (6 / 2))", 126)
+print("")
+print("Unary minus:")
+run_test("-5 + 10", 5)
+run_test("-(3 + 4)", -7)
+run_test("-2 * -3", 6)
+run_test("10 + -4", 6)
+print("")
+print("Chained operations (left-associativity):")
+run_test("1 + 2 + 3 + 4 + 5", 15)
+run_test("100 / 2 / 5", 10)
+run_test("2 * 3 * 4 * 5", 120)
+run_test("20 - 5 - 3 - 2", 10)
 '''
 
+
 if __name__ == '__main__':
-    print("=" * 60)
-    print("Self-hosted interpreter")
-    print("=" * 60)
-    print("\nRunning the language interpreting itself:")
+    print("\nBootstrap: language interpreting a real parser of itself")
+    print("-" * 56)
     print()
     run_code(self_hosted_code)
-    print("\n" + "-" * 60)
-    print("The language interpreted itself.")
-    print("-" * 60)
+    print()
+    print("Done. The inner parser is genuine recursive descent.\n")

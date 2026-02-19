@@ -21,24 +21,24 @@ the patterns of reasoning they support and the constructions they make convenien
 these commitments helps programmers understand not just how to use a language,
 but why it works the way it does.
 
-| Language     | Constructions                                                            |
-|--------------|----------------------------------------------------------------------------|
-| C            | Mutable vars, loops, conditionals, explicit control flow, procedures      |
-| C++          | Classes, inheritance, generics, composition, threads, locks, functions    |
-| Java         | Classes, inheritance, interfaces, polymorphism, threads, futures, generics|
-| C#           | Classes, inheritance, LINQ (map/filter), events, delegates, async/await   |
+| Language     | Constructions                                                                    |
+|--------------|----------------------------------------------------------------------------------|
+| C            | Mutable vars, loops, conditionals, explicit control flow, procedures             |
+| C++          | Classes, inheritance, generics, composition, threads, locks, functions           |
+| Java         | Classes, inheritance, interfaces, polymorphism, threads, futures, generics       |
+| C#           | Classes, inheritance, LINQ (map/filter), events, delegates, async/await          |
 | Python       | First-class funcs, OO (classes), dynamic typing, list comprehensions, decorators |
-| Haskell      | Pure functions, ADTs, pattern matching, lazy evaluation, monads, type inference |
-| Scala        | Pure functions, pattern matching, traits (mixins), monads, generics       |
-| JavaScript   | First-class funcs, closures, event loop, callbacks, promises, async/await |
-| Erlang       | Message passing, recursion, immutable state, pattern matching, processes  |
-| Go           | Goroutines, channels, static typing, explicit control flow                |
-| Rust         | Ownership, pattern matching, ADTs, threads, generics, safe concurrency    |
-| Prolog       | Facts, rules, queries, unification, backtracking                          |
-| SQL          | Queries, constraints, rules, declarative relations                        |
-| Forth        | Stack-based execution, postfix notation, small reusable combinators       |
-| Elm          | Pure functions, pattern matching, ADTs, subscriptions, signals            |
-| AspectJ      | Aspects, join points, advice, weaving, cross-cutting concerns             |
+| Haskell      | Pure functions, ADTs, pattern matching, lazy evaluation, monads, type inference  |
+| Scala        | Pure functions, pattern matching, traits (mixins), monads, generics              |
+| JavaScript   | First-class funcs, closures, event loop, callbacks, promises, async/await        |
+| Erlang       | Message passing, recursion, immutable state, pattern matching, processes         |
+| Go           | Goroutines, channels, static typing, explicit control flow                       |
+| Rust         | Ownership, pattern matching, ADTs, threads, generics, safe concurrency           |
+| Prolog       | Facts, rules, queries, unification, backtracking                                 | 
+| SQL          | Queries, constraints, rules, declarative relations                               |
+| Forth        | Stack-based execution, postfix notation, small reusable combinators              |
+| Elm          | Pure functions, pattern matching, ADTs, subscriptions, signals                   |
+| AspectJ      | Aspects, join points, advice, weaving, cross-cutting concerns                    |
 
 
 #### Learning a Language
@@ -392,16 +392,16 @@ Pick 8–12 constructions that cover core paradigms
 
 Suggested initial constructions:
 
-| Construction         | Paradigm               | Notes                     |
-|----------------------|------------------------|---------------------------|
-| Mutable variables    | Imperative             | Foundational              |
-| Loops                | Imperative             | Common control structure  |
-| First-class functions| Functional             | Highlights abstraction    |
-| Recursion            | Functional             | Alternative to loops      |
-| Classes/objects      | Object-Oriented (OOP)  | Encapsulation / modeling  |
-| Threads              | Concurrent             | Explicit concurrency      |
+| Construction         | Paradigm               | Notes                       |
+|----------------------|------------------------|-----------------------------|
+| Mutable variables    | Imperative             | Foundational                |
+| Loops                | Imperative             | Common control structure    |
+| First-class functions| Functional             | Highlights abstraction      |
+| Recursion            | Functional             | Alternative to loops        |
+| Classes/objects      | Object-Oriented (OOP)  | Encapsulation / modeling    |
+| Threads              | Concurrent             | Explicit concurrency        |
 | Event handlers       | Event-driven           | Input/output responsiveness |
-| Pattern matching     | Functional / Declarative | Structural decomposition |
+| Pattern matching     | Functional / Declarative | Structural decomposition  |
 
 
 __Output Format (GitHub-friendly)__
@@ -426,7 +426,7 @@ Folder structure something like:
 - Commentary (language contrasts)
 
 
-Benefits
+Benefits:
 - Systematic, reusable reference for learners and teachers: Share
 - Forces deep understanding of core cross-language ideas
 - Clean project for GitHub portfolio (shows clarity, pedagogy, breadth)
@@ -437,3 +437,4 @@ __Possible extensions (Phase 2)__
 - Add more languages (e.g. JavaScript, Haskell, Rust)
 - Add unit tests / demo apps for each example
 - Build interactive docs / web version later
+
