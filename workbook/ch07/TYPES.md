@@ -13,7 +13,7 @@ where:
 - $e$ is an expression
 - $\tau$ is the type
 - $\Gamma \vdash e : \tau$ reads: "under context $\Gamma$, expression $e$ has type $\tau$"
-```
+
 
 
 ### Example: Variable Typing
