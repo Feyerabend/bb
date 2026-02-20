@@ -10,9 +10,9 @@ ensuring certain correctness properties. Typing judgments are written as:
 
 where:
 - $\Gamma\$ is the typing context (variables and their types)
-- \(e\) is an expression
-- \(\tau\) is the type
-- \(\Gamma \vdash e : \tau\) reads: "under context \(\Gamma\), expression \(e\) has type \(\tau\)"
+- $e$ is an expression
+- $\tau$ is the type
+- $\Gamma \vdash e : \tau$ reads: "under context $\Gamma$, expression $e$ has type $\tau$"
 ```
 
 
