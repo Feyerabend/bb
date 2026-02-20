@@ -19,12 +19,10 @@ where:
 ### Example: Variable Typing
 
 ```math
-\[
 \frac{x:\tau \in \Gamma}{\Gamma \vdash x : \tau} \quad (\text{Var})
-\]
 ```
 
-If a variable \(x\) has type \(\tau\) in the context, it is assigned type \(\tau\).
+If a variable $x$ has type $\tau$ in the context, it is assigned type $\tau$.
 
 
 
