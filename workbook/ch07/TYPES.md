@@ -29,12 +29,10 @@ If a variable $x$ has type $\tau$ in the context, it is assigned type $\tau$.
 ### Example: Addition
 
 ```math
-\[
 \frac{\Gamma \vdash e_1 : \text{Int} \quad \Gamma \vdash e_2 : \text{Int}}{\Gamma \vdash e_1 + e_2 : \text{Int}} \quad (\text{Add})
-\]
 ```
 
-If \(e_1\) and \(e_2\) are integers, then \(e_1 + e_2\) is also an integer.
+If $e_1$ and $e_2$ are integers, then $e_1 + e_2$ is also an integer.
 
 
 
