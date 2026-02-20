@@ -5,9 +5,7 @@ A *type system* classifies program expressions according to the kinds of values 
 ensuring certain correctness properties. Typing judgments are written as:
 
 ```math
-\[
 \Gamma \vdash e : \tau
-\]
 ```
 
 where:
