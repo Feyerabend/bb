@@ -41,17 +41,13 @@ If $e_1$ and $e_2$ are integers, then $e_1 + e_2$ is also an integer.
 *Abstraction:*
 
 ```math
-\[
 \frac{\Gamma, x:\tau_1 \vdash e : \tau_2}{\Gamma \vdash (\lambda x.e) : \tau_1 \to \tau_2} \quad (\text{Abs})
-\]
 ```
 
 *Application:*
 
 ```math
-\[
 \frac{\Gamma \vdash e_1 : \tau_1 \to \tau_2 \quad \Gamma \vdash e_2 : \tau_1}{\Gamma \vdash e_1 \, e_2 : \tau_2} \quad (\text{App})
-\]
 ```
 
 These formal rules allow reasoning about programs rigorously
