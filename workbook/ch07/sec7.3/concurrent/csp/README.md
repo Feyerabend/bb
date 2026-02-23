@@ -1,60 +1,78 @@
 
 ## Introduction to CSP
 
-*Communicating Sequential Processes (CSP)* is a formal language for describing and analysing concurrent systems.[^hoare]
-Developed by Tony Hoare in the late 1970s, it provides a mathematical framework for understanding how independent
-processes can interact with each other. Think of it as a blueprint language for building complex software systems
-where multiple parts run at the same time and need to coordinate their actions.
+*Communicating Sequential Processes (CSP)* is a formal language
+for describing and analysing concurrent systems.[^hoare]
+Developed by Tony Hoare in the late 1970s, it provides a mathematical
+framework for understanding how independent processes can interact
+with each other. Think of it as a blueprint language for building
+complex software systems where multiple parts run at the same time
+and need to coordinate their actions.
 
 [^hoare]: Hoare, C. A. R. (1978). Communicating sequential processes. *Communications of the ACM*, 21(8), 666–677.
 https://doi.org/10.1145/359576.359585. https://www.cs.cmu.edu/~crary/819-f09/Hoare78.pdf.
 
 Here are the core ideas behind CSP:
 
-* *Processes:* In CSP, a system is modelled as a collection of independent processes. Each process performs a
-  sequence of actions. These actions can be internal (like a calculation) or external (communicating with another process).
+* *Processes:* In CSP, a system is modelled as a collection of
+  independent processes. Each process performs a sequence of actions.
+  These actions can be internal (like a calculation) or external
+  (communicating with another process).
 
-* *Communication:* Processes communicate exclusively through *channels*. A channel is a medium through which two processes
-  can exchange information. This communication is *synchronous*, meaning both the sending and receiving process must be
-  ready for the communication to occur. If one process is ready but the other isn't, the ready process waits (or "blocks")
-  until the other is also ready. This synchronised exchange is called a *rendezvous*.
+* *Communication:* Processes communicate exclusively through *channels*.
+  A channel is a medium through which two processes can exchange information.
+  This communication is *synchronous*, meaning both the sending and receiving
+  process must be ready for the communication to occur. If one process is ready
+  but the other isn't, the ready process waits (or "blocks") until the other
+  is also ready. This synchronised exchange is called a *rendezvous*.
 
-* *Actions:* The fundamental building blocks of a CSP process are *actions*. These include:
+* *Actions:* The fundamental building blocks of a CSP process are *actions*.
+  These include:
     * *Send (!):* A process sends a message on a channel.
     * *Receive (?):* A process receives a message on a channel.
-    * *Tau ($`\tau`$):* An internal, unobservable action. This represents an action that happens within a process and doesn't
+    * *Tau ($`\tau`$):* An internal, unobservable action. This represents
+      an action that happens within a process and doesn't
       involve communication with other processes.
 
-* *Operators:* CSP provides a set of operators to combine basic actions and processes into more complex behaviours:
-    * *Prefix (a $`\rightarrow`$ P):* An action `a` followed by a process `P`. `P` can only start after `a` has completed.
-    * *Sequential Composition (P; Q):* Process `P` runs to completion, and then process `Q` starts.
+* *Operators:* CSP provides a set of operators to combine basic actions and
+  processes into more complex behaviours:
+    * *Prefix (a $`\rightarrow`$ P):* An action `a` followed by a process
+      `P`. `P` can only start after `a` has completed.
+    * *Sequential Composition (P; Q):* Process `P` runs to completion,
+      and then process `Q` starts.
     * *Choice (P $`\Box`$ Q or P $`\sqcap`$ Q):*
-        * *External Choice ($`\Box`$):* The environment (or an external event) determines which of `P` or `Q` will execute.
-        * *Internal Choice ($`\sqcap`$):* The process itself non-deterministically chooses to behave as `P` or `Q`.
-    * *Parallel (P || Q):* Processes `P` and `Q` execute concurrently. If they share channels, communication on those
-      channels must be synchronised.
-    * *Interleaving (P ||| Q):* Processes `P` and `Q` execute concurrently without any shared channels, meaning their
-      actions can be interleaved in any order.
-    * *Recursion ($`\mu`$ X . P):* Allows for repeating behaviours, where `X` refers to the process `P` itself, enabling loops.
+        * *External Choice ($`\Box`$):* The environment (or an external event)
+          determines which of `P` or `Q` will execute.
+        * *Internal Choice ($`\sqcap`$):* The process itself non-deterministically
+          chooses to behave as `P` or `Q`.
+    * *Parallel (P || Q):* Processes `P` and `Q` execute concurrently.
+      If they share channels, communication on those channels must be synchronised.
+    * *Interleaving (P ||| Q):* Processes `P` and `Q` execute concurrently without
+      any shared channels, meaning their actions can be interleaved in any order.
+    * *Recursion ($`\mu`$ X . P):* Allows for repeating behaviours, where `X`
+      refers to the process `P` itself, enabling loops.
 
-* *Trace Semantics:* CSP uses traces (sequences of observable actions) to describe the behaviour of processes. This allows
-  for formal reasoning about properties like deadlock (where processes are stuck waiting for each other indefinitely) and
+* *Trace Semantics:* CSP uses traces (sequences of observable actions) to describe
+  the behaviour of processes. This allows for formal reasoning about properties
+  like deadlock (where processes are stuck waiting for each other indefinitely) and
   livelock (where processes are busy but make no progress).
 
 CSP is widely used in areas like:
 
-* *Design and Verification of Concurrent Systems:* It helps engineers rigorously define and prove properties about
-  parallel and distributed software.
+* *Design and Verification of Concurrent Systems:* It helps engineers rigorously
+  define and prove properties about parallel and distributed software.
 * *Network Protocols:* Modelling and analysing how different components of a network interact.
 * *Operating Systems:* Understanding the synchronisation mechanisms between various parts of an OS.
 
 
 ### Core Implementation Overview
 
-This is a *formal CSP interpreter* in Python that implements Hoare-style CSP semantics with these key features:
+This is a *formal CSP interpreter* in Python that implements Hoare-style
+CSP semantics with these key features:
 
 1. *Process Algebra Foundation*:
-   - Implements core CSP operators: prefix (`→`), sequential (`;`), choice (`□`), external choice (`⊓`), parallel (`||`), and recursion
+   - Implements core CSP operators: prefix (`→`), sequential (`;`), choice (`□`),
+     external choice (`⊓`), parallel (`||`), and recursion
    - Supports guarded processes with conditions
 
 2. *Channel Communication*:
@@ -146,7 +164,8 @@ This implementation can be useful for:
 
 ### 1. Process Algebra Formalisation
 
-To give a more formal approach to CSP, some concepts can be introduced which corresponds with both implementation and theory.
+To give a more formal approach to CSP, some concepts can be introduced
+which corresponds with both implementation and theory.
 
 #### Basic Processes
 | CSP Math Notation | Python Class    | Example Usage            | Semantics                   |
@@ -156,14 +175,14 @@ To give a more formal approach to CSP, some concepts can be introduced which cor
 | `a → P`           | `Prefix(a, P)`  | `Prefix(Send(c,x), Q)`   | Action `a` then process `P` |
 
 #### Communication Primitives
-| CSP Notation | Python Class | Example                          | Channel Behaviour                       |
-|--------------|--------------|----------------------------------|----------------------------------------|
-| `c!v`        | `Send(c,v)`  | `Send("chan1", 42)`              | Output value `v` on channel `c`        |
-| `c?x`        | `Receive(c,x)`| `Receive("chan1", "data")`      | Input to variable `x` from channel `c` |
-| `τ`          | `Tau()`      | `Prefix(Tau(), P)`               | Internal silent action                 |
+| CSP Notation | Python Class  | Example                          | Channel Behaviour                      |
+|--------------|---------------|----------------------------------|----------------------------------------|
+| `c!v`        | `Send(c,v)`   | `Send("chan1", 42)`              | Output value `v` on channel `c`        |
+| `c?x`        | `Receive(c,x)`| `Receive("chan1", "data")`       | Input to variable `x` from channel `c` |
+| `τ`          | `Tau()`       | `Prefix(Tau(), P)`               | Internal silent action                 |
 
 ### 2. Composition Operators
-| CSP Operator | Python Class    | Example Code                         | Implementation Behaviour              |
+| CSP Operator | Python Class    | Example Code                         | Implementation Behaviour             |
 |--------------|-----------------|--------------------------------------|--------------------------------------|
 | `P ; Q`      | `Seq(P, Q)`     | `Seq(Send(c,x), Receive(c,y))`       | Sequential composition               |
 | `P □ Q`      | `ExtChoice(P,Q)`| `ExtChoice(recv1, recv2)`            | External (environment-driven) choice |
@@ -171,7 +190,7 @@ To give a more formal approach to CSP, some concepts can be introduced which cor
 | `P ⟦C⟧ Q`    | `Parallel(P,Q,C)`| `Parallel(P,Q,{"chan1","chan2"})`    | Synchronized parallel on channels `C`|
 
 ### 3. Recursion & Variables
-| CSP Notation  | Python Class | Example                          | Compilation Behavior          |
+| CSP Notation  | Python Class | Example                          | Compilation Behaviour         |
 |---------------|--------------|----------------------------------|-------------------------------|
 | `μX.P`        | `Rec(X,P)`   | `Rec("P", Prefix(a, Var("P")))`  | Creates recursive process     |
 | `X`           | `Var(X)`     | `Var("P")`                       | Unfolds recursive definition  |
