@@ -150,3 +150,12 @@ int main() {
 
     return 0;
 }
+
+// This code implements a simple interpreter for a fixed-point arithmetic language
+// using a trampoline to manage control flow. The trampoline allows us to execute
+// instructions without deep recursion.
+
+// How would the recursive version look like?
+// In a recursive version of the interpreter, we would directly call the function
+// corresponding to each opcode without using a trampoline. This would lead to
+// deep recursion, if the program has many instructions, which can cause a stack overflow.

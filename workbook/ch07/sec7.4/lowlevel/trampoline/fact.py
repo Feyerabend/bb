@@ -10,4 +10,8 @@ def factorial_trampoline(n):
         result = result()  # next step
     return result  # final
 
+# Example
 print(factorial_trampoline(5))  # Output: 120
+
+# This implementation uses a trampoline to avoid deep recursion
+# and allows us to compute factorials of large numbers without hitting a recursion limit.
