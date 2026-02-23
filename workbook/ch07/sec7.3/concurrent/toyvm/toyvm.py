@@ -360,7 +360,9 @@ class ToyVM:
                 self.globals[var_name] = thread.stack.pop()
         elif opcode == "JUMP":
             target = args[0]
-            if 0 <= target < len(thread.instructions):
+            # Allow target == len(instructions): pc advances to len on next step,
+            # which terminates the thread — the canonical way to "exit a loop".
+            if 0 <= target <= len(thread.instructions):
                 thread.pc = target - 1
             else:
                 print(f"[{thread.name}] Warning: JUMP to invalid address {target}")
@@ -371,7 +373,7 @@ class ToyVM:
             condition = thread.stack.pop()
             if condition >= 0:
                 target = args[0]
-                if 0 <= target < len(thread.instructions):
+                if 0 <= target <= len(thread.instructions):
                     thread.pc = target - 1
                 else:
                     print(f"[{thread.name}] Warning: JUMP_IF to invalid address {target}")
