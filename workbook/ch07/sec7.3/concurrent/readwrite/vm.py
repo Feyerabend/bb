@@ -15,6 +15,10 @@ class Thread:
         self.running = True
         self.waiting = False
         self.wait_condition: Optional[Callable[[], bool]] = None
+        # Called when a blocking instruction's condition fires via the fallback wakeup
+        # path in the run loop, to complete any deferred work (e.g. pop a resource name
+        # left on the stack, decrement a semaphore count, deliver a queued message).
+        self.wakeup_action: Optional[Callable[[], None]] = None
         self.joined_by = []
         self.priority = priority
         self.last_scheduled = time.time()
@@ -24,24 +28,29 @@ class Thread:
             return False
         if self.pc >= len(self.instructions):
             self.running = False
+            # Remove from the scheduler's active list immediately so it is not
+            # selected as a candidate in future rounds.
+            if self.name in self.vm.active_threads:
+                self.vm.active_threads.remove(self.name)
             for thread_name in self.joined_by:
                 thread = self.vm.threads.get(thread_name)
                 if thread and thread.waiting:
                     thread.waiting = False
                     thread.wait_condition = None
+                    if thread.wakeup_action:
+                        thread.wakeup_action()
+                        thread.wakeup_action = None
             return False
         if self.wait_condition and self.wait_condition():
             self.waiting = False
             self.wait_condition = None
-        if not self.waiting:
-            instruction = self.instructions[self.pc]
-            opcode = instruction[0]
-            args = instruction[1:] if len(instruction) > 1 else []
-            self.vm.execute_instruction(self, opcode, args)
-            self.pc += 1
-            self.last_scheduled = time.time()
-            return True
-        return False
+        instruction = self.instructions[self.pc]
+        opcode = instruction[0]
+        args = instruction[1:] if len(instruction) > 1 else []
+        self.vm.execute_instruction(self, opcode, args)
+        self.pc += 1
+        self.last_scheduled = time.time()
+        return True
 
 class Lock:
     def __init__(self, name: str):
@@ -134,8 +143,10 @@ class ToyVM:
         self.globals = {}
         self.next_thread_id = 0
         self.running = False
-        self.scheduler_type = "priority"
+        self.scheduler_type = "round_robin"
         self.step_interval = 0.01
+        self.active_threads = deque()
+        self.debug = False
 
     def create_thread(self, instructions: List[Tuple], name: str = None, priority: int = 0) -> str:
         if name is None:
@@ -143,6 +154,9 @@ class ToyVM:
             self.next_thread_id += 1
         thread = Thread(self, name, instructions, priority=priority)
         self.threads[name] = thread
+        self.active_threads.append(name)
+        if self.debug:
+            print(f"[DEBUG] Created thread {name}")
         return name
 
     def create_lock(self, name: str = None) -> str:
@@ -197,14 +211,24 @@ class ToyVM:
             return "waiting"
         return "runnable"
 
-    def run(self, max_steps: int = 10000, debug: bool = False):
+    def run(self, max_steps: int = 20000, debug: bool = False):
         self.running = True
+        self.debug = debug
         step_count = 0
-        active_threads = list(self.threads.keys())
         while self.running and step_count < max_steps:
             step_count += 1
-            active_threads = [t for t in self.threads if self.threads[t].running]
-            if not active_threads:
+            runnable_threads = [t for t in self.active_threads if self.threads[t].running and not self.threads[t].waiting]
+            if not runnable_threads:
+                for t in self.active_threads:
+                    thread = self.threads[t]
+                    if thread.waiting and thread.wait_condition and thread.wait_condition():
+                        runnable_threads.append(t)
+                        thread.waiting = False
+                        thread.wait_condition = None
+                        if thread.wakeup_action:
+                            thread.wakeup_action()
+                            thread.wakeup_action = None
+            if not runnable_threads:
                 break
             if self.detect_deadlock():
                 if debug:
@@ -212,7 +236,7 @@ class ToyVM:
                     self.print_thread_states(debug)
                 self.running = False
                 break
-            thread_name = self.select_thread(active_threads)
+            thread_name = self.select_thread(runnable_threads)
             thread = self.threads[thread_name]
             if debug:
                 print(f"Step {step_count}: Running thread {thread_name} (priority {thread.priority}) at PC {thread.pc}")
@@ -233,18 +257,31 @@ class ToyVM:
         return step_count
 
     def select_thread(self, active_threads: List[str]) -> str:
+        if not active_threads:
+            return None
         if self.scheduler_type == "priority":
             candidates = [
                 (t, self.threads[t].priority, -self.threads[t].last_scheduled)
                 for t in active_threads
             ]
-            return max(candidates, key=lambda x: (x[1], x[2]))[0]
+            selected = max(candidates, key=lambda x: (x[1], x[2]))[0]
         elif self.scheduler_type == "round_robin":
-            thread_name = active_threads[0]
-            active_threads.append(active_threads.pop(0))
-            return thread_name
+            # Walk self.active_threads in order and pick the first thread that
+            # appears in the runnable set, advancing the deque past it so the
+            # next call starts from the following thread.
+            runnable_set = set(active_threads)
+            selected = active_threads[0]  # fallback
+            for _ in range(len(self.active_threads)):
+                candidate = self.active_threads[0]
+                self.active_threads.rotate(-1)
+                if candidate in runnable_set:
+                    selected = candidate
+                    break
         else:
-            return random.choice(active_threads)
+            selected = random.choice(active_threads)
+        if selected and self.debug:
+            print(f"[DEBUG] Selected thread {selected}")
+        return selected
 
     def print_thread_states(self, debug: bool):
         if not debug:
@@ -270,11 +307,15 @@ class ToyVM:
                 b = thread.stack.pop()
                 a = thread.stack.pop()
                 thread.stack.append(a + b)
+            else:
+                print(f"[{thread.name}] Warning: ADD with fewer than 2 values on stack")
         elif opcode == "SUB":
             if len(thread.stack) >= 2:
                 b = thread.stack.pop()
                 a = thread.stack.pop()
                 thread.stack.append(a - b)
+            else:
+                print(f"[{thread.name}] Warning: SUB with fewer than 2 values on stack")
         elif opcode == "MUL":
             if len(thread.stack) >= 2:
                 b = thread.stack.pop()
@@ -283,18 +324,32 @@ class ToyVM:
                     thread.stack.append(a % b)
                 else:
                     thread.stack.append(a * b)
+            else:
+                print(f"[{thread.name}] Warning: MUL with fewer than 2 values on stack")
         elif opcode == "DIV":
             if len(thread.stack) >= 2:
-                b = thread.stack.pop()
-                a = thread.stack.pop()
+                # Peek before popping so the stack stays consistent on error.
+                b = thread.stack[-1]
+                a = thread.stack[-2]
                 if b != 0:
+                    thread.stack.pop()
+                    thread.stack.pop()
                     thread.stack.append(a // b)
+                else:
+                    thread.stack.pop()
+                    thread.stack.pop()
+                    thread.stack.append(0)
+                    print(f"[{thread.name}] Warning: DIV by zero, result set to 0")
+            else:
+                print(f"[{thread.name}] Warning: DIV with fewer than 2 values on stack")
         elif opcode == "LOAD":
             var_name = args[0]
             if var_name in thread.variables:
                 thread.stack.append(thread.variables[var_name])
             elif var_name in self.globals:
                 thread.stack.append(self.globals[var_name])
+            else:
+                print(f"[{thread.name}] Warning: LOAD of undefined variable '{var_name}'")
         elif opcode == "STORE":
             var_name = args[0]
             if thread.stack:
@@ -304,11 +359,24 @@ class ToyVM:
             if thread.stack:
                 self.globals[var_name] = thread.stack.pop()
         elif opcode == "JUMP":
-            thread.pc = args[0] - 1
+            target = args[0]
+            # Allow target == len(instructions): pc advances to len on next step,
+            # which terminates the thread — the canonical way to "exit a loop".
+            if 0 <= target <= len(thread.instructions):
+                thread.pc = target - 1
+            else:
+                print(f"[{thread.name}] Warning: JUMP to invalid address {target}")
         elif opcode == "JUMP_IF":
-            condition = thread.stack.pop() if thread.stack else False
-            if condition == 0:
-                thread.pc = args[0] - 1
+            if not thread.stack:
+                print(f"[{thread.name}] Warning: JUMP_IF with empty stack, skipping jump")
+                return
+            condition = thread.stack.pop()
+            if condition >= 0:
+                target = args[0]
+                if 0 <= target <= len(thread.instructions):
+                    thread.pc = target - 1
+                else:
+                    print(f"[{thread.name}] Warning: JUMP_IF to invalid address {target}")
         elif opcode == "PRINT":
             if args:
                 message = args[0]
@@ -345,6 +413,10 @@ class ToyVM:
                     else:
                         thread.waiting = True
                         thread.wait_condition = lambda: lock.owner == thread.name
+                        # When woken via the fallback path the lock_name is still
+                        # on the stack (it was peeked, not popped).  The wakeup
+                        # action removes it so the thread resumes with a clean stack.
+                        thread.wakeup_action = lambda: thread.stack.pop() if thread.stack else None
         elif opcode == "LOCK_RELEASE":
             if thread.stack:
                 lock_name = thread.stack.pop()
@@ -356,6 +428,11 @@ class ToyVM:
                         if next_thread_obj:
                             next_thread_obj.waiting = False
                             next_thread_obj.wait_condition = None
+                            # The woken thread left lock_name on its stack when it
+                            # blocked; pop it now so it resumes with a clean stack.
+                            if next_thread_obj.stack:
+                                next_thread_obj.stack.pop()
+                            next_thread_obj.wakeup_action = None
         elif opcode == "SEMAPHORE_CREATE":
             if thread.stack:
                 count = thread.stack.pop()
@@ -370,7 +447,22 @@ class ToyVM:
                         thread.stack.pop()
                     else:
                         thread.waiting = True
-                        thread.wait_condition = lambda: sem.count > 0 or thread.name in sem.waiting_threads
+                        # Only wake via condition if there is genuinely available
+                        # capacity (not because the thread is still in the waiting
+                        # queue, which was the previous always-True bug).
+                        thread.wait_condition = lambda: sem.count > 0
+                        # Fallback wakeup: pop sem_name from the stack and claim
+                        # the permit that triggered the condition.
+                        def _sem_wakeup(t=thread, s=sem):
+                            if t.stack:
+                                t.stack.pop()
+                            if s.count > 0:
+                                s.count -= 1
+                            try:
+                                s.waiting_threads.remove(t.name)
+                            except ValueError:
+                                pass
+                        thread.wakeup_action = _sem_wakeup
         elif opcode == "SEMAPHORE_RELEASE":
             if thread.stack:
                 sem_name = thread.stack.pop()
@@ -382,6 +474,10 @@ class ToyVM:
                         if next_thread_obj:
                             next_thread_obj.waiting = False
                             next_thread_obj.wait_condition = None
+                            # The woken thread left sem_name on its stack; pop it.
+                            if next_thread_obj.stack:
+                                next_thread_obj.stack.pop()
+                            next_thread_obj.wakeup_action = None
         elif opcode == "QUEUE_CREATE":
             queue_name = self.create_message_queue()
             thread.stack.append(queue_name)
@@ -398,7 +494,15 @@ class ToyVM:
                         if receiver:
                             receiver.waiting = False
                             receiver.wait_condition = None
-                            receiver.stack.append(msg)
+                            receiver.wakeup_action = None
+                            # The receiver peeked at queue_name (did not pop it)
+                            # before blocking.  Replace that stale value with the
+                            # delivered message so the receiver's stack matches the
+                            # successful non-blocking path.
+                            if receiver.stack:
+                                receiver.stack[-1] = msg
+                            else:
+                                receiver.stack.append(msg)
         elif opcode == "QUEUE_RECEIVE":
             if thread.stack:
                 queue_name = thread.stack[-1]
@@ -411,7 +515,23 @@ class ToyVM:
                     else:
                         queue.waiting_receivers.append(thread.name)
                         thread.waiting = True
-                        thread.wait_condition = lambda: len(queue.messages) > 0 or thread.name in queue.waiting_receivers
+                        # Only wake when a message is actually in the queue.
+                        # The previous condition also checked
+                        # `thread.name in queue.waiting_receivers`, which was
+                        # always True immediately after adding the thread, causing
+                        # an immediate spurious wakeup with no message delivered.
+                        thread.wait_condition = lambda: bool(queue.messages)
+                        # Fallback wakeup: receive the message and replace the
+                        # queue_name that was peeked and left on the stack.
+                        def _queue_wakeup(t=thread, q=queue):
+                            if q.messages and t.stack:
+                                msg = q.messages.popleft()
+                                t.stack[-1] = msg
+                            try:
+                                q.waiting_receivers.remove(t.name)
+                            except ValueError:
+                                pass
+                        thread.wakeup_action = _queue_wakeup
         elif opcode == "ATOMIC_CREATE":
             if thread.stack:
                 initial_value = thread.stack.pop()
