@@ -2,10 +2,11 @@
 ### Concurrency & Threading
 
 > [!NOTE]
-> Also compare with [concurrent](./../models/concurrent/) programming lanuages constructs.
+> Also compare with [concurrent](./../models/concurrent/)
+> programming lanuages constructs.
 
 | Mechanism | Description | Use Cases | Related Pattern(s) |
-|--|--|--|--|
+|-----------|-------------|-----------|--------------------|
 | [Re-entrant](./reentrant/) | Function safe to be re-entered concurrently | Multithreading, interrupt-safe routines | Thread-safe design, Stateless design |
 | [Context Switch](./context/) | Save/restore execution context between tasks | Thread scheduling, green threads, RTOS | Scheduler design |
 | [Memory Barrier](./barrier/) | Prevent CPU from reordering memory operations | Lock-free concurrency, shared memory | Happens-before relations |

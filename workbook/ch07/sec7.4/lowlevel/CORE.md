@@ -20,7 +20,7 @@ systems or hardware, these mechanisms shape the capabilities and constraints of 
 Thus, a working familiarity with them strengthens both practical competence and architectural insight.
 
 | Mechanism Class | Examples | Purpose |
-|---|---|---|
+|-----------------|----------|---------|
 | *Execution Contexts* | Threads, Processes, Coroutines, Tasks, Interrupt Handlers     | Units of execution that run code concurrently or asynchronously |
 | *Memory Management*  | Virtual Memory, Memory Protection, Allocation, Garbage Collection | Control access, isolation, and allocation of memory resources |
 | *I/O Handling*       | Blocking I/O, Non-blocking I/O, DMA, Interrupt-driven I/O     | Manage communication and data transfer with external devices |
