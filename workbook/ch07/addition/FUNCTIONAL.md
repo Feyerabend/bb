@@ -465,6 +465,6 @@ Avoid in C!
 6. Under-the-hood implementation cost (C)
 7. Concurrency implications
 
-This creates intellectual progression:
+Progression:
 Mechanics -> Problems -> Abstractions -> Implementation reality -> Concurrency benefits
 
