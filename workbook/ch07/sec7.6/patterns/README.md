@@ -10,11 +10,11 @@ common problems in object-oriented software development. The patterns are divide
 into three main categories:
 
 
-|Category	|Description	|Examples|
-|--|--|--|
-|Creational	|Object creation mechanisms	|Factory Method, Singleton, Builder|
-|Structural	|Composing classes and objects into larger structures	|Adapter, Composite, Facade|
-|Behavioural	|Managing algorithms, responsibilities, communication	|Strategy, Observer, Command|
+|Category	 |Description    |Examples|
+|------------|---------------|--------|
+|Creational  |Object creation mechanisms |Factory Method, Singleton, Builder|
+|Structural  |Composing classes and objects into larger structures |Adapter, Composite, Facade|
+|Behavioural |Managing algorithms, responsibilities, communication |Strategy, Observer, Command|
 
 
 ```mermaid
