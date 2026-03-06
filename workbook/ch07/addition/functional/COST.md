@@ -2,7 +2,7 @@
 
 # 11. Cost Model Section
 
-Very important for your book.
+Very important.
 
 Compare:
 
