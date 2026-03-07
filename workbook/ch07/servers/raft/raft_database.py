@@ -1,57 +1,120 @@
 import os
 import json
 
+
+class LogEntry:
+    """A single entry in the replicated log."""
+    __slots__ = ("term", "command")
+
+    def __init__(self, term, command):
+        self.term = term
+        self.command = command  # tuple: ("SET", key, value)
+
+    def to_dict(self):
+        return {"term": self.term, "command": list(self.command)}
+
+    @staticmethod
+    def from_dict(d):
+        return LogEntry(d["term"], tuple(d["command"]))
+
+    def __repr__(self):
+        return f"LogEntry(term={self.term}, cmd={self.command})"
+
+
 class RaftDatabase:
-    def __init__(self, db_file="raft_db.json", log_file="raft_log.json"):
-        self.db_file = db_file
-        self.log_file = log_file
-        self.load_db()
-        self.load_log()
+    """
+    Per-server persistent storage and state machine.
 
-    def load_db(self):
-        if os.path.exists(self.db_file):
-            with open(self.db_file, 'r') as f:
-                self.db = json.load(f)
-        else:
-            self.db = {"counter": 0}  # data: simple counter to be incremented
+    In a real Raft node three things MUST be written to stable storage
+    before responding to any RPC: current_term, voted_for, and the log.
+    The commit_index and last_applied are volatile and are derived from
+    the log on restart.  Here we keep them in memory and optionally
+    persist the log to a JSON file.
+    """
 
-    def save_db(self):
-        with open(self.db_file, 'w') as f:
-            json.dump(self.db, f)
+    def __init__(self, server_id, persist=False):
+        self.server_id = server_id
+        self.persist = persist
+        self._log_file = f"raft_log_{server_id}.json"
 
-    def load_log(self):
-        if os.path.exists(self.log_file):
-            with open(self.log_file, 'r') as f:
-                self.log = json.load(f)
-        else:
-            self.log = []
+        # Replicated log -- list of LogEntry
+        self.log = []
 
-    def append_log(self, term, command):
-        log_entry = {
-            "term": term,
-            "command": command
-        }
-        self.log.append(log_entry)
-        self.save_log()
+        # Key-value state machine (applied entries)
+        self.kv_store = {}
 
-    def save_log(self):
-        with open(self.log_file, 'w') as f:
-            json.dump(self.log, f)
+        # Highest index applied to state machine
+        self.last_applied = -1
 
-    def get_log(self):
-        return self.log
+        if persist:
+            self._load()
 
-    def get_current_term(self):
-        if self.log:
-            return self.log[-1]["term"]
-        return 0  # no entries yet
 
-    def set_voted_for(self, server_id):
-        self.voted_for = server_id
+    # Persistence
 
-    def get_db_state(self):
-        return self.db
+    def _load(self):
+        if os.path.exists(self._log_file):
+            with open(self._log_file) as f:
+                data = json.load(f)
+            self.log = [LogEntry.from_dict(e) for e in data]
 
-    def update_db(self, key, value):
-        self.db[key] = value
-        self.save_db()
+    def _save_log(self):
+        if self.persist:
+            with open(self._log_file, "w") as f:
+                json.dump([e.to_dict() for e in self.log], f)
+
+
+    # Log operations
+
+    def append_entries(self, prev_index, entries):
+        """
+        Merge new entries into the log starting after prev_index.
+
+        Conflicting entries (same index, different term) and everything
+        after them are discarded before the new entries are written.
+        """
+        insert_at = prev_index + 1
+        for i, entry in enumerate(entries):
+            idx = insert_at + i
+            if idx < len(self.log):
+                if self.log[idx].term != entry.term:
+                    # Conflict: truncate and replace from here
+                    self.log = self.log[:idx]
+                    self.log.append(entry)
+                # else: identical entry already present, skip
+            else:
+                self.log.append(entry)
+        self._save_log()
+
+    def last_log_index(self):
+        return len(self.log) - 1
+
+    def last_log_term(self):
+        return self.log[-1].term if self.log else 0
+
+    def term_at(self, index):
+        if index < 0 or index >= len(self.log):
+            return 0
+        return self.log[index].term
+
+
+    # State machine
+
+    def apply_up_to(self, commit_index):
+        """
+        Apply all log entries from (last_applied + 1) to commit_index
+        against the key-value state machine.  Returns a list of
+        (key, value) pairs that were applied.
+        """
+        applied = []
+        while self.last_applied < commit_index and self.last_applied < len(self.log) - 1:
+            self.last_applied += 1
+            entry = self.log[self.last_applied]
+            cmd = entry.command
+            if cmd[0] == "SET":
+                self.kv_store[cmd[1]] = cmd[2]
+                applied.append((cmd[1], cmd[2]))
+        return applied
+
+    def get_state(self):
+        return dict(self.kv_store)
