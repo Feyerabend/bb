@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DisplayPack 2.0 Simulator - BASIC Graphics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .display-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .display-wrapper {
+            flex: 1;
+            background: #2a2a2a;
+            padding: 20px;
+        }
+        
+        .display-header {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #888;
+        }
+        
+        #displayCanvas {
+            display: block;
+            margin: 0 auto;
+            background: #000;
+            image-rendering: pixelated;
+        }
+        
+        .console {
+            flex: 1;
+            background: #000;
+            padding: 10px;
+            height: 400px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        
+        .console-line {
+            margin: 2px 0;
+            word-wrap: break-word;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 10px;
+            background: #2a2a2a;
+            margin-top: 10px;
+        }
+        
+        .status.connected {
+            color: #00ff00;
+        }
+        
+        .status.disconnected {
+            color: #ff0000;
+        }
+        
+        .info {
+            background: #2a2a2a;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+        
+        .info h3 {
+            margin-bottom: 10px;
+        }
+        
+        .info ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+        
+        .info li:before {
+            content: "▸ ";
+        }
+    </style>
+</head>
+<body>
+    <div class="container">        
+        <div class="display-container">
+            <div class="display-wrapper">
+                <div class="display-header">DisplayPack 2.0 - 320 x 240 RGB565</div>
+                <canvas id="displayCanvas" width="320" height="240"></canvas>
+            </div>
+            
+            <div class="console" id="console">
+                <div class="console-line">DisplayPack 2.0 Simulator Ready</div>
+                <div class="console-line">Waiting for graphics commands from server..</div>
+                <div class="console-line">Use REPL on server to control display</div>
+            </div>
+        </div>
+        
+        <div class="status" id="status">Connecting...</div>
+        
+        <div class="info">
+            <h3>Server REPL Commands</h3>
+            <ul>
+                <li><strong>CLS [color]</strong> - Clear screen (color: 0-65535)</li>
+                <li><strong>PIXEL x, y, color</strong> - Draw pixel</li>
+                <li><strong>LINE x1, y1, x2, y2, color</strong> - Draw line</li>
+                <li><strong>RECT x, y, w, h, color</strong> - Draw rectangle outline</li>
+                <li><strong>RECTF x, y, w, h, color</strong> - Draw filled rectangle</li>
+                <li><strong>CIRCLE x, y, r, color</strong> - Draw circle outline</li>
+                <li><strong>CIRCLEF x, y, r, color</strong> - Draw filled circle</li>
+                <li><strong>TEXT x, y, "text", color</strong> - Draw text</li>
+            </ul>
+            <h3 style="margin-top: 15px;">Display Info</h3>
+            <ul>
+                <li>Resolution: 320 x 240 pixels</li>
+                <li>Color Format: RGB565 (16-bit, 0-65535)</li>
+                <li>Polling Rate: 500ms</li>
+                <li>White: 65535, Red: 63488, Green: 2016, Blue: 31</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('displayCanvas');
+        const ctx = canvas.getContext('2d');
+        const consoleDiv = document.getElementById('console');
+        const statusDiv = document.getElementById('status');
+        
+        let serverUrl = 'http://localhost:8080';
+        let lastCommandCount = 0;
+        
+        // RGB565 to RGB888 conversion
+        function rgb565ToRgb(color) {
+            const r = ((color >> 11) & 0x1F) * 255 / 31;
+            const g =  ((color >> 5) & 0x3F) * 255 / 63;
+            const b =         (color & 0x1F) * 255 / 31;
+            return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+        }
+        
+        // Clear display
+        function clearDisplay() {
+            ctx.fillStyle = 'rgb(0, 0, 0)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        // Draw graphics commands
+        function drawGraphics(commands) {
+            if (!commands || commands.length === 0) return;
+            
+            console.log(`Drawing ${commands.length} commands`);
+            
+            commands.forEach((cmd, idx) => {
+                try {
+                    switch(cmd.type) {
+                        case 'cls':
+                            const clsColor = rgb565ToRgb(cmd.color || 0);
+                            console.log(`CLS with color ${clsColor}`);
+                            ctx.fillStyle = clsColor;
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            break;
+                            
+                        case 'pixel':
+                            ctx.fillStyle = rgb565ToRgb(cmd.color);
+                            ctx.fillRect(cmd.x, cmd.y, 1, 1);
+                            break;
+                            
+                        case 'line':
+                            ctx.strokeStyle = rgb565ToRgb(cmd.color);
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(cmd.x1, cmd.y1);
+                            ctx.lineTo(cmd.x2, cmd.y2);
+                            ctx.stroke();
+                            break;
+                            
+                        case 'rect':
+                            ctx.strokeStyle = rgb565ToRgb(cmd.color);
+                            ctx.fillStyle = rgb565ToRgb(cmd.color);
+                            ctx.lineWidth = 1;
+                            if (cmd.filled) {
+                                ctx.fillRect(cmd.x, cmd.y, cmd.w, cmd.h);
+                            } else {
+                                ctx.strokeRect(cmd.x, cmd.y, cmd.w, cmd.h);
+                            }
+                            break;
+                            
+                        case 'circle':
+                            ctx.strokeStyle = rgb565ToRgb(cmd.color);
+                            ctx.fillStyle = rgb565ToRgb(cmd.color);
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.arc(cmd.x, cmd.y, cmd.r, 0, Math.PI * 2);
+                            if (cmd.filled) {
+                                ctx.fill();
+                            } else {
+                                ctx.stroke();
+                            }
+                            break;
+                            
+                        case 'text':
+                            const textColor = rgb565ToRgb(cmd.color);
+                            console.log(`Drawing text "${cmd.text}" at (${cmd.x},${cmd.y}) with color ${textColor}`);
+                            ctx.fillStyle = textColor;
+                            ctx.font = '12px monospace';
+                            ctx.fillText(cmd.text, cmd.x, cmd.y);
+                            break;
+                            
+                        default:
+                            console.warn(`Unknown command type: ${cmd.type}`);
+                    }
+                } catch (err) {
+                    console.error(`Error drawing command ${idx}:`, cmd, err);
+                }
+            });
+        }
+        
+        // Add message to console
+        function addConsoleMessage(msg) {
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            line.textContent = msg;
+            consoleDiv.appendChild(line);
+            
+            // Keep only last 50 lines
+            while (consoleDiv.children.length > 50) {
+                consoleDiv.removeChild(consoleDiv.firstChild);
+            }
+            
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+        
+        // Update status
+        function updateStatus(connected) {
+            statusDiv.className = 'status ' + (connected ? 'connected' : 'disconnected');
+            statusDiv.textContent = connected ? '* Connected to BASIC Server' : '* Disconnected';
+        }
+        
+        // Fetch graphics from server
+        async function fetchGraphics() {
+            try {
+                const response = await fetch(`${serverUrl}/graphics`);
+                const data = await response.json();
+                
+                // Check if we have new commands
+                if (data.graphics && data.graphics.length > 0) {
+                    if (data.graphics.length !== lastCommandCount) {
+                        // Log new commands
+                        const newCommands = data.graphics.slice(lastCommandCount);
+                        
+                        newCommands.forEach(cmd => {
+                            let cmdStr = `${cmd.type.toUpperCase()}`;
+                            if (cmd.x !== undefined) cmdStr += ` x=${cmd.x}`;
+                            if (cmd.y !== undefined) cmdStr += ` y=${cmd.y}`;
+                            if (cmd.text !== undefined) cmdStr += ` "${cmd.text}"`;
+                            if (cmd.color !== undefined) cmdStr += ` color=${cmd.color}`;
+                            addConsoleMessage(cmdStr);
+                        });
+                        
+                        lastCommandCount = data.graphics.length;
+                    }
+                    
+                    // Always redraw entire buffer
+                    clearDisplay();
+                    drawGraphics(data.graphics);
+                }
+                
+                updateStatus(true);
+            } catch (error) {
+                updateStatus(false);
+                console.error('Error fetching graphics:', error);
+            }
+        }
+        
+        // Initialize
+        clearDisplay();
+        fetchGraphics();
+        
+        // Poll server every 500ms for updates
+        setInterval(fetchGraphics, 500);
+        
+        addConsoleMessage('Display initialised - polling server every 500ms ..');
+    </script>
+</body>
+</html>
