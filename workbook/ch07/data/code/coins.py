@@ -3,7 +3,6 @@ import hashlib
 import time
 import json
 import base64
-import pickle
 import logging
 import sys
 from abc import ABC, abstractmethod
@@ -49,9 +48,11 @@ class Transaction:
     
     def is_valid(self) -> bool:
         """Verify the transaction's signature"""
-        if not self.signature or self.sender == "network":
+        if self.sender == "network":
             return True
-            
+        if not self.signature:
+            return False
+
         try:
             vk = ecdsa.VerifyingKey.from_string(base64.b64decode(self.sender))
             transaction_string = f"{self.sender}{self.recipient}{self.amount}{self.timestamp}"
@@ -268,21 +269,21 @@ class PersistenceManager:
         self.filename = filename
         self.logger = logging.getLogger("PersistenceManager")
         
-    def save(self, data: Any) -> bool:
-        """Save data to disk"""
+    def save(self, chain: list) -> bool:
+        """Save blockchain to disk as JSON"""
         try:
-            with open(self.filename, "wb") as f:
-                pickle.dump(data, f)
+            with open(self.filename, "w") as f:
+                json.dump([block.to_dict() for block in chain], f, indent=2)
             return True
         except Exception as e:
             self.logger.error(f"Failed to save data: {e}")
             return False
-            
+
     def load(self) -> Any:
-        """Load data from disk"""
+        """Load blockchain from disk"""
         try:
-            with open(self.filename, "rb") as f:
-                return pickle.load(f)
+            with open(self.filename, "r") as f:
+                return json.load(f)
         except FileNotFoundError:
             self.logger.info(f"No data file found at {self.filename}")
             return None
@@ -320,9 +321,9 @@ class Blockchain(Subject):
             self.nodes: Set[str] = set()
             
             # Load existing chain or create genesis block
-            loaded_chain = self.persistence.load()
-            if loaded_chain:
-                self.chain = loaded_chain
+            loaded_data = self.persistence.load()
+            if loaded_data:
+                self.chain = self._json_to_blocks(loaded_data)
             else:
                 self.chain = [BlockFactory.create_genesis_block()]
                 
@@ -725,15 +726,20 @@ def main():
         blockchain.add_node("http://localhost:5001")
         blockchain.add_node("http://localhost:5002")
         
-        # Create and sign test transactions
+        # Fund wallets via mining rewards before spending
+        blockchain.add_transaction(TransactionFactory.create_reward_transaction(alice_wallet.address, 50.0))
+        blockchain.add_transaction(TransactionFactory.create_reward_transaction(bob_wallet.address, 50.0))
+        blockchain.mine_pending_transactions(miner_wallet.address)
+
+        # Create and sign test transactions (wallets now have funded balances)
         tx1 = TransactionFactory.create_transaction(alice_wallet.address, bob_wallet.address, 5.0)
         alice_wallet.sign_transaction(tx1)
         blockchain.add_transaction(tx1)
-        
+
         tx2 = TransactionFactory.create_transaction(bob_wallet.address, alice_wallet.address, 2.0)
         bob_wallet.sign_transaction(tx2)
         blockchain.add_transaction(tx2)
-        
+
         # Mine a test block
         blockchain.mine_pending_transactions(miner_wallet.address)
         

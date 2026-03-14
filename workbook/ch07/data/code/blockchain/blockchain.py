@@ -3,7 +3,6 @@ import hashlib
 import time
 import json
 import base64
-import pickle
 import logging
 import sys
 import threading
@@ -91,8 +90,10 @@ class Transaction:
     
     def verify_signature(self) -> bool:
         """Verify transaction signature"""
-        if self._data.sender == "network" or self._data.signature is None:
+        if self._data.sender == "network":
             return True
+        if self._data.signature is None:
+            return False
             
         try:
             public_key_bytes = base64.b64decode(self._data.sender)
@@ -585,69 +586,59 @@ class Blockchain:
     def mine_block(self, miner_address: str) -> Optional[Block]:
         """Mine a new block with pending transactions"""
         try:
+            # Set up block under lock (fast)
             with self._thread_safe_operation():
-                if not self._pending_transactions:
-                    self.logger.info("No transactions to mine")
-                    return None
-                
-                # Select transactions for block
+                # Select pending transactions (may be empty — miner still earns reward)
                 transactions = self._pending_transactions[:self.config.max_transactions_per_block]
-                
+
                 # Add mining reward
                 reward_tx = Transaction("network", miner_address, self.config.mining_reward)
                 transactions.append(reward_tx)
-                
-                # Create block
+
                 previous_block = self._chain[-1]
                 header = BlockHeader(
                     len(self._chain),
                     previous_block.hash,
                     time.time(),
-                    "",  # Will be calculated
+                    "",  # Calculated by Block.__init__
                     0,
                     self.config.difficulty
                 )
-                
                 block = Block(header, transactions)
-                
-                # Mine the block
-                self.logger.info(f"Mining block #{block.header.index}...")
-                start_time = time.time()
-                mined_block = block.mine(self.config.difficulty)
-                mining_time = time.time() - start_time
-                
-                # Validate mined block
+
+            # PoW is CPU-intensive — run outside the lock so other operations aren't blocked
+            self.logger.info(f"Mining block #{block.header.index}...")
+            start_time = time.time()
+            mined_block = block.mine(self.config.difficulty)
+            mining_time = time.time() - start_time
+
+            # Commit mined block under lock
+            with self._thread_safe_operation():
+                previous_block = self._chain[-1]  # Re-check tip after mining
                 validation_result = self.validator.validate_block(mined_block, previous_block)
                 if not validation_result:
                     self.logger.error(f"Mined block is invalid: {validation_result.errors}")
                     return None
-                
-                # Add to chain
+
                 self._chain.append(mined_block)
-                
-                # Update balances
                 self._update_balances_for_block(mined_block)
-                
-                # Remove mined transactions from pending pool
+
                 mined_tx_hashes = {tx.hash for tx in mined_block.transactions}
                 self._pending_transactions = [
-                    tx for tx in self._pending_transactions 
+                    tx for tx in self._pending_transactions
                     if tx.hash not in mined_tx_hashes
                 ]
-                
-                # Persist chain
+
                 self.persistence.save_chain(self._chain)
-                
-                # Broadcast to network
+
                 if self._nodes:
                     self.network.broadcast_block(mined_block, self._nodes)
-                
-                self.logger.info(
-                    f"Block #{mined_block.header.index} mined in {mining_time:.2f}s "
-                    f"with {len(mined_block.transactions)} transactions"
-                )
-                
-                return mined_block
+
+            self.logger.info(
+                f"Block #{mined_block.header.index} mined in {mining_time:.2f}s "
+                f"with {len(mined_block.transactions)} transactions"
+            )
+            return mined_block
         except Exception as e:
             self.logger.error(f"Failed to mine block: {e}")
             return None
@@ -1117,40 +1108,47 @@ def run_blockchain_demo():
     tx1 = alice.create_transaction(bob.address, 20.0)
     if blockchain.add_transaction(tx1):
         print(f"Transaction added: {BlockchainUtils.format_hash(tx1.hash)}")
-        print(f"Alice balance after creating transaction: {blockchain.get_balance(alice.address)}")
-    
+
+    # Mine block to confirm Alice->Bob so Bob has a confirmed balance
+    print("\n3. Mining block to confirm Alice->Bob transaction...")
+    block2 = blockchain.mine_block(alice.address)
+    if block2:
+        print(f"Block #{block2.header.index} mined")
+        print(f"Alice balance: {blockchain.get_balance(alice.address)}")
+        print(f"Bob balance: {blockchain.get_balance(bob.address)}")
+
     # Bob sends money to Charlie (this should fail - no signature)
-    print("\n3. Bob tries to send 5 coins to Charlie (unsigned transaction)...")
-    tx2 = Transaction(bob.address, charlie.address, 5.0)  # Not signed properly
+    print("\n4. Bob tries to send 5 coins to Charlie (unsigned transaction)...")
+    tx2 = Transaction(bob.address, charlie.address, 5.0)  # Not signed
     if blockchain.add_transaction(tx2):
         print("Transaction added (this shouldn't happen!)")
     else:
         print("Transaction correctly rejected (not signed)")
-    
+
     # Bob properly sends money to Charlie
-    print("\n4. Bob properly sends 5 coins to Charlie...")
+    print("\n5. Bob properly sends 5 coins to Charlie...")
     tx3 = bob.create_transaction(charlie.address, 5.0)
     if blockchain.add_transaction(tx3):
         print(f"Transaction added: {BlockchainUtils.format_hash(tx3.hash)}")
     
     # Mine another block
-    print("\n5. Mining block with transactions...")
-    block2 = blockchain.mine_block(bob.address)
-    if block2:
-        print(f"Block #{block2.header.index} mined with {len(block2.transactions)} transactions")
+    print("\n6. Mining block with Bob->Charlie transaction...")
+    block3 = blockchain.mine_block(bob.address)
+    if block3:
+        print(f"Block #{block3.header.index} mined with {len(block3.transactions)} transactions")
         print(f"Final balances:")
         print(f"  Alice: {blockchain.get_balance(alice.address)}")
         print(f"  Bob: {blockchain.get_balance(bob.address)}")
         print(f"  Charlie: {blockchain.get_balance(charlie.address)}")
-    
+
     # Show blockchain stats
-    print("\n6. Blockchain Statistics:")
+    print("\n7. Blockchain Statistics:")
     stats = blockchain.get_stats()
     for key, value in stats.items():
         print(f"  {key}: {value}")
-    
+
     # Verify chain integrity
-    print("\n7. Chain Validation:")
+    print("\n8. Chain Validation:")
     validation_result = blockchain.validator.validate_chain(blockchain.get_chain())
     if validation_result:
         print("✓ Blockchain is valid")

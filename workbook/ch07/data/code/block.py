@@ -43,10 +43,9 @@ class Blockchain:
             print(f"Previous Hash: {block.previous_hash}")
             print(f"Hash: {block.hash}\n")
 
-# Example usage
-blockchain = Blockchain()
-blockchain.add_block("Transaction 1: Alice pays Bob 5 BTC")
-blockchain.add_block("Transaction 2: Bob pays Charlie 2 BTC")
-blockchain.print_chain()
-
-print("Blockchain valid:", blockchain.is_chain_valid())
+if __name__ == "__main__":
+    blockchain = Blockchain()
+    blockchain.add_block("Transaction 1: Alice pays Bob 5 BTC")
+    blockchain.add_block("Transaction 2: Bob pays Charlie 2 BTC")
+    blockchain.print_chain()
+    print("Blockchain valid:", blockchain.is_chain_valid())
