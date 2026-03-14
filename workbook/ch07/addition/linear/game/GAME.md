@@ -31,7 +31,7 @@ following Alfred Tarski, treated meaning in a purely model-theoretic way.
 A formula was interpreted relative to a structure, and truth meant that
 the formula evaluated to true in that structure under an assignment of
 variables. Logical semantics therefore consisted of defining truth conditions.
-This perspective dominated formal logic for decades.
+This perspective dominated formal logic for decades.[^game]
 
 
 ### Hintikka's Game-Theoretic Semantics
@@ -190,3 +190,12 @@ Hyland, J. M. E., & Ong, C.-H. L. (2000). On full abstraction for PCF: I, II, an
 Tarski, A. (1944). The semantic conception of truth and the foundations of semantics. *Philosophy and Phenomenological Research*, 4(3), 341-376.
 
 Väänänen, J. (2007). *Dependence Logic: A New Approach to Independence Friendly Logic*. Cambridge University Press.
+
+
+[^game]: *Note on Game Theory and Semantic Games:*
+Hintikka's semantic games and the game semantics frameworks discussed here borrow mathematical structures from classical game theory—players, moves, strategies, and winning conditions—but their purpose differs fundamentally from game-theoretic modeling of rational choice.
+In classical game theory (von Neumann, Nash, and successors), games model strategic interaction between rational agents. The central questions concern equilibria, optimal strategies given beliefs about opponents, and payoff maximisation. Game theory asks: *What should rational agents do?*
+Semantic games, by contrast, use game structures as a mathematical tool for *defining meaning*. The "players" are formal roles in an evaluation procedure, not actual agents making rational choices. When we say the Verifier has a winning strategy for ∀x∃y R(x,y), we are not modeling strategic reasoning but explaining what makes the formula true. The game is the semantics itself, not a model of something external.
+The relationship is therefore one of __borrowed formalism__ rather than shared subject matter. Extensive-form games from game theory are structurally similar to semantic games, and techniques like backward induction appear in both contexts. Some specialised areas--particularly epistemic game theory, which studies knowledge and belief in strategic settings--do draw on both traditions. But the core insight of interaction-based semantics is not about strategic behavior; it is that logical meaning can be understood as patterns of interaction governed by structural rules.
+The game-theoretic apparatus provides precise mathematical tools for describing these interaction patterns, much as probability theory provides tools for quantum mechanics without quantum phenomena being "about" randomness in the classical sense.
+
