@@ -204,13 +204,13 @@
                             displayResults(currentResults);
                             updatePagination();
                             
-                            // Add to recommendation engine
-                            recommendationEngine.addResults(currentResults);
-                            
-                            // Show recommendations based on first result
+                            // Show recommendations from *previous* searches before adding current results
                             if (currentResults.length > 0) {
                                 showRecommendations(currentResults[0]);
                             }
+
+                            // Add current results to engine after recommendations are computed
+                            recommendationEngine.addResults(currentResults);
                         } else {
                             showNoResults();
                         }
@@ -223,8 +223,8 @@
 
         function addToHistory(query) {
             const history = JSON.parse(localStorage.getItem('searchHistory'));
-            // Add if not already in history
-            if (!history.includes(query.toLowerCase())) {
+            // Case-insensitive duplicate check against stored entries
+            if (!history.some(h => h.toLowerCase() === query.toLowerCase())) {
                 history.unshift(query);
                 // Keep only last 20 searches
                 if (history.length > 20) history.pop();

@@ -229,15 +229,11 @@
                         totalRecords = parseInt(totalCountHeader);
                     }
 
-                    // Check content type to handle different response formats
-                    const contentType = response.headers.get("content-type");
-                    if (contentType && contentType.includes("application/json")) {
+                    // Route by requested format, not content-type header
+                    if (format === "json") {
                         return response.json().then(data => ({ data, format }));
-                    } else if (format !== "json") {
-                        // For non-JSON formats, return text content
-                        return response.text().then(text => ({ rawContent: text, format: format }));
                     } else {
-                        throw new Error("Unexpected response format");
+                        return response.text().then(text => ({ rawContent: text, format: format }));
                     }
                 })
                 .then(({ data, rawContent, format }) => {
