@@ -58,11 +58,11 @@ boundary of what must be available?
 *The nine nines:*
 
 | Availability | Downtime per year |
-|--|--|
-| 99% | ~3.65 days |
-| 99.9% | ~8.76 hours |
-| 99.99% | ~52.6 minutes |
-| 99.999% | ~5.26 minutes |
+|--------------|-------------------|
+| 99%          | ~3.65 days        |
+| 99.9%        | ~8.76 hours       |
+| 99.99%       | ~52.6 minutes     |
+| 99.999%      | ~5.26 minutes     |
 
 What does it take to achieve each level? What changes in your architecture as you move from
 99% to 99.9%? From 99.9% to 99.99%?
