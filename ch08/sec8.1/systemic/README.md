@@ -19,25 +19,33 @@ eventually engage with, whether explicitly or implicitly.
 
 
 | Concept | Systemic |
-|---|---|
-| [*Noise*](./noice/) | Affects communication, sensing, and even logic gates |
-| [*Randomness*](./random/) | Critical in simulation, cryptography, testing, protocols |
-| [*Optimisation*](./optimal/) | Present in compilers, algorithms, hardware, energy use |
-| [*Security*](./security/) | Requires attention at every layer: physical to logical |
-| [*Interface*](./interface/) | Defines component interaction everywhere |
-| [*Abstraction*](./abstract/) | Central to all software and hardware design |
-| [*Scalability*](./scale/) | Applies to data, computation, architecture |
-| [*Latency*](./latency/) | Matters in networks, UI, hardware timing |
-| [*Concurrency*](./../../ch07/models/concurrent/) | Appears from CPU pipelines to distributed systems |
-| [*Fault tolerance*](./fault/) | From ECC memory to retry loops in software |
-| [*Determinism*](./determinism/) | Affects debugging, simulation, and predictability |
-| [*Time*](./time/) | Scheduling, clocks, profiling, causality in distributed systems |
-| [*Complexity*](./complex/) | Measured algorithmically, but also felt in UX and architecture |
-| [*State*](./state/) | Core to both computing and modelling; managed differently across layers |
-| [*Energy use*](./energy/) | Crucial from battery devices to datacenters |
-| [*Cost*](./cost/) | Not just economic, but computational, spatial, or temporal |
-| [*Errors*](./errors/) | Arise from hardware faults, logic bugs, bad input, or user misunderstanding |
-| [*Resilience*](./resilience/) | Ensures systems degrade gracefully and recover from faults, attacks, or overload |
+|--------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| [*Noise*](./noice/)                              | Affects communication, sensing, and even logic gates                                                              |
+| [*Randomness*](./random/)                        | Critical in simulation, cryptography, testing, protocols                                                          |
+| [*Optimisation*](./optimal/)                     | Present in compilers, algorithms, hardware, energy use                                                            |
+| [*Security*](./security/)                        | Requires attention at every layer: physical to logical                                                            |
+| [*Interface*](./interface/)                      | Defines component interaction everywhere                                                                          |
+| [*Abstraction*](./abstract/)                     | Central to all software and hardware design                                                                       |
+| [*Scalability*](./scale/)                        | Applies to data, computation, architecture                                                                        |
+| [*Latency*](./latency/)                          | Matters in networks, UI, hardware timing                                                                          |
+| [*Concurrency*](./../../ch07/models/concurrent/) | Appears from CPU pipelines to distributed systems                                                                 |
+| [*Fault tolerance*](./fault/)                    | From ECC memory to retry loops in software                                                                        |
+| [*Determinism*](./determinism/)                  | Affects debugging, simulation, and predictability                                                                 |
+| [*Time*](./time/)                                | Scheduling, clocks, profiling, causality in distributed systems                                                   |
+| [*Complexity*](./complex/)                       | Measured algorithmically, but also felt in UX and architecture                                                    |
+| [*State*](./state/)                              | Core to both computing and modelling; managed differently across layers                                           |
+| [*Energy use*](./energy/)                        | Crucial from battery devices to datacenters                                                                       |
+| [*Cost*](./cost/)                                | Not just economic, but computational, spatial, or temporal                                                        |
+| [*Errors*](./errors/)                            | Arise from hardware faults, logic bugs, bad input, or user misunderstanding                                       |
+| [*Resilience*](./resilience/)                    | Ensures systems degrade gracefully and recover from faults, attacks, or overload                                  |
+| [*Locality*](./locality/)                        | The tendency of programmes to reuse the same data and instructions in clusters of time and space                  |
+| [*Throughput*](./throughput/)                    | The rate at which a system completes work; distinct from and often in tension with latency                        |
+| [*Observability*](./observability/)              | The ability to understand internal system state from external signals; precondition for debugging and reliability |
+| [*Feedback*](./feedback/)                        | Using information about a system's output to adjust its future behaviour; the mechanism of self-regulation        |
+| [*Availability*](./availability/)                | The fraction of time a system is operational; related to but distinct from fault tolerance and resilience         |
+| [*Privacy*](./privacy/)                          | Individuals' control over information about themselves; related to but distinct from security                     |
+| [*Fairness*](./fairness/)                        | Equitable distribution of resources or decisions across parties; has multiple incompatible formal definitions     |
+| [*Correctness*](./correctness/)                  | The property that a system does what its specification says; precondition of all other systemic properties        |
 
 
 This workbook does not attempt to provide an exhaustive catalogue of all systemic concerns in
@@ -240,6 +248,23 @@ about a system's ability to grow without performance collapse, resilience ensure
 functionality as conditions change. These are not just performance issues--they are design philosophies that
 emphasise system behaviour under load and stress. A scalable system may still be fragile; a resilient one
 prioritises survival and recovery.
+
+*Locality*, *Throughput*, *Observability*, and *Feedback* each deepen the picture drawn by the
+original eighteen concepts. Locality explains *why* caches work--it is a property of programme
+behaviour, not hardware. Throughput completes the picture alongside latency: latency is the cost
+of one operation; throughput is the capacity of the system. Observability is the precondition for
+managing any of the other concepts in production--without signals, no other property can be
+monitored, debugged, or improved. Feedback is the mechanism by which systems become self-regulating:
+it appears in TCP congestion control, CPU frequency scaling, garbage collection, circuit breakers,
+and load balancers. These four are fully documented entries.
+
+*Availability*, *Privacy*, *Fairness*, and *Correctness* are left as open explorations. Availability
+completes the trio with fault tolerance and resilience, making the outcome metric explicit. Privacy
+extends security from "can unauthorised parties access this?" to "should authorised parties have
+this in the first place?"--a question that is as much ethical as technical. Fairness asks what
+equitable treatment means when resources are shared--a question with multiple incompatible formal
+definitions and no single correct answer. Correctness is the deepest of the four: it is the
+property that a system does what it should, which requires first having said what it should do.
 
 For an indepth analysis of systemic concept within AI/ML, see [AI/ML](AIMLCONCEPTS.pdf).
 
