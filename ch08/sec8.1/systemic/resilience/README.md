@@ -50,16 +50,16 @@ Comprehensive visibility into system behavior through:
 
 ### Design Principles
 
-| Principle | Purpose | Implementation Examples |
-|-----------|---------|------------------------|
-| *Redundancy* | Eliminate single points of failure | Load-balanced services, database replicas, multi-AZ deployments |
-| *Diversity* | Prevent correlated failures | Different cloud providers, varied hardware, alternative algorithms |
-| *Consensus* | Maintain consistency despite failures | Raft consensus for distributed configuration, Byzantine fault tolerance |
-| *Graceful Degradation* | Provide fallback functionality | Read-only mode during maintenance, cached responses, simplified UI |
-| *Isolation* | Contain failure impact | Microservices boundaries, container sandboxing, network segmentation |
-| *Self-Healing* | Automatic fault mitigation | Service restarts, auto-scaling, circuit breakers, queue management |
-| *Idempotency* | Safe operation retry | Unique request IDs, stateless operations, deterministic outcomes |
-| *Timeout & Backoff* | Prevent resource exhaustion | Request timeouts, exponential backoff, jitter in retries |
+| Principle              | Purpose                               | Implementation Examples                                                 |
+|------------------------|---------------------------------------|-------------------------------------------------------------------------|
+| *Redundancy*           | Eliminate single points of failure    | Load-balanced services, database replicas, multi-AZ deployments         |
+| *Diversity*            | Prevent correlated failures           | Different cloud providers, varied hardware, alternative algorithms      |
+| *Consensus*            | Maintain consistency despite failures | Raft consensus for distributed configuration, Byzantine fault tolerance |
+| *Graceful Degradation* | Provide fallback functionality        | Read-only mode during maintenance, cached responses, simplified UI      |
+| *Isolation*            | Contain failure impact                | Microservices boundaries, container sandboxing, network segmentation    |
+| *Self-Healing*         | Automatic fault mitigation            | Service restarts, auto-scaling, circuit breakers, queue management      |
+| *Idempotency*          | Safe operation retry                  | Unique request IDs, stateless operations, deterministic outcomes        |
+| *Timeout & Backoff*    | Prevent resource exhaustion           | Request timeouts, exponential backoff, jitter in retries                |
 
 
 ### Architecture Components
@@ -123,7 +123,7 @@ Comprehensive visibility into system behavior through:
 
 Automatically prevent calls to failing services and allow recovery:
 
-States: Closed (normal) → Open (failing) → Half-Open (testing)
+States: Closed (normal) --> Open (failing) --> Half-Open (testing)
 Thresholds: Failure rate, response time, error count
 Recovery: Gradual traffic increase, success rate monitoring
 
