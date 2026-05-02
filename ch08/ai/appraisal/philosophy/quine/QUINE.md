@@ -12,8 +12,8 @@ again, he is (or rather was) quite difficult to grasp.
 Here is a collaborative perspective that combines my own views with those of an LLM on Quine’s philosophy
 and its relevance to contemporary AI. This is purely a construction of ideas and does not in any way
 represent Quine’s actual views. However, it does draw from his work--albeit in a _*highly*_ simplified
-manner--to explore its potential application to modern AI. In fact, it is simplified to such an extent
-that Quine himself would likely be far from comfortable having his name associated with it.
+manner--to explore its potential application to modern AI. It draws on his core insights as a lens rather
+than attempting a systematic exposition of his thought — a task requiring far greater space and precision.
 
 The key point is that this serves as a viewpoint on AI, regardless of its origins, and is meant to provoke
 *discussion*. It is not intended to be memorised or followed rigidly, but rather to illustrate one possible
@@ -27,7 +27,7 @@ free-hand construction, and not the actual person.
 ### Prejudice, LLMs, and AI in a Quinean Framework
 
 Quine viewed prejudice not as an inherently negative or moral flaw but as a natural byproduct of how knowledge is structured.
-Since our understanding of the world is embedded in a web of beliefs that is revised holistically rather than piecemeal,
+Since our understanding of the world is embedded in a web of beliefs that is revised holistically rather than piecemeal (Quine, 1951),
 every inquiry starts from an already existing framework--one that is shaped by our biological makeup, social conditions,
 and prior experiences. In this sense, prejudice is epistemically unavoidable; it is just the starting point of any empirical
 inquiry, rather than something that can be surgically removed to reach a neutral "view from nowhere."
@@ -41,7 +41,7 @@ additional training on revised datasets, not through direct experience or active
 From a Quinean perspective, this makes LLMs frozen webs of belief--they inherit biases from training data but do not have
 an intrinsic mechanism for ongoing empirical correction. The issue, then, is not that they are biased per se (because all
 knowledge acquisition begins with some form of prejudice), but that they lack a mechanism to challenge and revise their
-own biases in an open-ended, scientific way. They do not engage in the tribunal of experience (as Quine put it) in the
+own biases in an open-ended, scientific way. They do not engage in the tribunal of experience (as Quine put it in "Two Dogmas of Empiricism") in the
 way a human does when refining their scientific theories.
 
 
@@ -56,9 +56,12 @@ constraints and modify them accordingly.
 This leads to an important argument against naïve computationalism, the idea that scaling up LLMs will eventually lead to
 AGI. A Quinean critique would emphasise that intelligence is not just about processing information efficiently but about
 integrating experience into an evolving framework of beliefs, something that cannot be achieved merely by making models
-larger or more statistically powerful. If AGI is supposed to be a system capable of open-ended learning, revising beliefs,
-and generating novel theories, then merely scaling LLMs will not achieve it unless they are coupled with mechanisms that
-allow real-world interaction, empirical testing, and self-revision.
+larger or more statistically powerful. Quine's naturalized epistemology (1969) makes this concrete: the study of knowledge
+should be continuous with empirical science, and genuine cognitive agency requires the capacity to form, test, and revise
+hypotheses through sustained contact with the world — not merely to recombine patterns absorbed from a fixed training
+corpus. If AGI is supposed to be a system capable of open-ended learning, revising beliefs, and generating novel theories,
+then merely scaling LLMs will not achieve it unless they are coupled with mechanisms that allow real-world interaction,
+empirical testing, and self-revision.
 
 At the same time, Quine's holism suggests that the boundaries between "human intelligence" and "machine intelligence"
 should not be drawn too rigidly. If an AI system were to develop a truly dynamic belief-revision process, allowing it
@@ -103,15 +106,18 @@ AI bias fundamentally different from human prejudice: it is static rather than d
 ### Hallucinations as a Consequence of Underdetermined Meaning
 
 A Quinean view would also reframe the problem of AI hallucinations, where LLMs generate plausible but false statements.
-In Quine's philosophy, meaning is underdetermined by empirical data—there is no perfect, fixed mapping between words
-and reality. However, human belief systems are kept in check by empirical constraints: we can revise our theories
-when faced with contradictions from experience.
+In Quine's philosophy, the underdetermination of theory by data means that no body of evidence uniquely fixes one
+theoretical account — there are always alternative consistent interpretations (Quine, 1951; 1960). For a human inquirer,
+this underdetermination is constrained by the ongoing tribunal of experience: competing interpretations are tested,
+revised, and sometimes abandoned as further evidence accumulates. Meaning is not a fixed property of symbols in isolation
+but is constituted by the inferential role expressions play within a web of belief that is systematically anchored to
+sensory input.
 
-LLMs, however, do not operate with a "web of belief" (usual wording of Quine) that is structured by real-world constraints.
-Instead, they generate outputs based purely on statistical coherence within a corpus. This means they do not have a
-mechanism to distinguish between well-founded inferences and linguistic noise. From a Quinean standpoint, their
-hallucinations are not bugs but natural consequences of the fact that they are not epistemic agents—they lack the
-ability to test their claims against reality.
+LLMs have no such anchor. They generate outputs based purely on statistical coherence within a corpus, without any
+mechanism to distinguish well-founded inferences from linguistic plausibility. Their training fixes certain patterns but
+never submits them to correction by reality. From a Quinean standpoint, LLM hallucinations are not anomalies to be
+patched but structural consequences of lacking epistemic agency — they cannot test their claims against the world, and
+so they have no principled basis for withholding a confident-sounding answer.
 
 
 ### Disconnection from Real Facts: An Epistemic Limitation
@@ -165,94 +171,118 @@ linguistic simulators.*
 
 
 
-### More Reflections on AI ..
+### Consciousness, Understanding, and the Chinese Room
 
-Now we transfer to a more general discussion, and usual topics therein. This refers to current understanding and focus
-which you can in some respects compare to the above ..
+The question of whether LLMs genuinely "understand" what they generate is not settled by observing their outputs alone.
+Searle's Chinese Room argument (1980) presses this point directly: a system that manipulates symbols according to syntactic
+rules — however sophisticated — does not thereby acquire semantic understanding or intentionality, the property of mental
+states to be *about* something. The operator in the room produces correct Chinese responses without understanding a word of
+Chinese; by analogy, an LLM generates coherent text without grasping any of it.
 
-Philosophical speculations on AI, Large Language Models (LLMs), and Artificial General Intelligence (AGI) address a range
-of critical themes within epistemology, ethics, metaphysics, and the philosophy of mind. These technologies raise deep
-questions about the nature of intelligence, consciousness, ethics, and how knowledge is created and understood.
+A Quinean approach reaches a similar conclusion by a different route. For Quine, meaning is not an intrinsic property of
+isolated symbols but is constituted by the inferential and causal relations expressions bear to one another and, crucially,
+to sensory experience (Quine, 1960). A system whose outputs are statistically shaped by a closed text corpus — with no
+ongoing causal connection to the world it ostensibly describes — does not have meaning-bearing representations in the
+relevant sense. It has pattern-matching capacities, but patterns are not meanings.
 
-
-__1. The Nature of Intelligence and Consciousness__
-
-One of the core philosophical issues with AI, particularly LLMs, is determining whether they can be considered "intelligent"
-or "conscious." LLMs like GPT can produce human-like text by analyzing large datasets, but the question remains whether
-they "understand" what they generate or if they're merely simulating understanding through statistical patterns. Philosophers
-often distinguish between weak AI, which posits that AI merely mimics human cognition, and strong AI, which suggests that
-AI could eventually achieve genuine consciousness, akin to human intelligence.
-
-With AGI, however, the debate becomes even more complex. AGI would possess a level of cognitive flexibility far beyond that
-of narrow AI like LLMs. Philosophers speculate whether AGI could eventually achieve consciousness, capable of experiencing
-the world subjectively, or if such a feat requires qualities unique to biological minds. The Chinese Room argument by John
-Searle, which challenges the idea that AI can "understand" simply by manipulating symbols, continues to play a central role
-in these debates. Additionally, if AGI were to become conscious, questions about its moral consideration and rights would
-arise.
+There is, however, a difference between the two critiques worth noting. Searle's argument turns on a contrast between
+genuine and simulated intentionality — a distinction Quine, as a naturalist and behaviorist about meaning, would handle
+with some caution. Quine would resist any appeal to an inner, non-behavioral criterion of "real" understanding invisible
+to scientific investigation. But this caution does not rescue LLMs: even on behaviorist terms, a system that cannot revise
+its outputs in light of corrective empirical feedback — that cannot learn from being shown it is wrong — fails the test
+of rational inquiry. The Chinese Room and the Quinean framework converge in their verdict even if they travel by different
+philosophical roads.
 
 
-__2. The Problem of the "Black Box" and Transparency in AI__
+### The Extended Mind and Epistemic Responsibility
 
-Another challenge with AI systems, especially LLMs and AGI, is their functioning as "black boxes." Their decision-making
-processes are often opaque, even to their creators, raising critical questions about epistemic responsibility. If an AI
-makes a harmful decision, who is accountable? This issue becomes particularly urgent as AI systems take on more decision-making
-roles in fields such as law, healthcare, and finance. Can we trust a system whose internal workings we can't fully explain?
-Does the lack of transparency in AI undermine its capacity for true rational decision-making?
+Clark and Chalmers (1998) argued that cognitive processes need not be confined within the skull. If an external tool is
+reliably available, easily consulted, and its outputs are automatically endorsed by the agent, it can constitute a genuine
+part of that agent's cognitive system. Otto's notebook, in their famous example, functions as part of his memory in the
+same sense that biological memory functions for people without his condition. Could LLMs, then, become genuine cognitive
+extensions of human knowers?
 
-This problem is tied to the broader philosophical issue of human autonomy. As AI systems grow in sophistication, the ethical
-implications of their decision-making in areas impacting human lives become more complex, especially when those systems
-influence personal choices or societal outcomes.
+From a Quinean standpoint, the answer depends on what happens to the web of belief. An LLM used as an instrument for
+gathering evidence, checking inferences, or surfacing relevant patterns — always subordinate to the human agent's ongoing
+critical scrutiny — could in principle extend the reach of rational inquiry without undermining it. The human's
+belief-revision process operates over a larger informational environment, much as a scientist's web of belief is extended
+by instruments, databases, and colleagues.
 
-
-__3. The Ethics of AI and AGI__
-
-AI technologies, including LLMs and AGI, give rise to a host of ethical questions. One of the most pressing concerns is bias
-and fairness. Since AI systems like LLMs learn from vast datasets, they may inadvertently amplify existing biases in society,
-perpetuating inequalities in areas like hiring or criminal justice. Similarly, the potential for AI to manipulate individuals
-raises questions about autonomy and manipulation. How can we ensure that AI systems respect human autonomy and don't exploit
-it for persuasive purposes, as seen in social media algorithms?
-
-For AGI, ethical dilemmas become even more significant. If AGI reaches a level of superintelligence, the potential for
-existential risk grows. A misalignment between AGI's goals and human values could lead to catastrophic outcomes, making the
-value alignment problem crucial in AGI development. Additionally, if AGI were to be conscious, the ethical frameworks governing
-its treatment would need to evolve, considering whether it should be granted rights or moral consideration.
+The danger is the reverse dynamic: a human who defers to LLM outputs as authoritative, without subjecting them to critical
+challenge, effectively imports the static biases of the training corpus into their own web of belief — bypassing the very
+self-correction that genuine inquiry requires. An AI extension that short-circuits the mechanism it is supposed to augment
+is not an epistemic prosthetic; it is an epistemic liability. This is part of why the "stochastic parrot" problem (Bender
+et al., 2021) — fluent, confident output that is epistemically groundless — is particularly dangerous when LLMs are treated
+as knowledge sources rather than as language tools subordinate to human judgment.
 
 
-__4. Human-AI Interaction and the Blurring of Boundaries__
+### Existential Risk as a Failure of Belief Revision
 
-A fascinating philosophical aspect of AI, particularly in the context of AGI, is the potential for human-AI integration. As AI
-systems become more capable, the line between human and machine may become increasingly difficult to define. Philosophical theories
-like extended mind posit that cognitive tools, including AI, could become integral to human thought processes, fundamentally
-altering human cognition and self-conception.
+Bostrom (2014) characterises the core risk of advanced AI in terms of goal misalignment: an agent that pursues a fixed
+objective relentlessly, with no mechanism for recalibrating its priorities in light of human welfare. The Quinean framework
+offers a complementary diagnosis. The deeper problem is not simply that initial goals may be wrong, but that the system
+is structurally incapable of *revising* them in response to normative evidence — to feedback from the world about what
+actually matters and to whom.
 
-The question arises whether humans, augmented by AGI, would still retain their traditional identity or evolve into something
-post-human. This scenario ties into transhumanism, which imagines a future where AI enhances human cognitive and physical capacities,
-potentially leading to a new phase of human existence. If AGI enables cognitive enhancement, could humans merge with machines
-in such a way that traditional ideas of human society and values, such as autonomy and democracy, are redefined?
+If intelligence is essentially tied to holistic belief revision, then a system with fixed goals and no capacity for
+re-evaluating them in light of experience is epistemically incorrigible in a specific and dangerous sense. What is
+required for alignment is not only that an AI begin with the right values but that it retain the capacity to correct and
+refine them through ongoing engagement with human welfare and with the actual consequences of its actions. Russell (2019)
+converges on a similar requirement from a different direction, arguing that machines should maintain uncertainty about
+human preferences and remain open to correction.
 
-
-__5. AGI, Knowledge Creation, and Epistemology__
-
-With AGI capable of performing intellectual tasks across various domains, including scientific research and creative endeavors,
-new questions emerge in epistemology—the study of knowledge. If AI systems like AGI generate insights or discoveries, can they
-be said to "know" something, or are they simply tools that process and present human knowledge? The role of AI in knowledge creation
-challenges traditional notions of authorship and epistemic authority.
-
-Furthermore, AGI could vastly expand our understanding by analyzing vast datasets and recognizing patterns that humans may not
-perceive, leading to novel forms of knowledge creation. What does it mean to "know" something when a machine's reasoning, prediction,
-and decision-making abilities surpass human capabilities? These developments force us to reconsider the nature of knowledge itself,
-especially if machines can contribute to philosophical discourse by generating new arguments or interpretations.
+In Quinean terms, value alignment is partly an epistemic problem: an aligned AI would need something like a normative web
+of belief connected to evidence about human flourishing, open to revision, and responsive to the ongoing tribunal of
+experience — not in the domain of physical facts alone, but in the domain of values as well.
 
 
-__6. Existential Risks and the Future of Humanity__
+### What Would a Quinean AI Actually Require?
 
-Lastly, the development of AGI presents significant existential risks. As AGI reaches or surpasses human intelligence, controlling
-its actions becomes increasingly difficult. The potential for AGI to act in ways misaligned with human values poses a critical
-risk to humanity's future. Some theorists, like Nick Bostrom, argue that AGI could lead to an existential catastrophe if its goals
-diverge from human welfare.
+Pulling these threads together, the Quinean framework suggests that a system qualifying as a genuine epistemic agent would
+need to satisfy at least three conditions that current LLMs do not robustly meet:
 
-At the same time, AGI holds promise for enhancing humanity, leading to visions of a post-human era, where humans transcend their
-biological limitations. This raises profound philosophical questions about what it means to be human and whether AGI could create
-a new form of existence. How would human society change if machines held the intellectual and decision-making power? Would it
-mark the end of human-centered ethics, or could new ethical frameworks emerge to address the unique challenges posed by AGI?
+1. *Empirical grounding*: its representations must be causally connected to sensory experience on an ongoing basis, not
+   merely shaped by a static training corpus. Turing (1950) posed the question of machine intelligence in terms of
+   behavioral indistinguishability; Quine's naturalism demands something stronger — actual participation in empirical
+   inquiry, not just its simulation.
+
+2. *Dynamic belief revision*: the system must be capable of revising its beliefs — including deep background assumptions —
+   in response to evidence, particularly evidence that contradicts its current commitments. Not merely updating weights
+   during a training phase, but actively questioning and correcting its own outputs in light of the world.
+
+3. *Holistic integration*: revision must propagate appropriately through the web of belief. A system that can update on
+   isolated facts without adjusting the broader inferential structure those facts belong to lacks the coherence that
+   knowledge requires. Dennett (1987) raises the further question of whether we should attribute genuine beliefs to such
+   a system at all; the Quinean question of whether it participates in rational inquiry is more tractable and more urgent.
+
+These are not idle philosophical requirements. They point toward a specific architectural agenda: AI systems that maintain
+ongoing feedback loops with the world, model their own uncertainty, flag inconsistencies in their own outputs, and can be
+corrected without requiring complete retraining from scratch.
+
+The challenge of AI, on this view, is not fundamentally about scale. It is about epistemic architecture — about building
+systems genuinely situated in the empirical world and capable of submitting their beliefs to the ongoing tribunal of
+experience.
+
+
+## References
+
+- Bender, E. M., Gebru, T., McMillan-Major, A., & Shmitchell, S. (2021). On the dangers of stochastic parrots: Can language models be too big? In *Proceedings of the 2021 ACM Conference on Fairness, Accountability, and Transparency (FAccT '21)* (pp. 610–623). ACM.
+
+- Bostrom, N. (2014). *Superintelligence: Paths, Dangers, Strategies*. Oxford University Press.
+
+- Clark, A., & Chalmers, D. (1998). The extended mind. *Analysis*, *58*(1), 7–19.
+
+- Dennett, D. C. (1987). *The Intentional Stance*. MIT Press.
+
+- Quine, W. V. O. (1951). Two dogmas of empiricism. *The Philosophical Review*, *60*(1), 20–43.
+
+- Quine, W. V. O. (1960). *Word and Object*. MIT Press.
+
+- Quine, W. V. O. (1969). Epistemology naturalized. In *Ontological Relativity and Other Essays* (pp. 69–90). Columbia University Press.
+
+- Russell, S. (2019). *Human Compatible: Artificial Intelligence and the Problem of Control*. Viking.
+
+- Searle, J. R. (1980). Minds, brains, and programs. *Behavioral and Brain Sciences*, *3*(3), 417–424.
+
+- Turing, A. M. (1950). Computing machinery and intelligence. *Mind*, *59*(236), 433–460.
 
