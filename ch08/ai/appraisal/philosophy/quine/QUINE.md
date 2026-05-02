@@ -21,9 +21,6 @@ perspective from which to begin reasoning. The goal is to stimulate *your* philo
 rather than to offer a definitive interpretation of Quine. So "Quine" in the following rather stands for a
 free-hand construction, and not the actual person.
 
-* Google's NotebookLM comments in a [WAVE-file](./QUINE.wav).
-
-
 ### Prejudice, LLMs, and AI in a Quinean Framework
 
 Quine viewed prejudice not as an inherently negative or moral flaw but as a natural byproduct of how knowledge is structured.
